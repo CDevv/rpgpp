@@ -1,3 +1,4 @@
+#include "room.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
 #include <raylib.h>
@@ -15,7 +16,18 @@ int main()
     Texture texture = LoadTexture("resources/Hills.png");
 
     TileSet tileSet(texture);
-    TileMap tileMap(&tileSet, 16, 48);
+    TileMap tileMap(&tileSet, 50, 50, 16, 48);
+
+    Room room(&tileMap);
+
+    Vector2 maxSize = tileMap.getMaxAtlasSize();
+
+    for (int x = 0; x < maxSize.x; x++) {
+        for (int y = 0; y < maxSize.y; y++) {
+            Vector2 vector = (Vector2){ (float)x, (float)y };
+            tileMap.setTile(vector, vector);
+        }
+    }
 
     SetTargetFPS(60);
 
@@ -24,20 +36,7 @@ int main()
 
         ClearBackground(RAYWHITE);
 
-        //DrawText("Hello!", 20, 20, 36, BLACK);
-
-        Vector2 maxSize = tileMap.getMaxAtlasSize();
-
-        for (int x = 0; x < maxSize.x; x++) {
-            for (int y = 0; y < maxSize.y; y++) {
-                Vector2 vector = (Vector2){ (float)x, (float)y };
-                tileMap.drawTile(vector, vector);
-            }
-        }
-
-        //tileMap.drawTile((Vector2){ 0, 0 }, (Vector2){ 0, 0 });
-        //tileMap.drawTile((Vector2){ 0, 1 }, (Vector2){ 0, 1 });
-        //tileMap.drawTile((Vector2){ 0, 2 }, (Vector2){ 0, 2 });
+        room.draw();
 
         EndDrawing();
     }

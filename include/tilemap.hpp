@@ -2,6 +2,7 @@
 #define _RPGPP_TILEMAP_H
 
 #include <raylib.h>
+#include "atlasTile.hpp"
 #include "tile.hpp"
 #include "tileset.hpp"
 
@@ -11,13 +12,20 @@ private:
     TileSet *tileSet;
     int atlasTileSize;
     int worldTileSize;
+    int width;
+    int height;
     int maxAtlasWidth;
     int maxAtlasHeight;
+    Tile **tiles;
 public:
-    TileMap(TileSet *tileSet, int atlasTileSize, int worldTileSize);
+    TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int worldTileSize);
+    ~TileMap();
+    void draw();
     bool atlasPosIsValid(Vector2 atlasPos);
+    void setTile(Vector2 worldPos, Vector2 atlasPos);
+    void drawTile(int x, int y);
     void drawTile(Vector2 worldPos, Vector2 atlasPos);
-    void drawTile(Vector2 worldPos, Tile tile);
+    void drawTile(Vector2 worldPos, AtlasTile tile);
     Vector2 getMaxAtlasSize();
 };
 

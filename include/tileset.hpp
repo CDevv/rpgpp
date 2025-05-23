@@ -2,15 +2,16 @@
 #define _RPGPP_TILESET_H
 
 #include <raylib.h>
-#include "tile.hpp"
+#include "atlasTile.hpp"
 
 class TileSet {
 private:
     Texture texture;
 public:
     TileSet(Texture texture);
+    ~TileSet();
     Texture getTexture();
-    Tile getTile(Vector2 atlasPos);
+    AtlasTile getTile(Vector2 atlasPos);
 };
 
 #endif
