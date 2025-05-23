@@ -9,6 +9,7 @@ private:
     Vector2 atlasCoords;
 public:
     Tile(Texture *texture, Vector2 atlasCoords);
+    Vector2 getAtlasCoords();
     void draw(Vector2 worldCoords);
 };
 

@@ -9,6 +9,7 @@ private:
     Texture texture;
 public:
     TileSet(Texture texture);
+    Texture getTexture();
     Tile getTile(Vector2 atlasPos);
 };
 

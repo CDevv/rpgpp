@@ -6,6 +6,10 @@ Tile::Tile(Texture *texture, Vector2 atlasCoords) {
     this->atlasCoords = atlasCoords;
 }
 
+Vector2 Tile::getAtlasCoords() {
+    return this->atlasCoords;
+}
+
 void Tile::draw(Vector2 worldCoords) {
     Rectangle atlasCoordsRect = (Rectangle){ this->atlasCoords.x, this->atlasCoords.y, 16, 16 };
     Rectangle worldCoordsRect = (Rectangle){ worldCoords.x, worldCoords.y, 48, 48 };

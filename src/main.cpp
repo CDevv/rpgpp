@@ -1,3 +1,4 @@
+#include "tilemap.hpp"
 #include "tileset.hpp"
 #include <raylib.h>
 
@@ -14,6 +15,7 @@ int main()
     Texture texture = LoadTexture("resources/Hills.png");
 
     TileSet tileSet(texture);
+    TileMap tileMap(&tileSet, 16, 48);
 
     SetTargetFPS(60);
 
@@ -22,9 +24,20 @@ int main()
 
         ClearBackground(RAYWHITE);
 
-        DrawText("Hello!", 20, 20, 36, BLACK);
+        //DrawText("Hello!", 20, 20, 36, BLACK);
 
-        tileSet.getTile((Vector2){ 0, 0 }).draw((Vector2){ 20, 70 });
+        Vector2 maxSize = tileMap.getMaxAtlasSize();
+
+        for (int x = 0; x < maxSize.x; x++) {
+            for (int y = 0; y < maxSize.y; y++) {
+                Vector2 vector = (Vector2){ (float)x, (float)y };
+                tileMap.drawTile(vector, vector);
+            }
+        }
+
+        //tileMap.drawTile((Vector2){ 0, 0 }, (Vector2){ 0, 0 });
+        //tileMap.drawTile((Vector2){ 0, 1 }, (Vector2){ 0, 1 });
+        //tileMap.drawTile((Vector2){ 0, 2 }, (Vector2){ 0, 2 });
 
         EndDrawing();
     }
