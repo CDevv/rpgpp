@@ -20,6 +20,7 @@ private:
 public:
     TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int worldTileSize);
     ~TileMap();
+    void update();
     void draw();
     bool atlasPosIsValid(Vector2 atlasPos);
     void setTile(Vector2 worldPos, Vector2 atlasPos);

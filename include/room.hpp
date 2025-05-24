@@ -9,11 +9,12 @@
 class Room {
 private:
     TileMap *tileMap;
-    std::vector<Actor> actors;
+    std::vector<Actor*> actors;
 public:
     Room(TileMap *tileMap);
     ~Room();
-    void addActor(Actor actor);
+    void addActor(Actor *actor);
+    void update();
     void draw();
 };
 

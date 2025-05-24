@@ -30,6 +30,18 @@ TileMap::~TileMap() {
     UnloadTexture(tileSet->getTexture());
 }
 
+void TileMap::update() {
+    //this->draw();
+}
+
+void TileMap::draw() {
+    for (int x = 0; x < height; x++) {
+        for (int y = 0; y < width; y++) {
+            drawTile(x, y);
+        }
+    }
+}
+
 void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos) {
     Vector2 resultAtlasCoords = (Vector2){
         atlasPos.x * atlasTileSize,
@@ -49,13 +61,7 @@ void TileMap::drawTile(int x, int y) {
     }
 }
 
-void TileMap::draw() {
-    for (int x = 0; x < height; x++) {
-        for (int y = 0; y < width; y++) {
-            drawTile(x, y);
-        }
-    }
-}
+
 
 bool TileMap::atlasPosIsValid(Vector2 atlasPos) {
     bool atlasXFits = false;

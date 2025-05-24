@@ -1,6 +1,7 @@
 #ifndef _RPGPP_ACTOR_H
 #define _RPGPP_ACTOR_H
 
+#include <vector>
 #include "atlasTile.hpp"
 #include "tileset.hpp"
 #include <raylib.h>
@@ -10,8 +11,14 @@ private:
     TileSet *tileSet;
     AtlasTile tile;
     Vector2 position;
+    int frameCounter;
+    int frameSpeed;
+    int currentFrame;
+    std::vector<Vector2> frames;
 public:
     Actor(TileSet *tileSet, Vector2 atlasPos);
+    ~Actor();
+    void update();
     void draw();
 };
 

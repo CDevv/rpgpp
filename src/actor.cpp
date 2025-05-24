@@ -4,6 +4,36 @@
 Actor::Actor(TileSet *tileSet, Vector2 atlasPos) {
     this->tileSet = tileSet;
     this->tile = tileSet->getTile(atlasPos);
+
+    this->frameCounter = 0;
+    this->frameSpeed = 2;
+    this->currentFrame = 0;
+    this->frames.push_back((Vector2){ 0, 0 });
+    this->frames.push_back((Vector2){ 1, 0 });
+}
+
+Actor::~Actor() {
+    delete tileSet;
+}
+
+void Actor::update() {
+    frameCounter++;
+
+    if (frameCounter >= (60/frameSpeed)) {
+        frameCounter = 0;
+        currentFrame++;
+
+        if (currentFrame >= 2) currentFrame = 0;
+
+        float atlasTileSize = (float)tileSet->getTileSize();
+        Vector2 atlasPos = frames.at(currentFrame);
+        atlasPos = (Vector2){
+            atlasPos.x * atlasTileSize,
+            atlasPos.y * atlasTileSize
+        };
+
+        this->tile = tileSet->getTile(atlasPos);
+    }
 }
 
 void Actor::draw() {

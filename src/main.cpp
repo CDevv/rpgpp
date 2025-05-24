@@ -26,7 +26,7 @@ int main()
 
     Room room(&tileMap);
 
-    room.addActor(actor);
+    room.addActor(&actor);
 
     Vector2 maxSize = tileMap.getMaxAtlasSize();
 
@@ -40,6 +40,8 @@ int main()
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
+        room.update();
+
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
