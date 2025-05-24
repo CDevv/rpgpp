@@ -2,12 +2,17 @@
 #include "atlasTile.hpp"
 #include <raylib.h>
 
-TileSet::TileSet(Texture texture) {
+TileSet::TileSet(Texture texture, int tileSize) {
     this->texture = texture;
+    this->tileSize = tileSize;
 }
 
 TileSet::~TileSet() {
     UnloadTexture(texture);
+}
+
+int TileSet::getTileSize() {
+    return tileSize;
 }
 
 Texture TileSet::getTexture() {

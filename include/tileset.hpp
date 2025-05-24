@@ -7,9 +7,11 @@
 class TileSet {
 private:
     Texture texture;
+    int tileSize;
 public:
-    TileSet(Texture texture);
+    TileSet(Texture texture, int tileSize);
     ~TileSet();
+    int getTileSize();
     Texture getTexture();
     AtlasTile getTile(Vector2 atlasPos);
 };

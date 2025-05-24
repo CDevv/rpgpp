@@ -1,3 +1,4 @@
+#include "actor.hpp"
 #include "room.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
@@ -14,11 +15,18 @@ int main()
     const float rotation = 0.0f;
 
     Texture texture = LoadTexture("resources/Hills.png");
+    TileSet tileSet(texture, 16);
 
-    TileSet tileSet(texture);
     TileMap tileMap(&tileSet, 50, 50, 16, 48);
 
+    Texture actorTexture = LoadTexture("resources/character.png");
+    TileSet actorTileSet(actorTexture, 16);
+
+    Actor actor(&actorTileSet, (Vector2){ 0, 0 });
+
     Room room(&tileMap);
+
+    room.addActor(actor);
 
     Vector2 maxSize = tileMap.getMaxAtlasSize();
 

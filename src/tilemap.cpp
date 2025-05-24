@@ -6,7 +6,7 @@ TileMap::TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int
     this->basePos = (Vector2){ 0.0f, 0.0f };
     this->tileSet = tileSet;
 
-    this->atlasTileSize = atlasTileSize;
+    this->atlasTileSize = tileSet->getTileSize();
     this->worldTileSize = worldTileSize;
 
     this->width = width;
