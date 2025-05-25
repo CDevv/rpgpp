@@ -12,10 +12,10 @@ private:
     std::vector<Actor*> actors;
 public:
     Room(TileMap *tileMap);
-    ~Room();
-    void addActor(Actor *actor);
+    void unload();
     void update();
     void draw();
+    void addActor(Actor *actor);
 };
 
 #endif

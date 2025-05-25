@@ -7,7 +7,7 @@ TileSet::TileSet(Texture texture, int tileSize) {
     this->tileSize = tileSize;
 }
 
-TileSet::~TileSet() {
+void TileSet::unload() {
     UnloadTexture(texture);
 }
 

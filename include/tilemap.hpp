@@ -1,6 +1,7 @@
 #ifndef _RPGPP_TILEMAP_H
 #define _RPGPP_TILEMAP_H
 
+#include <vector>
 #include <raylib.h>
 #include "atlasTile.hpp"
 #include "tile.hpp"
@@ -16,10 +17,10 @@ private:
     int height;
     int maxAtlasWidth;
     int maxAtlasHeight;
-    Tile **tiles;
+    std::vector<std::vector<Tile>> tiles;
 public:
     TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int worldTileSize);
-    ~TileMap();
+    void unload();
     void update();
     void draw();
     bool atlasPosIsValid(Vector2 atlasPos);

@@ -15,18 +15,18 @@ TileMap::TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int
     this->maxAtlasWidth = tileSet->getTexture().width / atlasTileSize;
     this->maxAtlasHeight = tileSet->getTexture().height / atlasTileSize;
 
-    this->tiles = new Tile*[height];
-    for (int i = 0; i < height; i++) {
-        this->tiles[i] = new Tile[width];
+    for (int i = 0; i < width; i++) {
+        std::vector<Tile> row;
+        for (int j = 0; j < height; j++) {
+            Tile tile;
+            row.push_back(tile);
+        }
+
+        tiles.push_back(row);
     }
 }
 
-TileMap::~TileMap() {
-    for (int i = 0; i < height; i++) {
-        delete [] this->tiles[i];
-    }
-    delete this->tiles;
-
+void TileMap::unload() {
     UnloadTexture(tileSet->getTexture());
 }
 

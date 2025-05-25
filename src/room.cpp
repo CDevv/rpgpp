@@ -5,8 +5,11 @@ Room::Room(TileMap *tileMap) {
     this->tileMap = tileMap;
 }
 
-Room::~Room() {
-    delete this->tileMap;
+void Room::unload() {
+    tileMap->unload();
+    for (Actor *actor : actors) {
+        actor->unload();
+    }
 }
 
 void Room::addActor(Actor *actor) {

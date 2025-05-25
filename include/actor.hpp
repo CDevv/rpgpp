@@ -17,7 +17,7 @@ private:
     std::vector<Vector2> frames;
 public:
     Actor(TileSet *tileSet, Vector2 atlasPos);
-    ~Actor();
+    void unload();
     void update();
     void draw();
 };

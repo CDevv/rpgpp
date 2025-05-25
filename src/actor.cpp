@@ -12,8 +12,8 @@ Actor::Actor(TileSet *tileSet, Vector2 atlasPos) {
     this->frames.push_back((Vector2){ 1, 0 });
 }
 
-Actor::~Actor() {
-    delete tileSet;
+void Actor::unload() {
+    tileSet->unload();
 }
 
 void Actor::update() {

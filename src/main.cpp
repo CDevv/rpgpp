@@ -11,9 +11,6 @@ int main()
 
     InitWindow(width, height, "Window");
 
-    const Vector2 origin = (Vector2){ 0.0f, 0.0f };
-    const float rotation = 0.0f;
-
     Texture texture = LoadTexture("resources/Hills.png");
     TileSet tileSet(texture, 16);
 
@@ -22,11 +19,11 @@ int main()
     Texture actorTexture = LoadTexture("resources/character.png");
     TileSet actorTileSet(actorTexture, 16);
 
-    Actor actor(&actorTileSet, (Vector2){ 0, 0 });
+    Actor *actor = new Actor (&actorTileSet, (Vector2){ 0, 0 });
 
     Room room(&tileMap);
 
-    room.addActor(&actor);
+    room.addActor(actor);
 
     Vector2 maxSize = tileMap.getMaxAtlasSize();
 
@@ -50,6 +47,8 @@ int main()
 
         EndDrawing();
     }
+
+    room.unload();
 
     CloseWindow();
 

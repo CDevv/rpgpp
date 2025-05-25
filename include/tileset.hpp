@@ -10,7 +10,7 @@ private:
     int tileSize;
 public:
     TileSet(Texture texture, int tileSize);
-    ~TileSet();
+    void unload();
     int getTileSize();
     Texture getTexture();
     AtlasTile getTile(Vector2 atlasPos);
