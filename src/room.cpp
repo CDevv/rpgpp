@@ -10,24 +10,30 @@ void Room::unload() {
     for (Actor *actor : actors) {
         actor->unload();
     }
+    player->unload();
+}
+
+void Room::update() {
+    for (Actor *actor : actors) {
+        actor->update();
+    }
+    player->update();
+}
+
+void Room::draw() {
+    this->tileMap->draw();
+    for (Actor *actor : actors) {
+        actor->draw();
+    }
+    player->draw();
 }
 
 void Room::addActor(Actor *actor) {
     this->actors.push_back(actor);
 }
 
-void Room::update() {
-    //this->tileMap->update();
-
-    for (Actor *actor : actors) {
-        actor->update();
-    }
+void Room::addPlayer(Player* player)
+{
+    this->player = player;
 }
 
-void Room::draw() {
-    this->tileMap->draw();
-
-    for (Actor *actor : actors) {
-        actor->draw();
-    }
-}
