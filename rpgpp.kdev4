@@ -1,4 +1,4 @@
 [Project]
-CreatedFrom=Makefile
-Manager=KDevCustomMakeManager
+CreatedFrom=
+Manager=KDevCustomBuildSystem
 Name=rpgpp

@@ -2,6 +2,8 @@
 #include <raymath.h>
 
 Player::Player(Actor *actor) {
+    this->position = (Vector2){ 0, 0 };
+
     this->actor = actor;
     this->idleDirection = RPGPP_DOWN_IDLE;
     this->currentDirection = RPGPP_DOWN;

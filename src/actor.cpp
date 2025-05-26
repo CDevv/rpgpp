@@ -3,6 +3,8 @@
 #include <raymath.h>
 
 Actor::Actor(TileSet *tileSet, Vector2 atlasPos) {
+    this->position = (Vector2){ 0, 0 };
+
     this->tileSet = tileSet;
     this->tile = tileSet->getTile(atlasPos);
 

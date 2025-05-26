@@ -20,33 +20,33 @@ int main()
     Texture actorTexture = LoadTexture("resources/character.png");
     TileSet actorTileSet(actorTexture, 16);
 
-    Actor *actor = new Actor (&actorTileSet, (Vector2){ 0, 0 });
+    Actor actor(&actorTileSet, (Vector2){ 0, 0 });
 
-    actor->addAnimation(RPGPP_DOWN_IDLE, (Vector2){ 0, 0 });
-    actor->addAnimation(RPGPP_DOWN_IDLE, (Vector2){ 1, 0 });
+    actor.addAnimation(RPGPP_DOWN_IDLE, (Vector2){ 0, 0 });
+    actor.addAnimation(RPGPP_DOWN_IDLE, (Vector2){ 1, 0 });
 
-    actor->addAnimation(RPGPP_DOWN, (Vector2){ 2, 0 });
-    actor->addAnimation(RPGPP_DOWN, (Vector2){ 3, 0 });
+    actor.addAnimation(RPGPP_DOWN, (Vector2){ 2, 0 });
+    actor.addAnimation(RPGPP_DOWN, (Vector2){ 3, 0 });
 
-    actor->addAnimation(RPGPP_UP_IDLE, (Vector2){ 0, 1 });
-    actor->addAnimation(RPGPP_UP_IDLE, (Vector2){ 1, 1 });
+    actor.addAnimation(RPGPP_UP_IDLE, (Vector2){ 0, 1 });
+    actor.addAnimation(RPGPP_UP_IDLE, (Vector2){ 1, 1 });
 
-    actor->addAnimation(RPGPP_UP, (Vector2){ 2, 1 });
-    actor->addAnimation(RPGPP_UP, (Vector2){ 3, 1 });
+    actor.addAnimation(RPGPP_UP, (Vector2){ 2, 1 });
+    actor.addAnimation(RPGPP_UP, (Vector2){ 3, 1 });
 
-    actor->addAnimation(RPGPP_LEFT_IDLE, (Vector2){ 0, 2 });
-    actor->addAnimation(RPGPP_LEFT_IDLE, (Vector2){ 1, 2 });
+    actor.addAnimation(RPGPP_LEFT_IDLE, (Vector2){ 0, 2 });
+    actor.addAnimation(RPGPP_LEFT_IDLE, (Vector2){ 1, 2 });
 
-    actor->addAnimation(RPGPP_LEFT, (Vector2){ 2, 2 });
-    actor->addAnimation(RPGPP_LEFT, (Vector2){ 3, 2 });
+    actor.addAnimation(RPGPP_LEFT, (Vector2){ 2, 2 });
+    actor.addAnimation(RPGPP_LEFT, (Vector2){ 3, 2 });
 
-    actor->addAnimation(RPGPP_RIGHT_IDLE, (Vector2){ 0, 3 });
-    actor->addAnimation(RPGPP_RIGHT_IDLE, (Vector2){ 1, 3 });
+    actor.addAnimation(RPGPP_RIGHT_IDLE, (Vector2){ 0, 3 });
+    actor.addAnimation(RPGPP_RIGHT_IDLE, (Vector2){ 1, 3 });
 
-    actor->addAnimation(RPGPP_RIGHT, (Vector2){ 2, 3 });
-    actor->addAnimation(RPGPP_RIGHT, (Vector2){ 3, 3 });
+    actor.addAnimation(RPGPP_RIGHT, (Vector2){ 2, 3 });
+    actor.addAnimation(RPGPP_RIGHT, (Vector2){ 3, 3 });
 
-    Player player(actor);
+    Player player(&actor);
 
     Room room(&tileMap);
 
