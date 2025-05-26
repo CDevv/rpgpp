@@ -1,11 +1,13 @@
 #include "room.hpp"
 #include "tilemap.hpp"
 
-Room::Room(TileMap *tileMap) {
+Room::Room(TileMap *tileMap)
+{
     this->tileMap = tileMap;
 }
 
-void Room::unload() {
+void Room::unload()
+{
     tileMap->unload();
     for (Actor *actor : actors) {
         actor->unload();
@@ -13,14 +15,16 @@ void Room::unload() {
     player->unload();
 }
 
-void Room::update() {
+void Room::update()
+{
     for (Actor *actor : actors) {
         actor->update();
     }
     player->update();
 }
 
-void Room::draw() {
+void Room::draw()
+{
     this->tileMap->draw();
     for (Actor *actor : actors) {
         actor->draw();
@@ -35,5 +39,17 @@ void Room::addActor(Actor *actor) {
 void Room::addPlayer(Player* player)
 {
     this->player = player;
+    this->player->setRoom(this);
 }
+
+TileMap * Room::getTileMap()
+{
+    return this->tileMap;
+}
+
+std::vector<Vector2> Room::getCollisionTiles()
+{
+    return this->tileMap->getCollisionTiles();
+}
+
 

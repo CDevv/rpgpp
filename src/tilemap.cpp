@@ -1,6 +1,7 @@
 #include "tilemap.hpp"
 #include "atlasTile.hpp"
 #include <raylib.h>
+#include <raymath.h>
 
 TileMap::TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int worldTileSize) {
     this->basePos = (Vector2){ 0.0f, 0.0f };
@@ -26,23 +27,51 @@ TileMap::TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int
     }
 }
 
-void TileMap::unload() {
+void TileMap::unload()
+{
     UnloadTexture(tileSet->getTexture());
 }
 
-void TileMap::update() {
+void TileMap::update()
+{
     //this->draw();
 }
 
-void TileMap::draw() {
+void TileMap::draw()
+{
+    //draw the tiles
     for (int x = 0; x < height; x++) {
         for (int y = 0; y < width; y++) {
             drawTile(x, y);
         }
     }
+
+    //draw collision boxes
+    Color collisionDebugColor = RED;
+    collisionDebugColor.a = (255 / 2);
+
+    for (Vector2 v : collisions) {
+        Rectangle rec = (Rectangle){
+            v.x * worldTileSize, v.y * worldTileSize,
+            (float)worldTileSize, (float)worldTileSize
+        };
+
+        DrawRectangleRec(rec, collisionDebugColor);
+    }
 }
 
-void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos) {
+int TileMap::getAtlasTileSize()
+{
+    return atlasTileSize;
+}
+
+int TileMap::getWorldTileSize()
+{
+    return worldTileSize;
+}
+
+void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos)
+{
     Vector2 resultAtlasCoords = (Vector2){
         atlasPos.x * atlasTileSize,
         atlasPos.y * atlasTileSize
@@ -53,7 +82,8 @@ void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos) {
     this->tiles[(int)worldPos.x][(int)worldPos.y].place(atlasTile, worldPos);
 }
 
-void TileMap::drawTile(int x, int y) {
+void TileMap::drawTile(int x, int y)
+{
     Tile tile = this->tiles[x][y];
 
     if (tile.isPlaced()) {
@@ -61,9 +91,8 @@ void TileMap::drawTile(int x, int y) {
     }
 }
 
-
-
-bool TileMap::atlasPosIsValid(Vector2 atlasPos) {
+bool TileMap::atlasPosIsValid(Vector2 atlasPos)
+{
     bool atlasXFits = false;
     bool atlasYFits = false;
 
@@ -77,7 +106,8 @@ bool TileMap::atlasPosIsValid(Vector2 atlasPos) {
     return (atlasXFits && atlasYFits);
 }
 
-void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos) {
+void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos)
+{
     if (!atlasPosIsValid(atlasPos)) {
         return;
     }
@@ -92,7 +122,8 @@ void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos) {
     this->drawTile(worldPos, tile);
 }
 
-void TileMap::drawTile(Vector2 worldPos, AtlasTile tile) {
+void TileMap::drawTile(Vector2 worldPos, AtlasTile tile)
+{
     //defaults..
     const Vector2 origin = (Vector2){ 0.0f, 0.0f };
     const float rotation = 0.0f;
@@ -113,6 +144,26 @@ void TileMap::drawTile(Vector2 worldPos, AtlasTile tile) {
 
     //draw it
     DrawTexturePro(texture, atlasCoordsRect, worldCoordsRect, origin, rotation, WHITE);
+}
+
+void TileMap::setCollisionTile(Vector2 worldPos)
+{
+    this->collisions.push_back(worldPos);
+}
+
+bool TileMap::isCollisionTile(const Vector2 worldPos)
+{
+    for (Vector2 v : collisions) {
+        if (Vector2Equals(v, worldPos)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::vector<Vector2> TileMap::getCollisionTiles()
+{
+    return this->collisions;
 }
 
 Vector2 TileMap::getMaxAtlasSize() {

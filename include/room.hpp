@@ -7,6 +7,8 @@
 #include "player.hpp"
 #include "tilemap.hpp"
 
+class Player;
+
 class Room {
 private:
     TileMap *tileMap;
@@ -19,6 +21,8 @@ public:
     void draw();
     void addActor(Actor *actor);
     void addPlayer(Player *player);
+    TileMap *getTileMap();
+    std::vector<Vector2> getCollisionTiles();
 };
 
 #endif

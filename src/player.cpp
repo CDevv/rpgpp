@@ -1,8 +1,10 @@
 #include "player.hpp"
 #include <raymath.h>
 
-Player::Player(Actor *actor) {
+Player::Player(Actor *actor)
+{
     this->position = (Vector2){ 0, 0 };
+    this->size = 48;
 
     this->actor = actor;
     this->idleDirection = RPGPP_DOWN_IDLE;
@@ -16,8 +18,12 @@ void Player::unload()
 
 void Player::update()
 {
-    const int change = 2;
+    int change = 2;
     Vector2 velocity = (Vector2){ 0, 0 };
+
+    if (IsKeyDown(KEY_LEFT_SHIFT)) {
+        change *= 2;
+    }
 
     if (IsKeyDown(KEY_UP)) {
         currentDirection = RPGPP_UP;
@@ -40,6 +46,28 @@ void Player::update()
         velocity.x += change;
     }
 
+    Vector2 newPos = Vector2Add(position, velocity);
+    Rectangle playerRect = (Rectangle) {
+        newPos.x, newPos.y,
+        size, size
+    };
+
+    TileMap *tileMap = room->getTileMap();
+    int worldTileSize = tileMap->getWorldTileSize();
+
+    std::vector<Vector2> collisionTiles = this->room->getCollisionTiles();
+    for (Vector2 v : collisionTiles) {
+        Rectangle tileRect = (Rectangle){
+            v.x * worldTileSize, v.y * worldTileSize,
+            (float)worldTileSize, (float)worldTileSize
+        };
+
+        if (CheckCollisionRecs(playerRect, tileRect)) {
+            velocity = (Vector2){ 0, 0 };
+            break;
+        }
+    }
+
     if (Vector2Equals(velocity, (Vector2){ 0, 0 })) {
         actor->changeAnimation(idleDirection);
     } else {
@@ -54,6 +82,11 @@ void Player::update()
 void Player::draw()
 {
     actor->draw();
+}
+
+void Player::setRoom(Room* room)
+{
+    this->room = room;
 }
 
 void Player::moveByVelocity(Vector2 velocity)

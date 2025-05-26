@@ -61,6 +61,9 @@ int main()
         }
     }
 
+    tileMap.setCollisionTile((Vector2){ 0, 3 });
+    tileMap.setCollisionTile((Vector2){ 1, 3 });
+
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
