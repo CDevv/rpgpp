@@ -46,11 +46,7 @@ void Player::update()
         velocity.x += change;
     }
 
-    Vector2 newPos = Vector2Add(position, velocity);
-    Rectangle playerRect = (Rectangle) {
-        newPos.x, newPos.y,
-        size, size
-    };
+    Rectangle playerRect = actor->getCollisionRect(velocity);
 
     TileMap *tileMap = room->getTileMap();
     int worldTileSize = tileMap->getWorldTileSize();

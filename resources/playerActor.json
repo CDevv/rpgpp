@@ -1,0 +1,14 @@
+{
+    "tileset": "resources/actorTiles.json",
+    "collision": [6, 24, 36, 24],
+    "animations": {
+        "down": [[2, 0], [3, 0]],
+        "down-idle": [[0, 0], [1, 0]],
+        "up": [[2, 1], [3, 1]],
+        "up-idle": [[0, 1], [1, 1]],
+        "left": [[2, 2], [3, 2]],
+        "left-idle": [[0, 2], [1, 2]],
+        "right": [[2, 3], [3, 3]],
+        "right-idle": [[0, 3], [1, 3]]
+    }
+}

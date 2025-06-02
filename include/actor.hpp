@@ -26,10 +26,12 @@ private:
     int frameCounter;
     int frameSpeed;
     int currentFrame;
+    Rectangle collisionRect;
     std::vector<Vector2> *frames;
     std::array<std::vector<Vector2>*, 8> animations;
     Direction currentAnimation;
 public:
+    Actor(std::string fileName);
     Actor(TileSet *tileSet, Vector2 atlasPos);
     void unload();
     void update();
@@ -37,7 +39,9 @@ public:
     Vector2 getPosition();
     void setPosition(Vector2 position);
     void moveByVelocity(Vector2 velocity);
+    Rectangle getCollisionRect(Vector2 velocity);
     void addAnimation(Direction id, Vector2 atlasPos);
+    void addAnimationFrames(Direction id, std::vector<std::vector<int>> frames);
     void changeAnimation(Direction id);
 };
 

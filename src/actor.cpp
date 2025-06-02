@@ -1,8 +1,73 @@
 #include "actor.hpp"
 #include <raylib.h>
 #include <raymath.h>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
-Actor::Actor(TileSet *tileSet, Vector2 atlasPos) {
+Actor::Actor(std::string fileName)
+{
+    this->position = (Vector2){ 0, 0 };
+    this->frameCounter = 0;
+    this->frameSpeed = 2;
+    this->currentFrame = 0;
+    this->currentAnimation = RPGPP_DOWN_IDLE;
+
+    char *jsonContent = LoadFileText(fileName.c_str());
+    json j = json::parse(jsonContent);
+
+    std::vector<int> collisionInfo = j.at("collision");
+    int x = collisionInfo.at(0);
+    int y = collisionInfo.at(1);
+    int width = collisionInfo.at(2);
+    int height = collisionInfo.at(3);
+
+    Rectangle collisionRect = (Rectangle){
+        (float)x, (float)y,
+        (float)width, (float)height
+    };
+    this->collisionRect = collisionRect;
+
+    std::string tileSetSource = j.at("tileset");
+    TileSet *tileSet = new TileSet(tileSetSource);
+    this->tileSet = tileSet;
+
+    for (int i = 0; i < 8; i++) {
+        std::vector<Vector2> *frames = new std::vector<Vector2>;
+        animations[i] = frames;
+    }
+
+    std::vector<std::vector<int>> down = j.at("animations").at("down");
+    addAnimationFrames(RPGPP_DOWN, down);
+
+    std::vector<std::vector<int>> downIdle = j.at("animations").at("down-idle");
+    addAnimationFrames(RPGPP_DOWN_IDLE, downIdle);
+
+    std::vector<std::vector<int>> up = j.at("animations").at("up");
+    addAnimationFrames(RPGPP_UP, up);
+
+    std::vector<std::vector<int>> upIdle = j.at("animations").at("up-idle");
+    addAnimationFrames(RPGPP_UP_IDLE, upIdle);
+
+    std::vector<std::vector<int>> left = j.at("animations").at("left");
+    addAnimationFrames(RPGPP_LEFT, left);
+
+    std::vector<std::vector<int>> leftIdle = j.at("animations").at("left-idle");
+    addAnimationFrames(RPGPP_LEFT_IDLE, leftIdle);
+
+    std::vector<std::vector<int>> right = j.at("animations").at("right");
+    addAnimationFrames(RPGPP_RIGHT, right);
+
+    std::vector<std::vector<int>> rightIdle = j.at("animations").at("right-idle");
+    addAnimationFrames(RPGPP_RIGHT_IDLE, rightIdle);
+
+    Vector2 defaultTileAtlasPos = animations[(int)currentAnimation]->at(0);
+    this->tile = tileSet->getTile(defaultTileAtlasPos);
+
+    UnloadFileText(jsonContent);
+}
+
+Actor::Actor(TileSet *tileSet, Vector2 atlasPos)
+{
     this->position = (Vector2){ 0, 0 };
 
     this->tileSet = tileSet;
@@ -19,15 +84,18 @@ Actor::Actor(TileSet *tileSet, Vector2 atlasPos) {
     }
 }
 
-void Actor::unload() {
+void Actor::unload()
+{
     tileSet->unload();
+    delete tileSet;
 
     for (int i = 0; i < 8; i++) {
         delete animations[i];
     }
 }
 
-void Actor::update() {
+void Actor::update()
+{
     frameCounter++;
 
     if (frameCounter >= (60/frameSpeed)) {
@@ -47,7 +115,8 @@ void Actor::update() {
     }
 }
 
-void Actor::draw() {
+void Actor::draw()
+{
     //defaults..
     const Vector2 origin = (Vector2){ 0.0f, 0.0f };
     const float rotation = 0.0f;
@@ -72,6 +141,13 @@ void Actor::draw() {
 
     //draw it
     DrawTexturePro(texture, atlasRect, worldRect, origin, rotation, WHITE);
+
+    //draw collision rect..
+    Color collisionDebugColor = GRAY;
+    collisionDebugColor.a = (255 / 2);
+
+    Rectangle collisionRect = getCollisionRect((Vector2){ 0, 0 });
+    DrawRectanglePro(collisionRect, origin, rotation, collisionDebugColor);
 }
 
 Vector2 Actor::getPosition()
@@ -91,9 +167,33 @@ void Actor::moveByVelocity(Vector2 velocity)
     this->position = resultVector;
 }
 
+Rectangle Actor::getCollisionRect(Vector2 velocity)
+{
+    Vector2 newPos = Vector2Add(position, velocity);
+    Rectangle result = (Rectangle){
+        newPos.x + collisionRect.x, newPos.y + collisionRect.y,
+        collisionRect.width, collisionRect.height
+    };
+
+    return result;
+}
+
 void Actor::addAnimation(Direction id, Vector2 atlasPos)
 {
     animations[(int)id]->push_back(atlasPos);
+}
+
+void Actor::addAnimationFrames(Direction id, std::vector<std::vector<int>> frames)
+{
+    int idNum = static_cast<int>(id);
+
+    for (int i = 0; i < frames.size(); i++) {
+        int x = frames.at(i).at(0);
+        int y = frames.at(i).at(1);
+        Vector2 pos = (Vector2){ (float)x, (float)y };
+
+        animations[idNum]->push_back(pos);
+    }
 }
 
 void Actor::changeAnimation(Direction id)
