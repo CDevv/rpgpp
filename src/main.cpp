@@ -5,6 +5,9 @@
 #include "player.hpp"
 #include <raylib.h>
 
+#include <nlohmann/json.hpp>
+#include <stdio.h>
+
 int main()
 {
     const int width = 640;
@@ -12,13 +15,9 @@ int main()
 
     InitWindow(width, height, "Window");
 
-    Texture texture = LoadTexture("resources/Hills.png");
-    TileSet tileSet(texture, 16);
+    TileMap tileMap("resources/map.json");
 
-    TileMap tileMap(&tileSet, 50, 50, 16, 48);
-
-    Texture actorTexture = LoadTexture("resources/character.png");
-    TileSet actorTileSet(actorTexture, 16);
+    TileSet actorTileSet("resources/actorTiles.json");
 
     Actor actor(&actorTileSet, (Vector2){ 0, 0 });
 
@@ -52,17 +51,8 @@ int main()
 
     room.addPlayer(&player);
 
-    Vector2 maxSize = tileMap.getMaxAtlasSize();
-
-    for (int x = 0; x < maxSize.x; x++) {
-        for (int y = 0; y < maxSize.y; y++) {
-            Vector2 vector = (Vector2){ (float)x, (float)y };
-            tileMap.setTile(vector, vector);
-        }
-    }
-
-    tileMap.setCollisionTile((Vector2){ 0, 3 });
-    tileMap.setCollisionTile((Vector2){ 1, 3 });
+    //tileMap.setCollisionTile((Vector2){ 0, 3 });
+    //tileMap.setCollisionTile((Vector2){ 1, 3 });
 
     SetTargetFPS(60);
 

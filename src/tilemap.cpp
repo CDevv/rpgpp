@@ -2,6 +2,72 @@
 #include "atlasTile.hpp"
 #include <raylib.h>
 #include <raymath.h>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
+TileMap::TileMap(std::string fileName)
+{
+    this->basePos = (Vector2){ 0.0f, 0.0f };
+
+    char *jsonContent = LoadFileText(fileName.c_str());
+    json j = json::parse(jsonContent);
+
+    std::string tileSetSource = j.at("tileset");
+    TileSet *tileSet = new TileSet(tileSetSource);
+    this->tileSet = tileSet;
+
+    this->atlasTileSize = tileSet->getTileSize();
+    int worldTileSize = j.at("tileSize");
+    this->worldTileSize = worldTileSize;
+
+    this->width = j.at("width");
+    this->height = j.at("height");
+
+    this->maxAtlasWidth = this->tileSet->getTexture().width / atlasTileSize;
+    this->maxAtlasHeight = this->tileSet->getTexture().height / atlasTileSize;
+
+    //Initialize empty tiles
+    for (int i = 0; i < width; i++) {
+        std::vector<Tile> row;
+        for (int j = 0; j < height; j++) {
+            Tile tile;
+            row.push_back(tile);
+        }
+
+        tiles.push_back(row);
+    }
+
+    //Place the tiles..
+    auto tileRows = j.at("map");
+    size_t rowsCount = tileRows.size();
+    for (int64_t y = 0; y < rowsCount; y++) {
+        std::vector<std::vector<int>> tileCol = j.at("map").at(y);
+        size_t colCount = tileCol.size();
+
+        for (int x = 0; x < colCount; x++) {
+            int atlasX = tileCol.at(x).at(0);
+            int atlasY = tileCol.at(x).at(1);
+
+            Vector2 worldPos = (Vector2){ (float)x, (float)y };
+            Vector2 atlasPos = (Vector2){ (float)atlasX, (float)atlasY };
+
+            this->setTile(worldPos, atlasPos);
+        }
+    }
+
+    //Set collisions..
+    std::vector<std::vector<int>> collisionPositions = j.at("collision");
+    for (std::vector<int> pos : collisionPositions) {
+        int x = pos.at(0);
+        int y = pos.at(1);
+
+        Vector2 collisionPos = (Vector2){ (float)x, (float)y };
+
+        this->setCollisionTile(collisionPos);
+    }
+
+    UnloadFileText(jsonContent);
+}
 
 TileMap::TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int worldTileSize) {
     this->basePos = (Vector2){ 0.0f, 0.0f };
@@ -29,7 +95,8 @@ TileMap::TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int
 
 void TileMap::unload()
 {
-    UnloadTexture(tileSet->getTexture());
+    tileSet->unload();
+    delete tileSet;
 }
 
 void TileMap::update()

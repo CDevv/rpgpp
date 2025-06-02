@@ -1,6 +1,7 @@
 #ifndef _RPGPP_TILEMAP_H
 #define _RPGPP_TILEMAP_H
 
+#include <string>
 #include <vector>
 #include <raylib.h>
 #include "atlasTile.hpp"
@@ -20,6 +21,7 @@ private:
     std::vector<std::vector<Tile>> tiles;
     std::vector<Vector2> collisions;
 public:
+    TileMap(std::string fileName);
     TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int worldTileSize);
     void unload();
     void update();
