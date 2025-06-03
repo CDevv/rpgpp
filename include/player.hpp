@@ -13,8 +13,12 @@ private:
     Actor *actor;
     Vector2 position;
     float size;
+    Vector2 velocity;
     Direction currentDirection;
     Direction idleDirection;
+    Rectangle interactableArea;
+    void handleCollision();
+    void handleInteraction();
 public:
     Player(Actor *actor);
     void unload();

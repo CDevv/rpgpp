@@ -105,7 +105,8 @@ void Actor::update()
         if (currentFrame >= 2) currentFrame = 0;
 
         float atlasTileSize = (float)tileSet->getTileSize();
-        Vector2 atlasPos = animations[(int)currentAnimation]->at(currentFrame);
+        int animId = static_cast<int>(currentAnimation);
+        Vector2 atlasPos = animations[animId]->at(currentFrame);
         atlasPos = (Vector2){
             atlasPos.x * atlasTileSize,
             atlasPos.y * atlasTileSize

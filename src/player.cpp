@@ -4,7 +4,14 @@
 Player::Player(Actor *actor)
 {
     this->position = (Vector2){ 0, 0 };
+    this->velocity = (Vector2){ 0, 0 };
     this->size = 48;
+
+    Rectangle collisionRect = actor->getCollisionRect((Vector2){ 0, 0 });
+    this->interactableArea = (Rectangle) {
+        collisionRect.x - 6, collisionRect.y - 6,
+        collisionRect.width + 12, collisionRect.height + 12
+    };
 
     this->actor = actor;
     this->idleDirection = RPGPP_DOWN_IDLE;
@@ -18,8 +25,14 @@ void Player::unload()
 
 void Player::update()
 {
+    Rectangle collisionRect = actor->getCollisionRect((Vector2){ 0, 0 });
+    this->interactableArea = (Rectangle) {
+        collisionRect.x - 6, collisionRect.y - 6,
+        collisionRect.width + 12, collisionRect.height + 12
+    };
+
     int change = 2;
-    Vector2 velocity = (Vector2){ 0, 0 };
+    velocity = (Vector2){ 0, 0 };
 
     if (IsKeyDown(KEY_LEFT_SHIFT)) {
         change *= 2;
@@ -45,24 +58,11 @@ void Player::update()
         idleDirection = RPGPP_RIGHT_IDLE;
         velocity.x += change;
     }
-
-    Rectangle playerRect = actor->getCollisionRect(velocity);
-
-    TileMap *tileMap = room->getTileMap();
-    int worldTileSize = tileMap->getWorldTileSize();
-
-    std::vector<Vector2> collisionTiles = this->room->getCollisionTiles();
-    for (Vector2 v : collisionTiles) {
-        Rectangle tileRect = (Rectangle){
-            v.x * worldTileSize, v.y * worldTileSize,
-            (float)worldTileSize, (float)worldTileSize
-        };
-
-        if (CheckCollisionRecs(playerRect, tileRect)) {
-            velocity = (Vector2){ 0, 0 };
-            break;
-        }
+    else if (IsKeyPressed(KEY_Z)) {
+        this->handleInteraction();
     }
+
+    this->handleCollision();
 
     if (Vector2Equals(velocity, (Vector2){ 0, 0 })) {
         actor->changeAnimation(idleDirection);
@@ -78,7 +78,69 @@ void Player::update()
 void Player::draw()
 {
     actor->draw();
+
+    //debug draw interactable area..
+    Color interactableAreaDebugColor = ORANGE;
+    interactableAreaDebugColor.a = (255 / 4);
+
+    DrawRectangleRec(interactableArea, interactableAreaDebugColor);
 }
+
+void Player::handleCollision()
+{
+    Rectangle playerRect = actor->getCollisionRect(velocity);
+
+    TileMap *tileMap = room->getTileMap();
+    int worldTileSize = tileMap->getWorldTileSize();
+
+    //collision tiles
+    std::vector<Vector2> collisionTiles = this->room->getCollisionTiles();
+    for (Vector2 v : collisionTiles) {
+        Rectangle tileRect = (Rectangle){
+            v.x * worldTileSize, v.y * worldTileSize,
+            (float)worldTileSize, (float)worldTileSize
+        };
+
+        if (CheckCollisionRecs(playerRect, tileRect)) {
+            velocity = (Vector2){ 0, 0 };
+            break;
+        }
+    }
+
+    //interactable tiles
+    std::vector<Vector2> interactableTiles = this->room->getInteractableTiles();
+    for (Vector2 v : interactableTiles) {
+        Rectangle tileRect = (Rectangle){
+            v.x * worldTileSize, v.y * worldTileSize,
+            (float)worldTileSize, (float)worldTileSize
+        };
+
+        if (CheckCollisionRecs(playerRect, tileRect)) {
+            velocity = (Vector2){ 0, 0 };
+            break;
+        }
+    }
+}
+
+void Player::handleInteraction()
+{
+    TileMap *tileMap = room->getTileMap();
+    int worldTileSize = tileMap->getWorldTileSize();
+
+    std::vector<Vector2> interactableTiles = this->room->getInteractableTiles();
+    for (Vector2 v : interactableTiles) {
+        Rectangle tileRect = (Rectangle){
+            v.x * worldTileSize, v.y * worldTileSize,
+            (float)worldTileSize, (float)worldTileSize
+        };
+
+        if (CheckCollisionRecs(interactableArea, tileRect)) {
+            printf("interacted!\n");
+            break;
+        }
+    }
+}
+
 
 void Player::setRoom(Room* room)
 {
@@ -92,5 +154,3 @@ void Player::moveByVelocity(Vector2 velocity)
 
     actor->moveByVelocity(velocity);
 }
-
-

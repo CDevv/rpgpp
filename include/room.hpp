@@ -23,6 +23,7 @@ public:
     void addPlayer(Player *player);
     TileMap *getTileMap();
     std::vector<Vector2> getCollisionTiles();
+    std::vector<Vector2> getInteractableTiles();
 };
 
 #endif

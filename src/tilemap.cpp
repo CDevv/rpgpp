@@ -66,6 +66,16 @@ TileMap::TileMap(std::string fileName)
         this->setCollisionTile(collisionPos);
     }
 
+    //Set interactables
+    std::vector<std::vector<int>> interactablePositions = j.at("interactables");
+    for (std::vector<int> pos : interactablePositions) {
+        int x = pos.at(0);
+        int y = pos.at(1);
+
+        Vector2 interactablePos = (Vector2){ (float)x, (float)y };
+        this->setInteractable(interactablePos);
+    }
+
     UnloadFileText(jsonContent);
 }
 
@@ -124,6 +134,19 @@ void TileMap::draw()
         };
 
         DrawRectangleRec(rec, collisionDebugColor);
+    }
+
+    //draw interactables..
+    Color interactableDebugColor = YELLOW;
+    interactableDebugColor.a = (255 / 2);
+
+    for (Vector2 v : interactables) {
+        Rectangle rec = (Rectangle){
+            v.x * worldTileSize, v.y * worldTileSize,
+            (float)worldTileSize, (float)worldTileSize
+        };
+
+        DrawRectangleRec(rec, interactableDebugColor);
     }
 }
 
@@ -231,6 +254,16 @@ bool TileMap::isCollisionTile(const Vector2 worldPos)
 std::vector<Vector2> TileMap::getCollisionTiles()
 {
     return this->collisions;
+}
+
+void TileMap::setInteractable(Vector2 worldPos)
+{
+    this->interactables.push_back(worldPos);
+}
+
+std::vector<Vector2> TileMap::getInteractables()
+{
+    return this->interactables;
 }
 
 Vector2 TileMap::getMaxAtlasSize() {

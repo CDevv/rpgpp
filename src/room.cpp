@@ -52,4 +52,10 @@ std::vector<Vector2> Room::getCollisionTiles()
     return this->tileMap->getCollisionTiles();
 }
 
+std::vector<Vector2> Room::getInteractableTiles()
+{
+    return this->tileMap->getInteractables();
+}
+
+
 
