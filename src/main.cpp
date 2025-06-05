@@ -5,9 +5,6 @@
 #include "player.hpp"
 #include <raylib.h>
 
-#include <nlohmann/json.hpp>
-#include <stdio.h>
-
 int main()
 {
     const int width = 640;

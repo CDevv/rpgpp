@@ -6,6 +6,7 @@
 #include "actor.hpp"
 #include "player.hpp"
 #include "tilemap.hpp"
+#include "interactable.hpp"
 
 class Player;
 
@@ -23,7 +24,7 @@ public:
     void addPlayer(Player *player);
     TileMap *getTileMap();
     std::vector<Vector2> getCollisionTiles();
-    std::vector<Vector2> getInteractableTiles();
+    std::vector<Interactable*> getInteractableTiles();
 };
 
 #endif

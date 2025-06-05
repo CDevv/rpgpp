@@ -108,12 +108,9 @@ void Player::handleCollision()
     }
 
     //interactable tiles
-    std::vector<Vector2> interactableTiles = this->room->getInteractableTiles();
-    for (Vector2 v : interactableTiles) {
-        Rectangle tileRect = (Rectangle){
-            v.x * worldTileSize, v.y * worldTileSize,
-            (float)worldTileSize, (float)worldTileSize
-        };
+    std::vector<Interactable*> interactableTiles = this->room->getInteractableTiles();
+    for (Interactable *interactable : interactableTiles) {
+        Rectangle tileRect = interactable->getRect();
 
         if (CheckCollisionRecs(playerRect, tileRect)) {
             velocity = (Vector2){ 0, 0 };
@@ -124,23 +121,16 @@ void Player::handleCollision()
 
 void Player::handleInteraction()
 {
-    TileMap *tileMap = room->getTileMap();
-    int worldTileSize = tileMap->getWorldTileSize();
-
-    std::vector<Vector2> interactableTiles = this->room->getInteractableTiles();
-    for (Vector2 v : interactableTiles) {
-        Rectangle tileRect = (Rectangle){
-            v.x * worldTileSize, v.y * worldTileSize,
-            (float)worldTileSize, (float)worldTileSize
-        };
+    std::vector<Interactable*> interactableTiles = this->room->getInteractableTiles();
+    for (Interactable *interactable : interactableTiles) {
+        Rectangle tileRect = interactable->getRect();
 
         if (CheckCollisionRecs(interactableArea, tileRect)) {
-            printf("interacted!\n");
+            interactable->interact();
             break;
         }
     }
 }
-
 
 void Player::setRoom(Room* room)
 {

@@ -71,9 +71,10 @@ TileMap::TileMap(std::string fileName)
     for (std::vector<int> pos : interactablePositions) {
         int x = pos.at(0);
         int y = pos.at(1);
+        int type = pos.at(2);
 
         Vector2 interactablePos = (Vector2){ (float)x, (float)y };
-        this->setInteractable(interactablePos);
+        this->setInteractable(type, interactablePos);
     }
 
     UnloadFileText(jsonContent);
@@ -107,6 +108,10 @@ void TileMap::unload()
 {
     tileSet->unload();
     delete tileSet;
+
+    for (Interactable *interactable : interactables) {
+        delete interactable;
+    }
 }
 
 void TileMap::update()
@@ -140,12 +145,8 @@ void TileMap::draw()
     Color interactableDebugColor = YELLOW;
     interactableDebugColor.a = (255 / 2);
 
-    for (Vector2 v : interactables) {
-        Rectangle rec = (Rectangle){
-            v.x * worldTileSize, v.y * worldTileSize,
-            (float)worldTileSize, (float)worldTileSize
-        };
-
+    for (Interactable *interactable : interactables) {
+        Rectangle rec = interactable->getRect();
         DrawRectangleRec(rec, interactableDebugColor);
     }
 }
@@ -256,12 +257,25 @@ std::vector<Vector2> TileMap::getCollisionTiles()
     return this->collisions;
 }
 
-void TileMap::setInteractable(Vector2 worldPos)
+void TileMap::setInteractable(int type, Vector2 worldPos)
 {
-    this->interactables.push_back(worldPos);
+    InteractableType interactableType = InteractableType(type);
+    Interactable *interactable;
+
+    switch (interactableType) {
+        case INT_BLANK:
+            interactable = new InteractableOne(worldPos, worldTileSize);
+            interactables.push_back(interactable);
+            break;
+        case INT_TWO:
+            interactable = new InteractableTwo(worldPos, worldTileSize);
+            interactables.push_back(interactable);
+            break;
+    };
+    //this->interactables.push_back(interactable);
 }
 
-std::vector<Vector2> TileMap::getInteractables()
+std::vector<Interactable*> TileMap::getInteractables()
 {
     return this->interactables;
 }

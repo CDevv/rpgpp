@@ -7,6 +7,7 @@
 #include "atlasTile.hpp"
 #include "tile.hpp"
 #include "tileset.hpp"
+#include "interactable.hpp"
 
 class TileMap {
 private:
@@ -20,7 +21,7 @@ private:
     int maxAtlasHeight;
     std::vector<std::vector<Tile>> tiles;
     std::vector<Vector2> collisions;
-    std::vector<Vector2> interactables;
+    std::vector<Interactable*> interactables;
 public:
     TileMap(std::string fileName);
     TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int worldTileSize);
@@ -37,8 +38,8 @@ public:
     void setCollisionTile(Vector2 worldPos);
     bool isCollisionTile(const Vector2 worldPos);
     std::vector<Vector2> getCollisionTiles();
-    void setInteractable(Vector2 worldPos);
-    std::vector<Vector2> getInteractables();
+    void setInteractable(int type, Vector2 worldPos);
+    std::vector<Interactable*> getInteractables();
     Vector2 getMaxAtlasSize();
 };
 
