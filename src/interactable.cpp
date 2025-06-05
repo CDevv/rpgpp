@@ -6,6 +6,7 @@ Interactable::Interactable(InteractableType type, Vector2 tilePos, int tileSize)
     this->type = type;
     this->tilePos = tilePos;
     this->tileSize = tileSize;
+    this->absolutePos = (Vector2){ 0, 0 };
 
     rect = (Rectangle){
         tilePos.x * tileSize, tilePos.y * tileSize,

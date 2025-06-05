@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include "game.hpp"
 #include <raymath.h>
 
 Player::Player(Actor *actor)
@@ -25,6 +26,9 @@ void Player::unload()
 
 void Player::update()
 {
+    Room *room = Game::getState()->getRoom();
+    this->room = room;
+
     Rectangle collisionRect = actor->getCollisionRect((Vector2){ 0, 0 });
     this->interactableArea = (Rectangle) {
         collisionRect.x - 6, collisionRect.y - 6,

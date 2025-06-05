@@ -1,6 +1,20 @@
 #include "room.hpp"
 #include "tilemap.hpp"
 
+Room::Room()
+{
+}
+
+Room::Room(std::string fileName)
+{
+    TileMap *tileMap = new TileMap(fileName);
+    Actor *actor = new Actor("resources/playerActor.json");
+    Player *player = new Player(actor);
+
+    this->tileMap = tileMap;
+    this->addPlayer(player);
+}
+
 Room::Room(TileMap *tileMap)
 {
     this->tileMap = tileMap;
@@ -39,7 +53,7 @@ void Room::addActor(Actor *actor) {
 void Room::addPlayer(Player* player)
 {
     this->player = player;
-    this->player->setRoom(this);
+    //this->player->setRoom(this);
 }
 
 TileMap * Room::getTileMap()

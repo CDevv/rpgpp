@@ -16,6 +16,8 @@ private:
     std::vector<Actor*> actors;
     Player *player;
 public:
+    Room();
+    Room(std::string fileName);
     Room(TileMap *tileMap);
     void unload();
     void update();

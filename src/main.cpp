@@ -3,6 +3,7 @@
 #include "tilemap.hpp"
 #include "tileset.hpp"
 #include "player.hpp"
+#include "game.hpp"
 #include <raylib.h>
 
 int main()
@@ -12,31 +13,24 @@ int main()
 
     InitWindow(width, height, "Window");
 
-    TileMap tileMap("resources/map.json");
-
-    Actor actor("resources/playerActor.json");
-
-    Player player(&actor);
-
-    Room room(&tileMap);
-
-    room.addPlayer(&player);
+    Game game;
+    game.init();
 
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
-        room.update();
+        game.update();
 
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
-        room.draw();
+        game.draw();
 
         EndDrawing();
     }
 
-    room.unload();
+    game.unload();
 
     CloseWindow();
 
