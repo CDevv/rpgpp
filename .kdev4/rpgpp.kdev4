@@ -12,14 +12,14 @@ Title=scons
 Arguments=
 Enabled=true
 Environment=
-Executable=file:scons
+Executable=file:xmake
 Type=0
 
 [CustomBuildSystem][BuildConfig0][ToolClean]
-Arguments=--clean
+Arguments=clean
 Enabled=true
 Environment=
-Executable=file:scons
+Executable=file:xmake
 Type=3
 
 [CustomBuildSystem][BuildConfig0][ToolConfigure]
@@ -30,10 +30,10 @@ Executable=
 Type=1
 
 [CustomBuildSystem][BuildConfig0][ToolInstall]
-Arguments=
-Enabled=false
+Arguments=install
+Enabled=true
 Environment=
-Executable=
+Executable=file:xmake
 Type=2
 
 [CustomBuildSystem][BuildConfig0][ToolPrune]
