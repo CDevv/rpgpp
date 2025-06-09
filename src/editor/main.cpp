@@ -1,5 +1,7 @@
 #include <raylib.h>
-#include "game.hpp"
+#define RAYGUI_IMPLEMENTATION
+#include <raygui.h>
+#include "editor.hpp"
 
 int main()
 {
@@ -8,26 +10,24 @@ int main()
 
     InitWindow(width, height, "editor");
 
-    Game game;
-    game.init();
-
-    Game::getWorld()->setRoom("resources/map.json");
+    Editor editor;
+    editor.init();
 
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
-        game.update();
+        editor.update();
 
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
-        game.draw();
+        editor.draw();
 
         EndDrawing();
     }
 
-    game.unload();
+    editor.unload();
     CloseWindow();
 
     return 0;
