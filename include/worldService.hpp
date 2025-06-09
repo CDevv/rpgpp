@@ -3,6 +3,7 @@
 
 #include "room.hpp"
 #include "player.hpp"
+#include <string>
 
 class WorldService {
 private:
@@ -10,6 +11,7 @@ private:
 public:
     WorldService();
     Room *getRoom();
+    void setRoom(std::string filePath);
     Player *getPlayer();
     void update();
     void draw();

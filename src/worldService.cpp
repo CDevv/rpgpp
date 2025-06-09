@@ -2,14 +2,19 @@
 
 WorldService::WorldService()
 {
-    Room *room = new Room("resources/map.json");
-
-    this->room = room;
+    this->room = nullptr;
 }
 
 Room *WorldService::getRoom()
 {
     return this->room;
+}
+
+void WorldService::setRoom(std::string filePath)
+{
+    Room *room = new Room(filePath);
+
+    this->room = room;
 }
 
 Player *WorldService::getPlayer()
