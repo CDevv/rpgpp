@@ -2,6 +2,8 @@
 
 Game *Game::instance_ = nullptr;
 StateService *Game::state = nullptr;
+WorldService *Game::world = nullptr;
+InterfaceService *Game::ui = nullptr;
 
 Game::Game() {}
 
@@ -17,6 +19,8 @@ Game& Game::instance()
 void Game::init()
 {
     state = new StateService;
+    world = new WorldService;
+    ui = new InterfaceService;
 }
 
 StateService *Game::getState()
@@ -24,17 +28,30 @@ StateService *Game::getState()
     return state;
 }
 
+WorldService * Game::getWorld()
+{
+    return world;
+}
+
+InterfaceService *Game::getUi()
+{
+    return ui;
+}
+
 void Game::update()
 {
-    state->getRoom()->update();
+    world->update();
+    ui->update();
 }
 
 void Game::draw()
 {
-    state->getRoom()->draw();
+    world->draw();
+    ui->draw();
 }
 
 void Game::unload()
 {
-    state->getRoom()->unload();
+    world->unload();
+    ui->unload();
 }

@@ -22,11 +22,12 @@ Player::Player(Actor *actor)
 void Player::unload()
 {
     actor->unload();
+    delete actor;
 }
 
 void Player::update()
 {
-    Room *room = Game::getState()->getRoom();
+    Room *room = Game::getWorld()->getRoom();
     this->room = room;
 
     Rectangle collisionRect = actor->getCollisionRect((Vector2){ 0, 0 });

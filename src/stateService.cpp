@@ -1,24 +1,17 @@
 #include "stateService.hpp"
-#include "tileset.hpp"
-#include "tilemap.hpp"
-#include "actor.hpp"
-#include "player.hpp"
 
 StateService::StateService()
 {
-    Room *room = new Room("resources/map.json");
-
-    this->room = room;
+    gameState.emplace("test", false);
 }
 
-Room *StateService::getRoom()
+bool StateService::getProp(std::string prop)
 {
-    return room;
+    return gameState.at(prop);
 }
 
 void StateService::unload()
 {
-    room->unload();
-    delete room;
+
 }
 

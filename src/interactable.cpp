@@ -1,4 +1,5 @@
 #include "interactable.hpp"
+#include "game.hpp"
 #include <stdio.h>
 
 Interactable::Interactable(InteractableType type, Vector2 tilePos, int tileSize)
@@ -49,6 +50,7 @@ InteractableTwo::InteractableTwo(Vector2 tilePos, int tileSize)
 
 void InteractableTwo::interact()
 {
-    printf("two test.\n");
+    bool value = Game::getState()->getProp("test");
+    printf("state test: %s\n", value ? "true" : "false");
 }
 

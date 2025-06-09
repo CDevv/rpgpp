@@ -1,14 +1,15 @@
 #ifndef _RPGPP_STATESERVICE_H
 #define _RPGPP_STATESERVICE_H
 
-#include "room.hpp"
+#include <map>
+#include <string>
 
 class StateService {
 private:
-    Room *room;
+    std::map<std::string, bool> gameState;
 public:
     StateService();
-    Room *getRoom();
+    bool getProp(std::string prop);
     void unload();
 };
 

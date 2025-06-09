@@ -24,6 +24,7 @@ public:
     void draw();
     void addActor(Actor *actor);
     void addPlayer(Player *player);
+    Player *getPlayer();
     TileMap *getTileMap();
     std::vector<Vector2> getCollisionTiles();
     std::vector<Interactable*> getInteractableTiles();

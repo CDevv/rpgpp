@@ -23,10 +23,15 @@ Room::Room(TileMap *tileMap)
 void Room::unload()
 {
     tileMap->unload();
+    delete tileMap;
+
     for (Actor *actor : actors) {
         actor->unload();
+        delete actor;
     }
+
     player->unload();
+    delete player;
 }
 
 void Room::update()
@@ -53,7 +58,11 @@ void Room::addActor(Actor *actor) {
 void Room::addPlayer(Player* player)
 {
     this->player = player;
-    //this->player->setRoom(this);
+}
+
+Player *Room::getPlayer()
+{
+    return player;
 }
 
 TileMap * Room::getTileMap()
