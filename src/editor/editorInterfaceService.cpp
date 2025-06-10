@@ -7,9 +7,12 @@ EditorInterfaceService::EditorInterfaceService()
 {
     NFD_Init();
 
+    uiFont = LoadFont("resources/ark-pixel-10px-monospaced-latin.otf");
+
     openDialog = false;
     openedTileSet = false;
     tileSet = nullptr;
+    mousePos = (Vector2){ 0, 0 };
 
     camera = (Camera2D){ {0} };
     camera.target = (Vector2){ 0, 0 };
@@ -50,6 +53,37 @@ void EditorInterfaceService::update()
 
 void EditorInterfaceService::draw()
 {
+    mousePos = Vector2Subtract(GetMousePosition(), (Vector2){ 138, 32 });
+    Vector2 hoverPos = Vector2Add(mousePos, Vector2Scale(camera.target, camera.zoom));
+    hoverPos = Vector2Scale(hoverPos, (1/camera.zoom));
+
+    Vector2 tileAtlasPos = (Vector2){ 0, 0 };
+    Vector2 tileWorldPos = (Vector2){ 0, 0 };
+    bool hoverValidX = false;
+    bool hoverValidY = false;
+    bool hoverValidTile = false;
+
+    if (openedTileSet) {
+        Texture tileSetTexture = tileSet->getTexture();
+        int tileSize = tileSet->getTileSize();
+        int tilesWidth = tileSetTexture.width / tileSet->getTileSize();
+        int tilesHeight = tileSetTexture.height / tileSet->getTileSize();
+
+        if (hoverPos.x >= 0 && hoverPos.x <= tileSetTexture.width) {
+            hoverValidX = true;
+            //tileAtlasPos.x = (hoverPos.x / tileSetTexture.width) * tilesWidth * tileSize;
+            tileWorldPos.x = floor(hoverPos.x / tileSize) * tileSize;
+            tileAtlasPos.x = floor(hoverPos.x / tileSize);
+        }
+        if (hoverPos.y >= 0 && hoverPos.y <= tileSetTexture.height) {
+            hoverValidY = true;
+            //tileAtlasPos.y = (hoverPos.y / tileSetTexture.height) * tilesHeight * tileSize;
+            tileWorldPos.y = floor(hoverPos.y / tileSize) * tileSize;
+            tileAtlasPos.y = floor(hoverPos.y / tileSize);
+        }
+        hoverValidTile = hoverValidX && hoverValidY;
+    }
+
     BeginTextureMode(renderTexture);
     ClearBackground(RAYWHITE);
     BeginMode2D(camera);
@@ -79,9 +113,33 @@ void EditorInterfaceService::draw()
                 DrawRectangleLinesEx(tileBorder, 0.25f, RED);
             }
         }
+
+        if (hoverValidTile) {
+            Rectangle hoverTileRect = (Rectangle){
+                tileWorldPos.x, tileWorldPos.y,
+                (float)tileSize, (float)tileSize
+            };
+
+            DrawRectangleRec(hoverTileRect, Fade(RED, 0.5f));
+        }
     }
 
     EndMode2D();
+
+    DrawCircleV(mousePos, 4, DARKGRAY);
+    Vector2 textPos = Vector2Add(mousePos, (Vector2){ -44, -24 });
+    int mouseX = hoverPos.x;
+    int mouseY = hoverPos.y;
+    DrawTextEx(uiFont, TextFormat("[%d, %d]", mouseX, mouseY), textPos, 16, 2, MAROON);
+
+    //draw atlas position text..
+    if (hoverValidTile) {
+        Vector2 atlasPosTextPos = (Vector2){ 8, static_cast<float>(renderTexture.texture.height - 24) };
+        int atlasPosX = tileAtlasPos.x;
+        int atlasPosY = tileAtlasPos.y;
+        DrawTextEx(uiFont, TextFormat("Tile: [%d, %d]", atlasPosX, atlasPosY), atlasPosTextPos, 16, 2, BLACK);
+    }
+
     EndTextureMode();
 
     std::string windowTitle = "TileSet not loaded";
@@ -125,6 +183,7 @@ void EditorInterfaceService::unload()
         delete tileSet;
     }
     UnloadRenderTexture(renderTexture);
+    UnloadFont(uiFont);
 
     NFD_Quit();
 }
