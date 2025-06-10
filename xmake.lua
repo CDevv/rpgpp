@@ -1,4 +1,5 @@
 add_requires("raylib", "nlohmann_json", "nativefiledialog-extended")
+set_defaultmode("debug")
 
 target("rpgpp")
     set_kind("shared")

@@ -32,7 +32,7 @@
 *.app
 
 rpgpp
-editor
+/editor
 librpgpp.so
 build/
 .xmake/

@@ -9,7 +9,7 @@ BuildDir=file:///home/nikodev/Документи/Projects/cpp/rpgpp
 Title=scons
 
 [CustomBuildSystem][BuildConfig0][ToolBuild]
-Arguments=
+Arguments=-b editor
 Enabled=true
 Environment=
 Executable=file:xmake
@@ -72,7 +72,7 @@ Arguments=
 Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x00)
 Dependency Action=Nothing
 EnvironmentGroup=
-Executable=file:///home/nikodev/Документи/Projects/cpp/rpgpp/rpgpp
+Executable=file:///home/nikodev/Документи/Projects/cpp/rpgpp/editor
 External Terminal=konsole --noclose --workdir %workdir -e %exe
 Kill Before Executing Again=4194304
 Project Target=
