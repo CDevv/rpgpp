@@ -32,3 +32,9 @@ void Editor::unload()
     ui->unload();
     delete ui;
 }
+
+EditorInterfaceService *Editor::getUi()
+{
+    return ui;
+}
+

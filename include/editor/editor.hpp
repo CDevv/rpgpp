@@ -9,7 +9,7 @@ private:
     static EditorInterfaceService *ui;
 public:
     Editor();
-    EditorInterfaceService *getUi();
+    static EditorInterfaceService *getUi();
     void init();
     void update();
     void draw();
