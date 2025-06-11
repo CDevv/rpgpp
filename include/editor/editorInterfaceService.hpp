@@ -12,6 +12,11 @@ private:
     char *tilePath;
     bool openedTileSet;
     Vector2 mousePos;
+    Vector2 hoverPos;
+    Vector2 lastPos;
+    int lastMode;
+    bool lock;
+    bool initPos;
     TileSet *tileSet;
     Camera2D camera;
     RenderTexture renderTexture;

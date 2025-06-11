@@ -1,6 +1,7 @@
 #include "editorInterfaceService.hpp"
 #include <raygui.h>
 #include <raymath.h>
+#include <rlgl.h>
 #include "nfd.h"
 
 EditorInterfaceService::EditorInterfaceService()
@@ -13,6 +14,11 @@ EditorInterfaceService::EditorInterfaceService()
     openedTileSet = false;
     tileSet = nullptr;
     mousePos = (Vector2){ 0, 0 };
+    hoverPos = (Vector2){ 0, 0 };
+    lastPos = Vector2Subtract(hoverPos, (Vector2){ 138, 32 });
+    lastMode = 0;
+    lock = false;
+    initPos = false;
 
     camera = (Camera2D){ {0} };
     camera.target = (Vector2){ 0, 0 };
@@ -25,38 +31,44 @@ EditorInterfaceService::EditorInterfaceService()
 
 void EditorInterfaceService::update()
 {
-    const float change = 2;
-    Vector2 velocity = (Vector2){ 0, 0 };
+    mousePos = Vector2Subtract(GetMousePosition(), (Vector2){ 138, 32 });
 
-    if (IsKeyDown(KEY_LEFT)) {
-        velocity.x -= change;
-    }
-    if (IsKeyDown(KEY_RIGHT)) {
-        velocity.x += change;
-    }
-    if (IsKeyDown(KEY_UP)) {
-        velocity.y -= change;
-    }
-    if (IsKeyDown(KEY_DOWN)) {
-        velocity.y += change;
+    Vector2 delta = GetMouseDelta();
+    delta = Vector2Scale(delta, -1.0f/camera.zoom);
+
+    if (!lock) {
+        lastPos = Vector2Add(lastPos, Vector2Scale(GetMouseDelta(), 1/camera.zoom));
     }
 
-    Vector2 resultPos = Vector2Add(camera.target, velocity);
-    camera.target = resultPos;
+    hoverPos = lastPos;
 
-    float wheel = GetMouseWheelMove();
-    if (wheel != 0) {
-        float scale = 0.2f * wheel;
-        camera.zoom = Clamp(camera.zoom + scale, 1.0f, 5.0f);
+    if (IsMouseButtonDown(MOUSE_MIDDLE_BUTTON)) {
+        camera.target = Vector2Add(camera.target, delta);
+
+        lastPos = hoverPos;
+        lock = true;
+        lastMode = 1;
+    } else {
+        lock = false;
     }
+
+    if (lastMode == 0) {
+        float wheel = GetMouseWheelMove();
+        if (wheel != 0) {
+            Vector2 mouseWorldPos = GetScreenToWorld2D(mousePos, camera);
+            camera.offset = mousePos;
+            camera.target = mouseWorldPos;
+
+            float scale = 0.2f * wheel;
+            camera.zoom = Clamp(camera.zoom + scale, 1.0f, 5.0f);
+        }
+    }
+
+    lastMode = 0;
 }
 
 void EditorInterfaceService::draw()
 {
-    mousePos = Vector2Subtract(GetMousePosition(), (Vector2){ 138, 32 });
-    Vector2 hoverPos = Vector2Add(mousePos, Vector2Scale(camera.target, camera.zoom));
-    hoverPos = Vector2Scale(hoverPos, (1/camera.zoom));
-
     Vector2 tileAtlasPos = (Vector2){ 0, 0 };
     Vector2 tileWorldPos = (Vector2){ 0, 0 };
     bool hoverValidX = false;
@@ -66,18 +78,14 @@ void EditorInterfaceService::draw()
     if (openedTileSet) {
         Texture tileSetTexture = tileSet->getTexture();
         int tileSize = tileSet->getTileSize();
-        int tilesWidth = tileSetTexture.width / tileSet->getTileSize();
-        int tilesHeight = tileSetTexture.height / tileSet->getTileSize();
 
         if (hoverPos.x >= 0 && hoverPos.x <= tileSetTexture.width) {
             hoverValidX = true;
-            //tileAtlasPos.x = (hoverPos.x / tileSetTexture.width) * tilesWidth * tileSize;
             tileWorldPos.x = floor(hoverPos.x / tileSize) * tileSize;
             tileAtlasPos.x = floor(hoverPos.x / tileSize);
         }
         if (hoverPos.y >= 0 && hoverPos.y <= tileSetTexture.height) {
             hoverValidY = true;
-            //tileAtlasPos.y = (hoverPos.y / tileSetTexture.height) * tilesHeight * tileSize;
             tileWorldPos.y = floor(hoverPos.y / tileSize) * tileSize;
             tileAtlasPos.y = floor(hoverPos.y / tileSize);
         }
@@ -87,6 +95,12 @@ void EditorInterfaceService::draw()
     BeginTextureMode(renderTexture);
     ClearBackground(RAYWHITE);
     BeginMode2D(camera);
+
+    rlPushMatrix();
+    rlTranslatef(0, 25*16, 0);
+    rlRotatef(90, 1, 0, 0);
+    DrawGrid(100, 16);
+    rlPopMatrix();
 
     if (openedTileSet) {
         Texture tileSetTexture = tileSet->getTexture();
