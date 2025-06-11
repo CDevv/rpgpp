@@ -19,7 +19,7 @@ void InterfaceService::draw()
 {
     if (fpsVisible) {
         DrawFPS(10, 10);
-        DrawTextEx(font, "rpgpp", (Vector2){ 10, 36 }, (float)font.baseSize, 2, RED);
+        DrawTextEx(font, "rpgpp", Vector2 { 10, 36 }, (float)font.baseSize, 2, RED);
     }
 }
 

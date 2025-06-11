@@ -13,16 +13,16 @@ EditorInterfaceService::EditorInterfaceService()
     openDialog = false;
     openedTileSet = false;
     tileSet = nullptr;
-    mousePos = (Vector2){ 0, 0 };
-    hoverPos = (Vector2){ 0, 0 };
+    mousePos = Vector2 { 0, 0 };
+    hoverPos = Vector2 { 0, 0 };
 
-    camera = (Camera2D){ {0} };
-    camera.target = (Vector2){ 0, 0 };
+    camera = Camera2D { {0} };
+    camera.target = Vector2 { 0, 0 };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
     renderTexture = LoadRenderTexture(494, 420);
 
-    mouseInput = new MouseInputComponent((Vector2){ 138, 32 }, &camera);
+    mouseInput = new MouseInputComponent(Vector2 { 138, 32 }, &camera);
     worldView = WorldViewBox(&camera);
 
     GuiLoadStyle("rpgpp.rgs");
@@ -40,7 +40,7 @@ void EditorInterfaceService::draw()
 {
     worldView.draw();
 
-    if (GuiButton((Rectangle){ 8, 8, 120, 24 }, "Open..")) {
+    if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
         nfdu8char_t *outPath;
         nfdu8filteritem_t filters[1] = { { "RPG++ JSON Resource", "json" } };
         nfdopendialogu8args_t args = {0};

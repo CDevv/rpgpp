@@ -24,8 +24,8 @@ void WorldViewBox::draw()
     Vector2 mousePos = ui->getMouse()->getMousePos();
     Vector2 hoverPos = ui->getMouse()->getMouseWorldPos();
 
-    Vector2 tileAtlasPos = (Vector2){ 0, 0 };
-    Vector2 tileWorldPos = (Vector2){ 0, 0 };
+    Vector2 tileAtlasPos = Vector2 { 0, 0 };
+    Vector2 tileWorldPos = Vector2 { 0, 0 };
     bool hoverValidX = false;
     bool hoverValidY = false;
     bool hoverValidTile = false;
@@ -64,9 +64,9 @@ void WorldViewBox::draw()
         Texture tileSetTexture = tileSet->getTexture();
 
         DrawTexture(tileSetTexture, 0, 0, WHITE);
-        Rectangle border = (Rectangle){
+        Rectangle border = Rectangle {
             0, 0,
-            (float)tileSet->getTexture().width, (float)tileSet->getTexture().height
+            static_cast<float>(tileSet->getTexture().width), static_cast<float>(tileSet->getTexture().height)
         };
         DrawRectangleLinesEx(border, 0.5f, RED);
 
@@ -77,7 +77,7 @@ void WorldViewBox::draw()
 
         for (int y = 0; y < tilesHeight; y++) {
             for (int x = 0; x < tilesWidth; x++){
-                Rectangle tileBorder = (Rectangle){
+                Rectangle tileBorder = Rectangle {
                     tileSize * (float)x, tileSize * (float)y,
                     (float)tileSize, (float)tileSize
                 };
@@ -87,9 +87,9 @@ void WorldViewBox::draw()
         }
 
         if (hoverValidTile) {
-            Rectangle hoverTileRect = (Rectangle){
+            Rectangle hoverTileRect = Rectangle {
                 tileWorldPos.x, tileWorldPos.y,
-                (float)tileSize, (float)tileSize
+                static_cast<float>(tileSize), static_cast<float>(tileSize)
             };
 
             DrawRectangleRec(hoverTileRect, Fade(RED, 0.5f));
@@ -100,14 +100,14 @@ void WorldViewBox::draw()
 
     //small circle on mouse pos
     DrawCircleV(mousePos, 4, DARKGRAY);
-    Vector2 textPos = Vector2Add(mousePos, (Vector2){ -44, -24 });
+    Vector2 textPos = Vector2Add(mousePos, Vector2 { -44, -24 });
     int mouseX = hoverPos.x;
     int mouseY = hoverPos.y;
     DrawTextEx(ui->getFont(), TextFormat("[%d, %d]", mouseX, mouseY), textPos, 16, 2, MAROON);
 
     //draw atlas position text..
     if (hoverValidTile) {
-        Vector2 atlasPosTextPos = (Vector2){ 8, static_cast<float>(renderTexture.texture.height - 24) };
+        Vector2 atlasPosTextPos = Vector2 { 8, static_cast<float>(renderTexture.texture.height - 24) };
         int atlasPosX = tileAtlasPos.x;
         int atlasPosY = tileAtlasPos.y;
         DrawTextEx(ui->getFont(), TextFormat("Tile: [%d, %d]", atlasPosX, atlasPosY), atlasPosTextPos, 16, 2, BLACK);
@@ -119,13 +119,13 @@ void WorldViewBox::draw()
     if (ui->hasOpenedTileSet()) {
         windowTitle = ui->getTilePath();
     }
-    GuiWindowBox((Rectangle){ 136, 8, 498, 446 }, windowTitle.c_str());
+    GuiWindowBox(Rectangle { 136, 8, 498, 446 }, windowTitle.c_str());
 
-    Rectangle cameraRect = (Rectangle){
+    Rectangle cameraRect = Rectangle {
         0, 0,
-        (float)renderTexture.texture.width, -(float)renderTexture.texture.height
+        static_cast<float>(renderTexture.texture.width), static_cast<float>(-renderTexture.texture.height)
     };
-    DrawTextureRec(renderTexture.texture, cameraRect, (Vector2){ 138, 32 }, WHITE);
+    DrawTextureRec(renderTexture.texture, cameraRect, Vector2 { 138, 32 }, WHITE);
 }
 
 void WorldViewBox::unload()

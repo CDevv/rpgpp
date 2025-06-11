@@ -4,12 +4,12 @@
 
 Player::Player(Actor *actor)
 {
-    this->position = (Vector2){ 0, 0 };
-    this->velocity = (Vector2){ 0, 0 };
+    this->position = Vector2 { 0, 0 };
+    this->velocity = Vector2 { 0, 0 };
     this->size = 48;
 
-    Rectangle collisionRect = actor->getCollisionRect((Vector2){ 0, 0 });
-    this->interactableArea = (Rectangle) {
+    Rectangle collisionRect = actor->getCollisionRect(Vector2 { 0, 0 });
+    this->interactableArea = Rectangle {
         collisionRect.x - 6, collisionRect.y - 6,
         collisionRect.width + 12, collisionRect.height + 12
     };
@@ -30,14 +30,14 @@ void Player::update()
     Room *room = Game::getWorld()->getRoom();
     this->room = room;
 
-    Rectangle collisionRect = actor->getCollisionRect((Vector2){ 0, 0 });
-    this->interactableArea = (Rectangle) {
+    Rectangle collisionRect = actor->getCollisionRect(Vector2 { 0, 0 });
+    this->interactableArea = Rectangle {
         collisionRect.x - 6, collisionRect.y - 6,
         collisionRect.width + 12, collisionRect.height + 12
     };
 
     int change = 2;
-    velocity = (Vector2){ 0, 0 };
+    velocity = Vector2 { 0, 0 };
 
     if (IsKeyDown(KEY_LEFT_SHIFT)) {
         change *= 2;
@@ -69,7 +69,7 @@ void Player::update()
 
     this->handleCollision();
 
-    if (Vector2Equals(velocity, (Vector2){ 0, 0 })) {
+    if (Vector2Equals(velocity, Vector2 { 0, 0 })) {
         actor->changeAnimation(idleDirection);
     } else {
         actor->changeAnimation(currentDirection);
@@ -101,13 +101,13 @@ void Player::handleCollision()
     //collision tiles
     std::vector<Vector2> collisionTiles = this->room->getCollisionTiles();
     for (Vector2 v : collisionTiles) {
-        Rectangle tileRect = (Rectangle){
+        Rectangle tileRect = Rectangle {
             v.x * worldTileSize, v.y * worldTileSize,
             (float)worldTileSize, (float)worldTileSize
         };
 
         if (CheckCollisionRecs(playerRect, tileRect)) {
-            velocity = (Vector2){ 0, 0 };
+            velocity = Vector2 { 0, 0 };
             break;
         }
     }
@@ -118,7 +118,7 @@ void Player::handleCollision()
         Rectangle tileRect = interactable->getRect();
 
         if (CheckCollisionRecs(playerRect, tileRect)) {
-            velocity = (Vector2){ 0, 0 };
+            velocity = Vector2 { 0, 0 };
             break;
         }
     }

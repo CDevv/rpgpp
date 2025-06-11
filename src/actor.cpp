@@ -6,7 +6,7 @@ using json = nlohmann::json;
 
 Actor::Actor(std::string fileName)
 {
-    this->position = (Vector2){ 0, 0 };
+    this->position = Vector2 { 0, 0 };
     this->frameCounter = 0;
     this->frameSpeed = 2;
     this->currentFrame = 0;
@@ -21,9 +21,9 @@ Actor::Actor(std::string fileName)
     int width = collisionInfo.at(2);
     int height = collisionInfo.at(3);
 
-    Rectangle collisionRect = (Rectangle){
-        (float)x, (float)y,
-        (float)width, (float)height
+    Rectangle collisionRect = Rectangle {
+        static_cast<float>(x), static_cast<float>(y),
+        static_cast<float>(width), static_cast<float>(height)
     };
     this->collisionRect = collisionRect;
 
@@ -68,7 +68,7 @@ Actor::Actor(std::string fileName)
 
 Actor::Actor(TileSet *tileSet, Vector2 atlasPos)
 {
-    this->position = (Vector2){ 0, 0 };
+    this->position = Vector2 { 0, 0 };
 
     this->tileSet = tileSet;
     this->tile = tileSet->getTile(atlasPos);
@@ -107,7 +107,7 @@ void Actor::update()
         float atlasTileSize = (float)tileSet->getTileSize();
         int animId = static_cast<int>(currentAnimation);
         Vector2 atlasPos = animations[animId]->at(currentFrame);
-        atlasPos = (Vector2){
+        atlasPos = Vector2 {
             atlasPos.x * atlasTileSize,
             atlasPos.y * atlasTileSize
         };
@@ -119,9 +119,9 @@ void Actor::update()
 void Actor::draw()
 {
     //defaults..
-    const Vector2 origin = (Vector2){ 0.0f, 0.0f };
+    const Vector2 origin = Vector2 { 0.0f, 0.0f };
     const float rotation = 0.0f;
-    const float atlasTileSize = (float)tileSet->getTileSize();
+    const float atlasTileSize = static_cast<float>(tileSet->getTileSize());
     const float worldTileSize = 48.0f;
 
     //texture
@@ -131,11 +131,11 @@ void Actor::draw()
     Vector2 atlasCoords = this->tile.getAtlasCoords();
 
     //build rects
-    Rectangle atlasRect = (Rectangle){
+    Rectangle atlasRect = Rectangle {
         atlasCoords.x, atlasCoords.y,
         atlasTileSize, atlasTileSize
     };
-    Rectangle worldRect = (Rectangle){
+    Rectangle worldRect = Rectangle {
         position.x, position.y,
         worldTileSize, worldTileSize
     };
@@ -147,7 +147,7 @@ void Actor::draw()
     Color collisionDebugColor = GRAY;
     collisionDebugColor.a = (255 / 2);
 
-    Rectangle collisionRect = getCollisionRect((Vector2){ 0, 0 });
+    Rectangle collisionRect = getCollisionRect(Vector2 { 0, 0 });
     DrawRectanglePro(collisionRect, origin, rotation, collisionDebugColor);
 }
 
@@ -171,7 +171,7 @@ void Actor::moveByVelocity(Vector2 velocity)
 Rectangle Actor::getCollisionRect(Vector2 velocity)
 {
     Vector2 newPos = Vector2Add(position, velocity);
-    Rectangle result = (Rectangle){
+    Rectangle result = Rectangle {
         newPos.x + collisionRect.x, newPos.y + collisionRect.y,
         collisionRect.width, collisionRect.height
     };
@@ -191,7 +191,7 @@ void Actor::addAnimationFrames(Direction id, std::vector<std::vector<int>> frame
     for (int i = 0; i < frames.size(); i++) {
         int x = frames.at(i).at(0);
         int y = frames.at(i).at(1);
-        Vector2 pos = (Vector2){ (float)x, (float)y };
+        Vector2 pos = Vector2 { static_cast<float>(x), static_cast<float>(y) };
 
         animations[idNum]->push_back(pos);
     }

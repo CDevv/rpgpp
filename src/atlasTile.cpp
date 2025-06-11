@@ -3,7 +3,7 @@
 
 AtlasTile::AtlasTile() {
     this->texture = nullptr;
-    this->atlasCoords = (Vector2){ 0 };
+    this->atlasCoords = Vector2 { 0 };
 }
 
 AtlasTile::AtlasTile(Texture *texture, Vector2 atlasCoords) {

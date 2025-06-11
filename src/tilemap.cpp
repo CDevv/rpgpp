@@ -7,7 +7,7 @@ using json = nlohmann::json;
 
 TileMap::TileMap(std::string fileName)
 {
-    this->basePos = (Vector2){ 0.0f, 0.0f };
+    this->basePos = Vector2 { 0.0f, 0.0f };
 
     char *jsonContent = LoadFileText(fileName.c_str());
     json j = json::parse(jsonContent);
@@ -48,8 +48,8 @@ TileMap::TileMap(std::string fileName)
             int atlasX = tileCol.at(x).at(0);
             int atlasY = tileCol.at(x).at(1);
 
-            Vector2 worldPos = (Vector2){ (float)x, (float)y };
-            Vector2 atlasPos = (Vector2){ (float)atlasX, (float)atlasY };
+            Vector2 worldPos = Vector2 { static_cast<float>(x), static_cast<float>(y) };
+            Vector2 atlasPos = Vector2 { static_cast<float>(atlasX), static_cast<float>(atlasY) };
 
             this->setTile(worldPos, atlasPos);
         }
@@ -61,7 +61,7 @@ TileMap::TileMap(std::string fileName)
         int x = pos.at(0);
         int y = pos.at(1);
 
-        Vector2 collisionPos = (Vector2){ (float)x, (float)y };
+        Vector2 collisionPos = Vector2{ static_cast<float>(x), static_cast<float>(y) };
 
         this->setCollisionTile(collisionPos);
     }
@@ -73,7 +73,7 @@ TileMap::TileMap(std::string fileName)
         int y = pos.at(1);
         int type = pos.at(2);
 
-        Vector2 interactablePos = (Vector2){ (float)x, (float)y };
+        Vector2 interactablePos = Vector2 { static_cast<float>(x), static_cast<float>(y) };
         this->setInteractable(type, interactablePos);
     }
 
@@ -81,7 +81,7 @@ TileMap::TileMap(std::string fileName)
 }
 
 TileMap::TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int worldTileSize) {
-    this->basePos = (Vector2){ 0.0f, 0.0f };
+    this->basePos = Vector2 { 0.0f, 0.0f };
     this->tileSet = tileSet;
 
     this->atlasTileSize = tileSet->getTileSize();
@@ -133,9 +133,9 @@ void TileMap::draw()
     collisionDebugColor.a = (255 / 2);
 
     for (Vector2 v : collisions) {
-        Rectangle rec = (Rectangle){
+        Rectangle rec = Rectangle {
             v.x * worldTileSize, v.y * worldTileSize,
-            (float)worldTileSize, (float)worldTileSize
+            static_cast<float>(worldTileSize), static_cast<float>(worldTileSize)
         };
 
         DrawRectangleRec(rec, collisionDebugColor);
@@ -163,7 +163,7 @@ int TileMap::getWorldTileSize()
 
 void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos)
 {
-    Vector2 resultAtlasCoords = (Vector2){
+    Vector2 resultAtlasCoords = Vector2 {
         atlasPos.x * atlasTileSize,
         atlasPos.y * atlasTileSize
     };
@@ -203,7 +203,7 @@ void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos)
         return;
     }
 
-    Vector2 resultVector = (Vector2){
+    Vector2 resultVector = Vector2 {
         atlasPos.x * atlasTileSize,
         atlasPos.y * atlasTileSize
     };
@@ -216,7 +216,7 @@ void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos)
 void TileMap::drawTile(Vector2 worldPos, AtlasTile tile)
 {
     //defaults..
-    const Vector2 origin = (Vector2){ 0.0f, 0.0f };
+    const Vector2 origin = Vector2 { 0.0f, 0.0f };
     const float rotation = 0.0f;
 
     //texture..
@@ -224,14 +224,14 @@ void TileMap::drawTile(Vector2 worldPos, AtlasTile tile)
 
     //actual coordinates
     Vector2 atlasCoords = tile.getAtlasCoords();
-    Vector2 worldCoords = (Vector2){
+    Vector2 worldCoords = Vector2 {
         this->basePos.x + (worldPos.x * worldTileSize),
         this->basePos.y + (worldPos.y * worldTileSize)
     };
 
     //Build rects
-    Rectangle atlasCoordsRect = (Rectangle){ atlasCoords.x, atlasCoords.y, (float)atlasTileSize, (float)atlasTileSize };
-    Rectangle worldCoordsRect = (Rectangle){ worldCoords.x, worldCoords.y, (float)worldTileSize, (float)worldTileSize };
+    Rectangle atlasCoordsRect = Rectangle { atlasCoords.x, atlasCoords.y, static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize) };
+    Rectangle worldCoordsRect = Rectangle { worldCoords.x, worldCoords.y, static_cast<float>(worldTileSize), static_cast<float>(worldTileSize) };
 
     //draw it
     DrawTexturePro(texture, atlasCoordsRect, worldCoordsRect, origin, rotation, WHITE);
@@ -281,6 +281,6 @@ std::vector<Interactable*> TileMap::getInteractables()
 }
 
 Vector2 TileMap::getMaxAtlasSize() {
-    Vector2 result = (Vector2){ (float)maxAtlasWidth, (float)maxAtlasHeight };
+    Vector2 result = Vector2 { static_cast<float>(maxAtlasWidth), static_cast<float>(maxAtlasHeight) };
     return result;
 }

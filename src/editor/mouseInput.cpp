@@ -11,8 +11,8 @@ MouseInputComponent::MouseInputComponent(Vector2 offset, Camera2D *camera)
     this->camera = camera;
     this->lastMode = 0;
 
-    mousePos = (Vector2){ 0, 0 };
-    hoverPos = (Vector2){ 0, 0 };
+    mousePos = Vector2 { 0, 0 };
+    hoverPos = Vector2 { 0, 0 };
     lastPos = Vector2Subtract(hoverPos, offset);
     lock = false;
 }

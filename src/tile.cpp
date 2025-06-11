@@ -3,7 +3,7 @@
 #include <raylib.h>
 
 Tile::Tile() {
-    worldCoords = (Vector2){ 0, 0 };
+    worldCoords = Vector2 { 0, 0 };
     placed = false;
 }
 
