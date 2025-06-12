@@ -14,14 +14,9 @@ private:
     Font uiFont;
     MouseInputComponent *mouseInput;
     WorldViewBox worldView;
-    bool openDialog;
-    char *tilePath;
-    bool openedTileSet;
     Vector2 mousePos;
     Vector2 hoverPos;
-    TileSet *tileSet;
     Camera2D camera;
-    RenderTexture renderTexture;
 public:
     EditorInterfaceService();
     void update();
@@ -30,9 +25,6 @@ public:
     MouseInputComponent *getMouse();
     Font getFont();
     Camera2D *getCamera();
-    bool hasOpenedTileSet();
-    TileSet *getTileSet();
-    std::string getTilePath();
 };
 
 #endif

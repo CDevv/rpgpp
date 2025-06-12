@@ -11,7 +11,6 @@ WorldViewBox::WorldViewBox()
 
 WorldViewBox::WorldViewBox(Camera2D* camera)
 {
-    //EditorInterfaceService *ui = Editor::getUi();
     this->camera = camera;
 
     windowTitle = "TileSet not opened..";
@@ -21,6 +20,8 @@ WorldViewBox::WorldViewBox(Camera2D* camera)
 void WorldViewBox::draw()
 {
     EditorInterfaceService *ui = Editor::getUi();
+    FileSystemService *fs = Editor::getFileSystem();
+
     Vector2 mousePos = ui->getMouse()->getMousePos();
     Vector2 hoverPos = ui->getMouse()->getMouseWorldPos();
 
@@ -30,8 +31,8 @@ void WorldViewBox::draw()
     bool hoverValidY = false;
     bool hoverValidTile = false;
 
-    if (ui->hasOpenedTileSet()) {
-        tileSet = ui->getTileSet();
+    if (fs->fileIsOpen()) {
+        tileSet = fs->getTileSet();
 
         Texture tileSetTexture = tileSet->getTexture();
         int tileSize = tileSet->getTileSize();
@@ -59,8 +60,7 @@ void WorldViewBox::draw()
     DrawGrid(100, 16);
     rlPopMatrix();
 
-    TileSet *tileSet = ui->getTileSet();
-    if (ui->hasOpenedTileSet()) {
+    if (fs->fileIsOpen()) {
         Texture tileSetTexture = tileSet->getTexture();
 
         DrawTexture(tileSetTexture, 0, 0, WHITE);
@@ -116,8 +116,8 @@ void WorldViewBox::draw()
     EndTextureMode();
 
     std::string windowTitle = "TileSet not loaded";
-    if (ui->hasOpenedTileSet()) {
-        windowTitle = ui->getTilePath();
+    if (fs->fileIsOpen()) {
+        windowTitle = fs->getOpenedFilePath();
     }
     GuiWindowBox(Rectangle { 136, 8, 498, 446 }, windowTitle.c_str());
 

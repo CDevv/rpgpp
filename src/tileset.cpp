@@ -17,6 +17,7 @@ TileSet::TileSet(std::string fileName)
 
     //Load Texture
     std::string sourcePath = j.at("source");
+    this->textureSource = sourcePath;
     Texture texture = LoadTexture(sourcePath.c_str());
     this->texture = texture;
 
@@ -28,19 +29,28 @@ TileSet::TileSet(std::string fileName)
     UnloadFileText(jsonContent);
 }
 
-void TileSet::unload() {
+void TileSet::unload()
+{
     UnloadTexture(texture);
 }
 
-int TileSet::getTileSize() {
-    return tileSize;
+int TileSet::getTileSize()
+{
+    return this->tileSize;
 }
 
-Texture TileSet::getTexture() {
+Texture TileSet::getTexture()
+{
     return this->texture;
 }
 
-AtlasTile TileSet::getTile(Vector2 atlasCoords) {
+std::string TileSet::getTextureSource()
+{
+    return this->textureSource;
+}
+
+AtlasTile TileSet::getTile(Vector2 atlasCoords)
+{
     AtlasTile tile(&this->texture, atlasCoords);
 
     return tile;

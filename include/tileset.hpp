@@ -9,13 +9,15 @@ class TileSet {
 private:
     Texture texture;
     int tileSize;
+    std::string textureSource;
 public:
     TileSet(std::string fileName);
     TileSet(Texture texture, int tileSize);
     void unload();
     int getTileSize();
     Texture getTexture();
-    AtlasTile getTile(Vector2 atlasPos);
+    std::string getTextureSource();
+    AtlasTile getTile(Vector2 atlasCoords);
 };
 
 #endif
