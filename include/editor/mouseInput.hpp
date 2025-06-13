@@ -5,7 +5,7 @@
 
 class MouseInputComponent {
 private:
-    Camera2D *camera;
+    Camera2D& camera;
     Vector2 offset;
     Vector2 mousePos;
     Vector2 hoverPos;
@@ -13,8 +13,7 @@ private:
     bool lock;
     int lastMode;
 public:
-    MouseInputComponent();
-    MouseInputComponent(Vector2 offset, Camera2D *camera);
+    MouseInputComponent(Vector2 offset, Camera2D& camera);
     Vector2 getMouseWorldPos();
     Vector2 getMousePos();
     void update();

@@ -1,11 +1,8 @@
 #include "mouseInput.hpp"
 #include <raymath.h>
 
-MouseInputComponent::MouseInputComponent()
-{
-}
-
-MouseInputComponent::MouseInputComponent(Vector2 offset, Camera2D *camera)
+MouseInputComponent::MouseInputComponent(Vector2 offset, Camera2D& camera)
+: camera(camera)
 {
     this->offset = offset;
     this->camera = camera;
@@ -22,16 +19,16 @@ void MouseInputComponent::update()
     mousePos = Vector2Subtract(GetMousePosition(), offset);
 
     Vector2 delta = GetMouseDelta();
-    delta = Vector2Scale(delta, -1.0f/camera->zoom);
+    delta = Vector2Scale(delta, -1.0f/camera.zoom);
 
     if (!lock) {
-        lastPos = Vector2Add(lastPos, Vector2Scale(GetMouseDelta(), 1/camera->zoom));
+        lastPos = Vector2Add(lastPos, Vector2Scale(GetMouseDelta(), 1/camera.zoom));
     }
 
     hoverPos = lastPos;
 
     if (IsMouseButtonDown(MOUSE_MIDDLE_BUTTON)) {
-        camera->target = Vector2Add(camera->target, delta);
+        camera.target = Vector2Add(camera.target, delta);
 
         lastPos = hoverPos;
         lock = true;
@@ -43,12 +40,12 @@ void MouseInputComponent::update()
     if (lastMode == 0) {
         float wheel = GetMouseWheelMove();
         if (wheel != 0) {
-            Vector2 mouseWorldPos = GetScreenToWorld2D(mousePos, *camera);
-            camera->offset = mousePos;
-            camera->target = mouseWorldPos;
+            Vector2 mouseWorldPos = GetScreenToWorld2D(mousePos, camera);
+            camera.offset = mousePos;
+            camera.target = mouseWorldPos;
 
             float scale = 0.2f * wheel;
-            camera->zoom = Clamp(camera->zoom + scale, 1.0f, 5.0f);
+            camera.zoom = Clamp(camera.zoom + scale, 1.0f, 5.0f);
         }
     }
 

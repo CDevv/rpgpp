@@ -29,6 +29,11 @@ TileSet::TileSet(std::string fileName)
     UnloadFileText(jsonContent);
 }
 
+TileSet::~TileSet()
+{
+    UnloadTexture(texture);
+}
+
 void TileSet::unload()
 {
     UnloadTexture(texture);

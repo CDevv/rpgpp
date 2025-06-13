@@ -18,9 +18,10 @@ EditorInterfaceService::EditorInterfaceService()
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
 
-    mouseInput = new MouseInputComponent(Vector2 { 138, 32 }, &camera);
+    mouseInput = std::make_unique<MouseInputComponent>(Vector2 { 138, 32 }, camera);
     worldView = WorldViewBox(&camera);
 
+    printf("loaded style\n");
     GuiLoadStyle("rpgpp.rgs");
 }
 
@@ -55,12 +56,13 @@ void EditorInterfaceService::draw()
 void EditorInterfaceService::unload()
 {
     UnloadFont(uiFont);
+    
     worldView.unload();
 }
 
-MouseInputComponent *EditorInterfaceService::getMouse()
+MouseInputComponent& EditorInterfaceService::getMouse()
 {
-    return mouseInput;
+    return *mouseInput.get();
 }
 
 Font EditorInterfaceService::getFont()
@@ -68,8 +70,8 @@ Font EditorInterfaceService::getFont()
     return uiFont;
 }
 
-Camera2D *EditorInterfaceService::getCamera()
+Camera2D& EditorInterfaceService::getCamera()
 {
-    return &camera;
+    return camera;
 }
 

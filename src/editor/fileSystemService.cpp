@@ -3,7 +3,7 @@
 
 FileSystemService::FileSystemService()
 {
-    lastTileSet = nullptr;
+    lastTileSet = std::unique_ptr<TileSet>{};
     isOpen = false;
 
     NFD_Init();
@@ -19,13 +19,8 @@ void FileSystemService::promptOpenFile()
     nfdresult_t result = NFD_OpenDialogU8_With(&outPath, &args);
 
     if (result == NFD_OKAY) {
-        if (lastTileSet != nullptr) {
-            lastTileSet->unload();
-            delete lastTileSet;
-        }
-
         lastOpenPath = outPath;
-        lastTileSet = new TileSet(outPath);
+        lastTileSet.reset(new TileSet(outPath));
         isOpen = true;
     }
 }
@@ -42,16 +37,11 @@ std::string FileSystemService::getOpenedFilePath()
 
 TileSet *FileSystemService::getTileSet()
 {
-    return lastTileSet;
+    return lastTileSet.get();
 }
 
 void FileSystemService::unload()
 {
-    if (isOpen && lastTileSet != nullptr) {
-        lastTileSet->unload();
-        delete lastTileSet;
-    }
-
     NFD_Quit();
 }
 

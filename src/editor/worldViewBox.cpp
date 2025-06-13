@@ -22,8 +22,8 @@ void WorldViewBox::draw()
     EditorInterfaceService *ui = Editor::getUi();
     FileSystemService *fs = Editor::getFileSystem();
 
-    Vector2 mousePos = ui->getMouse()->getMousePos();
-    Vector2 hoverPos = ui->getMouse()->getMouseWorldPos();
+    Vector2 mousePos = ui->getMouse().getMousePos();
+    Vector2 hoverPos = ui->getMouse().getMouseWorldPos();
 
     Vector2 tileAtlasPos = Vector2 { 0, 0 };
     Vector2 tileWorldPos = Vector2 { 0, 0 };

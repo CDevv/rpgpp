@@ -1,6 +1,7 @@
 #ifndef _RPGPP_EDITOR_INTERFACE_H
 #define _RPGPP_EDITOR_INTERFACE_H
 
+#include <memory>
 #include <raylib.h>
 #include <string>
 #include "tileset.hpp"
@@ -12,7 +13,7 @@ class MouseInputComponent;
 class EditorInterfaceService {
 private:
     Font uiFont;
-    MouseInputComponent *mouseInput;
+    std::unique_ptr<MouseInputComponent> mouseInput;
     WorldViewBox worldView;
     Vector2 mousePos;
     Vector2 hoverPos;
@@ -22,9 +23,9 @@ public:
     void update();
     void draw();
     void unload();
-    MouseInputComponent *getMouse();
+    MouseInputComponent& getMouse();
     Font getFont();
-    Camera2D *getCamera();
+    Camera2D& getCamera();
 };
 
 #endif

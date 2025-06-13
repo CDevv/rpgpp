@@ -13,6 +13,7 @@ private:
 public:
     TileSet(std::string fileName);
     TileSet(Texture texture, int tileSize);
+    ~TileSet();
     void unload();
     int getTileSize();
     Texture getTexture();
