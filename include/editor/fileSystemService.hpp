@@ -13,6 +13,7 @@ private:
     std::unique_ptr<TileSet> lastTileSet;
 public:
     FileSystemService();
+    ~FileSystemService();
     void unload();
     void promptOpenFile();
     bool fileIsOpen();

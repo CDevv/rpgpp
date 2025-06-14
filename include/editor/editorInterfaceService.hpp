@@ -20,6 +20,7 @@ private:
     Camera2D camera;
 public:
     EditorInterfaceService();
+    ~EditorInterfaceService();
     void update();
     void draw();
     void unload();

@@ -28,12 +28,11 @@ Actor::Actor(std::string fileName)
     this->collisionRect = collisionRect;
 
     std::string tileSetSource = j.at("tileset");
-    TileSet *tileSet = new TileSet(tileSetSource);
-    this->tileSet = tileSet;
+    this->tileSet = std::make_unique<TileSet>(tileSetSource);
 
     for (int i = 0; i < 8; i++) {
-        std::vector<Vector2> *frames = new std::vector<Vector2>;
-        animations[i] = frames;
+        //std::vector<Vector2> *frames = new std::vector<Vector2>;
+        animations[i] = std::make_unique<std::vector<Vector2>>();
     }
 
     std::vector<std::vector<int>> down = j.at("animations").at("down");
@@ -66,11 +65,11 @@ Actor::Actor(std::string fileName)
     UnloadFileText(jsonContent);
 }
 
-Actor::Actor(TileSet *tileSet, Vector2 atlasPos)
+Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos)
 {
     this->position = Vector2 { 0, 0 };
 
-    this->tileSet = tileSet;
+    this->tileSet = std::move(tileSet);
     this->tile = tileSet->getTile(atlasPos);
 
     this->frameCounter = 0;
@@ -78,20 +77,15 @@ Actor::Actor(TileSet *tileSet, Vector2 atlasPos)
     this->currentFrame = 0;
     this->currentAnimation = RPGPP_DOWN_IDLE;
 
-    for (int i =0; i < 8; i++) {
-        std::vector<Vector2> *frames = new std::vector<Vector2>;
-        animations[i] = frames;
+    for (int i = 0; i < 8; i++) {
+        //std::vector<Vector2> *frames = new std::vector<Vector2>;
+        animations[i] = std::make_unique<std::vector<Vector2>>();
     }
 }
 
 void Actor::unload()
 {
-    tileSet->unload();
-    delete tileSet;
 
-    for (int i = 0; i < 8; i++) {
-        delete animations[i];
-    }
 }
 
 void Actor::update()
@@ -181,7 +175,7 @@ Rectangle Actor::getCollisionRect(Vector2 velocity)
 
 void Actor::addAnimation(Direction id, Vector2 atlasPos)
 {
-    animations[(int)id]->push_back(atlasPos);
+    animations[static_cast<int>(id)]->push_back(atlasPos);
 }
 
 void Actor::addAnimationFrames(Direction id, std::vector<std::vector<int>> frames)

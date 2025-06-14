@@ -1,6 +1,7 @@
 #ifndef _RPGPP_ACTOR_H
 #define _RPGPP_ACTOR_H
 
+#include <memory>
 #include <vector>
 #include <array>
 #include "atlasTile.hpp"
@@ -20,19 +21,18 @@ enum Direction {
 
 class Actor {
 private:
-    TileSet *tileSet;
+    std::unique_ptr<TileSet> tileSet;
     AtlasTile tile;
     Vector2 position;
     int frameCounter;
     int frameSpeed;
     int currentFrame;
     Rectangle collisionRect;
-    std::vector<Vector2> *frames;
-    std::array<std::vector<Vector2>*, 8> animations;
+    std::array<std::unique_ptr<std::vector<Vector2>>, 8> animations;
     Direction currentAnimation;
 public:
     Actor(std::string fileName);
-    Actor(TileSet *tileSet, Vector2 atlasPos);
+    Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos);
     void unload();
     void update();
     void draw();

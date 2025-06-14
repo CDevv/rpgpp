@@ -1,8 +1,8 @@
 #include "editor.hpp"
 
 Editor *Editor::instance_ = nullptr;
-EditorInterfaceService *Editor::ui = nullptr;
-FileSystemService *Editor::fs = nullptr;
+std::unique_ptr<EditorInterfaceService> Editor::ui = std::unique_ptr<EditorInterfaceService>{};
+std::unique_ptr<FileSystemService> Editor::fs = std::unique_ptr<FileSystemService>{};
 
 Editor::Editor()
 {
@@ -15,8 +15,8 @@ Editor::Editor()
 
 void Editor::init()
 {
-    ui = new EditorInterfaceService;
-    fs = new FileSystemService;
+    ui = std::make_unique<EditorInterfaceService>();
+    fs = std::make_unique<FileSystemService>();
 }
 
 void Editor::update()
@@ -31,21 +31,16 @@ void Editor::draw()
 
 void Editor::unload()
 {
-    ui->unload();
-    delete ui;
-
-    fs->unload();
-    delete fs;
 }
 
-EditorInterfaceService *Editor::getUi()
+EditorInterfaceService& Editor::getUi()
 {
-    return ui;
+    return *ui;
 }
 
-FileSystemService *Editor::getFileSystem()
+FileSystemService& Editor::getFileSystem()
 {
-    return fs;
+    return *fs;
 }
 
 

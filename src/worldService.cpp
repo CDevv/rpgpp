@@ -2,19 +2,17 @@
 
 WorldService::WorldService()
 {
-    this->room = nullptr;
+    this->room = std::unique_ptr<Room>{};
 }
 
-Room *WorldService::getRoom()
+Room& WorldService::getRoom()
 {
-    return this->room;
+    return *this->room;
 }
 
 void WorldService::setRoom(std::string filePath)
 {
-    Room *room = new Room(filePath);
-
-    this->room = room;
+    this->room = std::make_unique<Room>(filePath);
 }
 
 Player *WorldService::getPlayer()
@@ -35,6 +33,5 @@ void WorldService::draw()
 void WorldService::unload()
 {
     room->unload();
-    delete room;
 }
 

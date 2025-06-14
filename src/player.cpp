@@ -2,7 +2,8 @@
 #include "game.hpp"
 #include <raymath.h>
 
-Player::Player(Actor *actor)
+Player::Player(Actor *actor, Room& room)
+: room(room)
 {
     this->position = Vector2 { 0, 0 };
     this->velocity = Vector2 { 0, 0 };
@@ -17,6 +18,8 @@ Player::Player(Actor *actor)
     this->actor = actor;
     this->idleDirection = RPGPP_DOWN_IDLE;
     this->currentDirection = RPGPP_DOWN;
+
+    this->room = room;
 }
 
 void Player::unload()
@@ -27,7 +30,7 @@ void Player::unload()
 
 void Player::update()
 {
-    Room *room = Game::getWorld()->getRoom();
+    Room& room = Game::getWorld()->getRoom();
     this->room = room;
 
     Rectangle collisionRect = actor->getCollisionRect(Vector2 { 0, 0 });
@@ -95,11 +98,11 @@ void Player::handleCollision()
 {
     Rectangle playerRect = actor->getCollisionRect(velocity);
 
-    TileMap *tileMap = room->getTileMap();
+    TileMap *tileMap = room.getTileMap();
     int worldTileSize = tileMap->getWorldTileSize();
 
     //collision tiles
-    std::vector<Vector2> collisionTiles = this->room->getCollisionTiles();
+    std::vector<Vector2> collisionTiles = this->room.getCollisionTiles();
     for (Vector2 v : collisionTiles) {
         Rectangle tileRect = Rectangle {
             v.x * worldTileSize, v.y * worldTileSize,
@@ -113,7 +116,7 @@ void Player::handleCollision()
     }
 
     //interactable tiles
-    std::vector<Interactable*> interactableTiles = this->room->getInteractableTiles();
+    std::vector<Interactable*> interactableTiles = this->room.getInteractableTiles();
     for (Interactable *interactable : interactableTiles) {
         Rectangle tileRect = interactable->getRect();
 
@@ -126,7 +129,7 @@ void Player::handleCollision()
 
 void Player::handleInteraction()
 {
-    std::vector<Interactable*> interactableTiles = this->room->getInteractableTiles();
+    std::vector<Interactable*> interactableTiles = this->room.getInteractableTiles();
     for (Interactable *interactable : interactableTiles) {
         Rectangle tileRect = interactable->getRect();
 
@@ -137,7 +140,7 @@ void Player::handleInteraction()
     }
 }
 
-void Player::setRoom(Room* room)
+void Player::setRoom(Room& room)
 {
     this->room = room;
 }

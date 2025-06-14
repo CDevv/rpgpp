@@ -9,7 +9,7 @@ Room::Room(std::string fileName)
 {
     TileMap *tileMap = new TileMap(fileName);
     Actor *actor = new Actor("resources/playerActor.json");
-    Player *player = new Player(actor);
+    Player *player = new Player(actor, *this);
 
     this->tileMap = tileMap;
     this->addPlayer(player);

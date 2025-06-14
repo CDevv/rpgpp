@@ -9,6 +9,11 @@ FileSystemService::FileSystemService()
     NFD_Init();
 }
 
+FileSystemService::~FileSystemService()
+{
+    NFD_Quit();
+}
+
 void FileSystemService::promptOpenFile()
 {
     nfdu8char_t *outPath;
@@ -22,6 +27,8 @@ void FileSystemService::promptOpenFile()
         lastOpenPath = outPath;
         lastTileSet.reset(new TileSet(outPath));
         isOpen = true;
+
+        NFD_FreePathU8(outPath);
     }
 }
 

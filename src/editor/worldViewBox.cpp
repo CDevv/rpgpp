@@ -19,11 +19,11 @@ WorldViewBox::WorldViewBox(Camera2D* camera)
 
 void WorldViewBox::draw()
 {
-    EditorInterfaceService *ui = Editor::getUi();
-    FileSystemService *fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
+    FileSystemService& fs = Editor::getFileSystem();
 
-    Vector2 mousePos = ui->getMouse().getMousePos();
-    Vector2 hoverPos = ui->getMouse().getMouseWorldPos();
+    Vector2 mousePos = ui.getMouse().getMousePos();
+    Vector2 hoverPos = ui.getMouse().getMouseWorldPos();
 
     Vector2 tileAtlasPos = Vector2 { 0, 0 };
     Vector2 tileWorldPos = Vector2 { 0, 0 };
@@ -31,8 +31,8 @@ void WorldViewBox::draw()
     bool hoverValidY = false;
     bool hoverValidTile = false;
 
-    if (fs->fileIsOpen()) {
-        tileSet = fs->getTileSet();
+    if (fs.fileIsOpen()) {
+        tileSet = fs.getTileSet();
 
         Texture tileSetTexture = tileSet->getTexture();
         int tileSize = tileSet->getTileSize();
@@ -60,7 +60,7 @@ void WorldViewBox::draw()
     DrawGrid(100, 16);
     rlPopMatrix();
 
-    if (fs->fileIsOpen()) {
+    if (fs.fileIsOpen()) {
         Texture tileSetTexture = tileSet->getTexture();
 
         DrawTexture(tileSetTexture, 0, 0, WHITE);
@@ -103,21 +103,21 @@ void WorldViewBox::draw()
     Vector2 textPos = Vector2Add(mousePos, Vector2 { -44, -24 });
     int mouseX = hoverPos.x;
     int mouseY = hoverPos.y;
-    DrawTextEx(ui->getFont(), TextFormat("[%d, %d]", mouseX, mouseY), textPos, 16, 2, MAROON);
+    DrawTextEx(ui.getFont(), TextFormat("[%d, %d]", mouseX, mouseY), textPos, 16, 2, MAROON);
 
     //draw atlas position text..
     if (hoverValidTile) {
         Vector2 atlasPosTextPos = Vector2 { 8, static_cast<float>(renderTexture.texture.height - 24) };
         int atlasPosX = tileAtlasPos.x;
         int atlasPosY = tileAtlasPos.y;
-        DrawTextEx(ui->getFont(), TextFormat("Tile: [%d, %d]", atlasPosX, atlasPosY), atlasPosTextPos, 16, 2, BLACK);
+        DrawTextEx(ui.getFont(), TextFormat("Tile: [%d, %d]", atlasPosX, atlasPosY), atlasPosTextPos, 16, 2, BLACK);
     }
 
     EndTextureMode();
 
     std::string windowTitle = "TileSet not loaded";
-    if (fs->fileIsOpen()) {
-        windowTitle = fs->getOpenedFilePath();
+    if (fs.fileIsOpen()) {
+        windowTitle = fs.getOpenedFilePath();
     }
     GuiWindowBox(Rectangle { 136, 8, 498, 446 }, windowTitle.c_str());
 

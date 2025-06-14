@@ -1,10 +1,10 @@
-#include "editorInterfaceService.hpp"
-#include "editor.hpp"
 #include <raygui.h>
 #include <raymath.h>
 #include <rlgl.h>
 #include "nfd.h"
 #include "fileSystemService.hpp"
+#include "editorInterfaceService.hpp"
+#include "editor.hpp"
 
 EditorInterfaceService::EditorInterfaceService()
 {
@@ -21,8 +21,13 @@ EditorInterfaceService::EditorInterfaceService()
     mouseInput = std::make_unique<MouseInputComponent>(Vector2 { 138, 32 }, camera);
     worldView = WorldViewBox(&camera);
 
-    printf("loaded style\n");
     GuiLoadStyle("rpgpp.rgs");
+}
+
+EditorInterfaceService::~EditorInterfaceService()
+{
+    UnloadFont(uiFont);
+    worldView.unload();
 }
 
 void EditorInterfaceService::update()
@@ -37,13 +42,13 @@ void EditorInterfaceService::draw()
 {
     worldView.draw();
 
-    FileSystemService *fs = Editor::getFileSystem();
+    FileSystemService& fs = Editor::getFileSystem();
     if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
-        fs->promptOpenFile();
+        fs.promptOpenFile();
     }
 
-    if (fs->fileIsOpen()) {
-        TileSet *tileSet = fs->getTileSet();
+    if (fs.fileIsOpen()) {
+        TileSet *tileSet = fs.getTileSet();
 
         GuiLabel(Rectangle { 8, 40, 120, 24 }, "TILE SIZE");
         GuiLabel(Rectangle { 8, 72, 120, 24 }, TextFormat("%i", tileSet->getTileSize()));

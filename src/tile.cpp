@@ -3,8 +3,8 @@
 #include <raylib.h>
 
 Tile::Tile() {
-    worldCoords = Vector2 { 0, 0 };
-    placed = false;
+    this->worldCoords = Vector2 { 0, 0 };
+    this->placed = false;
 }
 
 void Tile::place(AtlasTile atlasTile, Vector2 worldCoords) {
