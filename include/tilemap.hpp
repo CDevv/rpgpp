@@ -1,6 +1,7 @@
 #ifndef _RPGPP_TILEMAP_H
 #define _RPGPP_TILEMAP_H
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <raylib.h>
@@ -9,10 +10,12 @@
 #include "tileset.hpp"
 #include "interactable.hpp"
 
+
+
 class TileMap {
 private:
     Vector2 basePos;
-    TileSet *tileSet;
+    std::unique_ptr<TileSet> tileSet;
     int atlasTileSize;
     int worldTileSize;
     int width;
@@ -21,10 +24,10 @@ private:
     int maxAtlasHeight;
     std::vector<std::vector<Tile>> tiles;
     std::vector<Vector2> collisions;
-    std::vector<Interactable*> interactables;
+    std::unique_ptr<std::vector<Interactable>> interactables;
 public:
     TileMap(std::string fileName);
-    TileMap(TileSet *tileSet, int width, int height, int atlasTileSize, int worldTileSize);
+    TileMap(std::unique_ptr<TileSet> tileSet, int width, int height, int atlasTileSize, int worldTileSize);
     void unload();
     void update();
     void draw();
@@ -39,7 +42,7 @@ public:
     bool isCollisionTile(const Vector2 worldPos);
     std::vector<Vector2> getCollisionTiles();
     void setInteractable(int type, Vector2 worldPos);
-    std::vector<Interactable*> getInteractables();
+    std::vector<Interactable>& getInteractables();
     Vector2 getMaxAtlasSize();
 };
 

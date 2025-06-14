@@ -13,7 +13,7 @@ public:
     WorldService();
     Room& getRoom();
     void setRoom(std::string filePath);
-    Player *getPlayer();
+    Player& getPlayer();
     void update();
     void draw();
     void unload();

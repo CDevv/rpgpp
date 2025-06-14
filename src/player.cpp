@@ -2,12 +2,14 @@
 #include "game.hpp"
 #include <raymath.h>
 
-Player::Player(Actor *actor, Room& room)
+Player::Player(std::unique_ptr<Actor> actor, Room& room)
 : room(room)
 {
     this->position = Vector2 { 0, 0 };
     this->velocity = Vector2 { 0, 0 };
     this->size = 48;
+
+
 
     Rectangle collisionRect = actor->getCollisionRect(Vector2 { 0, 0 });
     this->interactableArea = Rectangle {
@@ -15,23 +17,19 @@ Player::Player(Actor *actor, Room& room)
         collisionRect.width + 12, collisionRect.height + 12
     };
 
-    this->actor = actor;
+    this->actor = std::move(actor);
     this->idleDirection = RPGPP_DOWN_IDLE;
     this->currentDirection = RPGPP_DOWN;
-
-    this->room = room;
 }
 
 void Player::unload()
 {
     actor->unload();
-    delete actor;
 }
 
 void Player::update()
 {
-    Room& room = Game::getWorld()->getRoom();
-    this->room = room;
+    //Room& room = Game::getWorld()->getRoom();
 
     Rectangle collisionRect = actor->getCollisionRect(Vector2 { 0, 0 });
     this->interactableArea = Rectangle {
@@ -98,8 +96,8 @@ void Player::handleCollision()
 {
     Rectangle playerRect = actor->getCollisionRect(velocity);
 
-    TileMap *tileMap = room.getTileMap();
-    int worldTileSize = tileMap->getWorldTileSize();
+    TileMap& tileMap = room.getTileMap();
+    int worldTileSize = tileMap.getWorldTileSize();
 
     //collision tiles
     std::vector<Vector2> collisionTiles = this->room.getCollisionTiles();
@@ -116,9 +114,9 @@ void Player::handleCollision()
     }
 
     //interactable tiles
-    std::vector<Interactable*> interactableTiles = this->room.getInteractableTiles();
-    for (Interactable *interactable : interactableTiles) {
-        Rectangle tileRect = interactable->getRect();
+    std::vector<Interactable> interactableTiles = this->room.getInteractableTiles();
+    for (Interactable interactable : interactableTiles) {
+        Rectangle tileRect = interactable.getRect();
 
         if (CheckCollisionRecs(playerRect, tileRect)) {
             velocity = Vector2 { 0, 0 };
@@ -129,12 +127,12 @@ void Player::handleCollision()
 
 void Player::handleInteraction()
 {
-    std::vector<Interactable*> interactableTiles = this->room.getInteractableTiles();
-    for (Interactable *interactable : interactableTiles) {
-        Rectangle tileRect = interactable->getRect();
+    std::vector<Interactable> interactableTiles = this->room.getInteractableTiles();
+    for (Interactable interactable : interactableTiles) {
+        Rectangle tileRect = interactable.getRect();
 
         if (CheckCollisionRecs(interactableArea, tileRect)) {
-            interactable->interact();
+            interactable.interact();
             break;
         }
     }
@@ -142,7 +140,7 @@ void Player::handleInteraction()
 
 void Player::setRoom(Room& room)
 {
-    this->room = room;
+    //this->room = Room(room);
 }
 
 void Player::moveByVelocity(Vector2 velocity)

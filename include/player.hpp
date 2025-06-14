@@ -10,7 +10,7 @@ class Room;
 class Player {
 private:
     Room& room;
-    Actor *actor;
+    std::unique_ptr<Actor> actor;
     Vector2 position;
     float size;
     Vector2 velocity;
@@ -20,7 +20,7 @@ private:
     void handleCollision();
     void handleInteraction();
 public:
-    Player(Actor *actor, Room& room);
+    Player(std::unique_ptr<Actor> actor, Room& room);
     void unload();
     void update();
     void draw();

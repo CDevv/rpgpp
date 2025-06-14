@@ -1,6 +1,7 @@
 #ifndef _RPGPP_ROOM_H
 #define _RPGPP_ROOM_H
 
+#include <memory>
 #include <vector>
 #include <raylib.h>
 #include "actor.hpp"
@@ -12,22 +13,22 @@ class Player;
 
 class Room {
 private:
-    TileMap *tileMap;
-    std::vector<Actor*> actors;
-    Player *player;
+    std::unique_ptr<TileMap> tileMap;
+    std::unique_ptr<std::vector<Actor>> actors;
+    std::unique_ptr<Player> player;
 public:
     Room();
     Room(std::string fileName);
-    Room(TileMap *tileMap);
+    Room(std::unique_ptr<TileMap> tileMap);
     void unload();
     void update();
     void draw();
-    void addActor(Actor *actor);
-    void addPlayer(Player *player);
-    Player *getPlayer();
-    TileMap *getTileMap();
+    void addActor(Actor actor);
+    void addPlayer(std::unique_ptr<Player> player);
+    Player& getPlayer();
+    TileMap& getTileMap();
     std::vector<Vector2> getCollisionTiles();
-    std::vector<Interactable*> getInteractableTiles();
+    std::vector<Interactable> getInteractableTiles();
 };
 
 #endif

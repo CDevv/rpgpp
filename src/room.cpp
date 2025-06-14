@@ -3,41 +3,40 @@
 
 Room::Room()
 {
+    this->tileMap = std::unique_ptr<TileMap>{};
+    this->actors = std::unique_ptr<std::vector<Actor>>{};
+    this->player = std::unique_ptr<Player>{};
 }
 
 Room::Room(std::string fileName)
 {
-    TileMap *tileMap = new TileMap(fileName);
-    Actor *actor = new Actor("resources/playerActor.json");
-    Player *player = new Player(actor, *this);
+    std::unique_ptr<Actor> actor = std::make_unique<Actor>("resources/playerActor.json");
+    std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
 
-    this->tileMap = tileMap;
-    this->addPlayer(player);
+    this->tileMap = std::make_unique<TileMap>(fileName);
+    this->addPlayer(std::move(player));
 }
 
-Room::Room(TileMap *tileMap)
+Room::Room(std::unique_ptr<TileMap> tileMap)
 {
-    this->tileMap = tileMap;
+    this->tileMap = std::move(tileMap);
 }
 
 void Room::unload()
 {
     tileMap->unload();
-    delete tileMap;
 
-    for (Actor *actor : actors) {
-        actor->unload();
-        delete actor;
+    for (auto&& actor : *actors) {
+        actor.unload();
     }
 
     player->unload();
-    delete player;
 }
 
 void Room::update()
 {
-    for (Actor *actor : actors) {
-        actor->update();
+    for (auto&& actor : *actors) {
+        actor.update();
     }
     player->update();
 }
@@ -45,29 +44,29 @@ void Room::update()
 void Room::draw()
 {
     this->tileMap->draw();
-    for (Actor *actor : actors) {
-        actor->draw();
+    for (auto&& actor : *actors) {
+        actor.draw();
     }
     player->draw();
 }
 
-void Room::addActor(Actor *actor) {
-    this->actors.push_back(actor);
+void Room::addActor(Actor actor) {
+    this->actors->push_back(std::move(actor));
 }
 
-void Room::addPlayer(Player* player)
+void Room::addPlayer(std::unique_ptr<Player> player)
 {
-    this->player = player;
+    this->player = std::move(player);
 }
 
-Player *Room::getPlayer()
+Player& Room::getPlayer()
 {
-    return player;
+    return *player;
 }
 
-TileMap * Room::getTileMap()
+TileMap& Room::getTileMap()
 {
-    return this->tileMap;
+    return *this->tileMap;
 }
 
 std::vector<Vector2> Room::getCollisionTiles()
@@ -75,7 +74,7 @@ std::vector<Vector2> Room::getCollisionTiles()
     return this->tileMap->getCollisionTiles();
 }
 
-std::vector<Interactable*> Room::getInteractableTiles()
+std::vector<Interactable> Room::getInteractableTiles()
 {
     return this->tileMap->getInteractables();
 }
