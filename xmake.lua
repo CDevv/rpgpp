@@ -16,3 +16,11 @@ target("editor")
     add_deps("rpgpp")
     set_targetdir("./")
 
+target("game")
+    set_kind("binary")
+    add_includedirs("include/")
+    add_files("src/game/*.cpp")
+    add_packages("raylib")
+    add_deps("rpgpp")
+    set_targetdir("./")
+

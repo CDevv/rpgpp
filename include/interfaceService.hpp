@@ -9,6 +9,7 @@ private:
     bool fpsVisible;
 public:
     InterfaceService();
+    ~InterfaceService();
     void update();
     void draw();
     void unload();

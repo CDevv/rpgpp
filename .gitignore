@@ -33,6 +33,7 @@
 
 rpgpp
 /editor
+/game
 librpgpp.so
 build/
 .xmake/

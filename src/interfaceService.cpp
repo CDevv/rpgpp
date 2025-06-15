@@ -8,6 +8,11 @@ InterfaceService::InterfaceService()
     this->font = font;
 }
 
+InterfaceService::~InterfaceService()
+{
+    UnloadFont(font);
+}
+
 void InterfaceService::update()
 {
     if (IsKeyPressed(KEY_Q)) {
@@ -25,5 +30,5 @@ void InterfaceService::draw()
 
 void InterfaceService::unload()
 {
-    UnloadFont(font);
+    //UnloadFont(font);
 }

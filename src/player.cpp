@@ -9,8 +9,6 @@ Player::Player(std::unique_ptr<Actor> actor, Room& room)
     this->velocity = Vector2 { 0, 0 };
     this->size = 48;
 
-
-
     Rectangle collisionRect = actor->getCollisionRect(Vector2 { 0, 0 });
     this->interactableArea = Rectangle {
         collisionRect.x - 6, collisionRect.y - 6,
@@ -29,8 +27,6 @@ void Player::unload()
 
 void Player::update()
 {
-    //Room& room = Game::getWorld()->getRoom();
-
     Rectangle collisionRect = actor->getCollisionRect(Vector2 { 0, 0 });
     this->interactableArea = Rectangle {
         collisionRect.x - 6, collisionRect.y - 6,

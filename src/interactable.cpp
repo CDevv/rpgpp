@@ -50,7 +50,7 @@ InteractableTwo::InteractableTwo(Vector2 tilePos, int tileSize)
 
 void InteractableTwo::interact()
 {
-    bool value = Game::getState()->getProp("test");
+    bool value = Game::getState().getProp("test");
     printf("state test: %s\n", value ? "true" : "false");
 }
 

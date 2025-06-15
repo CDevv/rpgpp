@@ -37,6 +37,8 @@ TileMap::TileMap(std::string fileName)
     }
 
     //Place the tiles..
+    //this->tiles = std::vector<std::vector<Tile>>{};
+
     auto tileRows = j.at("map");
     size_t rowsCount = tileRows.size();
     for (int64_t y = 0; y < rowsCount; y++) {
@@ -55,6 +57,8 @@ TileMap::TileMap(std::string fileName)
     }
 
     //Set collisions..
+    //this->collisions = std::vector<Vector2>{};
+
     std::vector<std::vector<int>> collisionPositions = j.at("collision");
     for (std::vector<int> pos : collisionPositions) {
         int x = pos.at(0);
@@ -66,6 +70,8 @@ TileMap::TileMap(std::string fileName)
     }
 
     //Set interactables
+    this->interactables = std::make_unique<std::vector<Interactable>>();
+
     std::vector<std::vector<int>> interactablePositions = j.at("interactables");
     for (std::vector<int> pos : interactablePositions) {
         int x = pos.at(0);
@@ -101,6 +107,8 @@ TileMap::TileMap(std::unique_ptr<TileSet> tileSet, int width, int height, int at
 
         tiles.push_back(row);
     }
+
+    this->interactables = std::make_unique<std::vector<Interactable>>();
 }
 
 void TileMap::unload()

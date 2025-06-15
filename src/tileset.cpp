@@ -4,7 +4,8 @@
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
-TileSet::TileSet(Texture texture, int tileSize) {
+TileSet::TileSet(Texture texture, int tileSize)
+{
     this->texture = texture;
     this->tileSize = tileSize;
 }

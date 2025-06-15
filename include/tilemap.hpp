@@ -10,8 +10,6 @@
 #include "tileset.hpp"
 #include "interactable.hpp"
 
-
-
 class TileMap {
 private:
     Vector2 basePos;

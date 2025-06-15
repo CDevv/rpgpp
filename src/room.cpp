@@ -10,6 +10,8 @@ Room::Room()
 
 Room::Room(std::string fileName)
 {
+    this->actors = std::make_unique<std::vector<Actor>>();
+
     std::unique_ptr<Actor> actor = std::make_unique<Actor>("resources/playerActor.json");
     std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
 

@@ -1,16 +1,24 @@
 #include "game.hpp"
+#include <stdexcept>
 
 Game *Game::instance_ = nullptr;
-StateService *Game::state = nullptr;
-WorldService *Game::world = nullptr;
-InterfaceService *Game::ui = nullptr;
+std::unique_ptr<StateService> Game::state = std::unique_ptr<StateService>{};
+std::unique_ptr<WorldService> Game::world = std::unique_ptr<WorldService>{};
+std::unique_ptr<InterfaceService> Game::ui = std::unique_ptr<InterfaceService>{};
 
-Game::Game() {}
+Game::Game()
+{
+    if (instance_ == nullptr) {
+        instance_ = this;
+    } else {
+        throw std::runtime_error("Instance of Game already exists.");
+    }
+}
 
 Game& Game::instance()
 {
     if (instance_ == nullptr) {
-        instance_ = new Game();
+        throw std::runtime_error("There is no instance of Game.");
     }
 
     return *instance_;
@@ -18,24 +26,24 @@ Game& Game::instance()
 
 void Game::init()
 {
-    state = new StateService;
-    world = new WorldService;
-    ui = new InterfaceService;
+    state = std::make_unique<StateService>();
+    world = std::make_unique<WorldService>();
+    ui = std::make_unique<InterfaceService>();
 }
 
-StateService *Game::getState()
+StateService& Game::getState()
 {
-    return state;
+    return *state;
 }
 
-WorldService * Game::getWorld()
+WorldService& Game::getWorld()
 {
-    return world;
+    return *world;
 }
 
-InterfaceService *Game::getUi()
+InterfaceService& Game::getUi()
 {
-    return ui;
+    return *ui;
 }
 
 void Game::update()

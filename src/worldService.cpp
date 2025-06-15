@@ -32,6 +32,6 @@ void WorldService::draw()
 
 void WorldService::unload()
 {
-    room->unload();
+    //room->unload();
 }
 
