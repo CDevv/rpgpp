@@ -64,7 +64,7 @@ Launch Configurations=Launch Configuration 0,Launch Configuration 1
 [Launch][Launch Configuration 0]
 Configured Launch Modes=execute
 Configured Launchers=nativeAppLauncher
-Name=rpgpp
+Name=editor
 Type=Native Application
 
 [Launch][Launch Configuration 0][Data]

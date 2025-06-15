@@ -16,8 +16,10 @@ public:
     ~TileSet();
     void unload();
     int getTileSize();
+    void setTileSize(int size);
     Texture getTexture();
     std::string getTextureSource();
+    void setTextureSource(std::string source);
     AtlasTile getTile(Vector2 atlasCoords);
 };
 

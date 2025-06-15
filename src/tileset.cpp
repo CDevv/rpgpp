@@ -45,6 +45,11 @@ int TileSet::getTileSize()
     return this->tileSize;
 }
 
+void TileSet::setTileSize(int size)
+{
+    this->tileSize = size;
+}
+
 Texture TileSet::getTexture()
 {
     return this->texture;
@@ -53,6 +58,12 @@ Texture TileSet::getTexture()
 std::string TileSet::getTextureSource()
 {
     return this->textureSource;
+}
+
+void TileSet::setTextureSource(std::string source)
+{
+    this->textureSource = source;
+    this->texture = LoadTexture(source.c_str());
 }
 
 AtlasTile TileSet::getTile(Vector2 atlasCoords)

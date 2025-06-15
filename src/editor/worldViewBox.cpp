@@ -55,9 +55,17 @@ void WorldViewBox::draw()
     BeginMode2D(*camera);
 
     rlPushMatrix();
-    rlTranslatef(0, 25*16, 0);
-    rlRotatef(90, 1, 0, 0);
-    DrawGrid(100, 16);
+
+    if (fs.fileIsOpen()) {
+        rlTranslatef(0, 25*(tileSet->getTileSize()), 0);
+        rlRotatef(90, 1, 0, 0);
+        DrawGrid(100, (tileSet->getTileSize()));
+    } else {
+        rlTranslatef(0, 25*16, 0);
+        rlRotatef(90, 1, 0, 0);
+        DrawGrid(100, 16);
+    }
+
     rlPopMatrix();
 
     if (fs.fileIsOpen()) {

@@ -22,6 +22,9 @@ EditorInterfaceService::EditorInterfaceService()
     worldView = WorldViewBox(&camera);
 
     GuiLoadStyle("rpgpp.rgs");
+
+    chosenTileSize = 0;
+    chosenTileSizeEditMode = false;
 }
 
 EditorInterfaceService::~EditorInterfaceService()
@@ -45,16 +48,30 @@ void EditorInterfaceService::draw()
     FileSystemService& fs = Editor::getFileSystem();
     if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
         fs.promptOpenFile();
+
+        TileSet *tileSet = fs.getTileSet();
+        chosenTileSize = tileSet->getTileSize();
     }
 
     if (fs.fileIsOpen()) {
         TileSet *tileSet = fs.getTileSet();
+        if (chosenTileSize >= 16) {
+            tileSet->setTileSize(chosenTileSize);
+        }
 
         GuiLabel(Rectangle { 8, 40, 120, 24 }, "TILE SIZE");
-        GuiLabel(Rectangle { 8, 72, 120, 24 }, TextFormat("%i", tileSet->getTileSize()));
+        if (GuiValueBox(Rectangle { 8, 72, 120, 24 }, "", &chosenTileSize, 16, 32, chosenTileSizeEditMode)) {
+            chosenTileSizeEditMode = !chosenTileSizeEditMode;
+        }
 
         GuiLabel(Rectangle { 8, 112, 120, 24 }, "TEXTURE SOURCE");
-        GuiLabel(Rectangle { 8, 144, 120, 24 }, tileSet->getTextureSource().c_str());
+        if (GuiLabelButton(Rectangle { 8, 144, 120, 24 }, tileSet->getTextureSource().c_str())) {
+            FS_Result fsResult = fs.openImage();
+            if (fsResult.result == NFD_OKAY) {
+                tileSet->setTextureSource(fsResult.path);
+                printf("%s \n", fsResult.path.c_str());
+            }
+        }
     }
 }
 

@@ -5,6 +5,12 @@
 #include <string>
 #include <raylib.h>
 #include "tileset.hpp"
+#include "nfd.h"
+
+struct FS_Result {
+    std::string path;
+    nfdresult_t result;
+};
 
 class FileSystemService {
 private:
@@ -19,6 +25,7 @@ public:
     bool fileIsOpen();
     std::string getOpenedFilePath();
     TileSet *getTileSet();
+    FS_Result openImage();
 };
 
 #endif

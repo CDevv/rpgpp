@@ -18,6 +18,8 @@ private:
     Vector2 mousePos;
     Vector2 hoverPos;
     Camera2D camera;
+    int chosenTileSize;
+    bool chosenTileSizeEditMode;
 public:
     EditorInterfaceService();
     ~EditorInterfaceService();
