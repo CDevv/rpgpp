@@ -14,7 +14,6 @@ EditorInterfaceService::EditorInterfaceService()
     mousePos = Vector2 { 0, 0 };
     hoverPos = Vector2 { 0, 0 };
 
-
     Rectangle windowRect = Rectangle
     {
         176, 48,
@@ -49,11 +48,17 @@ void EditorInterfaceService::draw()
     if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
         fs.promptOpenFile();
 
-        TileSet *tileSet = fs.getTileSet();
-        chosenTileSize = tileSet->getTileSize();
+        if (fs.getType() == FILE_TILESET) {
+            TileSet *tileSet = fs.getTileSet();
+            chosenTileSize = tileSet->getTileSize();
+        }
     }
 
     if (fs.fileIsOpen()) {
+        if (fs.getType() != FILE_TILESET) {
+            return;
+        }
+
         TileSet *tileSet = fs.getTileSet();
         if (chosenTileSize >= 16) {
             tileSet->setTileSize(chosenTileSize);
@@ -66,7 +71,9 @@ void EditorInterfaceService::draw()
             SaveFileText(fs.getOpenedFilePath().c_str(), text);
         }
 
-        GuiPanel(Rectangle { 8, 48, 160, static_cast<float>(GetScreenHeight() - 56) }, "TileSet Props");
+        if (fs.getType() == FILE_TILESET) {
+            GuiPanel(Rectangle { 8, 48, 160, static_cast<float>(GetScreenHeight() - 56) }, "TileSet Props");
+        }
 
         GuiLabel(Rectangle { 16, 80, 144, 24 }, "TILE SIZE");
         if (GuiValueBox(Rectangle { 16, 112, 144, 24 }, NULL, &chosenTileSize, 16, 32, chosenTileSizeEditMode)) {
@@ -76,17 +83,7 @@ void EditorInterfaceService::draw()
         GuiLabel(Rectangle { 16, 144, 144, 24 }, "TEXTURE SOURCE");
         std::string sourceFileName = GetFileName(tileSet->getTextureSource().c_str());
         GuiLabel(Rectangle { 16, 176, 144, 24 }, sourceFileName.c_str());
-        if (CheckCollisionPointRec(GetMousePosition(), Rectangle { 16, 176, 144, 24 })) {
-            Vector2 mousePos = GetMousePosition();
-            Vector2 textPos = Vector2Add(mousePos, Vector2 { 2, 2 });
-            Vector2 textSize = MeasureTextEx(uiFont, tileSet->getTextureSource().c_str(), 16, 2);
-            GuiPanel(
-                Rectangle {
-                    mousePos.x, mousePos.y,
-                    textSize.x + 4, textSize.y + 4
-                }, NULL);
-            DrawTextEx(uiFont, tileSet->getTextureSource().c_str(), textPos, 16, 2, GRAY);
-        }
+        drawTooltip(Rectangle { 16, 176, 144, 24 }, tileSet->getTextureSource());
 
         if (GuiButton(Rectangle { 16, 208, 144, 24 }, "CHANGE TEXTURE")) {
             FS_Result fsResult = fs.openImage();
@@ -108,4 +105,20 @@ Font EditorInterfaceService::getFont()
 {
     return uiFont;
 }
+
+void EditorInterfaceService::drawTooltip(Rectangle rect, std::string text)
+{
+    if (CheckCollisionPointRec(GetMousePosition(), rect)) {
+        Vector2 mousePos = GetMousePosition();
+        Vector2 textPos = Vector2Add(mousePos, Vector2 { 2, 2 });
+        Vector2 textSize = MeasureTextEx(uiFont, text.c_str(), 16, 2);
+        GuiPanel(
+            Rectangle {
+                mousePos.x, mousePos.y,
+                textSize.x + 4, textSize.y + 4
+            }, NULL);
+        DrawTextEx(uiFont, text.c_str(), textPos, 16, 2, GRAY);
+    }
+}
+
 

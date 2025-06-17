@@ -153,6 +153,11 @@ void TileMap::draw()
     }
 }
 
+TileSet& TileMap::getTileSet()
+{
+    return *tileSet;
+}
+
 int TileMap::getAtlasTileSize()
 {
     return atlasTileSize;
@@ -161,6 +166,11 @@ int TileMap::getAtlasTileSize()
 int TileMap::getWorldTileSize()
 {
     return worldTileSize;
+}
+
+Tile TileMap::getTile(int x, int y)
+{
+    return this->tiles[x][y];
 }
 
 void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos)
@@ -284,5 +294,10 @@ std::vector<Interactable>& TileMap::getInteractables()
 
 Vector2 TileMap::getMaxAtlasSize() {
     Vector2 result = Vector2 { static_cast<float>(maxAtlasWidth), static_cast<float>(maxAtlasHeight) };
+    return result;
+}
+
+Vector2 TileMap::getMaxWorldSize() {
+    Vector2 result = Vector2 { static_cast<float>(width), static_cast<float>(height) };
     return result;
 }

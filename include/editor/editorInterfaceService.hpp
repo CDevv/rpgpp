@@ -25,6 +25,7 @@ public:
     void draw();
     void unload();
     Font getFont();
+    void drawTooltip(Rectangle rect, std::string text);
 };
 
 #endif

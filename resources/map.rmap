@@ -1,5 +1,5 @@
 {
-    "tileset": "resources/tiles.json",
+    "tileset": "resources/tiles.rtiles",
     "tileSize": 48,
     "width": 50,
     "height": 50,

@@ -5,8 +5,45 @@
 #include <raylib.h>
 #include "mouseInput.hpp"
 #include "tileset.hpp"
+#include "tilemap.hpp"
+
+class WorldViewBox;
+
+class TileSetViewBox {
+private:
+    TileSet *tileSet;
+    WorldViewBox* viewBox;
+    Vector2 tileAtlasPos;
+    Vector2 tileWorldPos;
+    bool hoverValidTile;
+public:
+    TileSetViewBox();
+    TileSetViewBox(WorldViewBox* viewBox);
+    void isHoverOnValidTile();
+    void drawGrid();
+    void drawTiles();
+    void drawMouse();
+};
+
+class MapViewBox {
+private:
+    TileMap *map;
+    WorldViewBox *viewBox;
+    Vector2 tileAtlasPos;
+    Vector2 tileWorldPos;
+    bool hoverValidTile;
+public:
+    MapViewBox();
+    MapViewBox(WorldViewBox *viewBox);
+    void isHoverOnValidTile();
+    void drawGrid();
+    void drawTiles();
+    void drawMouse();
+};
 
 class WorldViewBox {
+    friend class TileSetViewBox;
+    friend class MapViewBox;
 private:
     Rectangle windowRect;
     Rectangle renderRect;
@@ -17,6 +54,8 @@ private:
     std::string windowTitle;
     Vector2 mousePos;
     Vector2 hoverPos;
+    TileSetViewBox tilesView;
+    MapViewBox mapView;
 public:
     WorldViewBox();
     WorldViewBox(Rectangle windowRect, Rectangle renderRect);

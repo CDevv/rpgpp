@@ -4,6 +4,7 @@
 FileSystemService::FileSystemService()
 {
     lastTileSet = std::unique_ptr<TileSet>{};
+    lastTileMap = std::unique_ptr<TileMap>{};
     isOpen = false;
 
     NFD_Init();
@@ -14,10 +15,15 @@ FileSystemService::~FileSystemService()
     NFD_Quit();
 }
 
+void FileSystemService::unload()
+{
+    NFD_Quit();
+}
+
 void FileSystemService::promptOpenFile()
 {
     nfdu8char_t *outPath;
-    nfdu8filteritem_t filters[1] = { { "RPG++ JSON Resource", "json" } };
+    nfdu8filteritem_t filters[1] = { { "RPG++ Resource", "rtiles,rmap" } };
     nfdopendialogu8args_t args = {0};
     args.filterList = filters;
     args.filterCount = 1;
@@ -25,7 +31,16 @@ void FileSystemService::promptOpenFile()
 
     if (result == NFD_OKAY) {
         lastOpenPath = outPath;
-        lastTileSet.reset(new TileSet(outPath));
+
+        std::string fileExtension = GetFileExtension(outPath);
+        if (TextIsEqual(fileExtension.c_str(), ".rtiles")) {
+            lastTileSet.reset(new TileSet(outPath));
+            lastType = FILE_TILESET;
+        } else if (TextIsEqual(fileExtension.c_str(), ".rmap")) {
+            lastTileMap.reset(new TileMap(outPath));
+            lastType = FILE_MAP;
+        }
+
         isOpen = true;
 
         NFD_FreePathU8(outPath);
@@ -42,9 +57,19 @@ std::string FileSystemService::getOpenedFilePath()
     return lastOpenPath;
 }
 
+EngineFileType FileSystemService::getType()
+{
+    return lastType;
+}
+
 TileSet *FileSystemService::getTileSet()
 {
     return lastTileSet.get();
+}
+
+TileMap *FileSystemService::getTileMap()
+{
+    return lastTileMap.get();
 }
 
 FS_Result FileSystemService::openImage()
@@ -67,11 +92,5 @@ FS_Result FileSystemService::openImage()
     }
 
     return fsResult;
-}
-
-
-void FileSystemService::unload()
-{
-    NFD_Quit();
 }
 
