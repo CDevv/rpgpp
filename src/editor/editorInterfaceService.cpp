@@ -8,20 +8,23 @@
 
 EditorInterfaceService::EditorInterfaceService()
 {
+    GuiLoadStyle("rpgpp.rgs");
     uiFont = LoadFont("resources/ark-pixel-10px-monospaced-latin.otf");
 
     mousePos = Vector2 { 0, 0 };
     hoverPos = Vector2 { 0, 0 };
 
-    camera = Camera2D { {0} };
-    camera.target = Vector2 { 0, 0 };
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
 
-    mouseInput = std::make_unique<MouseInputComponent>(Vector2 { 138, 32 }, camera);
-    worldView = WorldViewBox(&camera);
-
-    GuiLoadStyle("rpgpp.rgs");
+    Rectangle windowRect = Rectangle
+    {
+        176, 48,
+        static_cast<float>(GetScreenWidth() - 386), static_cast<float>(GetScreenHeight() - 56)
+    };
+    Rectangle renderRect = Rectangle {
+        (windowRect.x + 2), (windowRect.y + 24),
+        (windowRect.width - 4), (windowRect.height - 30)
+    };
+    worldView = std::make_unique<WorldViewBox>(windowRect, renderRect);
 
     chosenTileSize = 0;
     chosenTileSizeEditMode = false;
@@ -30,20 +33,17 @@ EditorInterfaceService::EditorInterfaceService()
 EditorInterfaceService::~EditorInterfaceService()
 {
     UnloadFont(uiFont);
-    worldView.unload();
+    worldView->unload();
 }
 
 void EditorInterfaceService::update()
 {
-    mouseInput->update();
-
-    mousePos = mouseInput->getMousePos();
-    hoverPos = mouseInput->getMouseWorldPos();
+    worldView->update();
 }
 
 void EditorInterfaceService::draw()
 {
-    worldView.draw();
+    worldView->draw();
 
     FileSystemService& fs = Editor::getFileSystem();
     if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
@@ -59,13 +59,36 @@ void EditorInterfaceService::draw()
             tileSet->setTileSize(chosenTileSize);
         }
 
-        GuiLabel(Rectangle { 8, 40, 120, 24 }, "TILE SIZE");
-        if (GuiValueBox(Rectangle { 8, 72, 120, 24 }, "", &chosenTileSize, 16, 32, chosenTileSizeEditMode)) {
+        if (GuiButton(Rectangle { 138, 8, 120, 24 }, "Save")) {
+            std::string jsonString = tileSet->dumpJson().dump(4);
+
+            char *text = jsonString.data();
+            SaveFileText(fs.getOpenedFilePath().c_str(), text);
+        }
+
+        GuiPanel(Rectangle { 8, 48, 160, static_cast<float>(GetScreenHeight() - 56) }, "TileSet Props");
+
+        GuiLabel(Rectangle { 16, 80, 144, 24 }, "TILE SIZE");
+        if (GuiValueBox(Rectangle { 16, 112, 144, 24 }, NULL, &chosenTileSize, 16, 32, chosenTileSizeEditMode)) {
             chosenTileSizeEditMode = !chosenTileSizeEditMode;
         }
 
-        GuiLabel(Rectangle { 8, 112, 120, 24 }, "TEXTURE SOURCE");
-        if (GuiLabelButton(Rectangle { 8, 144, 120, 24 }, tileSet->getTextureSource().c_str())) {
+        GuiLabel(Rectangle { 16, 144, 144, 24 }, "TEXTURE SOURCE");
+        std::string sourceFileName = GetFileName(tileSet->getTextureSource().c_str());
+        GuiLabel(Rectangle { 16, 176, 144, 24 }, sourceFileName.c_str());
+        if (CheckCollisionPointRec(GetMousePosition(), Rectangle { 16, 176, 144, 24 })) {
+            Vector2 mousePos = GetMousePosition();
+            Vector2 textPos = Vector2Add(mousePos, Vector2 { 2, 2 });
+            Vector2 textSize = MeasureTextEx(uiFont, tileSet->getTextureSource().c_str(), 16, 2);
+            GuiPanel(
+                Rectangle {
+                    mousePos.x, mousePos.y,
+                    textSize.x + 4, textSize.y + 4
+                }, NULL);
+            DrawTextEx(uiFont, tileSet->getTextureSource().c_str(), textPos, 16, 2, GRAY);
+        }
+
+        if (GuiButton(Rectangle { 16, 208, 144, 24 }, "CHANGE TEXTURE")) {
             FS_Result fsResult = fs.openImage();
             if (fsResult.result == NFD_OKAY) {
                 tileSet->setTextureSource(fsResult.path);
@@ -78,22 +101,11 @@ void EditorInterfaceService::draw()
 void EditorInterfaceService::unload()
 {
     UnloadFont(uiFont);
-    
-    worldView.unload();
-}
-
-MouseInputComponent& EditorInterfaceService::getMouse()
-{
-    return *mouseInput.get();
+    worldView->unload();
 }
 
 Font EditorInterfaceService::getFont()
 {
     return uiFont;
-}
-
-Camera2D& EditorInterfaceService::getCamera()
-{
-    return camera;
 }
 

@@ -35,6 +35,16 @@ TileSet::~TileSet()
     UnloadTexture(texture);
 }
 
+json TileSet::dumpJson()
+{
+    json tileSetJson = {
+        {"source", textureSource},
+        {"tileSize", tileSize}
+    };
+
+    return tileSetJson;
+}
+
 void TileSet::unload()
 {
     UnloadTexture(texture);

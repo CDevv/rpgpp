@@ -9,6 +9,7 @@
 
 struct FS_Result {
     std::string path;
+    std::string fileName;
     nfdresult_t result;
 };
 

@@ -1,11 +1,12 @@
 #include "mouseInput.hpp"
 #include <raymath.h>
 
-MouseInputComponent::MouseInputComponent(Vector2 offset, Camera2D& camera)
+MouseInputComponent::MouseInputComponent(Vector2 offset, Camera2D& camera, Rectangle cameraRect)
 : camera(camera)
 {
     this->offset = offset;
     this->camera = camera;
+    this->cameraRect = cameraRect;
     this->lastMode = 0;
 
     mousePos = Vector2 { 0, 0 };
@@ -26,6 +27,10 @@ void MouseInputComponent::update()
     }
 
     hoverPos = lastPos;
+
+    if (!isInRect()) {
+        return;
+    }
 
     if (IsMouseButtonDown(MOUSE_MIDDLE_BUTTON)) {
         camera.target = Vector2Add(camera.target, delta);
@@ -62,3 +67,7 @@ Vector2 MouseInputComponent::getMousePos()
     return mousePos;
 }
 
+bool MouseInputComponent::isInRect()
+{
+    return CheckCollisionPointRec(GetMousePosition(), cameraRect);
+}

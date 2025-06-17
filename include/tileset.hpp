@@ -3,6 +3,8 @@
 
 #include <string>
 #include <raylib.h>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 #include "atlasTile.hpp"
 
 class TileSet {
@@ -14,6 +16,7 @@ public:
     TileSet(std::string fileName);
     TileSet(Texture texture, int tileSize);
     ~TileSet();
+    json dumpJson();
     void unload();
     int getTileSize();
     void setTileSize(int size);

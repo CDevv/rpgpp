@@ -6,15 +6,30 @@
 #include <cmath>
 
 WorldViewBox::WorldViewBox()
+{}
+
+WorldViewBox::WorldViewBox(Rectangle windowRect, Rectangle renderRect)
 {
+    windowTitle = "TileSet not opened..";
+
+    camera = Camera2D { {0} };
+    camera.target = Vector2 { 0, 0 };
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+
+    this->windowRect = windowRect;
+    this->renderRect = renderRect;
+
+    renderTexture = LoadRenderTexture(renderRect.width, renderRect.height);
+
+    mouseInput = std::make_unique<MouseInputComponent>(Vector2 { renderRect.x, renderRect.y }, camera, renderRect);
 }
 
-WorldViewBox::WorldViewBox(Camera2D* camera)
+void WorldViewBox::update()
 {
-    this->camera = camera;
-
-    windowTitle = "TileSet not opened..";
-    renderTexture = LoadRenderTexture(494, 420);
+    mouseInput->update();
+    mousePos = mouseInput->getMousePos();
+    hoverPos = mouseInput->getMouseWorldPos();
 }
 
 void WorldViewBox::draw()
@@ -22,8 +37,8 @@ void WorldViewBox::draw()
     EditorInterfaceService& ui = Editor::getUi();
     FileSystemService& fs = Editor::getFileSystem();
 
-    Vector2 mousePos = ui.getMouse().getMousePos();
-    Vector2 hoverPos = ui.getMouse().getMouseWorldPos();
+    //Vector2 mousePos = mouseInput->getMousePos();
+    //Vector2 hoverPos = mouseInput->getMouseWorldPos();
 
     Vector2 tileAtlasPos = Vector2 { 0, 0 };
     Vector2 tileWorldPos = Vector2 { 0, 0 };
@@ -52,7 +67,7 @@ void WorldViewBox::draw()
 
     BeginTextureMode(renderTexture);
     ClearBackground(RAYWHITE);
-    BeginMode2D(*camera);
+    BeginMode2D(camera);
 
     rlPushMatrix();
 
@@ -106,19 +121,21 @@ void WorldViewBox::draw()
 
     EndMode2D();
 
-    //small circle on mouse pos
-    DrawCircleV(mousePos, 4, DARKGRAY);
-    Vector2 textPos = Vector2Add(mousePos, Vector2 { -44, -24 });
-    int mouseX = hoverPos.x;
-    int mouseY = hoverPos.y;
-    DrawTextEx(ui.getFont(), TextFormat("[%d, %d]", mouseX, mouseY), textPos, 16, 2, MAROON);
+    if (mouseInput->isInRect()) {
+        //small circle on mouse pos
+        DrawCircleV(mousePos, 4, DARKGRAY);
+        Vector2 textPos = Vector2Add(mousePos, Vector2 { -44, -24 });
+        int mouseX = hoverPos.x;
+        int mouseY = hoverPos.y;
+        DrawTextEx(ui.getFont(), TextFormat("[%d, %d]", mouseX, mouseY), textPos, 16, 2, MAROON);
 
-    //draw atlas position text..
-    if (hoverValidTile) {
-        Vector2 atlasPosTextPos = Vector2 { 8, static_cast<float>(renderTexture.texture.height - 24) };
-        int atlasPosX = tileAtlasPos.x;
-        int atlasPosY = tileAtlasPos.y;
-        DrawTextEx(ui.getFont(), TextFormat("Tile: [%d, %d]", atlasPosX, atlasPosY), atlasPosTextPos, 16, 2, BLACK);
+        //draw atlas position text..
+        if (hoverValidTile) {
+            Vector2 atlasPosTextPos = Vector2 { 8, static_cast<float>(renderTexture.texture.height - 24) };
+            int atlasPosX = tileAtlasPos.x;
+            int atlasPosY = tileAtlasPos.y;
+            DrawTextEx(ui.getFont(), TextFormat("Tile: [%d, %d]", atlasPosX, atlasPosY), atlasPosTextPos, 16, 2, BLACK);
+        }
     }
 
     EndTextureMode();
@@ -127,13 +144,13 @@ void WorldViewBox::draw()
     if (fs.fileIsOpen()) {
         windowTitle = fs.getOpenedFilePath();
     }
-    GuiWindowBox(Rectangle { 136, 8, 498, 446 }, windowTitle.c_str());
+    GuiWindowBox(windowRect, windowTitle.c_str());
 
     Rectangle cameraRect = Rectangle {
         0, 0,
         static_cast<float>(renderTexture.texture.width), static_cast<float>(-renderTexture.texture.height)
     };
-    DrawTextureRec(renderTexture.texture, cameraRect, Vector2 { 138, 32 }, WHITE);
+    DrawTextureRec(renderTexture.texture, cameraRect, Vector2 { renderRect.x, renderRect.y }, WHITE);
 }
 
 void WorldViewBox::unload()

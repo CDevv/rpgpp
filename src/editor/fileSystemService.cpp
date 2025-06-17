@@ -61,6 +61,7 @@ FS_Result FileSystemService::openImage()
     fsResult.result = result;
     if (result == NFD_OKAY) {
         fsResult.path = outPath;
+        fsResult.fileName = GetFileName(outPath);
 
         NFD_FreePathU8(outPath);
     }

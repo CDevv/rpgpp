@@ -13,11 +13,9 @@ class MouseInputComponent;
 class EditorInterfaceService {
 private:
     Font uiFont;
-    std::unique_ptr<MouseInputComponent> mouseInput;
-    WorldViewBox worldView;
+    std::unique_ptr<WorldViewBox> worldView;
     Vector2 mousePos;
     Vector2 hoverPos;
-    Camera2D camera;
     int chosenTileSize;
     bool chosenTileSizeEditMode;
 public:
@@ -26,9 +24,7 @@ public:
     void update();
     void draw();
     void unload();
-    MouseInputComponent& getMouse();
     Font getFont();
-    Camera2D& getCamera();
 };
 
 #endif

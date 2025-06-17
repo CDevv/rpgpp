@@ -5,8 +5,8 @@
 
 int main()
 {
-    const int width = 640;
-    const int height = 480;
+    const int width = 1280;
+    const int height = 640;
 
     InitWindow(width, height, "editor");
 
