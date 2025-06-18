@@ -67,7 +67,7 @@ void EditorInterfaceService::draw()
         if (GuiButton(Rectangle { 138, 8, 120, 24 }, "Save")) {
             std::string jsonString = tileSet->dumpJson().dump(4);
 
-            char *text = jsonString.data();
+            char *text = const_cast<char*>(jsonString.data());
             SaveFileText(fs.getOpenedFilePath().c_str(), text);
         }
 
