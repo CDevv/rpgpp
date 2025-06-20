@@ -38,6 +38,7 @@ public:
     TileSet *getTileSet();
     TileMap *getTileMap();
     FS_Result openImage();
+    FS_Result openTileSetResource();
 };
 
 #endif

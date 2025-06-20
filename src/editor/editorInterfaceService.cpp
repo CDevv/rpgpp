@@ -66,10 +66,7 @@ void EditorInterfaceService::draw()
     if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
         fs.promptOpenFile();
 
-        if (fs.getType() == FILE_TILESET) {
-            TileSet *tileSet = fs.getTileSet();
-            chosenTileSize = tileSet->getTileSize();
-        }
+        propertiesBox.setDefaults();
     }
 
     if (fs.fileIsOpen()) {
@@ -82,9 +79,9 @@ void EditorInterfaceService::draw()
                 char *text = const_cast<char*>(jsonString.data());
                 SaveFileText(fs.getOpenedFilePath().c_str(), text);
             }
-
-            propertiesBox.draw();
         }
+
+        propertiesBox.draw();
     }
 }
 

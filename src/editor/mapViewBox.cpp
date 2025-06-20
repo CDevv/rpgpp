@@ -45,10 +45,6 @@ void MapViewBox::drawGrid()
     FileSystemService& fs = Editor::getFileSystem();
 
     if (fs.fileIsOpen()) {
-        //rlTranslatef(0, (map->getMaxWorldSize().y)*(map->getAtlasTileSize()), 0);
-        //rlRotatef(90, 1, 0, 0);
-        //DrawGrid((map->getMaxWorldSize().x), (map->getAtlasTileSize()));
-
         //draw a big white rectangle instead
         Rectangle rect = Rectangle {
             0, 0,

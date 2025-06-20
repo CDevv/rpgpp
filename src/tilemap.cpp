@@ -13,6 +13,7 @@ TileMap::TileMap(std::string fileName)
     json j = json::parse(jsonContent);
 
     std::string tileSetSource = j.at("tileset");
+    this->tileSetSource = tileSetSource;
     this->tileSet = std::make_unique<TileSet>(tileSetSource);
 
     this->atlasTileSize = tileSet->getTileSize();
@@ -57,8 +58,6 @@ TileMap::TileMap(std::string fileName)
     }
 
     //Set collisions..
-    //this->collisions = std::vector<Vector2>{};
-
     std::vector<std::vector<int>> collisionPositions = j.at("collision");
     for (std::vector<int> pos : collisionPositions) {
         int x = pos.at(0);
@@ -153,9 +152,20 @@ void TileMap::draw()
     }
 }
 
+std::string TileMap::getTileSetSource()
+{
+    return tileSetSource;
+}
+
 TileSet& TileMap::getTileSet()
 {
     return *tileSet;
+}
+
+void TileMap::setTileSet(std::string tileSetSource)
+{
+    this->tileSet.reset(new TileSet(tileSetSource));
+    this->tileSetSource = tileSetSource;
 }
 
 int TileMap::getAtlasTileSize()
@@ -284,7 +294,6 @@ void TileMap::setInteractable(int type, Vector2 worldPos)
             interactables->push_back(interactable);
             break;
     };
-    //this->interactables.push_back(interactable);
 }
 
 std::vector<Interactable>& TileMap::getInteractables()
@@ -301,3 +310,44 @@ Vector2 TileMap::getMaxWorldSize() {
     Vector2 result = Vector2 { static_cast<float>(width), static_cast<float>(height) };
     return result;
 }
+
+void TileMap::setWorldSize(Vector2 size)
+{
+    if (size.x < width) {
+        int diff = (width - size.x);
+        for (int i = 0; i < diff; i++) {
+            tiles.pop_back();
+        }
+    } else if (size.x > width) {
+        int diff = (size.x - width);
+        for (int i = 0; i < diff; i++) {
+            std::vector<Tile> row;
+            for (int j = 0; j < size.y; j++) {
+                Tile tile;
+                row.push_back(tile);
+            }
+            tiles.push_back(row);
+        }
+    }
+
+    if (size.y < height) {
+        int diff = (height - size.y);
+        for (int x = 0; x < tiles.size(); x++) {
+            for (int y = 0; y < diff; y++) {
+                tiles[x].pop_back();
+            }
+        }
+    } else if (size.y > height) {
+        int diff = (size.y - height);
+        for (int x = 0; x < tiles.size(); x++) {
+            for (int y = 0; y < diff; y++) {
+                Tile tile;
+                tiles[x].push_back(tile);
+            }
+        }
+    }
+
+    this->width = size.x;
+    this->height = size.y;
+}
+

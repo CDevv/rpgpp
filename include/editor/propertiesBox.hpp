@@ -2,20 +2,21 @@
 #define _RPGPP_EDITOR_PROPERTIESBOX_H
 
 #include <raylib.h>
-#include "tileset.hpp"
+#include "tileSetPropertiesBox.hpp"
+#include "mapPropertiesBox.hpp"
 
 class PropertiesBox {
 private:
     Vector2 pos;
     Rectangle rect;
-    int chosenTileSize;
-    bool chosenTileSizeEditMode;
-    TileSet *tileSet;
+    TileSetPropertiesBox tileSetProps;
+    MapPropertiesBox mapProps;
 public:
     PropertiesBox();
     PropertiesBox(Rectangle rect);
     void update();
     void draw();
+    void setDefaults();
 };
 
 #endif

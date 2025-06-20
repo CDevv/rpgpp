@@ -13,6 +13,7 @@
 class TileMap {
 private:
     Vector2 basePos;
+    std::string tileSetSource;
     std::unique_ptr<TileSet> tileSet;
     int atlasTileSize;
     int worldTileSize;
@@ -29,7 +30,9 @@ public:
     void unload();
     void update();
     void draw();
+    std::string getTileSetSource();
     TileSet& getTileSet();
+    void setTileSet(std::string tileSetSource);
     int getAtlasTileSize();
     int getWorldTileSize();
     bool atlasPosIsValid(Vector2 atlasPos);
@@ -45,6 +48,7 @@ public:
     std::vector<Interactable>& getInteractables();
     Vector2 getMaxAtlasSize();
     Vector2 getMaxWorldSize();
+    void setWorldSize(Vector2 size);
 };
 
 #endif

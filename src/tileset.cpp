@@ -76,6 +76,23 @@ void TileSet::setTextureSource(std::string source)
     this->texture = LoadTexture(source.c_str());
 }
 
+bool TileSet::areAtlasCoordsValid(Vector2 atlasCoords)
+{
+    bool xValid = false;
+    bool yValid = false;
+    bool posValid = false;
+
+    if (atlasCoords.x >= 0 && atlasCoords.x < (texture.width / tileSize)) {
+        xValid = true;
+    }
+    if (atlasCoords.y >= 0 && atlasCoords.y < (texture.height / tileSize)) {
+        yValid = true;
+    }
+
+    posValid = (xValid && yValid);
+    return posValid;
+}
+
 AtlasTile TileSet::getTile(Vector2 atlasCoords)
 {
     AtlasTile tile(&this->texture, atlasCoords);

@@ -23,6 +23,7 @@ public:
     Texture getTexture();
     std::string getTextureSource();
     void setTextureSource(std::string source);
+    bool areAtlasCoordsValid(Vector2 atlasCoords);
     AtlasTile getTile(Vector2 atlasCoords);
 };
 
