@@ -7,6 +7,7 @@
 #include "tileset.hpp"
 #include "mouseInput.hpp"
 #include "worldViewBox.hpp"
+#include "propertiesBox.hpp"
 
 class MouseInputComponent;
 
@@ -14,6 +15,7 @@ class EditorInterfaceService {
 private:
     Font uiFont;
     std::unique_ptr<WorldViewBox> worldView;
+    PropertiesBox propertiesBox;
     Vector2 mousePos;
     Vector2 hoverPos;
     int chosenTileSize;

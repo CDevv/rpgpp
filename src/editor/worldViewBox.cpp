@@ -48,7 +48,11 @@ void WorldViewBox::draw()
     }
 
     BeginTextureMode(renderTexture);
-    ClearBackground(RAYWHITE);
+    if (fs.getType() == FILE_MAP) {
+        ClearBackground(GRAY);
+    } else {
+        ClearBackground(RAYWHITE);
+    }
     BeginMode2D(camera);
 
     rlPushMatrix();

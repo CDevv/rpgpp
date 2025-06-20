@@ -99,14 +99,14 @@ void TileSetViewBox::drawMouse()
         Vector2 textPos = Vector2Add(viewBox->mousePos, Vector2 { -44, -24 });
         int mouseX = viewBox->hoverPos.x;
         int mouseY = viewBox->hoverPos.y;
-        DrawTextEx(ui.getFont(), TextFormat("[%d, %d]", mouseX, mouseY), textPos, 16, 2, MAROON);
+        DrawTextEx(ui.getFont(), TextFormat("[%d, %d]", mouseX, mouseY), textPos, 26, 2, MAROON);
 
         //draw atlas position text..
         if (hoverValidTile) {
             Vector2 atlasPosTextPos = Vector2 { 8, static_cast<float>(viewBox->renderTexture.texture.height - 24) };
             int atlasPosX = tileAtlasPos.x;
             int atlasPosY = tileAtlasPos.y;
-            DrawTextEx(ui.getFont(), TextFormat("Tile: [%d, %d]", atlasPosX, atlasPosY), atlasPosTextPos, 16, 2, BLACK);
+            DrawTextEx(ui.getFont(), TextFormat("Tile: [%d, %d]", atlasPosX, atlasPosY), atlasPosTextPos, 26, 2, BLACK);
         }
     }
 }

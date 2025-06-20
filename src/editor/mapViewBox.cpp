@@ -45,9 +45,17 @@ void MapViewBox::drawGrid()
     FileSystemService& fs = Editor::getFileSystem();
 
     if (fs.fileIsOpen()) {
-        rlTranslatef(0, 25*(map->getAtlasTileSize()), 0);
-        rlRotatef(90, 1, 0, 0);
-        DrawGrid(100, (map->getAtlasTileSize()));
+        //rlTranslatef(0, (map->getMaxWorldSize().y)*(map->getAtlasTileSize()), 0);
+        //rlRotatef(90, 1, 0, 0);
+        //DrawGrid((map->getMaxWorldSize().x), (map->getAtlasTileSize()));
+
+        //draw a big white rectangle instead
+        Rectangle rect = Rectangle {
+            0, 0,
+            (map->getMaxWorldSize().x * map->getAtlasTileSize()), (map->getMaxWorldSize().y * map->getAtlasTileSize())
+        };
+
+        DrawRectangleRec(rect, RAYWHITE);
     } else {
         rlTranslatef(0, 25*16, 0);
         rlRotatef(90, 1, 0, 0);
@@ -121,14 +129,14 @@ void MapViewBox::drawMouse()
         Vector2 textPos = Vector2Add(viewBox->mousePos, Vector2 { -44, -24 });
         int mouseX = viewBox->hoverPos.x;
         int mouseY = viewBox->hoverPos.y;
-        DrawTextEx(ui.getFont(), TextFormat("[%d, %d]", mouseX, mouseY), textPos, 16, 2, MAROON);
+        DrawTextEx(ui.getFont(), TextFormat("[%d, %d]", mouseX, mouseY), textPos, 26, 2, MAROON);
 
         //draw atlas position text..
         if (hoverValidTile) {
             Vector2 atlasPosTextPos = Vector2 { 8, static_cast<float>(viewBox->renderTexture.texture.height - 24) };
             int atlasPosX = tileAtlasPos.x;
             int atlasPosY = tileAtlasPos.y;
-            DrawTextEx(ui.getFont(), TextFormat("Tile: [%d, %d]", atlasPosX, atlasPosY), atlasPosTextPos, 16, 2, BLACK);
+            DrawTextEx(ui.getFont(), TextFormat("Tile: [%d, %d]", atlasPosX, atlasPosY), atlasPosTextPos, 26, 2, BLACK);
         }
     }
 }
