@@ -37,6 +37,7 @@ public:
     EngineFileType getType();
     TileSet *getTileSet();
     TileMap *getTileMap();
+    FS_Result openFile(nfdu8filteritem_t filters[]);
     FS_Result openImage();
     FS_Result openTileSetResource();
 };

@@ -50,10 +50,12 @@ TileMap::TileMap(std::string fileName)
             int atlasX = tileCol.at(x).at(0);
             int atlasY = tileCol.at(x).at(1);
 
-            Vector2 worldPos = Vector2 { static_cast<float>(x), static_cast<float>(y) };
-            Vector2 atlasPos = Vector2 { static_cast<float>(atlasX), static_cast<float>(atlasY) };
+            if (atlasX >= 0 && atlasY >= 0) {
+                Vector2 worldPos = Vector2 { static_cast<float>(x), static_cast<float>(y) };
+                Vector2 atlasPos = Vector2 { static_cast<float>(atlasX), static_cast<float>(atlasY) };
 
-            this->setTile(worldPos, atlasPos);
+                this->setTile(worldPos, atlasPos);
+            }
         }
     }
 
@@ -108,6 +110,62 @@ TileMap::TileMap(std::unique_ptr<TileSet> tileSet, int width, int height, int at
     }
 
     this->interactables = std::make_unique<std::vector<Interactable>>();
+}
+
+json TileMap::dumpJson()
+{
+    //Make a vector for the tiles
+    auto tilesVector = std::vector<std::vector<std::vector<int>>>();
+    for (int i = 0; i < height; i++) {
+        tilesVector.push_back(std::vector<std::vector<int>>());
+        for (int j = 0; j < width; j++) {
+            Tile tile = getTile(j, i);
+            std::vector<int> atlasPosVector;
+            if (tile.isPlaced()) {
+                AtlasTile atlasTile = tile.getAtlasTile();
+                Vector2 atlasCoords = atlasTile.getAtlasCoords();
+                atlasPosVector.push_back((atlasCoords.x / atlasTileSize));
+                atlasPosVector.push_back((atlasCoords.y / atlasTileSize));
+            } else {
+                atlasPosVector.push_back(-1);
+                atlasPosVector.push_back(-1);
+            }
+            tilesVector[i].push_back(atlasPosVector);
+        }
+    }
+
+    //Vector for collisions
+    auto collisionsVector = std::vector<std::vector<int>>();
+    for (Vector2 collisionPos : collisions) {
+        std::vector<int> collision;
+        collision.push_back(collisionPos.x);
+        collision.push_back(collisionPos.y);
+
+        collisionsVector.push_back(collision);
+    }
+
+    auto interactablesVector = std::vector<std::vector<int>>();
+    for (auto&& interactable : *interactables) {
+        std::vector<int> interactableVector;
+        interactableVector.push_back(interactable.getWorldPos().x);
+        interactableVector.push_back(interactable.getWorldPos().y);
+        interactableVector.push_back(static_cast<int>(interactable.getType()));
+
+        interactablesVector.push_back(interactableVector);
+    }
+
+    //Make the json object
+    json tileMapJson = {
+        {"tileset", tileSetSource},
+        {"tileSize", worldTileSize},
+        {"width", width},
+        {"height", height},
+        {"map", tilesVector},
+        {"collision", collisionsVector},
+        {"interactables", interactablesVector}
+    };
+
+    return tileMapJson;
 }
 
 void TileMap::unload()

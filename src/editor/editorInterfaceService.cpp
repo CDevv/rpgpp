@@ -70,13 +70,18 @@ void EditorInterfaceService::draw()
     }
 
     if (fs.fileIsOpen()) {
-        if (fs.getType() == FILE_TILESET) {
-            TileSet *tileSet = fs.getTileSet();
+        if (GuiButton(Rectangle { 138, 8, 120, 24 }, "Save")) {
+            if (fs.getType() == FILE_TILESET) {
+                TileSet *tileSet = fs.getTileSet();
 
-            if (GuiButton(Rectangle { 138, 8, 120, 24 }, "Save")) {
                 std::string jsonString = tileSet->dumpJson().dump(4);
 
                 char *text = const_cast<char*>(jsonString.data());
+                SaveFileText(fs.getOpenedFilePath().c_str(), text);
+            } else {
+                std::string mapJsonString = fs.getTileMap()->dumpJson().dump(4);
+
+                char *text = const_cast<char*>(mapJsonString.data());
                 SaveFileText(fs.getOpenedFilePath().c_str(), text);
             }
         }
@@ -101,13 +106,13 @@ void EditorInterfaceService::drawTooltip(Rectangle rect, std::string text)
     if (CheckCollisionPointRec(GetMousePosition(), rect)) {
         Vector2 mousePos = Vector2Add(GetMousePosition(), Vector2 { 16, 0 });
         Vector2 textPos = Vector2Add(mousePos, Vector2 { 4, 4 });
-        Vector2 textSize = MeasureTextEx(uiFont, text.c_str(), 13, 2);
+        Vector2 textSize = MeasureTextEx(uiFont, text.c_str(), 13, 1);
         GuiPanel(
             Rectangle {
                 mousePos.x, mousePos.y,
                 textSize.x + 8, textSize.y + 8
             }, NULL);
-        DrawTextEx(uiFont, text.c_str(), textPos, 13, 2, GRAY);
+        DrawTextEx(uiFont, text.c_str(), textPos, 13, 1, GRAY);
     }
 }
 

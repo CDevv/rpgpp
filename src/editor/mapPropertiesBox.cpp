@@ -25,11 +25,6 @@ void MapPropertiesBox::setDefaults()
 
 void MapPropertiesBox::update()
 {
-    FileSystemService& fs = Editor::getFileSystem();
-    TileMap *map = fs.getTileMap();
-    this->map = map;
-
-
 }
 
 void MapPropertiesBox::draw()

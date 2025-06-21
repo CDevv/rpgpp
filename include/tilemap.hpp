@@ -9,6 +9,8 @@
 #include "tile.hpp"
 #include "tileset.hpp"
 #include "interactable.hpp"
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 class TileMap {
 private:
@@ -27,6 +29,7 @@ private:
 public:
     TileMap(std::string fileName);
     TileMap(std::unique_ptr<TileSet> tileSet, int width, int height, int atlasTileSize, int worldTileSize);
+    json dumpJson();
     void unload();
     void update();
     void draw();

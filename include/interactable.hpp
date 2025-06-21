@@ -19,6 +19,8 @@ public:
     Interactable(InteractableType type, Vector2 tilePos, int tileSize);
     virtual ~Interactable();
     Rectangle getRect();
+    InteractableType getType();
+    Vector2 getWorldPos();
     virtual void interact();
 };
 

@@ -24,6 +24,16 @@ Rectangle Interactable::getRect()
     return this->rect;
 }
 
+Vector2 Interactable::getWorldPos()
+{
+    return this->tilePos;
+}
+
+InteractableType Interactable::getType()
+{
+    return this->type;
+}
+
 void Interactable::interact()
 {
     if (type == INT_BLANK) {
