@@ -8,6 +8,7 @@
 #include "mouseInput.hpp"
 #include "worldViewBox.hpp"
 #include "propertiesBox.hpp"
+#include "panelView.hpp"
 
 class MouseInputComponent;
 
@@ -15,6 +16,7 @@ class EditorInterfaceService {
 private:
     Font uiFont;
     std::unique_ptr<WorldViewBox> worldView;
+    std::unique_ptr<PanelView> panelView;
     PropertiesBox propertiesBox;
     Vector2 mousePos;
     Vector2 hoverPos;

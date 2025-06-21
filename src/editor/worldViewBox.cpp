@@ -1,21 +1,26 @@
 #include "worldViewBox.hpp"
 #include "editor.hpp"
+#include "fileSystemService.hpp"
+#include <memory>
 #include <raygui.h>
 #include <raymath.h>
 #include <rlgl.h>
-#include <cmath>
 
 WorldViewBox::WorldViewBox()
 {}
 
-WorldViewBox::WorldViewBox(Rectangle windowRect, Rectangle renderRect)
+WorldViewBox::WorldViewBox(Rectangle windowRect, Rectangle renderRect, EngineFileType type)
 {
     windowTitle = "TileSet not opened..";
+    this->type = type;
 
     camera = Camera2D { {0} };
     camera.target = Vector2 { 0, 0 };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
+
+    this->mousePos = Vector2 { 0, 0 };
+    this->hoverPos = Vector2 { 0, 0 };
 
     this->windowRect = windowRect;
     this->renderRect = renderRect;
@@ -24,7 +29,7 @@ WorldViewBox::WorldViewBox(Rectangle windowRect, Rectangle renderRect)
 
     mouseInput = std::make_unique<MouseInputComponent>(Vector2 { renderRect.x, renderRect.y }, camera, renderRect);
 
-    tilesView = TileSetViewBox(this);
+    tilesView = std::make_unique<TileSetViewBox>(this);
     mapView = MapViewBox(this);
 }
 
@@ -40,15 +45,15 @@ void WorldViewBox::draw()
     FileSystemService& fs = Editor::getFileSystem();
 
     if (fs.fileIsOpen()) {
-        if (fs.getType() == FILE_TILESET) {
-            tilesView.isHoverOnValidTile();
+        if (type == FILE_TILESET) {
+            tilesView->isHoverOnValidTile();
         } else {
             mapView.isHoverOnValidTile();
         }
     }
 
     BeginTextureMode(renderTexture);
-    if (fs.getType() == FILE_MAP) {
+    if (type == FILE_MAP) {
         ClearBackground(GRAY);
     } else {
         ClearBackground(RAYWHITE);
@@ -56,16 +61,16 @@ void WorldViewBox::draw()
     BeginMode2D(camera);
 
     rlPushMatrix();
-    if (fs.getType() == FILE_TILESET) {
-        tilesView.drawGrid();
+    if (type == FILE_TILESET) {
+        tilesView->drawGrid();
     } else {
         mapView.drawGrid();
     }
     rlPopMatrix();
 
     if (fs.fileIsOpen()) {
-        if (fs.getType() == FILE_TILESET) {
-            tilesView.drawTiles();
+        if (type == FILE_TILESET) {
+            tilesView->drawTiles();
         } else {
             mapView.drawTiles();
         }
@@ -73,8 +78,8 @@ void WorldViewBox::draw()
 
     EndMode2D();
 
-    if (fs.getType() == FILE_TILESET) {
-        tilesView.drawMouse();
+    if (type == FILE_TILESET) {
+        tilesView->drawMouse();
     } else {
         mapView.drawMouse();
     }

@@ -17,7 +17,8 @@ MouseInputComponent::MouseInputComponent(Vector2 offset, Camera2D& camera, Recta
 
 void MouseInputComponent::update()
 {
-    mousePos = Vector2Subtract(GetMousePosition(), offset);
+    Vector2 screenMousePos = GetMousePosition();
+    mousePos = Vector2Subtract(screenMousePos, offset);
 
     Vector2 delta = GetMouseDelta();
     delta = Vector2Scale(delta, -1.0f/camera.zoom);

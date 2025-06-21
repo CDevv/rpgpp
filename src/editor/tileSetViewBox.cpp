@@ -8,10 +8,24 @@ TileSetViewBox::TileSetViewBox() {}
 
 TileSetViewBox::TileSetViewBox(WorldViewBox* viewBox)
 {
+    this->updateSelf = true;
+
     this->viewBox = viewBox;
     this->tileAtlasPos = Vector2 { 0, 0 };
     this->tileWorldPos = Vector2 { 0, 0 };
     this->hoverValidTile = false;
+}
+
+TileSetViewBox::TileSetViewBox(WorldViewBox* viewBox, TileSet *tileSet)
+{
+    this->updateSelf = false;
+
+    this->viewBox = viewBox;
+    this->tileAtlasPos = Vector2 { 0, 0 };
+    this->tileWorldPos = Vector2 { 0, 0 };
+    this->hoverValidTile = false;
+
+    this->tileSet = tileSet;
 }
 
 void TileSetViewBox::isHoverOnValidTile()
@@ -20,7 +34,9 @@ void TileSetViewBox::isHoverOnValidTile()
     bool hoverValidX = false;
     bool hoverValidY = false;
 
-    tileSet = fs.getTileSet();
+    if (updateSelf) {
+        this->tileSet = fs.getTileSet();
+    }
 
     Texture tileSetTexture = tileSet->getTexture();
     int tileSize = tileSet->getTileSize();

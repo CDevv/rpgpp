@@ -1,7 +1,6 @@
 #include <raygui.h>
 #include <raymath.h>
 #include <rlgl.h>
-#include "nfd.h"
 #include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
 #include "editor.hpp"
@@ -37,7 +36,7 @@ EditorInterfaceService::EditorInterfaceService()
         (windowRect.x + 2), (windowRect.y + 24),
         (windowRect.width - 4), (windowRect.height - 30)
     };
-    worldView = std::make_unique<WorldViewBox>(windowRect, renderRect);
+    panelView = std::make_unique<PanelView>(windowRect);
 
     Rectangle propRect = Rectangle { 8, 48, 160, static_cast<float>(GetScreenHeight() - 56) };
     propertiesBox = PropertiesBox(propRect);
@@ -49,18 +48,18 @@ EditorInterfaceService::EditorInterfaceService()
 EditorInterfaceService::~EditorInterfaceService()
 {
     UnloadFont(uiFont);
-    worldView->unload();
+    //worldView->unload();
 }
 
 void EditorInterfaceService::update()
 {
-    worldView->update();
+    panelView->update();
     propertiesBox.update();
 }
 
 void EditorInterfaceService::draw()
 {
-    worldView->draw();
+    panelView->draw();
 
     FileSystemService& fs = Editor::getFileSystem();
     if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
@@ -93,7 +92,7 @@ void EditorInterfaceService::draw()
 void EditorInterfaceService::unload()
 {
     UnloadFont(uiFont);
-    worldView->unload();
+    //worldView->unload();
 }
 
 Font EditorInterfaceService::getFont()

@@ -36,4 +36,6 @@ rpgpp
 /game
 librpgpp.so
 build/
+bin/
+.cache/
 .xmake/

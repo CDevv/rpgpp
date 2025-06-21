@@ -1,4 +1,5 @@
 add_requires("raylib", "nlohmann_json", "nativefiledialog-extended", "raygui")
+add_rules("mode.debug")
 set_defaultmode("debug")
 
 target("rpgpp")
