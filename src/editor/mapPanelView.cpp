@@ -1,5 +1,9 @@
 #include "mapPanelView.hpp"
+#include <memory>
 #include <raylib.h>
+#include "editor.hpp"
+#include "fileSystemService.hpp"
+#include "worldViewBox.hpp"
 
 MapPanelView::MapPanelView()
 {
@@ -17,14 +21,36 @@ MapPanelView::MapPanelView(Rectangle rect)
         (windowRect.width - 4), (windowRect.height - 30)
     };
     worldView = std::make_unique<WorldViewBox>(windowRect, renderRect, FILE_MAP);
+
+    Rectangle tileSetWindowRect = Rectangle
+    {
+        (windowRect.x + windowRect.width + 4), (windowRect.y),
+        (GetScreenWidth() - ((windowRect.x + windowRect.width + 4) + 4)), (8)
+    };
+    tileSetWindowRect.height = tileSetWindowRect.width;
+    Rectangle tileSetRenderRect = Rectangle
+    {
+        (tileSetWindowRect.x + 2), (tileSetWindowRect.y + 24),
+        (tileSetWindowRect.width - 4), (tileSetWindowRect.height - 30)
+    };
+    tileSetView = std::make_unique<WorldViewBox>(tileSetWindowRect, tileSetRenderRect, FILE_TILESET);
 }
 
 void MapPanelView::update()
 {
+    FileSystemService& fs = Editor::getFileSystem();
+
+    worldView->setMap(fs.getTileMap());
     worldView->update();
+
+    if (fs.getTileMap() != nullptr) {
+        tileSetView->setTileSet(&fs.getTileMap()->getTileSet());
+    }
+    tileSetView->update();
 }
 
 void MapPanelView::draw()
 {
     worldView->draw();
+    tileSetView->draw();
 }

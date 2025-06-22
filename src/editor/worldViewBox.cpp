@@ -1,8 +1,11 @@
 #include "worldViewBox.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "tilemap.hpp"
+#include "tileset.hpp"
 #include <memory>
 #include <raygui.h>
+#include <raylib.h>
 #include <raymath.h>
 #include <rlgl.h>
 
@@ -29,8 +32,23 @@ WorldViewBox::WorldViewBox(Rectangle windowRect, Rectangle renderRect, EngineFil
 
     mouseInput = std::make_unique<MouseInputComponent>(Vector2 { renderRect.x, renderRect.y }, camera, renderRect);
 
-    tilesView = std::make_unique<TileSetViewBox>(this);
+    tilesView = TileSetViewBox(this);
     mapView = MapViewBox(this);
+}
+
+WorldViewBox::~WorldViewBox()
+{
+    UnloadRenderTexture(renderTexture);
+}
+
+void WorldViewBox::setTileSet(TileSet* tileSet)
+{
+    tilesView.setTileSet(tileSet);
+}
+
+void WorldViewBox::setMap(TileMap* map)
+{
+    mapView.setMap(map);
 }
 
 void WorldViewBox::update()
@@ -46,7 +64,7 @@ void WorldViewBox::draw()
 
     if (fs.fileIsOpen()) {
         if (type == FILE_TILESET) {
-            tilesView->isHoverOnValidTile();
+            tilesView.isHoverOnValidTile();
         } else {
             mapView.isHoverOnValidTile();
         }
@@ -62,7 +80,7 @@ void WorldViewBox::draw()
 
     rlPushMatrix();
     if (type == FILE_TILESET) {
-        tilesView->drawGrid();
+        tilesView.drawGrid();
     } else {
         mapView.drawGrid();
     }
@@ -70,7 +88,7 @@ void WorldViewBox::draw()
 
     if (fs.fileIsOpen()) {
         if (type == FILE_TILESET) {
-            tilesView->drawTiles();
+            tilesView.drawTiles();
         } else {
             mapView.drawTiles();
         }
@@ -79,7 +97,7 @@ void WorldViewBox::draw()
     EndMode2D();
 
     if (type == FILE_TILESET) {
-        tilesView->drawMouse();
+        tilesView.drawMouse();
     } else {
         mapView.drawMouse();
     }

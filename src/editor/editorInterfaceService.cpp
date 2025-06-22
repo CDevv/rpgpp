@@ -48,7 +48,6 @@ EditorInterfaceService::EditorInterfaceService()
 EditorInterfaceService::~EditorInterfaceService()
 {
     UnloadFont(uiFont);
-    //worldView->unload();
 }
 
 void EditorInterfaceService::update()
@@ -87,12 +86,6 @@ void EditorInterfaceService::draw()
 
         propertiesBox.draw();
     }
-}
-
-void EditorInterfaceService::unload()
-{
-    UnloadFont(uiFont);
-    //worldView->unload();
 }
 
 Font EditorInterfaceService::getFont()

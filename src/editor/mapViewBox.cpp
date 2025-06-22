@@ -1,3 +1,4 @@
+#include "tilemap.hpp"
 #include "worldViewBox.hpp"
 #include "tile.hpp"
 #include "editor.hpp"
@@ -9,19 +10,27 @@ MapViewBox::MapViewBox() {}
 
 MapViewBox::MapViewBox(WorldViewBox *viewBox)
 {
+    this->map = nullptr;
+
     this->viewBox = viewBox;
     this->tileAtlasPos = Vector2 { 0, 0 };
     this->tileWorldPos = Vector2 { 0, 0 };
     this->hoverValidTile = false;
 }
 
+void MapViewBox::setMap(TileMap* map)
+{
+    this->map = map;
+}
+
 void MapViewBox::isHoverOnValidTile()
 {
+    if (map == nullptr) return;
+
     FileSystemService& fs = Editor::getFileSystem();
     bool hoverValidX = false;
     bool hoverValidY = false;
 
-    map = fs.getTileMap();
     int tileSize = map->getAtlasTileSize();
     Vector2 sizeInTiles = map->getMaxWorldSize();
     int absoluteWidth = map->getAtlasTileSize() * sizeInTiles.x;

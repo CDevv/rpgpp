@@ -1,4 +1,5 @@
 #include "tileSetPanelView.hpp"
+#include "editor.hpp"
 #include "fileSystemService.hpp"
 
 TileSetPanelView::TileSetPanelView()
@@ -21,6 +22,8 @@ TileSetPanelView::TileSetPanelView(Rectangle rect)
 
 void TileSetPanelView::update()
 {
+    FileSystemService& fs = Editor::getFileSystem();
+    worldView->setTileSet(fs.getTileSet());
     worldView->update();
 }
 

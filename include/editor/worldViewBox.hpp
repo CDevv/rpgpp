@@ -12,7 +12,6 @@ class WorldViewBox;
 
 class TileSetViewBox {
 private:
-    bool updateSelf;
     TileSet *tileSet;
     WorldViewBox* viewBox;
     Vector2 tileAtlasPos;
@@ -21,7 +20,7 @@ private:
 public:
     TileSetViewBox();
     TileSetViewBox(WorldViewBox* viewBox);
-    TileSetViewBox(WorldViewBox* viewBox, TileSet *tileSet);
+    void setTileSet(TileSet* tileSet);
     void isHoverOnValidTile();
     void drawGrid();
     void drawTiles();
@@ -38,6 +37,7 @@ private:
 public:
     MapViewBox();
     MapViewBox(WorldViewBox *viewBox);
+    void setMap(TileMap* map);
     void isHoverOnValidTile();
     void drawGrid();
     void drawTiles();
@@ -48,21 +48,23 @@ class WorldViewBox {
     friend class TileSetViewBox;
     friend class MapViewBox;
 private:
+    std::string windowTitle;
     Rectangle windowRect;
     Rectangle renderRect;
     Camera2D camera;
+    RenderTexture renderTexture;
     EngineFileType type;
     std::unique_ptr<MouseInputComponent> mouseInput;
-    TileSet *tileSet;
-    RenderTexture renderTexture;
-    std::string windowTitle;
     Vector2 mousePos;
     Vector2 hoverPos;
-    std::unique_ptr<TileSetViewBox> tilesView;
+    TileSetViewBox tilesView;
     MapViewBox mapView;
 public:
     WorldViewBox();
     WorldViewBox(Rectangle windowRect, Rectangle renderRect, EngineFileType type);
+    ~WorldViewBox();
+    void setTileSet(TileSet* tileSet);
+    void setMap(TileMap* map);
     void update();
     void draw();
     void unload();

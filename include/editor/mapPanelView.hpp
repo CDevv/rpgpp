@@ -9,6 +9,7 @@ class MapPanelView {
 private:
     Rectangle rect;
     std::unique_ptr<WorldViewBox> worldView;
+    std::unique_ptr<WorldViewBox> tileSetView;
 public:
     MapPanelView();
     MapPanelView(Rectangle rect);
