@@ -17,10 +17,16 @@ private:
     Vector2 tileAtlasPos;
     Vector2 tileWorldPos;
     bool hoverValidTile;
+    bool isSelectingTile;
+    bool hasSelectedTile;
+    Vector2 selectedTileAtlasPos;
+    Vector2 selectedTileWorldPos;
 public:
     TileSetViewBox();
     TileSetViewBox(WorldViewBox* viewBox);
     void setTileSet(TileSet* tileSet);
+    void setSelectionMode();
+    Vector2 getSelectedTile();
     void isHoverOnValidTile();
     void drawGrid();
     void drawTiles();
@@ -34,10 +40,15 @@ private:
     Vector2 tileAtlasPos;
     Vector2 tileWorldPos;
     bool hoverValidTile;
+    bool isPlacing;
+    bool isTileValid;
+    Vector2 selectedTileAtlasCoords;
 public:
     MapViewBox();
     MapViewBox(WorldViewBox *viewBox);
     void setMap(TileMap* map);
+    void setPlacingMode();
+    void setSelectedTile(Vector2 tile);
     void isHoverOnValidTile();
     void drawGrid();
     void drawTiles();
@@ -65,6 +76,10 @@ public:
     ~WorldViewBox();
     void setTileSet(TileSet* tileSet);
     void setMap(TileMap* map);
+    void enableTileSelection();
+    Vector2 getSelectedTile();
+    void enableTilePlacement();
+    void setSelectedTile(Vector2 tile);
     void update();
     void draw();
     void unload();

@@ -2,6 +2,7 @@
 #include "worldViewBox.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include <raylib.h>
 #include <rlgl.h>
 #include <raymath.h>
 
@@ -15,11 +16,29 @@ TileSetViewBox::TileSetViewBox(WorldViewBox* viewBox)
     this->tileAtlasPos = Vector2 { 0, 0 };
     this->tileWorldPos = Vector2 { 0, 0 };
     this->hoverValidTile = false;
+
+    this->isSelectingTile = false;
+    this->hasSelectedTile = false;
+    this->selectedTileAtlasPos = Vector2 { 0, 0 };
+    this->selectedTileWorldPos = Vector2 { 0, 0 };
 }
 
 void TileSetViewBox::setTileSet(TileSet* tileSet)
 {
     this->tileSet = tileSet;
+}
+
+void TileSetViewBox::setSelectionMode()
+{
+    this->isSelectingTile = true;
+}
+
+Vector2 TileSetViewBox::getSelectedTile()
+{
+    if (!hasSelectedTile) {
+        return Vector2 { -1, -1 };
+    }
+    return selectedTileAtlasPos;
 }
 
 void TileSetViewBox::isHoverOnValidTile()
@@ -44,6 +63,20 @@ void TileSetViewBox::isHoverOnValidTile()
         tileAtlasPos.y = floor(viewBox->hoverPos.y / tileSize);
     }
     hoverValidTile = hoverValidX && hoverValidY;
+
+    if (isSelectingTile) {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            Rectangle checkRect = Rectangle {
+                tileWorldPos.x, tileWorldPos.y,
+                static_cast<float>(tileSize), static_cast<float>(tileSize)
+            };
+            if (CheckCollisionPointRec(viewBox->hoverPos, checkRect)) {
+                hasSelectedTile = true;
+                selectedTileAtlasPos = tileAtlasPos;
+                selectedTileWorldPos = tileWorldPos;
+            }
+        }
+    }
 }
 
 void TileSetViewBox::drawGrid()
@@ -94,6 +127,15 @@ void TileSetViewBox::drawTiles()
         };
 
         DrawRectangleRec(hoverTileRect, Fade(RED, 0.5f));
+    }
+
+    if (isSelectingTile && hasSelectedTile) {
+        Rectangle selectedTileRect = Rectangle {
+            selectedTileWorldPos.x, selectedTileWorldPos.y,
+            static_cast<float>(tileSize), static_cast<float>(tileSize)
+        };
+
+        DrawRectangleRec(selectedTileRect, Fade(BLUE, 0.5f));
     }
 }
 

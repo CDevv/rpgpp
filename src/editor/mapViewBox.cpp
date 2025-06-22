@@ -3,6 +3,7 @@
 #include "tile.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include <raylib.h>
 #include <rlgl.h>
 #include <raymath.h>
 
@@ -16,11 +17,30 @@ MapViewBox::MapViewBox(WorldViewBox *viewBox)
     this->tileAtlasPos = Vector2 { 0, 0 };
     this->tileWorldPos = Vector2 { 0, 0 };
     this->hoverValidTile = false;
+
+    this->isPlacing = false;
+    this->isTileValid = false;
+    this->selectedTileAtlasCoords = Vector2 { 0, 0 };
 }
 
 void MapViewBox::setMap(TileMap* map)
 {
     this->map = map;
+}
+
+void MapViewBox::setPlacingMode() 
+{
+    this->isPlacing = true;
+}
+
+void MapViewBox::setSelectedTile(Vector2 tile)
+{
+    if (tile.x < 0 || tile.y < 0) {
+        isTileValid = false;
+    } else {
+        isTileValid = true;
+        selectedTileAtlasCoords = tile;
+    }
 }
 
 void MapViewBox::isHoverOnValidTile()
@@ -47,6 +67,12 @@ void MapViewBox::isHoverOnValidTile()
         tileAtlasPos.y = floor(viewBox->hoverPos.y / tileSize);
     }
     hoverValidTile = hoverValidX && hoverValidY;
+
+    if (isPlacing && isTileValid) {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            map->setTile(tileAtlasPos, selectedTileAtlasCoords);
+        }
+    }
 }
 
 void MapViewBox::drawGrid()
@@ -114,13 +140,37 @@ void MapViewBox::drawTiles()
         }
     }
 
+    
     if (hoverValidTile) {
-        Rectangle hoverTileRect = Rectangle {
-            tileWorldPos.x, tileWorldPos.y,
-            static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
-        };
+        if (isTileValid) {
+            //defaults
+            Vector2 origin = Vector2 { 0, 0 };
+            float rotation = 0.0f;
+            Color rectColor = Fade(WHITE, 0.7f);
 
-        DrawRectangleRec(hoverTileRect, Fade(RED, 0.5f));
+            //texture..
+            Texture rectTexture = map->getTileSet().getTexture();
+
+            //build rects
+            Rectangle selectedTileRect = Rectangle {
+                (selectedTileAtlasCoords.x * atlasTileSize), (selectedTileAtlasCoords.y * atlasTileSize),
+                static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+            };
+            Rectangle hoverTileRect = Rectangle {
+                tileWorldPos.x, tileWorldPos.y,
+                static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+            };
+
+            //draw it
+            DrawTexturePro(rectTexture, selectedTileRect, hoverTileRect, origin, rotation, rectColor);
+        } else {
+            Rectangle hoverTileRect = Rectangle {
+                tileWorldPos.x, tileWorldPos.y,
+                static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+            };
+
+            DrawRectangleRec(hoverTileRect, Fade(RED, 0.5f));
+        }
     }
 }
 

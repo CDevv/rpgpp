@@ -14,7 +14,7 @@ MapPanelView::MapPanelView(Rectangle rect)
     Rectangle windowRect = Rectangle
     {
         176, 48,
-        static_cast<float>(GetScreenWidth() - 386), static_cast<float>(GetScreenHeight() - 56)
+        static_cast<float>(GetScreenWidth() - 464), static_cast<float>(GetScreenHeight() - 56)
     };
     Rectangle renderRect = Rectangle {
         (windowRect.x + 2), (windowRect.y + 24),
@@ -34,6 +34,9 @@ MapPanelView::MapPanelView(Rectangle rect)
         (tileSetWindowRect.width - 4), (tileSetWindowRect.height - 30)
     };
     tileSetView = std::make_unique<WorldViewBox>(tileSetWindowRect, tileSetRenderRect, FILE_TILESET);
+
+    tileSetView->enableTileSelection();
+    worldView->enableTilePlacement();
 }
 
 void MapPanelView::update()
@@ -47,6 +50,8 @@ void MapPanelView::update()
         tileSetView->setTileSet(&fs.getTileMap()->getTileSet());
     }
     tileSetView->update();
+
+    worldView->setSelectedTile(tileSetView->getSelectedTile());
 }
 
 void MapPanelView::draw()

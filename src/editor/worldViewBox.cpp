@@ -51,6 +51,28 @@ void WorldViewBox::setMap(TileMap* map)
     mapView.setMap(map);
 }
 
+void WorldViewBox::enableTileSelection()
+{
+    if (type == FILE_TILESET) {
+        tilesView.setSelectionMode();
+    }
+}
+
+Vector2 WorldViewBox::getSelectedTile()
+{
+    return tilesView.getSelectedTile();
+}
+
+void WorldViewBox::enableTilePlacement()
+{
+    mapView.setPlacingMode();
+}
+
+void WorldViewBox::setSelectedTile(Vector2 tile)
+{
+    mapView.setSelectedTile(tile);
+}
+
 void WorldViewBox::update()
 {
     mouseInput->update();
