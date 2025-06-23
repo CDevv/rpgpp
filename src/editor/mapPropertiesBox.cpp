@@ -1,15 +1,23 @@
 #include "mapPropertiesBox.hpp"
 #include <raygui.h>
+#include <raylib.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 
-MapPropertiesBox::MapPropertiesBox()
+MapPropertiesBox::MapPropertiesBox() {}
+
+MapPropertiesBox::MapPropertiesBox(Rectangle rect)
 {
+    this->rect = rect;
+
     mapWidth = 0;
     widthEdit = false;
 
     mapHeight = 0;
     heightEdit = false;
+
+    scrollVec = Vector2 { 0 ,0 };
+    viewRec = Rectangle { 0 };
 }
 
 void MapPropertiesBox::setDefaults()
@@ -33,20 +41,25 @@ void MapPropertiesBox::draw()
     TileMap *map = fs.getTileMap();
     this->map = map;
 
-    GuiPanel(Rectangle { 8, 48, 160, static_cast<float>(GetScreenHeight() - 56) }, "TileMap Props");
+    Rectangle contentRec = rect;
+    contentRec.height += 100;
+    contentRec.width -= 16;
+    GuiScrollPanel(rect, "Map Props", contentRec, &scrollVec, &viewRec);
+
+    BeginScissorMode(viewRec.x, viewRec.y, viewRec.width, viewRec.height);
 
     // map size
-    GuiLabel(Rectangle { 16, 80, 144, 24 }, "Width");
-    if (GuiValueBox(Rectangle { 16, 104, 144, 24 }, NULL, &mapWidth, 1, 100, widthEdit)) {
+    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 8, (viewRec.width - 16), 24 }, "Width");
+    if (GuiValueBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 32, (viewRec.width - 16), 24 }, NULL, &mapWidth, 1, 100, widthEdit)) {
         widthEdit = !widthEdit;
     }
 
-    GuiLabel(Rectangle { 16, 136, 144, 24 }, "Height");
-    if (GuiValueBox(Rectangle { 16, 160, 144, 24 }, NULL, &mapHeight, 1, 100, heightEdit)) {
+    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 56, (viewRec.width - 16), 24 }, "Height");
+    if (GuiValueBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 80, (viewRec.width - 16), 24 }, NULL, &mapHeight, 1, 100, heightEdit)) {
         heightEdit = !heightEdit;
     }
 
-    if (GuiButton(Rectangle { 16, 192, 144, 24 }, "Resize")) {
+    if (GuiButton(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 112, (viewRec.width - 16), 24 }, "Resize")) {
         if (mapHeight >= 1 && mapWidth >= 1) {
             if (mapHeight <= 75 && mapWidth <= 75) {
                 map->setWorldSize(Vector2 { static_cast<float>(mapWidth), static_cast<float>(mapHeight) });
@@ -54,17 +67,20 @@ void MapPropertiesBox::draw()
         }
     }
 
-    GuiLine(Rectangle { 16, 216, 144, 16 }, NULL);
+    GuiLine(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 136, (viewRec.width - 16), 16 }, NULL);
     // tileset source
-    GuiLabel(Rectangle { 16, 236, 144, 24 }, "TileSet");
+    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 152, (viewRec.width - 16), 24 }, "TileSet");
     std::string sourceFileName = GetFileName(map->getTileSetSource().c_str());
-    GuiLabel(Rectangle { 16, 256, 144, 24 }, sourceFileName.c_str());
-    if (GuiButton(Rectangle { 16, 280, 144, 24 }, "Change TileSet")) {
+    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 176, (viewRec.width - (16 + 24)), 24 }, sourceFileName.c_str());
+    if (GuiButton(Rectangle { viewRec.x + 112, viewRec.y + scrollVec.y + 176, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
         FS_Result fsResult = fs.openTileSetResource();
         map->setTileSet(fsResult.path);
     }
 
+    EndScissorMode();
+
+    //draw tooltips AFTER scrissor mode
     EditorInterfaceService& ui = Editor::getUi();
-    ui.drawTooltip(Rectangle { 16, 256, 144, 24 }, map->getTileSetSource());
+    ui.drawTooltip(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 176, (viewRec.width - (16 + 24)), 24 }, map->getTileSetSource());
 }
 

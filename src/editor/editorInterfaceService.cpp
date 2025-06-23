@@ -1,4 +1,5 @@
 #include <raygui.h>
+#include <raylib.h>
 #include <raymath.h>
 #include <rlgl.h>
 #include "fileSystemService.hpp"
@@ -96,6 +97,8 @@ Font EditorInterfaceService::getFont()
 void EditorInterfaceService::drawTooltip(Rectangle rect, std::string text)
 {
     if (CheckCollisionPointRec(GetMousePosition(), rect)) {
+        DrawRectangleLinesEx(rect, 1.0f, GRAY);
+
         Vector2 mousePos = Vector2Add(GetMousePosition(), Vector2 { 16, 0 });
         Vector2 textPos = Vector2Add(mousePos, Vector2 { 4, 4 });
         Vector2 textSize = MeasureTextEx(uiFont, text.c_str(), 13, 1);

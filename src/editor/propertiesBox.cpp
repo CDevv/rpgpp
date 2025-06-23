@@ -2,6 +2,8 @@
 #include <raygui.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "mapPropertiesBox.hpp"
+#include "tileSetPropertiesBox.hpp"
 
 PropertiesBox::PropertiesBox() {}
 
@@ -9,6 +11,9 @@ PropertiesBox::PropertiesBox(Rectangle rect)
 {
     this->pos = Vector2 { rect.x, rect.y };
     this->rect = rect;
+
+    tileSetProps = TileSetPropertiesBox(rect);
+    mapProps = MapPropertiesBox(rect);
 }
 
 void PropertiesBox::setDefaults()
