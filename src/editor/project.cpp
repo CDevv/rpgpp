@@ -33,6 +33,11 @@ Project::Project(std::string filePath)
     UnloadFileText(jsonString);
 }
 
+std::string Project::getProjectTitle()
+{
+    return projectTitle;
+}
+
 std::string Project::getProjectBasePath()
 {
     return projectBasePath;

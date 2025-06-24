@@ -8,7 +8,7 @@ int main()
     const int width = 1280;
     const int height = 640;
 
-    InitWindow(width, height, "editor");
+    InitWindow(width, height, "Editor");
 
     Editor editor;
     editor.init();

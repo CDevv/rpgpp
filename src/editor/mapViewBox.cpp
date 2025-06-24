@@ -27,6 +27,7 @@ MapViewBox::MapViewBox(WorldViewBox *viewBox)
 void MapViewBox::setMap(TileMap* map)
 {
     this->map = map;
+    viewBox->windowTitle = "Map View";
 }
 
 void MapViewBox::setPlacingMode() 

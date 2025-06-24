@@ -26,6 +26,7 @@ TileSetViewBox::TileSetViewBox(WorldViewBox* viewBox)
 void TileSetViewBox::setTileSet(TileSet* tileSet)
 {
     this->tileSet = tileSet;
+    viewBox->windowTitle = "TileSet View";
 }
 
 void TileSetViewBox::setSelectionMode()

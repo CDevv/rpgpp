@@ -14,7 +14,7 @@ WorldViewBox::WorldViewBox()
 
 WorldViewBox::WorldViewBox(Rectangle windowRect, Rectangle renderRect, EngineFileType type)
 {
-    windowTitle = "TileSet not opened..";
+    windowTitle = "File not opened..";
     this->type = type;
 
     camera = Camera2D { {0} };
@@ -126,10 +126,6 @@ void WorldViewBox::draw()
 
     EndTextureMode();
 
-    std::string windowTitle = "TileSet not loaded";
-    if (fs.fileIsOpen()) {
-        windowTitle = fs.getOpenedFilePath();
-    }
     GuiWindowBox(windowRect, windowTitle.c_str());
 
     Rectangle cameraRect = Rectangle {

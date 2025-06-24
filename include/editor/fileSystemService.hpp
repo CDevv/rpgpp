@@ -15,6 +15,7 @@ enum EngineFileType {
 };
 
 struct FS_Result {
+    std::string absolutePath;
     std::string path;
     std::string fileName;
     nfdresult_t result;

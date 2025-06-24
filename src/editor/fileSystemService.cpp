@@ -30,6 +30,7 @@ void FileSystemService::promptOpenProject()
     FS_Result fsResult = openFile(filters);
     if (fsResult.result == NFD_OKAY) {
         project.reset(new Project(fsResult.path));
+        SetWindowTitle(TextFormat("Editor - %s", project->getProjectTitle().c_str()));
     }
 }
 
@@ -116,8 +117,15 @@ FS_Result FileSystemService::openFile(nfdu8filteritem_t filters[])
 
     fsResult.result = result;
     if (result == NFD_OKAY) {
+        fsResult.absolutePath = outPath;
         fsResult.path = outPath;
         fsResult.fileName = GetFileName(outPath);
+
+        if (project.get() != nullptr) {
+            if (fsResult.path.find(project->getProjectBasePath()) != std::string::npos) {
+                fsResult.path.erase(0, project->getProjectBasePath().size() + 1);
+            }
+        }
 
         NFD_FreePathU8(outPath);
     }

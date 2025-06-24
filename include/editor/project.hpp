@@ -18,6 +18,7 @@ private:
 public:
     Project();
     Project(std::string filePath);
+    std::string getProjectTitle();
     std::string getProjectBasePath();
     std::vector<std::string> getTileSetPaths();
     std::vector<std::string> getMapPaths();
