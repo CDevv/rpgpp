@@ -4,10 +4,8 @@
 #include <memory>
 #include <raylib.h>
 #include <string>
-#include "tileset.hpp"
-#include "mouseInput.hpp"
+#include "resourceViewerBox.hpp"
 #include "worldViewBox.hpp"
-#include "propertiesBox.hpp"
 #include "panelView.hpp"
 
 class MouseInputComponent;
@@ -17,7 +15,7 @@ private:
     Font uiFont;
     std::unique_ptr<WorldViewBox> worldView;
     std::unique_ptr<PanelView> panelView;
-    PropertiesBox propertiesBox;
+    ResourceViewerBox resourceView;
     Vector2 mousePos;
     Vector2 hoverPos;
     int chosenTileSize;

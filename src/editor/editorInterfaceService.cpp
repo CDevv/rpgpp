@@ -5,6 +5,7 @@
 #include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
 #include "editor.hpp"
+#include "resourceViewerBox.hpp"
 
 EditorInterfaceService::EditorInterfaceService()
 {
@@ -40,7 +41,8 @@ EditorInterfaceService::EditorInterfaceService()
     panelView = std::make_unique<PanelView>(windowRect);
 
     Rectangle propRect = Rectangle { 8, 48, 160, static_cast<float>(GetScreenHeight() - 56) };
-    propertiesBox = PropertiesBox(propRect);
+    //propertiesBox = PropertiesBox(propRect);
+    resourceView = ResourceViewerBox(propRect);
 
     chosenTileSize = 0;
     chosenTileSizeEditMode = false;
@@ -54,7 +56,8 @@ EditorInterfaceService::~EditorInterfaceService()
 void EditorInterfaceService::update()
 {
     panelView->update();
-    propertiesBox.update();
+    //propertiesBox.update();
+    resourceView.update();
 }
 
 void EditorInterfaceService::draw()
@@ -63,9 +66,10 @@ void EditorInterfaceService::draw()
 
     FileSystemService& fs = Editor::getFileSystem();
     if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
-        fs.promptOpenFile();
+        fs.promptOpenProject();
 
-        propertiesBox.setDefaults();
+        //propertiesBox.setDefaults();
+        panelView->setInitial();
     }
 
     if (fs.fileIsOpen()) {
@@ -85,8 +89,9 @@ void EditorInterfaceService::draw()
             }
         }
 
-        propertiesBox.draw();
+        //propertiesBox.draw();
     }
+    resourceView.draw();
 }
 
 Font EditorInterfaceService::getFont()

@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <raylib.h>
+#include "project.hpp"
 #include "tileset.hpp"
 #include "tilemap.hpp"
 #include "nfd.h"
@@ -21,6 +22,7 @@ struct FS_Result {
 
 class FileSystemService {
 private:
+    std::unique_ptr<Project> project;
     EngineFileType lastType;
     std::string lastOpenPath;
     bool isOpen;
@@ -30,6 +32,9 @@ public:
     FileSystemService();
     ~FileSystemService();
     void unload();
+    void promptOpenProject();
+    Project *getProject();
+    void openProjectFile(std::string absolutePath);
     void promptOpenFile();
     void saveOpenedFile();
     bool fileIsOpen();

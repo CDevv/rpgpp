@@ -1,4 +1,5 @@
 #include "tilemap.hpp"
+#include "tileset.hpp"
 #include "worldViewBox.hpp"
 #include "tile.hpp"
 #include "editor.hpp"
@@ -108,6 +109,7 @@ void MapViewBox::drawTiles()
                 const float rotation = 0.0f;
 
                 //texture..
+                TileSet& tileSet = map->getTileSet();
                 Texture texture = map->getTileSet().getTexture();
 
                 //actual coordinates

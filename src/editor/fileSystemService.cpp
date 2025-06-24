@@ -1,8 +1,12 @@
 #include "fileSystemService.hpp"
+#include "project.hpp"
+#include <memory>
 #include <nfd.h>
+#include <raylib.h>
 
 FileSystemService::FileSystemService()
 {
+    project = std::unique_ptr<Project>{};
     lastTileSet = std::unique_ptr<TileSet>{};
     lastTileMap = std::unique_ptr<TileMap>{};
     isOpen = false;
@@ -18,6 +22,34 @@ FileSystemService::~FileSystemService()
 void FileSystemService::unload()
 {
     NFD_Quit();
+}
+
+void FileSystemService::promptOpenProject()
+{
+    nfdu8filteritem_t filters[1] = { { "RPG++ Project", "rpgpp" } };
+    FS_Result fsResult = openFile(filters);
+    if (fsResult.result == NFD_OKAY) {
+        project.reset(new Project(fsResult.path));
+    }
+}
+
+Project *FileSystemService::getProject()
+{
+    return project.get();
+}
+
+void FileSystemService::openProjectFile(std::string absolutePath)
+{
+    std::string fileExtension = GetFileExtension(absolutePath.c_str());
+    if (TextIsEqual(fileExtension.c_str(), ".rtiles")) {
+        lastTileSet.reset(new TileSet(absolutePath));
+        lastType = FILE_TILESET;
+    } else if (TextIsEqual(fileExtension.c_str(), ".rmap")) {
+        lastTileMap.reset(new TileMap(absolutePath));
+        lastType = FILE_MAP;
+    }
+
+    isOpen = true;
 }
 
 void FileSystemService::promptOpenFile()

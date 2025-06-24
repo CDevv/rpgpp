@@ -15,6 +15,12 @@ PanelView::PanelView(Rectangle rect)
     this->mapPanel = MapPanelView(rect);
 }
 
+void PanelView::setInitial()
+{
+    tileSetPanel.setInitial();
+    mapPanel.setInitial();
+}
+
 void PanelView::update()
 {
     FileSystemService& fs = Editor::getFileSystem();

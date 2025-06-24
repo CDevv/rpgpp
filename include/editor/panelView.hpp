@@ -14,6 +14,7 @@ private:
 public:
     PanelView();
     PanelView(Rectangle rect);
+    void setInitial();
     void update();
     void draw();
 };

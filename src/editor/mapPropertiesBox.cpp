@@ -72,7 +72,7 @@ void MapPropertiesBox::draw()
     GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 152, (viewRec.width - 16), 24 }, "TileSet");
     std::string sourceFileName = GetFileName(map->getTileSetSource().c_str());
     GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 176, (viewRec.width - (16 + 24)), 24 }, sourceFileName.c_str());
-    if (GuiButton(Rectangle { viewRec.x + 112, viewRec.y + scrollVec.y + 176, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
+    if (GuiButton(Rectangle { viewRec.x + 8 + (viewRec.width - (16 + 24)), viewRec.y + scrollVec.y + 176, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
         FS_Result fsResult = fs.openTileSetResource();
         map->setTileSet(fsResult.path);
     }

@@ -28,6 +28,18 @@ TileSet::TileSet(std::string fileName)
 
     //Unload file's text
     UnloadFileText(jsonContent);
+
+    this->pathPrefix = "";
+}
+
+TileSet::TileSet(std::string fileName, std::string pathPrefix)
+: TileSet(fileName)
+{
+    UnloadTexture(texture);
+
+    this->pathPrefix = pathPrefix;
+    std::string sourcePath = std::string(pathPrefix).append("/").append(textureSource);
+    this->texture = LoadTexture(sourcePath.c_str());
 }
 
 TileSet::~TileSet()
@@ -82,10 +94,10 @@ bool TileSet::areAtlasCoordsValid(Vector2 atlasCoords)
     bool yValid = false;
     bool posValid = false;
 
-    if (atlasCoords.x >= 0 && atlasCoords.x < (texture.width / tileSize)) {
+    if (atlasCoords.x >= 0 && atlasCoords.x < (texture.width / static_cast<float>(tileSize))) {
         xValid = true;
     }
-    if (atlasCoords.y >= 0 && atlasCoords.y < (texture.height / tileSize)) {
+    if (atlasCoords.y >= 0 && atlasCoords.y < (texture.height / static_cast<float>(tileSize))) {
         yValid = true;
     }
 

@@ -3,14 +3,17 @@
 
 #include <memory>
 #include "worldViewBox.hpp"
+#include "propertiesBox.hpp"
 
 class TileSetPanelView {
 private:
     Rectangle rect;
     std::unique_ptr<WorldViewBox> worldView;
+    PropertiesBox propBox;
 public:
     TileSetPanelView();
     TileSetPanelView(Rectangle rect);
+    void setInitial();
     void update();
     void draw();
 };

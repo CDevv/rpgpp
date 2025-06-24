@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "propertiesBox.hpp"
 #include "worldViewBox.hpp"
 
 MapPanelView::MapPanelView()
@@ -37,6 +38,19 @@ MapPanelView::MapPanelView(Rectangle rect)
 
     tileSetView->enableTileSelection();
     worldView->enableTilePlacement();
+
+    Rectangle propRect = Rectangle
+    {
+        (tileSetWindowRect.x), (tileSetWindowRect.y + tileSetWindowRect.height + 8)
+    };
+    propRect.width = tileSetWindowRect.width;
+    propRect.height = GetScreenHeight() - propRect.y - 8;
+    propBox = PropertiesBox(propRect);
+}
+
+void MapPanelView::setInitial()
+{
+    propBox.setDefaults();
 }
 
 void MapPanelView::update()
@@ -52,10 +66,13 @@ void MapPanelView::update()
     tileSetView->update();
 
     worldView->setSelectedTile(tileSetView->getSelectedTile());
+
+    propBox.update();
 }
 
 void MapPanelView::draw()
 {
     worldView->draw();
     tileSetView->draw();
+    propBox.draw();
 }

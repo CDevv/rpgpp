@@ -60,7 +60,7 @@ void TileSetPropertiesBox::draw()
     std::string sourceFileName = GetFileName(tileSet->getTextureSource().c_str());
     GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 96, (viewRec.width - (16 + 24)), 24 }, sourceFileName.c_str());
 
-    if (GuiButton(Rectangle { viewRec.x + 112, viewRec.y + scrollVec.y + 96, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
+    if (GuiButton(Rectangle { viewRec.x + 8 + (viewRec.width - (16 + 24)), viewRec.y + scrollVec.y + 96, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
         FS_Result fsResult = fs.openImage();
         if (fsResult.result == NFD_OKAY) {
             tileSet->setTextureSource(fsResult.path);

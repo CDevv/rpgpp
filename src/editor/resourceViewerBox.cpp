@@ -1,0 +1,73 @@
+#include "resourceViewerBox.hpp"
+#include <raygui.h>
+#include <raylib.h>
+#include <string>
+#include <vector>
+#include "editor.hpp"
+#include "fileSystemService.hpp"
+
+ResourceViewerBox::ResourceViewerBox() {}
+
+ResourceViewerBox::ResourceViewerBox(Rectangle rect)
+{
+    this->rect = rect;
+    this->dropdownEditMode = false;
+    this->dropdownActive = 0;
+}
+
+void ResourceViewerBox::update()
+{
+
+}
+
+void ResourceViewerBox::draw()
+{
+    FileSystemService& fs = Editor::getFileSystem();
+    if (fs.getProject() != nullptr) {
+        GuiPanel(rect, "Project");
+
+        if (dropdownActive == 0) {
+            drawTileSets();
+        } else {
+            drawMaps();
+        }
+
+        if (GuiDropdownBox(Rectangle { rect.x, rect.y + 24, rect.width, 24 }, "TileSets;Maps", &dropdownActive, dropdownEditMode)) {
+            dropdownEditMode = !dropdownEditMode;
+        }
+    }
+}
+
+void ResourceViewerBox::drawTileSets()
+{
+    Rectangle baseRect = Rectangle { rect.x, rect.y, rect.width, rect.height };
+    baseRect.y += 2*24;
+    baseRect.height = 24;
+
+    FileSystemService& fs = Editor::getFileSystem();
+    std::vector<std::string> tileSetPaths = fs.getProject()->getTileSetPaths();
+    for (std::string tileSetPath : tileSetPaths) {
+        std::string tileSetFileName = GetFileNameWithoutExt(tileSetPath.c_str());
+        if (GuiLabelButton(baseRect, tileSetFileName.c_str())) {
+            fs.openProjectFile(tileSetPath);
+        }
+        baseRect.y += 24;
+    }
+}
+
+void ResourceViewerBox::drawMaps()
+{
+    Rectangle baseRect = Rectangle { rect.x, rect.y, rect.width, rect.height };
+    baseRect.y += 2*24;
+    baseRect.height = 24;
+
+    FileSystemService& fs = Editor::getFileSystem();
+    std::vector<std::string> mapPaths = fs.getProject()->getMapPaths();
+    for (std::string mapPath : mapPaths) {
+        std::string mapFileName = GetFileNameWithoutExt(mapPath.c_str());
+        if (GuiLabelButton(baseRect, mapFileName.c_str())) {
+            fs.openProjectFile(mapPath);
+        }
+        baseRect.y += 24;
+    }
+}

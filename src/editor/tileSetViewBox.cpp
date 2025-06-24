@@ -50,6 +50,7 @@ void TileSetViewBox::isHoverOnValidTile()
     bool hoverValidY = false;
 
     Texture tileSetTexture = tileSet->getTexture();
+    
     int tileSize = tileSet->getTileSize();
 
     if (viewBox->hoverPos.x >= 0 && viewBox->hoverPos.x <= tileSetTexture.width) {

@@ -24,6 +24,7 @@ private:
 public:
     TileSetViewBox();
     TileSetViewBox(WorldViewBox* viewBox);
+    void unload();
     void setTileSet(TileSet* tileSet);
     void setSelectionMode();
     Vector2 getSelectedTile();
@@ -46,6 +47,7 @@ private:
 public:
     MapViewBox();
     MapViewBox(WorldViewBox *viewBox);
+    void unload();
     void setMap(TileMap* map);
     void setPlacingMode();
     void setSelectedTile(Vector2 tile);
