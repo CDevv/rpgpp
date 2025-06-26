@@ -189,8 +189,8 @@ void TileMap::update()
 void TileMap::draw()
 {
     //draw the tiles
-    for (int x = 0; x < height; x++) {
-        for (int y = 0; y < width; y++) {
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
             drawTile(x, y);
         }
     }

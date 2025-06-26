@@ -8,7 +8,7 @@ int main()
     Game game;
     game.init();
 
-    Game::getWorld().setRoom("resources/map.json");
+    Game::getWorld().setRoom("resources/map.rmap");
 
     SetTargetFPS(60);
 

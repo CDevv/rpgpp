@@ -1,5 +1,5 @@
 {
-    "tileset": "resources/actorTiles.json",
+    "tileset": "resources/actorTiles.rtiles",
     "collision": [6, 24, 36, 24],
     "animations": {
         "down": [[2, 0], [3, 0]],
