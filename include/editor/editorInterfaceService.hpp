@@ -4,6 +4,7 @@
 #include <memory>
 #include <raylib.h>
 #include <string>
+#include "windowContainer.hpp"
 #include "resourceViewerBox.hpp"
 #include "worldViewBox.hpp"
 #include "panelView.hpp"
@@ -13,6 +14,7 @@ class MouseInputComponent;
 class EditorInterfaceService {
 private:
     Font uiFont;
+    WindowContainer windowContainer;
     std::unique_ptr<WorldViewBox> worldView;
     std::unique_ptr<PanelView> panelView;
     ResourceViewerBox resourceView;
@@ -27,6 +29,7 @@ public:
     void draw();
     Font getFont();
     void drawTooltip(Rectangle rect, std::string text);
+    WindowContainer& getWindowContainer();
 };
 
 #endif

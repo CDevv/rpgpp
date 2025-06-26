@@ -87,13 +87,6 @@ TileMap::TileMap(std::string fileName)
     UnloadFileText(jsonContent);
 }
 
-TileMap::TileMap(std::string fileName, std::string pathPrefix)
-: TileMap(fileName)
-{
-    std::string tileSetNewPath = std::string(pathPrefix).append("/").append(tileSetSource);
-    tileSet.reset(new TileSet(tileSetNewPath, pathPrefix));
-}
-
 TileMap::TileMap(std::unique_ptr<TileSet> tileSet, int width, int height, int atlasTileSize, int worldTileSize) {
     this->basePos = Vector2 { 0.0f, 0.0f };
     this->tileSet = std::move(tileSet);

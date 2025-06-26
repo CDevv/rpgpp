@@ -1,0 +1,78 @@
+#include "tileSetInitWindow.hpp"
+#include "editor.hpp"
+#include "fileSystemService.hpp"
+#include "tileset.hpp"
+#include <cstring>
+#include <raygui.h>
+#include <raylib.h>
+
+TileSetInitWindow::TileSetInitWindow() {}
+
+TileSetInitWindow::TileSetInitWindow(Rectangle rect)
+{
+    this->active = false;
+    this->rect = rect;
+
+    this->titleEditMode = false;
+    this->titleText = "";
+    this->hasSetTextureSource = false;
+
+    //this->title = const_cast<char*>(titleText.data());
+    //this->title = (char*)"";
+    this->title = new char;
+    //strncpy(title, titleText.c_str(), titleText.length());
+    *title = '\0';
+}
+
+void TileSetInitWindow::setActive()
+{
+    active = true;
+}
+
+void TileSetInitWindow::draw()
+{
+    if (active) {
+        FileSystemService& fs = Editor::getFileSystem();
+
+        if (GuiWindowBox(rect, "New TileSet..")) {
+            active = !active;
+        }
+
+        GuiLabel(Rectangle { rect.x + 8, rect.y + 40, rect.width - 16, 24 }, "Title..");
+        if (GuiTextBox(Rectangle { rect.x + 8, rect.y + 64, rect.width - 16, 24 }, title, 13, titleEditMode)) {
+            titleEditMode = !titleEditMode;
+        }
+
+        GuiLabel(Rectangle { rect.x + 8, rect.y + 96, rect.width - 16, 24 }, "Texture..");
+        Rectangle textureSourceLabelRect = Rectangle { rect.x + 8, rect.y + 120, rect.width - (16 + 24), 24 };
+        if (hasSetTextureSource) {
+            GuiLabel(textureSourceLabelRect, textureSource.c_str());
+        } else {
+            GuiLabel(textureSourceLabelRect, "Not set..");
+        }
+        if (GuiButton(Rectangle { rect.x + 8 + (rect.width - (16 + 24)), rect.y + 120, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
+            FS_Result fsResult = fs.openImage();
+            textureSource = fsResult.path;
+            hasSetTextureSource = true;
+        }
+
+        if (GuiButton(Rectangle { rect.x + 184, rect.y + (rect.height - (24 + 8)), 120, 24 }, "Submit..")) {
+            titleText = title;
+            
+            if (titleText.empty()) return;
+            if (!hasSetTextureSource) return;
+
+            TileSet tileSet(textureSource, 16);
+            nlohmann::json tileSetJson = tileSet.dumpJson();
+            std::string jsonString = tileSetJson.dump(4);
+
+            std::string filePath = std::string("tilesets/").append(titleText).append(".rtiles");
+            SaveFileText(filePath.c_str(), const_cast<char*>(jsonString.data()));
+
+            fs.openProjectFile(filePath);
+            active = false;
+
+            delete [] title;
+        }
+    }
+}

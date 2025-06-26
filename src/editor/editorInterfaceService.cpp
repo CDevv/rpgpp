@@ -6,6 +6,7 @@
 #include "editorInterfaceService.hpp"
 #include "editor.hpp"
 #include "resourceViewerBox.hpp"
+#include "windowContainer.hpp"
 
 EditorInterfaceService::EditorInterfaceService()
 {
@@ -41,11 +42,12 @@ EditorInterfaceService::EditorInterfaceService()
     panelView = std::make_unique<PanelView>(windowRect);
 
     Rectangle propRect = Rectangle { 8, 48, 160, static_cast<float>(GetScreenHeight() - 56) };
-    //propertiesBox = PropertiesBox(propRect);
     resourceView = ResourceViewerBox(propRect);
 
     chosenTileSize = 0;
     chosenTileSizeEditMode = false;
+
+    windowContainer = WindowContainer();
 }
 
 EditorInterfaceService::~EditorInterfaceService()
@@ -56,7 +58,6 @@ EditorInterfaceService::~EditorInterfaceService()
 void EditorInterfaceService::update()
 {
     panelView->update();
-    //propertiesBox.update();
     resourceView.update();
 }
 
@@ -67,8 +68,6 @@ void EditorInterfaceService::draw()
     FileSystemService& fs = Editor::getFileSystem();
     if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
         fs.promptOpenProject();
-
-        //propertiesBox.setDefaults();
         panelView->setInitial();
     }
 
@@ -88,15 +87,20 @@ void EditorInterfaceService::draw()
                 SaveFileText(fs.getOpenedFilePath().c_str(), text);
             }
         }
-
-        //propertiesBox.draw();
     }
     resourceView.draw();
+
+    windowContainer.draw();
 }
 
 Font EditorInterfaceService::getFont()
 {
     return uiFont;
+}
+
+WindowContainer& EditorInterfaceService::getWindowContainer()
+{
+    return windowContainer;
 }
 
 void EditorInterfaceService::drawTooltip(Rectangle rect, std::string text)

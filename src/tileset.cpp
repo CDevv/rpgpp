@@ -4,8 +4,10 @@
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
-TileSet::TileSet(Texture texture, int tileSize)
+TileSet::TileSet(std::string textureSource, int tileSize)
 {
+    this->textureSource = textureSource;
+    Texture texture = LoadTexture(textureSource.c_str());
     this->texture = texture;
     this->tileSize = tileSize;
 }
@@ -30,16 +32,6 @@ TileSet::TileSet(std::string fileName)
     UnloadFileText(jsonContent);
 
     this->pathPrefix = "";
-}
-
-TileSet::TileSet(std::string fileName, std::string pathPrefix)
-: TileSet(fileName)
-{
-    UnloadTexture(texture);
-
-    this->pathPrefix = pathPrefix;
-    std::string sourcePath = std::string(pathPrefix).append("/").append(textureSource);
-    this->texture = LoadTexture(sourcePath.c_str());
 }
 
 TileSet::~TileSet()
