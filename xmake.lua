@@ -1,4 +1,4 @@
-add_requires("raylib", "nlohmann_json", "nativefiledialog-extended", "raygui")
+add_requires("raylib", "nlohmann_json", "nativefiledialog-extended", "raygui", "sol2")
 add_rules("mode.debug")
 set_defaultmode("debug")
 
@@ -6,7 +6,8 @@ target("rpgpp")
     set_kind("static")
     add_includedirs("include/")
     add_files("src/*.cpp")
-    add_packages("raylib", "nlohmann_json")
+    add_packages("raylib", "nlohmann_json", "sol2")
+    add_links("lua")
     set_targetdir("./")
 
 target("editor")

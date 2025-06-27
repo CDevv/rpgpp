@@ -1,141 +1,161 @@
 [
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/main.cpp.o", "src/editor/main.cpp"],
-  "file": "src/editor/main.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/editor.cpp.o", "src/editor/editor.cpp"],
-  "file": "src/editor/editor.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/fileSystemService.cpp.o", "src/editor/fileSystemService.cpp"],
-  "file": "src/editor/fileSystemService.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/mouseInput.cpp.o", "src/editor/mouseInput.cpp"],
-  "file": "src/editor/mouseInput.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/worldViewBox.cpp.o", "src/editor/worldViewBox.cpp"],
-  "file": "src/editor/worldViewBox.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/tileSetViewBox.cpp.o", "src/editor/tileSetViewBox.cpp"],
-  "file": "src/editor/tileSetViewBox.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/mapViewBox.cpp.o", "src/editor/mapViewBox.cpp"],
-  "file": "src/editor/mapViewBox.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/propertiesBox.cpp.o", "src/editor/propertiesBox.cpp"],
-  "file": "src/editor/propertiesBox.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/editorInterfaceService.cpp.o", "src/editor/editorInterfaceService.cpp"],
-  "file": "src/editor/editorInterfaceService.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/tileSetPropertiesBox.cpp.o", "src/editor/tileSetPropertiesBox.cpp"],
-  "file": "src/editor/tileSetPropertiesBox.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/mapPropertiesBox.cpp.o", "src/editor/mapPropertiesBox.cpp"],
-  "file": "src/editor/mapPropertiesBox.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/panelView.cpp.o", "src/editor/panelView.cpp"],
-  "file": "src/editor/panelView.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/tileSetPanelView.cpp.o", "src/editor/tileSetPanelView.cpp"],
-  "file": "src/editor/tileSetPanelView.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/release/src/editor/mapPanelView.cpp.o", "src/editor/mapPanelView.cpp"],
-  "file": "src/editor/mapPanelView.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/room.cpp.o", "src/room.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/room.cpp.o", "src/room.cpp"],
   "file": "src/room.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/main.cpp.o", "src/main.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/main.cpp.o", "src/main.cpp"],
   "file": "src/main.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/game.cpp.o", "src/game.cpp"],
-  "file": "src/game.cpp"
-},
-{
-  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/stateService.cpp.o", "src/stateService.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/stateService.cpp.o", "src/stateService.cpp"],
   "file": "src/stateService.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/worldService.cpp.o", "src/worldService.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/worldService.cpp.o", "src/worldService.cpp"],
   "file": "src/worldService.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/actor.cpp.o", "src/actor.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/actor.cpp.o", "src/actor.cpp"],
   "file": "src/actor.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/atlasTile.cpp.o", "src/atlasTile.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/atlasTile.cpp.o", "src/atlasTile.cpp"],
   "file": "src/atlasTile.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/interactable.cpp.o", "src/interactable.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/interactable.cpp.o", "src/interactable.cpp"],
   "file": "src/interactable.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/interfaceService.cpp.o", "src/interfaceService.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/interfaceService.cpp.o", "src/interfaceService.cpp"],
   "file": "src/interfaceService.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/player.cpp.o", "src/player.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/player.cpp.o", "src/player.cpp"],
   "file": "src/player.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/tile.cpp.o", "src/tile.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/tile.cpp.o", "src/tile.cpp"],
   "file": "src/tile.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/tilemap.cpp.o", "src/tilemap.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/tilemap.cpp.o", "src/tilemap.cpp"],
   "file": "src/tilemap.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/rpgpp/linux/x86_64/release/src/tileset.cpp.o", "src/tileset.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/tileset.cpp.o", "src/tileset.cpp"],
   "file": "src/tileset.cpp"
 },
 {
   "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-Iinclude", "-o", "build/.objs/game/linux/x86_64/release/src/game/main.cpp.o", "src/game/main.cpp"],
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/s/sol2/v3.5.0/935a8a667cd24e86bbce6d9131e34070/include", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/game.cpp.o", "src/game.cpp"],
+  "file": "src/game.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/main.cpp.o", "src/editor/main.cpp"],
+  "file": "src/editor/main.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/editor.cpp.o", "src/editor/editor.cpp"],
+  "file": "src/editor/editor.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/fileSystemService.cpp.o", "src/editor/fileSystemService.cpp"],
+  "file": "src/editor/fileSystemService.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mouseInput.cpp.o", "src/editor/mouseInput.cpp"],
+  "file": "src/editor/mouseInput.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/worldViewBox.cpp.o", "src/editor/worldViewBox.cpp"],
+  "file": "src/editor/worldViewBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/tileSetViewBox.cpp.o", "src/editor/tileSetViewBox.cpp"],
+  "file": "src/editor/tileSetViewBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mapViewBox.cpp.o", "src/editor/mapViewBox.cpp"],
+  "file": "src/editor/mapViewBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/propertiesBox.cpp.o", "src/editor/propertiesBox.cpp"],
+  "file": "src/editor/propertiesBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/editorInterfaceService.cpp.o", "src/editor/editorInterfaceService.cpp"],
+  "file": "src/editor/editorInterfaceService.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/tileSetPropertiesBox.cpp.o", "src/editor/tileSetPropertiesBox.cpp"],
+  "file": "src/editor/tileSetPropertiesBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mapPropertiesBox.cpp.o", "src/editor/mapPropertiesBox.cpp"],
+  "file": "src/editor/mapPropertiesBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/panelView.cpp.o", "src/editor/panelView.cpp"],
+  "file": "src/editor/panelView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/tileSetPanelView.cpp.o", "src/editor/tileSetPanelView.cpp"],
+  "file": "src/editor/tileSetPanelView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mapPanelView.cpp.o", "src/editor/mapPanelView.cpp"],
+  "file": "src/editor/mapPanelView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/project.cpp.o", "src/editor/project.cpp"],
+  "file": "src/editor/project.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/resourceViewerBox.cpp.o", "src/editor/resourceViewerBox.cpp"],
+  "file": "src/editor/resourceViewerBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/windowContainer.cpp.o", "src/editor/windowContainer.cpp"],
+  "file": "src/editor/windowContainer.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-Iinclude/editor", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/raygui/4.0/9d606ceee8cb49559023212a8fb08d54/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/tileSetInitWindow.cpp.o", "src/editor/tileSetInitWindow.cpp"],
+  "file": "src/editor/tileSetInitWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/cpp/rpgpp",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Iinclude", "-o", "build/.objs/game/linux/x86_64/debug/src/game/main.cpp.o", "src/game/main.cpp"],
   "file": "src/game/main.cpp"
 }]
