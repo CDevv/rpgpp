@@ -12,7 +12,6 @@ private:
     Texture texture;
     int tileSize;
     std::string textureSource;
-    std::string pathPrefix;
 public:
     TileSet(std::string fileName);
     TileSet(std::string textureSource, int tileSize);

@@ -1,8 +1,10 @@
 #include "tileSetInitWindow.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "nfd.h"
 #include "tileset.hpp"
 #include <cstring>
+#include <memory>
 #include <raygui.h>
 #include <raylib.h>
 
@@ -17,16 +19,22 @@ TileSetInitWindow::TileSetInitWindow(Rectangle rect)
     this->titleText = "";
     this->hasSetTextureSource = false;
 
-    //this->title = const_cast<char*>(titleText.data());
-    //this->title = (char*)"";
-    this->title = new char;
-    //strncpy(title, titleText.c_str(), titleText.length());
+    this->title = std::make_unique<char>();
     *title = '\0';
 }
 
 void TileSetInitWindow::setActive()
 {
     active = true;
+}
+
+void TileSetInitWindow::closeWindow()
+{
+    hasSetTextureSource = false;
+    textureSource = "";
+    titleText = "";
+    *title = '\0';
+    active = false;
 }
 
 void TileSetInitWindow::draw()
@@ -39,7 +47,7 @@ void TileSetInitWindow::draw()
         }
 
         GuiLabel(Rectangle { rect.x + 8, rect.y + 40, rect.width - 16, 24 }, "Title..");
-        if (GuiTextBox(Rectangle { rect.x + 8, rect.y + 64, rect.width - 16, 24 }, title, 13, titleEditMode)) {
+        if (GuiTextBox(Rectangle { rect.x + 8, rect.y + 64, rect.width - 16, 24 }, title.get(), 13, titleEditMode)) {
             titleEditMode = !titleEditMode;
         }
 
@@ -52,12 +60,14 @@ void TileSetInitWindow::draw()
         }
         if (GuiButton(Rectangle { rect.x + 8 + (rect.width - (16 + 24)), rect.y + 120, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
             FS_Result fsResult = fs.openImage();
-            textureSource = fsResult.path;
-            hasSetTextureSource = true;
+            if (fsResult.result == NFD_OKAY) {
+                textureSource = fsResult.path;
+                hasSetTextureSource = true;
+            }
         }
 
         if (GuiButton(Rectangle { rect.x + 184, rect.y + (rect.height - (24 + 8)), 120, 24 }, "Submit..")) {
-            titleText = title;
+            titleText = title.get();
             
             if (titleText.empty()) return;
             if (!hasSetTextureSource) return;
@@ -70,9 +80,8 @@ void TileSetInitWindow::draw()
             SaveFileText(filePath.c_str(), const_cast<char*>(jsonString.data()));
 
             fs.openProjectFile(filePath);
-            active = false;
-
-            delete [] title;
+            
+            closeWindow();
         }
     }
 }

@@ -1,6 +1,7 @@
 #include "tilemap.hpp"
 #include "atlasTile.hpp"
 #include "tileset.hpp"
+#include <memory>
 #include <raylib.h>
 #include <raymath.h>
 #include <nlohmann/json.hpp>
@@ -87,9 +88,10 @@ TileMap::TileMap(std::string fileName)
     UnloadFileText(jsonContent);
 }
 
-TileMap::TileMap(std::unique_ptr<TileSet> tileSet, int width, int height, int atlasTileSize, int worldTileSize) {
+TileMap::TileMap(std::string tileSetSource, int width, int height, int atlasTileSize, int worldTileSize) {
     this->basePos = Vector2 { 0.0f, 0.0f };
-    this->tileSet = std::move(tileSet);
+    this->tileSet = std::make_unique<TileSet>(tileSetSource);
+    this->tileSetSource = tileSetSource;
 
     this->atlasTileSize = tileSet->getTileSize();
     this->worldTileSize = worldTileSize;

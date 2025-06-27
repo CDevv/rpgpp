@@ -16,7 +16,6 @@ class TileMap {
 private:
     Vector2 basePos;
     std::string tileSetSource;
-    std::string pathPrefix;
     std::unique_ptr<TileSet> tileSet;
     int atlasTileSize;
     int worldTileSize;
@@ -29,7 +28,7 @@ private:
     std::unique_ptr<std::vector<Interactable>> interactables;
 public:
     TileMap(std::string fileName);
-    TileMap(std::unique_ptr<TileSet> tileSet, int width, int height, int atlasTileSize, int worldTileSize);
+    TileMap(std::string tileSetSource, int width, int height, int atlasTileSize, int worldTileSize);
     json dumpJson();
     void unload();
     void update();

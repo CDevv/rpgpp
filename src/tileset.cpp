@@ -30,8 +30,6 @@ TileSet::TileSet(std::string fileName)
 
     //Unload file's text
     UnloadFileText(jsonContent);
-
-    this->pathPrefix = "";
 }
 
 TileSet::~TileSet()

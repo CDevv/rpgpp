@@ -66,8 +66,15 @@ void ResourceViewerBox::drawTileSets()
 
 void ResourceViewerBox::drawMaps()
 {
+    EditorInterfaceService& ui = Editor::getUi();
+    WindowContainer& windows = ui.getWindowContainer();
+
+    if (GuiButton(Rectangle { rect.x + 8, rect.y + 2*24, rect.width - 16, 24 }, "New..")) {
+        windows.openMapInit();
+    }
+
     Rectangle baseRect = Rectangle { rect.x, rect.y, rect.width, rect.height };
-    baseRect.y += 2*24;
+    baseRect.y += 3*24;
     baseRect.height = 24;
 
     FileSystemService& fs = Editor::getFileSystem();

@@ -49,7 +49,7 @@ void FileSystemService::openProjectFile(std::string absolutePath)
         lastTileMap.reset(new TileMap(absolutePath));
         lastType = FILE_MAP;
     }
-
+    lastOpenPath = absolutePath;
     isOpen = true;
 }
 

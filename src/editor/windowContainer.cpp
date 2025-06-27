@@ -1,4 +1,5 @@
 #include "windowContainer.hpp"
+#include "mapInitWindow.hpp"
 #include "tileSetInitWindow.hpp"
 #include <raylib.h>
 
@@ -11,6 +12,9 @@ WindowContainer::WindowContainer()
         baseTileSetSize.width, baseTileSetSize.height
     };
     tileSetInit = TileSetInitWindow(tileSetWindowSize);
+
+    Rectangle mapWindowSize = Rectangle(tileSetWindowSize);
+    mapInit = MapInitWindow(mapWindowSize);
 }
 
 void WindowContainer::openTileSetInit()
@@ -18,7 +22,13 @@ void WindowContainer::openTileSetInit()
     tileSetInit.setActive();
 }
 
+void WindowContainer::openMapInit()
+{
+    mapInit.setActive();
+}
+
 void WindowContainer::draw()
 {
     tileSetInit.draw();
+    mapInit.draw();
 }
