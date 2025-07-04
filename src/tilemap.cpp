@@ -72,19 +72,6 @@ TileMap::TileMap(std::string fileName)
         this->setCollisionTile(collisionPos);
     }
 
-    //Set interactables
-    this->interactables = std::make_unique<std::vector<Interactable>>();
-
-    std::vector<std::vector<int>> interactablePositions = j.at("interactables");
-    for (std::vector<int> pos : interactablePositions) {
-        int x = pos.at(0);
-        int y = pos.at(1);
-        int type = pos.at(2);
-
-        Vector2 interactablePos = Vector2 { static_cast<float>(x), static_cast<float>(y) };
-        this->setInteractable(type, interactablePos);
-    }
-
     UnloadFileText(jsonContent);
 }
 
@@ -111,8 +98,6 @@ TileMap::TileMap(std::string tileSetSource, int width, int height, int atlasTile
 
         tiles.push_back(row);
     }
-
-    this->interactables = std::make_unique<std::vector<Interactable>>();
 }
 
 json TileMap::dumpJson()
@@ -148,6 +133,7 @@ json TileMap::dumpJson()
     }
 
     auto interactablesVector = std::vector<std::vector<int>>();
+    /*
     for (auto&& interactable : *interactables) {
         std::vector<int> interactableVector;
         interactableVector.push_back(interactable.getWorldPos().x);
@@ -156,6 +142,7 @@ json TileMap::dumpJson()
 
         interactablesVector.push_back(interactableVector);
     }
+    */
 
     //Make the json object
     json tileMapJson = {
@@ -206,11 +193,6 @@ void TileMap::draw()
     //draw interactables..
     Color interactableDebugColor = YELLOW;
     interactableDebugColor.a = (255 / 2);
-
-    for (auto&& interactable : *interactables) {
-        Rectangle rec = interactable.getRect();
-        DrawRectangleRec(rec, interactableDebugColor);
-    }
 }
 
 std::string TileMap::getTileSetSource()
@@ -338,28 +320,6 @@ bool TileMap::isCollisionTile(const Vector2 worldPos)
 std::vector<Vector2> TileMap::getCollisionTiles()
 {
     return this->collisions;
-}
-
-void TileMap::setInteractable(int type, Vector2 worldPos)
-{
-    InteractableType interactableType = InteractableType(type);
-    Interactable interactable = Interactable(INT_BLANK, worldPos, worldTileSize);
-
-    switch (interactableType) {
-        case INT_BLANK:
-            interactable = InteractableOne(worldPos, worldTileSize);
-            interactables->push_back(interactable);
-            break;
-        case INT_TWO:
-            interactable = InteractableTwo(worldPos, worldTileSize);
-            interactables->push_back(interactable);
-            break;
-    };
-}
-
-std::vector<Interactable>& TileMap::getInteractables()
-{
-    return *interactables;
 }
 
 Vector2 TileMap::getMaxAtlasSize() {

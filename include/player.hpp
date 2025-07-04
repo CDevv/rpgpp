@@ -1,11 +1,11 @@
 #ifndef _RPGPP_PLAYER_H
 #define _RPGPP_PLAYER_H
 
+class Room;
+
 #include "room.hpp"
 #include "actor.hpp"
 #include <raylib.h>
-
-class Room;
 
 class Player {
 private:

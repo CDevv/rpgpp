@@ -8,7 +8,6 @@
 #include "atlasTile.hpp"
 #include "tile.hpp"
 #include "tileset.hpp"
-#include "interactable.hpp"
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
@@ -25,7 +24,6 @@ private:
     int maxAtlasHeight;
     std::vector<std::vector<Tile>> tiles;
     std::vector<Vector2> collisions;
-    std::unique_ptr<std::vector<Interactable>> interactables;
 public:
     TileMap(std::string fileName);
     TileMap(std::string tileSetSource, int width, int height, int atlasTileSize, int worldTileSize);
@@ -47,8 +45,6 @@ public:
     void setCollisionTile(Vector2 worldPos);
     bool isCollisionTile(const Vector2 worldPos);
     std::vector<Vector2> getCollisionTiles();
-    void setInteractable(int type, Vector2 worldPos);
-    std::vector<Interactable>& getInteractables();
     Vector2 getMaxAtlasSize();
     Vector2 getMaxWorldSize();
     void setWorldSize(Vector2 size);

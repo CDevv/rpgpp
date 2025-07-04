@@ -1,8 +1,16 @@
 #include "room.hpp"
+#include "interactable.hpp"
+#include "interactablesContainer.hpp"
 #include "tilemap.hpp"
+#include <memory>
+#include <raylib.h>
+#include <nlohmann/json.hpp>
+#include <vector>
+using json = nlohmann::json;
 
 Room::Room()
 {
+    this->interactables = std::unique_ptr<InteractablesContainer>{};
     this->tileMap = std::unique_ptr<TileMap>{};
     this->actors = std::unique_ptr<std::vector<Actor>>{};
     this->player = std::unique_ptr<Player>{};
@@ -10,6 +18,7 @@ Room::Room()
 
 Room::Room(std::string fileName)
 {
+    this->interactables = std::make_unique<InteractablesContainer>();
     this->actors = std::make_unique<std::vector<Actor>>();
 
     std::unique_ptr<Actor> actor = std::make_unique<Actor>("resources/playerActor.json");
@@ -17,6 +26,19 @@ Room::Room(std::string fileName)
 
     this->tileMap = std::make_unique<TileMap>(fileName);
     this->addPlayer(std::move(player));
+
+    char* jsonString = LoadFileText(fileName.c_str());
+    json roomJson = json::parse(jsonString);
+    std::vector<std::vector<int>> interactablesVec = roomJson.at("interactables");
+    for (auto v : interactablesVec) {
+        int x = v[0];
+        int y = v[1];
+        InteractableType itype = static_cast<InteractableType>(v[2]);
+
+        interactables->add(x, y, itype);
+    }
+
+    UnloadFileText(jsonString);
 }
 
 Room::Room(std::unique_ptr<TileMap> tileMap)
@@ -46,6 +68,11 @@ void Room::update()
 void Room::draw()
 {
     this->tileMap->draw();
+    for (auto i : interactables->getVector()) {
+        Rectangle rect = i.getRect();
+        DrawRectangleRec(rect, Fade(YELLOW, 0.5f));
+    }
+
     for (auto&& actor : *actors) {
         actor.draw();
     }
@@ -78,7 +105,7 @@ std::vector<Vector2> Room::getCollisionTiles()
 
 std::vector<Interactable> Room::getInteractableTiles()
 {
-    return this->tileMap->getInteractables();
+    return this->interactables->getVector();
 }
 
 
