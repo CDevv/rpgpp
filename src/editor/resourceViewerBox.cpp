@@ -54,11 +54,13 @@ void ResourceViewerBox::drawTileSets()
     baseRect.height = 24;
 
     FileSystemService& fs = Editor::getFileSystem();
+
     std::vector<std::string> tileSetPaths = fs.getProject()->getTileSetPaths();
     for (std::string tileSetPath : tileSetPaths) {
         std::string tileSetFileName = GetFileNameWithoutExt(tileSetPath.c_str());
         if (GuiLabelButton(baseRect, tileSetFileName.c_str())) {
             fs.openProjectFile(tileSetPath);
+            ui.setInitial();
         }
         baseRect.y += 24;
     }
@@ -83,6 +85,7 @@ void ResourceViewerBox::drawMaps()
         std::string mapFileName = GetFileNameWithoutExt(mapPath.c_str());
         if (GuiLabelButton(baseRect, mapFileName.c_str())) {
             fs.openProjectFile(mapPath);
+            ui.setInitial();
         }
         baseRect.y += 24;
     }

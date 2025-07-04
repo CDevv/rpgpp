@@ -25,6 +25,7 @@ private:
 public:
     EditorInterfaceService();
     ~EditorInterfaceService();
+    void setInitial();
     void update();
     void draw();
     Font getFont();

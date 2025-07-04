@@ -70,9 +70,18 @@ void MapViewBox::isHoverOnValidTile()
     }
     hoverValidTile = hoverValidX && hoverValidY;
 
-    if (isPlacing && isTileValid) {
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            map->setTile(tileAtlasPos, selectedTileAtlasCoords);
+    Rectangle rect = Rectangle {
+        0, 0,
+        (map->getMaxWorldSize().x * map->getAtlasTileSize()), (map->getMaxWorldSize().y * map->getAtlasTileSize())
+    };
+
+    bool isInViewport = viewBox->mouseInput->isInRect();
+    bool isInMapRect = CheckCollisionPointRec(viewBox->mouseInput->getMouseWorldPos(), rect);
+    if (isInViewport && isInMapRect) {
+        if (isPlacing && isTileValid) {
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                map->setTile(tileAtlasPos, selectedTileAtlasCoords);
+            }
         }
     }
 }
@@ -142,7 +151,6 @@ void MapViewBox::drawTiles()
             }
         }
     }
-
     
     if (hoverValidTile) {
         if (isTileValid) {

@@ -55,6 +55,11 @@ EditorInterfaceService::~EditorInterfaceService()
     UnloadFont(uiFont);
 }
 
+void EditorInterfaceService::setInitial()
+{
+    panelView->setInitial();
+}
+
 void EditorInterfaceService::update()
 {
     panelView->update();

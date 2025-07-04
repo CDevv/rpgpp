@@ -1,5 +1,6 @@
 #include "tileSetInitWindow.hpp"
 #include "editor.hpp"
+#include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
 #include "nfd.h"
 #include "tileset.hpp"
@@ -41,6 +42,7 @@ void TileSetInitWindow::draw()
 {
     if (active) {
         FileSystemService& fs = Editor::getFileSystem();
+        EditorInterfaceService& ui = Editor::getUi();
 
         if (GuiWindowBox(rect, "New TileSet..")) {
             active = !active;
@@ -80,6 +82,7 @@ void TileSetInitWindow::draw()
             SaveFileText(filePath.c_str(), const_cast<char*>(jsonString.data()));
 
             fs.openProjectFile(filePath);
+            ui.setInitial();
             
             closeWindow();
         }

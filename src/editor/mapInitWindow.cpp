@@ -3,6 +3,7 @@
 #include <raygui.h>
 #include <raylib.h>
 #include "editor.hpp"
+#include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
 #include "tilemap.hpp"
 
@@ -42,6 +43,7 @@ void MapInitWindow::draw()
 {
     if (active) {
         FileSystemService& fs = Editor::getFileSystem();
+        EditorInterfaceService& ui = Editor::getUi();
 
         if (GuiWindowBox(rect, "New Map..")) {
             active = !active;
@@ -85,6 +87,7 @@ void MapInitWindow::draw()
             SaveFileText(filePath.c_str(), const_cast<char*>(jsonString.data()));
 
             fs.openProjectFile(filePath);
+            ui.setInitial();
 
             closeWindow();
         }

@@ -50,7 +50,7 @@ void TileSetPropertiesBox::draw()
     BeginScissorMode(viewRec.x, viewRec.y, viewRec.width, viewRec.height);
 
     GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 8, (viewRec.width - 16), 24 }, "Tile Size");
-    if (GuiValueBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 32, (viewRec.width - 16), 24 }, NULL, &chosenTileSize, 16, 32, chosenTileSizeEditMode)) {
+    if (GuiValueBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 32, (viewRec.width - 16), 24 }, NULL, &chosenTileSize, 16, 100, chosenTileSizeEditMode)) {
         chosenTileSizeEditMode = !chosenTileSizeEditMode;
     }
 
