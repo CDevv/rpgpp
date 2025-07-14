@@ -1,5 +1,4 @@
 #include "player.hpp"
-#include "game.hpp"
 #include <raymath.h>
 
 Player::Player(std::unique_ptr<Actor> actor, Room& room)
@@ -92,8 +91,8 @@ void Player::handleCollision()
 {
     Rectangle playerRect = actor->getCollisionRect(velocity);
 
-    TileMap& tileMap = room.getTileMap();
-    int worldTileSize = tileMap.getWorldTileSize();
+    TileMap *tileMap = room.getTileMap();
+    int worldTileSize = tileMap->getWorldTileSize();
 
     //collision tiles
     std::vector<Vector2> collisionTiles = this->room.getCollisionTiles();

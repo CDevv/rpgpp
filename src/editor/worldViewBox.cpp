@@ -1,7 +1,7 @@
 #include "worldViewBox.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
-#include "tilemap.hpp"
+#include "room.hpp"
 #include "tileset.hpp"
 #include <memory>
 #include <raygui.h>
@@ -46,7 +46,7 @@ void WorldViewBox::setTileSet(TileSet* tileSet)
     tilesView.setTileSet(tileSet);
 }
 
-void WorldViewBox::setMap(TileMap* map)
+void WorldViewBox::setRoom(Room* map)
 {
     mapView.setMap(map);
 }
@@ -93,7 +93,7 @@ void WorldViewBox::draw()
     }
 
     BeginTextureMode(renderTexture);
-    if (type == FILE_MAP) {
+    if (type == FILE_ROOM) {
         ClearBackground(GRAY);
     } else {
         ClearBackground(RAYWHITE);

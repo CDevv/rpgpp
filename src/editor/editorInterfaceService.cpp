@@ -86,7 +86,7 @@ void EditorInterfaceService::draw()
                 char *text = const_cast<char*>(jsonString.data());
                 SaveFileText(fs.getOpenedFilePath().c_str(), text);
             } else {
-                std::string mapJsonString = fs.getTileMap()->dumpJson().dump(4);
+                std::string mapJsonString = fs.getRoom()->dumpJson().dump(4);
 
                 char *text = const_cast<char*>(mapJsonString.data());
                 SaveFileText(fs.getOpenedFilePath().c_str(), text);

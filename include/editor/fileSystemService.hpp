@@ -5,13 +5,13 @@
 #include <string>
 #include <raylib.h>
 #include "project.hpp"
+#include "room.hpp"
 #include "tileset.hpp"
-#include "tilemap.hpp"
 #include "nfd.h"
 
 enum EngineFileType {
     FILE_TILESET,
-    FILE_MAP
+    FILE_ROOM
 };
 
 struct FS_Result {
@@ -28,7 +28,7 @@ private:
     std::string lastOpenPath;
     bool isOpen;
     std::unique_ptr<TileSet> lastTileSet;
-    std::unique_ptr<TileMap> lastTileMap;
+    std::unique_ptr<Room> lastRoom;
 public:
     FileSystemService();
     ~FileSystemService();
@@ -42,7 +42,7 @@ public:
     std::string getOpenedFilePath();
     EngineFileType getType();
     TileSet *getTileSet();
-    TileMap *getTileMap();
+    Room *getRoom();
     FS_Result openFile(nfdu8filteritem_t filters[]);
     FS_Result openImage();
     FS_Result openTileSetResource();

@@ -21,7 +21,7 @@ MapPanelView::MapPanelView(Rectangle rect)
         (windowRect.x + 2), (windowRect.y + 24),
         (windowRect.width - 4), (windowRect.height - 30)
     };
-    worldView = std::make_unique<WorldViewBox>(windowRect, renderRect, FILE_MAP);
+    worldView = std::make_unique<WorldViewBox>(windowRect, renderRect, FILE_ROOM);
 
     Rectangle tileSetWindowRect = Rectangle
     {
@@ -57,11 +57,11 @@ void MapPanelView::update()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
-    worldView->setMap(fs.getTileMap());
+    worldView->setRoom(fs.getRoom());
     worldView->update();
 
-    if (fs.getTileMap() != nullptr) {
-        tileSetView->setTileSet(&fs.getTileMap()->getTileSet());
+    if (fs.getRoom() != nullptr) {
+        tileSetView->setTileSet(&fs.getRoom()->getTileMap()->getTileSet());
     }
     tileSetView->update();
 

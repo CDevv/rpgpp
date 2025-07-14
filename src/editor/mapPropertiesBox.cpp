@@ -23,7 +23,9 @@ MapPropertiesBox::MapPropertiesBox(Rectangle rect)
 void MapPropertiesBox::setDefaults()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    TileMap *map = fs.getTileMap();
+    Room *room = fs.getRoom();
+    this->room = room;
+    TileMap *map = room->getTileMap();
     this->map = map;
 
     Vector2 mapSize = map->getMaxWorldSize();
@@ -38,7 +40,7 @@ void MapPropertiesBox::update()
 void MapPropertiesBox::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    TileMap *map = fs.getTileMap();
+    TileMap *map = fs.getRoom()->getTileMap();
     this->map = map;
 
     Rectangle contentRec = rect;

@@ -1,5 +1,6 @@
 #include "fileSystemService.hpp"
 #include "project.hpp"
+#include "room.hpp"
 #include <memory>
 #include <nfd.h>
 #include <raylib.h>
@@ -8,7 +9,7 @@ FileSystemService::FileSystemService()
 {
     project = std::unique_ptr<Project>{};
     lastTileSet = std::unique_ptr<TileSet>{};
-    lastTileMap = std::unique_ptr<TileMap>{};
+    lastRoom = std::unique_ptr<Room>{};
     isOpen = false;
 
     NFD_Init();
@@ -46,8 +47,8 @@ void FileSystemService::openProjectFile(std::string absolutePath)
         lastTileSet.reset(new TileSet(absolutePath));
         lastType = FILE_TILESET;
     } else if (TextIsEqual(fileExtension.c_str(), ".rmap")) {
-        lastTileMap.reset(new TileMap(absolutePath));
-        lastType = FILE_MAP;
+        lastRoom.reset(new Room(absolutePath));
+        lastType = FILE_ROOM;
     }
     lastOpenPath = absolutePath;
     isOpen = true;
@@ -70,8 +71,8 @@ void FileSystemService::promptOpenFile()
             lastTileSet.reset(new TileSet(outPath));
             lastType = FILE_TILESET;
         } else if (TextIsEqual(fileExtension.c_str(), ".rmap")) {
-            lastTileMap.reset(new TileMap(outPath));
-            lastType = FILE_MAP;
+            lastRoom.reset(new Room(outPath));
+            lastType = FILE_ROOM;
         }
 
         isOpen = true;
@@ -100,9 +101,9 @@ TileSet *FileSystemService::getTileSet()
     return lastTileSet.get();
 }
 
-TileMap *FileSystemService::getTileMap()
+Room *FileSystemService::getRoom()
 {
-    return lastTileMap.get();
+    return lastRoom.get();
 }
 
 FS_Result FileSystemService::openFile(nfdu8filteritem_t filters[])

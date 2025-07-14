@@ -1,3 +1,4 @@
+#include "room.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
 #include "worldViewBox.hpp"
@@ -12,7 +13,7 @@ MapViewBox::MapViewBox() {}
 
 MapViewBox::MapViewBox(WorldViewBox *viewBox)
 {
-    this->map = nullptr;
+    this->room = nullptr;
 
     this->viewBox = viewBox;
     this->tileAtlasPos = Vector2 { 0, 0 };
@@ -24,9 +25,9 @@ MapViewBox::MapViewBox(WorldViewBox *viewBox)
     this->selectedTileAtlasCoords = Vector2 { 0, 0 };
 }
 
-void MapViewBox::setMap(TileMap* map)
+void MapViewBox::setMap(Room* map)
 {
-    this->map = map;
+    this->room = map;
     viewBox->windowTitle = "Map View";
 }
 
@@ -47,16 +48,17 @@ void MapViewBox::setSelectedTile(Vector2 tile)
 
 void MapViewBox::isHoverOnValidTile()
 {
-    if (map == nullptr) return;
+    if (room == nullptr) return;
 
     FileSystemService& fs = Editor::getFileSystem();
     bool hoverValidX = false;
     bool hoverValidY = false;
 
-    int tileSize = map->getAtlasTileSize();
-    Vector2 sizeInTiles = map->getMaxWorldSize();
-    int absoluteWidth = map->getAtlasTileSize() * sizeInTiles.x;
-    int absoluteHeight = map->getAtlasTileSize() * sizeInTiles.y;
+    TileMap *tileMap = room->getTileMap();
+    int tileSize = tileMap->getAtlasTileSize();
+    Vector2 sizeInTiles = tileMap->getMaxWorldSize();
+    int absoluteWidth = tileMap->getAtlasTileSize() * sizeInTiles.x;
+    int absoluteHeight = tileMap->getAtlasTileSize() * sizeInTiles.y;
 
     if (viewBox->hoverPos.x >= 0 && viewBox->hoverPos.x <= absoluteWidth) {
         hoverValidX = true;
@@ -72,7 +74,7 @@ void MapViewBox::isHoverOnValidTile()
 
     Rectangle rect = Rectangle {
         0, 0,
-        (map->getMaxWorldSize().x * map->getAtlasTileSize()), (map->getMaxWorldSize().y * map->getAtlasTileSize())
+        (tileMap->getMaxWorldSize().x * tileMap->getAtlasTileSize()), (tileMap->getMaxWorldSize().y * tileMap->getAtlasTileSize())
     };
 
     bool isInViewport = viewBox->mouseInput->isInRect();
@@ -80,7 +82,7 @@ void MapViewBox::isHoverOnValidTile()
     if (isInViewport && isInMapRect) {
         if (isPlacing && isTileValid) {
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                map->setTile(tileAtlasPos, selectedTileAtlasCoords);
+                tileMap->setTile(tileAtlasPos, selectedTileAtlasCoords);
             }
         }
     }
@@ -91,10 +93,11 @@ void MapViewBox::drawGrid()
     FileSystemService& fs = Editor::getFileSystem();
 
     if (fs.fileIsOpen()) {
+        TileMap *tileMap = room->getTileMap();
         //draw a big white rectangle instead
         Rectangle rect = Rectangle {
             0, 0,
-            (map->getMaxWorldSize().x * map->getAtlasTileSize()), (map->getMaxWorldSize().y * map->getAtlasTileSize())
+            (tileMap->getMaxWorldSize().x * tileMap->getAtlasTileSize()), (tileMap->getMaxWorldSize().y * tileMap->getAtlasTileSize())
         };
 
         DrawRectangleRec(rect, RAYWHITE);
@@ -107,11 +110,12 @@ void MapViewBox::drawGrid()
 
 void MapViewBox::drawTiles()
 {
-    int atlasTileSize = map->getAtlasTileSize();
-    Vector2 sizeInTiles = map->getMaxWorldSize();
+    TileMap *tileMap = room->getTileMap();
+    int atlasTileSize = tileMap->getAtlasTileSize();
+    Vector2 sizeInTiles = tileMap->getMaxWorldSize();
     for (int x = 0; x < sizeInTiles.x; x++) {
         for (int y = 0; y < sizeInTiles.y; y++) {
-            Tile tile = map->getTile(x, y);
+            Tile tile = tileMap->getTile(x, y);
 
             if (tile.isPlaced()) {
                 //defaults..
@@ -119,14 +123,14 @@ void MapViewBox::drawTiles()
                 const float rotation = 0.0f;
 
                 //texture..
-                TileSet& tileSet = map->getTileSet();
-                Texture texture = map->getTileSet().getTexture();
+                TileSet& tileSet = tileMap->getTileSet();
+                Texture texture = tileMap->getTileSet().getTexture();
 
                 //actual coordinates
-                Vector2 atlasCoords = map->getTile(x, y).getAtlasTile().getAtlasCoords();
+                Vector2 atlasCoords = tileMap->getTile(x, y).getAtlasTile().getAtlasCoords();
                 Vector2 worldCoords = Vector2 {
-                    static_cast<float>(x * map->getAtlasTileSize()),
-                    static_cast<float>(y * map->getAtlasTileSize())
+                    static_cast<float>(x * tileMap->getAtlasTileSize()),
+                    static_cast<float>(y * tileMap->getAtlasTileSize())
                 };
 
                 //Build rects
@@ -142,8 +146,8 @@ void MapViewBox::drawTiles()
                 //draw empty tile
 
                 Vector2 worldCoords = Vector2 {
-                    static_cast<float>(x * map->getAtlasTileSize()),
-                    static_cast<float>(y * map->getAtlasTileSize())
+                    static_cast<float>(x * tileMap->getAtlasTileSize()),
+                    static_cast<float>(y * tileMap->getAtlasTileSize())
                 };
                 Rectangle worldCoordsRect = Rectangle { worldCoords.x, worldCoords.y, static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize) };
 
@@ -160,7 +164,7 @@ void MapViewBox::drawTiles()
             Color rectColor = Fade(WHITE, 0.7f);
 
             //texture..
-            Texture rectTexture = map->getTileSet().getTexture();
+            Texture rectTexture = tileMap->getTileSet().getTexture();
 
             //build rects
             Rectangle selectedTileRect = Rectangle {

@@ -34,7 +34,7 @@ public:
     void addActor(Actor actor);
     void addPlayer(std::unique_ptr<Player> player);
     Player& getPlayer();
-    TileMap& getTileMap();
+    TileMap *getTileMap();
     std::vector<Vector2> getCollisionTiles();
     std::vector<Interactable> getInteractableTiles();
 };

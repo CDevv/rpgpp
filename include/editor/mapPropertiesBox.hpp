@@ -2,11 +2,13 @@
 #define _RPGPP_EDITOR_MAPPROPERTIESBOX_H
 
 #include <raylib.h>
+#include "room.hpp"
 #include "tilemap.hpp"
 
 class MapPropertiesBox {
 private:
     Rectangle rect;
+    Room *room;
     TileMap *map;
     int mapHeight;
     bool heightEdit;

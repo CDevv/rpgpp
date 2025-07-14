@@ -12,8 +12,8 @@ using json = nlohmann::json;
 Room::Room()
 {
     this->worldTileSize = 48;
-    this->interactables = std::unique_ptr<InteractablesContainer>{};
-    this->collisions = std::unique_ptr<CollisionsContainer>{};
+    this->interactables = std::make_unique<InteractablesContainer>();
+    this->collisions = std::make_unique<CollisionsContainer>();
     this->tileMap = std::unique_ptr<TileMap>{};
     this->actors = std::unique_ptr<std::vector<Actor>>{};
     this->player = std::unique_ptr<Player>{};
@@ -27,7 +27,7 @@ Room::Room(std::string fileName)
     this->collisions = std::make_unique<CollisionsContainer>();
     this->actors = std::make_unique<std::vector<Actor>>();
 
-    std::unique_ptr<Actor> actor = std::make_unique<Actor>("resources/playerActor.json");
+    std::unique_ptr<Actor> actor = std::make_unique<Actor>("actors/playerActor.json");
     std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
 
     this->tileMap = std::make_unique<TileMap>(fileName);
@@ -57,6 +57,7 @@ Room::Room(std::string fileName)
 }
 
 Room::Room(std::unique_ptr<TileMap> tileMap)
+: Room()
 {
     this->tileMap = std::move(tileMap);
 }
@@ -145,9 +146,9 @@ Player& Room::getPlayer()
     return *player;
 }
 
-TileMap& Room::getTileMap()
+TileMap *Room::getTileMap()
 {
-    return *this->tileMap;
+    return this->tileMap.get();
 }
 
 std::vector<Vector2> Room::getCollisionTiles()

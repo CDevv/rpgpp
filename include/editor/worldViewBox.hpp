@@ -5,8 +5,8 @@
 #include <raylib.h>
 #include "fileSystemService.hpp"
 #include "mouseInput.hpp"
+#include "room.hpp"
 #include "tileset.hpp"
-#include "tilemap.hpp"
 
 class WorldViewBox;
 
@@ -36,7 +36,7 @@ public:
 
 class MapViewBox {
 private:
-    TileMap *map;
+    Room *room;
     WorldViewBox *viewBox;
     Vector2 tileAtlasPos;
     Vector2 tileWorldPos;
@@ -48,7 +48,7 @@ public:
     MapViewBox();
     MapViewBox(WorldViewBox *viewBox);
     void unload();
-    void setMap(TileMap* map);
+    void setMap(Room* map);
     void setPlacingMode();
     void setSelectedTile(Vector2 tile);
     void isHoverOnValidTile();
@@ -77,7 +77,7 @@ public:
     WorldViewBox(Rectangle windowRect, Rectangle renderRect, EngineFileType type);
     ~WorldViewBox();
     void setTileSet(TileSet* tileSet);
-    void setMap(TileMap* map);
+    void setRoom(Room* map);
     void enableTileSelection();
     Vector2 getSelectedTile();
     void enableTilePlacement();

@@ -5,6 +5,7 @@
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
+#include "room.hpp"
 #include "tilemap.hpp"
 
 MapInitWindow::MapInitWindow() {}
@@ -79,9 +80,11 @@ void MapInitWindow::draw()
             if (titleText.empty()) return;
             if (!hasSetTileSet) return;
 
-            TileMap tileMap(tileSetSource, 25, 25, 16, 48);
-            nlohmann::json tileMapJson = tileMap.dumpJson();
-            std::string jsonString = tileMapJson.dump(4);
+            std::unique_ptr<TileMap> tileMap = std::make_unique<TileMap>(tileSetSource, 25, 25, 16, 48);
+
+            Room room(std::move(tileMap));
+            nlohmann::json roomJson = room.dumpJson();
+            std::string jsonString = roomJson.dump(4);
 
             std::string filePath = std::string("maps/").append(titleText).append(".rmap");
             SaveFileText(filePath.c_str(), const_cast<char*>(jsonString.data()));
