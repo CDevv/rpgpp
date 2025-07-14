@@ -63,9 +63,9 @@ Vector2 WorldViewBox::getSelectedTile()
     return tilesView.getSelectedTile();
 }
 
-void WorldViewBox::enableTilePlacement()
+void WorldViewBox::setActionMode(RoomAction mode)
 {
-    mapView.setPlacingMode();
+    mapView.setActionMode(mode);
 }
 
 void WorldViewBox::setSelectedTile(Vector2 tile)

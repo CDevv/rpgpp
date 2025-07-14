@@ -13,6 +13,11 @@ void Tile::place(AtlasTile atlasTile, Vector2 worldCoords) {
     this->placed = true;
 }
 
+void Tile::erase()
+{
+    this->placed = false;
+}
+
 bool Tile::isPlaced() {
     return this->placed;
 }

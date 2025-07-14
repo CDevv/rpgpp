@@ -10,6 +10,10 @@
 
 class WorldViewBox;
 
+enum RoomAction {
+    ACTION_NONE, ACTION_PLACE, ACTION_ERASE
+};
+
 class TileSetViewBox {
 private:
     TileSet *tileSet;
@@ -41,7 +45,7 @@ private:
     Vector2 tileAtlasPos;
     Vector2 tileWorldPos;
     bool hoverValidTile;
-    bool isPlacing;
+    RoomAction action;
     bool isTileValid;
     Vector2 selectedTileAtlasCoords;
 public:
@@ -49,7 +53,7 @@ public:
     MapViewBox(WorldViewBox *viewBox);
     void unload();
     void setMap(Room* map);
-    void setPlacingMode();
+    void setActionMode(RoomAction mode);
     void setSelectedTile(Vector2 tile);
     void isHoverOnValidTile();
     void drawGrid();
@@ -80,7 +84,7 @@ public:
     void setRoom(Room* map);
     void enableTileSelection();
     Vector2 getSelectedTile();
-    void enableTilePlacement();
+    void setActionMode(RoomAction mode);
     void setSelectedTile(Vector2 tile);
     void update();
     void draw();

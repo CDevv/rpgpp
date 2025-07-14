@@ -38,6 +38,7 @@ public:
     bool atlasPosIsValid(Vector2 atlasPos);
     Tile getTile(int x, int y);
     void setTile(Vector2 worldPos, Vector2 atlasPos);
+    void setEmptyTile(Vector2 worldPos);
     void drawTile(int x, int y);
     void drawTile(Vector2 worldPos, Vector2 atlasPos);
     void drawTile(Vector2 worldPos, AtlasTile tile);

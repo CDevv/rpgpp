@@ -186,6 +186,11 @@ void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos)
     this->tiles[(int)worldPos.x][(int)worldPos.y].place(atlasTile, worldPos);
 }
 
+void TileMap::setEmptyTile(Vector2 worldPos)
+{
+    this->tiles[(int)worldPos.x][(int)worldPos.y].erase();
+}
+
 void TileMap::drawTile(int x, int y)
 {
     Tile tile = this->tiles[x][y];

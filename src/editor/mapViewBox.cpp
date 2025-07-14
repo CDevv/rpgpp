@@ -20,7 +20,7 @@ MapViewBox::MapViewBox(WorldViewBox *viewBox)
     this->tileWorldPos = Vector2 { 0, 0 };
     this->hoverValidTile = false;
 
-    this->isPlacing = false;
+    this->action = ACTION_NONE;
     this->isTileValid = false;
     this->selectedTileAtlasCoords = Vector2 { 0, 0 };
 }
@@ -31,9 +31,9 @@ void MapViewBox::setMap(Room* map)
     viewBox->windowTitle = "Map View";
 }
 
-void MapViewBox::setPlacingMode() 
+void MapViewBox::setActionMode(RoomAction mode) 
 {
-    this->isPlacing = true;
+    this->action = mode;
 }
 
 void MapViewBox::setSelectedTile(Vector2 tile)
@@ -80,9 +80,13 @@ void MapViewBox::isHoverOnValidTile()
     bool isInViewport = viewBox->mouseInput->isInRect();
     bool isInMapRect = CheckCollisionPointRec(viewBox->mouseInput->getMouseWorldPos(), rect);
     if (isInViewport && isInMapRect) {
-        if (isPlacing && isTileValid) {
-            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                tileMap->setTile(tileAtlasPos, selectedTileAtlasCoords);
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            if (action == ACTION_PLACE) {
+                if (isTileValid) {
+                    tileMap->setTile(tileAtlasPos, selectedTileAtlasCoords);
+                }
+            } else if (action == ACTION_ERASE) {
+                tileMap->setEmptyTile(tileAtlasPos);
             }
         }
     }
@@ -155,36 +159,45 @@ void MapViewBox::drawTiles()
             }
         }
     }
-    
+
     if (hoverValidTile) {
-        if (isTileValid) {
-            //defaults
-            Vector2 origin = Vector2 { 0, 0 };
-            float rotation = 0.0f;
-            Color rectColor = Fade(WHITE, 0.7f);
-
-            //texture..
-            Texture rectTexture = tileMap->getTileSet().getTexture();
-
-            //build rects
-            Rectangle selectedTileRect = Rectangle {
-                (selectedTileAtlasCoords.x * atlasTileSize), (selectedTileAtlasCoords.y * atlasTileSize),
-                static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
-            };
+        if (action == ACTION_ERASE) {
             Rectangle hoverTileRect = Rectangle {
                 tileWorldPos.x, tileWorldPos.y,
                 static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
             };
 
-            //draw it
-            DrawTexturePro(rectTexture, selectedTileRect, hoverTileRect, origin, rotation, rectColor);
+            DrawRectangleRec(hoverTileRect, Fade(GRAY, 0.5f));
         } else {
-            Rectangle hoverTileRect = Rectangle {
-                tileWorldPos.x, tileWorldPos.y,
-                static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
-            };
+            if (action == ACTION_PLACE && isTileValid) {
+                //defaults
+                Vector2 origin = Vector2 { 0, 0 };
+                float rotation = 0.0f;
+                Color rectColor = Fade(WHITE, 0.7f);
 
-            DrawRectangleRec(hoverTileRect, Fade(RED, 0.5f));
+                //texture..
+                Texture rectTexture = tileMap->getTileSet().getTexture();
+
+                //build rects
+                Rectangle selectedTileRect = Rectangle {
+                    (selectedTileAtlasCoords.x * atlasTileSize), (selectedTileAtlasCoords.y * atlasTileSize),
+                    static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+                };
+                Rectangle hoverTileRect = Rectangle {
+                    tileWorldPos.x, tileWorldPos.y,
+                    static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+                };
+
+                //draw it
+                DrawTexturePro(rectTexture, selectedTileRect, hoverTileRect, origin, rotation, rectColor);
+            } else {
+                Rectangle hoverTileRect = Rectangle {
+                    tileWorldPos.x, tileWorldPos.y,
+                    static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+                };
+
+                DrawRectangleRec(hoverTileRect, Fade(RED, 0.5f));
+            }
         }
     }
 }

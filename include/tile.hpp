@@ -13,6 +13,7 @@ public:
     Tile();
     bool isPlaced();
     void place(AtlasTile atlasTile, Vector2 worldCoords);
+    void erase();
     AtlasTile getAtlasTile();
     Vector2 getWorldCoords();
 };

@@ -1,6 +1,7 @@
 #include "mapPanelView.hpp"
 #include <memory>
 #include <raylib.h>
+#include <raygui.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "propertiesBox.hpp"
@@ -25,10 +26,10 @@ MapPanelView::MapPanelView(Rectangle rect)
 
     Rectangle tileSetWindowRect = Rectangle
     {
-        (windowRect.x + windowRect.width + 4), (windowRect.y),
+        (windowRect.x + windowRect.width + 4), (windowRect.y + 36),
         (GetScreenWidth() - ((windowRect.x + windowRect.width + 4) + 4)), (8)
     };
-    tileSetWindowRect.height = tileSetWindowRect.width;
+    tileSetWindowRect.height = tileSetWindowRect.width - 36;
     Rectangle tileSetRenderRect = Rectangle
     {
         (tileSetWindowRect.x + 2), (tileSetWindowRect.y + 24),
@@ -37,7 +38,7 @@ MapPanelView::MapPanelView(Rectangle rect)
     tileSetView = std::make_unique<WorldViewBox>(tileSetWindowRect, tileSetRenderRect, FILE_TILESET);
 
     tileSetView->enableTileSelection();
-    worldView->enableTilePlacement();
+    worldView->setActionMode(ACTION_NONE);
 
     Rectangle propRect = Rectangle
     {
@@ -75,4 +76,24 @@ void MapPanelView::draw()
     worldView->draw();
     tileSetView->draw();
     propBox.draw();
+
+    Rectangle windowRect = Rectangle
+    {
+        176, 48,
+        static_cast<float>(GetScreenWidth() - 464), static_cast<float>(GetScreenHeight() - 56)
+    };
+    Rectangle btnRect = Rectangle 
+    {
+        windowRect.x + windowRect.width + 4, windowRect.y,
+        60, 24
+    };
+    if (GuiButton(btnRect, "Place")) {
+        worldView->setActionMode(ACTION_PLACE);
+    }
+
+    Rectangle eraseBtnRect = btnRect;
+    eraseBtnRect.x += eraseBtnRect.width + 4;
+    if (GuiButton(eraseBtnRect, "Erase")) {
+        worldView->setActionMode(ACTION_ERASE);
+    }
 }
