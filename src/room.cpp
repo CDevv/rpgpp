@@ -1,4 +1,5 @@
 #include "room.hpp"
+#include "collisionsContainer.hpp"
 #include "interactable.hpp"
 #include "interactablesContainer.hpp"
 #include "tilemap.hpp"
@@ -10,7 +11,9 @@ using json = nlohmann::json;
 
 Room::Room()
 {
+    this->worldTileSize = 48;
     this->interactables = std::unique_ptr<InteractablesContainer>{};
+    this->collisions = std::unique_ptr<CollisionsContainer>{};
     this->tileMap = std::unique_ptr<TileMap>{};
     this->actors = std::unique_ptr<std::vector<Actor>>{};
     this->player = std::unique_ptr<Player>{};
@@ -18,7 +21,10 @@ Room::Room()
 
 Room::Room(std::string fileName)
 {
+    this->worldTileSize = 48;
+
     this->interactables = std::make_unique<InteractablesContainer>();
+    this->collisions = std::make_unique<CollisionsContainer>();
     this->actors = std::make_unique<std::vector<Actor>>();
 
     std::unique_ptr<Actor> actor = std::make_unique<Actor>("resources/playerActor.json");
@@ -29,6 +35,7 @@ Room::Room(std::string fileName)
 
     char* jsonString = LoadFileText(fileName.c_str());
     json roomJson = json::parse(jsonString);
+
     std::vector<std::vector<int>> interactablesVec = roomJson.at("interactables");
     for (auto v : interactablesVec) {
         int x = v[0];
@@ -38,12 +45,50 @@ Room::Room(std::string fileName)
         interactables->add(x, y, itype);
     }
 
+    std::vector<std::vector<int>> collisionsVec = roomJson.at("collision");
+    for (auto v : collisionsVec) {
+        int x = v[0];
+        int y = v[1];
+
+        collisions->addCollisionTile(x, y);
+    }
+
     UnloadFileText(jsonString);
 }
 
 Room::Room(std::unique_ptr<TileMap> tileMap)
 {
     this->tileMap = std::move(tileMap);
+}
+
+json Room::dumpJson()
+{
+    json roomJson = this->tileMap->dumpJson();
+    
+    //Vector for collisions
+    auto collisionsVector = std::vector<std::vector<int>>();
+    for (Vector2 collisionPos : collisions->getVector()) {
+        std::vector<int> collision;
+        collision.push_back(collisionPos.x);
+        collision.push_back(collisionPos.y);
+
+        collisionsVector.push_back(collision);
+    }
+    roomJson.push_back({"collision", collisionsVector});
+
+    //Vector for interactables
+    auto interactablesVector = std::vector<std::vector<int>>();
+    for (auto&& interactable : interactables->getVector()) {
+        std::vector<int> interactableVector;
+        interactableVector.push_back(interactable.getWorldPos().x);
+        interactableVector.push_back(interactable.getWorldPos().y);
+        interactableVector.push_back(static_cast<int>(interactable.getType()));
+
+        interactablesVector.push_back(interactableVector);
+    }
+    roomJson.push_back({"interactables", interactablesVector});
+
+    return roomJson;
 }
 
 void Room::unload()
@@ -71,6 +116,13 @@ void Room::draw()
     for (auto i : interactables->getVector()) {
         Rectangle rect = i.getRect();
         DrawRectangleRec(rect, Fade(YELLOW, 0.5f));
+    }
+    for (auto c : collisions->getVector()) {
+        Rectangle rect = Rectangle {
+            c.x * worldTileSize, c.y * worldTileSize,
+            static_cast<float>(worldTileSize), static_cast<float>(worldTileSize)
+        };
+        DrawRectangleRec(rect, Fade(RED, 0.5f));
     }
 
     for (auto&& actor : *actors) {
@@ -100,7 +152,7 @@ TileMap& Room::getTileMap()
 
 std::vector<Vector2> Room::getCollisionTiles()
 {
-    return this->tileMap->getCollisionTiles();
+    return this->collisions->getVector();
 }
 
 std::vector<Interactable> Room::getInteractableTiles()

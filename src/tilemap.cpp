@@ -61,17 +61,6 @@ TileMap::TileMap(std::string fileName)
         }
     }
 
-    //Set collisions..
-    std::vector<std::vector<int>> collisionPositions = j.at("collision");
-    for (std::vector<int> pos : collisionPositions) {
-        int x = pos.at(0);
-        int y = pos.at(1);
-
-        Vector2 collisionPos = Vector2{ static_cast<float>(x), static_cast<float>(y) };
-
-        this->setCollisionTile(collisionPos);
-    }
-
     UnloadFileText(jsonContent);
 }
 
@@ -122,37 +111,13 @@ json TileMap::dumpJson()
         }
     }
 
-    //Vector for collisions
-    auto collisionsVector = std::vector<std::vector<int>>();
-    for (Vector2 collisionPos : collisions) {
-        std::vector<int> collision;
-        collision.push_back(collisionPos.x);
-        collision.push_back(collisionPos.y);
-
-        collisionsVector.push_back(collision);
-    }
-
-    auto interactablesVector = std::vector<std::vector<int>>();
-    /*
-    for (auto&& interactable : *interactables) {
-        std::vector<int> interactableVector;
-        interactableVector.push_back(interactable.getWorldPos().x);
-        interactableVector.push_back(interactable.getWorldPos().y);
-        interactableVector.push_back(static_cast<int>(interactable.getType()));
-
-        interactablesVector.push_back(interactableVector);
-    }
-    */
-
     //Make the json object
     json tileMapJson = {
         {"tileset", tileSetSource},
         {"tileSize", worldTileSize},
         {"width", width},
         {"height", height},
-        {"map", tilesVector},
-        {"collision", collisionsVector},
-        {"interactables", interactablesVector}
+        {"map", tilesVector}
     };
 
     return tileMapJson;
@@ -176,23 +141,6 @@ void TileMap::draw()
             drawTile(x, y);
         }
     }
-
-    //draw collision boxes
-    Color collisionDebugColor = RED;
-    collisionDebugColor.a = (255 / 2);
-
-    for (Vector2 v : collisions) {
-        Rectangle rec = Rectangle {
-            v.x * worldTileSize, v.y * worldTileSize,
-            static_cast<float>(worldTileSize), static_cast<float>(worldTileSize)
-        };
-
-        DrawRectangleRec(rec, collisionDebugColor);
-    }
-
-    //draw interactables..
-    Color interactableDebugColor = YELLOW;
-    interactableDebugColor.a = (255 / 2);
 }
 
 std::string TileMap::getTileSetSource()
@@ -300,26 +248,6 @@ void TileMap::drawTile(Vector2 worldPos, AtlasTile tile)
 
     //draw it
     DrawTexturePro(texture, atlasCoordsRect, worldCoordsRect, origin, rotation, WHITE);
-}
-
-void TileMap::setCollisionTile(Vector2 worldPos)
-{
-    this->collisions.push_back(worldPos);
-}
-
-bool TileMap::isCollisionTile(const Vector2 worldPos)
-{
-    for (Vector2 v : collisions) {
-        if (Vector2Equals(v, worldPos)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-std::vector<Vector2> TileMap::getCollisionTiles()
-{
-    return this->collisions;
 }
 
 Vector2 TileMap::getMaxAtlasSize() {

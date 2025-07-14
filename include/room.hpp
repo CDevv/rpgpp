@@ -6,15 +6,20 @@ class Player;
 #include <memory>
 #include <vector>
 #include <raylib.h>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 #include "actor.hpp"
 #include "interactablesContainer.hpp"
+#include "collisionsContainer.hpp"
 #include "player.hpp"
 #include "tilemap.hpp"
 #include "interactable.hpp"
 
 class Room {
 private:
+    int worldTileSize;
     std::unique_ptr<InteractablesContainer> interactables;
+    std::unique_ptr<CollisionsContainer> collisions;
     std::unique_ptr<TileMap> tileMap;
     std::unique_ptr<std::vector<Actor>> actors;
     std::unique_ptr<Player> player;
@@ -22,6 +27,7 @@ public:
     Room();
     Room(std::string fileName);
     Room(std::unique_ptr<TileMap> tileMap);
+    json dumpJson();
     void unload();
     void update();
     void draw();

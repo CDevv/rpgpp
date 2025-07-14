@@ -23,7 +23,6 @@ private:
     int maxAtlasWidth;
     int maxAtlasHeight;
     std::vector<std::vector<Tile>> tiles;
-    std::vector<Vector2> collisions;
 public:
     TileMap(std::string fileName);
     TileMap(std::string tileSetSource, int width, int height, int atlasTileSize, int worldTileSize);
@@ -42,9 +41,6 @@ public:
     void drawTile(int x, int y);
     void drawTile(Vector2 worldPos, Vector2 atlasPos);
     void drawTile(Vector2 worldPos, AtlasTile tile);
-    void setCollisionTile(Vector2 worldPos);
-    bool isCollisionTile(const Vector2 worldPos);
-    std::vector<Vector2> getCollisionTiles();
     Vector2 getMaxAtlasSize();
     Vector2 getMaxWorldSize();
     void setWorldSize(Vector2 size);
