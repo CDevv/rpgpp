@@ -12,6 +12,9 @@ private:
     std::unique_ptr<WorldViewBox> worldView;
     std::unique_ptr<WorldViewBox> tileSetView;
     PropertiesBox propBox;
+    int actionModeToggle;
+    int layoutModeToggle;
+    bool layoutDropdownEditMode;
 public:
     MapPanelView();
     MapPanelView(Rectangle rect);

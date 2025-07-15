@@ -96,6 +96,8 @@ void EditorInterfaceService::draw()
     resourceView.draw();
 
     windowContainer.draw();
+
+    GuiUnlock();
 }
 
 Font EditorInterfaceService::getFont()

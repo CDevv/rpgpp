@@ -34,7 +34,7 @@ void ResourceViewerBox::draw()
             drawMaps();
         }
 
-        if (GuiDropdownBox(Rectangle { rect.x, rect.y + 24, rect.width, 24 }, "TileSets;Maps", &dropdownActive, dropdownEditMode)) {
+        if (GuiDropdownBox(Rectangle { rect.x, rect.y + 24, rect.width, 24 }, "TileSets;Rooms", &dropdownActive, dropdownEditMode)) {
             dropdownEditMode = !dropdownEditMode;
         }
     }

@@ -1,3 +1,4 @@
+#include "editorInterfaceService.hpp"
 #include "room.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
@@ -21,6 +22,7 @@ MapViewBox::MapViewBox(WorldViewBox *viewBox)
     this->hoverValidTile = false;
 
     this->action = ACTION_NONE;
+    this->currentLayer = LAYER_TILES;
     this->isTileValid = false;
     this->selectedTileAtlasCoords = Vector2 { 0, 0 };
 }
@@ -34,6 +36,11 @@ void MapViewBox::setMap(Room* map)
 void MapViewBox::setActionMode(RoomAction mode) 
 {
     this->action = mode;
+}
+
+void MapViewBox::setLayerMode(RoomLayer mode)
+{
+    this->currentLayer = mode;
 }
 
 void MapViewBox::setSelectedTile(Vector2 tile)
@@ -160,6 +167,42 @@ void MapViewBox::drawTiles()
         }
     }
 
+    if (currentLayer == LAYER_COLLISIONS) {
+        for (auto c : room->getCollisionTiles()) {
+            Rectangle collisionRect = Rectangle {
+                (c.x * atlasTileSize), (c.y * atlasTileSize),
+                static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+            };
+            DrawRectangleRec(collisionRect, Fade(RED, 0.8f));
+        }
+    }
+    if (currentLayer == LAYER_INTERACTABLES) {
+        EditorInterfaceService& ui = Editor::getUi();
+        Font font = ui.getFont();
+
+        for (auto i : room->getInteractableTiles()) {
+            Rectangle intRect = Rectangle
+            {
+                (i.getWorldPos().x * atlasTileSize), (i.getWorldPos().y * atlasTileSize),
+                static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+            };
+
+            DrawRectangleRec(intRect, Fade(YELLOW, 0.8f));
+            DrawRectangleLinesEx(intRect, 0.5f, YELLOW);
+
+            int typeNum = static_cast<int>(i.getType());
+            Vector2 intPos = Vector2 { intRect.x, intRect.y };
+            DrawTextEx(font, TextFormat("Type: %i", typeNum), intPos, 6, 0.5f, BLACK);
+        }
+    }
+
+    drawHoverTile(atlasTileSize, tileWorldPos);
+}
+
+void MapViewBox::drawHoverTile(int atlasTileSize, Vector2 tileWorldPos)
+{
+    TileMap *tileMap = room->getTileMap();
+
     if (hoverValidTile) {
         if (action == ACTION_ERASE) {
             Rectangle hoverTileRect = Rectangle {
@@ -190,13 +233,6 @@ void MapViewBox::drawTiles()
 
                 //draw it
                 DrawTexturePro(rectTexture, selectedTileRect, hoverTileRect, origin, rotation, rectColor);
-            } else {
-                Rectangle hoverTileRect = Rectangle {
-                    tileWorldPos.x, tileWorldPos.y,
-                    static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
-                };
-
-                DrawRectangleRec(hoverTileRect, Fade(RED, 0.5f));
             }
         }
     }

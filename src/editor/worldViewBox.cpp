@@ -68,6 +68,11 @@ void WorldViewBox::setActionMode(RoomAction mode)
     mapView.setActionMode(mode);
 }
 
+void WorldViewBox::setLayerMode(RoomLayer mode)
+{
+    mapView.setLayerMode(mode);
+}
+
 void WorldViewBox::setSelectedTile(Vector2 tile)
 {
     mapView.setSelectedTile(tile);

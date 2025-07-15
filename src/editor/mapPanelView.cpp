@@ -13,6 +13,10 @@ MapPanelView::MapPanelView()
 
 MapPanelView::MapPanelView(Rectangle rect)
 {
+    actionModeToggle = 0;
+    layoutModeToggle = 0;
+    layoutDropdownEditMode = false;
+
     Rectangle windowRect = Rectangle
     {
         176, 48,
@@ -26,7 +30,7 @@ MapPanelView::MapPanelView(Rectangle rect)
 
     Rectangle tileSetWindowRect = Rectangle
     {
-        (windowRect.x + windowRect.width + 4), (windowRect.y + 36),
+        (windowRect.x + windowRect.width + 4), (windowRect.y + 56),
         (GetScreenWidth() - ((windowRect.x + windowRect.width + 4) + 4)), (8)
     };
     tileSetWindowRect.height = tileSetWindowRect.width - 36;
@@ -38,7 +42,7 @@ MapPanelView::MapPanelView(Rectangle rect)
     tileSetView = std::make_unique<WorldViewBox>(tileSetWindowRect, tileSetRenderRect, FILE_TILESET);
 
     tileSetView->enableTileSelection();
-    worldView->setActionMode(ACTION_NONE);
+    worldView->setActionMode(ACTION_PLACE);
 
     Rectangle propRect = Rectangle
     {
@@ -69,10 +73,18 @@ void MapPanelView::update()
     worldView->setSelectedTile(tileSetView->getSelectedTile());
 
     propBox.update();
+
+    RoomAction actionMode = static_cast<RoomAction>(actionModeToggle + 1);
+    worldView->setActionMode(actionMode);
+
+    RoomLayer layerMode = static_cast<RoomLayer>(layoutModeToggle);
+    worldView->setLayerMode(layerMode);
 }
 
 void MapPanelView::draw()
 {
+    if (layoutDropdownEditMode) GuiLock();
+
     worldView->draw();
     tileSetView->draw();
     propBox.draw();
@@ -82,18 +94,19 @@ void MapPanelView::draw()
         176, 48,
         static_cast<float>(GetScreenWidth() - 464), static_cast<float>(GetScreenHeight() - 56)
     };
-    Rectangle btnRect = Rectangle 
+    Rectangle optionsRect = Rectangle 
     {
-        windowRect.x + windowRect.width + 4, windowRect.y,
-        60, 24
+        (windowRect.x + windowRect.width + 4), (windowRect.y),
+        (GetScreenWidth() - ((windowRect.x + windowRect.width + 4) + 4)), 24
     };
-    if (GuiButton(btnRect, "Place")) {
-        worldView->setActionMode(ACTION_PLACE);
-    }
+    Rectangle singleOptionRect = optionsRect;
+    singleOptionRect.width /= 2;
+    //singleOptionRect.width -= 4;
+    GuiToggleGroup(singleOptionRect, "Place;Erase", &actionModeToggle);
 
-    Rectangle eraseBtnRect = btnRect;
-    eraseBtnRect.x += eraseBtnRect.width + 4;
-    if (GuiButton(eraseBtnRect, "Erase")) {
-        worldView->setActionMode(ACTION_ERASE);
+    Rectangle layoutDropdown = optionsRect;
+    layoutDropdown.y += layoutDropdown.height + 4;
+    if (GuiDropdownBox(layoutDropdown, "Tiles;Collisions;Interactables", &layoutModeToggle, layoutDropdownEditMode)) {
+        layoutDropdownEditMode = !layoutDropdownEditMode;
     }
 }

@@ -46,7 +46,7 @@ void MapInitWindow::draw()
         FileSystemService& fs = Editor::getFileSystem();
         EditorInterfaceService& ui = Editor::getUi();
 
-        if (GuiWindowBox(rect, "New Map..")) {
+        if (GuiWindowBox(rect, "New Room..")) {
             active = !active;
         }
 
