@@ -3,6 +3,8 @@
 
 #include <memory>
 #include <raylib.h>
+#include "collisionInfoPanel.hpp"
+#include "interactableInfoPanel.hpp"
 #include "worldViewBox.hpp"
 #include "propertiesBox.hpp"
 
@@ -11,6 +13,8 @@ private:
     Rectangle rect;
     std::unique_ptr<WorldViewBox> worldView;
     std::unique_ptr<WorldViewBox> tileSetView;
+    CollisionInfoPanel collisionInfo;
+    InteractableInfoPanel interactableInfo;
     PropertiesBox propBox;
     int actionModeToggle;
     int layoutModeToggle;

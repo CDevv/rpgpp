@@ -2,8 +2,10 @@
 #include <memory>
 #include <raylib.h>
 #include <raygui.h>
+#include "collisionInfoPanel.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "interactableInfoPanel.hpp"
 #include "propertiesBox.hpp"
 #include "worldViewBox.hpp"
 
@@ -44,6 +46,9 @@ MapPanelView::MapPanelView(Rectangle rect)
     tileSetView->enableTileSelection();
     worldView->setActionMode(ACTION_PLACE);
 
+    collisionInfo = CollisionInfoPanel(tileSetWindowRect);
+    interactableInfo = InteractableInfoPanel(tileSetWindowRect);
+
     Rectangle propRect = Rectangle
     {
         (tileSetWindowRect.x), (tileSetWindowRect.y + tileSetWindowRect.height + 8)
@@ -76,6 +81,8 @@ void MapPanelView::update()
 
     RoomAction actionMode = static_cast<RoomAction>(actionModeToggle + 1);
     worldView->setActionMode(actionMode);
+    collisionInfo.setActionMode(actionMode);
+    interactableInfo.setActionMode(actionMode);
 
     RoomLayer layerMode = static_cast<RoomLayer>(layoutModeToggle);
     worldView->setLayerMode(layerMode);
@@ -86,9 +93,20 @@ void MapPanelView::draw()
     if (layoutDropdownEditMode) GuiLock();
 
     worldView->draw();
-    if (layoutModeToggle == 0) {
-        tileSetView->draw();
+
+    RoomLayer layerMode = static_cast<RoomLayer>(layoutModeToggle);
+    switch (layerMode) {
+        case LAYER_TILES:
+            tileSetView->draw();
+            break;
+        case LAYER_COLLISIONS:
+            collisionInfo.draw();
+            break;
+        case LAYER_INTERACTABLES:
+            interactableInfo.draw();
+            break;
     }
+
     propBox.draw();
 
     Rectangle windowRect = Rectangle
