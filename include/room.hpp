@@ -37,6 +37,8 @@ public:
     TileMap *getTileMap();
     std::vector<Vector2> getCollisionTiles();
     std::vector<Interactable> getInteractableTiles();
+    CollisionsContainer& getCollisions();
+    InteractablesContainer& getInteractables();
 };
 
 #endif

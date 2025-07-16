@@ -86,7 +86,9 @@ void MapPanelView::draw()
     if (layoutDropdownEditMode) GuiLock();
 
     worldView->draw();
-    tileSetView->draw();
+    if (layoutModeToggle == 0) {
+        tileSetView->draw();
+    }
     propBox.draw();
 
     Rectangle windowRect = Rectangle

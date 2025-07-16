@@ -1,4 +1,5 @@
 #include "editorInterfaceService.hpp"
+#include "interactable.hpp"
 #include "room.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
@@ -89,11 +90,31 @@ void MapViewBox::isHoverOnValidTile()
     if (isInViewport && isInMapRect) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             if (action == ACTION_PLACE) {
-                if (isTileValid) {
-                    tileMap->setTile(tileAtlasPos, selectedTileAtlasCoords);
+                switch (currentLayer) {
+                    case LAYER_TILES:
+                        if (isTileValid) {
+                            tileMap->setTile(tileAtlasPos, selectedTileAtlasCoords);
+                        }
+                        break;
+                    case LAYER_COLLISIONS:
+                        room->getCollisions().addCollisionTile(tileAtlasPos.x, tileAtlasPos.y);
+                        break;
+                    case LAYER_INTERACTABLES:
+                        room->getInteractables().add(tileAtlasPos.x, tileAtlasPos.y, INT_BLANK);
+                        break;
                 }
             } else if (action == ACTION_ERASE) {
-                tileMap->setEmptyTile(tileAtlasPos);
+                switch (currentLayer) {
+                    case LAYER_TILES:
+                        tileMap->setEmptyTile(tileAtlasPos);
+                        break;
+                    case LAYER_COLLISIONS:
+                        room->getCollisions().removeCollisionTile(tileAtlasPos.x, tileAtlasPos.y);
+                        break;
+                    case LAYER_INTERACTABLES:
+                        room->getInteractables().removeInteractable(tileAtlasPos.x, tileAtlasPos.y);
+                        break;
+                }
             }
         }
     }
@@ -212,27 +233,43 @@ void MapViewBox::drawHoverTile(int atlasTileSize, Vector2 tileWorldPos)
 
             DrawRectangleRec(hoverTileRect, Fade(GRAY, 0.5f));
         } else {
-            if (action == ACTION_PLACE && isTileValid) {
-                //defaults
-                Vector2 origin = Vector2 { 0, 0 };
-                float rotation = 0.0f;
-                Color rectColor = Fade(WHITE, 0.7f);
+            if (action == ACTION_PLACE) {
+                if (currentLayer == LAYER_TILES && isTileValid) {
+                    //defaults
+                    Vector2 origin = Vector2 { 0, 0 };
+                    float rotation = 0.0f;
+                    Color rectColor = Fade(WHITE, 0.7f);
 
-                //texture..
-                Texture rectTexture = tileMap->getTileSet().getTexture();
+                    //texture..
+                    Texture rectTexture = tileMap->getTileSet().getTexture();
 
-                //build rects
-                Rectangle selectedTileRect = Rectangle {
-                    (selectedTileAtlasCoords.x * atlasTileSize), (selectedTileAtlasCoords.y * atlasTileSize),
-                    static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
-                };
-                Rectangle hoverTileRect = Rectangle {
-                    tileWorldPos.x, tileWorldPos.y,
-                    static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
-                };
+                    //build rects
+                    Rectangle selectedTileRect = Rectangle {
+                        (selectedTileAtlasCoords.x * atlasTileSize), (selectedTileAtlasCoords.y * atlasTileSize),
+                        static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+                    };
+                    Rectangle hoverTileRect = Rectangle {
+                        tileWorldPos.x, tileWorldPos.y,
+                        static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+                    };
 
-                //draw it
-                DrawTexturePro(rectTexture, selectedTileRect, hoverTileRect, origin, rotation, rectColor);
+                    //draw it
+                    DrawTexturePro(rectTexture, selectedTileRect, hoverTileRect, origin, rotation, rectColor);
+                } else if (currentLayer == LAYER_COLLISIONS) {
+                    Rectangle hoverTileRect = Rectangle {
+                        tileWorldPos.x, tileWorldPos.y,
+                        static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+                    };
+
+                    DrawRectangleRec(hoverTileRect, Fade(RED, 0.7f));
+                } else if (currentLayer == LAYER_INTERACTABLES) {
+                    Rectangle hoverTileRect = Rectangle {
+                        tileWorldPos.x, tileWorldPos.y,
+                        static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+                    };
+
+                    DrawRectangleRec(hoverTileRect, Fade(YELLOW, 0.7f));
+                }
             }
         }
     }

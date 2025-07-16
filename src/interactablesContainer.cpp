@@ -18,6 +18,16 @@ void InteractablesContainer::add(int x, int y, InteractableType type) {
     }
 }
 
+void InteractablesContainer::removeInteractable(int x, int y) {
+    for (std::vector<Interactable>::iterator it = vec.begin(); it != vec.end();) {
+        if (it->getWorldPos().x == x && it->getWorldPos().y == y) {
+            vec.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
 std::vector<Interactable> InteractablesContainer::getVector() {
     return this->vec;
 }

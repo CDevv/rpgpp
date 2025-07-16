@@ -10,6 +10,7 @@ private:
 public:
     CollisionsContainer();
     void addCollisionTile(int x, int y);
+    void removeCollisionTile(int x, int y);
     const std::vector<Vector2>& getVector();
 };
 

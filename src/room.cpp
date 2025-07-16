@@ -161,5 +161,13 @@ std::vector<Interactable> Room::getInteractableTiles()
     return this->interactables->getVector();
 }
 
+CollisionsContainer& Room::getCollisions()
+{
+    return *this->collisions;
+}
 
+InteractablesContainer& Room::getInteractables()
+{
+    return *this->interactables;
+}
 

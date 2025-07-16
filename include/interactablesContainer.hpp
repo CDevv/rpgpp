@@ -10,6 +10,7 @@ private:
 public:
     InteractablesContainer();
     void add(int x, int y, InteractableType type);
+    void removeInteractable(int x, int y);
     std::vector<Interactable> getVector();
 };
 
