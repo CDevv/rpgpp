@@ -2,8 +2,14 @@
 #include "game.hpp"
 #include <stdio.h>
 
+Interactable::Interactable()
+{
+    this->valid = false;
+}
+
 Interactable::Interactable(InteractableType type, Vector2 tilePos, int tileSize)
 {
+    this->valid = true;
     this->type = type;
     this->tilePos = tilePos;
     this->tileSize = tileSize;
@@ -17,6 +23,11 @@ Interactable::Interactable(InteractableType type, Vector2 tilePos, int tileSize)
 
 Interactable::~Interactable()
 {
+}
+
+bool Interactable::isValid()
+{
+    return this->valid;
 }
 
 Rectangle Interactable::getRect()

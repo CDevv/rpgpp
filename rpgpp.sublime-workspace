@@ -1,0 +1,3461 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Inter",
+				"Interactable"
+			],
+			[
+				"getW",
+				"getWorldPos"
+			],
+			[
+				"inter",
+				"interactable"
+			],
+			[
+				"int",
+				"interactable"
+			],
+			[
+				"Int",
+				"Interactable"
+			],
+			[
+				"IN",
+				"Interactable"
+			],
+			[
+				"g",
+				"getWorldPos"
+			],
+			[
+				"get",
+				"get"
+			],
+			[
+				"inte",
+				"interactableWorldPos"
+			],
+			[
+				"set",
+				"setInitial"
+			],
+			[
+				"getSelect",
+				"getSelectedWorldTile"
+			],
+			[
+				"map",
+				"mapView"
+			],
+			[
+				"getSele",
+				"getSelectedWorldTile"
+			],
+			[
+				"getSelected",
+				"getSelectedWorldTile"
+			],
+			[
+				"selectedTileWo",
+				"selectedTileWorldPosY"
+			],
+			[
+				"sel",
+				"selectedTileWorldPosX"
+			],
+			[
+				"sele",
+				"selectedWorldTile"
+			],
+			[
+				"A",
+				"ACTION_EDIT"
+			],
+			[
+				"Draw",
+				"DrawRectangleLinesEx"
+			],
+			[
+				"ACTION_",
+				"ACTION_EDIT"
+			],
+			[
+				"in",
+				"interactableInfo"
+			],
+			[
+				"se",
+				"setCurrentInteractableType"
+			],
+			[
+				"typ",
+				"typeNumber"
+			],
+			[
+				"In",
+				"InteractableType"
+			],
+			[
+				"GuiD",
+				"GuiDropdownBox"
+			],
+			[
+				"cur",
+				"currentInteractableType"
+			],
+			[
+				"Gui",
+				"GuiPanel"
+			],
+			[
+				"Gu",
+				"GuiPanel"
+			],
+			[
+				"curr",
+				"currentInteractableType"
+			],
+			[
+				"ge",
+				"getType"
+			],
+			[
+				"inc",
+				"include"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "Package Control Messages\n========================\n\n\nDebugger\n--------\n\n  For setup see https://github.com/daveleroy/sublime_debugger\n  \n  For a full list of changes see https://github.com/daveleroy/sublime_debugger/commits\n  \n  Version 0.11.6 - Dec 22, 2024\n  - python: fixes issue with installing adapter\n  \n  Version 0.11.5 - May 25, 2024\n  - Renamed `ui_scale` to `font_size` to better reflect what it does\n  - Added `internal_width_modifier` to allow adjusting the width of the content if the variables panel is being clipped\n  \n  \n  Version 0.11.3 - May 6, 2024\n  - Support for reverse debugging for adapters that support it (@Phaiax)\n  - Fixes a compatibility issue with LSP 4070-2.0.1\n  \n  - gdb: Added a few extra commands for improved reverse debugging support (@Phaiax)\n  - python: Changed type to `debugpy` to match vscode and updated to use vscode-python-debugger\n  \n  \n  Version 0.11.2 - April 19, 2024\n  - Updated to handle LSP using the 3.8 plugin host (some adapters require LSP)\n  \n  \n  Version 0.11.1 - March 24, 2024\n  - Fixes issue with installing adapters\n  \n  \n  Version 0.11.0 - March 23, 2024\n  - Added `Debugger: Example Projects` for opening example projects for each adapter\n  - Added `internal_font_scale` setting for users who have issues with the font overlapping the ui (#223)\n  - Added `always_keep_visible` setting which attempts to always keep the debugger panel open when there is no other output panel\n  - The callstack panel now shows the tabs at the bottom like the console\n  - Improved the messaging around installing adapters\n  - Hide Debugger33 package from PackageControl listings (@narenkarthicktp)\n  - Fixes an issue where stepping was targeting the wrong thread\n  \n  - sublime: initial support for debugging sublime plugins\n  \n  \n  Version 0.10.1 - April 3, 2023\n  - Fixes an issue with new versions of vscode-js-debug\n  \n  \n  Version 0.10.0 - April 1, 2023\n  - Initial support for viewing and stepping through disassembly (not all adapters support this)\n  - Fixes a few issues with how multiple simultaneous debug sessions are hanled\n  - All adapters are now packaged on github instead of taking some from openvsx since the openvsx api can be really slow\n  - LSP-json schema now issues an error message when an adapter type is not installed\n  - A number of minor layout and color tweaks to make the ui fit better with the default adaptive theme\n  \n  - ruby: Switched to rdbg instead of readapt since that seems like the official dap server\n  - go: Support for `env` configuration option and default `cwd` to `${folder}`\n  \n  \n  Version 0.9.3 - Feb 4, 2023\n  - Minor improvements to the variables/watch display\n  - Show duplicate lines in the console with a counter\n  - Show none stderr/stdout output events as blue\n  - Fixes an issue with the java adapter (@LDAP)\n  \n  \n  Version 0.9.2 - Jan 19, 2023\n  - Fixes issue with Debugger unintentionally stealing command + click\n  \n  \n  Version 0.9.1 - Jan 15, 2023\n  - Fixes issue with latest release\n  \n  \n  Version 0.9.0 - Jan 14, 2023\n  - Add location information to some error messages such as launch errors which point to the configuration being run\n  - Improved validation of configurations\n  \n  - Generate better html for clickable item to reduce unnecessary html elements\n  - Optimize the size of image assets with pngquant\n  - Optimize html and css generation\n  - Delay resizing the ui until the layout stop changing\n  \n  - Fixes a few issues with stderr from the adapter not being logged correctly when a transport ends unexpectedly\n  - Fixes an issue where the debugger output panel was being forced to be too tall (you may need to delete the cached values in your workspace file)\n  - Fixes an issue with setting breakpoints in some adapters\n  \n  \n  Version 0.8.4 - Nov 19, 2022\n  - Changed how debugger console panels deal with extra vertical space\n  - Integrated terminals tab now appear next to the console tab instead of after the callstack tab\n  - Improvements to the protocol logging\n  - If the session ends unexpectedly then log anything from the transports stderr to the console\n  - Add `debugger_configurations` to project data when opening in a project (#189)\n  - Display multiple variables in the same console event better\n  \n  \n  Version 0.8.3 - Oct 16, 2022\n  - line up/down in the debugger console now cycles through previous commands\n  - Fixes issue with debugger console input not activating\n  \n  \n  Version 0.8.3 - Oct 16, 2022\n  - line up/down in the debugger console now cycles through previous commands\n  - Fixes issue with debugger console input not activating\n  \n  \n  Version 0.8.2 - Oct 15, 2022\n  - When copying text from the debugger console remove hidden syntax highlighting characters\n  - Fixes alignment issues on Windows/Linux\n  \n  \n  Version 0.8.1 - Oct 10, 2022\n  - The selected stack frame location indicator now shows a tick mark under the selected column\n  - Add context values for keybindings (debugger, debugger.visible, debugger.active)\n  - Adjusted layout calculations\n  \n  \n  Version 0.8.0 - Oct 8, 2022\n  - Show currently selected configuration in the controls bar instead of step controls when there is no active debug sessions\n  - Support for global debug configurations by adding configurations to `global_debugger_configurations` in the debugger settings\n  - The debugger can now be opened without a project file when there are global configurations\n  - Clicking on a breakpoint now shows the breakpoint menu\n  - Right clicking on a breakpoint removes it\n  - Show preview of configuration snippets when navigating the add configuration menu\n  - A number of improvements to the schema for LSP-json\n  - emulicious: Adds Emulicious Debugger (@Calindro)\n  \n  \n  Version 0.7.2 - Sep 26, 2022\n  - Minor bug fixes\n  \n  \n  Version 0.7.1 - Sep 25, 2022\n  - Refined debugger interface that was redesigned in the last release\n  - Allow inputting commands by typing into the debugger console\n  - The debugger interface now matches the current font-size this can be overridden with the setting `ui-scale`\n  - Fixes issue where breakpoints were not shown until a view was activated\n  - Allow installing older versions of some adapters by holding down command or option when selecting the adapter in the install adapters menu\n  - js: Fixes an issue where breakpoints were not being marked as verified\n  - go: Fixes an issue where the debugger would not automatically select a thread when stopped in some cases\n  - java: Adds Java debugger via LSP-jdtls (@LDAP)\n  - python: Automatically detect virtual environments (@LDAP)\n  \n  \n  Version 0.7.0\n  - Redesigned debugger ui so that the console output can appear in an output panel\n  - The hover expression behavior is smarter and can evaluate simple expressions like `a.b` `a->c` etc\n  - lua: Adds lua debugger via lua-local (@naoufalzerai)\n  - python: support for multiprocess debugging\n  - ruby: allow specifying readapt path via `ruby_readapt` preference\n  - go: updated to use dlv dap\n  \n  Version 0.6.8\n  - python: fixes issue with installing adapter\n  - python: allow specifying the python interpreter with `python`\n  \n  \n  Version 0.6.7\n  - Fixes an issue with the latest version of vscode lldb\n  \n  \n  Version 0.6.6\n  - Allow inputing debugger commands directly into the debugger console\n  - Auto complete for debugger commands (not all adapters support this)\n  - A number of performance/usability improvements for the debugger console\n  \n  \n  Version 0.6.4\n  - Added support for vscode-js-debug for chrome/node/edge adapters\n  - Improved snippet support\n  \n  \n  Version 0.6.3\n  - Adjusted the calculation for determining a good value for ui_rem_width_scale\n  - Added setting ui_rem_width_scale_adjust_automatically for disabling automatic calculation of ui_rem_width_scale\n  \n  \n  Version 0.6.2\n  - Fixes a layout issue on Linux\n  \n  \n  Version 0.6.1\n  - Fixes an issue with the debugger panel not being correctly sized on Windows/Linux #121\n  - Fixes an issue with hover evaluation #152 (@ta946)\n  \n  \n  Version 0.6.0\n  - This update changes how the output is handled. Instead of showing up as a tab in the debugger UI the layout is changed to a split view and the output is created in a standard view. This isn't perfect but it at least allows copy/paste/scrolling etc. The output view now also supports some ansi escape codes. You can customize the layout/placement of the view in the settings.\n  - Adds dissasembly syntax for LLDB\n  - Elixer support (@timfjord)\n  \n  \n  Version 0.5.4\n  - Resolve the`$workspaceFolder` variable to first folder project instead of being an alias of `$project_path`  (@rchl)\n  - Fix layout positioning in latest ST dev builds (@rchl)\n  - lldb: Fixes an issue with the integrated terminal handling\n  \n  \n  Version 0.5.3\n  - Tool tips when hovering over debugger controls\n  - Moved Debugger menu item into tools -> Debugger\n  - Improved json schema support for auto completeing adapter configurations (requires LSP-json)\n  - Fixes node json schema contributions\n  - Fixes issue with installing the php adapter\n  - Fixes issues with localized pacakages and json schema/snippets\n  - Fixes issue with external terminal on mac\n  \n  \n  Version 0.5.2\n  - Disable winpty on Windows (needs to be rebuilt for python 3.8)\n  \n  \n  Version 0.5.1\n  - Fixes 64/32 bit windows importing the wrong winpyty versions\n  \n  \n  Version 0.5.0\n  - python: Allow module launch configurations (@anergictcell)\n  - lldb: fixes issue with toggle disassembly\n  - ruby: added adapter (requires readapt)\n  \n  - The install adapter menu now checks installed adapters for updates (for most adapters)\n  - The install adapter menu now has a link to each adapters documentations\n  \n  - Added 'Debugger: Clear Breakpoints' command that clears all breakpoints\n  \n  - Support for exception breakpoint filter conditions (not all adapters support this)\n  - Support for debug session hierarchies which is going to be required for some complex adapter setups such as vscode-debug-js\n  - Support the \"clipboard\" context when copying a variables value\n  \n  - When expanding a variable display a loading indicator when the variables children are fetched.\n  - Show error message inline when expanding a variable fails\n  - Allow expanding/collapsing a debug session\n  - Improved handling of stack frames that marked as labels\n  - Improved handling of stack frames that are marked as deemphasized or their source is deemphasized\n  - Fixes integrated terminal\n  \n  \n  Version 0.4.1\n  - Adds explicit font setting for debugger panel\n  \n  \n  Version 0.4.0\n  - debugger_configuration replaces debug.configurations and is now defined at the root of the .sublime-project instead of inside settings\n  - Adds support for tasks see https://github.com/daveleroy/sublime_debugger#tasks\n  - Adds support for pre_debug_task and post_debug_task which can be used to build etc\n  - Adds schema support for LSP-json for auto completeing adapter configurations (see https://github.com/sublimelsp/LSP-json)\n  - Improvements to lldb adapter adding toggle disassembly, display options, dereference options\n  - Clicking a terminal panel when already selected now shows an output panel with the entire contents\n  - Renamed a bunch of commands (so if you bound any commands check them)\n  - Node adapter now has snippets\n  - Fixes issues with latest release of lldb adapter\n  - Fixes default ui scale accross platforms\n  \n  \n  Version 0.3.1\n  - Fixes issue with sizing and alignment of panels on windows\n  - Fixes path of go adapter\n  \n  \n  Version 0.3.0\n  - Initial support for multiple debug sessions\n  - Use debugpy instead of ptvsd for python adapter\n  - Right align line numbers in variables/callstack panel\n  - Improved layout of panels\n  \n  \n  Version 0.2.3\n  - Updates path for lldb\n  \n  \n  Version 0.2.3\n  - Updates path for lldb\n  \n  \n  Version 0.2.2\n  - Show dialog with error message when launching fails (to match vscode)\n  - In multi-threaded programs the reason for why a specific thread was stopped is now only displayed on that thread even if all threads were stopped\n  - If running a build with `sublime_build` in the configuration don't start debugging if the build fails with an exit code\n  - Fixes issue with pause not working\n  - Fixes rendering performance regression\n  - Fixes gutter icons on windows\n  \n  \n  Version 0.2.1\n  - Debugging with a single thread now just displays the stack frames without the thread header\n  - When launching a configuration and the adapter is not installed offer to install it\n  - When auto selecting a stack frame prefer the first none subtle stack frame\n  - Fixes call stack layout when encountering long stack frame names\n  - Fixes various issues with multi threaded debugging\n  - Fixes hover providers\n  \n  \n  Version 0.2.0\n  - Support for column breakpoints (requires adapter support)\n  - Support for data breakpoints (requires adapter support, currently only lldb?)\n  - Left-click gutter now toggles breakpoints, right-clicking a breakpoint allows editing/advanced options\n  - Watch expressions\n  - Loaded Modules/Sources panels\n  - Adds Node debug adapter (@appelgriebsch)\n  - External terminal support. Terminal on Mac (Needs support for Windows/Linux) or Sublime's Terminus package.\n  - Integrated terminal now strips ascii control sequences\n  - Settings button\n  - Show currently installed version of an adapter, show download progress when installing an adapter\n  - Fixes issues that sometimes occurred installing/reinstalling adapters\n  - Fixes issues with reloading plugin\n  \n  \n  Version 0.1.8\n  - Fixes core not defined error\n  \n  \n  Version 0.1.7\n  - Allow setting logging options in settings\n  - Updated url for vscode-firefox-debugger (@appelgriebsch)\n  - Fixes issue preventing Debugger: Install Adapters from being run from the command palette\n  - Fixes issue where some debug adapters were failing to be fully unzipped on Windows because of long paths\n  \n  \n  Version 0.1.6\n  - Adds run to cursor command\n  - Fixes issue preventing installing debug adapters\n  \n  \n  Version 0.1.5\n  - Fixes issue that prevented debugging on windows\n  \n  \n  Version 0.1.4\n  - New styling of panels and updated layout to better support temporary panels created for build results/integrated terminal (and in the future allow customizing the layout of the panels)\n  - New console rendering code to support text wrapping and build results/integrated terminal\n  - Support internal terminal requests to allow program input. Requires configuration changes to use this feature which depends on the adapter in question. (LLVM uses \"terminal\": \"integrated\")\n  - Allow defining platform specific configuration settings with a top level object called \"linux\", \"osx\", or \"windows\" in your configuration. Same as vscode\n  - Fixes issue where hover providers/autocomplete/run command was not working for some debug adapters\n  - Fixes issue where using $file and other variables in a configuration had their values expanded when the debugger was opened not when the debugger was started\n  - Fixes some wonkiness that occurred when stepping the debugger that caused it to not update correctly\n  \n  \n  Version 0.1.3\n  - When attempting to open the debugger in a window without a sublime project prompt the user to create one.\n  - Fixes some other minor bugs and configuration issues\n  \n  \n  Version 0.1.0\n  - Adds package control support\n",
+			"settings":
+			{
+				"buffer_size": 15322,
+				"line_ending": "Unix",
+				"name": "Package Control Messages",
+				"read_only": true,
+				"scratch": true
+			},
+			"undo_stack":
+			[
+				[
+					1,
+					1,
+					"package_control_message",
+					{
+						"message": "\n\nDebugger\n--------\n\n  For setup see https://github.com/daveleroy/sublime_debugger\n  \n  For a full list of changes see https://github.com/daveleroy/sublime_debugger/commits\n  \n  Version 0.11.6 - Dec 22, 2024\n  - python: fixes issue with installing adapter\n  \n  Version 0.11.5 - May 25, 2024\n  - Renamed `ui_scale` to `font_size` to better reflect what it does\n  - Added `internal_width_modifier` to allow adjusting the width of the content if the variables panel is being clipped\n  \n  \n  Version 0.11.3 - May 6, 2024\n  - Support for reverse debugging for adapters that support it (@Phaiax)\n  - Fixes a compatibility issue with LSP 4070-2.0.1\n  \n  - gdb: Added a few extra commands for improved reverse debugging support (@Phaiax)\n  - python: Changed type to `debugpy` to match vscode and updated to use vscode-python-debugger\n  \n  \n  Version 0.11.2 - April 19, 2024\n  - Updated to handle LSP using the 3.8 plugin host (some adapters require LSP)\n  \n  \n  Version 0.11.1 - March 24, 2024\n  - Fixes issue with installing adapters\n  \n  \n  Version 0.11.0 - March 23, 2024\n  - Added `Debugger: Example Projects` for opening example projects for each adapter\n  - Added `internal_font_scale` setting for users who have issues with the font overlapping the ui (#223)\n  - Added `always_keep_visible` setting which attempts to always keep the debugger panel open when there is no other output panel\n  - The callstack panel now shows the tabs at the bottom like the console\n  - Improved the messaging around installing adapters\n  - Hide Debugger33 package from PackageControl listings (@narenkarthicktp)\n  - Fixes an issue where stepping was targeting the wrong thread\n  \n  - sublime: initial support for debugging sublime plugins\n  \n  \n  Version 0.10.1 - April 3, 2023\n  - Fixes an issue with new versions of vscode-js-debug\n  \n  \n  Version 0.10.0 - April 1, 2023\n  - Initial support for viewing and stepping through disassembly (not all adapters support this)\n  - Fixes a few issues with how multiple simultaneous debug sessions are hanled\n  - All adapters are now packaged on github instead of taking some from openvsx since the openvsx api can be really slow\n  - LSP-json schema now issues an error message when an adapter type is not installed\n  - A number of minor layout and color tweaks to make the ui fit better with the default adaptive theme\n  \n  - ruby: Switched to rdbg instead of readapt since that seems like the official dap server\n  - go: Support for `env` configuration option and default `cwd` to `${folder}`\n  \n  \n  Version 0.9.3 - Feb 4, 2023\n  - Minor improvements to the variables/watch display\n  - Show duplicate lines in the console with a counter\n  - Show none stderr/stdout output events as blue\n  - Fixes an issue with the java adapter (@LDAP)\n  \n  \n  Version 0.9.2 - Jan 19, 2023\n  - Fixes issue with Debugger unintentionally stealing command + click\n  \n  \n  Version 0.9.1 - Jan 15, 2023\n  - Fixes issue with latest release\n  \n  \n  Version 0.9.0 - Jan 14, 2023\n  - Add location information to some error messages such as launch errors which point to the configuration being run\n  - Improved validation of configurations\n  \n  - Generate better html for clickable item to reduce unnecessary html elements\n  - Optimize the size of image assets with pngquant\n  - Optimize html and css generation\n  - Delay resizing the ui until the layout stop changing\n  \n  - Fixes a few issues with stderr from the adapter not being logged correctly when a transport ends unexpectedly\n  - Fixes an issue where the debugger output panel was being forced to be too tall (you may need to delete the cached values in your workspace file)\n  - Fixes an issue with setting breakpoints in some adapters\n  \n  \n  Version 0.8.4 - Nov 19, 2022\n  - Changed how debugger console panels deal with extra vertical space\n  - Integrated terminals tab now appear next to the console tab instead of after the callstack tab\n  - Improvements to the protocol logging\n  - If the session ends unexpectedly then log anything from the transports stderr to the console\n  - Add `debugger_configurations` to project data when opening in a project (#189)\n  - Display multiple variables in the same console event better\n  \n  \n  Version 0.8.3 - Oct 16, 2022\n  - line up/down in the debugger console now cycles through previous commands\n  - Fixes issue with debugger console input not activating\n  \n  \n  Version 0.8.3 - Oct 16, 2022\n  - line up/down in the debugger console now cycles through previous commands\n  - Fixes issue with debugger console input not activating\n  \n  \n  Version 0.8.2 - Oct 15, 2022\n  - When copying text from the debugger console remove hidden syntax highlighting characters\n  - Fixes alignment issues on Windows/Linux\n  \n  \n  Version 0.8.1 - Oct 10, 2022\n  - The selected stack frame location indicator now shows a tick mark under the selected column\n  - Add context values for keybindings (debugger, debugger.visible, debugger.active)\n  - Adjusted layout calculations\n  \n  \n  Version 0.8.0 - Oct 8, 2022\n  - Show currently selected configuration in the controls bar instead of step controls when there is no active debug sessions\n  - Support for global debug configurations by adding configurations to `global_debugger_configurations` in the debugger settings\n  - The debugger can now be opened without a project file when there are global configurations\n  - Clicking on a breakpoint now shows the breakpoint menu\n  - Right clicking on a breakpoint removes it\n  - Show preview of configuration snippets when navigating the add configuration menu\n  - A number of improvements to the schema for LSP-json\n  - emulicious: Adds Emulicious Debugger (@Calindro)\n  \n  \n  Version 0.7.2 - Sep 26, 2022\n  - Minor bug fixes\n  \n  \n  Version 0.7.1 - Sep 25, 2022\n  - Refined debugger interface that was redesigned in the last release\n  - Allow inputting commands by typing into the debugger console\n  - The debugger interface now matches the current font-size this can be overridden with the setting `ui-scale`\n  - Fixes issue where breakpoints were not shown until a view was activated\n  - Allow installing older versions of some adapters by holding down command or option when selecting the adapter in the install adapters menu\n  - js: Fixes an issue where breakpoints were not being marked as verified\n  - go: Fixes an issue where the debugger would not automatically select a thread when stopped in some cases\n  - java: Adds Java debugger via LSP-jdtls (@LDAP)\n  - python: Automatically detect virtual environments (@LDAP)\n  \n  \n  Version 0.7.0\n  - Redesigned debugger ui so that the console output can appear in an output panel\n  - The hover expression behavior is smarter and can evaluate simple expressions like `a.b` `a->c` etc\n  - lua: Adds lua debugger via lua-local (@naoufalzerai)\n  - python: support for multiprocess debugging\n  - ruby: allow specifying readapt path via `ruby_readapt` preference\n  - go: updated to use dlv dap\n  \n  Version 0.6.8\n  - python: fixes issue with installing adapter\n  - python: allow specifying the python interpreter with `python`\n  \n  \n  Version 0.6.7\n  - Fixes an issue with the latest version of vscode lldb\n  \n  \n  Version 0.6.6\n  - Allow inputing debugger commands directly into the debugger console\n  - Auto complete for debugger commands (not all adapters support this)\n  - A number of performance/usability improvements for the debugger console\n  \n  \n  Version 0.6.4\n  - Added support for vscode-js-debug for chrome/node/edge adapters\n  - Improved snippet support\n  \n  \n  Version 0.6.3\n  - Adjusted the calculation for determining a good value for ui_rem_width_scale\n  - Added setting ui_rem_width_scale_adjust_automatically for disabling automatic calculation of ui_rem_width_scale\n  \n  \n  Version 0.6.2\n  - Fixes a layout issue on Linux\n  \n  \n  Version 0.6.1\n  - Fixes an issue with the debugger panel not being correctly sized on Windows/Linux #121\n  - Fixes an issue with hover evaluation #152 (@ta946)\n  \n  \n  Version 0.6.0\n  - This update changes how the output is handled. Instead of showing up as a tab in the debugger UI the layout is changed to a split view and the output is created in a standard view. This isn't perfect but it at least allows copy/paste/scrolling etc. The output view now also supports some ansi escape codes. You can customize the layout/placement of the view in the settings.\n  - Adds dissasembly syntax for LLDB\n  - Elixer support (@timfjord)\n  \n  \n  Version 0.5.4\n  - Resolve the`$workspaceFolder` variable to first folder project instead of being an alias of `$project_path`  (@rchl)\n  - Fix layout positioning in latest ST dev builds (@rchl)\n  - lldb: Fixes an issue with the integrated terminal handling\n  \n  \n  Version 0.5.3\n  - Tool tips when hovering over debugger controls\n  - Moved Debugger menu item into tools -> Debugger\n  - Improved json schema support for auto completeing adapter configurations (requires LSP-json)\n  - Fixes node json schema contributions\n  - Fixes issue with installing the php adapter\n  - Fixes issues with localized pacakages and json schema/snippets\n  - Fixes issue with external terminal on mac\n  \n  \n  Version 0.5.2\n  - Disable winpty on Windows (needs to be rebuilt for python 3.8)\n  \n  \n  Version 0.5.1\n  - Fixes 64/32 bit windows importing the wrong winpyty versions\n  \n  \n  Version 0.5.0\n  - python: Allow module launch configurations (@anergictcell)\n  - lldb: fixes issue with toggle disassembly\n  - ruby: added adapter (requires readapt)\n  \n  - The install adapter menu now checks installed adapters for updates (for most adapters)\n  - The install adapter menu now has a link to each adapters documentations\n  \n  - Added 'Debugger: Clear Breakpoints' command that clears all breakpoints\n  \n  - Support for exception breakpoint filter conditions (not all adapters support this)\n  - Support for debug session hierarchies which is going to be required for some complex adapter setups such as vscode-debug-js\n  - Support the \"clipboard\" context when copying a variables value\n  \n  - When expanding a variable display a loading indicator when the variables children are fetched.\n  - Show error message inline when expanding a variable fails\n  - Allow expanding/collapsing a debug session\n  - Improved handling of stack frames that marked as labels\n  - Improved handling of stack frames that are marked as deemphasized or their source is deemphasized\n  - Fixes integrated terminal\n  \n  \n  Version 0.4.1\n  - Adds explicit font setting for debugger panel\n  \n  \n  Version 0.4.0\n  - debugger_configuration replaces debug.configurations and is now defined at the root of the .sublime-project instead of inside settings\n  - Adds support for tasks see https://github.com/daveleroy/sublime_debugger#tasks\n  - Adds support for pre_debug_task and post_debug_task which can be used to build etc\n  - Adds schema support for LSP-json for auto completeing adapter configurations (see https://github.com/sublimelsp/LSP-json)\n  - Improvements to lldb adapter adding toggle disassembly, display options, dereference options\n  - Clicking a terminal panel when already selected now shows an output panel with the entire contents\n  - Renamed a bunch of commands (so if you bound any commands check them)\n  - Node adapter now has snippets\n  - Fixes issues with latest release of lldb adapter\n  - Fixes default ui scale accross platforms\n  \n  \n  Version 0.3.1\n  - Fixes issue with sizing and alignment of panels on windows\n  - Fixes path of go adapter\n  \n  \n  Version 0.3.0\n  - Initial support for multiple debug sessions\n  - Use debugpy instead of ptvsd for python adapter\n  - Right align line numbers in variables/callstack panel\n  - Improved layout of panels\n  \n  \n  Version 0.2.3\n  - Updates path for lldb\n  \n  \n  Version 0.2.3\n  - Updates path for lldb\n  \n  \n  Version 0.2.2\n  - Show dialog with error message when launching fails (to match vscode)\n  - In multi-threaded programs the reason for why a specific thread was stopped is now only displayed on that thread even if all threads were stopped\n  - If running a build with `sublime_build` in the configuration don't start debugging if the build fails with an exit code\n  - Fixes issue with pause not working\n  - Fixes rendering performance regression\n  - Fixes gutter icons on windows\n  \n  \n  Version 0.2.1\n  - Debugging with a single thread now just displays the stack frames without the thread header\n  - When launching a configuration and the adapter is not installed offer to install it\n  - When auto selecting a stack frame prefer the first none subtle stack frame\n  - Fixes call stack layout when encountering long stack frame names\n  - Fixes various issues with multi threaded debugging\n  - Fixes hover providers\n  \n  \n  Version 0.2.0\n  - Support for column breakpoints (requires adapter support)\n  - Support for data breakpoints (requires adapter support, currently only lldb?)\n  - Left-click gutter now toggles breakpoints, right-clicking a breakpoint allows editing/advanced options\n  - Watch expressions\n  - Loaded Modules/Sources panels\n  - Adds Node debug adapter (@appelgriebsch)\n  - External terminal support. Terminal on Mac (Needs support for Windows/Linux) or Sublime's Terminus package.\n  - Integrated terminal now strips ascii control sequences\n  - Settings button\n  - Show currently installed version of an adapter, show download progress when installing an adapter\n  - Fixes issues that sometimes occurred installing/reinstalling adapters\n  - Fixes issues with reloading plugin\n  \n  \n  Version 0.1.8\n  - Fixes core not defined error\n  \n  \n  Version 0.1.7\n  - Allow setting logging options in settings\n  - Updated url for vscode-firefox-debugger (@appelgriebsch)\n  - Fixes issue preventing Debugger: Install Adapters from being run from the command palette\n  - Fixes issue where some debug adapters were failing to be fully unzipped on Windows because of long paths\n  \n  \n  Version 0.1.6\n  - Adds run to cursor command\n  - Fixes issue preventing installing debug adapters\n  \n  \n  Version 0.1.5\n  - Fixes issue that prevented debugging on windows\n  \n  \n  Version 0.1.4\n  - New styling of panels and updated layout to better support temporary panels created for build results/integrated terminal (and in the future allow customizing the layout of the panels)\n  - New console rendering code to support text wrapping and build results/integrated terminal\n  - Support internal terminal requests to allow program input. Requires configuration changes to use this feature which depends on the adapter in question. (LLVM uses \"terminal\": \"integrated\")\n  - Allow defining platform specific configuration settings with a top level object called \"linux\", \"osx\", or \"windows\" in your configuration. Same as vscode\n  - Fixes issue where hover providers/autocomplete/run command was not working for some debug adapters\n  - Fixes issue where using $file and other variables in a configuration had their values expanded when the debugger was opened not when the debugger was started\n  - Fixes some wonkiness that occurred when stepping the debugger that caused it to not update correctly\n  \n  \n  Version 0.1.3\n  - When attempting to open the debugger in a window without a sublime project prompt the user to create one.\n  - Fixes some other minor bugs and configuration issues\n  \n  \n  Version 0.1.0\n  - Adds package control support\n"
+					},
+					"AQAAAAAAAAAAAAAA2jsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		},
+		{
+			"file": "include/editor/mapPanelView.hpp",
+			"settings":
+			{
+				"buffer_size": 710,
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+			]
+		},
+		{
+			"file": "src/editor/mapPanelView.cpp",
+			"settings":
+			{
+				"buffer_size": 4311,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					7,
+					1,
+					"insert",
+					{
+						"characters": "\n\ni"
+					},
+					"BAAAALgJAAAAAAAAvQkAAAAAAAAAAAAAvQkAAAAAAADCCQAAAAAAAAAAAAC5CQAAAAAAALkJAAAAAAAABAAAACAgICC+CQAAAAAAAL8JAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAuAkAAAAAAAC4CQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					8,
+					1,
+					"insert",
+					{
+						"characters": "nt"
+					},
+					"AgAAAL8JAAAAAAAAwAkAAAAAAAAAAAAAwAkAAAAAAADBCQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAvwkAAAAAAAC/CQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					9,
+					1,
+					"insert_completion",
+					{
+						"completion": "interactableInfo",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "interactableInfo"
+					},
+					"AgAAAL4JAAAAAAAAvgkAAAAAAAADAAAAaW50vgkAAAAAAADOCQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAwQkAAAAAAADBCQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					10,
+					1,
+					"insert",
+					{
+						"characters": ".up"
+					},
+					"AwAAAM4JAAAAAAAAzwkAAAAAAAAAAAAAzwkAAAAAAADQCQAAAAAAAAAAAADQCQAAAAAAANEJAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAzgkAAAAAAADOCQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					11,
+					1,
+					"insert_completion",
+					{
+						"completion": "update()",
+						"format": "snippet",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "update"
+					},
+					"AgAAAM8JAAAAAAAAzwkAAAAAAAACAAAAdXDPCQAAAAAAANcJAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA0QkAAAAAAADRCQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					12,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAANcJAAAAAAAA2AkAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA1wkAAAAAAADXCQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					23,
+					1,
+					"insert",
+					{
+						"characters": "\n\nw"
+					},
+					"BAAAAHUKAAAAAAAAegoAAAAAAAAAAAAAegoAAAAAAAB/CgAAAAAAAAAAAAB2CgAAAAAAAHYKAAAAAAAABAAAACAgICB7CgAAAAAAAHwKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAdQoAAAAAAAB1CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					24,
+					1,
+					"insert_completion",
+					{
+						"completion": "worldView",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "worldView"
+					},
+					"AgAAAHsKAAAAAAAAewoAAAAAAAABAAAAd3sKAAAAAAAAhAoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAfAoAAAAAAAB8CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					25,
+					1,
+					"insert",
+					{
+						"characters": "->s"
+					},
+					"AwAAAIQKAAAAAAAAhQoAAAAAAAAAAAAAhQoAAAAAAACGCgAAAAAAAAAAAACGCgAAAAAAAIcKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAhAoAAAAAAACECgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					26,
+					1,
+					"insert",
+					{
+						"characters": "e"
+					},
+					"AQAAAIcKAAAAAAAAiAoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAhwoAAAAAAACHCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					32,
+					1,
+					"insert_completion",
+					{
+						"completion": "setCurrentInteractableType(${1:InteractableType type})",
+						"format": "snippet",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "setCurrentInteractableType"
+					},
+					"AgAAAIYKAAAAAAAAhgoAAAAAAAACAAAAc2WGCgAAAAAAALcKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAiAoAAAAAAACICgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					33,
+					1,
+					"insert",
+					{
+						"characters": "in"
+					},
+					"AgAAAKEKAAAAAAAAogoAAAAAAAAVAAAASW50ZXJhY3RhYmxlVHlwZSB0eXBlogoAAAAAAACjCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAoQoAAAAAAAC2CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					38,
+					2,
+					"left_delete",
+					null,
+					"AgAAAKIKAAAAAAAAogoAAAAAAAABAAAAbqEKAAAAAAAAoQoAAAAAAAABAAAAaQ",
+					"AQAAAAAAAAABAAAAowoAAAAAAACjCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					39,
+					1,
+					"insert",
+					{
+						"characters": "in"
+					},
+					"AgAAAKEKAAAAAAAAogoAAAAAAAAAAAAAogoAAAAAAACjCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAoQoAAAAAAAChCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					41,
+					1,
+					"insert_completion",
+					{
+						"completion": "interactableInfo",
+						"format": "snippet",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "interactableInfo"
+					},
+					"AgAAAKEKAAAAAAAAoQoAAAAAAAACAAAAaW6hCgAAAAAAALEKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAowoAAAAAAACjCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					42,
+					1,
+					"insert",
+					{
+						"characters": "."
+					},
+					"AQAAALEKAAAAAAAAsgoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAsQoAAAAAAACxCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					43,
+					1,
+					"insert",
+					{
+						"characters": "ge"
+					},
+					"AgAAALIKAAAAAAAAswoAAAAAAAAAAAAAswoAAAAAAAC0CgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAsgoAAAAAAACyCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					44,
+					1,
+					"insert_completion",
+					{
+						"completion": "getType()",
+						"format": "snippet",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "getType"
+					},
+					"AgAAALIKAAAAAAAAsgoAAAAAAAACAAAAZ2WyCgAAAAAAALsKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAtAoAAAAAAAC0CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					46,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAALwKAAAAAAAAvQoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAvAoAAAAAAAC8CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					66,
+					1,
+					"left_delete",
+					null,
+					"AQAAAEQOAAAAAAAARA4AAAAAAAABAAAAMg",
+					"AQAAAAAAAAABAAAARQ4AAAAAAABFDgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					67,
+					1,
+					"insert",
+					{
+						"characters": "3"
+					},
+					"AQAAAEQOAAAAAAAARQ4AAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAARA4AAAAAAABEDgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					70,
+					2,
+					"left_delete",
+					null,
+					"AgAAAEwOAAAAAAAATA4AAAAAAAABAAAAL0sOAAAAAAAASw4AAAAAAAABAAAALw",
+					"AQAAAAAAAAABAAAATQ4AAAAAAABNDgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					77,
+					1,
+					"insert",
+					{
+						"characters": ";Edit"
+					},
+					"BQAAAJkOAAAAAAAAmg4AAAAAAAAAAAAAmg4AAAAAAACbDgAAAAAAAAAAAACbDgAAAAAAAJwOAAAAAAAAAAAAAJwOAAAAAAAAnQ4AAAAAAAAAAAAAnQ4AAAAAAACeDgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAmQ4AAAAAAACZDgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					89,
+					1,
+					"left_delete",
+					null,
+					"AQAAAGUOAAAAAAAAZQ4AAAAAAAABAAAANA",
+					"AQAAAAAAAAABAAAAZg4AAAAAAABmDgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					90,
+					1,
+					"insert",
+					{
+						"characters": "2"
+					},
+					"AQAAAGUOAAAAAAAAZg4AAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAZQ4AAAAAAABlDgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					105,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAL0KAAAAAAAAwgoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAvQoAAAAAAAC9CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					106,
+					1,
+					"insert",
+					{
+						"characters": "int"
+					},
+					"AwAAAMIKAAAAAAAAwwoAAAAAAAAAAAAAwwoAAAAAAADECgAAAAAAAAAAAADECgAAAAAAAMUKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAwgoAAAAAAADCCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					107,
+					1,
+					"insert_completion",
+					{
+						"completion": "interactableInfo",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "interactableInfo"
+					},
+					"AgAAAMIKAAAAAAAAwgoAAAAAAAADAAAAaW50wgoAAAAAAADSCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAxQoAAAAAAADFCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					108,
+					1,
+					"insert",
+					{
+						"characters": ".set"
+					},
+					"BAAAANIKAAAAAAAA0woAAAAAAAAAAAAA0woAAAAAAADUCgAAAAAAAAAAAADUCgAAAAAAANUKAAAAAAAAAAAAANUKAAAAAAAA1goAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA0goAAAAAAADSCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					109,
+					1,
+					"insert",
+					{
+						"characters": "Inter"
+					},
+					"BQAAANYKAAAAAAAA1woAAAAAAAAAAAAA1woAAAAAAADYCgAAAAAAAAAAAADYCgAAAAAAANkKAAAAAAAAAAAAANkKAAAAAAAA2goAAAAAAAAAAAAA2goAAAAAAADbCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA1goAAAAAAADWCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					110,
+					1,
+					"insert",
+					{
+						"characters": "actab"
+					},
+					"BQAAANsKAAAAAAAA3AoAAAAAAAAAAAAA3AoAAAAAAADdCgAAAAAAAAAAAADdCgAAAAAAAN4KAAAAAAAAAAAAAN4KAAAAAAAA3woAAAAAAAAAAAAA3woAAAAAAADgCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA2woAAAAAAADbCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					111,
+					1,
+					"insert",
+					{
+						"characters": "le"
+					},
+					"AgAAAOAKAAAAAAAA4QoAAAAAAAAAAAAA4QoAAAAAAADiCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA4AoAAAAAAADgCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					116,
+					1,
+					"paste",
+					null,
+					"AQAAANMKAAAAAAAA6goAAAAAAAAPAAAAc2V0SW50ZXJhY3RhYmxl",
+					"AQAAAAAAAAABAAAA0woAAAAAAADiCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					117,
+					1,
+					"insert_snippet",
+					{
+						"contents": "($0)"
+					},
+					"AQAAAOoKAAAAAAAA7AoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA6goAAAAAAADqCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					118,
+					1,
+					"insert",
+					{
+						"characters": "m"
+					},
+					"AQAAAOsKAAAAAAAA7AoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA6woAAAAAAADrCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					119,
+					1,
+					"left_delete",
+					null,
+					"AQAAAOsKAAAAAAAA6woAAAAAAAABAAAAbQ",
+					"AQAAAAAAAAABAAAA7AoAAAAAAADsCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					120,
+					1,
+					"insert",
+					{
+						"characters": "worl"
+					},
+					"BAAAAOsKAAAAAAAA7AoAAAAAAAAAAAAA7AoAAAAAAADtCgAAAAAAAAAAAADtCgAAAAAAAO4KAAAAAAAAAAAAAO4KAAAAAAAA7woAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA6woAAAAAAADrCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					121,
+					1,
+					"insert_completion",
+					{
+						"completion": "worldView",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "worldView"
+					},
+					"AgAAAOsKAAAAAAAA6woAAAAAAAAEAAAAd29ybOsKAAAAAAAA9AoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA7woAAAAAAADvCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					122,
+					1,
+					"insert",
+					{
+						"characters": "->"
+					},
+					"AgAAAPQKAAAAAAAA9QoAAAAAAAAAAAAA9QoAAAAAAAD2CgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA9AoAAAAAAAD0CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					125,
+					1,
+					"insert",
+					{
+						"characters": ")"
+					},
+					"AQAAAOsKAAAAAAAA7AoAAAAAAAAMAAAAd29ybGRWaWV3LT4p",
+					"AQAAAAAAAAABAAAA9woAAAAAAADrCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					128,
+					1,
+					"insert",
+					{
+						"characters": "\n\nInter"
+					},
+					"CAAAAL0KAAAAAAAAwgoAAAAAAAAAAAAAwgoAAAAAAADHCgAAAAAAAAAAAAC+CgAAAAAAAL4KAAAAAAAABAAAACAgICDDCgAAAAAAAMQKAAAAAAAAAAAAAMQKAAAAAAAAxQoAAAAAAAAAAAAAxQoAAAAAAADGCgAAAAAAAAAAAADGCgAAAAAAAMcKAAAAAAAAAAAAAMcKAAAAAAAAyAoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAvQoAAAAAAAC9CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					131,
+					1,
+					"insert",
+					{
+						"characters": "actable"
+					},
+					"BwAAAMgKAAAAAAAAyQoAAAAAAAAAAAAAyQoAAAAAAADKCgAAAAAAAAAAAADKCgAAAAAAAMsKAAAAAAAAAAAAAMsKAAAAAAAAzAoAAAAAAAAAAAAAzAoAAAAAAADNCgAAAAAAAAAAAADNCgAAAAAAAM4KAAAAAAAAAAAAAM4KAAAAAAAAzwoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAyAoAAAAAAADICgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					132,
+					1,
+					"insert",
+					{
+						"characters": " int"
+					},
+					"BAAAAM8KAAAAAAAA0AoAAAAAAAAAAAAA0AoAAAAAAADRCgAAAAAAAAAAAADRCgAAAAAAANIKAAAAAAAAAAAAANIKAAAAAAAA0woAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAzwoAAAAAAADPCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					133,
+					1,
+					"insert",
+					{
+						"characters": " ="
+					},
+					"AgAAANMKAAAAAAAA1AoAAAAAAAAAAAAA1AoAAAAAAADVCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA0woAAAAAAADTCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					134,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAANUKAAAAAAAA1goAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA1QoAAAAAAADVCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					135,
+					6,
+					"left_delete",
+					null,
+					"BgAAANUKAAAAAAAA1QoAAAAAAAABAAAAINQKAAAAAAAA1AoAAAAAAAABAAAAPdMKAAAAAAAA0woAAAAAAAABAAAAINIKAAAAAAAA0goAAAAAAAABAAAAdNEKAAAAAAAA0QoAAAAAAAABAAAAbtAKAAAAAAAA0AoAAAAAAAABAAAAaQ",
+					"AQAAAAAAAAABAAAA1goAAAAAAADWCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					136,
+					1,
+					"insert",
+					{
+						"characters": "s"
+					},
+					"AQAAANAKAAAAAAAA0QoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA0AoAAAAAAADQCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					137,
+					1,
+					"left_delete",
+					null,
+					"AQAAANAKAAAAAAAA0AoAAAAAAAABAAAAcw",
+					"AQAAAAAAAAABAAAA0QoAAAAAAADRCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					138,
+					1,
+					"insert",
+					{
+						"characters": "selectedI"
+					},
+					"CQAAANAKAAAAAAAA0QoAAAAAAAAAAAAA0QoAAAAAAADSCgAAAAAAAAAAAADSCgAAAAAAANMKAAAAAAAAAAAAANMKAAAAAAAA1AoAAAAAAAAAAAAA1AoAAAAAAADVCgAAAAAAAAAAAADVCgAAAAAAANYKAAAAAAAAAAAAANYKAAAAAAAA1woAAAAAAAAAAAAA1woAAAAAAADYCgAAAAAAAAAAAADYCgAAAAAAANkKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA0AoAAAAAAADQCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					139,
+					1,
+					"insert",
+					{
+						"characters": "nteractable"
+					},
+					"CwAAANkKAAAAAAAA2goAAAAAAAAAAAAA2goAAAAAAADbCgAAAAAAAAAAAADbCgAAAAAAANwKAAAAAAAAAAAAANwKAAAAAAAA3QoAAAAAAAAAAAAA3QoAAAAAAADeCgAAAAAAAAAAAADeCgAAAAAAAN8KAAAAAAAAAAAAAN8KAAAAAAAA4AoAAAAAAAAAAAAA4AoAAAAAAADhCgAAAAAAAAAAAADhCgAAAAAAAOIKAAAAAAAAAAAAAOIKAAAAAAAA4woAAAAAAAAAAAAA4woAAAAAAADkCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA2QoAAAAAAADZCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					140,
+					1,
+					"insert",
+					{
+						"characters": " ="
+					},
+					"AgAAAOQKAAAAAAAA5QoAAAAAAAAAAAAA5QoAAAAAAADmCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA5AoAAAAAAADkCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					141,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAOYKAAAAAAAA5woAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA5goAAAAAAADmCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					142,
+					1,
+					"insert",
+					{
+						"characters": "fs.get"
+					},
+					"BgAAAOcKAAAAAAAA6AoAAAAAAAAAAAAA6AoAAAAAAADpCgAAAAAAAAAAAADpCgAAAAAAAOoKAAAAAAAAAAAAAOoKAAAAAAAA6woAAAAAAAAAAAAA6woAAAAAAADsCgAAAAAAAAAAAADsCgAAAAAAAO0KAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA5woAAAAAAADnCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					143,
+					1,
+					"insert",
+					{
+						"characters": "Room"
+					},
+					"BAAAAO0KAAAAAAAA7goAAAAAAAAAAAAA7goAAAAAAADvCgAAAAAAAAAAAADvCgAAAAAAAPAKAAAAAAAAAAAAAPAKAAAAAAAA8QoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA7QoAAAAAAADtCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					144,
+					1,
+					"insert_snippet",
+					{
+						"contents": "($0)"
+					},
+					"AQAAAPEKAAAAAAAA8woAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA8QoAAAAAAADxCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					146,
+					1,
+					"insert",
+					{
+						"characters": ".ge"
+					},
+					"AwAAAPMKAAAAAAAA9AoAAAAAAAAAAAAA9AoAAAAAAAD1CgAAAAAAAAAAAAD1CgAAAAAAAPYKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA8woAAAAAAADzCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					147,
+					1,
+					"insert",
+					{
+						"characters": "t"
+					},
+					"AQAAAPYKAAAAAAAA9woAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA9goAAAAAAAD2CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					148,
+					4,
+					"left_delete",
+					null,
+					"BAAAAPYKAAAAAAAA9goAAAAAAAABAAAAdPUKAAAAAAAA9QoAAAAAAAABAAAAZfQKAAAAAAAA9AoAAAAAAAABAAAAZ/MKAAAAAAAA8woAAAAAAAABAAAALg",
+					"AQAAAAAAAAABAAAA9woAAAAAAAD3CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					149,
+					1,
+					"insert",
+					{
+						"characters": ".ge"
+					},
+					"AwAAAPMKAAAAAAAA9AoAAAAAAAAAAAAA9AoAAAAAAAD1CgAAAAAAAAAAAAD1CgAAAAAAAPYKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA8woAAAAAAADzCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					150,
+					2,
+					"left_delete",
+					null,
+					"AgAAAPUKAAAAAAAA9QoAAAAAAAABAAAAZfQKAAAAAAAA9AoAAAAAAAABAAAAZw",
+					"AQAAAAAAAAABAAAA9goAAAAAAAD2CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					151,
+					1,
+					"insert",
+					{
+						"characters": "getInter"
+					},
+					"CAAAAPQKAAAAAAAA9QoAAAAAAAAAAAAA9QoAAAAAAAD2CgAAAAAAAAAAAAD2CgAAAAAAAPcKAAAAAAAAAAAAAPcKAAAAAAAA+AoAAAAAAAAAAAAA+AoAAAAAAAD5CgAAAAAAAAAAAAD5CgAAAAAAAPoKAAAAAAAAAAAAAPoKAAAAAAAA+woAAAAAAAAAAAAA+woAAAAAAAD8CgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA9AoAAAAAAAD0CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					152,
+					1,
+					"insert",
+					{
+						"characters": "ctabl"
+					},
+					"BQAAAPwKAAAAAAAA/QoAAAAAAAAAAAAA/QoAAAAAAAD+CgAAAAAAAAAAAAD+CgAAAAAAAP8KAAAAAAAAAAAAAP8KAAAAAAAAAAsAAAAAAAAAAAAAAAsAAAAAAAABCwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA/AoAAAAAAAD8CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					153,
+					5,
+					"left_delete",
+					null,
+					"BQAAAAALAAAAAAAAAAsAAAAAAAABAAAAbP8KAAAAAAAA/woAAAAAAAABAAAAYv4KAAAAAAAA/goAAAAAAAABAAAAYf0KAAAAAAAA/QoAAAAAAAABAAAAdPwKAAAAAAAA/AoAAAAAAAABAAAAYw",
+					"AQAAAAAAAAABAAAAAQsAAAAAAAABCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					154,
+					1,
+					"insert",
+					{
+						"characters": "actables"
+					},
+					"CAAAAPwKAAAAAAAA/QoAAAAAAAAAAAAA/QoAAAAAAAD+CgAAAAAAAAAAAAD+CgAAAAAAAP8KAAAAAAAAAAAAAP8KAAAAAAAAAAsAAAAAAAAAAAAAAAsAAAAAAAABCwAAAAAAAAAAAAABCwAAAAAAAAILAAAAAAAAAAAAAAILAAAAAAAAAwsAAAAAAAAAAAAAAwsAAAAAAAAECwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA/AoAAAAAAAD8CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					155,
+					1,
+					"insert_snippet",
+					{
+						"contents": "($0)"
+					},
+					"AQAAAAQLAAAAAAAABgsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAABAsAAAAAAAAECwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					157,
+					1,
+					"insert",
+					{
+						"characters": "."
+					},
+					"AQAAAAYLAAAAAAAABwsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAABgsAAAAAAAAGCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					158,
+					1,
+					"insert",
+					{
+						"characters": "g"
+					},
+					"AQAAAAcLAAAAAAAACAsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAABwsAAAAAAAAHCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					159,
+					2,
+					"left_delete",
+					null,
+					"AgAAAAcLAAAAAAAABwsAAAAAAAABAAAAZwYLAAAAAAAABgsAAAAAAAABAAAALg",
+					"AQAAAAAAAAABAAAACAsAAAAAAAAICwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					160,
+					1,
+					"insert",
+					{
+						"characters": ".get"
+					},
+					"BAAAAAYLAAAAAAAABwsAAAAAAAAAAAAABwsAAAAAAAAICwAAAAAAAAAAAAAICwAAAAAAAAkLAAAAAAAAAAAAAAkLAAAAAAAACgsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAABgsAAAAAAAAGCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					161,
+					1,
+					"insert_snippet",
+					{
+						"contents": "($0)"
+					},
+					"AQAAAAoLAAAAAAAADAsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAACgsAAAAAAAAKCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					164,
+					1,
+					"insert",
+					{
+						"characters": "\nVector2"
+					},
+					"CAAAAL4KAAAAAAAAvwoAAAAAAAAAAAAAvwoAAAAAAADACgAAAAAAAAAAAADACgAAAAAAAMEKAAAAAAAAAAAAAMEKAAAAAAAAwgoAAAAAAAAAAAAAwgoAAAAAAADDCgAAAAAAAAAAAADDCgAAAAAAAMQKAAAAAAAAAAAAAMQKAAAAAAAAxQoAAAAAAAAAAAAAxQoAAAAAAADGCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAvgoAAAAAAAC+CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					165,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAMYKAAAAAAAAxwoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAxgoAAAAAAADGCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					166,
+					8,
+					"left_delete",
+					null,
+					"CAAAAMYKAAAAAAAAxgoAAAAAAAABAAAAIMUKAAAAAAAAxQoAAAAAAAABAAAAMsQKAAAAAAAAxAoAAAAAAAABAAAAcsMKAAAAAAAAwwoAAAAAAAABAAAAb8IKAAAAAAAAwgoAAAAAAAABAAAAdMEKAAAAAAAAwQoAAAAAAAABAAAAY8AKAAAAAAAAwAoAAAAAAAABAAAAZb8KAAAAAAAAvwoAAAAAAAABAAAAVg",
+					"AQAAAAAAAAABAAAAxwoAAAAAAADHCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					167,
+					1,
+					"reindent",
+					null,
+					"AQAAAL8KAAAAAAAAwwoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAvwoAAAAAAAC/CgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					168,
+					1,
+					"insert",
+					{
+						"characters": "Vector2"
+					},
+					"BwAAAMMKAAAAAAAAxAoAAAAAAAAAAAAAxAoAAAAAAADFCgAAAAAAAAAAAADFCgAAAAAAAMYKAAAAAAAAAAAAAMYKAAAAAAAAxwoAAAAAAAAAAAAAxwoAAAAAAADICgAAAAAAAAAAAADICgAAAAAAAMkKAAAAAAAAAAAAAMkKAAAAAAAAygoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAwwoAAAAAAADDCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					169,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAMoKAAAAAAAAywoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAygoAAAAAAADKCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					170,
+					1,
+					"insert",
+					{
+						"characters": "selectedT"
+					},
+					"CQAAAMsKAAAAAAAAzAoAAAAAAAAAAAAAzAoAAAAAAADNCgAAAAAAAAAAAADNCgAAAAAAAM4KAAAAAAAAAAAAAM4KAAAAAAAAzwoAAAAAAAAAAAAAzwoAAAAAAADQCgAAAAAAAAAAAADQCgAAAAAAANEKAAAAAAAAAAAAANEKAAAAAAAA0goAAAAAAAAAAAAA0goAAAAAAADTCgAAAAAAAAAAAADTCgAAAAAAANQKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAywoAAAAAAADLCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					171,
+					1,
+					"insert",
+					{
+						"characters": "ileW"
+					},
+					"BAAAANQKAAAAAAAA1QoAAAAAAAAAAAAA1QoAAAAAAADWCgAAAAAAAAAAAADWCgAAAAAAANcKAAAAAAAAAAAAANcKAAAAAAAA2AoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA1AoAAAAAAADUCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					172,
+					1,
+					"insert",
+					{
+						"characters": "orldPos"
+					},
+					"BwAAANgKAAAAAAAA2QoAAAAAAAAAAAAA2QoAAAAAAADaCgAAAAAAAAAAAADaCgAAAAAAANsKAAAAAAAAAAAAANsKAAAAAAAA3AoAAAAAAAAAAAAA3AoAAAAAAADdCgAAAAAAAAAAAADdCgAAAAAAAN4KAAAAAAAAAAAAAN4KAAAAAAAA3woAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA2AoAAAAAAADYCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					173,
+					1,
+					"insert",
+					{
+						"characters": " ="
+					},
+					"AgAAAN8KAAAAAAAA4AoAAAAAAAAAAAAA4AoAAAAAAADhCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA3woAAAAAAADfCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					174,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAOEKAAAAAAAA4goAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA4QoAAAAAAADhCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					175,
+					1,
+					"insert",
+					{
+						"characters": "worl"
+					},
+					"BAAAAOIKAAAAAAAA4woAAAAAAAAAAAAA4woAAAAAAADkCgAAAAAAAAAAAADkCgAAAAAAAOUKAAAAAAAAAAAAAOUKAAAAAAAA5goAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA4goAAAAAAADiCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					176,
+					1,
+					"insert_completion",
+					{
+						"completion": "worldView",
+						"format": "snippet",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "worldView"
+					},
+					"AgAAAOIKAAAAAAAA4goAAAAAAAAEAAAAd29ybOIKAAAAAAAA6woAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA5goAAAAAAADmCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					177,
+					1,
+					"insert",
+					{
+						"characters": "->"
+					},
+					"AgAAAOsKAAAAAAAA7AoAAAAAAAAAAAAA7AoAAAAAAADtCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA6woAAAAAAADrCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					178,
+					1,
+					"insert",
+					{
+						"characters": "get"
+					},
+					"AwAAAO0KAAAAAAAA7goAAAAAAAAAAAAA7goAAAAAAADvCgAAAAAAAAAAAADvCgAAAAAAAPAKAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA7QoAAAAAAADtCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					179,
+					3,
+					"left_delete",
+					null,
+					"AwAAAO8KAAAAAAAA7woAAAAAAAABAAAAdO4KAAAAAAAA7goAAAAAAAABAAAAZe0KAAAAAAAA7QoAAAAAAAABAAAAZw",
+					"AQAAAAAAAAABAAAA8AoAAAAAAADwCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					180,
+					1,
+					"paste",
+					null,
+					"AQAAAO0KAAAAAAAAAQsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA7QoAAAAAAADtCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					181,
+					1,
+					"insert_snippet",
+					{
+						"contents": "($0)"
+					},
+					"AQAAAAELAAAAAAAAAwsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAAQsAAAAAAAABCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					183,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAAAMLAAAAAAAABAsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAAwsAAAAAAAADCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					192,
+					1,
+					"paste",
+					null,
+					"AQAAAFELAAAAAAAAZQsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAUQsAAAAAAABRCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					193,
+					1,
+					"insert",
+					{
+						"characters": ".x,"
+					},
+					"AwAAAGULAAAAAAAAZgsAAAAAAAAAAAAAZgsAAAAAAABnCwAAAAAAAAAAAABnCwAAAAAAAGgLAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAZQsAAAAAAABlCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					194,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAGgLAAAAAAAAaQsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAaAsAAAAAAABoCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					195,
+					1,
+					"paste",
+					null,
+					"AQAAAGkLAAAAAAAAfQsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAaQsAAAAAAABpCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					196,
+					1,
+					"insert",
+					{
+						"characters": ".y"
+					},
+					"AgAAAH0LAAAAAAAAfgsAAAAAAAAAAAAAfgsAAAAAAAB/CwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAfQsAAAAAAAB9CwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					198,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAAIALAAAAAAAAgQsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAgAsAAAAAAACACwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					209,
+					1,
+					"paste",
+					null,
+					"AQAAAK8LAAAAAAAAwwsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAArwsAAAAAAACvCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					211,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAAMQLAAAAAAAAxQsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAxAsAAAAAAADECwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					218,
+					1,
+					"left_delete",
+					null,
+					"AQAAADkLAAAAAAAAOQsAAAAAAAABAAAALg",
+					"AQAAAAAAAAABAAAAOgsAAAAAAAA6CwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					219,
+					1,
+					"insert",
+					{
+						"characters": "->"
+					},
+					"AgAAADkLAAAAAAAAOgsAAAAAAAAAAAAAOgsAAAAAAAA7CwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAOQsAAAAAAAA5CwAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		},
+		{
+			"file": "include/interactablesContainer.hpp",
+			"settings":
+			{
+				"buffer_size": 491,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/editor/mapViewBox.cpp",
+			"settings":
+			{
+				"buffer_size": 12533,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "include/editor/worldViewBox.hpp",
+			"settings":
+			{
+				"buffer_size": 2737,
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+			]
+		},
+		{
+			"file": "include/editor/interactableInfoPanel.hpp",
+			"settings":
+			{
+				"buffer_size": 668,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					13,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAEkBAAAAAAAATgEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAASQEAAAAAAABJAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					14,
+					2,
+					"left_delete",
+					null,
+					"AgAAAEoBAAAAAAAASgEAAAAAAAAEAAAAICAgIEkBAAAAAAAASQEAAAAAAAABAAAACg",
+					"AQAAAAAAAAABAAAATgEAAAAAAABOAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					17,
+					1,
+					"insert",
+					{
+						"characters": "\nvoid"
+					},
+					"BQAAAJkBAAAAAAAAngEAAAAAAAAAAAAAngEAAAAAAACfAQAAAAAAAAAAAACfAQAAAAAAAKABAAAAAAAAAAAAAKABAAAAAAAAoQEAAAAAAAAAAAAAoQEAAAAAAACiAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAmQEAAAAAAACZAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					18,
+					1,
+					"insert",
+					{
+						"characters": " set"
+					},
+					"BAAAAKIBAAAAAAAAowEAAAAAAAAAAAAAowEAAAAAAACkAQAAAAAAAAAAAACkAQAAAAAAAKUBAAAAAAAAAAAAAKUBAAAAAAAApgEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAogEAAAAAAACiAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					19,
+					1,
+					"insert_completion",
+					{
+						"completion": "setInitial",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "setInitial"
+					},
+					"AgAAAKMBAAAAAAAAowEAAAAAAAADAAAAc2V0owEAAAAAAACtAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAApgEAAAAAAACmAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					20,
+					1,
+					"insert_snippet",
+					{
+						"contents": "($0)"
+					},
+					"AQAAAK0BAAAAAAAArwEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAArQEAAAAAAACtAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					21,
+					1,
+					"insert",
+					{
+						"characters": "I"
+					},
+					"AQAAAK4BAAAAAAAArwEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAArgEAAAAAAACuAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					22,
+					1,
+					"insert_completion",
+					{
+						"completion": "InteractableType",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "InteractableType"
+					},
+					"AgAAAK4BAAAAAAAArgEAAAAAAAABAAAASa4BAAAAAAAAvgEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAArwEAAAAAAACvAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					23,
+					1,
+					"insert",
+					{
+						"characters": " ty"
+					},
+					"AwAAAL4BAAAAAAAAvwEAAAAAAAAAAAAAvwEAAAAAAADAAQAAAAAAAAAAAADAAQAAAAAAAMEBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAvgEAAAAAAAC+AQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					24,
+					1,
+					"insert_completion",
+					{
+						"completion": "type",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "type"
+					},
+					"AgAAAL8BAAAAAAAAvwEAAAAAAAACAAAAdHm/AQAAAAAAAMMBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAwQEAAAAAAADBAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					26,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAAMQBAAAAAAAAxQEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAxAEAAAAAAADEAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					31,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAABYBAAAAAAAAGwEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAFgEAAAAAAAAWAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					32,
+					1,
+					"insert",
+					{
+						"characters": "Vector2"
+					},
+					"BwAAABsBAAAAAAAAHAEAAAAAAAAAAAAAHAEAAAAAAAAdAQAAAAAAAAAAAAAdAQAAAAAAAB4BAAAAAAAAAAAAAB4BAAAAAAAAHwEAAAAAAAAAAAAAHwEAAAAAAAAgAQAAAAAAAAAAAAAgAQAAAAAAACEBAAAAAAAAAAAAACEBAAAAAAAAIgEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAGwEAAAAAAAAbAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					33,
+					1,
+					"insert",
+					{
+						"characters": " inter"
+					},
+					"BgAAACIBAAAAAAAAIwEAAAAAAAAAAAAAIwEAAAAAAAAkAQAAAAAAAAAAAAAkAQAAAAAAACUBAAAAAAAAAAAAACUBAAAAAAAAJgEAAAAAAAAAAAAAJgEAAAAAAAAnAQAAAAAAAAAAAAAnAQAAAAAAACgBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAIgEAAAAAAAAiAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					34,
+					1,
+					"insert",
+					{
+						"characters": "actableP"
+					},
+					"CAAAACgBAAAAAAAAKQEAAAAAAAAAAAAAKQEAAAAAAAAqAQAAAAAAAAAAAAAqAQAAAAAAACsBAAAAAAAAAAAAACsBAAAAAAAALAEAAAAAAAAAAAAALAEAAAAAAAAtAQAAAAAAAAAAAAAtAQAAAAAAAC4BAAAAAAAAAAAAAC4BAAAAAAAALwEAAAAAAAAAAAAALwEAAAAAAAAwAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAKAEAAAAAAAAoAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					35,
+					1,
+					"left_delete",
+					null,
+					"AQAAAC8BAAAAAAAALwEAAAAAAAABAAAAUA",
+					"AQAAAAAAAAABAAAAMAEAAAAAAAAwAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					36,
+					1,
+					"insert",
+					{
+						"characters": "WorldPos;"
+					},
+					"CQAAAC8BAAAAAAAAMAEAAAAAAAAAAAAAMAEAAAAAAAAxAQAAAAAAAAAAAAAxAQAAAAAAADIBAAAAAAAAAAAAADIBAAAAAAAAMwEAAAAAAAAAAAAAMwEAAAAAAAA0AQAAAAAAAAAAAAA0AQAAAAAAADUBAAAAAAAAAAAAADUBAAAAAAAANgEAAAAAAAAAAAAANgEAAAAAAAA3AQAAAAAAAAAAAAA3AQAAAAAAADgBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAALwEAAAAAAAAvAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					41,
+					1,
+					"insert",
+					{
+						"characters": "\nvoid"
+					},
+					"BQAAAFQCAAAAAAAAWQIAAAAAAAAAAAAAWQIAAAAAAABaAgAAAAAAAAAAAABaAgAAAAAAAFsCAAAAAAAAAAAAAFsCAAAAAAAAXAIAAAAAAAAAAAAAXAIAAAAAAABdAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAVAIAAAAAAABUAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					42,
+					1,
+					"insert",
+					{
+						"characters": " set"
+					},
+					"BAAAAF0CAAAAAAAAXgIAAAAAAAAAAAAAXgIAAAAAAABfAgAAAAAAAAAAAABfAgAAAAAAAGACAAAAAAAAAAAAAGACAAAAAAAAYQIAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAXQIAAAAAAABdAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					43,
+					1,
+					"insert",
+					{
+						"characters": "Seel"
+					},
+					"BAAAAGECAAAAAAAAYgIAAAAAAAAAAAAAYgIAAAAAAABjAgAAAAAAAAAAAABjAgAAAAAAAGQCAAAAAAAAAAAAAGQCAAAAAAAAZQIAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAYQIAAAAAAABhAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					44,
+					1,
+					"insert_completion",
+					{
+						"completion": "setSelectedTile",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "setSelectedTile"
+					},
+					"AgAAAF4CAAAAAAAAXgIAAAAAAAAHAAAAc2V0U2VlbF4CAAAAAAAAbQIAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAZQIAAAAAAABlAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					45,
+					4,
+					"left_delete",
+					null,
+					"BAAAAGwCAAAAAAAAbAIAAAAAAAABAAAAZWsCAAAAAAAAawIAAAAAAAABAAAAbGoCAAAAAAAAagIAAAAAAAABAAAAaWkCAAAAAAAAaQIAAAAAAAABAAAAVA",
+					"AQAAAAAAAAABAAAAbQIAAAAAAABtAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					46,
+					1,
+					"insert",
+					{
+						"characters": "Interactabl"
+					},
+					"CwAAAGkCAAAAAAAAagIAAAAAAAAAAAAAagIAAAAAAABrAgAAAAAAAAAAAABrAgAAAAAAAGwCAAAAAAAAAAAAAGwCAAAAAAAAbQIAAAAAAAAAAAAAbQIAAAAAAABuAgAAAAAAAAAAAABuAgAAAAAAAG8CAAAAAAAAAAAAAG8CAAAAAAAAcAIAAAAAAAAAAAAAcAIAAAAAAABxAgAAAAAAAAAAAABxAgAAAAAAAHICAAAAAAAAAAAAAHICAAAAAAAAcwIAAAAAAAAAAAAAcwIAAAAAAAB0AgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAaQIAAAAAAABpAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					47,
+					1,
+					"insert",
+					{
+						"characters": "e"
+					},
+					"AQAAAHQCAAAAAAAAdQIAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAdAIAAAAAAAB0AgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					48,
+					1,
+					"insert_snippet",
+					{
+						"contents": "($0)"
+					},
+					"AQAAAHUCAAAAAAAAdwIAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAdQIAAAAAAAB1AgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					49,
+					1,
+					"insert",
+					{
+						"characters": "Vector2"
+					},
+					"BwAAAHYCAAAAAAAAdwIAAAAAAAAAAAAAdwIAAAAAAAB4AgAAAAAAAAAAAAB4AgAAAAAAAHkCAAAAAAAAAAAAAHkCAAAAAAAAegIAAAAAAAAAAAAAegIAAAAAAAB7AgAAAAAAAAAAAAB7AgAAAAAAAHwCAAAAAAAAAAAAAHwCAAAAAAAAfQIAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAdgIAAAAAAAB2AgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					50,
+					1,
+					"insert",
+					{
+						"characters": " worldPos"
+					},
+					"CQAAAH0CAAAAAAAAfgIAAAAAAAAAAAAAfgIAAAAAAAB/AgAAAAAAAAAAAAB/AgAAAAAAAIACAAAAAAAAAAAAAIACAAAAAAAAgQIAAAAAAAAAAAAAgQIAAAAAAACCAgAAAAAAAAAAAACCAgAAAAAAAIMCAAAAAAAAAAAAAIMCAAAAAAAAhAIAAAAAAAAAAAAAhAIAAAAAAACFAgAAAAAAAAAAAACFAgAAAAAAAIYCAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAfQIAAAAAAAB9AgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					52,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAAIcCAAAAAAAAiAIAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAhwIAAAAAAACHAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					55,
+					1,
+					"insert",
+					{
+						"characters": "INt"
+					},
+					"AwAAAHYCAAAAAAAAdwIAAAAAAAAQAAAAVmVjdG9yMiB3b3JsZFBvc3cCAAAAAAAAeAIAAAAAAAAAAAAAeAIAAAAAAAB5AgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAhgIAAAAAAAB2AgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					56,
+					2,
+					"left_delete",
+					null,
+					"AgAAAHgCAAAAAAAAeAIAAAAAAAABAAAAdHcCAAAAAAAAdwIAAAAAAAABAAAATg",
+					"AQAAAAAAAAABAAAAeQIAAAAAAAB5AgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					57,
+					1,
+					"insert",
+					{
+						"characters": "NTER"
+					},
+					"BAAAAHcCAAAAAAAAeAIAAAAAAAAAAAAAeAIAAAAAAAB5AgAAAAAAAAAAAAB5AgAAAAAAAHoCAAAAAAAAAAAAAHoCAAAAAAAAewIAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAdwIAAAAAAAB3AgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					58,
+					4,
+					"left_delete",
+					null,
+					"BAAAAHoCAAAAAAAAegIAAAAAAAABAAAAUnkCAAAAAAAAeQIAAAAAAAABAAAARXgCAAAAAAAAeAIAAAAAAAABAAAAVHcCAAAAAAAAdwIAAAAAAAABAAAATg",
+					"AQAAAAAAAAABAAAAewIAAAAAAAB7AgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					59,
+					1,
+					"insert",
+					{
+						"characters": "nter"
+					},
+					"BAAAAHcCAAAAAAAAeAIAAAAAAAAAAAAAeAIAAAAAAAB5AgAAAAAAAAAAAAB5AgAAAAAAAHoCAAAAAAAAAAAAAHoCAAAAAAAAewIAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAdwIAAAAAAAB3AgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					60,
+					1,
+					"insert_completion",
+					{
+						"completion": "InteractableType",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "InteractableType"
+					},
+					"AgAAAHYCAAAAAAAAdgIAAAAAAAAFAAAASW50ZXJ2AgAAAAAAAIYCAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAewIAAAAAAAB7AgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					61,
+					4,
+					"left_delete",
+					null,
+					"BAAAAIUCAAAAAAAAhQIAAAAAAAABAAAAZYQCAAAAAAAAhAIAAAAAAAABAAAAcIMCAAAAAAAAgwIAAAAAAAABAAAAeYICAAAAAAAAggIAAAAAAAABAAAAVA",
+					"AQAAAAAAAAABAAAAhgIAAAAAAACGAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					62,
+					1,
+					"insert",
+					{
+						"characters": " interactab"
+					},
+					"CwAAAIICAAAAAAAAgwIAAAAAAAAAAAAAgwIAAAAAAACEAgAAAAAAAAAAAACEAgAAAAAAAIUCAAAAAAAAAAAAAIUCAAAAAAAAhgIAAAAAAAAAAAAAhgIAAAAAAACHAgAAAAAAAAAAAACHAgAAAAAAAIgCAAAAAAAAAAAAAIgCAAAAAAAAiQIAAAAAAAAAAAAAiQIAAAAAAACKAgAAAAAAAAAAAACKAgAAAAAAAIsCAAAAAAAAAAAAAIsCAAAAAAAAjAIAAAAAAAAAAAAAjAIAAAAAAACNAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAggIAAAAAAACCAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					63,
+					1,
+					"insert",
+					{
+						"characters": "le"
+					},
+					"AgAAAI0CAAAAAAAAjgIAAAAAAAAAAAAAjgIAAAAAAACPAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAjQIAAAAAAACNAgAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		},
+		{
+			"file": "src/editor/interactableInfoPanel.cpp",
+			"settings":
+			{
+				"buffer_size": 2269,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					3,
+					1,
+					"insert",
+					{
+						"characters": "\n\nvoid"
+					},
+					"BgAAAHMBAAAAAAAAdAEAAAAAAAAAAAAAdAEAAAAAAAB1AQAAAAAAAAAAAAB1AQAAAAAAAHYBAAAAAAAAAAAAAHYBAAAAAAAAdwEAAAAAAAAAAAAAdwEAAAAAAAB4AQAAAAAAAAAAAAB4AQAAAAAAAHkBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAcwEAAAAAAABzAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					4,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAHkBAAAAAAAAegEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAeQEAAAAAAAB5AQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					5,
+					1,
+					"insert_completion",
+					{
+						"completion": "InteractableInfoPanel",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": true,
+						"trigger": "InteractableInfoPanel"
+					},
+					"AQAAAHoBAAAAAAAAjwEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAegEAAAAAAAB6AQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					6,
+					1,
+					"insert_snippet",
+					{
+						"contents": "($0)"
+					},
+					"AQAAAI8BAAAAAAAAkQEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAjwEAAAAAAACPAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					7,
+					1,
+					"run_macro_file",
+					{
+						"file": "res://Packages/Default/Delete Left Right.sublime-macro"
+					},
+					"AgAAAI8BAAAAAAAAjwEAAAAAAAABAAAAKI8BAAAAAAAAjwEAAAAAAAABAAAAKQ",
+					"AQAAAAAAAAABAAAAkAEAAAAAAACQAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					8,
+					1,
+					"insert",
+					{
+						"characters": "::"
+					},
+					"AgAAAI8BAAAAAAAAkAEAAAAAAAAAAAAAkAEAAAAAAACRAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAjwEAAAAAAACPAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					9,
+					1,
+					"insert",
+					{
+						"characters": "set"
+					},
+					"AwAAAJEBAAAAAAAAkgEAAAAAAAAAAAAAkgEAAAAAAACTAQAAAAAAAAAAAACTAQAAAAAAAJQBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAkQEAAAAAAACRAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					11,
+					1,
+					"insert_completion",
+					{
+						"completion": "setInitial(${1:InteractableType type})",
+						"format": "snippet",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "setInitial"
+					},
+					"AgAAAJEBAAAAAAAAkQEAAAAAAAADAAAAc2V0kQEAAAAAAACyAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAlAEAAAAAAACUAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					13,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAALIBAAAAAAAAswEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAsgEAAAAAAACyAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					14,
+					1,
+					"insert_snippet",
+					{
+						"contents": "{$0}"
+					},
+					"AQAAALMBAAAAAAAAtQEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAswEAAAAAAACzAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					15,
+					1,
+					"run_macro_file",
+					{
+						"file": "res://Packages/Default/Add Line in Braces.sublime-macro"
+					},
+					"AwAAALQBAAAAAAAAtQEAAAAAAAAAAAAAtQEAAAAAAAC2AQAAAAAAAAAAAAC1AQAAAAAAALkBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAtAEAAAAAAAC0AQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					16,
+					1,
+					"insert",
+					{
+						"characters": "this->typ"
+					},
+					"CQAAALkBAAAAAAAAugEAAAAAAAAAAAAAugEAAAAAAAC7AQAAAAAAAAAAAAC7AQAAAAAAALwBAAAAAAAAAAAAALwBAAAAAAAAvQEAAAAAAAAAAAAAvQEAAAAAAAC+AQAAAAAAAAAAAAC+AQAAAAAAAL8BAAAAAAAAAAAAAL8BAAAAAAAAwAEAAAAAAAAAAAAAwAEAAAAAAADBAQAAAAAAAAAAAADBAQAAAAAAAMIBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAuQEAAAAAAAC5AQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					17,
+					1,
+					"insert",
+					{
+						"characters": "e"
+					},
+					"AQAAAMIBAAAAAAAAwwEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAwgEAAAAAAADCAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					18,
+					1,
+					"insert",
+					{
+						"characters": " ="
+					},
+					"AgAAAMMBAAAAAAAAxAEAAAAAAAAAAAAAxAEAAAAAAADFAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAwwEAAAAAAADDAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					19,
+					1,
+					"insert",
+					{
+						"characters": " type;"
+					},
+					"BgAAAMUBAAAAAAAAxgEAAAAAAAAAAAAAxgEAAAAAAADHAQAAAAAAAAAAAADHAQAAAAAAAMgBAAAAAAAAAAAAAMgBAAAAAAAAyQEAAAAAAAAAAAAAyQEAAAAAAADKAQAAAAAAAAAAAADKAQAAAAAAAMsBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAxQEAAAAAAADFAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					24,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAAIFAAAAAAAADwUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAAgUAAAAAAAACBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					25,
+					1,
+					"left_delete",
+					null,
+					"AQAAAAsFAAAAAAAACwUAAAAAAAAEAAAAICAgIA",
+					"AQAAAAAAAAABAAAADwUAAAAAAAAPBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					26,
+					1,
+					"insert",
+					{
+						"characters": "case"
+					},
+					"BAAAAAsFAAAAAAAADAUAAAAAAAAAAAAADAUAAAAAAAANBQAAAAAAAAAAAAANBQAAAAAAAA4FAAAAAAAAAAAAAA4FAAAAAAAADwUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAACwUAAAAAAAALBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					27,
+					1,
+					"insert",
+					{
+						"characters": " ACTION_"
+					},
+					"CAAAAA8FAAAAAAAAEAUAAAAAAAAAAAAAEAUAAAAAAAARBQAAAAAAAAAAAAARBQAAAAAAABIFAAAAAAAAAAAAABIFAAAAAAAAEwUAAAAAAAAAAAAAEwUAAAAAAAAUBQAAAAAAAAAAAAAUBQAAAAAAABUFAAAAAAAAAAAAABUFAAAAAAAAFgUAAAAAAAAAAAAAFgUAAAAAAAAXBQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAADwUAAAAAAAAPBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					28,
+					1,
+					"insert",
+					{
+						"characters": "EDIT:"
+					},
+					"BQAAABcFAAAAAAAAGAUAAAAAAAAAAAAAGAUAAAAAAAAZBQAAAAAAAAAAAAAZBQAAAAAAABoFAAAAAAAAAAAAABoFAAAAAAAAGwUAAAAAAAAAAAAAGwUAAAAAAAAcBQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAFwUAAAAAAAAXBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					30,
+					1,
+					"insert",
+					{
+						"characters": "\nbreak;"
+					},
+					"BwAAABwFAAAAAAAAKQUAAAAAAAAAAAAAKQUAAAAAAAAqBQAAAAAAAAAAAAAqBQAAAAAAACsFAAAAAAAAAAAAACsFAAAAAAAALAUAAAAAAAAAAAAALAUAAAAAAAAtBQAAAAAAAAAAAAAtBQAAAAAAAC4FAAAAAAAAAAAAAC4FAAAAAAAALwUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAHAUAAAAAAAAcBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					36,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAABwFAAAAAAAAKQUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAHAUAAAAAAAAcBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					37,
+					1,
+					"paste",
+					null,
+					"AQAAACkFAAAAAAAAHQYAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAKQUAAAAAAAApBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					42,
+					1,
+					"insert",
+					{
+						"characters": "Edit"
+					},
+					"BAAAAD4FAAAAAAAAPwUAAAAAAAAFAAAAUGxhY2U/BQAAAAAAAEAFAAAAAAAAAAAAAEAFAAAAAAAAQQUAAAAAAAAAAAAAQQUAAAAAAABCBQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAPgUAAAAAAABDBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					44,
+					2,
+					"left_delete",
+					null,
+					"AgAAAEQFAAAAAAAARAUAAAAAAAABAAAAbkMFAAAAAAAAQwUAAAAAAAABAAAAYQ",
+					"AQAAAAAAAAABAAAARQUAAAAAAABFBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					45,
+					1,
+					"insert",
+					{
+						"characters": "ht"
+					},
+					"AgAAAEMFAAAAAAAARAUAAAAAAAAAAAAARAUAAAAAAABFBQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAQwUAAAAAAABDBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					46,
+					2,
+					"left_delete",
+					null,
+					"AgAAAEQFAAAAAAAARAUAAAAAAAABAAAAdEMFAAAAAAAAQwUAAAAAAAABAAAAaA",
+					"AQAAAAAAAAABAAAARQUAAAAAAABFBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					47,
+					1,
+					"insert",
+					{
+						"characters": "the"
+					},
+					"AwAAAEMFAAAAAAAARAUAAAAAAAAAAAAARAUAAAAAAABFBQAAAAAAAAAAAABFBQAAAAAAAEYFAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAQwUAAAAAAABDBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					48,
+					1,
+					"insert",
+					{
+						"characters": " selected"
+					},
+					"CQAAAEYFAAAAAAAARwUAAAAAAAAAAAAARwUAAAAAAABIBQAAAAAAAAAAAABIBQAAAAAAAEkFAAAAAAAAAAAAAEkFAAAAAAAASgUAAAAAAAAAAAAASgUAAAAAAABLBQAAAAAAAAAAAABLBQAAAAAAAEwFAAAAAAAAAAAAAEwFAAAAAAAATQUAAAAAAAAAAAAATQUAAAAAAABOBQAAAAAAAAAAAABOBQAAAAAAAE8FAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAARgUAAAAAAABGBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					71,
+					1,
+					"insert",
+					{
+						"characters": "\nthis->"
+					},
+					"BwAAAHEBAAAAAAAAdgEAAAAAAAAAAAAAdgEAAAAAAAB3AQAAAAAAAAAAAAB3AQAAAAAAAHgBAAAAAAAAAAAAAHgBAAAAAAAAeQEAAAAAAAAAAAAAeQEAAAAAAAB6AQAAAAAAAAAAAAB6AQAAAAAAAHsBAAAAAAAAAAAAAHsBAAAAAAAAfAEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAcQEAAAAAAABxAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					72,
+					1,
+					"insert",
+					{
+						"characters": "int"
+					},
+					"AwAAAHwBAAAAAAAAfQEAAAAAAAAAAAAAfQEAAAAAAAB+AQAAAAAAAAAAAAB+AQAAAAAAAH8BAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAfAEAAAAAAAB8AQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					73,
+					1,
+					"insert",
+					{
+						"characters": "eract"
+					},
+					"BQAAAH8BAAAAAAAAgAEAAAAAAAAAAAAAgAEAAAAAAACBAQAAAAAAAAAAAACBAQAAAAAAAIIBAAAAAAAAAAAAAIIBAAAAAAAAgwEAAAAAAAAAAAAAgwEAAAAAAACEAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAfwEAAAAAAAB/AQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					74,
+					1,
+					"insert",
+					{
+						"characters": "ableWorl"
+					},
+					"CAAAAIQBAAAAAAAAhQEAAAAAAAAAAAAAhQEAAAAAAACGAQAAAAAAAAAAAACGAQAAAAAAAIcBAAAAAAAAAAAAAIcBAAAAAAAAiAEAAAAAAAAAAAAAiAEAAAAAAACJAQAAAAAAAAAAAACJAQAAAAAAAIoBAAAAAAAAAAAAAIoBAAAAAAAAiwEAAAAAAAAAAAAAiwEAAAAAAACMAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAhAEAAAAAAACEAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					75,
+					1,
+					"insert",
+					{
+						"characters": "dPos"
+					},
+					"BAAAAIwBAAAAAAAAjQEAAAAAAAAAAAAAjQEAAAAAAACOAQAAAAAAAAAAAACOAQAAAAAAAI8BAAAAAAAAAAAAAI8BAAAAAAAAkAEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAjAEAAAAAAACMAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					76,
+					1,
+					"insert",
+					{
+						"characters": " ="
+					},
+					"AgAAAJABAAAAAAAAkQEAAAAAAAAAAAAAkQEAAAAAAACSAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAkAEAAAAAAACQAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					77,
+					1,
+					"insert",
+					{
+						"characters": " Vector2"
+					},
+					"CAAAAJIBAAAAAAAAkwEAAAAAAAAAAAAAkwEAAAAAAACUAQAAAAAAAAAAAACUAQAAAAAAAJUBAAAAAAAAAAAAAJUBAAAAAAAAlgEAAAAAAAAAAAAAlgEAAAAAAACXAQAAAAAAAAAAAACXAQAAAAAAAJgBAAAAAAAAAAAAAJgBAAAAAAAAmQEAAAAAAAAAAAAAmQEAAAAAAACaAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAkgEAAAAAAACSAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					78,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAJoBAAAAAAAAmwEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAmgEAAAAAAACaAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					79,
+					1,
+					"insert_snippet",
+					{
+						"contents": "{$0}"
+					},
+					"AQAAAJsBAAAAAAAAnQEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAmwEAAAAAAACbAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					80,
+					1,
+					"insert",
+					{
+						"characters": " -"
+					},
+					"AgAAAJwBAAAAAAAAnQEAAAAAAAAAAAAAnQEAAAAAAACeAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAnAEAAAAAAACcAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					81,
+					1,
+					"insert",
+					{
+						"characters": " 1,"
+					},
+					"AwAAAJ4BAAAAAAAAnwEAAAAAAAAAAAAAnwEAAAAAAACgAQAAAAAAAAAAAACgAQAAAAAAAKEBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAngEAAAAAAACeAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					82,
+					3,
+					"left_delete",
+					null,
+					"AwAAAKABAAAAAAAAoAEAAAAAAAABAAAALJ8BAAAAAAAAnwEAAAAAAAABAAAAMZ4BAAAAAAAAngEAAAAAAAABAAAAIA",
+					"AQAAAAAAAAABAAAAoQEAAAAAAAChAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					83,
+					1,
+					"insert",
+					{
+						"characters": "1,"
+					},
+					"AgAAAJ4BAAAAAAAAnwEAAAAAAAAAAAAAnwEAAAAAAACgAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAngEAAAAAAACeAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					84,
+					1,
+					"insert",
+					{
+						"characters": " -1"
+					},
+					"AwAAAKABAAAAAAAAoQEAAAAAAAAAAAAAoQEAAAAAAACiAQAAAAAAAAAAAACiAQAAAAAAAKMBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAoAEAAAAAAACgAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					85,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAKMBAAAAAAAApAEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAowEAAAAAAACjAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					87,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAAKUBAAAAAAAApgEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAApQEAAAAAAAClAQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					90,
+					1,
+					"cut",
+					null,
+					"AQAAAF4FAAAAAAAAXgUAAAAAAAD9AAAAR3VpTGFiZWwobGFiZWxSZWN0LCAiRWRpdCB0aGUgc2VsZWN0ZWQgaW50ZXJhY3RhYmxlXG5DaG9vc2UgSW50ZXJhY3RhYmxlIFR5cGU6Iik7CiAgICAgICAgICAgIGlmIChHdWlEcm9wZG93bkJveChkcm9wZG93blJlY3QsICJCbGFuaztUd28iLCAmdHlwZU51bWJlciwgdHlwZURyb3Bkb3duRWRpdE1vZGUpKSB7CiAgICAgICAgICAgICAgICB0eXBlRHJvcGRvd25FZGl0TW9kZSA9ICF0eXBlRHJvcGRvd25FZGl0TW9kZTsKICAgICAgICAgICAgfQ",
+					"AQAAAAAAAAABAAAAWwYAAAAAAABeBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					91,
+					1,
+					"insert",
+					{
+						"characters": "if"
+					},
+					"AgAAAF4FAAAAAAAAXwUAAAAAAAAAAAAAXwUAAAAAAABgBQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAXgUAAAAAAABeBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					92,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAGAFAAAAAAAAYQUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAYAUAAAAAAABgBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					93,
+					1,
+					"insert_snippet",
+					{
+						"contents": "($0)"
+					},
+					"AQAAAGEFAAAAAAAAYwUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAYQUAAAAAAABhBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					94,
+					1,
+					"insert",
+					{
+						"characters": "inte"
+					},
+					"BAAAAGIFAAAAAAAAYwUAAAAAAAAAAAAAYwUAAAAAAABkBQAAAAAAAAAAAABkBQAAAAAAAGUFAAAAAAAAAAAAAGUFAAAAAAAAZgUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAYgUAAAAAAABiBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					96,
+					1,
+					"insert_completion",
+					{
+						"completion": "interactableWorldPos",
+						"format": "snippet",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "interactableWorldPos"
+					},
+					"AgAAAGIFAAAAAAAAYgUAAAAAAAAEAAAAaW50ZWIFAAAAAAAAdgUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAZgUAAAAAAABmBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					97,
+					1,
+					"insert",
+					{
+						"characters": ".x"
+					},
+					"AgAAAHYFAAAAAAAAdwUAAAAAAAAAAAAAdwUAAAAAAAB4BQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAdgUAAAAAAAB2BQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					98,
+					1,
+					"insert",
+					{
+						"characters": " >"
+					},
+					"AgAAAHgFAAAAAAAAeQUAAAAAAAAAAAAAeQUAAAAAAAB6BQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAeAUAAAAAAAB4BQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					99,
+					1,
+					"insert",
+					{
+						"characters": " -1"
+					},
+					"AwAAAHoFAAAAAAAAewUAAAAAAAAAAAAAewUAAAAAAAB8BQAAAAAAAAAAAAB8BQAAAAAAAH0FAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAegUAAAAAAAB6BQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					101,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAH4FAAAAAAAAfwUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAfgUAAAAAAAB+BQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					102,
+					1,
+					"insert_snippet",
+					{
+						"contents": "{$0}"
+					},
+					"AQAAAH8FAAAAAAAAgQUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAfwUAAAAAAAB/BQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					103,
+					1,
+					"run_macro_file",
+					{
+						"file": "res://Packages/Default/Add Line in Braces.sublime-macro"
+					},
+					"BAAAAIAFAAAAAAAAjQUAAAAAAAAAAAAAjQUAAAAAAACaBQAAAAAAAAAAAACBBQAAAAAAAIEFAAAAAAAADAAAACAgICAgICAgICAgIIEFAAAAAAAAkQUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAgAUAAAAAAACABQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					105,
+					1,
+					"insert",
+					{
+						"characters": " else"
+					},
+					"BgAAAJ8FAAAAAAAAoAUAAAAAAAAAAAAAgQUAAAAAAACBBQAAAAAAABAAAAAgICAgICAgICAgICAgICAgkAUAAAAAAACRBQAAAAAAAAAAAACRBQAAAAAAAJIFAAAAAAAAAAAAAJIFAAAAAAAAkwUAAAAAAAAAAAAAkwUAAAAAAACUBQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAnwUAAAAAAACfBQAAAAAAAAAAAAAAAGBA"
+				],
+				[
+					106,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAJQFAAAAAAAAlQUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAlAUAAAAAAACUBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					107,
+					1,
+					"insert_snippet",
+					{
+						"contents": "{$0}"
+					},
+					"AQAAAJUFAAAAAAAAlwUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAlQUAAAAAAACVBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					108,
+					1,
+					"run_macro_file",
+					{
+						"file": "res://Packages/Default/Add Line in Braces.sublime-macro"
+					},
+					"BAAAAJYFAAAAAAAAowUAAAAAAAAAAAAAowUAAAAAAACwBQAAAAAAAAAAAACXBQAAAAAAAJcFAAAAAAAADAAAACAgICAgICAgICAgIJcFAAAAAAAApwUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAlgUAAAAAAACWBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					110,
+					1,
+					"left_delete",
+					null,
+					"AgAAAIAFAAAAAAAAgAUAAAAAAAABAAAACpYFAAAAAAAAlgUAAAAAAAAQAAAAICAgICAgICAgICAgICAgIA",
+					"AQAAAAAAAAABAAAAgQUAAAAAAACBBQAAAAAAAAAAAAAAAGBA"
+				],
+				[
+					111,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAIAFAAAAAAAAkQUAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAgAUAAAAAAACABQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					112,
+					1,
+					"paste",
+					null,
+					"AQAAAJEFAAAAAAAAjgYAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAkQUAAAAAAACRBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					115,
+					1,
+					"indent",
+					null,
+					"AwAAAOMFAAAAAAAA5wUAAAAAAAAAAAAARwYAAAAAAABLBgAAAAAAAAAAAACJBgAAAAAAAI0GAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAjgYAAAAAAADvBQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					121,
+					1,
+					"left_delete",
+					null,
+					"AQAAAK8GAAAAAAAArwYAAAAAAAABAAAACg",
+					"AQAAAAAAAAABAAAAsAYAAAAAAACwBgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					122,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAK8GAAAAAAAAwAYAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAArwYAAAAAAACvBgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					123,
+					1,
+					"paste",
+					null,
+					"AQAAAMAGAAAAAAAAEQcAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAwAYAAAAAAADABgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					126,
+					1,
+					"insert",
+					{
+						"characters": "No"
+					},
+					"AgAAANUGAAAAAAAA1gYAAAAAAAA5AAAARWRpdCB0aGUgc2VsZWN0ZWQgaW50ZXJhY3RhYmxlXG5DaG9vc2UgSW50ZXJhY3RhYmxlIFR5cGU61gYAAAAAAADXBgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAADgcAAAAAAADVBgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					127,
+					1,
+					"insert",
+					{
+						"characters": " selected"
+					},
+					"CQAAANcGAAAAAAAA2AYAAAAAAAAAAAAA2AYAAAAAAADZBgAAAAAAAAAAAADZBgAAAAAAANoGAAAAAAAAAAAAANoGAAAAAAAA2wYAAAAAAAAAAAAA2wYAAAAAAADcBgAAAAAAAAAAAADcBgAAAAAAAN0GAAAAAAAAAAAAAN0GAAAAAAAA3gYAAAAAAAAAAAAA3gYAAAAAAADfBgAAAAAAAAAAAADfBgAAAAAAAOAGAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA1wYAAAAAAADXBgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					128,
+					1,
+					"insert",
+					{
+						"characters": " interactabl"
+					},
+					"DAAAAOAGAAAAAAAA4QYAAAAAAAAAAAAA4QYAAAAAAADiBgAAAAAAAAAAAADiBgAAAAAAAOMGAAAAAAAAAAAAAOMGAAAAAAAA5AYAAAAAAAAAAAAA5AYAAAAAAADlBgAAAAAAAAAAAADlBgAAAAAAAOYGAAAAAAAAAAAAAOYGAAAAAAAA5wYAAAAAAAAAAAAA5wYAAAAAAADoBgAAAAAAAAAAAADoBgAAAAAAAOkGAAAAAAAAAAAAAOkGAAAAAAAA6gYAAAAAAAAAAAAA6gYAAAAAAADrBgAAAAAAAAAAAADrBgAAAAAAAOwGAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA4AYAAAAAAADgBgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					129,
+					1,
+					"insert",
+					{
+						"characters": "e.."
+					},
+					"AwAAAOwGAAAAAAAA7QYAAAAAAAAAAAAA7QYAAAAAAADuBgAAAAAAAAAAAADuBgAAAAAAAO8GAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA7AYAAAAAAADsBgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					133,
+					1,
+					"insert",
+					{
+						"characters": "\n\nvoid"
+					},
+					"BgAAAOYHAAAAAAAA5wcAAAAAAAAAAAAA5wcAAAAAAADoBwAAAAAAAAAAAADoBwAAAAAAAOkHAAAAAAAAAAAAAOkHAAAAAAAA6gcAAAAAAAAAAAAA6gcAAAAAAADrBwAAAAAAAAAAAADrBwAAAAAAAOwHAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA5gcAAAAAAADmBwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					134,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAOwHAAAAAAAA7QcAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA7AcAAAAAAADsBwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					135,
+					1,
+					"insert_completion",
+					{
+						"completion": "InteractableInfoPanel",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": true,
+						"trigger": "InteractableInfoPanel"
+					},
+					"AQAAAO0HAAAAAAAAAggAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAA7QcAAAAAAADtBwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					136,
+					1,
+					"insert",
+					{
+						"characters": "::set"
+					},
+					"BQAAAAIIAAAAAAAAAwgAAAAAAAAAAAAAAwgAAAAAAAAECAAAAAAAAAAAAAAECAAAAAAAAAUIAAAAAAAAAAAAAAUIAAAAAAAABggAAAAAAAAAAAAABggAAAAAAAAHCAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAAggAAAAAAAACCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					137,
+					1,
+					"insert",
+					{
+						"characters": "Sel"
+					},
+					"AwAAAAcIAAAAAAAACAgAAAAAAAAAAAAACAgAAAAAAAAJCAAAAAAAAAAAAAAJCAAAAAAAAAoIAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAABwgAAAAAAAAHCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					138,
+					1,
+					"insert",
+					{
+						"characters": "ectedIntera"
+					},
+					"CwAAAAoIAAAAAAAACwgAAAAAAAAAAAAACwgAAAAAAAAMCAAAAAAAAAAAAAAMCAAAAAAAAA0IAAAAAAAAAAAAAA0IAAAAAAAADggAAAAAAAAAAAAADggAAAAAAAAPCAAAAAAAAAAAAAAPCAAAAAAAABAIAAAAAAAAAAAAABAIAAAAAAAAEQgAAAAAAAAAAAAAEQgAAAAAAAASCAAAAAAAAAAAAAASCAAAAAAAABMIAAAAAAAAAAAAABMIAAAAAAAAFAgAAAAAAAAAAAAAFAgAAAAAAAAVCAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAACggAAAAAAAAKCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					139,
+					1,
+					"insert",
+					{
+						"characters": "ctable"
+					},
+					"BgAAABUIAAAAAAAAFggAAAAAAAAAAAAAFggAAAAAAAAXCAAAAAAAAAAAAAAXCAAAAAAAABgIAAAAAAAAAAAAABgIAAAAAAAAGQgAAAAAAAAAAAAAGQgAAAAAAAAaCAAAAAAAAAAAAAAaCAAAAAAAABsIAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAFQgAAAAAAAAVCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					140,
+					1,
+					"insert_snippet",
+					{
+						"contents": "($0)"
+					},
+					"AQAAABsIAAAAAAAAHQgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAGwgAAAAAAAAbCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					141,
+					1,
+					"insert",
+					{
+						"characters": "Vector2"
+					},
+					"BwAAABwIAAAAAAAAHQgAAAAAAAAAAAAAHQgAAAAAAAAeCAAAAAAAAAAAAAAeCAAAAAAAAB8IAAAAAAAAAAAAAB8IAAAAAAAAIAgAAAAAAAAAAAAAIAgAAAAAAAAhCAAAAAAAAAAAAAAhCAAAAAAAACIIAAAAAAAAAAAAACIIAAAAAAAAIwgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAHAgAAAAAAAAcCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					142,
+					1,
+					"insert",
+					{
+						"characters": " worldPos"
+					},
+					"CQAAACMIAAAAAAAAJAgAAAAAAAAAAAAAJAgAAAAAAAAlCAAAAAAAAAAAAAAlCAAAAAAAACYIAAAAAAAAAAAAACYIAAAAAAAAJwgAAAAAAAAAAAAAJwgAAAAAAAAoCAAAAAAAAAAAAAAoCAAAAAAAACkIAAAAAAAAAAAAACkIAAAAAAAAKggAAAAAAAAAAAAAKggAAAAAAAArCAAAAAAAAAAAAAArCAAAAAAAACwIAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAIwgAAAAAAAAjCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					144,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAC0IAAAAAAAALggAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAALQgAAAAAAAAtCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					145,
+					1,
+					"insert_snippet",
+					{
+						"contents": "{$0}"
+					},
+					"AQAAAC4IAAAAAAAAMAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAALggAAAAAAAAuCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					146,
+					1,
+					"run_macro_file",
+					{
+						"file": "res://Packages/Default/Add Line in Braces.sublime-macro"
+					},
+					"AwAAAC8IAAAAAAAAMAgAAAAAAAAAAAAAMAgAAAAAAAAxCAAAAAAAAAAAAAAwCAAAAAAAADQIAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAALwgAAAAAAAAvCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					153,
+					1,
+					"insert",
+					{
+						"characters": "Inte"
+					},
+					"BQAAABwIAAAAAAAAHQgAAAAAAAAQAAAAVmVjdG9yMiB3b3JsZFBvcyEIAAAAAAAAIQgAAAAAAAAEAAAAICAgIB0IAAAAAAAAHggAAAAAAAAAAAAAHggAAAAAAAAfCAAAAAAAAAAAAAAfCAAAAAAAACAIAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAALAgAAAAAAAAcCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					154,
+					1,
+					"insert_completion",
+					{
+						"completion": "InteractableType",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "InteractableType"
+					},
+					"AgAAABwIAAAAAAAAHAgAAAAAAAAEAAAASW50ZRwIAAAAAAAALAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAIAgAAAAAAAAgCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					155,
+					4,
+					"left_delete",
+					null,
+					"BAAAACsIAAAAAAAAKwgAAAAAAAABAAAAZSoIAAAAAAAAKggAAAAAAAABAAAAcCkIAAAAAAAAKQgAAAAAAAABAAAAeSgIAAAAAAAAKAgAAAAAAAABAAAAVA",
+					"AQAAAAAAAAABAAAALAgAAAAAAAAsCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					156,
+					1,
+					"insert",
+					{
+						"characters": " interactab"
+					},
+					"CwAAACgIAAAAAAAAKQgAAAAAAAAAAAAAKQgAAAAAAAAqCAAAAAAAAAAAAAAqCAAAAAAAACsIAAAAAAAAAAAAACsIAAAAAAAALAgAAAAAAAAAAAAALAgAAAAAAAAtCAAAAAAAAAAAAAAtCAAAAAAAAC4IAAAAAAAAAAAAAC4IAAAAAAAALwgAAAAAAAAAAAAALwgAAAAAAAAwCAAAAAAAAAAAAAAwCAAAAAAAADEIAAAAAAAAAAAAADEIAAAAAAAAMggAAAAAAAAAAAAAMggAAAAAAAAzCAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAKAgAAAAAAAAoCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					157,
+					1,
+					"insert",
+					{
+						"characters": "le"
+					},
+					"AgAAADMIAAAAAAAANAgAAAAAAAAAAAAANAgAAAAAAAA1CAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAMwgAAAAAAAAzCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					160,
+					1,
+					"reindent",
+					null,
+					"AQAAADkIAAAAAAAAPQgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAOQgAAAAAAAA5CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					161,
+					1,
+					"insert",
+					{
+						"characters": "if"
+					},
+					"AgAAAD0IAAAAAAAAPggAAAAAAAAAAAAAPggAAAAAAAA/CAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAPQgAAAAAAAA9CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					162,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAD8IAAAAAAAAQAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAPwgAAAAAAAA/CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					163,
+					1,
+					"insert_snippet",
+					{
+						"contents": "($0)"
+					},
+					"AQAAAEAIAAAAAAAAQggAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAQAgAAAAAAABACAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					164,
+					1,
+					"insert",
+					{
+						"characters": "int"
+					},
+					"AwAAAEEIAAAAAAAAQggAAAAAAAAAAAAAQggAAAAAAABDCAAAAAAAAAAAAABDCAAAAAAAAEQIAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAQQgAAAAAAABBCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					167,
+					1,
+					"insert_completion",
+					{
+						"completion": "interactable",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "interactable"
+					},
+					"AgAAAEEIAAAAAAAAQQgAAAAAAAADAAAAaW50QQgAAAAAAABNCAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAARAgAAAAAAABECAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					168,
+					1,
+					"insert",
+					{
+						"characters": ".isV"
+					},
+					"BAAAAE0IAAAAAAAATggAAAAAAAAAAAAATggAAAAAAABPCAAAAAAAAAAAAABPCAAAAAAAAFAIAAAAAAAAAAAAAFAIAAAAAAAAUQgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAATQgAAAAAAABNCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					169,
+					1,
+					"insert_completion",
+					{
+						"completion": "isValid()",
+						"format": "snippet",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "isValid"
+					},
+					"AgAAAE4IAAAAAAAATggAAAAAAAADAAAAaXNWTggAAAAAAABXCAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAUQgAAAAAAABRCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					171,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAFgIAAAAAAAAWQgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAWAgAAAAAAABYCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					172,
+					1,
+					"insert_snippet",
+					{
+						"contents": "{$0}"
+					},
+					"AQAAAFkIAAAAAAAAWwgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAWQgAAAAAAABZCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					173,
+					1,
+					"run_macro_file",
+					{
+						"file": "res://Packages/Default/Add Line in Braces.sublime-macro"
+					},
+					"BAAAAFoIAAAAAAAAXwgAAAAAAAAAAAAAXwgAAAAAAABkCAAAAAAAAAAAAABbCAAAAAAAAFsIAAAAAAAABAAAACAgICBbCAAAAAAAAGMIAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAWggAAAAAAABaCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					175,
+					1,
+					"insert",
+					{
+						"characters": " else"
+					},
+					"BgAAAGkIAAAAAAAAaggAAAAAAAAAAAAAWwgAAAAAAABbCAAAAAAAAAgAAAAgICAgICAgIGIIAAAAAAAAYwgAAAAAAAAAAAAAYwgAAAAAAABkCAAAAAAAAAAAAABkCAAAAAAAAGUIAAAAAAAAAAAAAGUIAAAAAAAAZggAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAaQgAAAAAAABpCAAAAAAAAAAAAAAAAFBA"
+				],
+				[
+					176,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAGYIAAAAAAAAZwgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAZggAAAAAAABmCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					177,
+					1,
+					"insert_snippet",
+					{
+						"contents": "{$0}"
+					},
+					"AQAAAGcIAAAAAAAAaQgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAZwgAAAAAAABnCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					178,
+					1,
+					"run_macro_file",
+					{
+						"file": "res://Packages/Default/Add Line in Braces.sublime-macro"
+					},
+					"BAAAAGgIAAAAAAAAbQgAAAAAAAAAAAAAbQgAAAAAAAByCAAAAAAAAAAAAABpCAAAAAAAAGkIAAAAAAAABAAAACAgICBpCAAAAAAAAHEIAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAaAgAAAAAAABoCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					179,
+					1,
+					"insert",
+					{
+						"characters": "sel"
+					},
+					"AwAAAHEIAAAAAAAAcggAAAAAAAAAAAAAcggAAAAAAABzCAAAAAAAAAAAAABzCAAAAAAAAHQIAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAcQgAAAAAAABxCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					180,
+					3,
+					"left_delete",
+					null,
+					"AwAAAHMIAAAAAAAAcwgAAAAAAAABAAAAbHIIAAAAAAAAcggAAAAAAAABAAAAZXEIAAAAAAAAcQgAAAAAAAABAAAAcw",
+					"AQAAAAAAAAABAAAAdAgAAAAAAAB0CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					181,
+					1,
+					"paste",
+					null,
+					"AQAAAHEIAAAAAAAAhQgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAcQgAAAAAAABxCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					182,
+					1,
+					"insert",
+					{
+						"characters": " ="
+					},
+					"AgAAAIUIAAAAAAAAhggAAAAAAAAAAAAAhggAAAAAAACHCAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAhQgAAAAAAACFCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					183,
+					1,
+					"insert",
+					{
+						"characters": " Vector2"
+					},
+					"CAAAAIcIAAAAAAAAiAgAAAAAAAAAAAAAiAgAAAAAAACJCAAAAAAAAAAAAACJCAAAAAAAAIoIAAAAAAAAAAAAAIoIAAAAAAAAiwgAAAAAAAAAAAAAiwgAAAAAAACMCAAAAAAAAAAAAACMCAAAAAAAAI0IAAAAAAAAAAAAAI0IAAAAAAAAjggAAAAAAAAAAAAAjggAAAAAAACPCAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAhwgAAAAAAACHCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					184,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAI8IAAAAAAAAkAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAjwgAAAAAAACPCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					185,
+					1,
+					"insert_snippet",
+					{
+						"contents": "{$0}"
+					},
+					"AQAAAJAIAAAAAAAAkggAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAkAgAAAAAAACQCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					186,
+					1,
+					"insert",
+					{
+						"characters": " -1,"
+					},
+					"BAAAAJEIAAAAAAAAkggAAAAAAAAAAAAAkggAAAAAAACTCAAAAAAAAAAAAACTCAAAAAAAAJQIAAAAAAAAAAAAAJQIAAAAAAAAlQgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAkQgAAAAAAACRCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					187,
+					1,
+					"insert",
+					{
+						"characters": " -1"
+					},
+					"AwAAAJUIAAAAAAAAlggAAAAAAAAAAAAAlggAAAAAAACXCAAAAAAAAAAAAACXCAAAAAAAAJgIAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAlQgAAAAAAACVCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					188,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAJgIAAAAAAAAmQgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAmAgAAAAAAACYCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					190,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAAJoIAAAAAAAAmwgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAmggAAAAAAACaCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					192,
+					1,
+					"left_delete",
+					null,
+					"AQAAAFoIAAAAAAAAWggAAAAAAAABAAAACg",
+					"AQAAAAAAAAABAAAAWwgAAAAAAABbCAAAAAAAAAAAAAAAAHlA"
+				],
+				[
+					193,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAFoIAAAAAAAAYwgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAWggAAAAAAABaCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					194,
+					1,
+					"paste",
+					null,
+					"AQAAAGMIAAAAAAAAdwgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAYwgAAAAAAABjCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					195,
+					1,
+					"insert",
+					{
+						"characters": " ="
+					},
+					"AgAAAHcIAAAAAAAAeAgAAAAAAAAAAAAAeAgAAAAAAAB5CAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAdwgAAAAAAAB3CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					196,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAAHkIAAAAAAAAeggAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAeQgAAAAAAAB5CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					197,
+					1,
+					"insert",
+					{
+						"characters": "inter"
+					},
+					"BQAAAHoIAAAAAAAAewgAAAAAAAAAAAAAewgAAAAAAAB8CAAAAAAAAAAAAAB8CAAAAAAAAH0IAAAAAAAAAAAAAH0IAAAAAAAAfggAAAAAAAAAAAAAfggAAAAAAAB/CAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAeggAAAAAAAB6CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					199,
+					1,
+					"insert_completion",
+					{
+						"completion": "interactable",
+						"format": "snippet",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "interactable"
+					},
+					"AgAAAHoIAAAAAAAAeggAAAAAAAAFAAAAaW50ZXJ6CAAAAAAAAIYIAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAfwgAAAAAAAB/CAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					200,
+					1,
+					"insert",
+					{
+						"characters": ".get"
+					},
+					"BAAAAIYIAAAAAAAAhwgAAAAAAAAAAAAAhwgAAAAAAACICAAAAAAAAAAAAACICAAAAAAAAIkIAAAAAAAAAAAAAIkIAAAAAAAAiggAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAhggAAAAAAACGCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					201,
+					1,
+					"insert",
+					{
+						"characters": "W"
+					},
+					"AQAAAIoIAAAAAAAAiwgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAiggAAAAAAACKCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					203,
+					1,
+					"insert_completion",
+					{
+						"completion": "getWorldPos()",
+						"format": "snippet",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "getWorldPos"
+					},
+					"AgAAAIcIAAAAAAAAhwgAAAAAAAAEAAAAZ2V0V4cIAAAAAAAAlAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAiwgAAAAAAACLCAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					204,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAAJQIAAAAAAAAlQgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAlAgAAAAAAACUCAAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"inst",
+				"Debugger: Install Adapters"
+			],
+			[
+				"term",
+				"Terminus Utilities: Select Theme"
+			],
+			[
+				"bui",
+				"Build With: xmake"
+			],
+			[
+				"ecc",
+				"ECC: Settings"
+			],
+			[
+				"eas",
+				"ECC: Show all errors"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"termi",
+				"Terminus: Toggle Panel"
+			],
+			[
+				"x",
+				"XMake: Build"
+			],
+			[
+				"xma",
+				"XMake: Build"
+			],
+			[
+				"run",
+				"XMake: Run"
+			],
+			[
+				"xmak",
+				"XMake: Build"
+			],
+			[
+				"terminus",
+				"Terminus: Toggle Panel"
+			],
+			[
+				"Package Control: list",
+				"Package Control: List Packages"
+			],
+			[
+				"Snippet: ",
+				"Snippet: Namespace"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"UI: Select Theme"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/nikodev/Документи/Projects/cpp/rpgpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/include",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/src"
+	],
+	"file_history":
+	[
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/include/interactablesContainer.hpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/src/interactablesContainer.cpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/src/interactable.cpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/include/interactable.hpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/src/editor/mapViewBox.cpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/include/editor/worldViewBox.hpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/src/editor/worldViewBox.cpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/include/editor/interactableInfoPanel.hpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/src/editor/interactableInfoPanel.cpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/include/editor/mapPanelView.hpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/.clang-complete",
+		"/home/nikodev/.config/sublime-text/Packages/User/ClangAutoComplete.sublime-settings",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/editor",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/src/editor/fileSystemService.cpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/src/actor.cpp",
+		"/home/nikodev/Документи/Projects/cpp/rpgpp/include/editor/fileSystemService.hpp",
+		"/home/nikodev/.config/sublime-text/Packages/User/xmake.sublime-build"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15322,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								132,
+								87
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"auto_indent": false,
+							"gutter": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_width": 2,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "include/editor/mapPanelView.hpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 710,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								701,
+								701
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/zzz A File Icon zzz/aliases/C++ (Header).sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 77.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/editor/mapPanelView.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4311,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3016,
+								3016
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1264.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "include/interactablesContainer.hpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 491,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/zzz A File Icon zzz/aliases/C++ (Header).sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/editor/mapViewBox.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12533,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 768.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "include/editor/worldViewBox.hpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2737,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2647,
+								2667
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/zzz A File Icon zzz/aliases/C++ (Header).sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1305.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "include/editor/interactableInfoPanel.hpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 668,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								291,
+								311
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/zzz A File Icon zzz/aliases/C++ (Header).sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/editor/interactableInfoPanel.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2269,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1811,
+								1811
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 999.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.Terminus":
+	{
+		"height": 124.0,
+		"history":
+		[
+		]
+	},
+	"output.exec":
+	{
+		"height": 136.0,
+		"history":
+		[
+		]
+	},
+	"output.find_results":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"output.xmake":
+	{
+		"height": 124.0,
+		"history":
+		[
+		]
+	},
+	"pinned_build_system": "Packages/User/xmake.sublime-build",
+	"project": "rpgpp.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"intera",
+				"include/interactablesContainer.hpp"
+			],
+			[
+				"interactable.cp",
+				"src/interactable.cpp"
+			],
+			[
+				"interactabl",
+				"include/interactable.hpp"
+			],
+			[
+				"int",
+				"src/interactablesContainer.cpp"
+			],
+			[
+				"interactableC",
+				"include/interactablesContainer.hpp"
+			],
+			[
+				"world",
+				"include/editor/worldViewBox.hpp"
+			],
+			[
+				"mapV",
+				"src/editor/mapViewBox.cpp"
+			],
+			[
+				"inter",
+				"src/editor/interactableInfoPanel.cpp"
+			],
+			[
+				"interactablePan",
+				"include/editor/interactableInfoPanel.hpp"
+			],
+			[
+				"interactableCO",
+				"include/interactablesContainer.hpp"
+			],
+			[
+				"worl",
+				"src/editor/worldViewBox.cpp"
+			],
+			[
+				"map",
+				"include/editor/mapPanelView.hpp"
+			],
+			[
+				"mapVi",
+				"src/editor/mapViewBox.cpp"
+			],
+			[
+				"in",
+				"src/editor/interactableInfoPanel.cpp"
+			],
+			[
+				"interactableP",
+				"include/editor/interactableInfoPanel.hpp"
+			],
+			[
+				"mapPa",
+				"src/editor/mapPanelView.cpp"
+			],
+			[
+				"file",
+				"src/editor/fileSystemService.cpp"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 274.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

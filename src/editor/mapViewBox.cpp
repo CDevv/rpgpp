@@ -21,6 +21,7 @@ MapViewBox::MapViewBox(WorldViewBox *viewBox)
     this->tileAtlasPos = Vector2 { 0, 0 };
     this->tileWorldPos = Vector2 { 0, 0 };
     this->hoverValidTile = false;
+    this->selectedWorldTile = Vector2 { -1, -1 };
 
     this->action = ACTION_NONE;
     this->currentLayer = LAYER_TILES;
@@ -58,6 +59,11 @@ void MapViewBox::setSelectedTile(Vector2 tile)
         isTileValid = true;
         selectedTileAtlasCoords = tile;
     }
+}
+
+Vector2 MapViewBox::getSelectedWorldTile()
+{
+    return this->selectedWorldTile;
 }
 
 void MapViewBox::isHoverOnValidTile()
@@ -121,6 +127,8 @@ void MapViewBox::isHoverOnValidTile()
                         room->getInteractables().removeInteractable(tileAtlasPos.x, tileAtlasPos.y);
                         break;
                 }
+            } else if (action == ACTION_EDIT) {
+                this->selectedWorldTile = tileAtlasPos;
             }
         }
     }
@@ -223,6 +231,17 @@ void MapViewBox::drawTiles()
         }
     }
 
+    if (action == ACTION_EDIT) {
+        if (selectedWorldTile.x > -1) {
+            Rectangle hoverTileRect = Rectangle {
+                selectedWorldTile.x * atlasTileSize, selectedWorldTile.y * atlasTileSize,
+                static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+            };
+
+            DrawRectangleLinesEx(hoverTileRect, 1.0f, Fade(ORANGE, 0.7f));
+        }
+    }
+
     drawHoverTile(atlasTileSize, tileWorldPos);
 }
 
@@ -238,8 +257,7 @@ void MapViewBox::drawHoverTile(int atlasTileSize, Vector2 tileWorldPos)
             };
 
             DrawRectangleRec(hoverTileRect, Fade(GRAY, 0.5f));
-        } else {
-            if (action == ACTION_PLACE) {
+        } else if (action == ACTION_PLACE) {
                 if (currentLayer == LAYER_TILES && isTileValid) {
                     //defaults
                     Vector2 origin = Vector2 { 0, 0 };
@@ -276,7 +294,13 @@ void MapViewBox::drawHoverTile(int atlasTileSize, Vector2 tileWorldPos)
 
                     DrawRectangleRec(hoverTileRect, Fade(YELLOW, 0.7f));
                 }
-            }
+        } else if (action == ACTION_EDIT) {
+            Rectangle hoverTileRect = Rectangle {
+                tileWorldPos.x, tileWorldPos.y,
+                static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+            };
+
+            DrawRectangleLinesEx(hoverTileRect, 1.0f, Fade(ORANGE, 0.5f));
         }
     }
 }
@@ -300,6 +324,13 @@ void MapViewBox::drawMouse()
             int atlasPosY = tileAtlasPos.y;
             DrawTextEx(ui.getFont(), TextFormat("Tile: [%d, %d]", atlasPosX, atlasPosY), atlasPosTextPos, 26, 2, BLACK);
         }
+    }
+
+    if (action == ACTION_EDIT && selectedWorldTile.x > -1) {
+        Vector2 selectedTileTextPos = Vector2 { 8, 8 };
+        int selectedTileWorldPosX = selectedWorldTile.x;
+        int selectedTileWorldPosY = selectedWorldTile.y;
+        DrawTextEx(ui.getFont(), TextFormat("Selected Tile: [%d, %d]", selectedTileWorldPosX, selectedTileWorldPosY), selectedTileTextPos, 26, 2, ORANGE);       
     }
 }
 

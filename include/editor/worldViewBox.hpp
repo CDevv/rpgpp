@@ -11,7 +11,7 @@
 class WorldViewBox;
 
 enum RoomAction {
-    ACTION_NONE, ACTION_PLACE, ACTION_ERASE
+    ACTION_NONE, ACTION_PLACE, ACTION_ERASE, ACTION_EDIT
 };
 
 enum RoomLayer {
@@ -49,6 +49,7 @@ private:
     Vector2 tileAtlasPos;
     Vector2 tileWorldPos;
     bool hoverValidTile;
+    Vector2 selectedWorldTile;
     RoomAction action;
     RoomLayer currentLayer;
     bool isTileValid;
@@ -64,6 +65,7 @@ public:
     void setLayerMode(RoomLayer mode);
     void setSelectedTile(Vector2 tile);
     void setCurrentInteractableType(InteractableType type);
+    Vector2 getSelectedWorldTile();
     void isHoverOnValidTile();
     void drawGrid();
     void drawTiles();
@@ -97,6 +99,7 @@ public:
     void setLayerMode(RoomLayer mode);
     void setCurrentInteractableType(InteractableType type);
     void setSelectedTile(Vector2 tile);
+    Vector2 getSelectedWorldTile();
     void update();
     void draw();
     void unload();

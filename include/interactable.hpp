@@ -10,13 +10,16 @@ enum InteractableType {
 
 class Interactable {
 private:
+    bool valid;
     InteractableType type;
     Vector2 tilePos;
     int tileSize;
     Vector2 absolutePos;
     Rectangle rect;
 public:
+    Interactable();
     Interactable(InteractableType type, Vector2 tilePos, int tileSize);
+    bool isValid();
     virtual ~Interactable();
     Rectangle getRect();
     InteractableType getType();

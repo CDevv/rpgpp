@@ -90,6 +90,12 @@ void MapPanelView::update()
     worldView->setLayerMode(layerMode);
 
     worldView->setCurrentInteractableType(interactableInfo.getType());
+
+    if (fs.getRoom() != nullptr) {
+        Vector2 selectedTileWorldPos = worldView->getSelectedWorldTile();
+        Interactable selectedInteractable = fs.getRoom()->getInteractables().get(selectedTileWorldPos.x, selectedTileWorldPos.y);
+        interactableInfo.setSelectedInteractable(selectedInteractable);
+    }
 }
 
 void MapPanelView::draw()
@@ -124,9 +130,9 @@ void MapPanelView::draw()
         (GetScreenWidth() - ((windowRect.x + windowRect.width + 4) + 4)), 24
     };
     Rectangle singleOptionRect = optionsRect;
-    singleOptionRect.width /= 2;
-    //singleOptionRect.width -= 4;
-    GuiToggleGroup(singleOptionRect, "Place;Erase", &actionModeToggle);
+    singleOptionRect.width /= 3;
+    singleOptionRect.width -= 2;
+    GuiToggleGroup(singleOptionRect, "Place;Erase;Edit", &actionModeToggle);
 
     Rectangle layoutDropdown = optionsRect;
     layoutDropdown.y += layoutDropdown.height + 4;

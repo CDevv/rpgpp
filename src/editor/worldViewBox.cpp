@@ -83,6 +83,11 @@ void WorldViewBox::setSelectedTile(Vector2 tile)
     mapView.setSelectedTile(tile);
 }
 
+Vector2 WorldViewBox::getSelectedWorldTile()
+{
+    return mapView.getSelectedWorldTile();
+}
+
 void WorldViewBox::update()
 {
     mouseInput->update();
