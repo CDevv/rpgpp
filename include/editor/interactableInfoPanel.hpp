@@ -3,16 +3,22 @@
 
 #include "worldViewBox.hpp"
 #include <raylib.h>
+#include "interactable.hpp"
 
 class InteractableInfoPanel {
 private:
     Rectangle rect;
     RoomAction action;
+    InteractableType type;
+    int typeNumber;
+    bool typeDropdownEditMode;
 public:
     InteractableInfoPanel();
     InteractableInfoPanel(Rectangle rect);
+    void update();
     void draw();
     void setActionMode(RoomAction mode);
+    InteractableType getType();
 };
 
 #endif

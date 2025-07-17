@@ -53,6 +53,7 @@ private:
     RoomLayer currentLayer;
     bool isTileValid;
     Vector2 selectedTileAtlasCoords;
+    InteractableType currentInteractableType;
     void drawHoverTile(int atlasTileSize, Vector2 tileWorldPos);
 public:
     MapViewBox();
@@ -62,6 +63,7 @@ public:
     void setActionMode(RoomAction mode);
     void setLayerMode(RoomLayer mode);
     void setSelectedTile(Vector2 tile);
+    void setCurrentInteractableType(InteractableType type);
     void isHoverOnValidTile();
     void drawGrid();
     void drawTiles();
@@ -93,6 +95,7 @@ public:
     Vector2 getSelectedTile();
     void setActionMode(RoomAction mode);
     void setLayerMode(RoomLayer mode);
+    void setCurrentInteractableType(InteractableType type);
     void setSelectedTile(Vector2 tile);
     void update();
     void draw();

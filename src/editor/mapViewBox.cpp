@@ -24,6 +24,7 @@ MapViewBox::MapViewBox(WorldViewBox *viewBox)
 
     this->action = ACTION_NONE;
     this->currentLayer = LAYER_TILES;
+    this->currentInteractableType = INT_BLANK;
     this->isTileValid = false;
     this->selectedTileAtlasCoords = Vector2 { 0, 0 };
 }
@@ -42,6 +43,11 @@ void MapViewBox::setActionMode(RoomAction mode)
 void MapViewBox::setLayerMode(RoomLayer mode)
 {
     this->currentLayer = mode;
+}
+
+void MapViewBox::setCurrentInteractableType(InteractableType type)
+{
+    this->currentInteractableType = type;
 }
 
 void MapViewBox::setSelectedTile(Vector2 tile)
@@ -100,7 +106,7 @@ void MapViewBox::isHoverOnValidTile()
                         room->getCollisions().addCollisionTile(tileAtlasPos.x, tileAtlasPos.y);
                         break;
                     case LAYER_INTERACTABLES:
-                        room->getInteractables().add(tileAtlasPos.x, tileAtlasPos.y, INT_BLANK);
+                        room->getInteractables().add(tileAtlasPos.x, tileAtlasPos.y, currentInteractableType);
                         break;
                 }
             } else if (action == ACTION_ERASE) {

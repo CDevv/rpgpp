@@ -9,6 +9,14 @@ InteractableInfoPanel::InteractableInfoPanel(Rectangle rect)
 {
     this->action = ACTION_PLACE;
     this->rect = rect;
+    this->type = INT_BLANK;
+    this->typeNumber = 0;
+    this->typeDropdownEditMode = false;
+}
+
+void InteractableInfoPanel::update()
+{
+    type = static_cast<InteractableType>(typeNumber);
 }
 
 void InteractableInfoPanel::draw()
@@ -17,12 +25,19 @@ void InteractableInfoPanel::draw()
 
     Rectangle labelRect = Rectangle
     {
-        rect.x + 4, rect.y + 4,
-        rect.width - 8, rect.height - 8
+        rect.x + 8, rect.y + 4 + 24,
+        rect.width - 16, (24 * 2)
     };
+    Rectangle dropdownRect = labelRect;
+    dropdownRect.height = 24;
+    dropdownRect.y += 2*24;
+
     switch (action) {
         case ACTION_PLACE:
-            GuiLabel(labelRect, "Place an interactable of blank type..");
+            GuiLabel(labelRect, "Place an interactable\nChoose Interactable Type:");
+            if (GuiDropdownBox(dropdownRect, "Blank;Two", &typeNumber, typeDropdownEditMode)) {
+                typeDropdownEditMode = !typeDropdownEditMode;
+            }
             break;
         case ACTION_ERASE:
             GuiLabel(labelRect, "Erase an interactable..");
@@ -35,4 +50,9 @@ void InteractableInfoPanel::draw()
 void InteractableInfoPanel::setActionMode(RoomAction mode)
 {
     this->action = mode;
+}
+
+InteractableType InteractableInfoPanel::getType()
+{
+    return this->type;
 }

@@ -73,6 +73,11 @@ void WorldViewBox::setLayerMode(RoomLayer mode)
     mapView.setLayerMode(mode);
 }
 
+void WorldViewBox::setCurrentInteractableType(InteractableType type)
+{
+    mapView.setCurrentInteractableType(type);
+}
+
 void WorldViewBox::setSelectedTile(Vector2 tile)
 {
     mapView.setSelectedTile(tile);

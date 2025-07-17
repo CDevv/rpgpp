@@ -82,10 +82,14 @@ void MapPanelView::update()
     RoomAction actionMode = static_cast<RoomAction>(actionModeToggle + 1);
     worldView->setActionMode(actionMode);
     collisionInfo.setActionMode(actionMode);
+
+    interactableInfo.update();
     interactableInfo.setActionMode(actionMode);
 
     RoomLayer layerMode = static_cast<RoomLayer>(layoutModeToggle);
     worldView->setLayerMode(layerMode);
+
+    worldView->setCurrentInteractableType(interactableInfo.getType());
 }
 
 void MapPanelView::draw()
