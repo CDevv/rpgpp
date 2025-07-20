@@ -7,6 +7,7 @@
 #include "editor.hpp"
 #include "resourceViewerBox.hpp"
 #include "windowContainer.hpp"
+#include "tabButton.hpp"
 
 EditorInterfaceService::EditorInterfaceService()
 {
@@ -29,6 +30,19 @@ EditorInterfaceService::EditorInterfaceService()
 
     mousePos = Vector2 { 0, 0 };
     hoverPos = Vector2 { 0, 0 };
+
+    Rectangle tabListRect = Rectangle
+    {
+        (138 + 120 + 8), 8,
+        120*5, 24
+    };
+    tabList = TabList(tabListRect);
+    tabList.addItem("file1");
+    tabList.addItem("file2");
+    tabList.addItem("file3");
+    tabList.addItem("file4");
+    tabList.addItem("file5");
+    tabList.addItem("file6");
 
     Rectangle windowRect = Rectangle
     {
@@ -62,12 +76,15 @@ void EditorInterfaceService::setInitial()
 
 void EditorInterfaceService::update()
 {
+    tabList.update();
     panelView->update();
     resourceView.update();
 }
 
 void EditorInterfaceService::draw()
 {
+    tabList.draw();
+
     panelView->draw();
 
     FileSystemService& fs = Editor::getFileSystem();
@@ -96,6 +113,17 @@ void EditorInterfaceService::draw()
     resourceView.draw();
 
     windowContainer.draw();
+
+    Rectangle tabRect = Rectangle
+    {
+        (138 + 120 + 8), 8,
+        120, 24
+    };
+    Rectangle tab2Rect = tabRect;
+    tab2Rect.x += tabRect.width;
+    
+    //EditorGuiTabButton(tabRect, "file..", false);
+    //EditorGuiTabButton(tab2Rect, "file2", true);
 
     GuiUnlock();
 }
