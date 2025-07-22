@@ -148,9 +148,9 @@ std::string TileMap::getTileSetSource()
     return tileSetSource;
 }
 
-TileSet& TileMap::getTileSet()
+TileSet* TileMap::getTileSet()
 {
-    return *tileSet;
+    return tileSet.get();
 }
 
 void TileMap::setTileSet(std::string tileSetSource)

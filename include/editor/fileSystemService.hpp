@@ -21,14 +21,31 @@ struct FS_Result {
     nfdresult_t result;
 };
 
+class ProjectFile {
+private:
+    std::string relativePath;
+    EngineFileType fileType;
+    std::unique_ptr<TileSet> tileSet;
+    std::unique_ptr<Room> room;
+public:
+    ProjectFile();
+    ProjectFile(std::string relativePath, EngineFileType fileType, TileSet* tileSet, Room* room);
+    std::string getRelativePath();
+    EngineFileType getFileType();
+    TileSet* getTileSet();
+    Room* getRoom();
+};
+
 class FileSystemService {
 private:
     std::unique_ptr<Project> project;
+    std::vector<std::unique_ptr<ProjectFile>> openedFiles;
+    int activeIndex;
     EngineFileType lastType;
     std::string lastOpenPath;
     bool isOpen;
-    std::unique_ptr<TileSet> lastTileSet;
-    std::unique_ptr<Room> lastRoom;
+    TileSet* lastTileSet;
+    Room* lastRoom;
 public:
     FileSystemService();
     ~FileSystemService();
@@ -36,6 +53,8 @@ public:
     void promptOpenProject();
     Project *getProject();
     void openProjectFile(std::string absolutePath);
+    void setActiveProjectFile(int index);
+    void closeProjectFile(int index);
     void promptOpenFile();
     void saveOpenedFile();
     bool fileIsOpen();

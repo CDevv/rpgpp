@@ -32,6 +32,7 @@ public:
     void draw();
     Font getFont();
     void drawTooltip(Rectangle rect, std::string text);
+    TabList& getTabList();
     WindowContainer& getWindowContainer();
 };
 

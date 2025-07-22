@@ -37,12 +37,6 @@ EditorInterfaceService::EditorInterfaceService()
         120*5, 24
     };
     tabList = TabList(tabListRect);
-    tabList.addItem("file1");
-    tabList.addItem("file2");
-    tabList.addItem("file3");
-    tabList.addItem("file4");
-    tabList.addItem("file5");
-    tabList.addItem("file6");
 
     Rectangle windowRect = Rectangle
     {
@@ -136,6 +130,11 @@ Font EditorInterfaceService::getFont()
 WindowContainer& EditorInterfaceService::getWindowContainer()
 {
     return windowContainer;
+}
+
+TabList& EditorInterfaceService::getTabList()
+{
+    return tabList;
 }
 
 void EditorInterfaceService::drawTooltip(Rectangle rect, std::string text)

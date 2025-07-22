@@ -32,6 +32,8 @@ TileSetPanelView::TileSetPanelView(Rectangle rect)
 
 void TileSetPanelView::setInitial()
 {
+    FileSystemService& fs = Editor::getFileSystem();
+    worldView->setTileSet(fs.getTileSet());
     propBox.setDefaults();
 }
 

@@ -13,6 +13,6 @@ enum TabButtonState {
 	TABSTATE_X_PRESSED
 };
 
-TabButtonState EditorGuiTabButton(Rectangle rect, std::string text, bool isActive);
+TabButtonState EditorGuiTabButton(Rectangle rect, std::string text, bool isActive, Rectangle scissorRect);
 
 #endif

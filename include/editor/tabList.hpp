@@ -19,6 +19,7 @@ private:
 	bool drawOverflow;
 	Rectangle scissorRect;
 	Vector2 scissorOffset;
+	float maxScissorOffset;
 public:
 	TabList();
 	TabList(Rectangle rect);

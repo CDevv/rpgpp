@@ -31,7 +31,7 @@ public:
     void update();
     void draw();
     std::string getTileSetSource();
-    TileSet& getTileSet();
+    TileSet* getTileSet();
     void setTileSet(std::string tileSetSource);
     int getAtlasTileSize();
     int getWorldTileSize();

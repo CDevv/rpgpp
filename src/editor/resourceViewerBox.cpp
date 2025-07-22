@@ -61,6 +61,7 @@ void ResourceViewerBox::drawTileSets()
         if (GuiLabelButton(baseRect, tileSetFileName.c_str())) {
             fs.openProjectFile(tileSetPath);
             ui.setInitial();
+            ui.getTabList().addItem(tileSetFileName);
         }
         baseRect.y += 24;
     }
@@ -86,6 +87,7 @@ void ResourceViewerBox::drawMaps()
         if (GuiLabelButton(baseRect, mapFileName.c_str())) {
             fs.openProjectFile(mapPath);
             ui.setInitial();
+            ui.getTabList().addItem(mapFileName);
         }
         baseRect.y += 24;
     }

@@ -70,8 +70,8 @@ void MapPanelView::update()
     worldView->setRoom(fs.getRoom());
     worldView->update();
 
-    if (fs.getRoom() != nullptr) {
-        tileSetView->setTileSet(&fs.getRoom()->getTileMap()->getTileSet());
+    if (fs.getType() == FILE_ROOM && fs.getRoom() != nullptr) {
+        tileSetView->setTileSet(fs.getRoom()->getTileMap()->getTileSet());
     }
     tileSetView->update();
 
@@ -91,7 +91,7 @@ void MapPanelView::update()
 
     worldView->setCurrentInteractableType(interactableInfo.getType());
 
-    if (fs.getRoom() != nullptr) {
+    if (fs.getType() == FILE_ROOM && fs.getRoom() != nullptr) {
         Vector2 selectedTileWorldPos = worldView->getSelectedWorldTile();
         Interactable selectedInteractable = fs.getRoom()->getInteractables().get(selectedTileWorldPos.x, selectedTileWorldPos.y);
         interactableInfo.setSelectedInteractable(selectedInteractable);

@@ -169,8 +169,8 @@ void MapViewBox::drawTiles()
                 const float rotation = 0.0f;
 
                 //texture..
-                TileSet& tileSet = tileMap->getTileSet();
-                Texture texture = tileMap->getTileSet().getTexture();
+                TileSet* tileSet = tileMap->getTileSet();
+                Texture texture = tileMap->getTileSet()->getTexture();
 
                 //actual coordinates
                 Vector2 atlasCoords = tileMap->getTile(x, y).getAtlasTile().getAtlasCoords();
@@ -265,7 +265,7 @@ void MapViewBox::drawHoverTile(int atlasTileSize, Vector2 tileWorldPos)
                     Color rectColor = Fade(WHITE, 0.7f);
 
                     //texture..
-                    Texture rectTexture = tileMap->getTileSet().getTexture();
+                    Texture rectTexture = tileMap->getTileSet()->getTexture();
 
                     //build rects
                     Rectangle selectedTileRect = Rectangle {
