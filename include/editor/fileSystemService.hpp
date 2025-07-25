@@ -38,6 +38,7 @@ public:
 
 class FileSystemService {
 private:
+    bool projectAvailable;
     std::unique_ptr<Project> project;
     std::vector<std::unique_ptr<ProjectFile>> openedFiles;
     int activeIndex;
@@ -52,6 +53,7 @@ public:
     void unload();
     void promptOpenProject();
     Project *getProject();
+    bool projectIsOpen();
     void openProjectFile(std::string absolutePath);
     void setActiveProjectFile(int index);
     void closeProjectFile(int index);
@@ -63,6 +65,7 @@ public:
     TileSet *getTileSet();
     Room *getRoom();
     FS_Result openFile(nfdu8filteritem_t filters[]);
+    FS_Result openGameData();
     FS_Result openImage();
     FS_Result openTileSetResource();
 };

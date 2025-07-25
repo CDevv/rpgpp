@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "gamedata.hpp"
 
 class Project {
 private:
@@ -18,6 +19,7 @@ private:
 public:
     Project();
     Project(std::string filePath);
+    GameData generateStruct();
     std::string getProjectTitle();
     std::string getProjectBasePath();
     std::vector<std::string> getTileSetPaths();

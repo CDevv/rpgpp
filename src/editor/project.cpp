@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include "tileset.hpp"
 using json = nlohmann::json;
 
 Project::Project() {}
@@ -31,6 +32,41 @@ Project::Project(std::string filePath)
     this->mapPathsList = makeMapPaths();
 
     UnloadFileText(jsonString);
+}
+
+GameData Project::generateStruct()
+{
+    GameData struc;
+    struc.title = this->projectTitle;
+
+    //TileSets
+    for (auto tileSetPath : this->tileSetPathsList) {
+        TileSet tileSet(tileSetPath);
+        Texture texture = tileSet.getTexture();
+        Image image = LoadImageFromTexture(texture);
+
+        int fileSize = 0;
+        std::string fileType = GetFileExtension(tileSet.getTextureSource().c_str());
+        unsigned char* imageData = ExportImageToMemory(image, fileType.c_str(), &fileSize);
+
+        TileSetBin tileSetBin;
+        tileSetBin.name = GetFileName(tileSetPath.c_str());
+        for (int i = 0; i < fileSize; i++) {
+            tileSetBin.image.push_back(*imageData);
+            imageData++;
+        }
+        tileSetBin.tileSize = tileSet.getTileSize();
+        tileSetBin.dataSize = fileSize;
+
+        struc.tilesets.push_back(tileSetBin);
+
+        //test header
+        //ExportImageAsCode(image, std::string(tileSetPath).append(".h").c_str());
+
+        UnloadImage(image);
+    }
+
+    return struc;
 }
 
 std::string Project::getProjectTitle()

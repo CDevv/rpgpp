@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <raymath.h>
 #include <rlgl.h>
+#include "gamedata.hpp"
 #include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
 #include "editor.hpp"
@@ -102,22 +103,27 @@ void EditorInterfaceService::draw()
                 char *text = const_cast<char*>(mapJsonString.data());
                 SaveFileText(fs.getOpenedFilePath().c_str(), text);
             }
+        }  
+    }
+    if (fs.projectIsOpen()) {
+        Project* project = fs.getProject();
+        std::string binFile = std::string(project->getProjectBasePath());
+        binFile.append("/game.bin");
+        if (GuiButton(Rectangle { (138 + 120*6 + 8*2), 8, 120, 24 }, "Export to binary file")) {
+            serializeDataToFile(binFile, project->generateStruct());
         }
     }
+
+    if (GuiButton(Rectangle { (138 + 120*6 + 8*2 + 120), 8, 120, 24 }, "Open binary file..")) {
+        FS_Result fsResult = fs.openGameData();
+        GameData data = deserializeFile(fsResult.path);
+        printf("%s\n", data.title.c_str());
+        ProjectBinaryViewWindow& window = windowContainer.openProjectBinaryView();
+        window.setData(data);
+    }
+
     resourceView.draw();
-
     windowContainer.draw();
-
-    Rectangle tabRect = Rectangle
-    {
-        (138 + 120 + 8), 8,
-        120, 24
-    };
-    Rectangle tab2Rect = tabRect;
-    tab2Rect.x += tabRect.width;
-    
-    //EditorGuiTabButton(tabRect, "file..", false);
-    //EditorGuiTabButton(tab2Rect, "file2", true);
 
     GuiUnlock();
 }

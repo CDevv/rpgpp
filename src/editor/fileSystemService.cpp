@@ -38,10 +38,9 @@ Room* ProjectFile::getRoom()
 FileSystemService::FileSystemService()
 {
     project = std::unique_ptr<Project>{};
+    projectAvailable = false;
     activeIndex = 0;
 
-    //lastTileSet = std::unique_ptr<TileSet>{};
-    //lastRoom = std::unique_ptr<Room>{};
     lastTileSet = nullptr;
     lastRoom = nullptr;
     isOpen = false;
@@ -65,6 +64,7 @@ void FileSystemService::promptOpenProject()
     FS_Result fsResult = openFile(filters);
     if (fsResult.result == NFD_OKAY) {
         project.reset(new Project(fsResult.path));
+        projectAvailable = true;
         SetWindowTitle(TextFormat("Editor - %s", project->getProjectTitle().c_str()));
     }
 }
@@ -72,6 +72,11 @@ void FileSystemService::promptOpenProject()
 Project *FileSystemService::getProject()
 {
     return project.get();
+}
+
+bool FileSystemService::projectIsOpen()
+{
+    return projectAvailable;
 }
 
 void FileSystemService::openProjectFile(std::string absolutePath)
@@ -211,6 +216,12 @@ FS_Result FileSystemService::openFile(nfdu8filteritem_t filters[])
     }
 
     return fsResult;
+}
+
+FS_Result FileSystemService::openGameData()
+{
+    nfdu8filteritem_t filters[1] = { { "RPG++ GameData", "bin" } };
+    return openFile(filters);
 }
 
 FS_Result FileSystemService::openImage()
