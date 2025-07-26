@@ -66,6 +66,8 @@ void TileSetViewBox::isHoverOnValidTile()
     }
     hoverValidTile = hoverValidX && hoverValidY;
 
+    if (viewBox->mouseLock) return;
+
     if (isSelectingTile) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             Rectangle checkRect = Rectangle {
@@ -84,7 +86,7 @@ void TileSetViewBox::isHoverOnValidTile()
 void TileSetViewBox::drawGrid()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    if (fs.fileIsOpen()) {
+    if (fs.fileIsOpen() || tileSet != nullptr) {
         rlTranslatef(0, 25*(tileSet->getTileSize()), 0);
         rlRotatef(90, 1, 0, 0);
         DrawGrid(100, (tileSet->getTileSize()));
@@ -145,6 +147,8 @@ void TileSetViewBox::drawMouse()
 {
     EditorInterfaceService& ui = Editor::getUi();
 
+    if (viewBox->mouseLock) return;
+    
     if (viewBox->mouseInput->isInRect()) {
         //small circle on mouse pos
         DrawCircleV(viewBox->mousePos, 4, DARKGRAY);

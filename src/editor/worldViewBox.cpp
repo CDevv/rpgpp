@@ -12,7 +12,7 @@
 WorldViewBox::WorldViewBox()
 {}
 
-WorldViewBox::WorldViewBox(Rectangle windowRect, Rectangle renderRect, EngineFileType type)
+WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type)
 {
     windowTitle = "File not opened..";
     this->type = type;
@@ -26,19 +26,30 @@ WorldViewBox::WorldViewBox(Rectangle windowRect, Rectangle renderRect, EngineFil
     this->hoverPos = Vector2 { 0, 0 };
 
     this->windowRect = windowRect;
-    this->renderRect = renderRect;
+    this->renderRect = Rectangle 
+    {
+        (windowRect.x + 2), (windowRect.y + 24),
+        (windowRect.width - 4), (windowRect.height - 30)
+    };
 
-    renderTexture = LoadRenderTexture(renderRect.width, renderRect.height);
+    renderTexture = LoadRenderTexture(this->renderRect.width, this->renderRect.height);
 
-    mouseInput = std::make_unique<MouseInputComponent>(Vector2 { renderRect.x, renderRect.y }, camera, renderRect);
+    mouseInput = std::make_unique<MouseInputComponent>(Vector2 { this->renderRect.x, this->renderRect.y }, camera, this->renderRect);
 
     tilesView = TileSetViewBox(this);
     mapView = MapViewBox(this);
+
+    this->mouseLock = false;
 }
 
 WorldViewBox::~WorldViewBox()
 {
     UnloadRenderTexture(renderTexture);
+}
+
+void WorldViewBox::setMouseLock(bool value)
+{
+    this->mouseLock = value;
 }
 
 void WorldViewBox::setTileSet(TileSet* tileSet)
@@ -123,12 +134,10 @@ void WorldViewBox::draw()
     }
     rlPopMatrix();
 
-    if (fs.fileIsOpen()) {
-        if (type == FILE_TILESET) {
-            tilesView.drawTiles();
-        } else {
-            mapView.drawTiles();
-        }
+    if (type == FILE_TILESET) {
+        tilesView.drawTiles();
+    } else {
+        mapView.drawTiles();
     }
 
     EndMode2D();

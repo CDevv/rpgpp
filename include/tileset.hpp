@@ -15,6 +15,7 @@ private:
 public:
     TileSet(std::string fileName);
     TileSet(std::string textureSource, int tileSize);
+    TileSet(Texture texture, int tileSize);
     ~TileSet();
     json dumpJson();
     void unload();

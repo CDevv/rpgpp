@@ -22,8 +22,7 @@ private:
     ResourceViewerBox resourceView;
     Vector2 mousePos;
     Vector2 hoverPos;
-    int chosenTileSize;
-    bool chosenTileSizeEditMode;
+    bool mouseLock;
 public:
     EditorInterfaceService();
     ~EditorInterfaceService();
@@ -32,6 +31,8 @@ public:
     void draw();
     Font getFont();
     void drawTooltip(Rectangle rect, std::string text);
+    void setMouseLock(bool value);
+    bool getMouseLock();
     TabList& getTabList();
     WindowContainer& getWindowContainer();
 };

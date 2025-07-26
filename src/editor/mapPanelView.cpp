@@ -24,11 +24,7 @@ MapPanelView::MapPanelView(Rectangle rect)
         176, 48,
         static_cast<float>(GetScreenWidth() - 464), static_cast<float>(GetScreenHeight() - 56)
     };
-    Rectangle renderRect = Rectangle {
-        (windowRect.x + 2), (windowRect.y + 24),
-        (windowRect.width - 4), (windowRect.height - 30)
-    };
-    worldView = std::make_unique<WorldViewBox>(windowRect, renderRect, FILE_ROOM);
+    worldView = std::make_unique<WorldViewBox>(windowRect, FILE_ROOM);
 
     Rectangle tileSetWindowRect = Rectangle
     {
@@ -36,12 +32,7 @@ MapPanelView::MapPanelView(Rectangle rect)
         (GetScreenWidth() - ((windowRect.x + windowRect.width + 4) + 4)), (8)
     };
     tileSetWindowRect.height = tileSetWindowRect.width - 36;
-    Rectangle tileSetRenderRect = Rectangle
-    {
-        (tileSetWindowRect.x + 2), (tileSetWindowRect.y + 24),
-        (tileSetWindowRect.width - 4), (tileSetWindowRect.height - 30)
-    };
-    tileSetView = std::make_unique<WorldViewBox>(tileSetWindowRect, tileSetRenderRect, FILE_TILESET);
+    tileSetView = std::make_unique<WorldViewBox>(tileSetWindowRect, FILE_TILESET);
 
     tileSetView->enableTileSelection();
     worldView->setActionMode(ACTION_PLACE);
@@ -66,6 +57,9 @@ void MapPanelView::setInitial()
 void MapPanelView::update()
 {
     FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
+
+    worldView->setMouseLock(ui.getMouseLock());
 
     worldView->setRoom(fs.getRoom());
     worldView->update();

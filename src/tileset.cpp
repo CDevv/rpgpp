@@ -12,6 +12,12 @@ TileSet::TileSet(std::string textureSource, int tileSize)
     this->tileSize = tileSize;
 }
 
+TileSet::TileSet(Texture texture, int tileSize)
+{
+    this->texture = texture;
+    this->tileSize = tileSize;
+}
+
 TileSet::TileSet(std::string fileName)
 {
     //Get text from JSON file

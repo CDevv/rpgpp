@@ -15,11 +15,7 @@ TileSetPanelView::TileSetPanelView(Rectangle rect)
         176, 48,
         static_cast<float>(GetScreenWidth() - 386), static_cast<float>(GetScreenHeight() - 56)
     };
-    Rectangle renderRect = Rectangle {
-        (windowRect.x + 2), (windowRect.y + 24),
-        (windowRect.width - 4), (windowRect.height - 30)
-    };
-    worldView = std::make_unique<WorldViewBox>(windowRect, renderRect, FILE_TILESET);
+    worldView = std::make_unique<WorldViewBox>(windowRect, FILE_TILESET);
 
     Rectangle propRect = Rectangle
     {
@@ -40,6 +36,10 @@ void TileSetPanelView::setInitial()
 void TileSetPanelView::update()
 {
     FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
+
+    worldView->setMouseLock(ui.getMouseLock());
+
     worldView->setTileSet(fs.getTileSet());
     worldView->update();
     propBox.update();

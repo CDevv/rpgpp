@@ -86,5 +86,14 @@ void TileSetInitWindow::draw()
             
             closeWindow();
         }
+
+        if (CheckCollisionPointRec(GetMousePosition(), rect)) {
+            ui.setMouseLock(true);
+        } else {
+            ui.setMouseLock(false);
+        }
+    } else {
+        EditorInterfaceService& ui = Editor::getUi();
+        ui.setMouseLock(false);
     }
 }

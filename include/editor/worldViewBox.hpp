@@ -79,6 +79,7 @@ private:
     std::string windowTitle;
     Rectangle windowRect;
     Rectangle renderRect;
+    bool mouseLock;
     Camera2D camera;
     RenderTexture renderTexture;
     EngineFileType type;
@@ -89,8 +90,9 @@ private:
     MapViewBox mapView;
 public:
     WorldViewBox();
-    WorldViewBox(Rectangle windowRect, Rectangle renderRect, EngineFileType type);
+    WorldViewBox(Rectangle windowRect, EngineFileType type);
     ~WorldViewBox();
+    void setMouseLock(bool value);
     void setTileSet(TileSet* tileSet);
     void setRoom(Room* map);
     void enableTileSelection();

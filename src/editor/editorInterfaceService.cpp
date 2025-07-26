@@ -53,9 +53,6 @@ EditorInterfaceService::EditorInterfaceService()
     Rectangle propRect = Rectangle { 8, 48, 160, static_cast<float>(GetScreenHeight() - 56) };
     resourceView = ResourceViewerBox(propRect);
 
-    chosenTileSize = 0;
-    chosenTileSizeEditMode = false;
-
     windowContainer = WindowContainer();
 }
 
@@ -160,4 +157,12 @@ void EditorInterfaceService::drawTooltip(Rectangle rect, std::string text)
     }
 }
 
+void EditorInterfaceService::setMouseLock(bool value)
+{
+    this->mouseLock = value;
+}
 
+bool EditorInterfaceService::getMouseLock()
+{
+    return this->mouseLock;
+}

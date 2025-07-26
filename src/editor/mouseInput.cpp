@@ -1,5 +1,7 @@
 #include "mouseInput.hpp"
 #include <raymath.h>
+#include "editor.hpp"
+#include "editorInterfaceService.hpp"
 
 MouseInputComponent::MouseInputComponent(Vector2 offset, Camera2D& camera, Rectangle cameraRect)
 : camera(camera)
@@ -29,7 +31,8 @@ void MouseInputComponent::update()
 
     hoverPos = lastPos;
 
-    if (!isInRect()) {
+    EditorInterfaceService& ui = Editor::getUi();
+    if (!isInRect() || ui.getMouseLock()) {
         return;
     }
 
