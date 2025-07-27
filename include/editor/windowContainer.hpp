@@ -7,11 +7,14 @@
 
 class WindowContainer {
 private:
+    bool windowOpen;
     TileSetInitWindow tileSetInit;
     MapInitWindow mapInit;
     ProjectBinaryViewWindow projectBinaryView;
 public:
     WindowContainer();
+    bool isWindowOpen();
+    void setWindowOpen(bool value);
     void openTileSetInit();
     void openMapInit();
     ProjectBinaryViewWindow& openProjectBinaryView();

@@ -97,6 +97,8 @@ void MapViewBox::isHoverOnValidTile()
         (tileMap->getMaxWorldSize().x * tileMap->getAtlasTileSize()), (tileMap->getMaxWorldSize().y * tileMap->getAtlasTileSize())
     };
 
+    if (viewBox->mouseLock) return;
+
     bool isInViewport = viewBox->mouseInput->isInRect();
     bool isInMapRect = CheckCollisionPointRec(viewBox->mouseInput->getMouseWorldPos(), rect);
     if (isInViewport && isInMapRect) {
@@ -308,6 +310,8 @@ void MapViewBox::drawHoverTile(int atlasTileSize, Vector2 tileWorldPos)
 void MapViewBox::drawMouse()
 {
     EditorInterfaceService& ui = Editor::getUi();
+
+    if (viewBox->mouseLock) return;
 
     if (viewBox->mouseInput->isInRect()) {
         //small circle on mouse pos

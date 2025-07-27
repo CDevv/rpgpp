@@ -31,6 +31,9 @@ void TileSetInitWindow::setActive()
 
 void TileSetInitWindow::closeWindow()
 {
+    EditorInterfaceService& ui = Editor::getUi();
+    ui.setMouseLock(false);
+
     hasSetTextureSource = false;
     textureSource = "";
     titleText = "";
@@ -45,7 +48,7 @@ void TileSetInitWindow::draw()
         EditorInterfaceService& ui = Editor::getUi();
 
         if (GuiWindowBox(rect, "New TileSet..")) {
-            active = !active;
+            closeWindow();
         }
 
         GuiLabel(Rectangle { rect.x + 8, rect.y + 40, rect.width - 16, 24 }, "Title..");
@@ -87,13 +90,12 @@ void TileSetInitWindow::draw()
             closeWindow();
         }
 
-        if (CheckCollisionPointRec(GetMousePosition(), rect)) {
-            ui.setMouseLock(true);
-        } else {
-            ui.setMouseLock(false);
+        if (active) {
+            if (CheckCollisionPointRec(GetMousePosition(), rect)) {
+                ui.setMouseLock(true);
+            } else {
+                ui.setMouseLock(false);
+            }
         }
-    } else {
-        EditorInterfaceService& ui = Editor::getUi();
-        ui.setMouseLock(false);
     }
 }

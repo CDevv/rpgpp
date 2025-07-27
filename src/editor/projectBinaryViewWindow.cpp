@@ -1,4 +1,6 @@
 #include "projectBinaryViewWindow.hpp"
+#include "editor.hpp"
+#include "editorInterfaceService.hpp"
 #include <raygui.h>
 
 ProjectBinaryViewWindow::ProjectBinaryViewWindow() {}
@@ -25,6 +27,9 @@ void ProjectBinaryViewWindow::setActive()
 
 void ProjectBinaryViewWindow::closeWindow()
 {
+	EditorInterfaceService& ui = Editor::getUi();
+    ui.setMouseLock(false);
+
 	this->dataAvailable = false;
 	this->data.reset();
 	this->tileset.reset();
@@ -40,7 +45,6 @@ void ProjectBinaryViewWindow::draw()
 			}
 
 			if (dataAvailable) {
-				//DrawTexture(tileset->getTexture(), rect.x + 140, rect.y + 36, WHITE);
 				this->tilesView->draw();
 
 				GuiPanel(Rectangle { rect.x + 4, rect.y + 28, 132, rect.height - 32 }, "Resources");
@@ -65,6 +69,16 @@ void ProjectBinaryViewWindow::draw()
 			if (GuiWindowBox(rect, "GameData")) {
 				closeWindow();
 			}
+		}
+
+		if (active) {
+			EditorInterfaceService& ui = Editor::getUi();
+			
+			if (CheckCollisionPointRec(GetMousePosition(), rect)) {
+                ui.setMouseLock(true);
+            } else {
+                ui.setMouseLock(false);
+            }
 		}
 	}
 }

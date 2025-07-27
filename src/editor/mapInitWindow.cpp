@@ -30,6 +30,9 @@ void MapInitWindow::setActive()
 
 void MapInitWindow::closeWindow()
 {
+    EditorInterfaceService& ui = Editor::getUi();
+    ui.setMouseLock(false);
+
     active = false;
 
     this->titleText = "";
@@ -47,7 +50,7 @@ void MapInitWindow::draw()
         EditorInterfaceService& ui = Editor::getUi();
 
         if (GuiWindowBox(rect, "New Room..")) {
-            active = !active;
+            closeWindow();
         }
 
         GuiLabel(Rectangle { rect.x + 8, rect.y + 40, rect.width - 16, 24 }, "Title..");
@@ -93,6 +96,14 @@ void MapInitWindow::draw()
             ui.setInitial();
 
             closeWindow();
+        }
+
+        if (active) {
+            if (CheckCollisionPointRec(GetMousePosition(), rect)) {
+                ui.setMouseLock(true);
+            } else {
+                ui.setMouseLock(false);
+            }
         }
     }
 }

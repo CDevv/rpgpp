@@ -11,6 +11,8 @@ private:
     Vector2 mousePos;
     Vector2 hoverPos;
     Vector2 lastPos;
+    Vector2 mouseWorldPos;
+    Vector2 cameraTargetOffset;
     bool lock;
     int lastMode;
 public:

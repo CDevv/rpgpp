@@ -31,6 +31,7 @@ EditorInterfaceService::EditorInterfaceService()
 
     mousePos = Vector2 { 0, 0 };
     hoverPos = Vector2 { 0, 0 };
+    mouseLock = false;
 
     Rectangle tabListRect = Rectangle
     {

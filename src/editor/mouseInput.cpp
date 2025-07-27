@@ -14,56 +14,66 @@ MouseInputComponent::MouseInputComponent(Vector2 offset, Camera2D& camera, Recta
     mousePos = Vector2 { 0, 0 };
     hoverPos = Vector2 { 0, 0 };
     lastPos = Vector2Subtract(hoverPos, offset);
+    mouseWorldPos = Vector2 { 0, 0 };
+    cameraTargetOffset = Vector2 { 0, 0 };
     lock = false;
 }
 
 void MouseInputComponent::update()
 {
+    Vector2 mouseDelta = GetMouseDelta();
+    Vector2 cameraScale = Vector2Scale(mouseDelta, 1/camera.zoom);
+
     Vector2 screenMousePos = GetMousePosition();
     mousePos = Vector2Subtract(screenMousePos, offset);
-
-    Vector2 delta = GetMouseDelta();
-    delta = Vector2Scale(delta, -1.0f/camera.zoom);
-
+    if (mouseWorldPos.x == 0 && mouseWorldPos.y == 0) {
+        mouseWorldPos = mousePos;
+    }
     if (!lock) {
-        lastPos = Vector2Add(lastPos, Vector2Scale(GetMouseDelta(), 1/camera.zoom));
+        mouseWorldPos = Vector2Add(mouseWorldPos, cameraScale);
     }
 
-    hoverPos = lastPos;
+    int actionMode = -1;
+    float wheel = GetMouseWheelMove();
+    if (wheel != 0) {
+        actionMode = 0;
+    } else if (IsMouseButtonDown(MOUSE_MIDDLE_BUTTON)) {
+        actionMode = 1;
+    }
 
     EditorInterfaceService& ui = Editor::getUi();
     if (!isInRect() || ui.getMouseLock()) {
         return;
     }
 
-    if (IsMouseButtonDown(MOUSE_MIDDLE_BUTTON)) {
-        camera.target = Vector2Add(camera.target, delta);
+    if (actionMode == 0) {
+        //mouse wheel
+        Vector2 mouseWorldPos = GetScreenToWorld2D(mousePos, camera);
+        camera.offset = mousePos;
+        camera.target = mouseWorldPos;
 
-        lastPos = hoverPos;
+        float scale = 0.2f * wheel;
+        camera.zoom = Clamp(camera.zoom + scale, 1.0f, 5.0f);
+    } else if (actionMode == 1) {
+        //mouse hold and move
         lock = true;
-        lastMode = 1;
-    } else {
+        Vector2 cameraMoveScale = Vector2Scale(mouseDelta, -1/camera.zoom);
+        camera.target = Vector2Add(camera.target, cameraMoveScale);
+        cameraTargetOffset = Vector2Add(cameraTargetOffset, cameraMoveScale);
+    }
+
+    if (IsMouseButtonReleased(MOUSE_MIDDLE_BUTTON)) {
         lock = false;
+        Vector2 mouseWorldPos = GetScreenToWorld2D(mousePos, camera);
+        this->mouseWorldPos = mouseWorldPos;
     }
 
-    if (lastMode == 0) {
-        float wheel = GetMouseWheelMove();
-        if (wheel != 0) {
-            Vector2 mouseWorldPos = GetScreenToWorld2D(mousePos, camera);
-            camera.offset = mousePos;
-            camera.target = mouseWorldPos;
-
-            float scale = 0.2f * wheel;
-            camera.zoom = Clamp(camera.zoom + scale, 1.0f, 5.0f);
-        }
-    }
-
-    lastMode = 0;
+    hoverPos = mousePos;
 }
 
 Vector2 MouseInputComponent::getMouseWorldPos()
 {
-    return hoverPos;
+    return mouseWorldPos;
 }
 
 Vector2 MouseInputComponent::getMousePos()
