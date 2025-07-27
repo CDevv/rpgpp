@@ -50,9 +50,6 @@ WorldViewBox::~WorldViewBox()
 void WorldViewBox::setMouseLock(bool value)
 {
     this->mouseLock = value;
-    if (value) {
-        printf("mouseLock");
-    }
 }
 
 void WorldViewBox::setTileSet(TileSet* tileSet)

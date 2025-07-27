@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 #include "tileset.hpp"
+#include "tilemap.hpp"
+#include "room.hpp"
 using json = nlohmann::json;
 
 Project::Project() {}
@@ -51,6 +53,7 @@ GameData Project::generateStruct()
 
         TileSetBin tileSetBin;
         tileSetBin.name = GetFileName(tileSetPath.c_str());
+        tileSetBin.extension = GetFileExtension(tileSet.getTextureSource().c_str());
         for (int i = 0; i < fileSize; i++) {
             tileSetBin.image.push_back(*imageData);
             imageData++;
@@ -58,12 +61,66 @@ GameData Project::generateStruct()
         tileSetBin.tileSize = tileSet.getTileSize();
         tileSetBin.dataSize = fileSize;
 
-        struc.tilesets.push_back(tileSetBin);
-
-        //test header
-        //ExportImageAsCode(image, std::string(tileSetPath).append(".h").c_str());
+        struc.tilesets[GetFileName(tileSetPath.c_str())] = tileSetBin;
 
         UnloadImage(image);
+    }
+
+    for (auto roomPath : this->mapPathsList) {
+        std::unique_ptr<TileMap> map = std::make_unique<TileMap>(roomPath);
+        
+        RoomBin roomBin;
+        roomBin.name = GetFileName(roomPath.c_str());
+        roomBin.tileSetName = GetFileName(map->getTileSetSource().c_str());
+        Vector2 worldSize = map->getMaxWorldSize();
+        roomBin.width = static_cast<int>(worldSize.x);
+        roomBin.height = static_cast<int>(worldSize.y);
+
+        for (int x = 0; x < roomBin.width; x++) {
+            std::vector<TileBin> row;
+            for (int y = 0; y < roomBin.height; y++) {
+                TileBin tile;
+                row.push_back(tile);   
+            }
+            roomBin.tiles.push_back(row);
+        }
+        for (int x = 0; x < roomBin.width; x++) {
+            for (int y = 0; y < roomBin.height; y++) {
+                Tile tile = map->getTile(x, y);
+                Vector2 atlasPos = tile.getAtlasTile().getAtlasCoords();
+                Vector2 worldPos = tile.getWorldCoords();
+
+                IVector intAtlas = IVector {
+                    static_cast<int>(atlasPos.x), static_cast<int>(atlasPos.y)
+                };
+                IVector intWorld = IVector {
+                    static_cast<int>(worldPos.x), static_cast<int>(worldPos.y)
+                };
+
+                TileBin tileBin = TileBin { intAtlas, intWorld };
+                roomBin.tiles[x][y] = tileBin;
+            }
+        }
+
+        map.reset();
+
+        std::unique_ptr<Room> room = std::make_unique<Room>(roomPath);
+        for (auto collisionVec : room->getCollisionTiles()) {
+            IVector intVec;
+            intVec.x = static_cast<int>(collisionVec.x);
+            intVec.y = static_cast<int>(collisionVec.y);
+            roomBin.collisions.push_back(intVec);
+        }
+        for (auto interactable : room->getInteractableTiles()) {
+            InteractableBin intBin;
+            intBin.x = static_cast<int>(interactable.getRect().x);
+            intBin.y = static_cast<int>(interactable.getRect().y);
+            intBin.type = static_cast<int>(interactable.getType());
+            roomBin.interactables.push_back(intBin);
+        }
+        room.reset();
+
+        struc.rooms.push_back(roomBin);
     }
 
     return struc;

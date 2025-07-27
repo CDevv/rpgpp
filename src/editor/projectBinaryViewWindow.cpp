@@ -53,10 +53,10 @@ void ProjectBinaryViewWindow::draw()
 					rect.x + 8, rect.y + 52,
 					112, 24
 				};
-				for (auto tileSetData : data->tilesets) {
+				for (auto [name, tileSetData] : data->tilesets) {
 					if (GuiLabelButton(labelBaseRect, tileSetData.name.c_str())) {
 						unsigned char* imageData = tileSetData.image.data();
-						Image image = LoadImageFromMemory(".png", imageData, tileSetData.dataSize);
+						Image image = LoadImageFromMemory(tileSetData.extension.c_str(), imageData, tileSetData.dataSize);
 						Texture texture = LoadTextureFromImage(image);
 
 						tileset = std::make_unique<TileSet>(texture, tileSetData.tileSize);
@@ -73,7 +73,7 @@ void ProjectBinaryViewWindow::draw()
 
 		if (active) {
 			EditorInterfaceService& ui = Editor::getUi();
-			
+
 			if (CheckCollisionPointRec(GetMousePosition(), rect)) {
                 ui.setMouseLock(true);
             } else {
@@ -89,10 +89,10 @@ void ProjectBinaryViewWindow::setData(GameData data)
 	this->dataAvailable = true;
 
 	//load first tileset
-	auto tileSetData = data.tilesets.at(0);
+	auto tileSetData = data.tilesets.at("tiles.rtiles");
 
 	unsigned char* imageData = tileSetData.image.data();
-	Image image = LoadImageFromMemory(".png", imageData, tileSetData.dataSize);
+	Image image = LoadImageFromMemory(tileSetData.extension.c_str(), imageData, tileSetData.dataSize);
 	Texture texture = LoadTextureFromImage(image);
 
 	tileset = std::make_unique<TileSet>(texture, tileSetData.tileSize);
