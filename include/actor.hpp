@@ -22,6 +22,7 @@ enum Direction {
 class Actor {
 private:
     std::unique_ptr<TileSet> tileSet;
+    std::string tileSetSource;
     AtlasTile tile;
     Vector2 position;
     int frameCounter;
@@ -43,6 +44,9 @@ public:
     void addAnimation(Direction id, Vector2 atlasPos);
     void addAnimationFrames(Direction id, std::vector<std::vector<int>> frames);
     void changeAnimation(Direction id);
+    std::string getTileSetSource();
+    std::array<std::vector<Vector2>, 8> getAnimationsRaw();
+    Rectangle getCollisionRect();
 };
 
 #endif

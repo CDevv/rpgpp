@@ -3,6 +3,7 @@
 
 #include <raylib.h>
 #include <vector>
+#include <array>
 #include <map>
 #include <cstdint>
 #include <string>
@@ -11,6 +12,22 @@ struct IVector
 {
 	int x;
 	int y;
+};
+
+struct IRect
+{
+	int x;
+	int y;
+	int width;
+	int height;
+};
+
+struct ActorBin
+{
+	std::string name;
+	std::string tileSetName;
+	IRect collision;
+	std::array<std::vector<IVector>, 8> animations;
 };
 
 struct TileBin
@@ -51,6 +68,7 @@ struct GameData
 	std::string title;
 	std::map<std::string, TileSetBin> tilesets;
 	std::vector<RoomBin> rooms;
+	std::vector<ActorBin> actors;
 };
 
 struct DataSerialization

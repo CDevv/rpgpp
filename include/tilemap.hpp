@@ -27,6 +27,7 @@ public:
     TileMap(std::string fileName);
     TileMap(std::string tileSetSource, int width, int height, int atlasTileSize, int worldTileSize);
     TileMap(TileSet tileSet, int width, int height, int atlasTileSize, int worldTileSize);
+    TileMap(std::unique_ptr<TileSet> tileSetPtr, int width, int height, int atlasTileSize, int worldTileSize);
     json dumpJson();
     void unload();
     void update();

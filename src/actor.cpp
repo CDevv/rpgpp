@@ -29,6 +29,7 @@ Actor::Actor(std::string fileName)
 
     std::string tileSetSource = j.at("tileset");
     this->tileSet = std::make_unique<TileSet>(tileSetSource);
+    this->tileSetSource = tileSetSource;
 
     for (int i = 0; i < 8; i++) {
         //std::vector<Vector2> *frames = new std::vector<Vector2>;
@@ -78,7 +79,6 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos)
     this->currentAnimation = RPGPP_DOWN_IDLE;
 
     for (int i = 0; i < 8; i++) {
-        //std::vector<Vector2> *frames = new std::vector<Vector2>;
         animations[i] = std::make_unique<std::vector<Vector2>>();
     }
 }
@@ -202,3 +202,22 @@ void Actor::changeAnimation(Direction id)
     }
 }
 
+std::string Actor::getTileSetSource()
+{
+    return tileSetSource;
+}
+
+std::array<std::vector<Vector2>, 8> Actor::getAnimationsRaw()
+{
+    std::array<std::vector<Vector2>, 8> result;
+    for (int i = 0; i < 8; i++) {
+        std::vector<Vector2> animFrames = *animations[i];
+        result[i] = animFrames;
+    }
+    return result;
+}
+
+Rectangle Actor::getCollisionRect()
+{
+    return collisionRect;
+}

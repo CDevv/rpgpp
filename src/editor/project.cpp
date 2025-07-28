@@ -29,9 +29,12 @@ Project::Project(std::string filePath)
     this->tileSetsPath = tileSetsPath;
     std::string mapsPath = projectJson.at("maps");
     this->mapsPath = mapsPath;
+    std::string actorsPath = projectJson.at("actors");
+    this->actorsPath = actorsPath;
 
     this->tileSetPathsList = makeTileSetPaths();
     this->mapPathsList = makeMapPaths();
+    this->actorPathsList = makeActorPaths();
 
     UnloadFileText(jsonString);
 }
@@ -97,7 +100,9 @@ GameData Project::generateStruct()
                     static_cast<int>(worldPos.x), static_cast<int>(worldPos.y)
                 };
 
-                TileBin tileBin = TileBin { intAtlas, intWorld };
+                TileBin tileBin;
+                tileBin.atlasPos = intAtlas;
+                tileBin.worldPos = intWorld;
                 roomBin.tiles[x][y] = tileBin;
             }
         }
@@ -121,6 +126,35 @@ GameData Project::generateStruct()
         room.reset();
 
         struc.rooms.push_back(roomBin);
+    }
+
+    for (auto actorPath : this->actorPathsList) {
+        std::unique_ptr<Actor> actor = std::make_unique<Actor>(actorPath);
+
+        ActorBin actorBin;
+        actorBin.name = GetFileName(actorPath.c_str());
+        actorBin.tileSetName = GetFileName(actor->getTileSetSource().c_str());
+
+        Rectangle collisionRect = actor->getCollisionRect();
+        actorBin.collision = IRect 
+        {
+            static_cast<int>(collisionRect.x), static_cast<int>(collisionRect.y),
+            static_cast<int>(collisionRect.width), static_cast<int>(collisionRect.height)
+        };
+        std::array<std::vector<Vector2>, 8> animations = actor->getAnimationsRaw();
+        for (int i = 0; i < 8; i++) {
+            for (int frameIndex = 0; frameIndex < animations[i].size(); frameIndex++) {
+                Vector2 vec = animations[i][frameIndex];
+                IVector intVec = IVector 
+                {
+                    static_cast<int>(vec.x), static_cast<int>(vec.y)
+                };
+
+                actorBin.animations[i].push_back(intVec);
+            }
+        }
+
+        struc.actors.push_back(actorBin);
     }
 
     return struc;
@@ -162,6 +196,19 @@ std::vector<std::string> Project::makeMapPaths()
     return vec;
 }
 
+std::vector<std::string> Project::makeActorPaths()
+{
+    FilePathList pathList = LoadDirectoryFiles(actorsPath.c_str());
+
+    auto vec = std::vector<std::string>();
+    for (int i = 0; i < pathList.count; i++) {
+        std::string pathStr = pathList.paths[i];
+        vec.push_back(pathStr);
+    }
+
+    return vec;
+}
+
 std::vector<std::string> Project::getTileSetPaths()
 {
     return tileSetPathsList;
@@ -170,4 +217,9 @@ std::vector<std::string> Project::getTileSetPaths()
 std::vector<std::string> Project::getMapPaths()
 {
     return mapPathsList;
+}
+
+std::vector<std::string> Project::getActorPaths()
+{
+    return actorPathsList;
 }

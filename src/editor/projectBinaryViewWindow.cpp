@@ -11,6 +11,10 @@ ProjectBinaryViewWindow::ProjectBinaryViewWindow(Rectangle rect)
 	this->active = false;
 	this->dataAvailable = false;
 	this->data = std::unique_ptr<GameData>{};
+	this->fileType = FILE_TILESET;
+	this->currentPage = FILE_TILESET;
+	this->currentPageNum = 0;
+	this->pageEditMode = false;
 
 	Rectangle viewRect = Rectangle
 	{
@@ -18,6 +22,7 @@ ProjectBinaryViewWindow::ProjectBinaryViewWindow(Rectangle rect)
 		rect.width - 144, rect.height - 32
 	};
 	this->tilesView = std::make_unique<WorldViewBox>(viewRect, FILE_TILESET);
+	this->roomView = std::make_unique<WorldViewBox>(viewRect, FILE_ROOM);
 }
 
 void ProjectBinaryViewWindow::setActive()
@@ -31,13 +36,19 @@ void ProjectBinaryViewWindow::closeWindow()
     ui.setMouseLock(false);
 
 	this->dataAvailable = false;
+	this->fileType = FILE_TILESET;
+	this->currentPage = FILE_TILESET;
+	this->currentPageNum = 0;
 	this->data.reset();
 	this->tileset.reset();
+	this->room.reset();
 	this->active = false;
 }
 
 void ProjectBinaryViewWindow::draw()
 {
+	if (pageEditMode) GuiLock();
+
 	if (active) {
 		if (dataAvailable) {
 			if (GuiWindowBox(rect, data->title.c_str())) {
@@ -45,25 +56,16 @@ void ProjectBinaryViewWindow::draw()
 			}
 
 			if (dataAvailable) {
-				this->tilesView->draw();
-
-				GuiPanel(Rectangle { rect.x + 4, rect.y + 28, 132, rect.height - 32 }, "Resources");
-				Rectangle labelBaseRect = Rectangle
-				{
-					rect.x + 8, rect.y + 52,
-					112, 24
-				};
-				for (auto [name, tileSetData] : data->tilesets) {
-					if (GuiLabelButton(labelBaseRect, tileSetData.name.c_str())) {
-						unsigned char* imageData = tileSetData.image.data();
-						Image image = LoadImageFromMemory(tileSetData.extension.c_str(), imageData, tileSetData.dataSize);
-						Texture texture = LoadTextureFromImage(image);
-
-						tileset = std::make_unique<TileSet>(texture, tileSetData.tileSize);
-						this->tilesView->setTileSet(tileset.get());
-					}
-					labelBaseRect.y += 24;
+				switch (fileType) {
+				case FILE_TILESET:
+					this->tilesView->draw();
+					break;
+				case FILE_ROOM:
+					this->roomView->draw();
+					break;
 				}
+
+				drawResourcesList();
 			}
 		} else {
 			if (GuiWindowBox(rect, "GameData")) {
@@ -83,19 +85,91 @@ void ProjectBinaryViewWindow::draw()
 	}
 }
 
+void ProjectBinaryViewWindow::setTileSet(std::string name)
+{
+	auto tileSetData = data->tilesets.at(name);
+
+	unsigned char* imageData = tileSetData.image.data();
+	Image image = LoadImageFromMemory(tileSetData.extension.c_str(), imageData, tileSetData.dataSize);
+	Texture texture = LoadTextureFromImage(image);
+
+	this->tileset = std::make_unique<TileSet>(texture, tileSetData.tileSize);
+
+	this->tilesView->setTileSet(tileset.get());
+	this->fileType = FILE_TILESET;
+}
+
+void ProjectBinaryViewWindow::setRoom(RoomBin roomBin)
+{
+	//first load the tileset
+	//setTileSet(roomBin.tileSetName);
+	auto tileSetData = data->tilesets.at(roomBin.tileSetName);
+	unsigned char* imageData = tileSetData.image.data();
+	Image image = LoadImageFromMemory(tileSetData.extension.c_str(), imageData, tileSetData.dataSize);
+	Texture texture = LoadTextureFromImage(image);
+	std::unique_ptr<TileSet> tileSet = std::make_unique<TileSet>(texture, tileSetData.tileSize);
+
+	//load tilemap
+	std::unique_ptr<TileMap> tileMap = std::make_unique<TileMap>(std::move(tileSet), roomBin.width, roomBin.height, 16, 48);
+	for (std::vector<TileBin> row : roomBin.tiles) {
+		for (TileBin col : row) {
+			Vector2 atlasPos = Vector2 { static_cast<float>(col.atlasPos.x / tileSetData.tileSize), static_cast<float>(col.atlasPos.y / tileSetData.tileSize) };
+			Vector2 worldPos = Vector2 { static_cast<float>(col.worldPos.x), static_cast<float>(col.worldPos.y) };
+			tileMap->setTile(worldPos, atlasPos);
+		}
+	}
+
+	//load room
+	this->room = std::make_unique<Room>(std::move(tileMap));
+
+	this->roomView->setRoom(room.get());
+	this->fileType = FILE_ROOM;
+}
+
 void ProjectBinaryViewWindow::setData(GameData data)
 {
 	this->data = std::make_unique<GameData>(data);
 	this->dataAvailable = true;
 
 	//load first tileset
-	auto tileSetData = data.tilesets.at("tiles.rtiles");
+	setTileSet("tiles.rtiles");
+}
 
-	unsigned char* imageData = tileSetData.image.data();
-	Image image = LoadImageFromMemory(tileSetData.extension.c_str(), imageData, tileSetData.dataSize);
-	Texture texture = LoadTextureFromImage(image);
+void ProjectBinaryViewWindow::drawResourcesList()
+{
+	GuiPanel(Rectangle { rect.x + 4, rect.y + 28, 132, rect.height - 32 }, "Resources");
 
-	tileset = std::make_unique<TileSet>(texture, tileSetData.tileSize);
+	Rectangle labelBaseRect = Rectangle
+	{
+		rect.x + 8, rect.y + 52 + 24,
+		112, 24
+	};
+	switch (currentPage) {
+	case FILE_TILESET:
+		for (auto [name, tileSetData] : data->tilesets) {
+			if (GuiLabelButton(labelBaseRect, tileSetData.name.c_str())) {
+				setTileSet(name);
+			}
+			labelBaseRect.y += 24;
+		}
+		break;
+	case FILE_ROOM:
+		for (auto roomData : data->rooms) {
+			if (GuiLabelButton(labelBaseRect, roomData.name.c_str())) {
+				setRoom(roomData);
+			}
+			labelBaseRect.y += 24;
+		}
+		break;
+	}
 
-	this->tilesView->setTileSet(tileset.get());
+	Rectangle dropdownRect = Rectangle
+	{
+		rect.x + 8, rect.y + 52,
+		122, 24
+	};
+	if (GuiDropdownBox(dropdownRect, "TileSets;Rooms", &currentPageNum, pageEditMode)) {
+		pageEditMode = !pageEditMode;
+	}
+	currentPage = static_cast<EngineFileType>(currentPageNum);
 }

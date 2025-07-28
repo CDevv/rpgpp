@@ -114,6 +114,31 @@ TileMap::TileMap(TileSet tileSet, int width, int height, int atlasTileSize, int 
     }
 }
 
+TileMap::TileMap(std::unique_ptr<TileSet> tileSetPtr, int width, int height, int atlasTileSize, int worldTileSize)
+{
+    this->basePos = Vector2 { 0.0f, 0.0f };
+    this->tileSet = std::move(tileSetPtr);
+
+    this->atlasTileSize = this->tileSet->getTileSize();
+    this->worldTileSize = worldTileSize;
+
+    this->width = width;
+    this->height = height;
+
+    this->maxAtlasWidth = this->tileSet->getTexture().width / atlasTileSize;
+    this->maxAtlasHeight = this->tileSet->getTexture().height / atlasTileSize;
+
+    for (int i = 0; i < width; i++) {
+        std::vector<Tile> row;
+        for (int j = 0; j < height; j++) {
+            Tile tile;
+            row.push_back(tile);
+        }
+
+        tiles.push_back(row);
+    }
+}
+
 json TileMap::dumpJson()
 {
     //Make a vector for the tiles

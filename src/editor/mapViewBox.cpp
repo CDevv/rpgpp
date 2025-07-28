@@ -140,7 +140,7 @@ void MapViewBox::drawGrid()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
-    if (fs.fileIsOpen()) {
+    if (fs.fileIsOpen() || room != nullptr) {
         TileMap *tileMap = room->getTileMap();
         //draw a big white rectangle instead
         Rectangle rect = Rectangle {
@@ -163,6 +163,7 @@ void MapViewBox::drawTiles()
     Vector2 sizeInTiles = tileMap->getMaxWorldSize();
     for (int x = 0; x < sizeInTiles.x; x++) {
         for (int y = 0; y < sizeInTiles.y; y++) {
+            //printf("%i, %i \n", x, y);
             Tile tile = tileMap->getTile(x, y);
 
             if (tile.isPlaced()) {
