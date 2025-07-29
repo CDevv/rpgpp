@@ -36,6 +36,6 @@ public:
     void unload();
 };
 
-extern "C" int luaopen_lib(lua_State* L);
+extern "C" int luaopen_librpgpplua(lua_State* L);
 
 #endif

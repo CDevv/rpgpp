@@ -111,7 +111,7 @@ void clear_bg_lua()
     ClearBackground(RAYWHITE);
 }
 
-extern "C" int luaopen_lib(lua_State* L)
+extern "C" int luaopen_librpgpplua(lua_State* L)
 {
     sol::state_view lua(L);
     lua.open_libraries(sol::lib::base);
@@ -125,6 +125,15 @@ extern "C" int luaopen_lib(lua_State* L)
     lua.set_function("set_fps", &SetTargetFPS);
     lua.set_function("clear_background", &clear_bg_lua);
     lua.set_function("draw_text", draw_text_lua);
+
+    sol::usertype<Game> game_type = lua.new_usertype<Game>("game",
+        sol::constructors<Game()>());
+
+    game_type["init"] = &Game::init;
+    game_type["use_bin"] = &Game::useBin;
+    game_type["update"] = &Game::update;
+    game_type["draw"] = &Game::draw;
+    game_type["unload"] = &Game::unload;
 
     return (0);
 }

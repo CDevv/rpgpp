@@ -27,6 +27,7 @@ public:
     EditorInterfaceService();
     ~EditorInterfaceService();
     void setInitial();
+    void unload();
     void update();
     void draw();
     Font getFont();

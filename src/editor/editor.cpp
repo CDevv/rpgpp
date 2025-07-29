@@ -31,7 +31,7 @@ void Editor::draw()
 
 void Editor::unload()
 {
-    //ui->unload();
+    ui->unload();
 }
 
 EditorInterfaceService& Editor::getUi()

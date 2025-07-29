@@ -1,4 +1,4 @@
-add_requires("raylib", "nlohmann_json", "nativefiledialog-extended", "raygui", "sol2", "alpaca")
+add_requires("raylib", "nlohmann_json", "nativefiledialog-extended", "raygui", "sol2", "alpaca", "reproc")
 add_rules("mode.debug")
 set_defaultmode("debug")
 
@@ -10,11 +10,19 @@ target("rpgpp")
     add_links("lua")
     set_targetdir("./")
 
+target("rpgpplua")
+    set_kind("shared")
+    add_includedirs("include/")
+    add_files("src/*.cpp")
+    add_packages("raylib", "nlohmann_json", "sol2", "alpaca")
+    add_links("lua")
+    set_targetdir("./")
+
 target("editor")
     set_kind("binary")
     add_includedirs("include/", "include/editor/")
     add_files("src/editor/*.cpp")
-    add_packages("raylib", "nlohmann_json", "nativefiledialog-extended", "raygui")
+    add_packages("raylib", "nlohmann_json", "nativefiledialog-extended", "raygui", "reproc")
     add_deps("rpgpp")
     set_targetdir("./")
 

@@ -16,6 +16,9 @@
 #include <lauxlib.h>
 #include <lualib.h>
 
+#include <filesystem>
+#include <reproc++/run.hpp>
+
 EditorInterfaceService::EditorInterfaceService()
 {
     //get codepoints
@@ -73,6 +76,13 @@ void EditorInterfaceService::setInitial()
     panelView->setInitial();
 }
 
+void EditorInterfaceService::unload()
+{
+    FileSystemService& fs = Editor::getFileSystem();
+    std::filesystem::path fPath = std::string(fs.getProject()->getProjectBasePath()).append("/").append("run.lua");
+    std::filesystem::remove(fPath);
+}
+
 void EditorInterfaceService::update()
 {
     tabList.update();
@@ -94,10 +104,45 @@ void EditorInterfaceService::draw()
         //test interpret lua
         lua_State* L = luaL_newstate();
         luaL_openlibs(L);
-        luaopen_lib(L);
+        luaopen_librpgpplua(L);
 
         sol::state_view lua(L);
-        lua.script("printer()");
+        std::string luaCodeString = R"(
+printer()
+
+        init_window(640, 480, "lraylib")
+
+        g = game.new()
+        g:init()
+
+        game.use_bin("game.bin")
+
+        set_fps(60)
+
+        while not window_should_close() do
+            g:update()
+            begin_drawing()
+            clear_background()
+            g:draw()
+            end_drawing()
+        end
+
+        close_window()
+        )";
+        SaveFileText("run.lua", const_cast<char*>(luaCodeString.data()));
+
+        reproc::options options;
+        options.redirect.parent = true;
+
+        std::vector<std::string> rargs;
+        rargs.push_back(std::string(GetApplicationDirectory()).append("lua"));
+        rargs.push_back("-llibrpgpplua");
+        rargs.push_back(std::string(fs.getProject()->getProjectBasePath()).append("/").append("run.lua"));
+        printf("%s \n", rargs[0].c_str());
+        reproc::process p;
+        p.start(rargs, options);
+
+        
     }
 
     if (fs.fileIsOpen()) {
