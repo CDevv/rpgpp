@@ -1,6 +1,7 @@
 #ifndef _RPGPP_ACTOR_H
 #define _RPGPP_ACTOR_H
 
+#include "gamedata.hpp"
 #include <memory>
 #include <vector>
 #include <array>
@@ -34,6 +35,7 @@ private:
 public:
     Actor(std::string fileName);
     Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos);
+    Actor(ActorBin bin);
     void unload();
     void update();
     void draw();

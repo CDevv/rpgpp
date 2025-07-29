@@ -15,6 +15,11 @@ void WorldService::setRoom(std::string filePath)
     this->room = std::make_unique<Room>(filePath);
 }
 
+void WorldService::setRoomBin(RoomBin bin)
+{
+    this->room = std::make_unique<Room>(bin);
+}
+
 Player& WorldService::getPlayer()
 {
     return this->room->getPlayer();

@@ -8,7 +8,9 @@ int main()
     Game game;
     game.init();
 
-    Game::getWorld().setRoom("resources/map.rmap");
+    Game::useBin("game.bin");
+
+    //Game::getWorld().setRoom("resources/map.rmap");
 
     SetTargetFPS(60);
 

@@ -10,6 +10,12 @@
 #include "windowContainer.hpp"
 #include "tabButton.hpp"
 
+#include <sol/sol.hpp>
+#include "game.hpp"
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
+
 EditorInterfaceService::EditorInterfaceService()
 {
     //get codepoints
@@ -84,6 +90,14 @@ void EditorInterfaceService::draw()
     if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
         fs.promptOpenProject();
         panelView->setInitial();
+
+        //test interpret lua
+        lua_State* L = luaL_newstate();
+        luaL_openlibs(L);
+        luaopen_lib(L);
+
+        sol::state_view lua(L);
+        lua.script("printer()");
     }
 
     if (fs.fileIsOpen()) {

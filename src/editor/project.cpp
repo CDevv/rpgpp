@@ -118,8 +118,8 @@ GameData Project::generateStruct()
         }
         for (auto interactable : room->getInteractableTiles()) {
             InteractableBin intBin;
-            intBin.x = static_cast<int>(interactable.getRect().x);
-            intBin.y = static_cast<int>(interactable.getRect().y);
+            intBin.x = static_cast<int>(interactable.getRect().x / 48);
+            intBin.y = static_cast<int>(interactable.getRect().y / 48);
             intBin.type = static_cast<int>(interactable.getType());
             roomBin.interactables.push_back(intBin);
         }

@@ -1,6 +1,7 @@
 #ifndef _RPGPP_TILESET_H
 #define _RPGPP_TILESET_H
 
+#include "gamedata.hpp"
 #include <string>
 #include <raylib.h>
 #include <nlohmann/json.hpp>
@@ -16,6 +17,7 @@ public:
     TileSet(std::string fileName);
     TileSet(std::string textureSource, int tileSize);
     TileSet(Texture texture, int tileSize);
+    TileSet(TileSetBin bin);
     ~TileSet();
     json dumpJson();
     void unload();

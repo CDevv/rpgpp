@@ -139,6 +139,38 @@ TileMap::TileMap(std::unique_ptr<TileSet> tileSetPtr, int width, int height, int
     }
 }
 
+TileMap::TileMap(RoomBin bin)
+{
+    this->basePos = Vector2 { 0.0f, 0.0f };
+    this->tileSet = std::make_unique<TileSet>(Game::getBin().tilesets.at(bin.tileSetName));
+    this->atlasTileSize = this->tileSet->getTileSize();
+    this->worldTileSize = 48;
+
+    this->width = bin.width;
+    this->height = bin.height;
+
+    this->maxAtlasWidth = this->tileSet->getTexture().width / atlasTileSize;
+    this->maxAtlasHeight = this->tileSet->getTexture().height / atlasTileSize;
+
+    for (int i = 0; i < width; i++) {
+        std::vector<Tile> row;
+        for (int j = 0; j < height; j++) {
+            Tile tile;
+            row.push_back(tile);
+        }
+
+        tiles.push_back(row);
+    }
+
+    for (auto row : bin.tiles) {
+        for (auto col : row) {
+            Vector2 atlasPos = Vector2 { static_cast<float>(col.atlasPos.x / tileSet->getTileSize()), static_cast<float>(col.atlasPos.y / tileSet->getTileSize()) };
+            Vector2 worldPos = Vector2 { static_cast<float>(col.worldPos.x), static_cast<float>(col.worldPos.y) };
+            this->setTile(worldPos, atlasPos);
+        }
+    }
+}
+
 json TileMap::dumpJson()
 {
     //Make a vector for the tiles

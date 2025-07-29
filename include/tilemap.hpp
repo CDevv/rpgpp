@@ -1,6 +1,8 @@
 #ifndef _RPGPP_TILEMAP_H
 #define _RPGPP_TILEMAP_H
 
+#include "game.hpp"
+#include "gamedata.hpp"
 #include <memory>
 #include <string>
 #include <vector>
@@ -28,6 +30,7 @@ public:
     TileMap(std::string tileSetSource, int width, int height, int atlasTileSize, int worldTileSize);
     TileMap(TileSet tileSet, int width, int height, int atlasTileSize, int worldTileSize);
     TileMap(std::unique_ptr<TileSet> tileSetPtr, int width, int height, int atlasTileSize, int worldTileSize);
+    TileMap(RoomBin bin);
     json dumpJson();
     void unload();
     void update();

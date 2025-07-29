@@ -10,6 +10,14 @@
 		{
 			"type": "gdb",
 			"request": "launch",
+			"name": "Launch game",
+			"target": "./game",
+			"cwd": "${folder}",
+			"valuesFormatting": "parseText"
+		},
+		{
+			"type": "gdb",
+			"request": "launch",
 			"name": "Launch Program",
 			"target": "./editor",
 			"cwd": "${folder}",

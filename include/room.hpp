@@ -2,7 +2,10 @@
 #define _RPGPP_ROOM_H
 
 class Player;
+class TileMap;
 
+#include "game.hpp"
+#include "gamedata.hpp"
 #include <memory>
 #include <vector>
 #include <raylib.h>
@@ -27,6 +30,7 @@ public:
     Room();
     Room(std::string fileName);
     Room(std::unique_ptr<TileMap> tileMap);
+    Room(RoomBin bin);
     json dumpJson();
     void unload();
     void update();

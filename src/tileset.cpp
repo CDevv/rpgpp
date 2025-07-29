@@ -38,6 +38,17 @@ TileSet::TileSet(std::string fileName)
     UnloadFileText(jsonContent);
 }
 
+TileSet::TileSet(TileSetBin bin)
+{
+    this->tileSize = bin.tileSize;
+
+    unsigned char* imageData = bin.image.data();
+    Image image = LoadImageFromMemory(bin.extension.c_str(), imageData, bin.dataSize);
+    Texture texture = LoadTextureFromImage(image);
+
+    this->texture = texture;
+}
+
 TileSet::~TileSet()
 {
     UnloadTexture(texture);

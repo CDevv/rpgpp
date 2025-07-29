@@ -1,4 +1,5 @@
 #include "actor.hpp"
+#include "game.hpp"
 #include <raylib.h>
 #include <raymath.h>
 #include <nlohmann/json.hpp>
@@ -80,6 +81,47 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos)
 
     for (int i = 0; i < 8; i++) {
         animations[i] = std::make_unique<std::vector<Vector2>>();
+    }
+}
+
+Actor::Actor(ActorBin bin)
+{
+    this->position = Vector2 { 0, 0 };
+
+    this->frameCounter = 0;
+    this->frameSpeed = 2;
+    this->currentFrame = 0;
+    this->currentAnimation = RPGPP_DOWN_IDLE;
+
+    //tileset
+    this->tileSet = std::make_unique<TileSet>(Game::getBin().tilesets.at(bin.tileSetName));
+
+    //collision
+    this->collisionRect = Rectangle
+    {
+        static_cast<float>(bin.collision.x), static_cast<float>(bin.collision.y),
+        static_cast<float>(bin.collision.width), static_cast<float>(bin.collision.height)
+    };
+
+    //animations
+    for (int i = 0; i < 8; i++) {
+        animations[i] = std::make_unique<std::vector<Vector2>>();
+    }
+    for (int i = 0; i < 8; i++) {
+        std::vector<IVector> binFrames = bin.animations[i];
+        std::vector<std::vector<int>> frames;
+        for (int j = 0; j < bin.animations[i].size(); j++) {
+            Vector2 frame = Vector2
+            {
+                static_cast<float>(binFrames[j].x), static_cast<float>(binFrames[j].y)
+            };
+            std::vector<int> frameVec;
+            frameVec.push_back(binFrames[j].x);
+            frameVec.push_back(binFrames[j].y);
+            frames.push_back(frameVec);
+        }
+
+        addAnimationFrames(static_cast<Direction>(i), frames);
     }
 }
 

@@ -62,6 +62,31 @@ Room::Room(std::unique_ptr<TileMap> tileMap)
     this->tileMap = std::move(tileMap);
 }
 
+Room::Room(RoomBin bin)
+: Room()
+{
+    this->worldTileSize = 48;
+
+    this->interactables = std::make_unique<InteractablesContainer>();
+    this->collisions = std::make_unique<CollisionsContainer>();
+    this->actors = std::make_unique<std::vector<Actor>>();
+
+    std::unique_ptr<Actor> actor = std::make_unique<Actor>(Game::getBin().actors.at(0));
+    std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
+
+    this->tileMap = std::make_unique<TileMap>(bin);
+    this->addPlayer(std::move(player));
+
+    for (auto intBin : bin.interactables) {
+        InteractableType itype = static_cast<InteractableType>(intBin.type);
+        interactables->add(intBin.x, intBin.y, itype);
+    }
+
+    for (auto collisionBin : bin.collisions) {
+        collisions->addCollisionTile(collisionBin.x, collisionBin.y);
+    }
+}
+
 json Room::dumpJson()
 {
     json roomJson = this->tileMap->dumpJson();
