@@ -10,13 +10,16 @@ target("rpgpp")
     add_packages("raylib", "nlohmann_json", "alpaca")
     add_links("lua")
     set_targetdir("./")
+    if is_plat("linux") then
+        add_cxxflags("-fPIC")
+    end
 
 target("rpgpplua")
     set_kind("shared")
 	set_languages("cxx17")
     add_includedirs("include/")
     add_files("src/rpgpplua/*.cpp")
-    add_packages("raylib", "nlohmann_json", "alpaca")
+    add_packages("nlohmann_json", "raylib", "alpaca", {public = true})
     add_links("lua")
 	add_deps("rpgpp")
     set_targetdir("./")

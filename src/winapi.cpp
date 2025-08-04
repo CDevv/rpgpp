@@ -1,9 +1,14 @@
 #include "winapi.hpp"
+
+#ifdef _WIN32
 #include <windows.h>
+#endif
+
 #include <cstdio>
 
 void WinCreateProc(std::string cmdLine) 
 {
+	#ifdef _WIN32
 	STARTUPINFO si;
     PROCESS_INFORMATION pi;
 	
@@ -21,4 +26,7 @@ void WinCreateProc(std::string cmdLine)
 	} else {
 		printf("CreateProcess failed (%d).\n", GetLastError());
 	}
+	#else
+	printf("This is for Windows API only");
+	#endif
 }

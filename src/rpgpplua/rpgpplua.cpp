@@ -23,7 +23,7 @@ void clear_bg_lua()
 }
 extern "C" 
 #ifdef _WIN32
-__declspec(dllexport) 
+__declspec(dllexport)
 #endif
 int luaopen_rpgpplua(lua_State* L)
 {
