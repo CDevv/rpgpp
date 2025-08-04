@@ -10,10 +10,6 @@ class WorldService;
 #include "worldService.hpp"
 #include "interfaceService.hpp"
 
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
-
 class Game {
 private:
     static Game *instance_;
@@ -35,7 +31,5 @@ public:
     void draw();
     void unload();
 };
-
-extern "C" int luaopen_librpgpplua(lua_State* L);
 
 #endif

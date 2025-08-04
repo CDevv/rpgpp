@@ -19,6 +19,10 @@
 #include <filesystem>
 #include <reproc++/run.hpp>
 
+#ifdef _WIN32
+#include "winapi.hpp"
+#endif
+
 EditorInterfaceService::EditorInterfaceService()
 {
     //get codepoints
@@ -100,49 +104,6 @@ void EditorInterfaceService::draw()
     if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
         fs.promptOpenProject();
         panelView->setInitial();
-
-        //test interpret lua
-        lua_State* L = luaL_newstate();
-        luaL_openlibs(L);
-        luaopen_librpgpplua(L);
-
-        sol::state_view lua(L);
-        std::string luaCodeString = R"(
-printer()
-
-        init_window(640, 480, "lraylib")
-
-        g = game.new()
-        g:init()
-
-        game.use_bin("game.bin")
-
-        set_fps(60)
-
-        while not window_should_close() do
-            g:update()
-            begin_drawing()
-            clear_background()
-            g:draw()
-            end_drawing()
-        end
-
-        close_window()
-        )";
-        SaveFileText("run.lua", const_cast<char*>(luaCodeString.data()));
-
-        reproc::options options;
-        options.redirect.parent = true;
-
-        std::vector<std::string> rargs;
-        rargs.push_back(std::string(GetApplicationDirectory()).append("lua"));
-        rargs.push_back("-llibrpgpplua");
-        rargs.push_back(std::string(fs.getProject()->getProjectBasePath()).append("/").append("run.lua"));
-        printf("%s \n", rargs[0].c_str());
-        reproc::process p;
-        p.start(rargs, options);
-
-        
     }
 
     if (fs.fileIsOpen()) {
@@ -166,9 +127,69 @@ printer()
         Project* project = fs.getProject();
         std::string binFile = std::string(project->getProjectBasePath());
         binFile.append("/game.bin");
-        if (GuiButton(Rectangle { (138 + 120*6 + 8*2), 8, 120, 24 }, "Export to binary file")) {
+		
+		Rectangle exportRect = Rectangle {
+			(138 + 120*6 + 8*2), 8, 120, 24
+		};
+        if (GuiButton(exportRect, "Export to binary file")) {
             serializeDataToFile(binFile, project->generateStruct());
         }
+		Rectangle runRect = exportRect;
+		runRect.x += exportRect.width * 2 + 16;
+		if (GuiButton(runRect, "Run Game")) {
+			std::string luaCodeString = R"(
+	printer()
+
+			init_window(640, 480, "lraylib")
+
+			g = game.new()
+			g:init()
+
+			game.use_bin("game.bin")
+
+			set_fps(60)
+
+			while not window_should_close() do
+				g:update()
+				begin_drawing()
+				clear_background()
+				g:draw()
+				end_drawing()
+			end
+
+			close_window()
+			)";
+			SaveFileText("run.lua", const_cast<char*>(luaCodeString.data()));
+			
+			reproc::options options;
+			options.redirect.parent = true;
+
+			std::vector<std::string> rargs;
+			#ifdef _WIN32
+				rargs.push_back(std::string("\"").append(GetApplicationDirectory()).append("lua.exe").append("\""));
+			#else
+				rargs.push_back(std::string(GetApplicationDirectory()).append("lua"));
+			#endif
+			
+			rargs.push_back("-lrpgpplua");
+			
+			#ifdef _WIN32
+				rargs.push_back(std::string("\"").append(fs.getProject()->getProjectBasePath()).append("\\").append("run.lua").append("\""));
+			#else
+				rargs.push_back(std::string(fs.getProject()->getProjectBasePath()).append("/").append("run.lua"));
+			#endif
+			printf("%s \n", rargs[0].c_str());
+			printf("%s \n", rargs[1].c_str());
+			printf("%s \n", rargs[2].c_str());
+			reproc::process p;
+			p.start(rargs, options);
+			
+			#ifdef _WIN32
+			std::string cmdLine = std::string(rargs[0]).append(" ").append(rargs[1]).append(" ").append(rargs[2]);
+			printf("%s \n", cmdLine.c_str());
+			WinCreateProc(cmdLine);
+			#endif
+		}
     }
 
     if (GuiButton(Rectangle { (138 + 120*6 + 8*2 + 120), 8, 120, 24 }, "Open binary file..")) {
