@@ -40,6 +40,7 @@ EditorInterfaceService::EditorInterfaceService()
     uiFont = LoadFontEx("resources/LanaPixel.ttf", 13, codepoints.data(), codepoints.size());
 
     GuiLoadStyle("rpgpp.rgs");
+    GuiLoadIcons("iconset.rgi", true);
     GuiSetFont(uiFont);
 
     mousePos = Vector2 { 0, 0 };
@@ -135,8 +136,9 @@ void EditorInterfaceService::draw()
             serializeDataToFile(binFile, project->generateStruct());
         }
 		Rectangle runRect = exportRect;
+        runRect.width = runRect.height;
 		runRect.x += exportRect.width * 2 + 16;
-		if (GuiButton(runRect, "Run Game")) {
+		if (GuiButton(runRect, GuiIconText(ICON_PLAYER_PLAY, NULL))) {
 			std::string luaCodeString = R"(
 	printer()
 
@@ -190,6 +192,15 @@ void EditorInterfaceService::draw()
 			WinCreateProc(cmdLine);
 			#endif
 		}
+
+        Rectangle buildRect = runRect;
+        buildRect.x += runRect.width + 8;
+        if (GuiButton(buildRect, GuiIconText(220, NULL))) {
+            #ifdef _WIN32
+            std::string vswherePath = std::string("\"").append(GetApplicationDirectory()).append("vswhere.exe");
+			WinVsWhere(vswherePath);
+			#endif
+        }
     }
 
     if (GuiButton(Rectangle { (138 + 120*6 + 8*2 + 120), 8, 120, 24 }, "Open binary file..")) {
