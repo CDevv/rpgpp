@@ -28,12 +28,6 @@ void WinWriteToHandle(HANDLE handle, std::string str)
 	CHAR charBuf[4096];
 	BOOL bSuccess = FALSE;
 
-	/*
-	for (;;) {
-		bSuccess = WriteFile(handle, str.data(), str.size(), &dwWritten, NULL);
-		if (!bSuccess) break;
-	}
-	*/
 	bSuccess = WriteFile(handle, static_cast<char*>(str.data()), str.size(), &dwWritten, NULL);
 	if (!bSuccess) {
 		printf("WriteFile Error: %d", GetLastError());
@@ -92,8 +86,6 @@ void WinCreateProc(std::string cmdLine)
 {
 	WinCreateProcEx(cmdLine, NULL, NULL, STARTF_FORCEONFEEDBACK, true);
 }
-
-void WinCallCompile(VsInfo vsInfo);
 
 VsInfo WinVsWhere(std::string path)
 {
@@ -165,72 +157,4 @@ VsInfo ParseVsWhereData(std::string output)
 	struc.auxiliaryPath = installationPath.append("\\VC\\Auxiliary\\Build");
 
 	return struc;
-}
-
-void WinCallCompile(VsInfo info)
-{
-	HANDLE g_hChildStd_IN_Rd = NULL;
-	HANDLE g_hChildStd_IN_Wr = NULL;
-	HANDLE g_hChildStd_OUT_Rd = NULL;
-	HANDLE g_hChildStd_OUT_Wr = NULL;
-
-	SECURITY_ATTRIBUTES saAttr;
-
-	saAttr.nLength = sizeof(SECURITY_ATTRIBUTES); 
-   	saAttr.bInheritHandle = TRUE; 
-   	saAttr.lpSecurityDescriptor = NULL; 
-
-	if (!CreatePipe(&g_hChildStd_OUT_Rd, &g_hChildStd_OUT_Wr, &saAttr, 0)) 
-    {
-		printf("StdoutRd CreatePipe");
-	  	return;
-	}
-
-	if (!SetHandleInformation(g_hChildStd_OUT_Rd, HANDLE_FLAG_INHERIT, 0)) {
-		printf("Stdout SetHandleInformation");
-		return;
-	}
-
-	if (!CreatePipe(&g_hChildStd_IN_Rd, &g_hChildStd_IN_Wr, &saAttr, 0))
-	{
-		printf("Stdin CreatePipe");
-		return;
-	}
-
-	if (!SetHandleInformation(g_hChildStd_IN_Wr, HANDLE_FLAG_INHERIT, 0))
-	{
-		printf("Stdin SetHandleInformation");
-		return;
-	}
-
-	std::string commandLineString = std::string("C:\\Windows\\System32\\cmd.exe /c ")
-	//.append(info.installationPath).append("\\VC\\Auxiliary\\Build\\vcvars64.bat");
-	.append("build.cmd");
-
-	WinCreateProcEx(commandLineString, g_hChildStd_OUT_Wr, g_hChildStd_IN_Rd, STARTF_USESTDHANDLES, false);
-
-	//WinWriteToHandle(g_hChildStd_IN_Wr, "pwd \n");
-
-	CHAR* childOutBuf = WinReadFromHandle(g_hChildStd_OUT_Rd);
-	printf("%s\n", childOutBuf);
-
-	/*
-	if (!CreatePipe(&g_hChildStd_IN_Rd, &g_hChildStd_IN_Wr, &saAttr, 0))
-	{
-		printf("Stdin CreatePipe");
-		return;
-	}
-
-	if (!SetHandleInformation(g_hChildStd_IN_Wr, HANDLE_FLAG_INHERIT, 0))
-	{
-		printf("Stdin SetHandleInformation");
-		return;
-	}
-
-	WinWriteToHandle(g_hChildStd_IN_Wr, "notepad \n");
-	
-
-	childOutBuf = WinReadFromHandle(g_hChildStd_OUT_Rd);
-	printf("%s\n", childOutBuf);
-	*/
 }
