@@ -9,6 +9,10 @@
 #include "room.hpp"
 using json = nlohmann::json;
 
+#ifdef _WIN32
+#include "winapi.hpp"
+#endif
+
 Project::Project() {}
 
 Project::Project(std::string filePath)
@@ -158,6 +162,37 @@ GameData Project::generateStruct()
     }
 
     return struc;
+}
+
+void Project::generateCmdScript()
+{
+    #ifdef _WIN32
+    //Generate a .cmd file on Windows
+    VsInfo vsInfo = WinVsWhere(std::string(GetApplicationDirectory()).append("vswhere.exe"));
+    printf("%s \n", vsInfo.auxiliaryPath.c_str());
+
+    std::string scriptSource;
+    std::string callVcBat = "call ";
+    callVcBat.append("\"").append(vsInfo.auxiliaryPath).append("\\vcvars64.bat").append("\"");
+
+    std::string clLine = "cl /c /EHs /I ";
+    clLine.append("\"").append(GetApplicationDirectory()).append("\include").append("\"")
+    .append(" /I ./include main.cpp");
+
+    std::string appDir = std::string(GetApplicationDirectory()).substr(0, TextLength(GetApplicationDirectory()) - 1);
+
+    std::string linkLine = "link ";
+    linkLine.append("/LIBPATH:\"").append(GetApplicationDirectory()).append("\lib").append("\"")
+    .append(" /LIBPATH:").append("\"").append(appDir).append("\"")
+    .append(" /OUT:main.exe")
+    .append(" raylib.lib rpgpp.lib opengl32.lib gdi32.lib shell32.lib user32.lib winmm.lib")
+    .append(" main.obj");
+
+    scriptSource.append(callVcBat).append("\n\n").append(clLine).append("\n").append(linkLine).append("\n");
+    printf("%s \n", scriptSource.c_str());
+
+    SaveFileText("build.cmd", const_cast<char*>(scriptSource.data()));
+    #endif
 }
 
 std::string Project::getProjectTitle()

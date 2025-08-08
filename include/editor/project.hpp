@@ -23,6 +23,7 @@ public:
     Project();
     Project(std::string filePath);
     GameData generateStruct();
+    void generateCmdScript();
     std::string getProjectTitle();
     std::string getProjectBasePath();
     std::vector<std::string> getTileSetPaths();

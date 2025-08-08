@@ -198,7 +198,8 @@ void EditorInterfaceService::draw()
         if (GuiButton(buildRect, GuiIconText(220, NULL))) {
             #ifdef _WIN32
             std::string vswherePath = std::string("\"").append(GetApplicationDirectory()).append("vswhere.exe");
-			WinVsWhere(vswherePath);
+			//WinVsWhere(vswherePath);
+            fs.getProject()->generateCmdScript();
 			#endif
         }
     }

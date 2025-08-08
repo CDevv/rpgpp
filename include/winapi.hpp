@@ -5,10 +5,12 @@
 
 struct VsInfo {
     std::string installationPath;
+    std::string vsdevcmdPath;
+    std::string auxiliaryPath;
 };
 
 void WinCreateProc(std::string cmdLine);
-void WinVsWhere(std::string path);
+VsInfo WinVsWhere(std::string path);
 VsInfo ParseVsWhereData(std::string output);
 
 #endif
