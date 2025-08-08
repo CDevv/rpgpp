@@ -44,5 +44,6 @@ bin/
 .cache/
 .xmake/
 
+!lua.exe
 !vswhere.exe
 !/game-src/** 

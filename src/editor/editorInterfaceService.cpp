@@ -139,6 +139,10 @@ void EditorInterfaceService::draw()
         runRect.width = runRect.height;
 		runRect.x += exportRect.width * 2 + 16;
 		if (GuiButton(runRect, GuiIconText(ICON_PLAYER_PLAY, NULL))) {
+            //Save game.bin first
+            std::string binFile = std::string(fs.getProject()->getProjectBasePath()).append("/game.bin");
+            serializeDataToFile(binFile, fs.getProject()->generateStruct());
+
 			std::string luaCodeString = R"(
 	printer()
 
@@ -162,6 +166,12 @@ void EditorInterfaceService::draw()
 			close_window()
 			)";
 			SaveFileText("run.lua", const_cast<char*>(luaCodeString.data()));
+
+            #ifdef _WIN32
+            std::string fromLuaLib = TextFormat("%s\\game-src\\lib\\rpgpplua.dll", GetApplicationDirectory());
+            std::string toLuaLib = TextFormat("%s\\rpgpplua.dll", fs.getProject()->getProjectBasePath().c_str());
+            std::filesystem::copy(fromLuaLib, toLuaLib);
+            #endif
 			
 			reproc::options options;
 			options.redirect.parent = true;
@@ -190,6 +200,10 @@ void EditorInterfaceService::draw()
 			std::string cmdLine = std::string(rargs[0]).append(" ").append(rargs[1]).append(" ").append(rargs[2]);
 			printf("%s \n", cmdLine.c_str());
 			WinCreateProc(cmdLine);
+
+            //Clean up
+            std::filesystem::remove(toLuaLib);
+            //std::filesystem::remove(std::string(TextFormat("%s\\run.lua", GetWorkingDirectory())));
 			#endif
 		}
 
