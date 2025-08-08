@@ -199,7 +199,7 @@ void EditorInterfaceService::draw()
             #ifdef _WIN32
             std::string vswherePath = std::string("\"").append(GetApplicationDirectory()).append("vswhere.exe");
 			//WinVsWhere(vswherePath);
-            fs.getProject()->generateCmdScript();
+            fs.getProject()->compileProject();
 			#endif
         }
     }

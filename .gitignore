@@ -43,3 +43,6 @@ build/
 bin/
 .cache/
 .xmake/
+
+!vswhere.exe
+!/game-src/** 
