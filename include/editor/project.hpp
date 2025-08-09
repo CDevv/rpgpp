@@ -21,12 +21,13 @@ private:
     std::vector<std::string> makeActorPaths();
     void generateCmdScript();
     void callCompiler();
-    void cleanCompilation();
 public:
     Project();
     Project(std::string filePath);
     GameData generateStruct();
     void compileProject();
+    void runProject();
+    void cleanCompilation();
     std::string getProjectTitle();
     std::string getProjectBasePath();
     std::vector<std::string> getTileSetPaths();

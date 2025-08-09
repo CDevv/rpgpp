@@ -86,6 +86,10 @@ void EditorInterfaceService::unload()
     FileSystemService& fs = Editor::getFileSystem();
     std::filesystem::path fPath = std::string(fs.getProject()->getProjectBasePath()).append("/").append("run.lua");
     std::filesystem::remove(fPath);
+
+    #ifdef __linux__
+    fs.getProject()->cleanCompilation();
+    #endif
 }
 
 void EditorInterfaceService::update()
@@ -139,82 +143,13 @@ void EditorInterfaceService::draw()
         runRect.width = runRect.height;
 		runRect.x += exportRect.width * 2 + 16;
 		if (GuiButton(runRect, GuiIconText(ICON_PLAYER_PLAY, NULL))) {
-            //Save game.bin first
-            std::string binFile = std::string(fs.getProject()->getProjectBasePath()).append("/game.bin");
-            serializeDataToFile(binFile, fs.getProject()->generateStruct());
-
-			std::string luaCodeString = R"(
-	printer()
-
-			init_window(640, 480, "lraylib")
-
-			g = game.new()
-			g:init()
-
-			game.use_bin("game.bin")
-
-			set_fps(60)
-
-			while not window_should_close() do
-				g:update()
-				begin_drawing()
-				clear_background()
-				g:draw()
-				end_drawing()
-			end
-
-			close_window()
-			)";
-			SaveFileText("run.lua", const_cast<char*>(luaCodeString.data()));
-
-            #ifdef _WIN32
-            std::string fromLuaLib = TextFormat("%s\\game-src\\lib\\rpgpplua.dll", GetApplicationDirectory());
-            std::string toLuaLib = TextFormat("%s\\rpgpplua.dll", fs.getProject()->getProjectBasePath().c_str());
-            std::filesystem::copy(fromLuaLib, toLuaLib);
-            #endif
-			
-			reproc::options options;
-			options.redirect.parent = true;
-
-			std::vector<std::string> rargs;
-			#ifdef _WIN32
-				rargs.push_back(std::string("\"").append(GetApplicationDirectory()).append("lua.exe").append("\""));
-			#else
-				rargs.push_back(std::string(GetApplicationDirectory()).append("lua"));
-			#endif
-			
-			rargs.push_back("-lrpgpplua");
-			
-			#ifdef _WIN32
-				rargs.push_back(std::string("\"").append(fs.getProject()->getProjectBasePath()).append("\\").append("run.lua").append("\""));
-			#else
-				rargs.push_back(std::string(fs.getProject()->getProjectBasePath()).append("/").append("run.lua"));
-			#endif
-			printf("%s \n", rargs[0].c_str());
-			printf("%s \n", rargs[1].c_str());
-			printf("%s \n", rargs[2].c_str());
-			reproc::process p;
-			p.start(rargs, options);
-			
-			#ifdef _WIN32
-			std::string cmdLine = std::string(rargs[0]).append(" ").append(rargs[1]).append(" ").append(rargs[2]);
-			printf("%s \n", cmdLine.c_str());
-			WinCreateProc(cmdLine);
-
-            //Clean up
-            std::filesystem::remove(toLuaLib);
-            //std::filesystem::remove(std::string(TextFormat("%s\\run.lua", GetWorkingDirectory())));
-			#endif
+            project->runProject();
 		}
 
         Rectangle buildRect = runRect;
         buildRect.x += runRect.width + 8;
         if (GuiButton(buildRect, GuiIconText(220, NULL))) {
-            #ifdef _WIN32
-            std::string vswherePath = std::string("\"").append(GetApplicationDirectory()).append("vswhere.exe");
-			//WinVsWhere(vswherePath);
             fs.getProject()->compileProject();
-			#endif
         }
     }
 

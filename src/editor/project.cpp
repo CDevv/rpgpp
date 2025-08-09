@@ -14,6 +14,8 @@ using json = nlohmann::json;
 #include "winapi.hpp"
 #endif
 
+#include <reproc++/run.hpp>
+
 Project::Project() {}
 
 Project::Project(std::string filePath)
@@ -195,6 +197,12 @@ void Project::generateCmdScript()
     printf("%s \n", scriptSource.c_str());
 
     SaveFileText("build.cmd", const_cast<char*>(scriptSource.data()));
+    #else
+    //Linux sh file
+    std::string shellString = TextFormat(R"(g++ -I"%sinclude" -I"%sgame-src/include" main.cpp -o %s -L"%sgame-src/lib" -lraylib -lrpgpp)", 
+        GetApplicationDirectory(), GetApplicationDirectory(), projectTitle.c_str(), GetApplicationDirectory());
+    printf("%s \n", shellString.c_str());
+    SaveFileText("build.sh", const_cast<char*>(shellString.data()));
     #endif
 }
 
@@ -234,6 +242,16 @@ int main()
     #ifdef _WIN32
     std::string cmdLine = TextFormat("C:\\Windows\\System32\\cmd.exe /c \"%s\"", "build.cmd");
     WinCreateProc(cmdLine);
+    #else
+    std::vector<std::string> rargs;
+    rargs.push_back("sh");
+    rargs.push_back("build.sh");
+
+    reproc::options options;
+    options.redirect.parent = true;
+
+    reproc::process p;
+    p.start(rargs, options);
     #endif
 }
 
@@ -243,6 +261,9 @@ void Project::cleanCompilation()
     std::filesystem::remove(std::string(TextFormat("%s\\build.cmd", projectBasePath.c_str())));
     std::filesystem::remove(std::string(TextFormat("%s\\main.cpp", projectBasePath.c_str())));
     std::filesystem::remove(std::string(TextFormat("%s\\main.obj", projectBasePath.c_str())));
+    #else
+    std::filesystem::remove(std::string(TextFormat("%s/build.sh", projectBasePath.c_str())));
+    std::filesystem::remove(std::string(TextFormat("%s/main.cpp", projectBasePath.c_str())));
     #endif
 }
 
@@ -262,11 +283,91 @@ void Project::compileProject()
     printf("CompileProject: Compilation is done\n");
 
     //Clean up
+    #ifdef _WIN32
     this->cleanCompilation();
     printf("CompileProject: Cleaned up\n");
+    printf("The executable is located at: %s\\%s.exe \n", projectBasePath.c_str(), projectTitle.c_str());
+    #else
+    printf("The executable is located at: %s/%s \n", projectBasePath.c_str(), projectTitle.c_str());
+    #endif
+}
+
+void Project::runProject()
+{
+    //Save game.bin first
+    std::string binFile = std::string(projectBasePath).append("/game.bin");
+    serializeDataToFile(binFile, this->generateStruct());
+
+    std::string luaCodeString = R"(
+    printer()
+
+    init_window(640, 480, "lraylib")
+
+    g = game.new()
+    g:init()
+
+    game.use_bin("game.bin")
+
+    set_fps(60)
+
+    while not window_should_close() do
+        g:update()
+        begin_drawing()
+        clear_background()
+        g:draw()
+        end_drawing()
+    end
+
+    close_window()
+    )";
+    SaveFileText("run.lua", const_cast<char*>(luaCodeString.data()));
+
+    std::string fromLuaLib;
+    std::string toLuaLib;
 
     #ifdef _WIN32
-    printf("The executable is located at: %s\\%s.exe", projectBasePath.c_str(), projectTitle.c_str());
+    fromLuaLib = TextFormat("%s\\game-src\\lib\\rpgpplua.dll", GetApplicationDirectory());
+    toLuaLib = TextFormat("%s\\rpgpplua.dll", projectBasePath.c_str());
+    #else
+    fromLuaLib = TextFormat("%sgame-src/lib/librpgpplua.so", GetApplicationDirectory());
+    toLuaLib = TextFormat("%s/rpgpplua.so", projectBasePath.c_str());
+    #endif
+    std::filesystem::copy(fromLuaLib, toLuaLib, std::filesystem::copy_options::update_existing);
+
+    reproc::options options;
+    options.redirect.parent = true;
+
+    std::vector<std::string> rargs;
+    #ifdef _WIN32
+    rargs.push_back(std::string("\"").append(GetApplicationDirectory()).append("lua.exe").append("\""));
+    #else
+    rargs.push_back(std::string(GetApplicationDirectory()).append("lua"));
+    #endif
+
+    rargs.push_back("-lrpgpplua");
+            
+    #ifdef _WIN32
+    rargs.push_back(std::string("\"").append(projectBasePath).append("\\").append("run.lua").append("\""));
+    #else
+    rargs.push_back(std::string(projectBasePath).append("/").append("run.lua"));
+    #endif
+
+    printf("%s \n", rargs[0].c_str());
+    printf("%s \n", rargs[1].c_str());
+    printf("%s \n", rargs[2].c_str());
+    reproc::process p;
+    std::error_code ec = p.start(rargs, options);
+    if (ec) {
+        printf("%s \n", ec.message().c_str());
+    }
+    printf("ended\n");
+
+    #ifdef _WIN32
+    std::string cmdLine = std::string(rargs[0]).append(" ").append(rargs[1]).append(" ").append(rargs[2]);
+    printf("%s \n", cmdLine.c_str());
+    WinCreateProc(cmdLine);
+
+    std::filesystem::remove(toLuaLib);
     #endif
 }
 

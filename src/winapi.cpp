@@ -6,6 +6,8 @@
 
 #include <cstdio>
 
+#ifdef _WIN32
+
 char* WinReadFromHandle(HANDLE handle)
 {
 	DWORD dwRead;
@@ -158,3 +160,19 @@ VsInfo ParseVsWhereData(std::string output)
 
 	return struc;
 }
+
+#else
+
+void WinCreateProc(std::string cmdLine) {}
+VsInfo WinVsWhere(std::string path)
+{
+	VsInfo info;
+	return info;
+}
+VsInfo ParseVsWhereData(std::string output)
+{
+	VsInfo info;
+	return info;
+}
+
+#endif
