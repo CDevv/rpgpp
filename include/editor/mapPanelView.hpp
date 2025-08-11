@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <raylib.h>
+#include "mapToolsBox.hpp"
 #include "collisionInfoPanel.hpp"
 #include "interactableInfoPanel.hpp"
 #include "worldViewBox.hpp"
@@ -12,6 +13,7 @@ class MapPanelView {
 private:
     Rectangle rect;
     std::unique_ptr<WorldViewBox> worldView;
+    MapToolsBox toolsBox;
     std::unique_ptr<WorldViewBox> tileSetView;
     CollisionInfoPanel collisionInfo;
     InteractableInfoPanel interactableInfo;

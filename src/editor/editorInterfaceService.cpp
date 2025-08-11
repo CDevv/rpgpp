@@ -57,7 +57,7 @@ EditorInterfaceService::EditorInterfaceService()
     Rectangle windowRect = Rectangle
     {
         176, 48,
-        static_cast<float>(GetScreenWidth() - 386), static_cast<float>(GetScreenHeight() - 56)
+        static_cast<float>(GetScreenWidth() - 180), static_cast<float>(GetScreenHeight() - 56)
     };
     Rectangle renderRect = Rectangle {
         (windowRect.x + 2), (windowRect.y + 24),

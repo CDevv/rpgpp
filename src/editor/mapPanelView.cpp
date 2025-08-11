@@ -15,21 +15,29 @@ MapPanelView::MapPanelView()
 
 MapPanelView::MapPanelView(Rectangle rect)
 {
+    this->rect = rect;
+
     actionModeToggle = 0;
     layoutModeToggle = 0;
     layoutDropdownEditMode = false;
 
+    Rectangle toolsRect = Rectangle
+    {
+        rect.x, rect.y, static_cast<float>(rect.width - 284), 30
+    };
+    toolsBox = MapToolsBox(toolsRect);
+
     Rectangle windowRect = Rectangle
     {
-        176, 48,
-        static_cast<float>(GetScreenWidth() - 464), static_cast<float>(GetScreenHeight() - 56)
+        rect.x, rect.y + 34,
+        static_cast<float>(rect.width - 284), static_cast<float>(rect.height - 34)
     };
     worldView = std::make_unique<WorldViewBox>(windowRect, FILE_ROOM);
 
     Rectangle tileSetWindowRect = Rectangle
     {
-        (windowRect.x + windowRect.width + 4), (windowRect.y + 56),
-        (GetScreenWidth() - ((windowRect.x + windowRect.width + 4) + 4)), (8)
+        (rect.x + windowRect.width + 4), (rect.y + 28),
+        (280), (8)
     };
     tileSetWindowRect.height = tileSetWindowRect.width - 36;
     tileSetView = std::make_unique<WorldViewBox>(tileSetWindowRect, FILE_TILESET);
@@ -42,10 +50,10 @@ MapPanelView::MapPanelView(Rectangle rect)
 
     Rectangle propRect = Rectangle
     {
-        (tileSetWindowRect.x), (tileSetWindowRect.y + tileSetWindowRect.height + 8)
+        (tileSetWindowRect.x), (tileSetWindowRect.y + tileSetWindowRect.height + 4),
+        280, (rect.height + rect.y - (tileSetWindowRect.y + tileSetWindowRect.height + 4) + 2)
     };
     propRect.width = tileSetWindowRect.width;
-    propRect.height = GetScreenHeight() - propRect.y - 8;
     propBox = PropertiesBox(propRect);
 }
 
@@ -58,6 +66,8 @@ void MapPanelView::update()
 {
     FileSystemService& fs = Editor::getFileSystem();
     EditorInterfaceService& ui = Editor::getUi();
+
+    toolsBox.update();
 
     worldView->setMouseLock(ui.getMouseLock());
 
@@ -73,7 +83,7 @@ void MapPanelView::update()
 
     propBox.update();
 
-    RoomAction actionMode = static_cast<RoomAction>(actionModeToggle + 1);
+    RoomAction actionMode = toolsBox.getActionMode();
     worldView->setActionMode(actionMode);
     collisionInfo.setActionMode(actionMode);
 
@@ -96,6 +106,7 @@ void MapPanelView::draw()
 {
     if (layoutDropdownEditMode) GuiLock();
 
+    toolsBox.draw();
     worldView->draw();
 
     RoomLayer layerMode = static_cast<RoomLayer>(layoutModeToggle);
@@ -120,16 +131,16 @@ void MapPanelView::draw()
     };
     Rectangle optionsRect = Rectangle 
     {
-        (windowRect.x + windowRect.width + 4), (windowRect.y),
-        (GetScreenWidth() - ((windowRect.x + windowRect.width + 4) + 4)), 24
+        (rect.x + windowRect.width + 4), (windowRect.y),
+        280, 24
     };
     Rectangle singleOptionRect = optionsRect;
     singleOptionRect.width /= 3;
     singleOptionRect.width -= 2;
-    GuiToggleGroup(singleOptionRect, "Place;Erase;Edit", &actionModeToggle);
+    //GuiToggleGroup(singleOptionRect, "Place;Erase;Edit", &actionModeToggle);
 
     Rectangle layoutDropdown = optionsRect;
-    layoutDropdown.y += layoutDropdown.height + 4;
+    //layoutDropdown.y += layoutDropdown.height + 4;
     if (GuiDropdownBox(layoutDropdown, "Tiles;Collisions;Interactables", &layoutModeToggle, layoutDropdownEditMode)) {
         layoutDropdownEditMode = !layoutDropdownEditMode;
     }

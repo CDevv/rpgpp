@@ -31,14 +31,18 @@ void InteractableInfoPanel::update()
     FileSystemService& fs = Editor::getFileSystem();
     
     if (lastType != type) {
-        fs.getRoom()->getInteractables().setInteractableType(interactableWorldPos.x, interactableWorldPos.y, type);
-        lastType = type;
+        if (interactableWorldPos.x != -1) {
+            fs.getRoom()->getInteractables().setInteractableType(interactableWorldPos.x, interactableWorldPos.y, type);
+            lastType = type;
+        }
     }
 }
 
 void InteractableInfoPanel::draw()
 {
     GuiPanel(rect, "Interactable");
+
+    if (typeDropdownEditMode) GuiLock();
 
     Rectangle labelRect = Rectangle
     {
