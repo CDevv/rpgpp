@@ -47,6 +47,11 @@ EditorInterfaceService::EditorInterfaceService()
     hoverPos = Vector2 { 0, 0 };
     mouseLock = false;
 
+    Rectangle projectMenuRect = Rectangle { 0, 16, static_cast<float>(GetScreenWidth()), 36 };
+    projectMenu = ProjectMenuBox(projectMenuRect);
+
+    float elementBaseY = projectMenuRect.y + projectMenuRect.height;
+
     Rectangle tabListRect = Rectangle
     {
         (138 + 120 + 8), 8,
@@ -54,19 +59,15 @@ EditorInterfaceService::EditorInterfaceService()
     };
     tabList = TabList(tabListRect);
 
+    Rectangle propRect = Rectangle { 4, elementBaseY + 4, 160, static_cast<float>(GetScreenHeight() - (elementBaseY + 8)) };
+    resourceView = ResourceViewerBox(propRect);
+
     Rectangle windowRect = Rectangle
     {
-        176, 48,
-        static_cast<float>(GetScreenWidth() - 180), static_cast<float>(GetScreenHeight() - 56)
-    };
-    Rectangle renderRect = Rectangle {
-        (windowRect.x + 2), (windowRect.y + 24),
-        (windowRect.width - 4), (windowRect.height - 30)
+        propRect.width + 8, elementBaseY + 4,
+        static_cast<float>(GetScreenWidth() - (propRect.width + 16) + 4), static_cast<float>(GetScreenHeight() - (elementBaseY + 8))
     };
     panelView = std::make_unique<PanelView>(windowRect);
-
-    Rectangle propRect = Rectangle { 8, 48, 160, static_cast<float>(GetScreenHeight() - 56) };
-    resourceView = ResourceViewerBox(propRect);
 
     windowContainer = WindowContainer();
 }
@@ -101,8 +102,15 @@ void EditorInterfaceService::update()
 
 void EditorInterfaceService::draw()
 {
-    tabList.draw();
+    Rectangle appMenuRect = Rectangle
+    {
+        0, 0, static_cast<float>(GetScreenWidth()), 16
+    };
+    DrawRectangleRec(appMenuRect, DARKGRAY);
 
+    projectMenu.draw();
+
+    tabList.draw();
     panelView->draw();
 
     FileSystemService& fs = Editor::getFileSystem();

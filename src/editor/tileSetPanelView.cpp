@@ -12,17 +12,17 @@ TileSetPanelView::TileSetPanelView(Rectangle rect)
 {
     Rectangle windowRect = Rectangle
     {
-        176, 48,
-        static_cast<float>(GetScreenWidth() - 386), static_cast<float>(GetScreenHeight() - 56)
+        rect.x, rect.y,
+        static_cast<float>(rect.width - 190), rect.height
     };
     worldView = std::make_unique<WorldViewBox>(windowRect, FILE_TILESET);
 
     Rectangle propRect = Rectangle
     {
-        (windowRect.x + windowRect.width + 8), (windowRect.y)
+        (windowRect.x + windowRect.width + 4), (windowRect.y)
     };
-    propRect.width = GetScreenWidth() - propRect.x - 8;
-    propRect.height = windowRect.height;
+    propRect.width = rect.width - windowRect.width - 4;
+    propRect.height = windowRect.height + 2;
     propBox = PropertiesBox(propRect);
 }
 

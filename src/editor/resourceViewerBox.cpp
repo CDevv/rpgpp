@@ -17,13 +17,12 @@ ResourceViewerBox::ResourceViewerBox(Rectangle rect)
     this->dropdownActive = 0;
 }
 
-void ResourceViewerBox::update()
-{
-
-}
+void ResourceViewerBox::update() {}
 
 void ResourceViewerBox::draw()
 {
+    if (dropdownEditMode) GuiLock();
+
     FileSystemService& fs = Editor::getFileSystem();
     if (fs.getProject() != nullptr) {
         GuiPanel(rect, "Project");

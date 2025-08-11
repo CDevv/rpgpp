@@ -47,6 +47,11 @@ WorldViewBox::~WorldViewBox()
     UnloadRenderTexture(renderTexture);
 }
 
+Rectangle WorldViewBox::getWindowRect()
+{
+    return this->windowRect;
+}
+
 void WorldViewBox::setMouseLock(bool value)
 {
     this->mouseLock = value;
@@ -150,7 +155,7 @@ void WorldViewBox::draw()
 
     EndTextureMode();
 
-    GuiWindowBox(windowRect, windowTitle.c_str());
+    GuiPanel(windowRect, windowTitle.c_str());
 
     Rectangle cameraRect = Rectangle {
         0, 0,

@@ -4,6 +4,7 @@
 #include <memory>
 #include <raylib.h>
 #include <string>
+#include "projectMenuBox.hpp"
 #include "tabList.hpp"
 #include "windowContainer.hpp"
 #include "resourceViewerBox.hpp"
@@ -15,6 +16,7 @@ class MouseInputComponent;
 class EditorInterfaceService {
 private:
     Font uiFont;
+    ProjectMenuBox projectMenu;
     TabList tabList;
     WindowContainer windowContainer;
     std::unique_ptr<WorldViewBox> worldView;

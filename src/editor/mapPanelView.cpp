@@ -124,23 +124,17 @@ void MapPanelView::draw()
 
     propBox.draw();
 
-    Rectangle windowRect = Rectangle
-    {
-        176, 48,
-        static_cast<float>(GetScreenWidth() - 464), static_cast<float>(GetScreenHeight() - 56)
-    };
+    Rectangle windowRect = worldView->getWindowRect();
     Rectangle optionsRect = Rectangle 
     {
-        (rect.x + windowRect.width + 4), (windowRect.y),
+        (rect.x + windowRect.width + 4), (rect.y),
         280, 24
     };
     Rectangle singleOptionRect = optionsRect;
     singleOptionRect.width /= 3;
     singleOptionRect.width -= 2;
-    //GuiToggleGroup(singleOptionRect, "Place;Erase;Edit", &actionModeToggle);
 
     Rectangle layoutDropdown = optionsRect;
-    //layoutDropdown.y += layoutDropdown.height + 4;
     if (GuiDropdownBox(layoutDropdown, "Tiles;Collisions;Interactables", &layoutModeToggle, layoutDropdownEditMode)) {
         layoutDropdownEditMode = !layoutDropdownEditMode;
     }
