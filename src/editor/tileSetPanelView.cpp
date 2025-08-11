@@ -40,9 +40,10 @@ void TileSetPanelView::update()
 
     worldView->setMouseLock(ui.getMouseLock());
 
-    worldView->setTileSet(fs.getTileSet());
     worldView->update();
-    propBox.update();
+    if (fs.fileIsOpen() && fs.getType() == FILE_TILESET) {
+        propBox.update();
+    }
 }
 
 void TileSetPanelView::draw()

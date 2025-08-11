@@ -52,20 +52,20 @@ EditorInterfaceService::EditorInterfaceService()
 
     float elementBaseY = projectMenuRect.y + projectMenuRect.height;
 
-    Rectangle tabListRect = Rectangle
-    {
-        (138 + 120 + 8), 8,
-        120*5, 24
-    };
-    tabList = TabList(tabListRect);
-
     Rectangle propRect = Rectangle { 4, elementBaseY + 4, 160, static_cast<float>(GetScreenHeight() - (elementBaseY + 8)) };
     resourceView = ResourceViewerBox(propRect);
 
+    Rectangle tabListRect = Rectangle
+    {
+        propRect.x + propRect.width + 4, propRect.y,
+        static_cast<float>(GetScreenWidth() - propRect.width - 12), 24
+    };
+    tabList = TabList(tabListRect);
+
     Rectangle windowRect = Rectangle
     {
-        propRect.width + 8, elementBaseY + 4,
-        static_cast<float>(GetScreenWidth() - (propRect.width + 16) + 4), static_cast<float>(GetScreenHeight() - (elementBaseY + 8))
+        propRect.width + 8, elementBaseY + 4 + tabListRect.height + 4,
+        static_cast<float>(GetScreenWidth() - (propRect.width + 16) + 4), static_cast<float>(GetScreenHeight() - (elementBaseY + 8) - (tabListRect.height + 4))
     };
     panelView = std::make_unique<PanelView>(windowRect);
 
@@ -102,6 +102,8 @@ void EditorInterfaceService::update()
 
 void EditorInterfaceService::draw()
 {
+    FileSystemService& fs = Editor::getFileSystem();
+
     Rectangle appMenuRect = Rectangle
     {
         0, 0, static_cast<float>(GetScreenWidth()), 16
@@ -110,64 +112,10 @@ void EditorInterfaceService::draw()
 
     projectMenu.draw();
 
-    tabList.draw();
-    panelView->draw();
-
-    FileSystemService& fs = Editor::getFileSystem();
-    if (GuiButton(Rectangle { 8, 8, 120, 24 }, "Open..")) {
-        fs.promptOpenProject();
-        panelView->setInitial();
-    }
-
-    if (fs.fileIsOpen()) {
-        if (GuiButton(Rectangle { 138, 8, 120, 24 }, "Save")) {
-            if (fs.getType() == FILE_TILESET) {
-                TileSet *tileSet = fs.getTileSet();
-
-                std::string jsonString = tileSet->dumpJson().dump(4);
-
-                char *text = const_cast<char*>(jsonString.data());
-                SaveFileText(fs.getOpenedFilePath().c_str(), text);
-            } else {
-                std::string mapJsonString = fs.getRoom()->dumpJson().dump(4);
-
-                char *text = const_cast<char*>(mapJsonString.data());
-                SaveFileText(fs.getOpenedFilePath().c_str(), text);
-            }
-        }  
-    }
     if (fs.projectIsOpen()) {
-        Project* project = fs.getProject();
-        std::string binFile = std::string(project->getProjectBasePath());
-        binFile.append("/game.bin");
-		
-		Rectangle exportRect = Rectangle {
-			(138 + 120*6 + 8*2), 8, 120, 24
-		};
-        if (GuiButton(exportRect, "Export to binary file")) {
-            serializeDataToFile(binFile, project->generateStruct());
-        }
-		Rectangle runRect = exportRect;
-        runRect.width = runRect.height;
-		runRect.x += exportRect.width * 2 + 16;
-		if (GuiButton(runRect, GuiIconText(ICON_PLAYER_PLAY, NULL))) {
-            project->runProject();
-		}
-
-        Rectangle buildRect = runRect;
-        buildRect.x += runRect.width + 8;
-        if (GuiButton(buildRect, GuiIconText(220, NULL))) {
-            fs.getProject()->compileProject();
-        }
+        tabList.draw();
     }
-
-    if (GuiButton(Rectangle { (138 + 120*6 + 8*2 + 120), 8, 120, 24 }, "Open binary file..")) {
-        FS_Result fsResult = fs.openGameData();
-        GameData data = deserializeFile(fsResult.path);
-        printf("%s\n", data.title.c_str());
-        ProjectBinaryViewWindow& window = windowContainer.openProjectBinaryView();
-        window.setData(data);
-    }
+    panelView->draw();
 
     resourceView.draw();
     windowContainer.draw();

@@ -81,7 +81,9 @@ void MapPanelView::update()
 
     worldView->setSelectedTile(tileSetView->getSelectedTile());
 
-    propBox.update();
+    if (fs.fileIsOpen() && fs.getType() == FILE_ROOM) {
+        propBox.update();
+    }
 
     RoomAction actionMode = toolsBox.getActionMode();
     worldView->setActionMode(actionMode);

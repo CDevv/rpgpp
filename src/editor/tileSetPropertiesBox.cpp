@@ -21,6 +21,7 @@ void TileSetPropertiesBox::setDefaults()
 {
     FileSystemService& fs = Editor::getFileSystem();
     TileSet *tileSet = fs.getTileSet();
+    this->tileSet = tileSet;
     chosenTileSize = tileSet->getTileSize();
 }
 
@@ -29,7 +30,7 @@ void TileSetPropertiesBox::update()
     FileSystemService& fs = Editor::getFileSystem();
 
     TileSet *tileSet = fs.getTileSet();
-    this->tileSet = tileSet;
+    //this->tileSet = tileSet;
 
     if (chosenTileSize >= 16) {
         tileSet->setTileSize(chosenTileSize);
@@ -40,7 +41,7 @@ void TileSetPropertiesBox::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
     TileSet *tileSet = fs.getTileSet();
-    this->tileSet = tileSet;
+    //this->tileSet = tileSet;
 
     Rectangle contentRec = rect;
     contentRec.height += 100;
