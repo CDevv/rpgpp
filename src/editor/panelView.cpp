@@ -28,6 +28,7 @@ void PanelView::update()
     FileSystemService& fs = Editor::getFileSystem();
     tileSetPanel.update();
     mapPanel.update();
+    actorPanel.update();
 }
 
 void PanelView::draw()

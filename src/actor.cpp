@@ -196,7 +196,7 @@ Rectangle Actor::getRect()
 {
     Vector2 atlasTileSize = tileSet->getTileSize();
     Rectangle result = Rectangle {
-        position.x, position.y, atlasTileSize.x, atlasTileSize.y
+        position.x, position.y, 48, 48
     };
     return result;
 }
