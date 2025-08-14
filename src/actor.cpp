@@ -1,5 +1,6 @@
 #include "actor.hpp"
 #include "game.hpp"
+#include "gamedata.hpp"
 #include <raylib.h>
 #include <raymath.h>
 #include <nlohmann/json.hpp>
@@ -196,7 +197,8 @@ Rectangle Actor::getRect()
 {
     Vector2 atlasTileSize = tileSet->getTileSize();
     Rectangle result = Rectangle {
-        position.x, position.y, 48, 48
+        position.x, position.y, 
+        atlasTileSize.x * RPGPP_DRAW_MULTIPLIER, atlasTileSize.y * RPGPP_DRAW_MULTIPLIER
     };
     return result;
 }
@@ -204,6 +206,12 @@ Rectangle Actor::getRect()
 TileSet& Actor::getTileSet()
 {
     return *tileSet;
+}
+
+void Actor::setTileSet(std::string tileSetSource)
+{
+    tileSet.reset(new TileSet(tileSetSource));
+    this->tileSetSource = tileSetSource;
 }
 
 void Actor::setPosition(Vector2 position)

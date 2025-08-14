@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include "tileSetPropertiesBox.hpp"
 #include "mapPropertiesBox.hpp"
+#include "actorPropertiesBox.hpp"
 
 class PropertiesBox {
 private:
@@ -11,6 +12,7 @@ private:
     Rectangle rect;
     TileSetPropertiesBox tileSetProps;
     MapPropertiesBox mapProps;
+    ActorPropertiesBox actorProps;
 public:
     PropertiesBox();
     PropertiesBox(Rectangle rect);

@@ -3,11 +3,13 @@
 
 #include <raylib.h>
 #include "actorView.hpp"
+#include "propertiesBox.hpp"
 
 class ActorPanelView {
 private:
 	Rectangle rect;
 	ActorView actorView;
+	PropertiesBox props;
 public:
 	ActorPanelView();
 	ActorPanelView(Rectangle rect);

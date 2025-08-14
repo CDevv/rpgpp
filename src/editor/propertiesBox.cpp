@@ -14,6 +14,7 @@ PropertiesBox::PropertiesBox(Rectangle rect)
 
     tileSetProps = TileSetPropertiesBox(rect);
     mapProps = MapPropertiesBox(rect);
+    actorProps = ActorPropertiesBox(rect);
 }
 
 void PropertiesBox::setDefaults()
@@ -29,6 +30,9 @@ void PropertiesBox::setDefaults()
             break;
         case FILE_ROOM:
             mapProps.setDefaults();
+            break;
+        case FILE_ACTOR:
+            actorProps.setDefaults();
             break;
         }
     }
@@ -48,6 +52,9 @@ void PropertiesBox::update()
         case FILE_ROOM:
             mapProps.update();
             break;
+        case FILE_ACTOR:
+            actorProps.update();
+            break;
         }
     }
 }
@@ -65,6 +72,9 @@ void PropertiesBox::draw()
             break;
         case FILE_ROOM:
             mapProps.draw();
+            break;
+        case FILE_ACTOR:
+            actorProps.draw();
             break;
         }
     }

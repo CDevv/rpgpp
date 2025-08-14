@@ -40,9 +40,10 @@ public:
     void update();
     void draw();
     Vector2 getPosition();
+    void setPosition(Vector2 position);
     Rectangle getRect();
     TileSet& getTileSet();
-    void setPosition(Vector2 position);
+    void setTileSet(std::string tileSetSource);
     void moveByVelocity(Vector2 velocity);
     Rectangle getCollisionRect(Vector2 velocity);
     void addAnimation(Direction id, Vector2 atlasPos);

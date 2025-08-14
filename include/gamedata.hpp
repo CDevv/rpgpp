@@ -8,6 +8,8 @@
 #include <cstdint>
 #include <string>
 
+#define RPGPP_DRAW_MULTIPLIER (3)
+
 struct IVector 
 {
 	int x;

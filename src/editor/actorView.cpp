@@ -1,4 +1,5 @@
 #include "actorView.hpp"
+#include "gamedata.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 
@@ -29,11 +30,13 @@ void ActorView::update()
 		camera.target = Vector2 { actorRect.width / 2, actorRect.height / 2 };
 	}
 
-	if (GetMouseWheelMove() != 0) {
+	bool isInRect = CheckCollisionPointRec(GetMousePosition(), renderRect);
+
+	if (GetMouseWheelMove() != 0 && isInRect) {
 		camera.zoom += GetMouseWheelMove() * 0.1f;
 
 		if (camera.zoom > 3.0f) camera.zoom = 3.0f;
-        else if (camera.zoom < 0.5f) camera.zoom = 0.5f;
+        else if (camera.zoom < 1.0f) camera.zoom = 1.0f;
 	}
 }
 
@@ -76,7 +79,7 @@ void ActorView::drawActor()
     Vector2 origin = Vector2 { 0.0f, 0.0f };
     float rotation = 0.0f;
     Vector2 atlasTileSize = tileSet.getTileSize();
-    float worldTileSize = 48.0f;
+    Vector2 worldTileSize = Vector2 { atlasTileSize.x * RPGPP_DRAW_MULTIPLIER, atlasTileSize.y * RPGPP_DRAW_MULTIPLIER };
 
     Vector2 position = Vector2 { 0, 0 };
 
@@ -87,7 +90,7 @@ void ActorView::drawActor()
     };
     Rectangle worldRect = Rectangle {
         position.x, position.y,
-        worldTileSize, worldTileSize
+        worldTileSize.x, worldTileSize.y
     };
 
     //draw it..
