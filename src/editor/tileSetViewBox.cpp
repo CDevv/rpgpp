@@ -52,17 +52,19 @@ void TileSetViewBox::isHoverOnValidTile()
 
     Texture tileSetTexture = tileSet->getTexture();
     
-    int tileSize = tileSet->getTileSize();
+    Vector2 tileSize = tileSet->getTileSize();
+    int tileWidth = tileSize.x;
+    int tileHeight = tileSize.y;
 
     if (viewBox->hoverPos.x >= 0 && viewBox->hoverPos.x <= tileSetTexture.width) {
         hoverValidX = true;
-        tileWorldPos.x = floor(viewBox->hoverPos.x / tileSize) * tileSize;
-        tileAtlasPos.x = floor(viewBox->hoverPos.x / tileSize);
+        tileWorldPos.x = floor(viewBox->hoverPos.x / tileWidth) * tileWidth;
+        tileAtlasPos.x = floor(viewBox->hoverPos.x / tileWidth);
     }
     if (viewBox->hoverPos.y >= 0 && viewBox->hoverPos.y <= tileSetTexture.height) {
         hoverValidY = true;
-        tileWorldPos.y = floor(viewBox->hoverPos.y / tileSize) * tileSize;
-        tileAtlasPos.y = floor(viewBox->hoverPos.y / tileSize);
+        tileWorldPos.y = floor(viewBox->hoverPos.y / tileHeight) * tileHeight;
+        tileAtlasPos.y = floor(viewBox->hoverPos.y / tileHeight);
     }
     hoverValidTile = hoverValidX && hoverValidY;
 
@@ -72,7 +74,7 @@ void TileSetViewBox::isHoverOnValidTile()
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             Rectangle checkRect = Rectangle {
                 tileWorldPos.x, tileWorldPos.y,
-                static_cast<float>(tileSize), static_cast<float>(tileSize)
+                static_cast<float>(tileWidth), static_cast<float>(tileHeight)
             };
             if (CheckCollisionPointRec(viewBox->hoverPos, checkRect)) {
                 hasSelectedTile = true;
@@ -85,16 +87,18 @@ void TileSetViewBox::isHoverOnValidTile()
 
 void TileSetViewBox::drawGrid()
 {
+    /*
     FileSystemService& fs = Editor::getFileSystem();
     if (fs.fileIsOpen() || tileSet != nullptr) {
-        rlTranslatef(0, 25*(tileSet->getTileSize()), 0);
+        rlTranslatef(0, 25*(tileSet->getTileSize().x), 0);
         rlRotatef(90, 1, 0, 0);
-        DrawGrid(100, (tileSet->getTileSize()));
+        DrawGrid(100, (tileSet->getTileSize().x));
     } else {
         rlTranslatef(0, 25*16, 0);
         rlRotatef(90, 1, 0, 0);
         DrawGrid(100, 16);
     }
+    */
 }
 
 void TileSetViewBox::drawTiles()
@@ -109,15 +113,15 @@ void TileSetViewBox::drawTiles()
     DrawRectangleLinesEx(border, 0.5f, RED);
 
     //draw tile rects
-    int tileSize = tileSet->getTileSize();
-    int tilesWidth = tileSetTexture.width / tileSet->getTileSize();
-    int tilesHeight = tileSetTexture.height / tileSet->getTileSize();
+    Vector2 tileSize = tileSet->getTileSize();
+    int tilesWidth = tileSetTexture.width / tileSet->getTileSize().x;
+    int tilesHeight = tileSetTexture.height / tileSet->getTileSize().y;
 
     for (int y = 0; y < tilesHeight; y++) {
         for (int x = 0; x < tilesWidth; x++){
             Rectangle tileBorder = Rectangle {
-                tileSize * (float)x, tileSize * (float)y,
-                (float)tileSize, (float)tileSize
+                tileSize.x * (float)x, tileSize.y * (float)y,
+                tileSize.x, tileSize.y
             };
 
             DrawRectangleLinesEx(tileBorder, 0.25f, RED);
@@ -127,7 +131,7 @@ void TileSetViewBox::drawTiles()
     if (hoverValidTile) {
         Rectangle hoverTileRect = Rectangle {
             tileWorldPos.x, tileWorldPos.y,
-            static_cast<float>(tileSize), static_cast<float>(tileSize)
+            tileSize.x, tileSize.y
         };
 
         DrawRectangleRec(hoverTileRect, Fade(RED, 0.5f));
@@ -136,7 +140,7 @@ void TileSetViewBox::drawTiles()
     if (isSelectingTile && hasSelectedTile) {
         Rectangle selectedTileRect = Rectangle {
             selectedTileWorldPos.x, selectedTileWorldPos.y,
-            static_cast<float>(tileSize), static_cast<float>(tileSize)
+            tileSize.x, tileSize.y
         };
 
         DrawRectangleRec(selectedTileRect, Fade(BLUE, 0.5f));

@@ -4,7 +4,7 @@
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
-TileSet::TileSet(std::string textureSource, int tileSize)
+TileSet::TileSet(std::string textureSource, Vector2 tileSize)
 {
     this->textureSource = textureSource;
     Texture texture = LoadTexture(textureSource.c_str());
@@ -12,7 +12,12 @@ TileSet::TileSet(std::string textureSource, int tileSize)
     this->tileSize = tileSize;
 }
 
-TileSet::TileSet(Texture texture, int tileSize)
+TileSet::TileSet(std::string textureSource, int tileSizeInt)
+: TileSet(textureSource, Vector2 { static_cast<float>(tileSizeInt), static_cast<float>(tileSizeInt) })
+{
+}
+
+TileSet::TileSet(Texture texture, Vector2 tileSize)
 {
     this->texture = texture;
     this->tileSize = tileSize;
@@ -32,7 +37,11 @@ TileSet::TileSet(std::string fileName)
 
     //Set tile size
     int tileSize = j.at("tileSize");
-    this->tileSize = tileSize;
+    //this->tileSize = tileSize;
+
+    int tileWidth = j.at("tileWidth");
+    int tileHeight = j.at("tileHeight");
+    this->tileSize = Vector2 { static_cast<float>(tileWidth), static_cast<float>(tileHeight) };
 
     //Unload file's text
     UnloadFileText(jsonContent);
@@ -40,7 +49,7 @@ TileSet::TileSet(std::string fileName)
 
 TileSet::TileSet(TileSetBin bin)
 {
-    this->tileSize = bin.tileSize;
+    this->tileSize = Vector2 { static_cast<float>(bin.tileSize.x), static_cast<float>(bin.tileSize.y) };
 
     unsigned char* imageData = bin.image.data();
     Image image = LoadImageFromMemory(bin.extension.c_str(), imageData, bin.dataSize);
@@ -58,7 +67,9 @@ json TileSet::dumpJson()
 {
     json tileSetJson = {
         {"source", textureSource},
-        {"tileSize", tileSize}
+        {"tileSize", tileSize.x},
+        {"tileWidth", tileSize.x},
+        {"tileHeight", tileSize.y}
     };
 
     return tileSetJson;
@@ -69,14 +80,19 @@ void TileSet::unload()
     UnloadTexture(texture);
 }
 
-int TileSet::getTileSize()
+Vector2 TileSet::getTileSize()
 {
     return this->tileSize;
 }
 
 void TileSet::setTileSize(int size)
 {
-    this->tileSize = size;
+    this->tileSize = Vector2 { static_cast<float>(size), static_cast<float>(size) };
+}
+
+void TileSet::setTileSizeVector(Vector2 vec)
+{
+    this->tileSize = vec;
 }
 
 Texture TileSet::getTexture()
@@ -101,10 +117,10 @@ bool TileSet::areAtlasCoordsValid(Vector2 atlasCoords)
     bool yValid = false;
     bool posValid = false;
 
-    if (atlasCoords.x >= 0 && atlasCoords.x < (texture.width / static_cast<float>(tileSize))) {
+    if (atlasCoords.x >= 0 && atlasCoords.x < (texture.width / static_cast<float>(tileSize.x))) {
         xValid = true;
     }
-    if (atlasCoords.y >= 0 && atlasCoords.y < (texture.height / static_cast<float>(tileSize))) {
+    if (atlasCoords.y >= 0 && atlasCoords.y < (texture.height / static_cast<float>(tileSize.y))) {
         yValid = true;
     }
 

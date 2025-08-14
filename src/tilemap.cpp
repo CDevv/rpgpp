@@ -18,7 +18,7 @@ TileMap::TileMap(std::string fileName)
     this->tileSetSource = tileSetSource;
     this->tileSet = std::make_unique<TileSet>(tileSetSource);
 
-    this->atlasTileSize = tileSet->getTileSize();
+    this->atlasTileSize = tileSet->getTileSize().x;
     int worldTileSize = j.at("tileSize");
     this->worldTileSize = worldTileSize;
 
@@ -69,7 +69,7 @@ TileMap::TileMap(std::string tileSetSource, int width, int height, int atlasTile
     this->tileSet = std::make_unique<TileSet>(tileSetSource);
     this->tileSetSource = tileSetSource;
 
-    this->atlasTileSize = tileSet->getTileSize();
+    this->atlasTileSize = tileSet->getTileSize().x;
     this->worldTileSize = worldTileSize;
 
     this->width = width;
@@ -94,7 +94,7 @@ TileMap::TileMap(TileSet tileSet, int width, int height, int atlasTileSize, int 
     this->basePos = Vector2 { 0.0f, 0.0f };
     this->tileSet = std::make_unique<TileSet>(tileSet);
 
-    this->atlasTileSize = this->tileSet->getTileSize();
+    this->atlasTileSize = this->tileSet->getTileSize().x;
     this->worldTileSize = worldTileSize;
 
     this->width = width;
@@ -119,7 +119,7 @@ TileMap::TileMap(std::unique_ptr<TileSet> tileSetPtr, int width, int height, int
     this->basePos = Vector2 { 0.0f, 0.0f };
     this->tileSet = std::move(tileSetPtr);
 
-    this->atlasTileSize = this->tileSet->getTileSize();
+    this->atlasTileSize = this->tileSet->getTileSize().x;
     this->worldTileSize = worldTileSize;
 
     this->width = width;
@@ -143,7 +143,7 @@ TileMap::TileMap(RoomBin bin)
 {
     this->basePos = Vector2 { 0.0f, 0.0f };
     this->tileSet = std::make_unique<TileSet>(Game::getBin().tilesets.at(bin.tileSetName));
-    this->atlasTileSize = this->tileSet->getTileSize();
+    this->atlasTileSize = this->tileSet->getTileSize().x;
     this->worldTileSize = 48;
 
     this->width = bin.width;
@@ -164,7 +164,7 @@ TileMap::TileMap(RoomBin bin)
 
     for (auto row : bin.tiles) {
         for (auto col : row) {
-            Vector2 atlasPos = Vector2 { static_cast<float>(col.atlasPos.x / tileSet->getTileSize()), static_cast<float>(col.atlasPos.y / tileSet->getTileSize()) };
+            Vector2 atlasPos = Vector2 { static_cast<float>(col.atlasPos.x / tileSet->getTileSize().x), static_cast<float>(col.atlasPos.y / tileSet->getTileSize().y) };
             Vector2 worldPos = Vector2 { static_cast<float>(col.worldPos.x), static_cast<float>(col.worldPos.y) };
             this->setTile(worldPos, atlasPos);
         }
@@ -217,6 +217,11 @@ void TileMap::update()
 
 void TileMap::draw()
 {
+    if (tileSet->getTileSize().x != tileSet->getTileSize().y) {
+        DrawText("Tile size must be square", 20, 20, 36, RED);
+        return;
+    }
+
     //draw the tiles
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {

@@ -68,7 +68,7 @@ GameData Project::generateStruct()
             tileSetBin.image.push_back(*imageData);
             imageData++;
         }
-        tileSetBin.tileSize = tileSet.getTileSize();
+        tileSetBin.tileSize = IVector { static_cast<int>(tileSet.getTileSize().x), static_cast<int>(tileSet.getTileSize().y) };
         tileSetBin.dataSize = fileSize;
 
         struc.tilesets[GetFileName(tileSetPath.c_str())] = tileSetBin;

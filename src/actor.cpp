@@ -140,12 +140,12 @@ void Actor::update()
 
         if (currentFrame >= 2) currentFrame = 0;
 
-        float atlasTileSize = (float)tileSet->getTileSize();
+        Vector2 atlasTileSize = tileSet->getTileSize();
         int animId = static_cast<int>(currentAnimation);
         Vector2 atlasPos = animations[animId]->at(currentFrame);
         atlasPos = Vector2 {
-            atlasPos.x * atlasTileSize,
-            atlasPos.y * atlasTileSize
+            atlasPos.x * atlasTileSize.x,
+            atlasPos.y * atlasTileSize.y
         };
 
         this->tile = tileSet->getTile(atlasPos);
@@ -157,7 +157,7 @@ void Actor::draw()
     //defaults..
     const Vector2 origin = Vector2 { 0.0f, 0.0f };
     const float rotation = 0.0f;
-    const float atlasTileSize = static_cast<float>(tileSet->getTileSize());
+    const Vector2 atlasTileSize = tileSet->getTileSize();
     const float worldTileSize = 48.0f;
 
     //texture
@@ -169,7 +169,7 @@ void Actor::draw()
     //build rects
     Rectangle atlasRect = Rectangle {
         atlasCoords.x, atlasCoords.y,
-        atlasTileSize, atlasTileSize
+        atlasTileSize.x, atlasTileSize.y
     };
     Rectangle worldRect = Rectangle {
         position.x, position.y,

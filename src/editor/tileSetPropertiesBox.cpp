@@ -10,7 +10,15 @@ TileSetPropertiesBox::TileSetPropertiesBox() {}
 TileSetPropertiesBox::TileSetPropertiesBox(Rectangle rect)
 {
     chosenTileSize = 0;
+    chosenTileWidth = 0;
+    chosenTileHeight = 0;
+
     chosenTileSizeEditMode = false;
+    chosenTileWidthEditMode = false;
+    chosenTileHeightEditMode = false;
+
+    multiSizeCheckBox = true;
+
     this->rect = rect;
 
     scrollVec = Vector2 { 0, 0 };
@@ -22,7 +30,13 @@ void TileSetPropertiesBox::setDefaults()
     FileSystemService& fs = Editor::getFileSystem();
     TileSet *tileSet = fs.getTileSet();
     this->tileSet = tileSet;
-    chosenTileSize = tileSet->getTileSize();
+    chosenTileSize = tileSet->getTileSize().x;
+    chosenTileWidth = tileSet->getTileSize().x;
+    chosenTileHeight = tileSet->getTileSize().y;
+
+    if (chosenTileWidth != chosenTileHeight) {
+        multiSizeCheckBox = false;
+    }
 }
 
 void TileSetPropertiesBox::update()
@@ -32,8 +46,15 @@ void TileSetPropertiesBox::update()
     TileSet *tileSet = fs.getTileSet();
     //this->tileSet = tileSet;
 
-    if (chosenTileSize >= 16) {
-        tileSet->setTileSize(chosenTileSize);
+    if (multiSizeCheckBox) {
+        if (chosenTileSize >= 16) {
+            tileSet->setTileSize(chosenTileSize);
+        }
+    } else {
+        if (chosenTileWidth >= 16 && chosenTileHeight >= 16) {
+            Vector2 sizeVec = Vector2 { static_cast<float>(chosenTileWidth), static_cast<float>(chosenTileHeight) };
+            tileSet->setTileSizeVector(sizeVec);
+        }
     }
 }
 
@@ -50,18 +71,31 @@ void TileSetPropertiesBox::draw()
 
     BeginScissorMode(viewRec.x, viewRec.y, viewRec.width, viewRec.height);
 
+    GuiCheckBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 32, 24, 24 }, "Square Tiles", &multiSizeCheckBox);
+
     GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 8, (viewRec.width - 16), 24 }, "Tile Size");
-    if (GuiValueBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 32, (viewRec.width - 16), 24 }, NULL, &chosenTileSize, 16, 100, chosenTileSizeEditMode)) {
-        chosenTileSizeEditMode = !chosenTileSizeEditMode;
+
+    if (multiSizeCheckBox) {
+        if (GuiValueBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 64, (viewRec.width - 16), 24 }, NULL, &chosenTileSize, 16, 100, chosenTileSizeEditMode)) {
+            chosenTileSizeEditMode = !chosenTileSizeEditMode;
+        }
+    } else {
+        float halfWidth = (viewRec.width - 16) / 2;
+        if (GuiValueBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 64, halfWidth, 24 }, NULL, &chosenTileWidth, 16, 100, chosenTileWidthEditMode)) {
+            chosenTileWidthEditMode = !chosenTileWidthEditMode;
+        }
+        if (GuiValueBox(Rectangle { viewRec.x + 8 + halfWidth, viewRec.y + scrollVec.y + 64, halfWidth, 24 }, NULL, &chosenTileHeight, 16, 100, chosenTileHeightEditMode)) {
+            chosenTileHeightEditMode = !chosenTileHeightEditMode;
+        }
     }
 
-    GuiLine(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 56, (viewRec.width - 16), 16 }, NULL);
+    GuiLine(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 88, (viewRec.width - 16), 16 }, NULL);
 
-    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 72, (viewRec.width - 16), 24 }, "Texture");
+    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 104, (viewRec.width - 16), 24 }, "Texture");
     std::string sourceFileName = GetFileName(tileSet->getTextureSource().c_str());
-    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 96, (viewRec.width - (16 + 24)), 24 }, sourceFileName.c_str());
+    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 128, (viewRec.width - (16 + 24)), 24 }, sourceFileName.c_str());
 
-    if (GuiButton(Rectangle { viewRec.x + 8 + (viewRec.width - (16 + 24)), viewRec.y + scrollVec.y + 96, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
+    if (GuiButton(Rectangle { viewRec.x + 8 + (viewRec.width - (16 + 24)), viewRec.y + scrollVec.y + 128, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
         FS_Result fsResult = fs.openImage();
         if (fsResult.result == NFD_OKAY) {
             tileSet->setTextureSource(fsResult.path);
@@ -71,6 +105,6 @@ void TileSetPropertiesBox::draw()
     EndScissorMode();
 
     EditorInterfaceService& ui = Editor::getUi();
-    ui.drawTooltip(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 96, (viewRec.width - (16 + 24)), 24 }, tileSet->getTextureSource());
+    ui.drawTooltip(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 128, (viewRec.width - (16 + 24)), 24 }, tileSet->getTextureSource());
 }
 

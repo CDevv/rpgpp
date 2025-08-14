@@ -11,18 +11,20 @@ using json = nlohmann::json;
 class TileSet {
 private:
     Texture texture;
-    int tileSize;
+    Vector2 tileSize;
     std::string textureSource;
 public:
     TileSet(std::string fileName);
-    TileSet(std::string textureSource, int tileSize);
-    TileSet(Texture texture, int tileSize);
+    TileSet(std::string textureSource, Vector2 tileSize);
+    TileSet(std::string textureSource, int tileSizeInt);
+    TileSet(Texture texture, Vector2 tileSize);
     TileSet(TileSetBin bin);
     ~TileSet();
     json dumpJson();
     void unload();
-    int getTileSize();
+    Vector2 getTileSize();
     void setTileSize(int size);
+    void setTileSizeVector(Vector2 vec);
     Texture getTexture();
     std::string getTextureSource();
     void setTextureSource(std::string source);

@@ -93,7 +93,8 @@ void ProjectBinaryViewWindow::setTileSet(std::string name)
 	Image image = LoadImageFromMemory(tileSetData.extension.c_str(), imageData, tileSetData.dataSize);
 	Texture texture = LoadTextureFromImage(image);
 
-	this->tileset = std::make_unique<TileSet>(texture, tileSetData.tileSize);
+	Vector2 tileSizeVec = Vector2 { static_cast<float>(tileSetData.tileSize.x), static_cast<float>(tileSetData.tileSize.y) };
+	this->tileset = std::make_unique<TileSet>(texture, tileSizeVec);
 
 	this->tilesView->setTileSet(tileset.get());
 	this->fileType = FILE_TILESET;
@@ -107,13 +108,14 @@ void ProjectBinaryViewWindow::setRoom(RoomBin roomBin)
 	unsigned char* imageData = tileSetData.image.data();
 	Image image = LoadImageFromMemory(tileSetData.extension.c_str(), imageData, tileSetData.dataSize);
 	Texture texture = LoadTextureFromImage(image);
-	std::unique_ptr<TileSet> tileSet = std::make_unique<TileSet>(texture, tileSetData.tileSize);
+	Vector2 tileSizeVec = Vector2 { static_cast<float>(tileSetData.tileSize.x), static_cast<float>(tileSetData.tileSize.y) };
+	std::unique_ptr<TileSet> tileSet = std::make_unique<TileSet>(texture, tileSizeVec);
 
 	//load tilemap
 	std::unique_ptr<TileMap> tileMap = std::make_unique<TileMap>(std::move(tileSet), roomBin.width, roomBin.height, 16, 48);
 	for (std::vector<TileBin> row : roomBin.tiles) {
 		for (TileBin col : row) {
-			Vector2 atlasPos = Vector2 { static_cast<float>(col.atlasPos.x / tileSetData.tileSize), static_cast<float>(col.atlasPos.y / tileSetData.tileSize) };
+			Vector2 atlasPos = Vector2 { static_cast<float>(col.atlasPos.x / tileSetData.tileSize.x), static_cast<float>(col.atlasPos.y / tileSetData.tileSize.y) };
 			Vector2 worldPos = Vector2 { static_cast<float>(col.worldPos.x), static_cast<float>(col.worldPos.y) };
 			tileMap->setTile(worldPos, atlasPos);
 		}

@@ -76,6 +76,7 @@ void MapViewBox::isHoverOnValidTile()
 
     TileMap *tileMap = room->getTileMap();
     int tileSize = tileMap->getAtlasTileSize();
+
     Vector2 sizeInTiles = tileMap->getMaxWorldSize();
     int absoluteWidth = tileMap->getAtlasTileSize() * sizeInTiles.x;
     int absoluteHeight = tileMap->getAtlasTileSize() * sizeInTiles.y;

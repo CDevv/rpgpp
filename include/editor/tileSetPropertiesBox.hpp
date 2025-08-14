@@ -9,7 +9,12 @@ private:
     Rectangle rect;
     TileSet *tileSet;
     int chosenTileSize;
+    int chosenTileWidth;
+    int chosenTileHeight;
+    bool multiSizeCheckBox;
     bool chosenTileSizeEditMode;
+    bool chosenTileWidthEditMode;
+    bool chosenTileHeightEditMode;
     Vector2 scrollVec;
     Rectangle viewRec;
 public:

@@ -47,7 +47,7 @@ struct TileSetBin
 {
 	std::string name;
 	std::string extension;
-	int tileSize;
+	IVector tileSize;
 	std::vector<unsigned char> image;
 	int dataSize;
 };
