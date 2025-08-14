@@ -192,6 +192,20 @@ Vector2 Actor::getPosition()
     return position;
 }
 
+Rectangle Actor::getRect()
+{
+    Vector2 atlasTileSize = tileSet->getTileSize();
+    Rectangle result = Rectangle {
+        position.x, position.y, atlasTileSize.x, atlasTileSize.y
+    };
+    return result;
+}
+
+TileSet& Actor::getTileSet()
+{
+    return *tileSet;
+}
+
 void Actor::setPosition(Vector2 position)
 {
     this->position = position;

@@ -13,12 +13,14 @@ PanelView::PanelView(Rectangle rect)
 
     this->tileSetPanel = TileSetPanelView(rect);
     this->mapPanel = MapPanelView(rect);
+    this->actorPanel = ActorPanelView(rect);
 }
 
 void PanelView::setInitial()
 {
     tileSetPanel.setInitial();
     mapPanel.setInitial();
+    actorPanel.setInitial();
 }
 
 void PanelView::update()
@@ -31,11 +33,20 @@ void PanelView::update()
 void PanelView::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
-        if (fs.fileIsOpen()) {
-            if (fs.getType() == FILE_TILESET) {
+    if (fs.fileIsOpen()) {
+
+        switch (fs.getType()) {
+        default:
+            break;
+        case FILE_TILESET:
             tileSetPanel.draw();
-        } else {
+            break;
+        case FILE_ROOM:
             mapPanel.draw();
+            break;
+        case FILE_ACTOR:
+            actorPanel.draw();
+            break;
         }
     }
 }

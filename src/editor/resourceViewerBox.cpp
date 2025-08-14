@@ -27,13 +27,23 @@ void ResourceViewerBox::draw()
     if (fs.getProject() != nullptr) {
         GuiPanel(rect, "Project");
 
-        if (dropdownActive == 0) {
+        EngineFileType fileTypeActive = static_cast<EngineFileType>(dropdownActive);
+
+        switch (fileTypeActive) {
+        default:
+            break;
+        case FILE_TILESET:
             drawTileSets();
-        } else {
+            break;
+        case FILE_ROOM:
             drawMaps();
+            break;
+        case FILE_ACTOR:
+            drawActors();
+            break;
         }
 
-        if (GuiDropdownBox(Rectangle { rect.x, rect.y + 24, rect.width, 24 }, "TileSets;Rooms", &dropdownActive, dropdownEditMode)) {
+        if (GuiDropdownBox(Rectangle { rect.x, rect.y + 24, rect.width, 24 }, "TileSets;Rooms;Actors", &dropdownActive, dropdownEditMode)) {
             dropdownEditMode = !dropdownEditMode;
         }
     }
@@ -87,6 +97,32 @@ void ResourceViewerBox::drawMaps()
             fs.openProjectFile(mapPath);
             ui.setInitial();
             ui.getTabList().addItem(mapFileName);
+        }
+        baseRect.y += 24;
+    }
+}
+
+void ResourceViewerBox::drawActors()
+{
+    EditorInterfaceService& ui = Editor::getUi();
+    WindowContainer& windows = ui.getWindowContainer();
+
+    if (GuiButton(Rectangle { rect.x + 8, rect.y + 2*24, rect.width - 16, 24 }, "New..")) {
+        //windows.openMapInit();
+    }
+
+    Rectangle baseRect = Rectangle { rect.x, rect.y, rect.width, rect.height };
+    baseRect.y += 3*24;
+    baseRect.height = 24;
+
+    FileSystemService& fs = Editor::getFileSystem();
+    std::vector<std::string> actorPaths = fs.getProject()->getActorPaths();
+    for (std::string actorPath : actorPaths) {
+        std::string actorFileName = GetFileNameWithoutExt(actorPath.c_str());
+        if (GuiLabelButton(baseRect, actorFileName.c_str())) {
+            fs.openProjectFile(actorPath);
+            ui.setInitial();
+            ui.getTabList().addItem(actorFileName);
         }
         baseRect.y += 24;
     }

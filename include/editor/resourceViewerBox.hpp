@@ -10,6 +10,7 @@ private:
     int dropdownActive;
     void drawTileSets();
     void drawMaps();
+    void drawActors();
 public:
     ResourceViewerBox();
     ResourceViewerBox(Rectangle rect);

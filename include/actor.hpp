@@ -40,6 +40,8 @@ public:
     void update();
     void draw();
     Vector2 getPosition();
+    Rectangle getRect();
+    TileSet& getTileSet();
     void setPosition(Vector2 position);
     void moveByVelocity(Vector2 velocity);
     Rectangle getCollisionRect(Vector2 velocity);

@@ -1,39 +1,10 @@
 #include "fileSystemService.hpp"
+#include "projectFile.hpp"
 #include "project.hpp"
 #include "room.hpp"
 #include <memory>
 #include <nfd.h>
 #include <raylib.h>
-
-ProjectFile::ProjectFile() {}
-
-ProjectFile::ProjectFile(std::string relativePath, EngineFileType fileType, TileSet* tileSet, Room* room)
-{
-    this->relativePath = relativePath;
-    this->fileType = fileType;
-    this->tileSet.reset(tileSet);
-    this->room.reset(room);
-}
-
-EngineFileType ProjectFile::getFileType()
-{
-    return fileType;
-}
-
-std::string ProjectFile::getRelativePath()
-{
-    return relativePath;
-}
-
-TileSet* ProjectFile::getTileSet()
-{
-    return tileSet.get();
-}
-
-Room* ProjectFile::getRoom()
-{
-    return room.get();
-}
 
 FileSystemService::FileSystemService()
 {
@@ -43,6 +14,7 @@ FileSystemService::FileSystemService()
 
     lastTileSet = nullptr;
     lastRoom = nullptr;
+    lastActor = nullptr;
     isOpen = false;
 
     NFD_Init();
@@ -83,7 +55,8 @@ void FileSystemService::openProjectFile(std::string absolutePath)
 {
     EngineFileType fileType;
     TileSet* tileSet = nullptr;
-    Room* room = nullptr;    
+    Room* room = nullptr;
+    Actor* actor = nullptr;  
 
     std::string fileExtension = GetFileExtension(absolutePath.c_str());
     if (TextIsEqual(fileExtension.c_str(), ".rtiles")) {
@@ -92,9 +65,16 @@ void FileSystemService::openProjectFile(std::string absolutePath)
     } else if (TextIsEqual(fileExtension.c_str(), ".rmap")) {
         room = new Room(absolutePath);
         fileType = FILE_ROOM;
+    } else if (TextIsEqual(fileExtension.c_str(), ".ractor")) {
+        actor = new Actor(absolutePath);
+        fileType = FILE_ACTOR;
     }
 
-    std::unique_ptr<ProjectFile> projectFile = std::make_unique<ProjectFile>(absolutePath, fileType, tileSet, room);
+    std::unique_ptr<ProjectFile> projectFile = std::make_unique<ProjectFile>(absolutePath, fileType);
+    projectFile->setTileSet(tileSet);
+    projectFile->setRoom(room);
+    projectFile->setActor(actor);
+
     openedFiles.push_back(std::move(projectFile));
     setActiveProjectFile(openedFiles.size() - 1);
 }
@@ -113,6 +93,11 @@ void FileSystemService::setActiveProjectFile(int index)
                 break;
             case FILE_ROOM:
                 lastRoom = i->get()->getRoom();
+                break;
+            case FILE_ACTOR:
+                lastActor = i->get()->getActor();
+                break;
+            default:
                 break;
             }
             lastOpenPath = i->get()->getRelativePath();
@@ -157,6 +142,9 @@ void FileSystemService::promptOpenFile()
         } else if (TextIsEqual(fileExtension.c_str(), ".rmap")) {
             lastRoom = new Room(outPath);
             lastType = FILE_ROOM;
+        } else if (TextIsEqual(fileExtension.c_str(), ".ractor")) {
+            lastActor = new Actor(outPath);
+            lastType = FILE_ACTOR;
         }
 
         isOpen = true;
@@ -188,6 +176,11 @@ TileSet *FileSystemService::getTileSet()
 Room *FileSystemService::getRoom()
 {
     return lastRoom;
+}
+
+Actor *FileSystemService::getActor()
+{
+    return lastActor;
 }
 
 FS_Result FileSystemService::openFile(nfdu8filteritem_t filters[])

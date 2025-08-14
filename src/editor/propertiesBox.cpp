@@ -21,10 +21,15 @@ void PropertiesBox::setDefaults()
     FileSystemService& fs = Editor::getFileSystem();
 
     if (fs.fileIsOpen()) {
-        if (fs.getType() == FILE_TILESET) {
+        switch (fs.getType()) {
+        default:
+            break;
+        case FILE_TILESET:
             tileSetProps.setDefaults();
-        } else {
+            break;
+        case FILE_ROOM:
             mapProps.setDefaults();
+            break;
         }
     }
 }
@@ -34,10 +39,15 @@ void PropertiesBox::update()
     FileSystemService& fs = Editor::getFileSystem();
 
     if (fs.fileIsOpen()) {
-        if (fs.getType() == FILE_TILESET) {
+        switch (fs.getType()) {
+        default:
+            break;
+        case FILE_TILESET:
             tileSetProps.update();
-        } else {
+            break;
+        case FILE_ROOM:
             mapProps.update();
+            break;
         }
     }
 }
@@ -47,10 +57,15 @@ void PropertiesBox::draw()
     FileSystemService& fs = Editor::getFileSystem();
 
     if (fs.fileIsOpen()) {
-        if (fs.getType() == FILE_TILESET) {
+        switch (fs.getType()) {
+        default:
+            break;
+        case FILE_TILESET:
             tileSetProps.draw();
-        } else {
+            break;
+        case FILE_ROOM:
             mapProps.draw();
+            break;
         }
     }
 }

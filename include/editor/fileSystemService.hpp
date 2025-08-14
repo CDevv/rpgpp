@@ -4,36 +4,18 @@
 #include <memory>
 #include <string>
 #include <raylib.h>
+#include "projectFile.hpp"
 #include "project.hpp"
 #include "room.hpp"
 #include "tileset.hpp"
+#include "actor.hpp"
 #include "nfd.h"
-
-enum EngineFileType {
-    FILE_TILESET,
-    FILE_ROOM
-};
 
 struct FS_Result {
     std::string absolutePath;
     std::string path;
     std::string fileName;
     nfdresult_t result;
-};
-
-class ProjectFile {
-private:
-    std::string relativePath;
-    EngineFileType fileType;
-    std::unique_ptr<TileSet> tileSet;
-    std::unique_ptr<Room> room;
-public:
-    ProjectFile();
-    ProjectFile(std::string relativePath, EngineFileType fileType, TileSet* tileSet, Room* room);
-    std::string getRelativePath();
-    EngineFileType getFileType();
-    TileSet* getTileSet();
-    Room* getRoom();
 };
 
 class FileSystemService {
@@ -47,6 +29,7 @@ private:
     bool isOpen;
     TileSet* lastTileSet;
     Room* lastRoom;
+    Actor* lastActor;
 public:
     FileSystemService();
     ~FileSystemService();
@@ -64,6 +47,7 @@ public:
     EngineFileType getType();
     TileSet *getTileSet();
     Room *getRoom();
+    Actor *getActor();
     FS_Result openFile(nfdu8filteritem_t filters[]);
     FS_Result openGameData();
     FS_Result openImage();

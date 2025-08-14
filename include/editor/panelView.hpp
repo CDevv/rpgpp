@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include "tileSetPanelView.hpp"
 #include "mapPanelView.hpp"
+#include "actorPanelView.hpp"
 
 class PanelView {
 private:
@@ -11,6 +12,7 @@ private:
     Rectangle rect;
     TileSetPanelView tileSetPanel;
     MapPanelView mapPanel;
+    ActorPanelView actorPanel;
 public:
     PanelView();
     PanelView(Rectangle rect);
