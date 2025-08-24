@@ -23,6 +23,7 @@ ActorPanelView::ActorPanelView(Rectangle rect)
 
 void ActorPanelView::setInitial()
 {
+	actorView.setInitial();
 	props.setDefaults();
 }
 

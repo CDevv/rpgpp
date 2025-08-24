@@ -23,17 +23,32 @@ ActorView::ActorView(Rectangle rect)
 
 	this->mouseWorldPos = Vector2 { 0, 0 };
 
+	collisionBox = CollisionBox();
 	collisionViewActive = false;
+}
+
+void ActorView::setInitial()
+{
+	FileSystemService& fs = Editor::getFileSystem();
+	Actor* actor = fs.getActor();
+
+	if (actor != nullptr)
+	{
+		collisionBox.setRect(actor->getCollisionRect());
+	}
 }
 
 void ActorView::update()
 {
+	FileSystemService& fs = Editor::getFileSystem();
+
 	//mouse
 	mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera);
     mouseWorldPos = Vector2Subtract(mouseWorldPos, Vector2Scale(Vector2 {rect.x, rect.y}, 1/camera.zoom));
     mouseWorldPos = Vector2Add(mouseWorldPos, Vector2 { -1, -1 });
 
-	FileSystemService& fs = Editor::getFileSystem();
+    collisionBox.setMouseWorldPos(mouseWorldPos);
+    collisionBox.update();
 
 	if (fs.getActor() != nullptr) {
 		Rectangle actorRect = fs.getActor()->getRect();
@@ -61,7 +76,8 @@ void ActorView::draw()
 
 	drawActor();
 	if (collisionViewActive) {
-    	drawCollision();	
+    	//drawCollision();
+    	collisionBox.draw();
     }
 
     //DrawCircleV(mouseWorldPos, 2.0f, PURPLE);
