@@ -27,7 +27,7 @@ Room::Room(std::string fileName)
     this->collisions = std::make_unique<CollisionsContainer>();
     this->actors = std::make_unique<std::vector<Actor>>();
 
-    std::unique_ptr<Actor> actor = std::make_unique<Actor>("actors/playerActor.json");
+    std::unique_ptr<Actor> actor = std::make_unique<Actor>("actors/playerActor.ractor");
     std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
 
     this->tileMap = std::make_unique<TileMap>(fileName);

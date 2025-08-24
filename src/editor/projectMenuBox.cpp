@@ -44,10 +44,15 @@ void ProjectMenuBox::draw()
 
 	                char *text = const_cast<char*>(jsonString.data());
 	                SaveFileText(fs.getOpenedFilePath().c_str(), text);
-	            } else {
+	            } else if (fs.getType() == FILE_ROOM) {
 	                std::string mapJsonString = fs.getRoom()->dumpJson().dump(4);
 
 	                char *text = const_cast<char*>(mapJsonString.data());
+	                SaveFileText(fs.getOpenedFilePath().c_str(), text);
+	            } else if (fs.getType() == FILE_ACTOR) {
+	            	std::string actorJsonString = fs.getActor()->dumpJson().dump(4);
+
+	            	char *text = const_cast<char*>(actorJsonString.data());
 	                SaveFileText(fs.getOpenedFilePath().c_str(), text);
 	            }
 			}

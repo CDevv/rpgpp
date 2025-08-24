@@ -2,6 +2,8 @@
 #include "gamedata.hpp"
 #include <raymath.h>
 #include <cstdio>
+#include "editor.hpp"
+#include "fileSystemService.hpp"
 
 CollisionBox::CollisionBox() 
 {
@@ -105,10 +107,19 @@ void CollisionBox::update()
 	{
 		if (holdingMouse) {
 			SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-			
+
 			holdingMouse = false;
+			resizeMode = RESIZE_TOP_LEFT;
 
 			this->setRect(newRect);
+
+			FileSystemService& fs = Editor::getFileSystem();
+			Actor* actor = fs.getActor();
+
+			if (actor != nullptr)
+			{
+				actor->setCollisionRect(rect);
+			}
 		}
 	}
 

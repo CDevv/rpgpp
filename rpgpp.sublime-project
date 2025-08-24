@@ -10,6 +10,14 @@
 		{
 			"type": "gdb",
 			"request": "launch",
+			"name": "Launch rpgppproj game",
+			"target": "/home/nikodev/Документи/rpgppproj/TestProj",
+			"cwd": "/home/nikodev/Документи/rpgppproj/",
+			"valuesFormatting": "parseText"
+		},
+		{
+			"type": "gdb",
+			"request": "launch",
 			"name": "Launch game",
 			"target": "./game",
 			"cwd": "${folder}",

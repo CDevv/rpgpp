@@ -126,6 +126,74 @@ Actor::Actor(ActorBin bin)
     }
 }
 
+json Actor::dumpJson()
+{
+    std::vector<int> collisionVec;
+    collisionVec.push_back(static_cast<int>(collisionRect.x));
+    collisionVec.push_back(static_cast<int>(collisionRect.y));
+    collisionVec.push_back(static_cast<int>(collisionRect.width));
+    collisionVec.push_back(static_cast<int>(collisionRect.height));
+
+    std::map<std::string, std::vector<std::vector<int>>> animsVec;
+
+    for (auto&& anim : animations)
+    {
+        std::vector<std::vector<int>> framesVec;
+
+    }
+    for (int i = 0; i < 8; i++) {
+        std::vector<std::vector<int>> framesVec;
+        std::vector<Vector2> animFrames = *animations[i];
+
+        for (Vector2 frameVector : animFrames)
+        {
+            std::vector<int> outFrame;
+            outFrame.push_back(static_cast<int>(frameVector.x));
+            outFrame.push_back(static_cast<int>(frameVector.y));
+            framesVec.push_back(outFrame);
+        }
+        
+        Direction direction = static_cast<Direction>(i);
+        std::string keyName = "untitled";
+        switch (direction) {
+        case RPGPP_DOWN_IDLE:
+            keyName = "down-idle";
+            break;
+        case RPGPP_DOWN:
+            keyName = "down";
+            break;
+        case RPGPP_UP_IDLE:
+            keyName = "up-idle";
+            break;
+        case RPGPP_UP:
+            keyName = "up";
+            break;
+        case RPGPP_LEFT_IDLE:
+            keyName = "left-idle";
+            break;
+        case RPGPP_LEFT:
+            keyName = "left";
+            break;
+        case RPGPP_RIGHT_IDLE:
+            keyName = "right-idle";
+            break;
+        case RPGPP_RIGHT:
+            keyName = "right";
+            break;
+        }
+
+        animsVec[keyName] = framesVec;
+    }
+
+    json j = {
+        {"tileset", tileSetSource},
+        {"collision", collisionVec},
+        {"animations", animsVec}
+    };
+
+    return j;
+}
+
 void Actor::unload()
 {
 
@@ -284,4 +352,9 @@ std::array<std::vector<Vector2>, 8> Actor::getAnimationsRaw()
 Rectangle Actor::getCollisionRect()
 {
     return collisionRect;
+}
+
+void Actor::setCollisionRect(Rectangle rect)
+{
+    this->collisionRect = rect;
 }

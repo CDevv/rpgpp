@@ -8,6 +8,8 @@
 #include "atlasTile.hpp"
 #include "tileset.hpp"
 #include <raylib.h>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 enum Direction {
     RPGPP_DOWN_IDLE = 0,
@@ -36,6 +38,7 @@ public:
     Actor(std::string fileName);
     Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos);
     Actor(ActorBin bin);
+    json dumpJson();
     void unload();
     void update();
     void draw();
@@ -52,6 +55,7 @@ public:
     std::string getTileSetSource();
     std::array<std::vector<Vector2>, 8> getAnimationsRaw();
     Rectangle getCollisionRect();
+    void setCollisionRect(Rectangle rect);
 };
 
 #endif
