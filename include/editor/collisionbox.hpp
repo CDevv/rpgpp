@@ -4,7 +4,7 @@
 #include <raylib.h>
 
 enum ResizeMode {
-	RESIZE_TOP_LEFT, RESIZE_TOP_RIGHT, RESIZE_BOTTOM_LEFT, RESIZE_BOTTOM_RIGHT
+	RESIZE_TOP_LEFT, RESIZE_TOP_RIGHT, RESIZE_BOTTOM_LEFT, RESIZE_BOTTOM_RIGHT, RESIZE_MOVE
 };
 
 class CollisionBox {
@@ -17,6 +17,7 @@ private:
 	Rectangle bottomRight;
 	Vector2 oldMousePos;
 	Rectangle newRect;
+	Vector2 mouseOffset;
 	ResizeMode resizeMode;
 	Vector2 mouseDelta;
 	bool holdingMouse;
