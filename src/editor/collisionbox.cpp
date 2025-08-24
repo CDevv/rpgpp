@@ -17,6 +17,7 @@ CollisionBox::CollisionBox()
 	newRect = rect;
 	mouseDelta = Vector2 { 0, 0 };
 	holdingMouse = false;
+	resizeMode = RESIZE_TOP_LEFT;
 }
 
 CollisionBox::CollisionBox(Rectangle rect) 
@@ -73,6 +74,12 @@ void CollisionBox::update()
 		if (CheckCollisionPointRec(mouseWorldPos, topLeft))
 		{
 			holdingMouse = true;
+			resizeMode = RESIZE_TOP_LEFT;
+		}
+		else if (CheckCollisionPointRec(mouseWorldPos, topRight))
+		{
+			holdingMouse = true;
+			resizeMode = RESIZE_TOP_RIGHT;
 		}
 	}
 	if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
@@ -87,12 +94,34 @@ void CollisionBox::update()
 	if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
 	{
 		oldMousePos = mouseWorldPos;
-		newRect = Rectangle {
-			floor(mouseWorldPos.x / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-			floor(mouseWorldPos.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER, 
-			floor((rect.width + (rect.x - oldMousePos.x)) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER,
-			floor((rect.height + (rect.y - oldMousePos.y)) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
-		};
+
+		float widthChangeTopRight = -1 * ((rect.x + rect.width) - oldMousePos.x);
+		float heightChangeTopRight = (rect.y - oldMousePos.y);
+
+		switch (resizeMode) {
+		case RESIZE_TOP_LEFT:
+			newRect = Rectangle {
+				floor(mouseWorldPos.x / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				floor(mouseWorldPos.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER, 
+				floor((rect.width + (rect.x - oldMousePos.x)) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER,
+				floor((rect.height + (rect.y - oldMousePos.y)) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
+			};
+			break;
+		case RESIZE_TOP_RIGHT:
+			//printf("%f \n", widthChangeTopRight);
+			//printf("height change: %f \n", heightChangeTopRight);
+			newRect = Rectangle {
+				floor(rect.x / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				floor(mouseWorldPos.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER, 
+				floor((rect.width + widthChangeTopRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				floor((rect.height + heightChangeTopRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
+			};
+			break;
+		case RESIZE_BOTTOM_LEFT:
+			break;
+		case RESIZE_BOTTOM_RIGHT:
+			break;
+		}
 	}
 }
 
@@ -108,6 +137,10 @@ void CollisionBox::draw()
     if (CheckCollisionPointRec(mouseWorldPos, topLeft))
     {
     	DrawRectangleRec(topLeft, ORANGE);
+    }
+    if (CheckCollisionPointRec(mouseWorldPos, topRight))
+    {
+    	DrawRectangleRec(topRight, ORANGE);
     }
 
     if (holdingMouse) 
