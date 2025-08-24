@@ -1,7 +1,9 @@
 #ifndef _RPGPP_EDITOR_ACTORVIEW_H
 #define _RPGPP_EDITOR_ACTORVIEW_H
 
+#include <memory>
 #include <raylib.h>
+#include "mouseInput.hpp"
 
 class ActorView {
 private:
@@ -9,12 +11,16 @@ private:
 	Rectangle renderRect;
 	RenderTexture2D renderTexture;
 	Camera2D camera;
+	Vector2 mouseWorldPos;
+	bool collisionViewActive;
 	void drawActor();
+	void drawCollision();
 public:
 	ActorView();
 	ActorView(Rectangle rect);
 	void update();
 	void draw();
+	void setCollisionActive(bool value);
 };
 
 #endif

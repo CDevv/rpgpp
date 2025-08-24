@@ -2,6 +2,7 @@
 #include "gamedata.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include <raymath.h>
 
 ActorView::ActorView() {}
 
@@ -19,10 +20,19 @@ ActorView::ActorView(Rectangle rect)
 	camera.offset = Vector2 { renderRect.width / 2, renderRect.height / 2 };
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f;
+
+	this->mouseWorldPos = Vector2 { 0, 0 };
+
+	collisionViewActive = false;
 }
 
 void ActorView::update()
 {
+	//mouse
+	mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera);
+    mouseWorldPos = Vector2Subtract(mouseWorldPos, Vector2Scale(Vector2 {rect.x, rect.y}, 1/camera.zoom));
+    mouseWorldPos = Vector2Add(mouseWorldPos, Vector2 { -1, -1 });
+
 	FileSystemService& fs = Editor::getFileSystem();
 
 	if (fs.getActor() != nullptr) {
@@ -50,6 +60,11 @@ void ActorView::draw()
 	BeginMode2D(camera);
 
 	drawActor();
+	if (collisionViewActive) {
+    	drawCollision();	
+    }
+
+    //DrawCircleV(mouseWorldPos, 2.0f, PURPLE);
 
 	EndMode2D();
 	EndTextureMode();
@@ -95,4 +110,42 @@ void ActorView::drawActor()
 
     //draw it..
     DrawTexturePro(texture, atlasRect, worldRect, origin, rotation, WHITE);
+}
+
+void ActorView::drawCollision()
+{
+	FileSystemService& fs = Editor::getFileSystem();
+	Actor* actor = fs.getActor();
+
+	Rectangle collisionRect = actor->getCollisionRect();
+
+    DrawRectangleRec(collisionRect, Fade(RED, 0.5f));
+
+    Rectangle topLeft = Rectangle {
+    	collisionRect.x, collisionRect.y, 4, 4
+    };
+    Rectangle topRight = Rectangle {
+    	collisionRect.x + (collisionRect.width - 4), collisionRect.y, 4, 4
+    };
+    Rectangle bottomLeft = Rectangle {
+    	collisionRect.x, collisionRect.y + (collisionRect.height - 4), 4, 4
+    };
+    Rectangle bottomRight = Rectangle {
+    	collisionRect.x + (collisionRect.width - 4), collisionRect.y + (collisionRect.height - 4), 4, 4
+    };
+
+    DrawRectangleRec(topLeft, RED);
+    DrawRectangleRec(topRight, RED);
+    DrawRectangleRec(bottomLeft, RED);
+    DrawRectangleRec(bottomRight, RED);
+
+    if (CheckCollisionPointRec(mouseWorldPos, topLeft))
+    {
+    	DrawRectangleRec(topLeft, ORANGE);
+    }
+}
+
+void ActorView::setCollisionActive(bool value)
+{
+	this->collisionViewActive = value;
 }

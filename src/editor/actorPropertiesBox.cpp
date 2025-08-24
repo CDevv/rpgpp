@@ -62,3 +62,8 @@ void ActorPropertiesBox::draw()
     EditorInterfaceService& ui = Editor::getUi();
     ui.drawTooltip(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 72, (viewRec.width - (16 + 24)), 24 }, this->actor->getTileSetSource());
 }
+
+bool ActorPropertiesBox::getCollisionViewActive()
+{
+    return collisionViewActive;
+}

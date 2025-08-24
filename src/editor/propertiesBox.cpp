@@ -79,3 +79,8 @@ void PropertiesBox::draw()
         }
     }
 }
+
+ActorPropertiesBox& PropertiesBox::getActorProps()
+{
+    return actorProps;
+}

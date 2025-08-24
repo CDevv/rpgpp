@@ -19,6 +19,7 @@ public:
     void update();
     void draw();
     void setDefaults();
+    ActorPropertiesBox& getActorProps();
 };
 
 #endif

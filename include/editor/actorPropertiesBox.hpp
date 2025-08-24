@@ -17,6 +17,7 @@ public:
 	void setDefaults();
 	void update();
 	void draw();
+	bool getCollisionViewActive();
 };
 
 #endif

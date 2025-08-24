@@ -28,12 +28,13 @@ void ActorPanelView::setInitial()
 
 void ActorPanelView::update()
 {
-	actorView.update();
 	props.update();
+	actorView.setCollisionActive(props.getActorProps().getCollisionViewActive());
+	actorView.update();
 }
 
 void ActorPanelView::draw()
 {
-	actorView.draw();
 	props.draw();
+	actorView.draw();
 }
