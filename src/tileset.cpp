@@ -60,7 +60,7 @@ TileSet::TileSet(TileSetBin bin)
 
 TileSet::~TileSet()
 {
-    UnloadTexture(texture);
+    //UnloadTexture(texture);
 }
 
 json TileSet::dumpJson()

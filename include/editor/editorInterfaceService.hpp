@@ -4,6 +4,7 @@
 #include <memory>
 #include <raylib.h>
 #include <string>
+#include <vector>
 #include "projectMenuBox.hpp"
 #include "tabList.hpp"
 #include "windowContainer.hpp"

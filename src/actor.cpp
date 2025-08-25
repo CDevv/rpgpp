@@ -196,7 +196,7 @@ json Actor::dumpJson()
 
 void Actor::unload()
 {
-
+    tileSet->unload();
 }
 
 void Actor::update()
@@ -347,6 +347,12 @@ std::array<std::vector<Vector2>, 8> Actor::getAnimationsRaw()
         result[i] = animFrames;
     }
     return result;
+}
+
+std::vector<Vector2> Actor::getAnimationRaw(Direction id)
+{
+    std::vector<Vector2> animFrames = *animations[static_cast<int>(id)];
+    return animFrames;
 }
 
 Rectangle Actor::getCollisionRect()

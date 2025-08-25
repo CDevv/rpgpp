@@ -54,6 +54,7 @@ public:
     void changeAnimation(Direction id);
     std::string getTileSetSource();
     std::array<std::vector<Vector2>, 8> getAnimationsRaw();
+    std::vector<Vector2> getAnimationRaw(Direction id);
     Rectangle getCollisionRect();
     void setCollisionRect(Rectangle rect);
 };

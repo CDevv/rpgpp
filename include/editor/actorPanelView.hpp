@@ -4,12 +4,14 @@
 #include <raylib.h>
 #include "actorView.hpp"
 #include "propertiesBox.hpp"
+#include "animationsView.hpp"
 
 class ActorPanelView {
 private:
 	Rectangle rect;
 	ActorView actorView;
 	PropertiesBox props;
+	AnimationsView animationsView;
 public:
 	ActorPanelView();
 	ActorPanelView(Rectangle rect);
