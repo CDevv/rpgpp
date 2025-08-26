@@ -49,7 +49,8 @@ public:
     void setTileSet(std::string tileSetSource);
     void moveByVelocity(Vector2 velocity);
     Rectangle getCollisionRect(Vector2 velocity);
-    void addAnimation(Direction id, Vector2 atlasPos);
+    void addAnimationFrame(Direction id, Vector2 atlasPos);
+    void removeAnimationFrame(Direction id, int frameIndex);
     void addAnimationFrames(Direction id, std::vector<std::vector<int>> frames);
     void changeAnimation(Direction id);
     std::string getTileSetSource();

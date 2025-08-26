@@ -227,7 +227,9 @@ void Actor::draw()
     const Vector2 origin = Vector2 { 0.0f, 0.0f };
     const float rotation = 0.0f;
     const Vector2 atlasTileSize = tileSet->getTileSize();
-    const float worldTileSize = 48.0f;
+    Vector2 worldTileSize = Vector2 {
+        atlasTileSize.x * RPGPP_DRAW_MULTIPLIER, atlasTileSize.y * RPGPP_DRAW_MULTIPLIER
+    };
 
     //texture
     Texture texture = this->tileSet->getTexture();
@@ -242,7 +244,7 @@ void Actor::draw()
     };
     Rectangle worldRect = Rectangle {
         position.x, position.y,
-        worldTileSize, worldTileSize
+        worldTileSize.x, worldTileSize.y
     };
     //draw it
     DrawTexturePro(texture, atlasRect, worldRect, origin, rotation, WHITE);
@@ -304,9 +306,19 @@ Rectangle Actor::getCollisionRect(Vector2 velocity)
     return result;
 }
 
-void Actor::addAnimation(Direction id, Vector2 atlasPos)
+void Actor::addAnimationFrame(Direction id, Vector2 atlasPos)
 {
     animations[static_cast<int>(id)]->push_back(atlasPos);
+}
+
+void Actor::removeAnimationFrame(Direction id, int frameIndex)
+{
+    if (currentFrame == frameIndex) {
+        currentFrame = 0;
+    }
+    if (frameIndex == 0) return;
+    animations[static_cast<int>(id)]->erase(
+        animations[static_cast<int>(id)]->begin() + frameIndex);
 }
 
 void Actor::addAnimationFrames(Direction id, std::vector<std::vector<int>> frames)
@@ -333,11 +345,6 @@ void Actor::changeAnimation(Direction id)
     }
 }
 
-std::string Actor::getTileSetSource()
-{
-    return tileSetSource;
-}
-
 std::array<std::vector<Vector2>, 8> Actor::getAnimationsRaw()
 {
     std::array<std::vector<Vector2>, 8> result;
@@ -352,6 +359,11 @@ std::vector<Vector2> Actor::getAnimationRaw(Direction id)
 {
     std::vector<Vector2> animFrames = *animations[static_cast<int>(id)];
     return animFrames;
+}
+
+std::string Actor::getTileSetSource()
+{
+    return tileSetSource;
 }
 
 Rectangle Actor::getCollisionRect()

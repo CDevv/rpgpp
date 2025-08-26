@@ -26,12 +26,14 @@ public:
 	ActorView();
 	ActorView(Rectangle rect);
 	void setInitial();
+	void updateData();
 	void update();
 	void draw();
 	void setCollisionActive(bool value);
 	void setAnimation(int id);
 	void setAnimPlaying(bool value);
 	void setFrame(int frame);
+	int getFrame();
 };
 
 #endif

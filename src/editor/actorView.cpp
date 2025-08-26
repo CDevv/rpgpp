@@ -149,6 +149,17 @@ void ActorView::drawActor()
     DrawTexturePro(texture, atlasRect, worldRect, origin, rotation, WHITE);
 }
 
+void ActorView::updateData()
+{
+	FileSystemService& fs = Editor::getFileSystem();
+
+	this->currentAnimFrames = fs.getActor()->getAnimationRaw(static_cast<Direction>(currentAnim));
+	if (currentFrame >= currentAnimFrames.size()) {
+		currentFrame = 0;
+	}
+	if (currentFrame < 0) currentFrame = 0;
+}
+
 void ActorView::setCollisionActive(bool value)
 {
 	this->collisionViewActive = value;
@@ -172,4 +183,9 @@ void ActorView::setAnimPlaying(bool value)
 void ActorView::setFrame(int frame)
 {
 	this->currentFrame = frame;
+}
+
+int ActorView::getFrame()
+{
+	return currentFrame;
 }

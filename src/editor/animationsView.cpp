@@ -70,9 +70,14 @@ void AnimationsView::draw()
 				DrawRectangleLinesEx(baseFrameRect, 1.0f, GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_FOCUSED)));
 				if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 					if (actorView != nullptr) {
-						//actorView->setAnimPlaying(false);
 						actorView->setFrame(frameIndex);
 					}
+				}
+			}
+
+			if (actorView != nullptr) {
+				if (actorView->getFrame() == frameIndex) {
+					DrawRectangleLinesEx(baseFrameRect, 1.0f, GetColor(GuiGetStyle(BUTTON, BORDER_COLOR_PRESSED)));
 				}
 			}
 
@@ -86,7 +91,14 @@ void AnimationsView::draw()
 		playIcon = ICON_PLAYER_PAUSE;
 	}
 
-	EditorGuiDropdown(Rectangle { rect.x + 4, rect.y + 28, 125, 24 }, &animNames, &currentAnim, &animDropdownEditMode);
+	if (EditorGuiDropdown(Rectangle { rect.x + 4, rect.y + 28, 125, 24 }, &animNames, &currentAnim, &animDropdownEditMode)) {
+		animPlaying = false;
+		if (actorView != nullptr) {
+			actorView->setAnimPlaying(false);
+			actorView->setFrame(0);
+		}
+	}
+
 	if (GuiButton(Rectangle { rect.x + 125 + 8, rect.y + 28, 24, 24 }, GuiIconText(playIcon, NULL))) {
 		animPlaying = !animPlaying;
 	}
@@ -96,6 +108,23 @@ void AnimationsView::draw()
 		if (actorView != nullptr) {
 			actorView->setAnimPlaying(false);
 			actorView->setFrame(0);
+		}
+	}
+
+	if (GuiButton(Rectangle { rect.x + 173 + 16, rect.y + 28, 24, 24 }, GuiIconText(ICON_FILE_ADD, NULL))) {
+		animPlaying = false;
+		
+		if (actor != nullptr) {
+			actor->addAnimationFrame(static_cast<Direction>(currentAnim), Vector2 { 0, 0 });
+		}
+	}
+
+	if (GuiButton(Rectangle { rect.x + 197 + 20, rect.y + 28, 24, 24 }, GuiIconText(ICON_FILE_DELETE, NULL))) {
+		animPlaying = false;
+		
+		if (actor != nullptr) {
+			actor->removeAnimationFrame(static_cast<Direction>(currentAnim), actorView->getFrame());
+			actorView->updateData();
 		}
 	}
 }
