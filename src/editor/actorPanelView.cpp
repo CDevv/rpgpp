@@ -31,13 +31,18 @@ void ActorPanelView::setInitial()
 {
 	actorView.setInitial();
 	props.setDefaults();
+	this->animationsView.setActorView(&actorView);
 }
 
 void ActorPanelView::update()
 {
 	props.update();
+
 	actorView.setCollisionActive(props.getActorProps().getCollisionViewActive());
+	actorView.setAnimation(animationsView.getCurrentAnim());
+	actorView.setAnimPlaying(animationsView.getAnimPlaying());
 	actorView.update();
+
 	animationsView.update();
 }
 

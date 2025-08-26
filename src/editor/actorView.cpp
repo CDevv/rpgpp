@@ -8,6 +8,8 @@ ActorView::ActorView() {}
 
 ActorView::ActorView(Rectangle rect)
 {
+	this->frameCounter = 0;
+
 	this->rect = rect;
 	this->renderRect = Rectangle {
 		rect.x + 4, rect.y + 4,
@@ -23,6 +25,10 @@ ActorView::ActorView(Rectangle rect)
 
 	this->mouseWorldPos = Vector2 { 0, 0 };
 
+	currentAnim = 0;
+	animPlaying = false;
+	currentFrame = 0;
+	currentAnimFrames = std::vector<Vector2>{};
 	collisionBox = CollisionBox();
 	collisionViewActive = false;
 }
@@ -35,11 +41,17 @@ void ActorView::setInitial()
 	if (actor != nullptr)
 	{
 		collisionBox.setRect(actor->getCollisionRect());
+		currentAnim = 0;
+		animPlaying = false;
+		currentFrame = 0;
+		currentAnimFrames = std::vector<Vector2>{};
 	}
 }
 
 void ActorView::update()
 {
+	frameCounter++;
+
 	FileSystemService& fs = Editor::getFileSystem();
 
 	//mouse
@@ -53,6 +65,16 @@ void ActorView::update()
 	if (fs.getActor() != nullptr) {
 		Rectangle actorRect = fs.getActor()->getRect();
 		camera.target = Vector2 { actorRect.width / 2, actorRect.height / 2 };
+
+		//animation playing
+		if (animPlaying) {
+			if (frameCounter >= (60/2)) {
+				frameCounter = 0;
+				currentFrame++;
+
+				if (currentFrame >= currentAnimFrames.size()) currentFrame = 0;
+			}
+		}
 	}
 
 	bool isInRect = CheckCollisionPointRec(GetMousePosition(), renderRect);
@@ -76,7 +98,6 @@ void ActorView::draw()
 
 	drawActor();
 	if (collisionViewActive) {
-    	//drawCollision();
     	collisionBox.draw();
     }
 
@@ -102,8 +123,8 @@ void ActorView::drawActor()
 	TileSet& tileSet = actor->getTileSet();
 	Texture texture = tileSet.getTexture();
 
-	auto firstAnim = actor->getAnimationsRaw().at(0);
-	Vector2 firstFrame = firstAnim.at(0);
+	auto firstAnim = actor->getAnimationsRaw().at(currentAnim);
+	Vector2 firstFrame = firstAnim.at(currentFrame);
 	Vector2 atlasCoords = firstFrame;
 
 	//defaults..
@@ -116,7 +137,7 @@ void ActorView::drawActor()
 
     //build rects
     Rectangle atlasRect = Rectangle {
-        atlasCoords.x, atlasCoords.y,
+        atlasCoords.x * atlasTileSize.x, atlasCoords.y * atlasTileSize.y,
         atlasTileSize.x, atlasTileSize.y
     };
     Rectangle worldRect = Rectangle {
@@ -128,40 +149,27 @@ void ActorView::drawActor()
     DrawTexturePro(texture, atlasRect, worldRect, origin, rotation, WHITE);
 }
 
-void ActorView::drawCollision()
-{
-	FileSystemService& fs = Editor::getFileSystem();
-	Actor* actor = fs.getActor();
-
-	Rectangle collisionRect = actor->getCollisionRect();
-
-    DrawRectangleRec(collisionRect, Fade(RED, 0.5f));
-
-    Rectangle topLeft = Rectangle {
-    	collisionRect.x, collisionRect.y, 4, 4
-    };
-    Rectangle topRight = Rectangle {
-    	collisionRect.x + (collisionRect.width - 4), collisionRect.y, 4, 4
-    };
-    Rectangle bottomLeft = Rectangle {
-    	collisionRect.x, collisionRect.y + (collisionRect.height - 4), 4, 4
-    };
-    Rectangle bottomRight = Rectangle {
-    	collisionRect.x + (collisionRect.width - 4), collisionRect.y + (collisionRect.height - 4), 4, 4
-    };
-
-    DrawRectangleRec(topLeft, RED);
-    DrawRectangleRec(topRight, RED);
-    DrawRectangleRec(bottomLeft, RED);
-    DrawRectangleRec(bottomRight, RED);
-
-    if (CheckCollisionPointRec(mouseWorldPos, topLeft))
-    {
-    	DrawRectangleRec(topLeft, ORANGE);
-    }
-}
-
 void ActorView::setCollisionActive(bool value)
 {
 	this->collisionViewActive = value;
+}
+
+void ActorView::setAnimation(int id)
+{
+	this->currentAnim = id;
+
+	FileSystemService& fs = Editor::getFileSystem();
+	if (fs.getActor() != nullptr) {
+		this->currentAnimFrames = fs.getActor()->getAnimationRaw(static_cast<Direction>(id));
+	}
+}
+
+void ActorView::setAnimPlaying(bool value)
+{
+	this->animPlaying = value;
+}
+
+void ActorView::setFrame(int frame)
+{
+	this->currentFrame = frame;
 }

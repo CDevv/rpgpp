@@ -41,4 +41,6 @@ public:
     WindowContainer& getWindowContainer();
 };
 
+bool EditorGuiDropdown(Rectangle rect, std::vector<std::string>* items, int* active, bool* editMode);
+
 #endif

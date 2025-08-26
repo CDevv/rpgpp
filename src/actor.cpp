@@ -244,7 +244,6 @@ void Actor::draw()
         position.x, position.y,
         worldTileSize, worldTileSize
     };
-
     //draw it
     DrawTexturePro(texture, atlasRect, worldRect, origin, rotation, WHITE);
 
