@@ -5,6 +5,7 @@
 
 class MouseInputComponent {
 private:
+    int layer;
     Camera2D& camera;
     Rectangle cameraRect;
     Vector2 offset;
@@ -16,7 +17,7 @@ private:
     bool lock;
     int lastMode;
 public:
-    MouseInputComponent(Vector2 offset, Camera2D& camera, Rectangle cameraRect);
+    MouseInputComponent(Vector2 offset, Camera2D& camera, Rectangle cameraRect, int layer);
     Vector2 getMouseWorldPos();
     Vector2 getMousePos();
     void update();

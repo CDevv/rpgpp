@@ -85,12 +85,14 @@ void EditorInterfaceService::setInitial()
 void EditorInterfaceService::unload()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    std::filesystem::path fPath = std::string(fs.getProject()->getProjectBasePath()).append("/").append("run.lua");
-    std::filesystem::remove(fPath);
+    if (fs.projectIsOpen()) {
+        std::filesystem::path fPath = std::string(fs.getProject()->getProjectBasePath()).append("/").append("run.lua");
+        std::filesystem::remove(fPath);
 
-    #ifdef __linux__
-    fs.getProject()->cleanCompilation();
-    #endif
+        #ifdef __linux__
+        fs.getProject()->cleanCompilation();
+        #endif
+    }
 }
 
 void EditorInterfaceService::update()
@@ -163,4 +165,14 @@ void EditorInterfaceService::setMouseLock(bool value)
 bool EditorInterfaceService::getMouseLock()
 {
     return this->mouseLock;
+}
+
+void EditorInterfaceService::setMouseBoxLayer(ViewBoxLayer boxLayer)
+{
+    this->mouseBoxLayer = boxLayer;
+}
+
+ViewBoxLayer EditorInterfaceService::getMouseBoxLayer()
+{
+    return this->mouseBoxLayer;
 }

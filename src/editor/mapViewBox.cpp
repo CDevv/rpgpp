@@ -13,11 +13,13 @@
 
 MapViewBox::MapViewBox() {}
 
-MapViewBox::MapViewBox(WorldViewBox *viewBox)
+MapViewBox::MapViewBox(WorldViewBox *viewBox, ViewBoxLayer boxLayer)
 {
     this->room = nullptr;
 
     this->viewBox = viewBox;
+    this->layer = boxLayer;
+
     this->tileAtlasPos = Vector2 { 0, 0 };
     this->tileWorldPos = Vector2 { 0, 0 };
     this->hoverValidTile = false;
@@ -71,6 +73,8 @@ void MapViewBox::isHoverOnValidTile()
     if (room == nullptr) return;
 
     FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
+
     bool hoverValidX = false;
     bool hoverValidY = false;
 
@@ -98,7 +102,7 @@ void MapViewBox::isHoverOnValidTile()
         (tileMap->getMaxWorldSize().x * tileMap->getAtlasTileSize()), (tileMap->getMaxWorldSize().y * tileMap->getAtlasTileSize())
     };
 
-    if (viewBox->mouseLock) return;
+    if (ui.getMouseBoxLayer() != this->layer) return;
 
     bool isInViewport = viewBox->mouseInput->isInRect();
     bool isInMapRect = CheckCollisionPointRec(viewBox->mouseInput->getMouseWorldPos(), rect);
@@ -164,7 +168,6 @@ void MapViewBox::drawTiles()
     Vector2 sizeInTiles = tileMap->getMaxWorldSize();
     for (int x = 0; x < sizeInTiles.x; x++) {
         for (int y = 0; y < sizeInTiles.y; y++) {
-            //printf("%i, %i \n", x, y);
             Tile tile = tileMap->getTile(x, y);
 
             if (tile.isPlaced()) {
@@ -313,7 +316,7 @@ void MapViewBox::drawMouse()
 {
     EditorInterfaceService& ui = Editor::getUi();
 
-    if (viewBox->mouseLock) return;
+    if (ui.getMouseBoxLayer() != this->layer) return;
 
     if (viewBox->mouseInput->isInRect()) {
         //small circle on mouse pos

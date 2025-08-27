@@ -51,6 +51,7 @@ public:
     Rectangle getCollisionRect(Vector2 velocity);
     void addAnimationFrame(Direction id, Vector2 atlasPos);
     void removeAnimationFrame(Direction id, int frameIndex);
+    void setAnimationFrame(Direction id, int frameIndex, Vector2 atlasTile);
     void addAnimationFrames(Direction id, std::vector<std::vector<int>> frames);
     void changeAnimation(Direction id);
     std::string getTileSetSource();

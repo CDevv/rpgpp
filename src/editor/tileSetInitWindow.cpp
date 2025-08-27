@@ -32,6 +32,7 @@ void TileSetInitWindow::setActive()
 void TileSetInitWindow::closeWindow()
 {
     EditorInterfaceService& ui = Editor::getUi();
+    ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
     ui.setMouseLock(false);
 
     hasSetTextureSource = false;
@@ -92,8 +93,10 @@ void TileSetInitWindow::draw()
 
         if (active) {
             if (CheckCollisionPointRec(GetMousePosition(), rect)) {
+                ui.setMouseBoxLayer(VIEWBOX_LAYER_WINDOW);
                 ui.setMouseLock(true);
             } else {
+                ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
                 ui.setMouseLock(false);
             }
         }

@@ -31,6 +31,7 @@ void MapInitWindow::setActive()
 void MapInitWindow::closeWindow()
 {
     EditorInterfaceService& ui = Editor::getUi();
+    ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
     ui.setMouseLock(false);
 
     active = false;
@@ -100,8 +101,10 @@ void MapInitWindow::draw()
 
         if (active) {
             if (CheckCollisionPointRec(GetMousePosition(), rect)) {
+                ui.setMouseBoxLayer(VIEWBOX_LAYER_WINDOW);
                 ui.setMouseLock(true);
             } else {
+                ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
                 ui.setMouseLock(false);
             }
         }

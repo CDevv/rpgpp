@@ -321,6 +321,11 @@ void Actor::removeAnimationFrame(Direction id, int frameIndex)
         animations[static_cast<int>(id)]->begin() + frameIndex);
 }
 
+void Actor::setAnimationFrame(Direction id, int frameIndex, Vector2 atlasTile)
+{
+    animations[static_cast<int>(id)]->at(frameIndex) = atlasTile;
+}
+
 void Actor::addAnimationFrames(Direction id, std::vector<std::vector<int>> frames)
 {
     int idNum = static_cast<int>(id);

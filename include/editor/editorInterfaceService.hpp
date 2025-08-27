@@ -26,6 +26,7 @@ private:
     Vector2 mousePos;
     Vector2 hoverPos;
     bool mouseLock;
+    ViewBoxLayer mouseBoxLayer;
 public:
     EditorInterfaceService();
     ~EditorInterfaceService();
@@ -37,6 +38,8 @@ public:
     void drawTooltip(Rectangle rect, std::string text);
     void setMouseLock(bool value);
     bool getMouseLock();
+    void setMouseBoxLayer(ViewBoxLayer boxLayer);
+    ViewBoxLayer getMouseBoxLayer();
     TabList& getTabList();
     WindowContainer& getWindowContainer();
 };

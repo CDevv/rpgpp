@@ -55,7 +55,9 @@ void ResourceViewerBox::drawTileSets()
     WindowContainer& windows = ui.getWindowContainer();
 
     if (GuiButton(Rectangle { rect.x + 8, rect.y + 2*24, rect.width - 16, 24 }, "New")) {
-        windows.openTileSetInit();
+        if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
+            windows.openTileSetInit();
+        }
     }
 
     Rectangle baseRect = Rectangle { rect.x, rect.y, rect.width, rect.height };
@@ -68,9 +70,11 @@ void ResourceViewerBox::drawTileSets()
     for (std::string tileSetPath : tileSetPaths) {
         std::string tileSetFileName = GetFileNameWithoutExt(tileSetPath.c_str());
         if (GuiLabelButton(baseRect, tileSetFileName.c_str())) {
-            fs.openProjectFile(tileSetPath);
-            ui.setInitial();
-            ui.getTabList().addItem(tileSetFileName);
+            if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
+                fs.openProjectFile(tileSetPath);
+                ui.setInitial();
+                ui.getTabList().addItem(tileSetFileName);
+            }
         }
         baseRect.y += 24;
     }
@@ -82,7 +86,9 @@ void ResourceViewerBox::drawMaps()
     WindowContainer& windows = ui.getWindowContainer();
 
     if (GuiButton(Rectangle { rect.x + 8, rect.y + 2*24, rect.width - 16, 24 }, "New..")) {
-        windows.openMapInit();
+        if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
+            windows.openMapInit();
+        }
     }
 
     Rectangle baseRect = Rectangle { rect.x, rect.y, rect.width, rect.height };
@@ -94,9 +100,11 @@ void ResourceViewerBox::drawMaps()
     for (std::string mapPath : mapPaths) {
         std::string mapFileName = GetFileNameWithoutExt(mapPath.c_str());
         if (GuiLabelButton(baseRect, mapFileName.c_str())) {
-            fs.openProjectFile(mapPath);
-            ui.setInitial();
-            ui.getTabList().addItem(mapFileName);
+            if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
+                fs.openProjectFile(mapPath);
+                ui.setInitial();
+                ui.getTabList().addItem(mapFileName);
+            }
         }
         baseRect.y += 24;
     }
@@ -120,9 +128,11 @@ void ResourceViewerBox::drawActors()
     for (std::string actorPath : actorPaths) {
         std::string actorFileName = GetFileNameWithoutExt(actorPath.c_str());
         if (GuiLabelButton(baseRect, actorFileName.c_str())) {
-            fs.openProjectFile(actorPath);
-            ui.setInitial();
-            ui.getTabList().addItem(actorFileName);
+            if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
+                fs.openProjectFile(actorPath);
+                ui.setInitial();
+                ui.getTabList().addItem(actorFileName);
+            }
         }
         baseRect.y += 24;
     }

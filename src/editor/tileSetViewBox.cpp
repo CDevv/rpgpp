@@ -8,11 +8,13 @@
 
 TileSetViewBox::TileSetViewBox() {}
 
-TileSetViewBox::TileSetViewBox(WorldViewBox* viewBox)
+TileSetViewBox::TileSetViewBox(WorldViewBox* viewBox, ViewBoxLayer boxLayer)
 {
     this->tileSet = nullptr;
 
     this->viewBox = viewBox;
+    this->layer = boxLayer;
+
     this->tileAtlasPos = Vector2 { 0, 0 };
     this->tileWorldPos = Vector2 { 0, 0 };
     this->hoverValidTile = false;
@@ -47,6 +49,8 @@ void TileSetViewBox::isHoverOnValidTile()
     if (tileSet == nullptr) return;
 
     FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
+
     bool hoverValidX = false;
     bool hoverValidY = false;
 
@@ -68,7 +72,7 @@ void TileSetViewBox::isHoverOnValidTile()
     }
     hoverValidTile = hoverValidX && hoverValidY;
 
-    if (viewBox->mouseLock) return;
+    if (ui.getMouseBoxLayer() != this->layer) return;
 
     if (isSelectingTile) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -151,7 +155,7 @@ void TileSetViewBox::drawMouse()
 {
     EditorInterfaceService& ui = Editor::getUi();
 
-    if (viewBox->mouseLock) return;
+    if (ui.getMouseBoxLayer() != this->layer) return;
     
     if (viewBox->mouseInput->isInRect()) {
         //small circle on mouse pos

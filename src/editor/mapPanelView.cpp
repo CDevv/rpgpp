@@ -32,7 +32,7 @@ MapPanelView::MapPanelView(Rectangle rect)
         rect.x, rect.y + 34,
         static_cast<float>(rect.width - 284), static_cast<float>(rect.height - 34)
     };
-    worldView = std::make_unique<WorldViewBox>(windowRect, FILE_ROOM);
+    worldView = std::make_unique<WorldViewBox>(windowRect, FILE_ROOM, VIEWBOX_LAYER_BASE);
 
     Rectangle tileSetWindowRect = Rectangle
     {
@@ -40,7 +40,7 @@ MapPanelView::MapPanelView(Rectangle rect)
         (280), (8)
     };
     tileSetWindowRect.height = tileSetWindowRect.width - 36;
-    tileSetView = std::make_unique<WorldViewBox>(tileSetWindowRect, FILE_TILESET);
+    tileSetView = std::make_unique<WorldViewBox>(tileSetWindowRect, FILE_TILESET, VIEWBOX_LAYER_BASE);
 
     tileSetView->enableTileSelection();
     worldView->setActionMode(ACTION_PLACE);

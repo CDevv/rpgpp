@@ -18,9 +18,14 @@ enum RoomLayer {
     LAYER_TILES, LAYER_COLLISIONS, LAYER_INTERACTABLES
 };
 
+enum ViewBoxLayer {
+    VIEWBOX_LAYER_BASE = 0, VIEWBOX_LAYER_BINVIEW = 1, VIEWBOX_LAYER_DIALOG = 2, VIEWBOX_LAYER_WINDOW = 3
+};
+
 class TileSetViewBox {
 private:
     TileSet *tileSet;
+    ViewBoxLayer layer;
     WorldViewBox* viewBox;
     Vector2 tileAtlasPos;
     Vector2 tileWorldPos;
@@ -31,7 +36,7 @@ private:
     Vector2 selectedTileWorldPos;
 public:
     TileSetViewBox();
-    TileSetViewBox(WorldViewBox* viewBox);
+    TileSetViewBox(WorldViewBox* viewBox, ViewBoxLayer boxLayer);
     void unload();
     void setTileSet(TileSet* tileSet);
     void setSelectionMode();
@@ -46,6 +51,7 @@ class MapViewBox {
 private:
     Room *room;
     WorldViewBox *viewBox;
+    ViewBoxLayer layer;
     Vector2 tileAtlasPos;
     Vector2 tileWorldPos;
     bool hoverValidTile;
@@ -58,7 +64,7 @@ private:
     void drawHoverTile(int atlasTileSize, Vector2 tileWorldPos);
 public:
     MapViewBox();
-    MapViewBox(WorldViewBox *viewBox);
+    MapViewBox(WorldViewBox *viewBox, ViewBoxLayer boxLayer);
     void unload();
     void setMap(Room* map);
     void setActionMode(RoomAction mode);
@@ -90,7 +96,7 @@ private:
     MapViewBox mapView;
 public:
     WorldViewBox();
-    WorldViewBox(Rectangle windowRect, EngineFileType type);
+    WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLayer boxLayer);
     ~WorldViewBox();
     Rectangle getWindowRect();
     void setMouseLock(bool value);

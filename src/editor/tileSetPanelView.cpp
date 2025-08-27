@@ -15,7 +15,7 @@ TileSetPanelView::TileSetPanelView(Rectangle rect)
         rect.x, rect.y,
         static_cast<float>(rect.width - 190), rect.height
     };
-    worldView = std::make_unique<WorldViewBox>(windowRect, FILE_TILESET);
+    worldView = std::make_unique<WorldViewBox>(windowRect, FILE_TILESET, VIEWBOX_LAYER_BASE);
 
     Rectangle propRect = Rectangle
     {

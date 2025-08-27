@@ -12,7 +12,7 @@
 WorldViewBox::WorldViewBox()
 {}
 
-WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type)
+WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLayer boxLayer)
 {
     windowTitle = "File not opened..";
     this->type = type;
@@ -34,10 +34,10 @@ WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type)
 
     renderTexture = LoadRenderTexture(this->renderRect.width, this->renderRect.height);
 
-    mouseInput = std::make_unique<MouseInputComponent>(Vector2 { this->renderRect.x, this->renderRect.y }, camera, this->renderRect);
+    mouseInput = std::make_unique<MouseInputComponent>(Vector2 { this->renderRect.x, this->renderRect.y }, camera, this->renderRect, static_cast<int>(boxLayer));
 
-    tilesView = TileSetViewBox(this);
-    mapView = MapViewBox(this);
+    tilesView = TileSetViewBox(this, boxLayer);
+    mapView = MapViewBox(this, boxLayer);
 
     this->mouseLock = false;
 }
@@ -115,12 +115,10 @@ void WorldViewBox::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
-    if (fs.fileIsOpen()) {
-        if (type == FILE_TILESET) {
-            tilesView.isHoverOnValidTile();
-        } else {
-            mapView.isHoverOnValidTile();
-        }
+    if (type == FILE_TILESET) {
+        tilesView.isHoverOnValidTile();
+    } else {
+        mapView.isHoverOnValidTile();
     }
 
     BeginTextureMode(renderTexture);

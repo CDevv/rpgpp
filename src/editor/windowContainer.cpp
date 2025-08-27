@@ -29,6 +29,16 @@ WindowContainer::WindowContainer()
         baseProjectViewWindowSize.width, baseProjectViewWindowSize.height
     };
     projectBinaryView = ProjectBinaryViewWindow(projectViewWindowRect);
+
+    Rectangle baseTileSetDialogSize = Rectangle {
+        0, 0, 420, 320
+    };
+    Rectangle tileSetDialogSize = Rectangle {
+        (GetScreenWidth() - baseTileSetDialogSize.width) / 2,
+        (GetScreenHeight() - baseTileSetDialogSize.height) / 2,
+        baseTileSetDialogSize.width, baseTileSetDialogSize.height
+    };
+    tileSetDialog = TileSetDialogWindow(tileSetDialogSize);
 }
 
 bool WindowContainer::isWindowOpen()
@@ -60,11 +70,18 @@ ProjectBinaryViewWindow& WindowContainer::openProjectBinaryView()
     return projectBinaryView;
 }
 
+void WindowContainer::openTileSetDialog()
+{
+    windowOpen = true;
+    tileSetDialog.setActive();
+}
+
 void WindowContainer::draw()
 {
     tileSetInit.draw();
     mapInit.draw();
     projectBinaryView.draw();
+    tileSetDialog.draw();
 
     if (!windowOpen) {
         EditorInterfaceService& ui = Editor::getUi();

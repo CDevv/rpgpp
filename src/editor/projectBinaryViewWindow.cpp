@@ -21,8 +21,8 @@ ProjectBinaryViewWindow::ProjectBinaryViewWindow(Rectangle rect)
 		rect.x + 140, rect.y + 28,
 		rect.width - 144, rect.height - 32
 	};
-	this->tilesView = std::make_unique<WorldViewBox>(viewRect, FILE_TILESET);
-	this->roomView = std::make_unique<WorldViewBox>(viewRect, FILE_ROOM);
+	this->tilesView = std::make_unique<WorldViewBox>(viewRect, FILE_TILESET, VIEWBOX_LAYER_BINVIEW);
+	this->roomView = std::make_unique<WorldViewBox>(viewRect, FILE_ROOM, VIEWBOX_LAYER_BINVIEW);
 }
 
 void ProjectBinaryViewWindow::setActive()
@@ -34,6 +34,7 @@ void ProjectBinaryViewWindow::closeWindow()
 {
 	EditorInterfaceService& ui = Editor::getUi();
     ui.setMouseLock(false);
+    ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
 
 	this->dataAvailable = false;
 	this->fileType = FILE_TILESET;
@@ -47,6 +48,9 @@ void ProjectBinaryViewWindow::closeWindow()
 
 void ProjectBinaryViewWindow::draw()
 {
+	this->tilesView->update();
+	this->roomView->update();
+
 	if (pageEditMode) GuiLock();
 
 	if (active) {
@@ -63,6 +67,8 @@ void ProjectBinaryViewWindow::draw()
 				case FILE_ROOM:
 					this->roomView->draw();
 					break;
+				default:
+					break;
 				}
 
 				drawResourcesList();
@@ -77,8 +83,10 @@ void ProjectBinaryViewWindow::draw()
 			EditorInterfaceService& ui = Editor::getUi();
 
 			if (CheckCollisionPointRec(GetMousePosition(), rect)) {
+				ui.setMouseBoxLayer(VIEWBOX_LAYER_BINVIEW);
                 ui.setMouseLock(true);
             } else {
+            	ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
                 ui.setMouseLock(false);
             }
 		}
@@ -162,6 +170,8 @@ void ProjectBinaryViewWindow::drawResourcesList()
 			}
 			labelBaseRect.y += 24;
 		}
+		break;
+	default:
 		break;
 	}
 

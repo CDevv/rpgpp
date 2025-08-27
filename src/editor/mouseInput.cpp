@@ -3,9 +3,10 @@
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 
-MouseInputComponent::MouseInputComponent(Vector2 offset, Camera2D& camera, Rectangle cameraRect)
+MouseInputComponent::MouseInputComponent(Vector2 offset, Camera2D& camera, Rectangle cameraRect, int layer)
 : camera(camera)
 {
+    this->layer = layer;
     this->offset = offset;
     this->camera = camera;
     this->cameraRect = cameraRect;
@@ -42,7 +43,8 @@ void MouseInputComponent::update()
     }
 
     EditorInterfaceService& ui = Editor::getUi();
-    if (!isInRect() || ui.getMouseLock()) {
+    
+    if (!isInRect() || static_cast<int>(ui.getMouseBoxLayer()) != this->layer) {
         return;
     }
 
