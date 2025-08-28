@@ -127,6 +127,22 @@ void AnimationsView::draw()
 			actorView->updateData();
 		}
 	}
+
+	if (GuiButton(Rectangle { rect.x + 221 + 24, rect.y + 28, 24, 24 }, GuiIconText(224, NULL))) {
+		animPlaying = false;
+		
+		if (actor != nullptr) {
+			EditorInterfaceService& ui = Editor::getUi();
+			WindowContainer& windows = ui.getWindowContainer();
+
+			TileSetDialogWindow& dialog = windows.openTileSetDialog();
+			dialog.setTileSet(&actor->getTileSet());
+			dialog.setSelectedTile(animFrames.at(actorView->getFrame()));
+			dialog.setCallback([this, actor](Vector2 atlas) 
+				{ actor->setAnimationFrame(static_cast<Direction>(currentAnim), actorView->getFrame(), atlas); }
+			);
+		}
+	}
 }
 
 void AnimationsView::setActorView(ActorView *actorView)

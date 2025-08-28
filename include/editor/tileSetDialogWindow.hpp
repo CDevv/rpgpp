@@ -2,6 +2,8 @@
 #define _RPGPP_EDITOR_TILESETDIALOGWINDOW_H
 
 #include <raylib.h>
+#include <memory>
+#include <functional>
 #include "worldViewBox.hpp"
 
 class TileSetDialogWindow {
@@ -10,6 +12,8 @@ private:
 	ViewBoxLayer boxLayer;
 	Rectangle rect;
 	Vector2 chosenTile;
+	std::unique_ptr<WorldViewBox> tileSetView;
+	std::function<void(Vector2)> callback;
 public:
 	TileSetDialogWindow();
 	TileSetDialogWindow(Rectangle rect);
@@ -17,6 +21,10 @@ public:
 	void closeWindow();
 	void update();
 	void draw();
+	void setTileSet(TileSet* tileSet);
+	void setSelectedTile(Vector2 atlasTile);
+	Vector2 getSelectedTile();
+	void setCallback(std::function<void(Vector2)> func);
 };
 
 #endif

@@ -60,7 +60,9 @@ void ActorView::update()
     mouseWorldPos = Vector2Add(mouseWorldPos, Vector2 { -1, -1 });
 
     collisionBox.setMouseWorldPos(mouseWorldPos);
-    collisionBox.update();
+    if (collisionViewActive) {
+    	collisionBox.update();
+    }
 
 	if (fs.getActor() != nullptr) {
 		Rectangle actorRect = fs.getActor()->getRect();

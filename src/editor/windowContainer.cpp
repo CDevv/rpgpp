@@ -31,7 +31,7 @@ WindowContainer::WindowContainer()
     projectBinaryView = ProjectBinaryViewWindow(projectViewWindowRect);
 
     Rectangle baseTileSetDialogSize = Rectangle {
-        0, 0, 420, 320
+        0, 0, 434, 320
     };
     Rectangle tileSetDialogSize = Rectangle {
         (GetScreenWidth() - baseTileSetDialogSize.width) / 2,
@@ -70,10 +70,11 @@ ProjectBinaryViewWindow& WindowContainer::openProjectBinaryView()
     return projectBinaryView;
 }
 
-void WindowContainer::openTileSetDialog()
+TileSetDialogWindow& WindowContainer::openTileSetDialog()
 {
     windowOpen = true;
     tileSetDialog.setActive();
+    return tileSetDialog;
 }
 
 void WindowContainer::draw()

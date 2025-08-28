@@ -20,7 +20,7 @@ public:
     void openTileSetInit();
     void openMapInit();
     ProjectBinaryViewWindow& openProjectBinaryView();
-    void openTileSetDialog();
+    TileSetDialogWindow& openTileSetDialog();
     void draw();
 };
 
