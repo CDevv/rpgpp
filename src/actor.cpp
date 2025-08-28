@@ -68,12 +68,13 @@ Actor::Actor(std::string fileName)
     UnloadFileText(jsonContent);
 }
 
-Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos)
+Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos, std::string tileSetSource)
 {
     this->position = Vector2 { 0, 0 };
 
     this->tileSet = std::move(tileSet);
     this->tile = tileSet->getTile(atlasPos);
+    this->tileSetSource = tileSetSource;
 
     this->frameCounter = 0;
     this->frameSpeed = 2;
@@ -83,6 +84,41 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos)
     for (int i = 0; i < 8; i++) {
         animations[i] = std::make_unique<std::vector<Vector2>>();
     }
+
+    //Some default animations
+    std::vector<std::vector<int>> down = {{2,0}, {3,0}};
+    addAnimationFrames(RPGPP_DOWN, down);
+
+    std::vector<std::vector<int>> downIdle = {{0,0}, {1,0}};
+    addAnimationFrames(RPGPP_DOWN_IDLE, downIdle);
+
+    std::vector<std::vector<int>> up = {{2,1}, {3,1}};
+    addAnimationFrames(RPGPP_UP, up);
+
+    std::vector<std::vector<int>> upIdle = {{0,1}, {1,1}};
+    addAnimationFrames(RPGPP_UP_IDLE, upIdle);
+
+    std::vector<std::vector<int>> left = {{2,2}, {3,2}};
+    addAnimationFrames(RPGPP_LEFT, left);
+
+    std::vector<std::vector<int>> leftIdle = {{0,2}, {1,2}};
+    addAnimationFrames(RPGPP_LEFT_IDLE, leftIdle);
+
+    std::vector<std::vector<int>> right = {{2,3}, {3,3}};
+    addAnimationFrames(RPGPP_RIGHT, right);
+
+    std::vector<std::vector<int>> rightIdle = {{0,3}, {1,3}};
+    addAnimationFrames(RPGPP_RIGHT_IDLE, rightIdle);
+
+    Vector2 defaultTileAtlasPos = animations[(int)currentAnimation]->at(0);
+    this->tile = tileSet->getTile(defaultTileAtlasPos);
+
+    //Default collision box..
+    Vector2 atlasTileSize = this->tileSet->getTileSize();
+    this->collisionRect = Rectangle {
+        0, (atlasTileSize.y * RPGPP_DRAW_MULTIPLIER) / 2,
+        (atlasTileSize.x * RPGPP_DRAW_MULTIPLIER), (atlasTileSize.y * RPGPP_DRAW_MULTIPLIER) / 2
+    };
 }
 
 Actor::Actor(ActorBin bin)

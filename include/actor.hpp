@@ -36,7 +36,7 @@ private:
     Direction currentAnimation;
 public:
     Actor(std::string fileName);
-    Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos);
+    Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos, std::string tileSetSource);
     Actor(ActorBin bin);
     json dumpJson();
     void unload();

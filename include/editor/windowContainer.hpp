@@ -5,12 +5,14 @@
 #include "mapInitWindow.hpp"
 #include "projectBinaryViewWindow.hpp"
 #include "tileSetDialogWindow.hpp"
+#include "actorInitWindow.hpp"
 
 class WindowContainer {
 private:
     bool windowOpen;
     TileSetInitWindow tileSetInit;
     MapInitWindow mapInit;
+    ActorInitWindow actorInit;
     ProjectBinaryViewWindow projectBinaryView;
     TileSetDialogWindow tileSetDialog;
 public:
@@ -19,6 +21,7 @@ public:
     void setWindowOpen(bool value);
     void openTileSetInit();
     void openMapInit();
+    void openActorInit();
     ProjectBinaryViewWindow& openProjectBinaryView();
     TileSetDialogWindow& openTileSetDialog();
     void draw();

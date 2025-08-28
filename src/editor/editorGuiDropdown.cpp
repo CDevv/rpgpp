@@ -58,7 +58,7 @@ bool EditorGuiDropdown(Rectangle rect, std::vector<std::string>* items, int* act
 			DrawRectangleLinesEx(baseRect, 1.0f, optionBorderColor);
 
 			float offsetY = (rect.height - 13) / 2;
-			DrawTextEx(GuiGetFont(), item.c_str(), Vector2{ baseRect.x + 8, baseRect.y + offsetY }, 13, 2, optionTextColor);
+			DrawTextEx(GuiGetFont(), item.c_str(), Vector2{ baseRect.x + 8, baseRect.y + offsetY }, 13, 1, optionTextColor);
 
 			index++;
 			baseRect.y += baseRect.height;
@@ -69,7 +69,7 @@ bool EditorGuiDropdown(Rectangle rect, std::vector<std::string>* items, int* act
 	DrawRectangleLinesEx(rect, 1.0f, borderColor);
 	if (items != NULL) {
 		float offsetY = (rect.height - 13) / 2;
-		DrawTextEx(GuiGetFont(), items->at(*active).c_str(), Vector2 { rect.x + 8, rect.y + offsetY }, 13, 2, borderColor);
+		DrawTextEx(GuiGetFont(), items->at(*active).c_str(), Vector2 { rect.x + 8, rect.y + offsetY }, 13, 1, borderColor);
 	}
 
 	float iconOffsetY = (rect.height - 16) / 2;

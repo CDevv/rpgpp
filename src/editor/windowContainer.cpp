@@ -18,6 +18,8 @@ WindowContainer::WindowContainer()
     Rectangle mapWindowSize = Rectangle(tileSetWindowSize);
     mapInit = MapInitWindow(mapWindowSize);
 
+    actorInit = ActorInitWindow(tileSetWindowSize);
+
     Rectangle baseProjectViewWindowSize = Rectangle
     {
         0, 0, static_cast<float>(GetScreenWidth() - 64), static_cast<float>(GetScreenHeight() - 64)
@@ -63,6 +65,12 @@ void WindowContainer::openMapInit()
     mapInit.setActive();
 }
 
+void WindowContainer::openActorInit()
+{
+    windowOpen = true;
+    actorInit.setActive();
+}
+
 ProjectBinaryViewWindow& WindowContainer::openProjectBinaryView()
 {
     windowOpen = true;
@@ -81,6 +89,7 @@ void WindowContainer::draw()
 {
     tileSetInit.draw();
     mapInit.draw();
+    actorInit.draw();
     projectBinaryView.draw();
     tileSetDialog.draw();
 

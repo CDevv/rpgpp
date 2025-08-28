@@ -116,7 +116,9 @@ void ResourceViewerBox::drawActors()
     WindowContainer& windows = ui.getWindowContainer();
 
     if (GuiButton(Rectangle { rect.x + 8, rect.y + 2*24, rect.width - 16, 24 }, "New..")) {
-        //windows.openMapInit();
+        if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
+            windows.openActorInit();
+        }
     }
 
     Rectangle baseRect = Rectangle { rect.x, rect.y, rect.width, rect.height };
