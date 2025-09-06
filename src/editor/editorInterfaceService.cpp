@@ -97,12 +97,31 @@ void EditorInterfaceService::unload()
 
 void EditorInterfaceService::update()
 {
+    mainView.update();
     tabList.update();
     panelView->update();
     resourceView.update();
 }
 
 void EditorInterfaceService::draw()
+{
+    FileSystemService& fs = Editor::getFileSystem();
+    if (!fs.projectIsOpen()) {
+        drawMainView();
+    } else {
+        drawProjectView();
+    }
+    windowContainer.draw();
+
+    GuiUnlock();
+}
+
+void EditorInterfaceService::drawMainView()
+{
+    mainView.draw();
+}
+
+void EditorInterfaceService::drawProjectView()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
@@ -120,9 +139,6 @@ void EditorInterfaceService::draw()
     panelView->draw();
 
     resourceView.draw();
-    windowContainer.draw();
-
-    GuiUnlock();
 }
 
 Font EditorInterfaceService::getFont()

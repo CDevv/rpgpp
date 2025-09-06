@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include "gamedata.hpp"
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 class Project {
 private:
@@ -24,6 +26,8 @@ private:
 public:
     Project();
     Project(std::string filePath);
+    void reloadPaths();
+    static void generateNewProj(std::string title, std::string path);
     GameData generateStruct();
     void compileProject();
     void runProject();

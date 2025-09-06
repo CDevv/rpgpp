@@ -5,6 +5,7 @@
 #include <raylib.h>
 #include <string>
 #include <vector>
+#include "mainView.hpp"
 #include "projectMenuBox.hpp"
 #include "tabList.hpp"
 #include "windowContainer.hpp"
@@ -17,6 +18,7 @@ class MouseInputComponent;
 class EditorInterfaceService {
 private:
     Font uiFont;
+    MainView mainView;
     ProjectMenuBox projectMenu;
     TabList tabList;
     WindowContainer windowContainer;
@@ -27,6 +29,8 @@ private:
     Vector2 hoverPos;
     bool mouseLock;
     ViewBoxLayer mouseBoxLayer;
+    void drawMainView();
+    void drawProjectView();
 public:
     EditorInterfaceService();
     ~EditorInterfaceService();

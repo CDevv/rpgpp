@@ -35,6 +35,7 @@ public:
     ~FileSystemService();
     void unload();
     void promptOpenProject();
+    void setProject(std::string projectPath);
     Project *getProject();
     bool projectIsOpen();
     void openProjectFile(std::string absolutePath);
@@ -49,6 +50,7 @@ public:
     Room *getRoom();
     Actor *getActor();
     FS_Result openFile(nfdu8filteritem_t filters[]);
+    FS_Result openFolder();
     FS_Result openGameData();
     FS_Result openImage();
     FS_Result openTileSetResource();

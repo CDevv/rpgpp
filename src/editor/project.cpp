@@ -46,6 +46,39 @@ Project::Project(std::string filePath)
     UnloadFileText(jsonString);
 }
 
+void Project::reloadPaths()
+{
+    this->tileSetPathsList = makeTileSetPaths();
+    this->mapPathsList = makeMapPaths();
+    this->actorPathsList = makeActorPaths();
+}
+
+void Project::generateNewProj(std::string title, std::string path)
+{
+    std::string newDirPath = TextFormat("%s/%s", path.c_str(), title.c_str());
+    int dirSuccess = MakeDirectory(newDirPath.c_str());
+
+    if (dirSuccess != 0) {
+        printf("Error when making a directory!\n");
+        return;
+    }
+
+    MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "images"));
+    MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "tilesets"));
+    MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "maps"));
+    MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "actors"));
+
+    json projectJson = {
+        {"title", title},
+        {"tilesets", "tilesets"},
+        {"maps", "maps"},
+        {"actors", "actors"}
+    };
+    std::string jsonString = projectJson.dump(4);
+
+    SaveFileText(TextFormat("%s/%s", newDirPath.c_str(), "proj.rpgpp"), const_cast<char*>(jsonString.data()));
+}
+
 GameData Project::generateStruct()
 {
     GameData struc;

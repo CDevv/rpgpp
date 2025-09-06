@@ -41,6 +41,13 @@ void FileSystemService::promptOpenProject()
     }
 }
 
+void FileSystemService::setProject(std::string projectPath)
+{
+    project.reset(new Project(projectPath));
+    projectAvailable = true;
+    SetWindowTitle(TextFormat("Editor - %s", project->getProjectTitle().c_str()));
+}
+
 Project *FileSystemService::getProject()
 {
     return project.get();
@@ -116,6 +123,23 @@ void FileSystemService::closeProjectFile(int index)
     {
         if (currentIndex == index) {
             openedFiles.erase(i);
+            if (index == 0) {
+                switch (lastType) {
+                case FILE_TILESET:
+                    lastTileSet = nullptr;
+                    break;
+                case FILE_ROOM:
+                    lastRoom = nullptr;
+                    break;
+                case FILE_ACTOR:
+                    lastActor = nullptr;
+                    break;
+                default:
+                    break;
+                }
+
+                isOpen = false;
+            }
 
             break;
         }
@@ -204,6 +228,25 @@ FS_Result FileSystemService::openFile(nfdu8filteritem_t filters[])
                 fsResult.path.erase(0, project->getProjectBasePath().size() + 1);
             }
         }
+
+        NFD_FreePathU8(outPath);
+    }
+
+    return fsResult;
+}
+
+FS_Result FileSystemService::openFolder()
+{
+    FS_Result fsResult;
+
+    nfdu8char_t *outPath;
+    nfdresult_t result = NFD_PickFolder(&outPath, NULL);
+
+    fsResult.result = result;
+
+    if (result == NFD_OKAY) {
+        fsResult.absolutePath = outPath;
+        fsResult.path = outPath;
 
         NFD_FreePathU8(outPath);
     }

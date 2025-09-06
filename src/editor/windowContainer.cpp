@@ -20,6 +20,8 @@ WindowContainer::WindowContainer()
 
     actorInit = ActorInitWindow(tileSetWindowSize);
 
+    projectInit = ProjectInitWindow(tileSetWindowSize);
+
     Rectangle baseProjectViewWindowSize = Rectangle
     {
         0, 0, static_cast<float>(GetScreenWidth() - 64), static_cast<float>(GetScreenHeight() - 64)
@@ -51,6 +53,12 @@ bool WindowContainer::isWindowOpen()
 void WindowContainer::setWindowOpen(bool value)
 {
     this->windowOpen = value;
+}
+
+void WindowContainer::openProjectInit()
+{
+    windowOpen = true;
+    projectInit.setActive();
 }
 
 void WindowContainer::openTileSetInit()
@@ -87,6 +95,7 @@ TileSetDialogWindow& WindowContainer::openTileSetDialog()
 
 void WindowContainer::draw()
 {
+    projectInit.draw();
     tileSetInit.draw();
     mapInit.draw();
     actorInit.draw();

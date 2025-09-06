@@ -64,7 +64,7 @@ void ActorView::update()
     	collisionBox.update();
     }
 
-	if (fs.getActor() != nullptr) {
+	if (fs.fileIsOpen() && fs.getActor() != nullptr) {
 		Rectangle actorRect = fs.getActor()->getRect();
 		camera.target = Vector2 { actorRect.width / 2, actorRect.height / 2 };
 
@@ -155,11 +155,13 @@ void ActorView::updateData()
 {
 	FileSystemService& fs = Editor::getFileSystem();
 
-	this->currentAnimFrames = fs.getActor()->getAnimationRaw(static_cast<Direction>(currentAnim));
-	if (currentFrame >= currentAnimFrames.size()) {
-		currentFrame = 0;
+	if (fs.fileIsOpen() && fs.getActor() != nullptr) {
+		this->currentAnimFrames = fs.getActor()->getAnimationRaw(static_cast<Direction>(currentAnim));
+		if (currentFrame >= currentAnimFrames.size()) {
+			currentFrame = 0;
+		}
+		if (currentFrame < 0) currentFrame = 0;
 	}
-	if (currentFrame < 0) currentFrame = 0;
 }
 
 void ActorView::setCollisionActive(bool value)
@@ -172,7 +174,7 @@ void ActorView::setAnimation(int id)
 	this->currentAnim = id;
 
 	FileSystemService& fs = Editor::getFileSystem();
-	if (fs.getActor() != nullptr) {
+	if (fs.fileIsOpen() && fs.getActor() != nullptr) {
 		this->currentAnimFrames = fs.getActor()->getAnimationRaw(static_cast<Direction>(id));
 	}
 }
