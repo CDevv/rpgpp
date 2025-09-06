@@ -18,6 +18,17 @@ TabList::TabList(Rectangle rect)
 
 void TabList::addItem(std::string title)
 {
+	bool exists = false;
+	for (std::vector<TabData>::iterator i = tabs.begin(); i != tabs.end(); ++i)
+	{
+		if (i->title == title) {
+			exists = true;
+			break;
+		}
+	}
+
+	if (exists) return;
+
 	this->tabs.push_back(TabData {title});
 	activeIndex = tabs.size() - 1;
 }

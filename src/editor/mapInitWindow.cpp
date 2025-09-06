@@ -93,6 +93,7 @@ void MapInitWindow::draw()
             std::string filePath = std::string("maps/").append(titleText).append(".rmap");
             SaveFileText(filePath.c_str(), const_cast<char*>(jsonString.data()));
 
+            fs.getProject()->reloadPaths();
             fs.openProjectFile(filePath);
             ui.setInitial();
 

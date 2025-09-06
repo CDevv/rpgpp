@@ -73,7 +73,6 @@ void ResourceViewerBox::drawTileSets()
             if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
                 fs.openProjectFile(tileSetPath);
                 ui.setInitial();
-                ui.getTabList().addItem(tileSetFileName);
             }
         }
         baseRect.y += 24;
@@ -103,7 +102,6 @@ void ResourceViewerBox::drawMaps()
             if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
                 fs.openProjectFile(mapPath);
                 ui.setInitial();
-                ui.getTabList().addItem(mapFileName);
             }
         }
         baseRect.y += 24;
@@ -133,7 +131,6 @@ void ResourceViewerBox::drawActors()
             if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
                 fs.openProjectFile(actorPath);
                 ui.setInitial();
-                ui.getTabList().addItem(actorFileName);
             }
         }
         baseRect.y += 24;

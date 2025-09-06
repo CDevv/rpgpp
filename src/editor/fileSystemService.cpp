@@ -5,6 +5,8 @@
 #include <memory>
 #include <nfd.h>
 #include <raylib.h>
+#include "editor.hpp"
+#include "editorInterfaceService.hpp"
 
 FileSystemService::FileSystemService()
 {
@@ -60,6 +62,17 @@ bool FileSystemService::projectIsOpen()
 
 void FileSystemService::openProjectFile(std::string absolutePath)
 {
+    bool exists = false;
+    for (std::vector<std::unique_ptr<ProjectFile>>::iterator i = openedFiles.begin(); i != openedFiles.end(); ++i)
+    {
+        if (i->get()->getRelativePath() == absolutePath) {
+            exists = true;
+            break;
+        }
+    }
+
+    if (exists) return;
+
     EngineFileType fileType;
     TileSet* tileSet = nullptr;
     Room* room = nullptr;
@@ -84,6 +97,10 @@ void FileSystemService::openProjectFile(std::string absolutePath)
 
     openedFiles.push_back(std::move(projectFile));
     setActiveProjectFile(openedFiles.size() - 1);
+
+    //tabList
+    EditorInterfaceService& ui = Editor::getUi();
+    ui.getTabList().addItem(GetFileName(absolutePath.c_str()));
 }
 
 void FileSystemService::setActiveProjectFile(int index)

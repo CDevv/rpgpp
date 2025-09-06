@@ -85,6 +85,7 @@ void TileSetInitWindow::draw()
             std::string filePath = std::string("tilesets/").append(titleText).append(".rtiles");
             SaveFileText(filePath.c_str(), const_cast<char*>(jsonString.data()));
 
+            fs.getProject()->reloadPaths();
             fs.openProjectFile(filePath);
             ui.setInitial();
             

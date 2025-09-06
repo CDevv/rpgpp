@@ -84,6 +84,7 @@ void ActorInitWindow::draw()
             std::string filePath = std::string("actors/").append(titleText).append(".ractor");
             SaveFileText(filePath.c_str(), const_cast<char*>(jsonString.data()));
 
+            fs.getProject()->reloadPaths();
             fs.openProjectFile(filePath);
             ui.setInitial();
             	
