@@ -6,6 +6,7 @@
 class MainViewPanel {
 private:
 	Rectangle rect;
+	Texture logoTexture;
 public:
 	MainViewPanel();
 	MainViewPanel(Rectangle rect);
