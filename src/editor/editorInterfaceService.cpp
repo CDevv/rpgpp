@@ -46,6 +46,7 @@ EditorInterfaceService::EditorInterfaceService()
     mousePos = Vector2 { 0, 0 };
     hoverPos = Vector2 { 0, 0 };
     mouseLock = false;
+    mouseBoxLayer = VIEWBOX_LAYER_BASE;
 
     Rectangle projectMenuRect = Rectangle { 0, 16, static_cast<float>(GetScreenWidth()), 36 };
     projectMenu = ProjectMenuBox(projectMenuRect);

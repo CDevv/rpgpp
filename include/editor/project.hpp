@@ -4,11 +4,13 @@
 #include <string>
 #include <vector>
 #include "gamedata.hpp"
+#include "projectGenerator.hpp"
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
 class Project {
 private:
+    ProjectGenerator projectGenerator;
     std::string projectBasePath;
     std::string projectPath;
     std::string projectTitle;

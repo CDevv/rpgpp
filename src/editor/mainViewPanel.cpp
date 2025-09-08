@@ -28,7 +28,7 @@ void MainViewPanel::draw()
 		0, 0, static_cast<float>(logoTexture.width), static_cast<float>(logoTexture.height)
 	};
 	Rectangle destRect = Rectangle {
-		rect.x + (((rect.width / 2) - (originRect.width / 2)) / 2), rect.y + 24, rect.width / 2, rect.width / 2
+		rect.x + (((rect.width / 2) - (originRect.width / 2))), rect.y + 24, originRect.width, originRect.height
 	};
 
 	DrawTexturePro(logoTexture, originRect, destRect, Vector2 { 0, 0 }, 0.0f, WHITE);

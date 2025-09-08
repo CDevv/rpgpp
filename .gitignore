@@ -43,7 +43,13 @@ build/
 bin/
 .cache/
 .xmake/
+*.kdev4
+.kdev4/
+build/
+*.sublime-project
+*.sublime-workspace
 
 !lua.exe
 !vswhere.exe
 !/game-src/** 
+
