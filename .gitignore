@@ -48,7 +48,6 @@ bin/
 build/
 *.sublime-project
 *.sublime-workspace
-docs/C++ API
 
 !lua.exe
 !vswhere.exe
