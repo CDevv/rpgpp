@@ -9,8 +9,11 @@
  */
 class Tile {
 private:
+    /** The Tile's source AtlasTile. */
     AtlasTile atlasTile;
+    /** The Tile's World coordinates. */
     Vector2 worldCoords;
+    /** Whether this Tile is placed and will be drawn or not. */
     bool placed;
 public:
     Tile();

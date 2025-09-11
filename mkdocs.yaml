@@ -1,8 +1,14 @@
 site_name: RPG++ Engine
 site_description:  
+repo_url: https://github.com/CDevv/rpgpp
+repo_name: rpgpp
 
 theme:
+  logo: 'logo.png'
+  favicon: 'logo.png'
   name: material
+  icon:
+    repo: fontawesome/brands/github
   custom_dir: docs/overrides
   features:
     - navigation.indexes

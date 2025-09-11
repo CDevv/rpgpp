@@ -8,7 +8,9 @@
  */
 class AtlasTile {
 private:
+    /** Pointer to the used Texture */
     Texture *texture;
+    /** The atlas (source) coordinates from the TileSet. */
     Vector2 atlasCoords;
 public:
     /**
