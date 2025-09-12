@@ -50,6 +50,7 @@ build/
 *.sublime-project
 *.sublime-workspace
 docs/C++ API
+site/
 
 !lua.exe
 !vswhere.exe

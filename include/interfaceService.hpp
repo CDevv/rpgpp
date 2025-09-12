@@ -2,6 +2,7 @@
 #define _RPGPP_INTERFACESERVICE_H
 
 #include <raylib.h>
+#include "dialogueBalloon.hpp"
 
 /** The InterfaceService acts for the User Interface (UI). */
 class InterfaceService {
@@ -9,10 +10,19 @@ private:
     /** The loaded font that will be used for the User Interface. */
     Font font;
     bool fpsVisible;
+    /** Texture for UI components. */
+    Texture uiTexture;
+    /** Component for in-game dialogue. */
+    DialogueBalloon dialogue;
+    void drawScaledNPatch(Texture2D texture, NPatchInfo info, Rectangle destRec, int scale);
 public:
     /** Empty constructor. */
     InterfaceService();
     ~InterfaceService();
+    /** Get the font used for the game's UI. */
+    Font getFont();
+    /** Get the texture, used for UI nine-patch components. */
+    Texture getTexture();
     /** Update routine. */
     void update();
     /** Draw routine. */
