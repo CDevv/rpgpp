@@ -41,6 +41,7 @@ rpgpp
 librpgpp.so
 build/
 bin/
+*.bin
 .cache/
 .xmake/
 *.kdev4

@@ -17,6 +17,8 @@ Player::Player(std::unique_ptr<Actor> actor, Room& room)
     this->actor = std::move(actor);
     this->idleDirection = RPGPP_DOWN_IDLE;
     this->currentDirection = RPGPP_DOWN;
+
+    this->position = this->actor->getPosition();
 }
 
 void Player::unload()

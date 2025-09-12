@@ -64,6 +64,8 @@ public:
     Vector2 getPosition();
     /** Set this Actor's position. */
     void setPosition(Vector2 position);
+    /** Set Actor position relative to a tile in the world. */
+    void setTilePosition(Vector2 position, Vector2 tileSize);
     /** Get the bounding box of this Actor. */
     Rectangle getRect();
     /** Get a reference to this Actor's TileSet. */

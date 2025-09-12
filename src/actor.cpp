@@ -331,6 +331,19 @@ void Actor::moveByVelocity(Vector2 velocity)
     this->position = resultVector;
 }
 
+void Actor::setTilePosition(Vector2 position, Vector2 tileSize)
+{
+    Vector2 actorTileSize = tileSet->getTileSize();
+    Vector2 absolutePos = Vector2 {
+        position.x * tileSize.x * RPGPP_DRAW_MULTIPLIER, position.y * tileSize.y * RPGPP_DRAW_MULTIPLIER
+    };
+
+    Vector2 resultVector = Vector2 {
+        absolutePos.x, absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) - (tileSize.y * RPGPP_DRAW_MULTIPLIER))
+    };
+    this->position = resultVector;
+}
+
 Rectangle Actor::getCollisionRect(Vector2 velocity)
 {
     Vector2 newPos = Vector2Add(position, velocity);

@@ -27,10 +27,11 @@ Room::Room(std::string fileName)
     this->collisions = std::make_unique<CollisionsContainer>();
     this->actors = std::make_unique<std::vector<Actor>>();
 
+    this->tileMap = std::make_unique<TileMap>(fileName);
     std::unique_ptr<Actor> actor = std::make_unique<Actor>("actors/playerActor.ractor");
+    actor->setTilePosition(Vector2 {1, 0}, tileMap->getTileSet()->getTileSize());
     std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
 
-    this->tileMap = std::make_unique<TileMap>(fileName);
     this->addPlayer(std::move(player));
 
     char* jsonString = LoadFileText(fileName.c_str());
@@ -71,10 +72,12 @@ Room::Room(RoomBin bin)
     this->collisions = std::make_unique<CollisionsContainer>();
     this->actors = std::make_unique<std::vector<Actor>>();
 
-    std::unique_ptr<Actor> actor = std::make_unique<Actor>(Game::getBin().actors.at(0));
-    std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
-
     this->tileMap = std::make_unique<TileMap>(bin);
+
+    std::unique_ptr<Actor> actor = std::make_unique<Actor>(Game::getBin().actors.at(0));
+    actor->setTilePosition(Vector2 {1, 0}, tileMap->getTileSet()->getTileSize());
+    std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
+    
     this->addPlayer(std::move(player));
 
     for (auto intBin : bin.interactables) {
