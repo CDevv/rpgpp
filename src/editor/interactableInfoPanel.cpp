@@ -88,14 +88,16 @@ InteractableType InteractableInfoPanel::getType()
     return this->type;
 }
 
-void InteractableInfoPanel::setSelectedInteractable(Interactable interactable)
+void InteractableInfoPanel::setSelectedInteractable(Interactable* interactable)
 {
-    if (interactable.isValid()) {
-        if (!Vector2Equals(interactableWorldPos, interactable.getWorldPos())) {
-            this->typeNumber = static_cast<int>(interactable.getType());
+    if (interactable == nullptr) return;
+
+    if (interactable->isValid()) {
+        if (!Vector2Equals(interactableWorldPos, interactable->getWorldPos())) {
+            this->typeNumber = static_cast<int>(interactable->getType());
         }
 
-        interactableWorldPos = interactable.getWorldPos();
+        interactableWorldPos = interactable->getWorldPos();
     } else {
         interactableWorldPos = Vector2 { -1, -1 };
     }

@@ -86,7 +86,7 @@ Room::Room(RoomBin bin)
     }
 
     interactables->add(1, 2, INT_TWO);
-    interactables->get(1, 2)->setProp("text", "Hello.");
+    interactables->get(1, 2)->setProp("text", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec placerat vel nulla eget ullamcorper.");
 
     for (auto collisionBin : bin.collisions) {
         collisions->addCollisionTile(collisionBin.x, collisionBin.y);

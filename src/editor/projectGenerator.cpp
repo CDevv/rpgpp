@@ -113,9 +113,9 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
         }
         for (auto interactable : room->getInteractableTiles()) {
             InteractableBin intBin;
-            intBin.x = static_cast<int>(interactable.getRect().x / 48);
-            intBin.y = static_cast<int>(interactable.getRect().y / 48);
-            intBin.type = static_cast<int>(interactable.getType());
+            intBin.x = static_cast<int>(interactable->getRect().x / 48);
+            intBin.y = static_cast<int>(interactable->getRect().y / 48);
+            intBin.type = static_cast<int>(interactable->getType());
             roomBin.interactables.push_back(intBin);
         }
         room.reset();

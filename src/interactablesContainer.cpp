@@ -20,7 +20,7 @@ void InteractablesContainer::add(int x, int y, InteractableType type) {
 
 Interactable* InteractablesContainer::get(int x, int y)
 {
-    Interactable* result;
+    Interactable* result = nullptr;
     for (auto&& i : vec) {
         if (i->getWorldPos().x == x && i->getWorldPos().y == y) {
             result = i.get();

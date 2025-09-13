@@ -225,14 +225,14 @@ void MapViewBox::drawTiles()
         for (auto i : room->getInteractableTiles()) {
             Rectangle intRect = Rectangle
             {
-                (i.getWorldPos().x * atlasTileSize), (i.getWorldPos().y * atlasTileSize),
+                (i->getWorldPos().x * atlasTileSize), (i->getWorldPos().y * atlasTileSize),
                 static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
             };
 
             DrawRectangleRec(intRect, Fade(YELLOW, 0.8f));
             DrawRectangleLinesEx(intRect, 0.5f, YELLOW);
 
-            int typeNum = static_cast<int>(i.getType());
+            int typeNum = static_cast<int>(i->getType());
             Vector2 intPos = Vector2 { intRect.x, intRect.y };
             DrawTextEx(font, TextFormat("Type: %i", typeNum), intPos, 6, 0.5f, BLACK);
         }

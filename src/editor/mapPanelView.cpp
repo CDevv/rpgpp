@@ -99,8 +99,10 @@ void MapPanelView::update()
 
     if (fs.getType() == FILE_ROOM && fs.getRoom() != nullptr) {
         Vector2 selectedTileWorldPos = worldView->getSelectedWorldTile();
-        Interactable selectedInteractable = fs.getRoom()->getInteractables().get(selectedTileWorldPos.x, selectedTileWorldPos.y);
-        interactableInfo.setSelectedInteractable(selectedInteractable);
+        if (selectedTileWorldPos.x != -1) {
+            Interactable* selectedInteractable = fs.getRoom()->getInteractables().get(selectedTileWorldPos.x, selectedTileWorldPos.y);
+            interactableInfo.setSelectedInteractable(selectedInteractable);
+        }
     }
 }
 

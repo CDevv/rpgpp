@@ -22,7 +22,7 @@ public:
     void draw();
     void setActionMode(RoomAction mode);
     InteractableType getType();
-    void setSelectedInteractable(Interactable interactable);
+    void setSelectedInteractable(Interactable* interactable);
 };
 
 #endif
