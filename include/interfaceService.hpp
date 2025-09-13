@@ -14,7 +14,6 @@ private:
     Texture uiTexture;
     /** Component for in-game dialogue. */
     DialogueBalloon dialogue;
-    void drawScaledNPatch(Texture2D texture, NPatchInfo info, Rectangle destRec, int scale);
 public:
     /** Empty constructor. */
     InterfaceService();

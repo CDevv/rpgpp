@@ -41,6 +41,7 @@ void InterfaceService::update()
     if (IsKeyPressed(KEY_Q)) {
         fpsVisible = !fpsVisible;
     }
+    dialogue.update();
 }
 
 void InterfaceService::draw()
@@ -51,11 +52,6 @@ void InterfaceService::draw()
     }
 
     dialogue.draw();
-}
-
-void InterfaceService::drawScaledNPatch(Texture2D texture, NPatchInfo info, Rectangle destRec, int scale)
-{
-    
 }
 
 void InterfaceService::unload()
