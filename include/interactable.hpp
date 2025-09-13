@@ -2,6 +2,8 @@
 #define _RPGPP_INTERACTABLE_H
 
 #include <raylib.h>
+#include <map>
+#include <string>
 
 /** ENum for interactable types */
 enum InteractableType {
@@ -23,6 +25,9 @@ private:
     Vector2 absolutePos;
     /** The Rectangle of this Interactable */
     Rectangle rect;
+protected:
+    /** Interactable properties. */
+    std::map<std::string, std::string> props;
 public:
     /** Empty constructor */
     Interactable();
@@ -40,6 +45,8 @@ public:
     /** Invoke the virtual interact method. Each Interactable has its own interact method. 
      * Shall be invoked when the player interacts with the Interactable */
     virtual void interact();
+    /** Set a property of this interactable. */
+    void setProp(std::string key, std::string value);
 };
 
 class InteractableOne : public Interactable {
@@ -52,6 +59,7 @@ class InteractableTwo : public Interactable {
 public:
     InteractableTwo(Vector2 tilePos, int tileSize);
     void interact() override;
+    void setText(std::string t);
 };
 
 #endif

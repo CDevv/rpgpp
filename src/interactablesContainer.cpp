@@ -10,20 +10,20 @@ void InteractablesContainer::add(int x, int y, InteractableType type) {
 
     switch (type) {
         case INT_BLANK:
-            vec.push_back(Interactable(type, position, 48));
+            vec.push_back(std::make_unique<InteractableOne>(position, 48));
             break;
         case INT_TWO:
-            vec.push_back(InteractableTwo(position, 48));
+            vec.push_back(std::make_unique<InteractableTwo>(position, 48));
             break;
     }
 }
 
-Interactable InteractablesContainer::get(int x, int y)
+Interactable* InteractablesContainer::get(int x, int y)
 {
-    Interactable result;
-    for (Interactable i : vec) {
-        if (i.getWorldPos().x == x && i.getWorldPos().y == y) {
-            result = i;
+    Interactable* result;
+    for (auto&& i : vec) {
+        if (i->getWorldPos().x == x && i->getWorldPos().y == y) {
+            result = i.get();
         }
     }
 
@@ -31,8 +31,8 @@ Interactable InteractablesContainer::get(int x, int y)
 }
 
 void InteractablesContainer::removeInteractable(int x, int y) {
-    for (std::vector<Interactable>::iterator it = vec.begin(); it != vec.end();) {
-        if (it->getWorldPos().x == x && it->getWorldPos().y == y) {
+    for (std::vector<std::unique_ptr<Interactable>>::iterator it = vec.begin(); it != vec.end();) {
+        if (it->get()->getWorldPos().x == x && it->get()->getWorldPos().y == y) {
             vec.erase(it);
         } else {
             ++it;
@@ -46,6 +46,11 @@ void InteractablesContainer::setInteractableType(int x, int y, InteractableType 
     this->add(x, y, type);
 }
 
-std::vector<Interactable> InteractablesContainer::getVector() {
-    return this->vec;
+std::vector<Interactable*> InteractablesContainer::getVector() 
+{
+    std::vector<Interactable*> result;
+    for (auto&& in : this->vec) {
+        result.push_back(in.get());
+    }
+    return result;
 }

@@ -22,6 +22,8 @@ public:
     Font getFont();
     /** Get the texture, used for UI nine-patch components. */
     Texture getTexture();
+    /** Open the dialogue with a certain line. */
+    void showDialogue(DialogueLine line);
     /** Update routine. */
     void update();
     /** Draw routine. */

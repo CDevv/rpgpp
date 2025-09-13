@@ -85,6 +85,9 @@ Room::Room(RoomBin bin)
         interactables->add(intBin.x, intBin.y, itype);
     }
 
+    interactables->add(1, 2, INT_TWO);
+    interactables->get(1, 2)->setProp("text", "Hello.");
+
     for (auto collisionBin : bin.collisions) {
         collisions->addCollisionTile(collisionBin.x, collisionBin.y);
     }
@@ -109,9 +112,9 @@ json Room::dumpJson()
     auto interactablesVector = std::vector<std::vector<int>>();
     for (auto&& interactable : interactables->getVector()) {
         std::vector<int> interactableVector;
-        interactableVector.push_back(interactable.getWorldPos().x);
-        interactableVector.push_back(interactable.getWorldPos().y);
-        interactableVector.push_back(static_cast<int>(interactable.getType()));
+        interactableVector.push_back(interactable->getWorldPos().x);
+        interactableVector.push_back(interactable->getWorldPos().y);
+        interactableVector.push_back(static_cast<int>(interactable->getType()));
 
         interactablesVector.push_back(interactableVector);
     }
@@ -143,7 +146,7 @@ void Room::draw()
 {
     this->tileMap->draw();
     for (auto i : interactables->getVector()) {
-        Rectangle rect = i.getRect();
+        Rectangle rect = i->getRect();
         DrawRectangleRec(rect, Fade(YELLOW, 0.5f));
     }
     for (auto c : collisions->getVector()) {
@@ -184,7 +187,7 @@ std::vector<Vector2> Room::getCollisionTiles()
     return this->collisions->getVector();
 }
 
-std::vector<Interactable> Room::getInteractableTiles()
+std::vector<Interactable*> Room::getInteractableTiles()
 {
     return this->interactables->getVector();
 }

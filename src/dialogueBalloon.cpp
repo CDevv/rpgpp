@@ -6,6 +6,8 @@ DialogueBalloon::DialogueBalloon() {}
 
 DialogueBalloon::DialogueBalloon(Rectangle rect)
 {
+	this->firstCharTyped = false;
+	this->active = false;
 	this->frameCounter = 0;
 	this->charIndex = 0;
 	this->rowIndex = 0;
@@ -21,34 +23,75 @@ DialogueBalloon::DialogueBalloon(Rectangle rect)
 
 void DialogueBalloon::update()
 {
-	frameCounter++;
-	if (frameCounter > (60/20)) {
-		frameCounter = 0;
-		if (charIndex < text.size()) {
-			charIndex++;
+	if (active) {
+		if (firstCharTyped == false) {
+			firstCharTyped = true;
+			return;
+		}
+
+		bool finished = false;
+		if (charIndex == (text.size() - 1) || charIndex == text.size()) {
+			finished = true;
+		}
+
+		if (IsKeyPressed(KEY_Z)) {
+			if (finished) {
+				hideDialogue();
+			} else {
+				charIndex = (text.size() - 1);
+			}
+		}
+
+		frameCounter++;
+		if (frameCounter > (60/20)) {
+			frameCounter = 0;
+			if (charIndex < text.size()) {
+				charIndex++;
+			}
 		}
 	}
 }
 
 void DialogueBalloon::draw()
 {
-	Font font = Game::getUi().getFont();
-	Texture uiTexture = Game::getUi().getTexture();
+	if (active) {
+		Font font = Game::getUi().getFont();
+		Texture uiTexture = Game::getUi().getTexture();
 
-	Vector2 origin = { 0.0f, 0.0f };
-	NPatchInfo info = NPatchInfo { 
-        Rectangle { 0, 0, static_cast<float>(uiTexture.width), static_cast<float>(uiTexture.height) },
-        3 * 3, 3 * 3, uiTexture.width - (3 * 3), uiTexture.height - (3 * 3)
-    };
+		Vector2 origin = { 0.0f, 0.0f };
+		NPatchInfo info = NPatchInfo { 
+	        Rectangle { 0, 0, static_cast<float>(uiTexture.width), static_cast<float>(uiTexture.height) },
+	        3 * 3, 3 * 3, uiTexture.width - (3 * 3), uiTexture.height - (3 * 3)
+	    };
 
-    DrawTextureNPatch(uiTexture, info, rect, origin, 0.0f, WHITE);
+	    DrawTextureNPatch(uiTexture, info, rect, origin, 0.0f, WHITE);
 
-    lineText = text;
-    lineTextStart = 0;
-    rowIndex = 0;
-    for (int i = 0; i < charIndex; i++) {
-    	putChar(i);
-    }
+	    lineText = text;
+	    lineTextStart = 0;
+	    rowIndex = 0;
+	    for (int i = 0; i < charIndex; i++) {
+	    	putChar(i);
+    	}
+	}
+}
+
+void DialogueBalloon::showDialogue(DialogueLine line)
+{
+	if (active) return;
+
+	firstCharTyped = false;
+	active = true;
+	this->text = line.text;
+	this->lineText = text;
+
+	this->frameCounter = 0;
+	this->charIndex = 0;
+	this->rowIndex = 0;
+}
+
+void DialogueBalloon::hideDialogue()
+{
+	active = false;
 }
 
 void DialogueBalloon::putChar(int charIndex)
@@ -66,9 +109,10 @@ void DialogueBalloon::putChar(int charIndex, Color color)
 	} else {
 		colIndex++;
 		Vector2 stringSize = MeasureTextEx(font, TextSubtext(text.c_str(), lineTextStart, charIndex - lineTextStart), 13 * 3, 1.0f);
+		Vector2 singleCharSize = MeasureTextEx(font, TextSubtext(text.c_str(), charIndex, 1), 13 * 3, 1.0f);
 
 		float resultX = (textRect.x + stringSize.x);
-		if ((textRect.x + stringSize.x) > (textRect.x + textRect.width)) {
+		if ((textRect.x + stringSize.x + singleCharSize.x) > (textRect.x + textRect.width)) {
 			lineTextStart = charIndex;
 			resultX = textRect.x;
 			rowIndex++;

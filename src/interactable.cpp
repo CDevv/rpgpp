@@ -1,6 +1,8 @@
 #include "interactable.hpp"
 #include "game.hpp"
 #include <stdio.h>
+#include "game.hpp"
+#include "interfaceService.hpp"
 
 Interactable::Interactable()
 {
@@ -54,6 +56,11 @@ void Interactable::interact()
     }
 }
 
+void Interactable::setProp(std::string key, std::string value)
+{
+    props[key] = value;
+}
+
 InteractableOne::InteractableOne(Vector2 tilePos, int tileSize)
 : Interactable(INT_BLANK, tilePos, tileSize)
 {
@@ -73,5 +80,18 @@ void InteractableTwo::interact()
 {
     bool value = Game::getState().getProp("test");
     printf("state test: %s\n", value ? "true" : "false");
+
+    if (props.count("text") > 0) {
+        printf("text: %s \n", props["text"].c_str());
+
+        InterfaceService& ui = Game::getUi();
+        ui.showDialogue(DialogueLine {
+            "Character", props["text"]
+        });
+    }
 }
 
+void InteractableTwo::setText(std::string t)
+{
+    this->props["text"] = t;
+}

@@ -72,7 +72,7 @@ public:
     TileMap *getTileMap();
 
     std::vector<Vector2> getCollisionTiles();
-    std::vector<Interactable> getInteractableTiles();
+    std::vector<Interactable*> getInteractableTiles();
     /** Get a reference to the CollisionsContainer of this Room. */
     CollisionsContainer& getCollisions();
     /** Get a reference to the InteractablesContainer of this Room. */
