@@ -116,6 +116,14 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
             intBin.x = static_cast<int>(interactable->getRect().x / 48);
             intBin.y = static_cast<int>(interactable->getRect().y / 48);
             intBin.type = static_cast<int>(interactable->getType());
+
+            switch (interactable->getType()) {
+            case INT_TWO:
+                intBin.dialogue = (static_cast<InteractableTwo*>(interactable))->getDialogue();
+                break;
+            default:
+                break;
+            }
             roomBin.interactables.push_back(intBin);
         }
         room.reset();

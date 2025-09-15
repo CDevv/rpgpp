@@ -8,6 +8,8 @@
 #include <cstdint>
 #include <string>
 
+#include "dialogueBalloon.hpp"
+
 #define RPGPP_DRAW_MULTIPLIER (3)
 
 struct IVector 
@@ -43,6 +45,7 @@ struct InteractableBin
 	int x;
 	int y;
 	int type;
+	Dialogue dialogue;
 };
 
 struct TileSetBin

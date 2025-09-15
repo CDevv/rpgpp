@@ -15,6 +15,11 @@ void InteractablePropsState::setDefaults(Interactable *interactable)
 	}
 }
 
+void InteractablePropsState::setDialogue(Dialogue dialogue)
+{
+	this->dialogue = dialogue;
+}
+
 Dialogue InteractablePropsState::getDialogue()
 {
 	return dialogue;

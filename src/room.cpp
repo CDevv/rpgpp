@@ -54,6 +54,29 @@ Room::Room(std::string fileName)
         collisions->addCollisionTile(x, y);
     }
 
+    if (roomJson.contains("interactable_props")) {
+        std::map<std::string, std::vector<std::string>> interactablesPropsVec = roomJson.at("interactable_props");
+        for (auto [key, value] : interactablesPropsVec) {
+            int count = 0;
+            char** textSplit = TextSplit(key.c_str(), ';', &count);
+            if (count != 2) return;
+
+            int x = std::stoi(std::string(textSplit[0]));
+            int y = std::stoi(std::string(textSplit[1]));
+
+            Interactable* inter = interactables->get(x, y);
+            if (inter->getType() == INT_TWO) {
+                Dialogue dialogue;
+                dialogue.lines.push_back(DialogueLine {
+                    "Character", value.at(0)
+                });
+
+                (static_cast<InteractableTwo*>(inter))->setDialogue(dialogue);
+            }
+            //printf("%i;%i \n", x, y);
+        }
+    }
+
     UnloadFileText(jsonString);
 }
 
@@ -83,19 +106,17 @@ Room::Room(RoomBin bin)
     for (auto intBin : bin.interactables) {
         InteractableType itype = static_cast<InteractableType>(intBin.type);
         interactables->add(intBin.x, intBin.y, itype);
+
+        InteractableTwo* diag;
+        switch (itype) {
+        case INT_TWO:
+            diag = static_cast<InteractableTwo*>(interactables->get(intBin.x, intBin.y));
+            diag->setDialogue(intBin.dialogue);
+            break;
+        default:
+            break;
+        }
     }
-
-    interactables->add(1, 2, INT_TWO);
-    InteractableTwo* diag = static_cast<InteractableTwo*>(interactables->get(1, 2));
-
-    Dialogue dialogue;
-    dialogue.lines.push_back(DialogueLine {
-        "Character", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec placerat vel nulla eget ullamcorper."
-    });
-    dialogue.lines.push_back(DialogueLine {
-        "Character", "Second text."
-    });
-    diag->setDialogue(dialogue);
 
     for (auto collisionBin : bin.collisions) {
         collisions->addCollisionTile(collisionBin.x, collisionBin.y);
@@ -118,6 +139,8 @@ json Room::dumpJson()
     roomJson.push_back({"collision", collisionsVector});
 
     //Vector for interactables
+    auto interactablesProps = std::map<std::string, std::vector<std::string>>();
+
     auto interactablesVector = std::vector<std::vector<int>>();
     for (auto&& interactable : interactables->getVector()) {
         std::vector<int> interactableVector;
@@ -125,9 +148,23 @@ json Room::dumpJson()
         interactableVector.push_back(interactable->getWorldPos().y);
         interactableVector.push_back(static_cast<int>(interactable->getType()));
 
+        if (interactable->getType() == INT_TWO) {
+            InteractableTwo* dialogueInter = static_cast<InteractableTwo*>(interactable);
+            //
+            std::string key = TextFormat("%i;%i", 
+                static_cast<int>(interactable->getWorldPos().x),
+                static_cast<int>(interactable->getWorldPos().y));
+
+            std::vector<std::string> propsVec;
+            propsVec.push_back(dialogueInter->getDialogue().lines.at(0).text);
+
+            interactablesProps[key] = propsVec;
+        }
+
         interactablesVector.push_back(interactableVector);
     }
     roomJson.push_back({"interactables", interactablesVector});
+    roomJson.push_back({"interactable_props", interactablesProps});
 
     return roomJson;
 }

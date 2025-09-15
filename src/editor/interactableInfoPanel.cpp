@@ -89,9 +89,14 @@ void InteractableInfoPanel::draw()
 
 void InteractableInfoPanel::drawTypeProps()
 {
-    Rectangle lineRect;
-    Rectangle baseRect;
-    Rectangle labelRect;
+    Rectangle saveRect = Rectangle {
+        rect.x + 4, (rect.y + rect.height) - (24 + 4),
+        rect.width - 8, 24
+    };
+
+    if (GuiButton(saveRect, "Save..")) {
+        saveProps();
+    }
 
     switch (interactable->getType()) {
     case INT_TWO:
@@ -126,6 +131,21 @@ void InteractableInfoPanel::drawDialogueProps()
     }
     
     //GuiLabel(textRect, propsState.getDialogue().lines.at(0).text.c_str());
+}
+
+void InteractableInfoPanel::saveProps()
+{
+    Dialogue dialogue;
+    InteractableTwo* dialogueInter;
+
+    if (interactable->getType() == INT_TWO) {
+        dialogue = propsState.getDialogue();
+        dialogue.lines.at(0).text = diagText.get();
+
+        propsState.setDialogue(dialogue);
+        dialogueInter = static_cast<InteractableTwo*>(interactable);
+        dialogueInter->setDialogue(dialogue);
+    }
 }
 
 void InteractableInfoPanel::setActionMode(RoomAction mode)

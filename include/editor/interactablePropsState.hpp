@@ -10,6 +10,7 @@ private:
 public:
 	InteractablePropsState();
 	void setDefaults(Interactable* interactable);
+	void setDialogue(Dialogue dialogue);
 	Dialogue getDialogue();
 };
 
