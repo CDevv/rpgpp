@@ -2,6 +2,7 @@
 #define _RPGPP_DIALOGUEBALLOON_H
 
 #include <string>
+#include <vector>
 #include <raylib.h>
 
 struct DialogueLine {
@@ -11,8 +12,14 @@ struct DialogueLine {
 	Texture portrait;
 };
 
+struct Dialogue {
+	std::vector<DialogueLine> lines;
+};
+
 class DialogueBalloon {
 private:
+	Rectangle rect;
+	Rectangle textRect;
 	bool firstCharTyped;
 	bool active;
 	int frameCounter;
@@ -20,8 +27,8 @@ private:
 	int rowIndex;
 	int colIndex;
 	int lineTextStart;
-	Rectangle rect;
-	Rectangle textRect;
+	Dialogue dialogue;
+	int lineIndex;
 	std::string text;
 	std::string lineText;
 public:
@@ -29,7 +36,7 @@ public:
 	DialogueBalloon(Rectangle rect);
 	void update();
 	void draw();
-	void showDialogue(DialogueLine line);
+	void showDialogue(Dialogue dialogue);
 	void hideDialogue();
 	void putChar(int charIndex);
 	void putChar(int charIndex, Color color);

@@ -6,6 +6,13 @@ DialogueBalloon::DialogueBalloon() {}
 
 DialogueBalloon::DialogueBalloon(Rectangle rect)
 {
+	this->rect = rect;
+	this->textRect = Rectangle {
+		rect.x + 9, rect.y + 9, rect.width - (9 * 2), rect.height - (9 * 2)
+	};
+
+	this->lineIndex = 0;
+
 	this->firstCharTyped = false;
 	this->active = false;
 	this->frameCounter = 0;
@@ -13,10 +20,7 @@ DialogueBalloon::DialogueBalloon(Rectangle rect)
 	this->rowIndex = 0;
 	this->colIndex = 0;
 	this->lineTextStart = 0;
-	this->rect = rect;
-	this->textRect = Rectangle {
-		rect.x + 9, rect.y + 9, rect.width - (9 * 2), rect.height - (9 * 2)
-	};
+	
 	this->text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec placerat vel nulla eget ullamcorper. Proin varius erat in tristique dignissim. Aliquam erat volutpat.";
 	this->lineText = text;
 }
@@ -36,7 +40,15 @@ void DialogueBalloon::update()
 
 		if (IsKeyPressed(KEY_Z)) {
 			if (finished) {
-				hideDialogue();
+				if (lineIndex == (dialogue.lines.size() - 1)) {
+					hideDialogue();
+				} else {
+					lineIndex++;
+					text = dialogue.lines.at(lineIndex).text;
+					charIndex = 0;
+					rowIndex = 0;
+					firstCharTyped = false;
+				}
 			} else {
 				charIndex = (text.size() - 1);
 			}
@@ -75,13 +87,16 @@ void DialogueBalloon::draw()
 	}
 }
 
-void DialogueBalloon::showDialogue(DialogueLine line)
+void DialogueBalloon::showDialogue(Dialogue dialogue)
 {
 	if (active) return;
 
+	this->dialogue = dialogue;
+	this->lineIndex = 0;
+
 	firstCharTyped = false;
 	active = true;
-	this->text = line.text;
+	this->text = dialogue.lines.at(0).text;
 	this->lineText = text;
 
 	this->frameCounter = 0;

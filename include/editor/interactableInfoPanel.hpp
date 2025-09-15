@@ -4,6 +4,8 @@
 #include "worldViewBox.hpp"
 #include <raylib.h>
 #include "interactable.hpp"
+#include "interactablePropsState.hpp"
+#include <memory>
 
 class InteractableInfoPanel {
 private:
@@ -14,6 +16,12 @@ private:
     Vector2 interactableWorldPos;
     int typeNumber;
     bool typeDropdownEditMode;
+    Interactable* interactable;
+    InteractablePropsState propsState;
+    std::unique_ptr<char[]> diagText;
+    bool diagTextEditMode;
+    void drawTypeProps();
+    void drawDialogueProps();
 public:
     InteractableInfoPanel();
     InteractableInfoPanel(Rectangle rect);

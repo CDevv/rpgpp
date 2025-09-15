@@ -17,6 +17,11 @@ InteractableInfoPanel::InteractableInfoPanel(Rectangle rect)
     this->typeNumber = 0;
     this->typeDropdownEditMode = false;
     this->interactableWorldPos = Vector2 { -1, -1 };
+    this->interactable = nullptr;
+
+    this->diagText = std::make_unique<char[]>(1);
+    diagText[0] = '\0';
+    this->diagTextEditMode = false;
 }
 
 void InteractableInfoPanel::setInitial(InteractableType type)
@@ -69,6 +74,10 @@ void InteractableInfoPanel::draw()
                 if (GuiDropdownBox(dropdownRect, "Blank;Two", &typeNumber, typeDropdownEditMode)) {
                     typeDropdownEditMode = !typeDropdownEditMode;
                 }
+
+                if (interactable != nullptr) {
+                    drawTypeProps();
+                }
             } else {
                 GuiLabel(labelRect, "No selected interactable..");
             }
@@ -76,6 +85,47 @@ void InteractableInfoPanel::draw()
         default:
             break;
     }
+}
+
+void InteractableInfoPanel::drawTypeProps()
+{
+    Rectangle lineRect;
+    Rectangle baseRect;
+    Rectangle labelRect;
+
+    switch (interactable->getType()) {
+    case INT_TWO:
+        drawDialogueProps();
+        break;
+    default:
+        break;
+    }
+}
+
+void InteractableInfoPanel::drawDialogueProps()
+{
+    Rectangle baseRect = Rectangle {
+        rect.x + 8, rect.y + 4 + (24 * 3),
+        rect.width - 16, 24
+    };
+
+    Rectangle lineRect = baseRect;
+    lineRect.height = 4;
+    lineRect.y += 24;
+    GuiLine(lineRect, NULL);
+
+    Rectangle labelRect = baseRect;
+    labelRect.y += 24 + 4;
+    GuiLabel(labelRect, "Dialogue Text");
+
+    Rectangle textRect = baseRect;
+    textRect.y += (2 * 24) + 4;
+    
+    if (GuiTextBox(textRect, diagText.get(), 13, diagTextEditMode)) {
+        diagTextEditMode = !diagTextEditMode;
+    }
+    
+    //GuiLabel(textRect, propsState.getDialogue().lines.at(0).text.c_str());
 }
 
 void InteractableInfoPanel::setActionMode(RoomAction mode)
@@ -90,11 +140,41 @@ InteractableType InteractableInfoPanel::getType()
 
 void InteractableInfoPanel::setSelectedInteractable(Interactable* interactable)
 {
-    if (interactable == nullptr) return;
+    if (interactable == nullptr) {
+        interactableWorldPos = Vector2 { -1, -1 };
+        return;
+    };
 
     if (interactable->isValid()) {
+        this->interactable = interactable;
+
+        if (interactable->getType() == INT_TWO) {
+            InteractableTwo* diagInt = static_cast<InteractableTwo*>(interactable);
+            if (diagInt->getDialogue().lines.size() == 0) {
+                Dialogue dialogue;
+                dialogue.lines.push_back(DialogueLine {
+                    "Empty", "Lorum ipsum!"
+                });
+                diagInt->setDialogue(dialogue);
+            }
+        }
+
+        //if its the same one..
         if (!Vector2Equals(interactableWorldPos, interactable->getWorldPos())) {
             this->typeNumber = static_cast<int>(interactable->getType());
+
+            this->propsState.setDefaults(interactable);
+
+            if (interactable->getType() == INT_TWO) {
+                std::string diagString = "Lorum ipsum!";
+                if (propsState.getDialogue().lines.size() != 0) {
+                    diagString = propsState.getDialogue().lines.at(0).text;
+                }
+                int arrSize = diagString.size();
+                this->diagText.reset(new char[arrSize]);
+                std::copy(diagString.begin(), diagString.end(), diagText.get());
+                this->diagText[arrSize] = '\0';
+            }
         }
 
         interactableWorldPos = interactable->getWorldPos();

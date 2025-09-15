@@ -1,6 +1,6 @@
 #include "interactable.hpp"
-#include "game.hpp"
 #include <stdio.h>
+#include <raylib.h>
 #include "game.hpp"
 #include "interfaceService.hpp"
 
@@ -74,24 +74,25 @@ void InteractableOne::interact()
 InteractableTwo::InteractableTwo(Vector2 tilePos, int tileSize)
 : Interactable(INT_TWO, tilePos, tileSize)
 {
+    Dialogue defDialog;
+    defDialog.lines.push_back(DialogueLine {
+        "Character", "Lorem ipsum!"
+    });
+    this->dialogue = defDialog;
 }
 
 void InteractableTwo::interact()
 {
-    bool value = Game::getState().getProp("test");
-    printf("state test: %s\n", value ? "true" : "false");
-
-    if (props.count("text") > 0) {
-        printf("text: %s \n", props["text"].c_str());
-
-        InterfaceService& ui = Game::getUi();
-        ui.showDialogue(DialogueLine {
-            "Character", props["text"]
-        });
-    }
+    InterfaceService& ui = Game::getUi();
+    ui.showDialogue(dialogue);
 }
 
-void InteractableTwo::setText(std::string t)
+Dialogue InteractableTwo::getDialogue()
 {
-    this->props["text"] = t;
+    return dialogue;
+}
+
+void InteractableTwo::setDialogue(Dialogue dialogue)
+{
+    this->dialogue = dialogue;
 }

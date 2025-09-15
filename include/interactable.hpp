@@ -5,6 +5,8 @@
 #include <map>
 #include <string>
 
+#include "dialogueBalloon.hpp"
+
 /** ENum for interactable types */
 enum InteractableType {
     INT_BLANK,
@@ -56,10 +58,13 @@ public:
 };
 
 class InteractableTwo : public Interactable {
+private:
+    Dialogue dialogue;
 public:
     InteractableTwo(Vector2 tilePos, int tileSize);
     void interact() override;
-    void setText(std::string t);
+    Dialogue getDialogue();
+    void setDialogue(Dialogue dialogue);
 };
 
 #endif

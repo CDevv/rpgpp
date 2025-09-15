@@ -36,21 +36,15 @@ Texture InterfaceService::getTexture()
     return uiTexture;
 }
 
-void InterfaceService::showDialogue(DialogueLine line)
+void InterfaceService::showDialogue(Dialogue dialogue)
 {
-    dialogue.showDialogue(line);
+    this->dialogue.showDialogue(dialogue);
 }
 
 void InterfaceService::update()
 {
     if (IsKeyPressed(KEY_Q)) {
         fpsVisible = !fpsVisible;
-    }
-    if (IsKeyPressed(KEY_W)) {
-        dialogue.showDialogue(DialogueLine {
-            "Character", 
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec placerat vel nulla eget ullamcorper. Proin varius erat in tristique dignissim. Aliquam erat volutpat."
-        });
     }
 
     dialogue.update();

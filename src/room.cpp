@@ -86,7 +86,16 @@ Room::Room(RoomBin bin)
     }
 
     interactables->add(1, 2, INT_TWO);
-    interactables->get(1, 2)->setProp("text", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec placerat vel nulla eget ullamcorper.");
+    InteractableTwo* diag = static_cast<InteractableTwo*>(interactables->get(1, 2));
+
+    Dialogue dialogue;
+    dialogue.lines.push_back(DialogueLine {
+        "Character", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec placerat vel nulla eget ullamcorper."
+    });
+    dialogue.lines.push_back(DialogueLine {
+        "Character", "Second text."
+    });
+    diag->setDialogue(dialogue);
 
     for (auto collisionBin : bin.collisions) {
         collisions->addCollisionTile(collisionBin.x, collisionBin.y);
