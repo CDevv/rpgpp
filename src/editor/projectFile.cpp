@@ -11,6 +11,21 @@ ProjectFile::ProjectFile(std::string relativePath, EngineFileType fileType)
     this->actor = std::unique_ptr<Actor>{};
 }
 
+void ProjectFile::setFromPath(std::string relativePath)
+{
+    std::string fileExtension = GetFileExtension(relativePath.c_str());
+    if (TextIsEqual(fileExtension.c_str(), ".rtiles")) {
+        tileSet.reset(new TileSet(relativePath));
+        fileType = FILE_TILESET;
+    } else if (TextIsEqual(fileExtension.c_str(), ".rmap")) {
+        room.reset(new Room(relativePath));
+        fileType = FILE_ROOM;
+    } else if (TextIsEqual(fileExtension.c_str(), ".ractor")) {
+        actor.reset(new Actor(relativePath));
+        fileType = FILE_ACTOR;
+    }
+}
+
 EngineFileType ProjectFile::getFileType()
 {
     return fileType;

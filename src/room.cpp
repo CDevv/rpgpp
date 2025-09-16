@@ -37,15 +37,6 @@ Room::Room(std::string fileName)
     char* jsonString = LoadFileText(fileName.c_str());
     json roomJson = json::parse(jsonString);
 
-    std::vector<std::vector<int>> interactablesVec = roomJson.at("interactables");
-    for (auto v : interactablesVec) {
-        int x = v[0];
-        int y = v[1];
-        InteractableType itype = static_cast<InteractableType>(v[2]);
-
-        interactables->add(x, y, itype);
-    }
-
     std::vector<std::vector<int>> collisionsVec = roomJson.at("collision");
     for (auto v : collisionsVec) {
         int x = v[0];
@@ -54,28 +45,7 @@ Room::Room(std::string fileName)
         collisions->addCollisionTile(x, y);
     }
 
-    if (roomJson.contains("interactable_props")) {
-        std::map<std::string, std::vector<std::string>> interactablesPropsVec = roomJson.at("interactable_props");
-        for (auto [key, value] : interactablesPropsVec) {
-            int count = 0;
-            char** textSplit = TextSplit(key.c_str(), ';', &count);
-            if (count != 2) return;
-
-            int x = std::stoi(std::string(textSplit[0]));
-            int y = std::stoi(std::string(textSplit[1]));
-
-            Interactable* inter = interactables->get(x, y);
-            if (inter->getType() == INT_TWO) {
-                Dialogue dialogue;
-                dialogue.lines.push_back(DialogueLine {
-                    "Character", value.at(0)
-                });
-
-                (static_cast<InteractableTwo*>(inter))->setDialogue(dialogue);
-            }
-            //printf("%i;%i \n", x, y);
-        }
-    }
+    interactables->addJsonData(roomJson);
 
     UnloadFileText(jsonString);
 }
@@ -103,20 +73,7 @@ Room::Room(RoomBin bin)
     
     this->addPlayer(std::move(player));
 
-    for (auto intBin : bin.interactables) {
-        InteractableType itype = static_cast<InteractableType>(intBin.type);
-        interactables->add(intBin.x, intBin.y, itype);
-
-        InteractableTwo* diag;
-        switch (itype) {
-        case INT_TWO:
-            diag = static_cast<InteractableTwo*>(interactables->get(intBin.x, intBin.y));
-            diag->setDialogue(intBin.dialogue);
-            break;
-        default:
-            break;
-        }
-    }
+    interactables->addBinVector(bin.interactables);
 
     for (auto collisionBin : bin.collisions) {
         collisions->addCollisionTile(collisionBin.x, collisionBin.y);

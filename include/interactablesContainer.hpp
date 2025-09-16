@@ -2,8 +2,11 @@
 #define _RPGPP_INTERACTABLESCONTAINER_H
 
 #include "interactable.hpp"
+#include "gamedata.hpp"
 #include <vector>
 #include <memory>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 /** Container of Interactables that is to be used by a [Room](Room.md) */
 class InteractablesContainer {
@@ -23,6 +26,11 @@ public:
     void setInteractableType(int x, int y, InteractableType type);
     /** Get the vector that contains all Interactables */
     std::vector<Interactable*> getVector();
+    /** Add interactables from binary structures. */
+    void addBinVector(std::vector<InteractableBin> bin);
+    /** Add interactables from a Room json object. Must contain 'interactables'
+     * and 'interactables_props' keys. */
+    void addJsonData(json roomJson);
 };
 
 #endif

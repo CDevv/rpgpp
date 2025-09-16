@@ -54,3 +54,57 @@ std::vector<Interactable*> InteractablesContainer::getVector()
     }
     return result;
 }
+
+void InteractablesContainer::addBinVector(std::vector<InteractableBin> bin)
+{
+    for (auto intBin : bin) {
+        InteractableType itype = static_cast<InteractableType>(intBin.type);
+        this->add(intBin.x, intBin.y, itype);
+
+        InteractableTwo* diag;
+        switch (itype) {
+        case INT_TWO:
+            diag = static_cast<InteractableTwo*>(this->get(intBin.x, intBin.y));
+            diag->setDialogue(intBin.dialogue);
+            break;
+        default:
+            break;
+        }
+    }
+}
+
+void InteractablesContainer::addJsonData(json roomJson)
+{
+    if (!roomJson.contains("interactables")) return;
+
+    std::vector<std::vector<int>> interactablesVec = roomJson.at("interactables");
+    for (auto v : interactablesVec) {
+        int x = v[0];
+        int y = v[1];
+        InteractableType itype = static_cast<InteractableType>(v[2]);
+
+        this->add(x, y, itype);
+    }
+
+    if (roomJson.contains("interactable_props")) {
+        std::map<std::string, std::vector<std::string>> interactablesPropsVec = roomJson.at("interactable_props");
+        for (auto [key, value] : interactablesPropsVec) {
+            int count = 0;
+            char** textSplit = TextSplit(key.c_str(), ';', &count);
+            if (count != 2) return;
+
+            int x = std::stoi(std::string(textSplit[0]));
+            int y = std::stoi(std::string(textSplit[1]));
+
+            Interactable* inter = this->get(x, y);
+            if (inter->getType() == INT_TWO) {
+                Dialogue dialogue;
+                dialogue.lines.push_back(DialogueLine {
+                    "Character", value.at(0)
+                });
+
+                (static_cast<InteractableTwo*>(inter))->setDialogue(dialogue);
+            }
+        }
+    }
+}

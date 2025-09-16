@@ -4,9 +4,12 @@
 #include <raylib.h>
 #include "mainViewPanel.hpp"
 
+#include "textArea.hpp"
+
 class MainView {
 private:
 	MainViewPanel panel;
+	TextArea area;
 public:
 	MainView();
 	void update();

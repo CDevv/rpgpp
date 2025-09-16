@@ -23,6 +23,7 @@ private:
 public:
     ProjectFile();
     ProjectFile(std::string relativePath, EngineFileType fileType);
+    void setFromPath(std::string relativePath);
     std::string getRelativePath();
     EngineFileType getFileType();
     void setTileSet(TileSet* tileSet);

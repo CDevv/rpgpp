@@ -74,26 +74,9 @@ void FileSystemService::openProjectFile(std::string absolutePath)
     if (exists) return;
 
     EngineFileType fileType;
-    TileSet* tileSet = nullptr;
-    Room* room = nullptr;
-    Actor* actor = nullptr;  
-
-    std::string fileExtension = GetFileExtension(absolutePath.c_str());
-    if (TextIsEqual(fileExtension.c_str(), ".rtiles")) {
-        tileSet = new TileSet(absolutePath);
-        fileType = FILE_TILESET;
-    } else if (TextIsEqual(fileExtension.c_str(), ".rmap")) {
-        room = new Room(absolutePath);
-        fileType = FILE_ROOM;
-    } else if (TextIsEqual(fileExtension.c_str(), ".ractor")) {
-        actor = new Actor(absolutePath);
-        fileType = FILE_ACTOR;
-    }
 
     std::unique_ptr<ProjectFile> projectFile = std::make_unique<ProjectFile>(absolutePath, fileType);
-    projectFile->setTileSet(tileSet);
-    projectFile->setRoom(room);
-    projectFile->setActor(actor);
+    projectFile->setFromPath(absolutePath);
 
     openedFiles.push_back(std::move(projectFile));
     setActiveProjectFile(openedFiles.size() - 1);
