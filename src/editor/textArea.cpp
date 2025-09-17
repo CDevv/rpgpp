@@ -10,8 +10,14 @@ TextArea::TextArea(Rectangle rect)
 	this->viewRec = Rectangle {0 };
 	this->scrollVec = Vector2 { 0, 0 };
 	this->cursorPos = Vector2 { 2, 2 };
+	this->cursorIndex = 0;
 	this->content = "";
 	this->linesCount = 0;
+	this->lineStartIndex = 0;
+	this->lineEndIndex = 0;
+
+	this->contentRec = rect;
+	contentRec.width -= 16;
 }
 
 void TextArea::update()
@@ -49,20 +55,61 @@ void TextArea::keyInput()
 		Vector2 textMeasure = MeasureTextEx(GuiGetFont(), charStr.c_str(), static_cast<float>(GuiGetFont().baseSize * 2), 1.0f);
 		cursorPos.x += textMeasure.x + 1;
 
-		content = content.append(charStr);
+		//content = content.append(charStr);
+
+		content = content.insert(cursorIndex, charStr);
+		cursorIndex++;
+
 		printf("string: %s \n", content.c_str());
 	}
 
 	if (IsKeyPressed(KEY_ENTER)) {
 		printf("enter \n");
 
-		content = content.append("\n");
+		content = content.insert(cursorIndex, "\n");
 		linesCount++;
+		cursorIndex++;
+		lineStartIndex = cursorIndex;
 
 		cursorPos.x = 2;
 		cursorPos.y += static_cast<float>(GuiGetFont().baseSize * 2);
 
-		//this->viewRec.height += (GuiGetFont().baseSize * 2) + 2;
+		contentRec.height += static_cast<float>(GuiGetFont().baseSize * 2);
+	}
+
+	if (IsKeyPressed(KEY_LEFT)) {
+		if (cursorIndex > 0) {
+			std::string charStr = "";
+			cursorIndex--;
+
+			if (cursorIndex != 0) {
+				std::string sub = "";
+				if (cursorIndex == content.size()) {
+					sub = TextSubtext(content.c_str(), 0, cursorIndex - 1);	
+				} else {
+					sub = TextSubtext(content.c_str(), 0, cursorIndex);	
+				}		
+				Vector2 textMeasure = MeasureTextEx(GuiGetFont(), sub.c_str(), static_cast<float>(GuiGetFont().baseSize * 2), 1.0f);
+				cursorPos.x = 2 + textMeasure.x;
+			} else {
+				cursorPos.x = 2;
+			}
+
+			//printf("%c \n", content.at(cursorIndex));
+		}
+	}
+
+	if (IsKeyPressed(KEY_RIGHT)) {
+		if (cursorIndex < (content.size())) {
+			cursorIndex++;
+
+			std::string sub = "";
+			sub = TextSubtext(content.c_str(), 0, cursorIndex);
+			Vector2 textMeasure = MeasureTextEx(GuiGetFont(), sub.c_str(), static_cast<float>(GuiGetFont().baseSize * 2), 1.0f);
+			cursorPos.x = 2 + textMeasure.x;
+
+			//printf("%c \n", content.at(cursorIndex));
+		}
 	}
 }
 
@@ -84,9 +131,6 @@ void TextArea::draw()
 
 	DrawRectangleLinesEx(rect, 1.0f, borderColor);
 
-	Rectangle contentRec = rect;
-    contentRec.height += 100;
-    contentRec.width -= 16;
     GuiScrollPanel(rect, NULL, contentRec, &scrollVec, &viewRec);
 
     BeginScissorMode(viewRec.x, viewRec.y, viewRec.width, viewRec.height);
@@ -96,18 +140,10 @@ void TextArea::draw()
 
 	TextSplit(content.c_str(), '\n', &linesCount);
 
-	/*
-	Vector2 textMeasure = MeasureTextEx(GuiGetFont(), content.c_str(), static_cast<float>(GuiGetFont().baseSize * 2), 1.0f);
 	Rectangle cursorRect = Rectangle {
-		rect.x + scrollVec.x + 2 + textMeasure.x,
-		rect.y + scrollVec.y + 2 + ((linesCount - 1) * textMeasure.y),
-		4,
-		static_cast<float>(GuiGetFont().baseSize * 2),
-	};
-	*/
-	Rectangle cursorRect = Rectangle {
-		rect.x + scrollVec.x + cursorPos.x, rect.y + scrollVec.y + cursorPos.y,
-		4,
+		rect.x + scrollVec.x + cursorPos.x, 
+		rect.y + scrollVec.y + cursorPos.y,
+		2,
 		static_cast<float>(GuiGetFont().baseSize * 2),
 	};
 

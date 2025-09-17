@@ -13,10 +13,14 @@ private:
 	TextAreaStatus state;
 	Rectangle rect;
 	std::string content;
-	int linesCount;
 	Rectangle viewRec;
+	Rectangle contentRec;
 	Vector2 scrollVec;
 	Vector2 cursorPos;
+	int cursorIndex;
+	int linesCount;
+	int lineStartIndex;
+	int lineEndIndex;
 	void keyInput();
 public:
 	TextArea();
