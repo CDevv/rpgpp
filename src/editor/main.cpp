@@ -5,6 +5,8 @@
 #include <rlImGui.h>
 #include "editor.hpp"
 
+#include "layoutContainer.hpp"
+
 int main()
 {
     const int width = 1280;
@@ -20,6 +22,8 @@ int main()
 
     rlImGuiSetup(true);
 
+    char input[256] = "";
+
     while (!WindowShouldClose()) {
         //editor.update();
 
@@ -29,6 +33,24 @@ int main()
         ClearBackground(RAYWHITE);
 
         //editor.draw();
+        
+
+        BeginLayout(ImVec2 { 4, 4 });
+
+        SetWindowLayout(0, 0.4f);
+        if (ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
+            ImGui::InputText("Input", input, IM_ARRAYSIZE(input));
+        };
+        ImGui::End();
+
+        SetWindowLayout(1, 0.6f);
+        if (ImGui::Begin("Text Window", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
+            ImGui::Text("This is a Text()!");
+        };
+        ImGui::End();
+
+        EndLayout();
+
         ImGui::ShowDemoWindow();
 
         rlImGuiEnd();
