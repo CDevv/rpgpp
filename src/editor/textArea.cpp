@@ -85,17 +85,15 @@ void TextArea::keyInput()
 			if (cursorIndex != 0) {
 				std::string sub = "";
 				if (cursorIndex == content.size()) {
-					sub = TextSubtext(content.c_str(), 0, cursorIndex - 1);	
+					sub = TextSubtext(content.c_str(), lineStartIndex, (cursorIndex - 1) - lineStartIndex);	
 				} else {
-					sub = TextSubtext(content.c_str(), 0, cursorIndex);	
+					sub = TextSubtext(content.c_str(), lineStartIndex, cursorIndex - lineStartIndex);	
 				}		
 				Vector2 textMeasure = MeasureTextEx(GuiGetFont(), sub.c_str(), static_cast<float>(GuiGetFont().baseSize * 2), 1.0f);
 				cursorPos.x = 2 + textMeasure.x;
 			} else {
 				cursorPos.x = 2;
 			}
-
-			//printf("%c \n", content.at(cursorIndex));
 		}
 	}
 
@@ -104,11 +102,9 @@ void TextArea::keyInput()
 			cursorIndex++;
 
 			std::string sub = "";
-			sub = TextSubtext(content.c_str(), 0, cursorIndex);
+			sub = TextSubtext(content.c_str(), lineStartIndex, cursorIndex - lineStartIndex);
 			Vector2 textMeasure = MeasureTextEx(GuiGetFont(), sub.c_str(), static_cast<float>(GuiGetFont().baseSize * 2), 1.0f);
 			cursorPos.x = 2 + textMeasure.x;
-
-			//printf("%c \n", content.at(cursorIndex));
 		}
 	}
 }
