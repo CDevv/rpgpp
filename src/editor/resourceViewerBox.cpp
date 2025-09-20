@@ -17,12 +17,18 @@ ResourceViewerBox::ResourceViewerBox(Rectangle rect)
     this->dropdownActive = 0;
 }
 
+void ResourceViewerBox::setRect(Rectangle rect)
+{
+    this->rect = rect;
+}
+
 void ResourceViewerBox::update() {}
 
 void ResourceViewerBox::draw()
 {
     if (dropdownEditMode) GuiLock();
 
+    /*
     FileSystemService& fs = Editor::getFileSystem();
     if (fs.getProject() != nullptr) {
         GuiPanel(rect, "Project");
@@ -46,6 +52,39 @@ void ResourceViewerBox::draw()
         if (GuiDropdownBox(Rectangle { rect.x, rect.y + 24, rect.width, 24 }, "TileSets;Rooms;Actors", &dropdownActive, dropdownEditMode)) {
             dropdownEditMode = !dropdownEditMode;
         }
+    }
+    */
+
+    const ImVec2 resourceButtonSize = ImVec2 { 76, 76 };
+
+    ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
+    ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
+    if (ImGui::Begin("Project")) {
+        ImGui::Text("Resources");
+        if (ImGui::Button("Choose..", ImVec2 { rect.width - (8 * 2), 24 })) {
+            ImGui::OpenPopup("res_choose");
+        }
+
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2 { 0, 0 });
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4 { 38, 38, 38, 0 });
+        //ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4 { 56, 72, 78, 0 });
+        if (ImGui::BeginChild("res_list")) {
+            for (int x = 0; x < 100; x++) {
+                ImGui::Button(TextFormat("Item-%i", x), ImVec2 { ImGui::GetWindowWidth(), 16.0f });
+            }
+            ImGui::EndChild();
+        }
+        ImGui::PopStyleVar();
+        ImGui::PopStyleColor();
+        //ImGui::PopStyleColor();
+
+        ImGui::SetNextWindowPos(ImVec2 { rect.x + 8, rect.y + 70 });
+        if (ImGui::BeginPopup("res_choose")) {
+            ImGui::Button("Example", resourceButtonSize);
+            ImGui::EndPopup();
+        }
+
+        ImGui::End();
     }
 }
 

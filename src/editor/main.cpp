@@ -15,8 +15,8 @@ int main()
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(width, height, "Editor [Dear ImGui]");
 
-    //Editor editor;
-    //editor.init();
+    Editor editor;
+    editor.init();
 
     SetTargetFPS(60);
 
@@ -25,33 +25,14 @@ int main()
     char input[256] = "";
 
     while (!WindowShouldClose()) {
-        //editor.update();
+        editor.update();
 
         BeginDrawing();
         rlImGuiBegin();
 
         ClearBackground(RAYWHITE);
 
-        //editor.draw();
-        
-
-        BeginLayout(ImVec2 { 4, 4 });
-
-        SetWindowLayout(0, 0.4f);
-        if (ImGui::Begin("Test", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
-            ImGui::InputText("Input", input, IM_ARRAYSIZE(input));
-        };
-        ImGui::End();
-
-        SetWindowLayout(1, 0.6f);
-        if (ImGui::Begin("Text Window", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
-            ImGui::Text("This is a Text()!");
-        };
-        ImGui::End();
-
-        EndLayout();
-
-        ImGui::ShowDemoWindow();
+        editor.draw();
 
         rlImGuiEnd();
         EndDrawing();

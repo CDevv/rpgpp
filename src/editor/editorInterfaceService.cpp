@@ -106,6 +106,7 @@ void EditorInterfaceService::update()
 
 void EditorInterfaceService::draw()
 {
+    /*
     FileSystemService& fs = Editor::getFileSystem();
     if (!fs.projectIsOpen()) {
         drawMainView();
@@ -113,6 +114,12 @@ void EditorInterfaceService::draw()
         drawProjectView();
     }
     windowContainer.draw();
+    */
+    resourceView.setRect(Rectangle {
+        0, 20, static_cast<float>(GetScreenWidth() * 0.2), static_cast<float>(GetScreenHeight() - 20)
+    });
+    resourceView.draw();
+    ImGui::ShowDemoWindow();
 
     GuiUnlock();
 }

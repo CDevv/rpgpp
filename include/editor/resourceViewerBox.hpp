@@ -14,6 +14,7 @@ private:
 public:
     ResourceViewerBox();
     ResourceViewerBox(Rectangle rect);
+    void setRect(Rectangle rect);
     void update();
     void draw();
 };

@@ -3,6 +3,8 @@
 
 #include <memory>
 #include <raylib.h>
+#include <imgui.h>
+#include <rlImGui.h>
 #include <string>
 #include <vector>
 #include "mainView.hpp"
