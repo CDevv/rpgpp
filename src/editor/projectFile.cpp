@@ -1,14 +1,24 @@
 #include "projectFile.hpp"
 
+std::array<std::string, 3> ProjectFile::fileTypeNames = std::array<std::string, 3>{
+    "TileSet", "Map", "Actor"
+};
+
 ProjectFile::ProjectFile() {}
 
 ProjectFile::ProjectFile(std::string relativePath, EngineFileType fileType)
 {
     this->relativePath = relativePath;
     this->fileType = fileType;
+
     this->tileSet = std::unique_ptr<TileSet>{};
     this->room = std::unique_ptr<Room>{};
     this->actor = std::unique_ptr<Actor>{};
+}
+
+std::array<std::string, 3> ProjectFile::getTypeNames()
+{
+    return fileTypeNames;
 }
 
 void ProjectFile::setFromPath(std::string relativePath)

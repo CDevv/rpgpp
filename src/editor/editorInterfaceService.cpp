@@ -115,6 +115,18 @@ void EditorInterfaceService::draw()
     }
     windowContainer.draw();
     */
+    FileSystemService& fs = Editor::getFileSystem();
+
+    if (ImGui::BeginMainMenuBar()) {
+        if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Open Project..")) {
+                fs.promptOpenProject();
+            }
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+
     resourceView.setRect(Rectangle {
         0, 20, static_cast<float>(GetScreenWidth() * 0.2), static_cast<float>(GetScreenHeight() - 20)
     });

@@ -17,12 +17,14 @@ class ProjectFile {
 private:
     std::string relativePath;
     EngineFileType fileType;
+    static std::array<std::string, 3> fileTypeNames;
     std::unique_ptr<TileSet> tileSet;
     std::unique_ptr<Room> room;
     std::unique_ptr<Actor> actor;
 public:
     ProjectFile();
     ProjectFile(std::string relativePath, EngineFileType fileType);
+    static std::array<std::string, 3> getTypeNames();
     void setFromPath(std::string relativePath);
     std::string getRelativePath();
     EngineFileType getFileType();
