@@ -20,9 +20,11 @@ private:
 	Rectangle scissorRect;
 	Vector2 scissorOffset;
 	float maxScissorOffset;
+	int drawTabButton(float offset, std::string title, bool active);
 public:
 	TabList();
 	TabList(Rectangle rect);
+	void setRect(Rectangle rect);
 	void addItem(std::string title);
 	void update();
 	void draw();

@@ -127,10 +127,13 @@ void EditorInterfaceService::draw()
         ImGui::EndMainMenuBar();
     }
 
-    resourceView.setRect(Rectangle {
-        0, 20, static_cast<float>(GetScreenWidth() * 0.2), static_cast<float>(GetScreenHeight() - 20)
-    });
-    resourceView.draw();
+    if (!fs.projectIsOpen()) {
+        //drawMainView();
+    } else {
+        drawProjectView();
+    }
+    //windowContainer.draw();
+
     ImGui::ShowDemoWindow();
 
     GuiUnlock();
@@ -145,19 +148,19 @@ void EditorInterfaceService::drawProjectView()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
-    Rectangle appMenuRect = Rectangle
-    {
-        0, 0, static_cast<float>(GetScreenWidth()), 16
-    };
-    DrawRectangleRec(appMenuRect, DARKGRAY);
-
-    projectMenu.draw();
+    //projectMenu.draw();
 
     if (fs.projectIsOpen()) {
+        tabList.setRect(Rectangle {
+            static_cast<float>(GetScreenWidth() * 0.2) + 8, 24, static_cast<float>(GetScreenWidth() * 0.8) - (8 * 2), 18
+        });
         tabList.draw();
     }
-    panelView->draw();
+    //panelView->draw();
 
+    resourceView.setRect(Rectangle {
+        0, 18, static_cast<float>(GetScreenWidth() * 0.2), static_cast<float>(GetScreenHeight() - 18)
+    });
     resourceView.draw();
 }
 

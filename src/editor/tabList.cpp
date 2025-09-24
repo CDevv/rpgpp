@@ -14,6 +14,15 @@ TabList::TabList(Rectangle rect)
 	this->activeIndex = 0;
 	this->tabWidth = 120.0f;
 	this->drawOverflow = false;
+
+	addItem("Test.");
+	addItem("Second.");
+	addItem("Third.");
+}
+
+void TabList::setRect(Rectangle rect)
+{
+	this->rect = rect;
 }
 
 void TabList::addItem(std::string title)
@@ -47,88 +56,83 @@ void TabList::update()
 	}
 }
 
+int TabList::drawTabButton(float offset, std::string title, bool active)
+{
+	int result = 0;
+	float tabTextWidth = ImGui::CalcTextSize(title.c_str()).x; 
+	float closeButtonWidth = (rect.height - 4);
+
+	ImDrawList* draw = ImGui::GetBackgroundDrawList();
+
+	ImGuiStyle& style = ImGui::GetStyle();
+    ImVec4 buttonColor = style.Colors[ImGuiCol_Button];
+
+    if (active) {
+    	buttonColor = style.Colors[ImGuiCol_ButtonActive];
+    }
+
+    ImVec2 buttonMin = ImVec2 { rect.x + 4 + offset, rect.y };
+    ImVec2 buttonMax = ImVec2 { rect.x + 4 + offset + tabTextWidth + closeButtonWidth + 4, 
+    	rect.y + rect.height };
+
+    ImVec2 closeMin = ImVec2 { rect.x + offset + 4 + tabTextWidth, rect.y + 2};
+	ImVec2 closeMax = ImVec2 { rect.x + offset + 4 + tabTextWidth + closeButtonWidth, 
+		rect.y + 2 + closeButtonWidth };
+
+	//interaction check
+    if (ImGui::IsMouseHoveringRect(buttonMin, 
+    	buttonMax, false)) {
+    	buttonColor = style.Colors[ImGuiCol_ButtonHovered];
+    }
+
+    //button itself
+	draw->AddRectFilled(buttonMin, buttonMax, ImGui::ColorConvertFloat4ToU32(buttonColor));
+
+	//close button
+	draw->AddRectFilled(closeMin, closeMax,
+		ImGui::ColorConvertFloat4ToU32(buttonColor));
+
+	draw->AddLine(ImVec2 { closeMin.x + 2, closeMin.y + 2 }, 
+		ImVec2 { closeMin.x + (closeButtonWidth - 2), closeMin.y + (closeButtonWidth - 2) }, 
+		IM_COL32_WHITE);
+	
+	draw->AddLine(ImVec2 { closeMin.x + (closeButtonWidth - 2), closeMin.y + 1 }, 
+		ImVec2 { closeMin.x + 2, closeMin.y + (closeButtonWidth - 2) - 1 }, 
+		IM_COL32_WHITE);
+
+    draw->AddText(ImVec2 { rect.x + 4 + offset + 4, rect.y + 2 }, IM_COL32_WHITE, title.c_str());
+
+    return result;
+}
+
 void TabList::draw()
 {
 	FileSystemService& fs = Editor::getFileSystem();
 	EditorInterfaceService& ui = Editor::getUi();
 
-	int index = 0;
-	bool actionLock = false;
+	ImGuiStyle& style = ImGui::GetStyle();
+    ImVec4 buttonColor = style.Colors[ImGuiCol_Button];
+    ImVec4 activeColor = style.Colors[ImGuiCol_ButtonActive];
 
-	BeginScissorMode(scissorRect.x, scissorRect.y, scissorRect.width, scissorRect.height);
-	for (std::vector<TabData>::iterator i = tabs.begin(); i != tabs.end();)
-	{
-		Rectangle tabRect = Rectangle
-		{
-			rect.x + (index * tabWidth) + scissorOffset.x, rect.y,
-			tabWidth, 24
-		};
+    ImDrawList* draw = ImGui::GetBackgroundDrawList();
 
-		Rectangle detectRect = tabRect;
-		float scissorTopRight = (scissorRect.x + scissorRect.width);
-		if ((tabRect.x + tabRect.width) > scissorTopRight) {
-			float diff = (tabRect.x + tabRect.width) - scissorTopRight;
-			detectRect.width -= diff;
-		}
+    int i = 0;
+    float addedWidth = 0.0f;
+    float closeButtonWidth = (rect.height - 4);
 
-		TabButtonState tabState;
-		if (activeIndex == index) {
-			tabState = EditorGuiTabButton(tabRect, i->title, true, scissorRect);
-		} else {
-			tabState = EditorGuiTabButton(tabRect, i->title, false, scissorRect);
-		}
+    for (TabData item : tabs) {
+    	float tabTextWidth = ImGui::CalcTextSize(item.title.c_str()).x;
 
-		//DrawRectangleLinesEx(detectRect, 2.0f, MAROON);
+    	bool isActive = false;
+    	if (activeIndex == i) {
+    		isActive = true;
+    	}
 
-		if (tabState == TABSTATE_PRESSED) {
-			activeIndex = index;
-			fs.setActiveProjectFile(activeIndex);
-			ui.setInitial();
-		} else if (tabState == TABSTATE_X_PRESSED) {
-			if (!actionLock) {
-				tabs.erase(i);
-				actionLock = true;
-				scissorOffset = Vector2 { 0, 0 };
-				fs.closeProjectFile(index);
-				printf("%i\n", index);
+    	int result = drawTabButton(addedWidth, item.title, isActive);
+    	addedWidth += tabTextWidth + 8 + closeButtonWidth;
+    	i++;
+    }
 
-				if (activeIndex == index) {
-					activeIndex = 0;
-					fs.setActiveProjectFile(0);
-					ui.setInitial();
-				}
-			}
-		}
-
-		index++;
-
-		if (tabState != TABSTATE_X_PRESSED) {
-			++i;
-		}
-	}
-	EndScissorMode();
-
-	if (drawOverflow) {
-		Rectangle leftButtonRect = Rectangle
-		{
-			rect.x + rect.width - (rect.height * 2), rect.y,
-			rect.height, rect.height
-		};
-		Rectangle rightButtonRect = Rectangle
-		{
-			rect.x + rect.width - (rect.height), rect.y,
-			rect.height, rect.height
-		};
-
-		if (GuiButton(leftButtonRect, GuiIconText(ICON_ARROW_LEFT_FILL, NULL))) {
-			//scissorOffset.x += 20;
-			scissorOffset.x = Clamp(scissorOffset.x + 20, -maxScissorOffset, 0);
-		}
-		if (GuiButton(rightButtonRect, GuiIconText(ICON_ARROW_RIGHT_FILL, NULL))) {
-			//scissorOffset.x -= 20;
-			scissorOffset.x = Clamp(scissorOffset.x - 20, -maxScissorOffset, 0);
-		}
-	}
-
-	DrawRectangleLinesEx(rect, 1.0f, GRAY);
+    draw->AddLine(ImVec2 { rect.x, rect.y + rect.height }, 
+    	ImVec2 { rect.x + rect.width, rect.y + rect.height }, ImGui::ColorConvertFloat4ToU32(activeColor));
 }
