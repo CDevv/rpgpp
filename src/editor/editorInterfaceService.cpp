@@ -156,7 +156,12 @@ void EditorInterfaceService::drawProjectView()
         });
         tabList.draw();
     }
-    //panelView->draw();
+
+    panelView->setRect(Rectangle {
+        static_cast<float>(GetScreenWidth() * 0.2) + 4, (24 + 18 + 4),
+        static_cast<float>(GetScreenWidth() * 0.8) - 8, static_cast<float>(GetScreenHeight() - (24 + 18 + 4 + 4))
+    });
+    panelView->draw();
 
     resourceView.setRect(Rectangle {
         0, 18, static_cast<float>(GetScreenWidth() * 0.2), static_cast<float>(GetScreenHeight() - 18)

@@ -87,3 +87,9 @@ bool MouseInputComponent::isInRect()
 {
     return CheckCollisionPointRec(GetMousePosition(), cameraRect);
 }
+
+void MouseInputComponent::setCameraRect(Rectangle rect)
+{
+    this->cameraRect = rect;
+    this->offset = Vector2 { rect.x, rect.y };
+}

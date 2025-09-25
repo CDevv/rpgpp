@@ -99,6 +99,8 @@ public:
     WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLayer boxLayer);
     ~WorldViewBox();
     Rectangle getWindowRect();
+    void setRect(Rectangle rect);
+    Rectangle getRenderRect();
     void setMouseLock(bool value);
     void setTileSet(TileSet* tileSet);
     void setRoom(Room* map);

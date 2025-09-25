@@ -66,6 +66,7 @@ int TabList::drawTabButton(float offset, std::string title, bool active)
 
 	ImGuiStyle& style = ImGui::GetStyle();
     ImVec4 buttonColor = style.Colors[ImGuiCol_Button];
+    ImVec4 closeColor = ImVec4 { 0, 0, 0, 0 };
 
     if (active) {
     	buttonColor = style.Colors[ImGuiCol_ButtonActive];
@@ -83,6 +84,23 @@ int TabList::drawTabButton(float offset, std::string title, bool active)
     if (ImGui::IsMouseHoveringRect(buttonMin, 
     	buttonMax, false)) {
     	buttonColor = style.Colors[ImGuiCol_ButtonHovered];
+
+    	if (ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
+    		result = 1;
+    	}
+    }
+
+    if (ImGui::IsMouseHoveringRect(closeMin, closeMax, false)) {
+    	buttonColor = style.Colors[ImGuiCol_Button];
+    	if (active) {
+	    	buttonColor = style.Colors[ImGuiCol_ButtonActive];
+	    }
+
+	    closeColor = style.Colors[ImGuiCol_ButtonHovered];
+
+	    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
+    		result = 2;
+    	}
     }
 
     //button itself
@@ -90,7 +108,7 @@ int TabList::drawTabButton(float offset, std::string title, bool active)
 
 	//close button
 	draw->AddRectFilled(closeMin, closeMax,
-		ImGui::ColorConvertFloat4ToU32(buttonColor));
+		ImGui::ColorConvertFloat4ToU32(closeColor));
 
 	draw->AddLine(ImVec2 { closeMin.x + 2, closeMin.y + 2 }, 
 		ImVec2 { closeMin.x + (closeButtonWidth - 2), closeMin.y + (closeButtonWidth - 2) }, 
@@ -100,6 +118,7 @@ int TabList::drawTabButton(float offset, std::string title, bool active)
 		ImVec2 { closeMin.x + 2, closeMin.y + (closeButtonWidth - 2) - 1 }, 
 		IM_COL32_WHITE);
 
+	//tab label
     draw->AddText(ImVec2 { rect.x + 4 + offset + 4, rect.y + 2 }, IM_COL32_WHITE, title.c_str());
 
     return result;
@@ -129,6 +148,17 @@ void TabList::draw()
     	}
 
     	int result = drawTabButton(addedWidth, item.title, isActive);
+
+    	if (result == 1) {
+    		activeIndex = i;
+    	} else if (result == 2) {
+    		tabs.erase(tabs.begin() + i);
+
+    		if (activeIndex == i) {
+    			activeIndex = 0;
+    		}
+    	}
+
     	addedWidth += tabTextWidth + 8 + closeButtonWidth;
     	i++;
     }

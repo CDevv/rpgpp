@@ -52,6 +52,19 @@ Rectangle WorldViewBox::getWindowRect()
     return this->windowRect;
 }
 
+Rectangle WorldViewBox::getRenderRect()
+{
+    Rectangle rec = windowRect;
+    rec.y += 21;
+    rec.height -= 21;
+    return rec;
+}
+
+void WorldViewBox::setRect(Rectangle rect)
+{
+    this->windowRect = rect;
+}
+
 void WorldViewBox::setMouseLock(bool value)
 {
     this->mouseLock = value;
@@ -113,6 +126,7 @@ void WorldViewBox::update()
 
 void WorldViewBox::draw()
 {
+    /*
     FileSystemService& fs = Editor::getFileSystem();
 
     if (type == FILE_TILESET) {
@@ -160,6 +174,57 @@ void WorldViewBox::draw()
         static_cast<float>(renderTexture.texture.width), static_cast<float>(-renderTexture.texture.height)
     };
     DrawTextureRec(renderTexture.texture, cameraRect, Vector2 { renderRect.x, renderRect.y }, WHITE);
+    */
+
+    BeginTextureMode(renderTexture);
+    BeginMode2D(camera);
+
+    ClearBackground(RAYWHITE);
+    DrawRectangleRec(Rectangle { 20, 20, 100, 100 }, RED);
+
+    if (mouseInput->isInRect()) {
+        /*
+        Vector2 worldMouse = mouseInput->getMousePos();
+        DrawCircleV(worldMouse, 4.0f, MAROON);
+        */
+
+        Vector2 mouse = mouseInput->getMouseWorldPos();
+        DrawCircleV(mouse, 4.0f, GREEN);
+    }
+
+    EndMode2D();
+    EndTextureMode();
+
+    ImGui::SetNextWindowPos(ImVec2 { windowRect.x, windowRect.y });
+    ImGui::SetNextWindowSize(ImVec2 { windowRect.width, windowRect.height });
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+    if (ImGui::Begin("WorldViewBox", NULL, 
+        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
+
+        ImVec2 pos = ImGui::GetWindowPos();
+        ImVec2 size = ImGui::GetWindowSize();
+        Rectangle windowRect = Rectangle {
+            pos.x, pos.y, size.x, size.y
+        };
+
+        Rectangle rec = windowRect;
+        rec.y += 21;
+        rec.height -= 21;
+
+        this->renderRect = rec;
+
+        if (renderRect.width != renderTexture.texture.width) {
+            UnloadRenderTexture(renderTexture);
+            renderTexture = LoadRenderTexture(renderRect.width, renderRect.height);
+        }
+
+        this->mouseInput->setCameraRect(renderRect);
+        
+        rlImGuiImageRenderTexture(&renderTexture);
+
+        ImGui::End();
+    }
+    ImGui::PopStyleVar();
 }
 
 void WorldViewBox::unload()
