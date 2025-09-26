@@ -14,10 +14,6 @@ TabList::TabList(Rectangle rect)
 	this->activeIndex = 0;
 	this->tabWidth = 120.0f;
 	this->drawOverflow = false;
-
-	addItem("Test.");
-	addItem("Second.");
-	addItem("Third.");
 }
 
 void TabList::setRect(Rectangle rect)
@@ -73,11 +69,11 @@ int TabList::drawTabButton(float offset, std::string title, bool active)
     }
 
     ImVec2 buttonMin = ImVec2 { rect.x + 4 + offset, rect.y };
-    ImVec2 buttonMax = ImVec2 { rect.x + 4 + offset + tabTextWidth + closeButtonWidth + 4, 
+    ImVec2 buttonMax = ImVec2 { rect.x + 4 + offset + tabTextWidth + closeButtonWidth + 8, 
     	rect.y + rect.height };
 
-    ImVec2 closeMin = ImVec2 { rect.x + offset + 4 + tabTextWidth, rect.y + 2};
-	ImVec2 closeMax = ImVec2 { rect.x + offset + 4 + tabTextWidth + closeButtonWidth, 
+    ImVec2 closeMin = ImVec2 { rect.x + offset + 4 + tabTextWidth + 4, rect.y + 2};
+	ImVec2 closeMax = ImVec2 { rect.x + offset + 4 + tabTextWidth + 4 + closeButtonWidth, 
 		rect.y + 2 + closeButtonWidth };
 
 	//interaction check

@@ -112,10 +112,10 @@ void ResourceViewerBox::drawTileSets()
     std::vector<std::string> tileSetPaths = fs.getProject()->getTileSetPaths();
     for (std::string tileSetPath : tileSetPaths) {
         std::string tileSetFileName = GetFileNameWithoutExt(tileSetPath.c_str());
-        ImGui::Button(tileSetFileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f });
-
-        //fs.openProjectFile(tileSetPath);
-        //ui.setInitial();
+        if (ImGui::Button(tileSetFileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
+            fs.openProjectFile(tileSetPath);
+            ui.setInitial();
+        }
     }
 }
 

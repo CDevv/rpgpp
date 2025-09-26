@@ -17,6 +17,11 @@ PropertiesBox::PropertiesBox(Rectangle rect)
     actorProps = ActorPropertiesBox(rect);
 }
 
+void PropertiesBox::setRect(Rectangle rect)
+{
+    this->rect = rect;
+}
+
 void PropertiesBox::setDefaults()
 {
     FileSystemService& fs = Editor::getFileSystem();
@@ -63,6 +68,18 @@ void PropertiesBox::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
+    ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
+    ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
+    if (ImGui::Begin("Props", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_Tooltip)) {
+        
+        if (fs.getType() == FILE_TILESET) {
+            tileSetProps.draw();
+        }
+
+        ImGui::End();
+    }
+
+    /*
     if (fs.fileIsOpen()) {
         switch (fs.getType()) {
         default:
@@ -78,6 +95,7 @@ void PropertiesBox::draw()
             break;
         }
     }
+    */
 }
 
 ActorPropertiesBox& PropertiesBox::getActorProps()

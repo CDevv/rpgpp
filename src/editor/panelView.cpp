@@ -39,6 +39,8 @@ void PanelView::update()
 
 void PanelView::draw()
 {
+    FileSystemService& fs = Editor::getFileSystem();
+    
     /*
     FileSystemService& fs = Editor::getFileSystem();
     if (fs.fileIsOpen()) {
@@ -60,6 +62,12 @@ void PanelView::draw()
     */
 
     this->setRect(rect);
-    tileSetPanel.draw();
+
+    if (fs.fileIsOpen()) {
+
+        if (fs.getType() == FILE_TILESET) {
+            tileSetPanel.draw();
+        }
+    }
 }
 

@@ -23,6 +23,8 @@ TileSetPropertiesBox::TileSetPropertiesBox(Rectangle rect)
 
     scrollVec = Vector2 { 0, 0 };
     viewRec = Rectangle { 0 };
+
+    tileSizeArr = { 0, 0 };
 }
 
 void TileSetPropertiesBox::setDefaults()
@@ -33,6 +35,9 @@ void TileSetPropertiesBox::setDefaults()
     chosenTileSize = tileSet->getTileSize().x;
     chosenTileWidth = tileSet->getTileSize().x;
     chosenTileHeight = tileSet->getTileSize().y;
+
+    tileSizeArr[0] = tileSet->getTileSize().x;
+    tileSizeArr[1] = tileSet->getTileSize().y;
 
     if (chosenTileWidth != chosenTileHeight) {
         multiSizeCheckBox = false;
@@ -51,8 +56,14 @@ void TileSetPropertiesBox::update()
             tileSet->setTileSize(chosenTileSize);
         }
     } else {
-        if (chosenTileWidth >= 16 && chosenTileHeight >= 16) {
+
+        /*if (chosenTileWidth >= 16 && chosenTileHeight >= 16) {
             Vector2 sizeVec = Vector2 { static_cast<float>(chosenTileWidth), static_cast<float>(chosenTileHeight) };
+            tileSet->setTileSizeVector(sizeVec);
+        }*/
+
+        if (tileSizeArr[0] >= 16 && tileSizeArr[1] >= 16) {
+            Vector2 sizeVec = Vector2 { static_cast<float>(tileSizeArr[0]), static_cast<float>(tileSizeArr[1]) };
             tileSet->setTileSizeVector(sizeVec);
         }
     }
@@ -64,6 +75,29 @@ void TileSetPropertiesBox::draw()
     TileSet *tileSet = fs.getTileSet();
     //this->tileSet = tileSet;
 
+    ImGui::Checkbox("Square Tiles?", &multiSizeCheckBox);
+
+    if (multiSizeCheckBox) {
+        ImGui::InputInt("Tile Size", &chosenTileSize);
+    } else {
+        ImGui::InputInt2("Tile Size", tileSizeArr.data());
+    }
+
+    std::string sourceFileName = GetFileName(tileSet->getTextureSource().c_str());
+    sourceFileName.push_back('\0');
+
+    ImGui::InputText("Texture", const_cast<char*>(sourceFileName.data()), sourceFileName.size(), ImGuiInputTextFlags_ReadOnly);
+    //ImGui::SetItemTooltip("Tooltip.");
+    
+
+    if (ImGui::Button("Change Texture..", ImVec2(-1, 0))) {
+        FS_Result fsResult = fs.openImage();
+        if (fsResult.result == NFD_OKAY) {
+            tileSet->setTextureSource(fsResult.path);
+        }
+    }
+
+    /*
     Rectangle contentRec = rect;
     contentRec.height += 100;
     contentRec.width -= 16;
@@ -106,5 +140,6 @@ void TileSetPropertiesBox::draw()
 
     EditorInterfaceService& ui = Editor::getUi();
     ui.drawTooltip(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 128, (viewRec.width - (16 + 24)), 24 }, tileSet->getTextureSource());
+    */
 }
 

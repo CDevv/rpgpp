@@ -31,6 +31,7 @@ private:
     Vector2 hoverPos;
     bool mouseLock;
     ViewBoxLayer mouseBoxLayer;
+    bool demoGuiActive;
     void drawMainView();
     void drawProjectView();
 public:

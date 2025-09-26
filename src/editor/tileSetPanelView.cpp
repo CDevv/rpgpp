@@ -42,7 +42,8 @@ void TileSetPanelView::setRect(Rectangle rect)
         (windowRect.x + windowRect.width + 4), (windowRect.y)
     };
     propRect.width = rect.width - windowRect.width - 4;
-    propRect.height = windowRect.height + 2;
+    propRect.height = windowRect.height;
+    propBox.setRect(propRect);
 
     //propBox = PropertiesBox(propRect);
 }

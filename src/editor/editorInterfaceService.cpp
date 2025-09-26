@@ -25,6 +25,8 @@
 
 EditorInterfaceService::EditorInterfaceService()
 {
+    demoGuiActive = false;
+
     //get codepoints
     std::vector<int> codepoints;
     //ASCII latin
@@ -124,6 +126,10 @@ void EditorInterfaceService::draw()
             }
             ImGui::EndMenu();
         }
+        if (ImGui::BeginMenu("Dev")) {
+            ImGui::MenuItem("ImGui Demo", nullptr, &demoGuiActive);
+            ImGui::EndMenu();
+        }
         ImGui::EndMainMenuBar();
     }
 
@@ -134,7 +140,9 @@ void EditorInterfaceService::draw()
     }
     //windowContainer.draw();
 
-    ImGui::ShowDemoWindow();
+    if (demoGuiActive) {
+        ImGui::ShowDemoWindow();
+    }
 
     GuiUnlock();
 }

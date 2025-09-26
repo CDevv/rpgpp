@@ -30,7 +30,7 @@ int main()
         BeginDrawing();
         rlImGuiBegin();
 
-        ClearBackground(RAYWHITE);
+        ClearBackground(Color { 20, 20, 20, 255 });
 
         editor.draw();
 

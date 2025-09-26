@@ -176,23 +176,52 @@ void WorldViewBox::draw()
     DrawTextureRec(renderTexture.texture, cameraRect, Vector2 { renderRect.x, renderRect.y }, WHITE);
     */
 
+    if (type == FILE_TILESET) {
+        tilesView.isHoverOnValidTile();
+    } else {
+        mapView.isHoverOnValidTile();
+    }
+
     BeginTextureMode(renderTexture);
-    BeginMode2D(camera);
 
-    ClearBackground(RAYWHITE);
-    DrawRectangleRec(Rectangle { 20, 20, 100, 100 }, RED);
+    if (type == FILE_ROOM) {
+        ClearBackground(GRAY);
+    } else {
+        ClearBackground(RAYWHITE);
+    }
+    //DrawRectangleRec(Rectangle { 20, 20, 100, 100 }, RED);
 
+    /*
     if (mouseInput->isInRect()) {
-        /*
-        Vector2 worldMouse = mouseInput->getMousePos();
-        DrawCircleV(worldMouse, 4.0f, MAROON);
-        */
 
         Vector2 mouse = mouseInput->getMouseWorldPos();
         DrawCircleV(mouse, 4.0f, GREEN);
+    }*/
+    
+    BeginMode2D(camera);
+
+    rlPushMatrix();
+    if (type == FILE_TILESET) {
+        tilesView.drawGrid();
+    } else {
+        mapView.drawGrid();
+    }
+    rlPopMatrix();
+
+    if (type == FILE_TILESET) {
+        tilesView.drawTiles();
+    } else {
+        mapView.drawTiles();
     }
 
     EndMode2D();
+
+    if (type == FILE_TILESET) {
+        tilesView.drawMouse();
+    } else {
+        mapView.drawMouse();
+    }
+
     EndTextureMode();
 
     ImGui::SetNextWindowPos(ImVec2 { windowRect.x, windowRect.y });

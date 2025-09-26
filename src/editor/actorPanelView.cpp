@@ -36,7 +36,11 @@ void ActorPanelView::setInitial()
 
 void ActorPanelView::update()
 {
-	props.update();
+	FileSystemService& fs = Editor::getFileSystem();
+
+	if (fs.fileIsOpen() && fs.getType() == FILE_ACTOR) {
+		props.update();
+	}
 
 	actorView.setCollisionActive(props.getActorProps().getCollisionViewActive());
 	actorView.setAnimation(animationsView.getCurrentAnim());
