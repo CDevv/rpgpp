@@ -34,7 +34,6 @@ void TileSetPanelView::setRect(Rectangle rect)
         rect.x, rect.y,
         static_cast<float>(rect.width * 0.7), rect.height
     };
-    //worldView = std::make_unique<WorldViewBox>(windowRect, FILE_TILESET, VIEWBOX_LAYER_BASE);
     worldView->setRect(windowRect);
 
     Rectangle propRect = Rectangle
@@ -44,8 +43,6 @@ void TileSetPanelView::setRect(Rectangle rect)
     propRect.width = rect.width - windowRect.width - 4;
     propRect.height = windowRect.height;
     propBox.setRect(propRect);
-
-    //propBox = PropertiesBox(propRect);
 }
 
 void TileSetPanelView::setInitial()

@@ -24,6 +24,7 @@ private:
 public:
     MapPanelView();
     MapPanelView(Rectangle rect);
+    void setRect(Rectangle rect);
     void setInitial();
     void update();
     void draw();

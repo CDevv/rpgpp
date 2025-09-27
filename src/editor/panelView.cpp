@@ -20,6 +20,7 @@ void PanelView::setRect(Rectangle rect)
 {
     this->rect = rect;
     tileSetPanel.setRect(rect);
+    mapPanel.setRect(rect);
 }
 
 void PanelView::setInitial()
@@ -39,10 +40,10 @@ void PanelView::update()
 
 void PanelView::draw()
 {
+    this->setRect(rect);
+
     FileSystemService& fs = Editor::getFileSystem();
-    
-    /*
-    FileSystemService& fs = Editor::getFileSystem();
+
     if (fs.fileIsOpen()) {
 
         switch (fs.getType()) {
@@ -57,16 +58,6 @@ void PanelView::draw()
         case FILE_ACTOR:
             actorPanel.draw();
             break;
-        }
-    }
-    */
-
-    this->setRect(rect);
-
-    if (fs.fileIsOpen()) {
-
-        if (fs.getType() == FILE_TILESET) {
-            tileSetPanel.draw();
         }
     }
 }

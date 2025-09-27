@@ -57,6 +57,22 @@ MapPanelView::MapPanelView(Rectangle rect)
     propBox = PropertiesBox(propRect);
 }
 
+void MapPanelView::setRect(Rectangle rect)
+{
+    Rectangle toolsRect = Rectangle
+    {
+        rect.x, rect.y, static_cast<float>(rect.width * 0.7), 30
+    };
+    toolsBox.setRect(toolsRect);
+
+    Rectangle windowRect = Rectangle
+    {
+        rect.x, rect.y + 34,
+        static_cast<float>(rect.width * 0.7), static_cast<float>(rect.height - 34)
+    };
+    worldView->setRect(windowRect);
+}
+
 void MapPanelView::setInitial()
 {
     propBox.setDefaults();

@@ -136,10 +136,10 @@ void ResourceViewerBox::drawMaps()
 
     for (std::string mapPath : mapPaths) {
         std::string mapFileName = GetFileNameWithoutExt(mapPath.c_str());
-        ImGui::Button(mapFileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f });
-
-        //fs.openProjectFile(mapPath);
-        //ui.setInitial();
+        if (ImGui::Button(mapFileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
+            fs.openProjectFile(mapPath);
+            ui.setInitial();
+        }
     }
 }
 
