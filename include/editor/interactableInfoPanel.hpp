@@ -19,10 +19,10 @@ private:
     Interactable* interactable;
     InteractablePropsState propsState;
     std::unique_ptr<char[]> diagText;
+    char diagChars[125];
     bool diagTextEditMode;
     void drawTypeProps();
     void drawDialogueProps();
-    void saveProps();
 public:
     InteractableInfoPanel();
     InteractableInfoPanel(Rectangle rect);

@@ -21,6 +21,7 @@ void PanelView::setRect(Rectangle rect)
     this->rect = rect;
     tileSetPanel.setRect(rect);
     mapPanel.setRect(rect);
+    actorPanel.setRect(rect);
 }
 
 void PanelView::setInitial()

@@ -33,6 +33,17 @@ ActorView::ActorView(Rectangle rect)
 	collisionViewActive = false;
 }
 
+void ActorView::setRect(Rectangle rect)
+{
+	this->rect = rect;
+	this->renderRect = Rectangle {
+		rect.x + 4, rect.y + 4,
+		rect.width - 8, rect.height - 8
+	};
+
+	camera.offset = Vector2 { renderRect.width / 2, renderRect.height / 2 };
+}
+
 void ActorView::setInitial()
 {
 	FileSystemService& fs = Editor::getFileSystem();
@@ -91,6 +102,12 @@ void ActorView::update()
 
 void ActorView::draw()
 {
+	if (renderTexture.texture.width != renderRect.width ||
+		renderTexture.texture.height != renderRect.height) {
+		UnloadRenderTexture(renderTexture);
+		renderTexture = LoadRenderTexture(renderRect.width, renderRect.height);
+	}
+
 	DrawRectangleLinesEx(rect, 1.0f, GRAY);
 
 	//texture mode

@@ -20,6 +20,7 @@ private:
 public:
 	AnimationsView();
 	AnimationsView(Rectangle rect);
+	void setRect(Rectangle rect);
 	void update();
 	void draw();
 	void setActorView(ActorView* actorView);

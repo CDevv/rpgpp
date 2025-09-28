@@ -36,7 +36,8 @@ void ResourceViewerBox::draw()
 
         ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
         ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
-        if (ImGui::Begin("Project")) {
+        if (ImGui::Begin("Project", nullptr,
+            ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
             ImGui::Text("Resources");
             if (ImGui::Button(arr[dropdownActive].c_str(), ImVec2 { rect.width - (8 * 2), 24 })) {
                 ImGui::OpenPopup("res_choose");
@@ -160,9 +161,9 @@ void ResourceViewerBox::drawActors()
     std::vector<std::string> actorPaths = fs.getProject()->getActorPaths();
     for (std::string actorPath : actorPaths) {
         std::string actorFileName = GetFileNameWithoutExt(actorPath.c_str());
-        ImGui::Button(actorFileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f });
-
-        //fs.openProjectFile(actorPath);
-        //ui.setInitial();
+        if (ImGui::Button(actorFileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
+            fs.openProjectFile(actorPath);
+            ui.setInitial();
+        }
     }
 }

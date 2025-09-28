@@ -28,6 +28,11 @@ AnimationsView::AnimationsView(Rectangle rect)
 	animNames.push_back("Right");
 }
 
+void AnimationsView::setRect(Rectangle rect)
+{
+	this->rect = rect;
+}
+
 void AnimationsView::update()
 {
 	FileSystemService& fs = Editor::getFileSystem();
@@ -41,6 +46,7 @@ void AnimationsView::update()
 
 void AnimationsView::draw()
 {
+	/*
 	GuiPanel(rect, "Animations View");
 
 	Rectangle baseFrameRect = Rectangle {
@@ -143,6 +149,31 @@ void AnimationsView::draw()
 			);
 		}
 	}
+	*/
+
+	ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
+	ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2 { 0, 0 });
+	if (ImGui::Begin("AnimationsView", nullptr, 
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
+
+		if (ImGui::BeginChild("top_bar", ImVec2(-1, 32))) {
+			ImGui::BeginGroup();
+			ImGui::Combo("Animation", &currentAnim, "Down Idle\0Down\0Up Idle\0Up\0Left Idle\0Left\0Right Idle\0Right\0");
+
+			ImGui::EndGroup();
+
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+			ImGui::Text("Text.");
+			ImGui::EndGroup();
+
+			ImGui::EndChild();
+		}
+
+		ImGui::End();
+	}
+	ImGui::PopStyleVar();
 }
 
 void AnimationsView::setActorView(ActorView *actorView)

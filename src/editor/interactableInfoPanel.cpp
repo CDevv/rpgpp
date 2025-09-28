@@ -23,6 +23,8 @@ InteractableInfoPanel::InteractableInfoPanel(Rectangle rect)
     this->diagText = std::make_unique<char[]>(1);
     diagText[0] = '\0';
     this->diagTextEditMode = false;
+
+    strcpy(diagChars, "Hello.");
 }
 
 void InteractableInfoPanel::setRect(Rectangle rect)
@@ -51,49 +53,6 @@ void InteractableInfoPanel::update()
 
 void InteractableInfoPanel::draw()
 {
-    /*
-    GuiPanel(rect, "Interactable");
-
-    if (typeDropdownEditMode) GuiLock();
-
-    Rectangle labelRect = Rectangle
-    {
-        rect.x + 8, rect.y + 4 + 24,
-        rect.width - 16, (24 * 2)
-    };
-    Rectangle dropdownRect = labelRect;
-    dropdownRect.height = 24;
-    dropdownRect.y += 2*24;
-
-    switch (action) {
-        case ACTION_PLACE:
-            GuiLabel(labelRect, "Place an interactable\nChoose Interactable Type:");
-            if (GuiDropdownBox(dropdownRect, "Blank;Two", &typeNumber, typeDropdownEditMode)) {
-                typeDropdownEditMode = !typeDropdownEditMode;
-            }
-            break;
-        case ACTION_ERASE:
-            GuiLabel(labelRect, "Erase an interactable..");
-            break;
-        case ACTION_EDIT:
-            if (interactableWorldPos.x > -1) {
-                GuiLabel(labelRect, "Edit the selected interactable\nChoose Interactable Type:");
-                if (GuiDropdownBox(dropdownRect, "Blank;Two", &typeNumber, typeDropdownEditMode)) {
-                    typeDropdownEditMode = !typeDropdownEditMode;
-                }
-
-                if (interactable != nullptr) {
-                    drawTypeProps();
-                }
-            } else {
-                GuiLabel(labelRect, "No selected interactable..");
-            }
-            break;
-        default:
-            break;
-    }
-    */
-
     ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
     ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
     if (ImGui::Begin("Interactable", nullptr,
@@ -107,8 +66,12 @@ void InteractableInfoPanel::draw()
             ImGui::Text("Erase an interactable..");
             break;
         case ACTION_EDIT:
-            ImGui::Text("Edit the selected interactable");
-            ImGui::Combo("Type", &typeNumber, "Blank\0Two\0");
+            if (interactableWorldPos.x != -1) {
+                ImGui::Text("Edit the selected interactable");
+                ImGui::Combo("Type", &typeNumber, "Blank\0Two\0");
+
+                drawTypeProps();
+            }
             break;
         default:
             break;
@@ -120,63 +83,22 @@ void InteractableInfoPanel::draw()
 
 void InteractableInfoPanel::drawTypeProps()
 {
-    Rectangle saveRect = Rectangle {
-        rect.x + 4, (rect.y + rect.height) - (24 + 4),
-        rect.width - 8, 24
-    };
+    if (ImGui::BeginChild("type_props", ImVec2(0, 0), ImGuiChildFlags_Borders, 0)) {
+        switch (interactable->getType()) {
+        case INT_TWO:
+            drawDialogueProps();
+            break;
+        default:
+            break;
+        }
 
-    if (GuiButton(saveRect, "Save..")) {
-        saveProps();
-    }
-
-    switch (interactable->getType()) {
-    case INT_TWO:
-        drawDialogueProps();
-        break;
-    default:
-        break;
+        ImGui::EndChild();
     }
 }
 
 void InteractableInfoPanel::drawDialogueProps()
 {
-    Rectangle baseRect = Rectangle {
-        rect.x + 8, rect.y + 4 + (24 * 3),
-        rect.width - 16, 24
-    };
-
-    Rectangle lineRect = baseRect;
-    lineRect.height = 4;
-    lineRect.y += 24;
-    GuiLine(lineRect, NULL);
-
-    Rectangle labelRect = baseRect;
-    labelRect.y += 24 + 4;
-    GuiLabel(labelRect, "Dialogue Text");
-
-    Rectangle textRect = baseRect;
-    textRect.y += (2 * 24) + 4;
-    
-    if (GuiTextBox(textRect, diagText.get(), 13, diagTextEditMode)) {
-        diagTextEditMode = !diagTextEditMode;
-    }
-    
-    //GuiLabel(textRect, propsState.getDialogue().lines.at(0).text.c_str());
-}
-
-void InteractableInfoPanel::saveProps()
-{
-    Dialogue dialogue;
-    InteractableTwo* dialogueInter;
-
-    if (interactable->getType() == INT_TWO) {
-        dialogue = propsState.getDialogue();
-        dialogue.lines.at(0).text = diagText.get();
-
-        propsState.setDialogue(dialogue);
-        dialogueInter = static_cast<InteractableTwo*>(interactable);
-        dialogueInter->setDialogue(dialogue);
-    }
+    ImGui::InputTextMultiline("Dialogue.", propsState.diagText, IM_ARRAYSIZE(propsState.diagText));
 }
 
 void InteractableInfoPanel::setActionMode(RoomAction mode)

@@ -25,6 +25,7 @@ private:
 public:
 	ActorView();
 	ActorView(Rectangle rect);
+	void setRect(Rectangle rect);
 	void setInitial();
 	void updateData();
 	void update();
