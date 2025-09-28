@@ -75,6 +75,9 @@ void PropertiesBox::draw()
         if (fs.getType() == FILE_TILESET) {
             tileSetProps.draw();
         }
+        if (fs.getType() == FILE_ROOM) {
+            mapProps.draw();
+        }
 
         ImGui::End();
     }

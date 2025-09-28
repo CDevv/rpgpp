@@ -98,6 +98,7 @@ public:
     WorldViewBox();
     WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLayer boxLayer);
     ~WorldViewBox();
+    void setWindowTitle(std::string title);
     Rectangle getWindowRect();
     void setRect(Rectangle rect);
     Rectangle getRenderRect();

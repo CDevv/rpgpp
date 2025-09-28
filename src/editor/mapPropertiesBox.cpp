@@ -43,25 +43,10 @@ void MapPropertiesBox::draw()
     TileMap *map = fs.getRoom()->getTileMap();
     this->map = map;
 
-    Rectangle contentRec = rect;
-    contentRec.height += 100;
-    contentRec.width -= 16;
-    GuiScrollPanel(rect, "Map Props", contentRec, &scrollVec, &viewRec);
-
-    BeginScissorMode(viewRec.x, viewRec.y, viewRec.width, viewRec.height);
-
-    // map size
-    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 8, (viewRec.width - 16), 24 }, "Width");
-    if (GuiValueBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 32, (viewRec.width - 16), 24 }, NULL, &mapWidth, 1, 100, widthEdit)) {
-        widthEdit = !widthEdit;
-    }
-
-    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 56, (viewRec.width - 16), 24 }, "Height");
-    if (GuiValueBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 80, (viewRec.width - 16), 24 }, NULL, &mapHeight, 1, 100, heightEdit)) {
-        heightEdit = !heightEdit;
-    }
-
-    if (GuiButton(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 112, (viewRec.width - 16), 24 }, "Resize")) {
+    ImGui::SeparatorText("Map Size");
+    ImGui::InputInt("Width", &mapWidth);
+    ImGui::InputInt("Height", &mapHeight);
+    if (ImGui::Button("Resize", ImVec2(-1, 0))) {
         if (mapHeight >= 1 && mapWidth >= 1) {
             if (mapHeight <= 75 && mapWidth <= 75) {
                 map->setWorldSize(Vector2 { static_cast<float>(mapWidth), static_cast<float>(mapHeight) });
@@ -69,20 +54,16 @@ void MapPropertiesBox::draw()
         }
     }
 
-    GuiLine(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 136, (viewRec.width - 16), 16 }, NULL);
-    // tileset source
-    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 152, (viewRec.width - 16), 24 }, "TileSet");
     std::string sourceFileName = GetFileName(map->getTileSetSource().c_str());
-    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 176, (viewRec.width - (16 + 24)), 24 }, sourceFileName.c_str());
-    if (GuiButton(Rectangle { viewRec.x + 8 + (viewRec.width - (16 + 24)), viewRec.y + scrollVec.y + 176, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
+    sourceFileName.push_back('\0');
+
+    ImGui::SeparatorText("TileSet");
+    ImGui::InputText("TileSet", const_cast<char*>(sourceFileName.data()), sourceFileName.size(), ImGuiInputTextFlags_ReadOnly);
+    if (ImGui::Button("Change TileSet..", ImVec2(-1, 0))) {
         FS_Result fsResult = fs.openTileSetResource();
-        map->setTileSet(fsResult.path);
+        if (fsResult.result == NFD_OKAY) {
+            map->setTileSet(fsResult.path);
+        }
     }
-
-    EndScissorMode();
-
-    //draw tooltips AFTER scrissor mode
-    EditorInterfaceService& ui = Editor::getUi();
-    ui.drawTooltip(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 176, (viewRec.width - (16 + 24)), 24 }, map->getTileSetSource());
 }
 

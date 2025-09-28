@@ -14,7 +14,7 @@ WorldViewBox::WorldViewBox()
 
 WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLayer boxLayer)
 {
-    windowTitle = "File not opened..";
+    windowTitle = "WorldViewBox";
     this->type = type;
 
     camera = Camera2D { {0} };
@@ -45,6 +45,11 @@ WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLay
 WorldViewBox::~WorldViewBox()
 {
     UnloadRenderTexture(renderTexture);
+}
+
+void WorldViewBox::setWindowTitle(std::string windowTitle)
+{
+    this->windowTitle = windowTitle;
 }
 
 Rectangle WorldViewBox::getWindowRect()
@@ -227,7 +232,7 @@ void WorldViewBox::draw()
     ImGui::SetNextWindowPos(ImVec2 { windowRect.x, windowRect.y });
     ImGui::SetNextWindowSize(ImVec2 { windowRect.width, windowRect.height });
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    if (ImGui::Begin("WorldViewBox", NULL, 
+    if (ImGui::Begin(windowTitle.c_str(), NULL, 
         ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollWithMouse)) {
 
         ImVec2 pos = ImGui::GetWindowPos();

@@ -56,12 +56,6 @@ void TileSetPropertiesBox::update()
             tileSet->setTileSize(chosenTileSize);
         }
     } else {
-
-        /*if (chosenTileWidth >= 16 && chosenTileHeight >= 16) {
-            Vector2 sizeVec = Vector2 { static_cast<float>(chosenTileWidth), static_cast<float>(chosenTileHeight) };
-            tileSet->setTileSizeVector(sizeVec);
-        }*/
-
         if (tileSizeArr[0] >= 16 && tileSizeArr[1] >= 16) {
             Vector2 sizeVec = Vector2 { static_cast<float>(tileSizeArr[0]), static_cast<float>(tileSizeArr[1]) };
             tileSet->setTileSizeVector(sizeVec);

@@ -34,18 +34,11 @@ RoomAction MapToolsBox::getActionMode()
 
 void MapToolsBox::update()
 {
-	action = static_cast<RoomAction>(actionInt + 1);
+	action = static_cast<RoomAction>(actionInt);
 }
 
 void MapToolsBox::draw()
 {
-	/*
-	DrawRectangleLinesEx(rect, 1.0f, GRAY);
-
-	Rectangle optionRect = Rectangle { rect.x + 2, rect.y + 2, rect.height - 4, rect.height - 4 };
-	GuiToggleGroup(optionRect, "#23#;#28#;#190#", &actionInt);
-	*/
-
 	ImVec2 buttonSize = ImVec2 { rect.height - 8, rect.height - 8 };
 
 	ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });

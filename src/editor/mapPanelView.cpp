@@ -41,6 +41,7 @@ MapPanelView::MapPanelView(Rectangle rect)
     };
     tileSetWindowRect.height = tileSetWindowRect.width - 36;
     tileSetView = std::make_unique<WorldViewBox>(tileSetWindowRect, FILE_TILESET, VIEWBOX_LAYER_BASE);
+    tileSetView->setWindowTitle("TileSet");
 
     tileSetView->enableTileSelection();
     worldView->setActionMode(ACTION_PLACE);
@@ -59,6 +60,8 @@ MapPanelView::MapPanelView(Rectangle rect)
 
 void MapPanelView::setRect(Rectangle rect)
 {
+    this->rect = rect;
+
     Rectangle toolsRect = Rectangle
     {
         rect.x, rect.y, static_cast<float>(rect.width * 0.7), 30
@@ -67,10 +70,28 @@ void MapPanelView::setRect(Rectangle rect)
 
     Rectangle windowRect = Rectangle
     {
-        rect.x, rect.y + 34,
-        static_cast<float>(rect.width * 0.7), static_cast<float>(rect.height - 34)
+        rect.x, rect.y + 36,
+        static_cast<float>(rect.width * 0.7), static_cast<float>(rect.height - 36)
     };
     worldView->setRect(windowRect);
+
+    float remainingHeight = rect.height - (28 + 4);
+    Rectangle tileSetWindowRect = Rectangle
+    {
+        (rect.x + windowRect.width + 4), (rect.y + 28 + 8),
+        (rect.width * 0.3f) - 8, (remainingHeight / 2)
+    };
+    tileSetWindowRect.height = tileSetWindowRect.width - 36;
+    tileSetView->setRect(tileSetWindowRect);
+
+    remainingHeight -= tileSetWindowRect.height;
+
+    Rectangle propRect = Rectangle
+    {
+        (tileSetWindowRect.x), (tileSetWindowRect.y + tileSetWindowRect.height + 4),
+        tileSetWindowRect.width, remainingHeight - 8
+    };
+    propBox.setRect(propRect);
 }
 
 void MapPanelView::setInitial()
@@ -140,22 +161,23 @@ void MapPanelView::draw()
         case LAYER_INTERACTABLES:
             interactableInfo.draw();
             break;
+        default:
+            break;
     }
 
     propBox.draw();
 
-    Rectangle windowRect = worldView->getWindowRect();
-    Rectangle optionsRect = Rectangle 
-    {
-        (rect.x + windowRect.width + 4), (rect.y),
-        280, 24
-    };
-    Rectangle singleOptionRect = optionsRect;
-    singleOptionRect.width /= 3;
-    singleOptionRect.width -= 2;
+    //Choosing on what layer to work on..
+    ImGui::SetNextWindowPos(ImVec2 { rect.x + (rect.width * 0.7f) + 4, rect.y });
+    ImGui::SetNextWindowSize(ImVec2 { (rect.width * 0.3f) - 8, 28 });
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
+    if (ImGui::Begin("MapLayerSelect", nullptr, 
+        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | 
+        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse)) {
 
-    Rectangle layoutDropdown = optionsRect;
-    if (GuiDropdownBox(layoutDropdown, "Tiles;Collisions;Interactables", &layoutModeToggle, layoutDropdownEditMode)) {
-        layoutDropdownEditMode = !layoutDropdownEditMode;
+        ImGui::Combo("Layer", &layoutModeToggle, "Tiles\0Collisions\0Interactables\0");
+
+        ImGui::End();
     }
+    ImGui::PopStyleVar();
 }
