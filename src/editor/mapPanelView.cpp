@@ -83,6 +83,8 @@ void MapPanelView::setRect(Rectangle rect)
     };
     tileSetWindowRect.height = tileSetWindowRect.width - 36;
     tileSetView->setRect(tileSetWindowRect);
+    collisionInfo.setRect(tileSetWindowRect);
+    interactableInfo.setRect(tileSetWindowRect);
 
     remainingHeight -= tileSetWindowRect.height;
 

@@ -1,7 +1,8 @@
 #include "interactableInfoPanel.hpp"
-#include <raygui.h>
 #include <raymath.h>
 #include <raylib.h>
+#include <imgui.h>
+#include <raygui.h>
 #include "worldViewBox.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
@@ -22,6 +23,11 @@ InteractableInfoPanel::InteractableInfoPanel(Rectangle rect)
     this->diagText = std::make_unique<char[]>(1);
     diagText[0] = '\0';
     this->diagTextEditMode = false;
+}
+
+void InteractableInfoPanel::setRect(Rectangle rect)
+{
+    this->rect = rect;
 }
 
 void InteractableInfoPanel::setInitial(InteractableType type)
@@ -45,6 +51,7 @@ void InteractableInfoPanel::update()
 
 void InteractableInfoPanel::draw()
 {
+    /*
     GuiPanel(rect, "Interactable");
 
     if (typeDropdownEditMode) GuiLock();
@@ -84,6 +91,30 @@ void InteractableInfoPanel::draw()
             break;
         default:
             break;
+    }
+    */
+
+    ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
+    ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
+    if (ImGui::Begin("Interactable", nullptr,
+        ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
+        switch (action) {
+        case ACTION_PLACE:
+            ImGui::Text("Place an interactable");
+            ImGui::Combo("Type", &typeNumber, "Blank\0Two\0");
+            break;
+        case ACTION_ERASE:
+            ImGui::Text("Erase an interactable..");
+            break;
+        case ACTION_EDIT:
+            ImGui::Text("Edit the selected interactable");
+            ImGui::Combo("Type", &typeNumber, "Blank\0Two\0");
+            break;
+        default:
+            break;
+        }
+
+        ImGui::End();
     }
 }
 

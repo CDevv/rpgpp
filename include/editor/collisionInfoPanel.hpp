@@ -11,6 +11,7 @@ private:
 public:
     CollisionInfoPanel();
     CollisionInfoPanel(Rectangle rect);
+    void setRect(Rectangle rect);
     void draw();
     void setActionMode(RoomAction mode);
 };

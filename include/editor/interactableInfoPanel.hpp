@@ -26,6 +26,7 @@ private:
 public:
     InteractableInfoPanel();
     InteractableInfoPanel(Rectangle rect);
+    void setRect(Rectangle rect);
     void setInitial(InteractableType type);
     void update();
     void draw();
