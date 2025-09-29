@@ -102,8 +102,9 @@ void ActorView::update()
 
 void ActorView::draw()
 {
-	if (renderTexture.texture.width != renderRect.width ||
-		renderTexture.texture.height != renderRect.height) {
+	if ((renderTexture.texture.width != static_cast<int>(renderRect.width)) ||
+		(renderTexture.texture.height != static_cast<int>(renderRect.height))) {
+		printf("reload.. \n");
 		UnloadRenderTexture(renderTexture);
 		renderTexture = LoadRenderTexture(renderRect.width, renderRect.height);
 	}
