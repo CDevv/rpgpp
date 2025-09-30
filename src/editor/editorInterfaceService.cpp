@@ -156,23 +156,25 @@ void EditorInterfaceService::drawProjectView()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
-    //projectMenu.draw();
+    Rectangle projectMenuRect = Rectangle { 0, 16, static_cast<float>(GetScreenWidth()), 36 };
+    projectMenu.setRect(projectMenuRect);
+    projectMenu.draw();
 
     if (fs.projectIsOpen()) {
         tabList.setRect(Rectangle {
-            static_cast<float>(GetScreenWidth() * 0.2) + 8, 24, static_cast<float>(GetScreenWidth() * 0.8) - (8 * 2), 18
+            static_cast<float>(GetScreenWidth() * 0.2) + 8, 36 + 16 + 4, static_cast<float>(GetScreenWidth() * 0.8) - (8 * 2), 18
         });
         tabList.draw();
     }
 
     panelView->setRect(Rectangle {
-        static_cast<float>(GetScreenWidth() * 0.2) + 4, (24 + 18 + 4),
-        static_cast<float>(GetScreenWidth() * 0.8) - 8, static_cast<float>(GetScreenHeight() - (24 + 18 + 4 + 4))
+        static_cast<float>(GetScreenWidth() * 0.2) + 4, (36 + 24 + 18 + 4),
+        static_cast<float>(GetScreenWidth() * 0.8) - 8, static_cast<float>(GetScreenHeight() - (36 + 24 + 18 + 4  + 4))
     });
     panelView->draw();
 
     resourceView.setRect(Rectangle {
-        0, 18, static_cast<float>(GetScreenWidth() * 0.2), static_cast<float>(GetScreenHeight() - 18)
+        0, 36 + 18, static_cast<float>(GetScreenWidth() * 0.2), static_cast<float>(GetScreenHeight() - (38 + 18 + 4))
     });
     resourceView.draw();
 }
