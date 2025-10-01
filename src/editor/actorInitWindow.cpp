@@ -3,6 +3,7 @@
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
+#include "imgui.h"
 #include <nlohmann/json.hpp>
 
 ActorInitWindow::ActorInitWindow() {}
@@ -13,7 +14,7 @@ ActorInitWindow::ActorInitWindow(Rectangle rect)
 	this->active = false;
 
 	this->titleEditMode = false;
-	this->title = std::make_unique<char>();
+	strcpy(this->title, "");
 	this->titleText = "";
 	this->hasSetTileSet = false;
 	this->tileSetSource = "";
@@ -22,6 +23,7 @@ ActorInitWindow::ActorInitWindow(Rectangle rect)
 void ActorInitWindow::setActive()
 {
 	active = true;
+	ImGui::OpenPopup("New Actor..");
 }
 
 void ActorInitWindow::closeWindow()
@@ -31,74 +33,63 @@ void ActorInitWindow::closeWindow()
 	ui.setMouseLock(false);
 
 	active = false;
-	*title = '\0';
+	strcpy(this->title, "");
 	titleEditMode = false;
 	titleText = "";
 	hasSetTileSet = false;
 	tileSetSource = "";
+
+	ImGui::CloseCurrentPopup();
 }
 
 void ActorInitWindow::draw()
 {
-	if (active) {
-		FileSystemService& fs = Editor::getFileSystem();
-        EditorInterfaceService& ui = Editor::getUi();
+    FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
 
-		if (GuiWindowBox(rect, "New Actor..")) {
-			closeWindow();
-		}
+	ImGui::SetNextWindowSize(ImVec2 { rect.width, -1 });
+	if (ImGui::BeginPopupModal("New Actor..")) {
+        ImGui::InputText("Title", title, 256);
 
-		GuiLabel(Rectangle { rect.x + 8, rect.y + 40, rect.width - 16, 24 }, "Title..");
-        if (GuiTextBox(Rectangle { rect.x + 8, rect.y + 64, rect.width - 16, 24 }, title.get(), 13, titleEditMode)) {
-            titleEditMode = !titleEditMode;
-        }
+    	tileSetSource.push_back('\0');
+    	ImGui::InputText("TileSet", tileSetSource.data(), tileSetSource.size());
 
-        GuiLabel(Rectangle { rect.x + 8, rect.y + 96, rect.width - 16, 24 }, "Texture..");
-        Rectangle tileSetSourceLabelRect = Rectangle { rect.x + 8, rect.y + 120, rect.width - (16 + 24), 24 };
-        if (hasSetTileSet) {
-            GuiLabel(tileSetSourceLabelRect, tileSetSource.c_str());
-        } else {
-            GuiLabel(tileSetSourceLabelRect, "Not set..");
-        }
-
-        if (GuiButton(Rectangle { rect.x + 8 + (rect.width - (16 + 24)), rect.y + 120, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
+    	if (ImGui::Button("Change TileSet", ImVec2(-1, 0))) {
             FS_Result fsResult = fs.openTileSetResource();
             if (fsResult.result == NFD_OKAY) {
                 tileSetSource = fsResult.path;
                 hasSetTileSet = true;
             }
-        }
+    	}
 
-        if (GuiButton(Rectangle { rect.x + 184, rect.y + (rect.height - (24 + 8)), 120, 24 }, "Submit..")) {
-            titleText = title.get();
+    	if (ImGui::Button("Submit")) {
+    		titleText = title;
 
-            if (titleText.empty()) return;
-            if (!hasSetTileSet) return;
+    		bool validated = !titleText.empty() && hasSetTileSet;
 
-            std::unique_ptr<TileSet> tileSet = std::make_unique<TileSet>(tileSetSource);
-            Actor actor(std::move(tileSet), Vector2 { 0, 0 }, tileSetSource);
+    		if (validated) {
+       			std::unique_ptr<TileSet> tileSet = std::make_unique<TileSet>(tileSetSource);
+                Actor actor(std::move(tileSet), Vector2 { 0, 0 }, tileSetSource);
 
-            nlohmann::json actorJson = actor.dumpJson();
-            std::string jsonString = actorJson.dump(4);
+                nlohmann::json actorJson = actor.dumpJson();
+                std::string jsonString = actorJson.dump(4);
 
-            std::string filePath = std::string("actors/").append(titleText).append(".ractor");
-            SaveFileText(filePath.c_str(), const_cast<char*>(jsonString.data()));
+                std::string filePath = std::string("actors/").append(titleText).append(".ractor");
+                SaveFileText(filePath.c_str(), const_cast<char*>(jsonString.data()));
 
-            fs.getProject()->reloadPaths();
-            fs.openProjectFile(filePath);
-            ui.setInitial();
-            	
-            closeWindow();
-        }
+                fs.getProject()->reloadPaths();
+                fs.openProjectFile(filePath);
+                ui.setInitial();
 
-		if (active) {
-            if (CheckCollisionPointRec(GetMousePosition(), rect)) {
-                ui.setMouseBoxLayer(VIEWBOX_LAYER_WINDOW);
-                ui.setMouseLock(true);
-            } else {
-                ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
-                ui.setMouseLock(false);
-            }
-        }
+     			closeWindow();
+    		}
+    	}
+    	ImGui::SameLine();
+
+    	if (ImGui::Button("Cancel")) {
+    		closeWindow();
+    	}
+
+	    ImGui::EndPopup();
 	}
 }

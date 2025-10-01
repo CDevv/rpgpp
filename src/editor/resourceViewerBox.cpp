@@ -30,6 +30,9 @@ void ResourceViewerBox::draw()
     const ImVec2 resourceButtonSize = ImVec2 { 76, 76 };
 
     FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
+    WindowContainer& windows = ui.getWindowContainer();
+
     if (fs.getProject() != nullptr) {
         auto arr = ProjectFile::getTypeNames();
         EngineFileType fileTypeActive = static_cast<EngineFileType>(dropdownActive);
@@ -43,15 +46,25 @@ void ResourceViewerBox::draw()
                 ImGui::OpenPopup("res_choose");
             }
             if (ImGui::Button("New..", ImVec2 { rect.width - (8 * 2), 24.0f })) {
-                ImGui::OpenPopup("new_");
+                switch (fileTypeActive) {
+                default:
+                    break;
+                case FILE_TILESET:
+                    windows.openTileSetInit();
+                    break;
+                case FILE_ROOM:
+                    windows.openMapInit();
+                    break;
+                case FILE_ACTOR:
+                    windows.openActorInit();
+                    break;
+                }
             }
 
             ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2 { 0, 0 });
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4 { 38, 38, 38, 0 });
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, IM_COL32(53,53,53, 255));
             if (ImGui::BeginChild("res_list")) {
-
-
                 switch (fileTypeActive) {
                 default:
                     break;
@@ -73,7 +86,7 @@ void ResourceViewerBox::draw()
             ImGui::PopStyleColor();
 
             ImGui::SetNextWindowPos(ImVec2 { rect.x + 8, rect.y + 70 });
-            if (ImGui::BeginPopup("res_choose")) {          
+            if (ImGui::BeginPopup("res_choose")) {
                 for (int i = 0; i < arr.size(); i++) {
                     ImGui::SameLine();
                     if (ImGui::Button(arr[i].c_str(), resourceButtonSize)) {
@@ -85,10 +98,7 @@ void ResourceViewerBox::draw()
                 ImGui::EndPopup();
             }
 
-            if (ImGui::BeginPopupModal("new_")) {
-                ImGui::Text("Content.");
-                ImGui::EndPopup();
-            }
+            windows.draw();
 
             ImGui::End();
         }
@@ -108,7 +118,7 @@ void ResourceViewerBox::drawTileSets()
         }
     }
     */
-    
+
 
     std::vector<std::string> tileSetPaths = fs.getProject()->getTileSetPaths();
     for (std::string tileSetPath : tileSetPaths) {

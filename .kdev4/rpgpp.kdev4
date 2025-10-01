@@ -57,6 +57,7 @@ Name=Clang
 [CustomDefinesAndIncludes][ProjectPath0][Includes]
 1=/home/nikodev/Документи/Projects/cpp/rpgpp/include/
 2=/home/nikodev/Документи/Projects/cpp/rpgpp/include/editor
+3=/home/nikodev/Документи/Projects/cpp/rpgpp/include/imgui/
 
 [Launch]
 Launch Configurations=Launch Configuration 0,Launch Configuration 1

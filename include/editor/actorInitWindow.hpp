@@ -2,7 +2,6 @@
 #define _RPGPP_EDITOR_ACTORINITWINDOW_H
 
 #include <raylib.h>
-#include <memory>
 #include <string>
 
 class ActorInitWindow {
@@ -10,7 +9,7 @@ private:
 	Rectangle rect;
 	bool active;
 	bool titleEditMode;
-	std::unique_ptr<char> title;
+	char title[256];
 	std::string titleText;
 	bool hasSetTileSet;
 	std::string tileSetSource;

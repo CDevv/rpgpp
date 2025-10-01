@@ -95,12 +95,12 @@ TileSetDialogWindow& WindowContainer::openTileSetDialog()
 
 void WindowContainer::draw()
 {
-    projectInit.draw();
+    //projectInit.draw();
     tileSetInit.draw();
     mapInit.draw();
     actorInit.draw();
-    projectBinaryView.draw();
-    tileSetDialog.draw();
+    //projectBinaryView.draw();
+    //tileSetDialog.draw();
 
     if (!windowOpen) {
         EditorInterfaceService& ui = Editor::getUi();
