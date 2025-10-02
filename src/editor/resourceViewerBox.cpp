@@ -8,6 +8,7 @@
 #include "fileSystemService.hpp"
 #include "windowContainer.hpp"
 #include "projectFile.hpp"
+#include "worldViewBox.hpp"
 
 ResourceViewerBox::ResourceViewerBox() {}
 
@@ -46,18 +47,20 @@ void ResourceViewerBox::draw()
                 ImGui::OpenPopup("res_choose");
             }
             if (ImGui::Button("New..", ImVec2 { rect.width - (8 * 2), 24.0f })) {
-                switch (fileTypeActive) {
-                default:
-                    break;
-                case FILE_TILESET:
-                    windows.openTileSetInit();
-                    break;
-                case FILE_ROOM:
-                    windows.openMapInit();
-                    break;
-                case FILE_ACTOR:
-                    windows.openActorInit();
-                    break;
+                if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
+                    switch (fileTypeActive) {
+                    default:
+                        break;
+                    case FILE_TILESET:
+                        windows.openTileSetInit();
+                        break;
+                    case FILE_ROOM:
+                        windows.openMapInit();
+                        break;
+                    case FILE_ACTOR:
+                        windows.openActorInit();
+                        break;
+                    }
                 }
             }
 
@@ -111,15 +114,6 @@ void ResourceViewerBox::drawTileSets()
     EditorInterfaceService& ui = Editor::getUi();
     WindowContainer& windows = ui.getWindowContainer();
 
-    /*
-    if (GuiButton(Rectangle { rect.x + 8, rect.y + 2*24, rect.width - 16, 24 }, "New")) {
-        if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
-            windows.openTileSetInit();
-        }
-    }
-    */
-
-
     std::vector<std::string> tileSetPaths = fs.getProject()->getTileSetPaths();
     for (std::string tileSetPath : tileSetPaths) {
         std::string tileSetFileName = GetFileNameWithoutExt(tileSetPath.c_str());
@@ -136,13 +130,6 @@ void ResourceViewerBox::drawMaps()
     EditorInterfaceService& ui = Editor::getUi();
     WindowContainer& windows = ui.getWindowContainer();
 
-    /*
-    if (GuiButton(Rectangle { rect.x + 8, rect.y + 2*24, rect.width - 16, 24 }, "New..")) {
-        if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
-            windows.openMapInit();
-        }
-    }
-    */
     std::vector<std::string> mapPaths = fs.getProject()->getMapPaths();
 
     for (std::string mapPath : mapPaths) {
@@ -159,14 +146,6 @@ void ResourceViewerBox::drawActors()
     FileSystemService& fs = Editor::getFileSystem();
     EditorInterfaceService& ui = Editor::getUi();
     WindowContainer& windows = ui.getWindowContainer();
-
-    /*
-    if (GuiButton(Rectangle { rect.x + 8, rect.y + 2*24, rect.width - 16, 24 }, "New..")) {
-        if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
-            windows.openActorInit();
-        }
-    }
-    */
 
     std::vector<std::string> actorPaths = fs.getProject()->getActorPaths();
     for (std::string actorPath : actorPaths) {

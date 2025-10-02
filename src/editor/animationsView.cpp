@@ -6,15 +6,17 @@
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
+#include "tileSetDialogWindow.hpp"
+#include "windowContainer.hpp"
 
 bool rlImGuiImageButtonRect(const char* str_id, const Texture* image, int destWidth, int destHeight, Rectangle sourceRect)
 {
     if (!image)
         return false;
-    
+
     //if (GlobalContext)
         //ImGui::SetCurrentContext(GlobalContext);
-    
+
     ImVec2 uv0;
     ImVec2 uv1;
 
@@ -86,12 +88,14 @@ void AnimationsView::draw()
 	FileSystemService& fs = Editor::getFileSystem();
 	Actor* actor = fs.getActor();
 
+	EditorInterfaceService& ui = Editor::getUi();
+	WindowContainer& windows = ui.getWindowContainer();
+
 	ImVec2 cursorScreen = ImVec2(0, 0);
 
 	ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
 	ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
-	//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2 { 0, 0 });
-	if (ImGui::Begin("AnimationsView", nullptr, 
+	if (ImGui::Begin("AnimationsView", nullptr,
 		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
 
 		if (ImGui::BeginChild("top_bar", ImVec2(-1, 32))) {
@@ -102,7 +106,7 @@ void AnimationsView::draw()
 
 			ImGui::SameLine();
 			ImGui::BeginGroup();
-			
+
 			if (ImGui::Button(ICON_FA_PLAY " Play")) {
 				animPlaying = !animPlaying;
 			}
@@ -119,7 +123,7 @@ void AnimationsView::draw()
 
 			if (ImGui::Button(ICON_FA_FILE_PEN " Add")) {
 				animPlaying = false;
-				
+
 				if (actor != nullptr) {
 					actor->addAnimationFrame(static_cast<Direction>(currentAnim), Vector2 { 0, 0 });
 				}
@@ -128,7 +132,7 @@ void AnimationsView::draw()
 
 			if (ImGui::Button(ICON_FA_FILE_PEN " Remove")) {
 				animPlaying = false;
-				
+
 				if (actor != nullptr) {
 					actor->removeAnimationFrame(static_cast<Direction>(currentAnim), actorView->getFrame());
 					actorView->updateData();
@@ -137,11 +141,19 @@ void AnimationsView::draw()
 			ImGui::SameLine();
 
 			if (ImGui::Button(ICON_FA_FILE_PEN " Edit")) {
-				
+                TileSetDialogWindow& tileSetDialog = windows.openTileSetDialog();
+                tileSetDialog.setTileSet(&actor->getTileSet());
+                tileSetDialog.setSelectedTile(animFrames.at(actorView->getFrame()));
+                tileSetDialog.setCallback([this, actor](Vector2 atlas)
+    				{ actor->setAnimationFrame(static_cast<Direction>(currentAnim), actorView->getFrame(), atlas); }
+    			);
+                //tileSetDialog.setTile(actor->getTileSet().getTile(actorView->getFrame()));
 			}
 			ImGui::SameLine();
 
 			ImGui::EndGroup();
+
+			windows.drawTileSetDialog();
 
 			ImGui::EndChild();
 		}
@@ -181,7 +193,7 @@ void AnimationsView::draw()
 
 					frameIndex++;
 				}
-				
+
 				ImGui::EndChild();
 			}
 			ImGui::PopStyleColor();
@@ -190,7 +202,6 @@ void AnimationsView::draw()
 
 		ImGui::End();
 	}
-	//ImGui::PopStyleVar();
 }
 
 void AnimationsView::setActorView(ActorView *actorView)

@@ -3,6 +3,7 @@
 #include "tileSetInitWindow.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
+#include "worldViewBox.hpp"
 #include <raylib.h>
 
 WindowContainer::WindowContainer()
@@ -35,7 +36,7 @@ WindowContainer::WindowContainer()
     projectBinaryView = ProjectBinaryViewWindow(projectViewWindowRect);
 
     Rectangle baseTileSetDialogSize = Rectangle {
-        0, 0, 434, 320
+        0, 0, 434, 404
     };
     Rectangle tileSetDialogSize = Rectangle {
         (GetScreenWidth() - baseTileSetDialogSize.width) / 2,
@@ -88,6 +89,8 @@ ProjectBinaryViewWindow& WindowContainer::openProjectBinaryView()
 
 TileSetDialogWindow& WindowContainer::openTileSetDialog()
 {
+    EditorInterfaceService& ui = Editor::getUi();
+    ui.setMouseBoxLayer(VIEWBOX_LAYER_DIALOG);
     windowOpen = true;
     tileSetDialog.setActive();
     return tileSetDialog;
@@ -106,4 +109,9 @@ void WindowContainer::draw()
         EditorInterfaceService& ui = Editor::getUi();
         ui.setMouseLock(false);
     }
+}
+
+void WindowContainer::drawTileSetDialog()
+{
+    tileSetDialog.draw();
 }

@@ -28,6 +28,7 @@ public:
     ProjectBinaryViewWindow& openProjectBinaryView();
     TileSetDialogWindow& openTileSetDialog();
     void draw();
+    void drawTileSetDialog();
 };
 
 #endif

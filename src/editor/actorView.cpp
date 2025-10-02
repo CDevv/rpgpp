@@ -2,6 +2,7 @@
 #include "gamedata.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "projectFile.hpp"
 #include <raymath.h>
 
 ActorView::ActorView() {}
@@ -49,13 +50,14 @@ void ActorView::setInitial()
 	FileSystemService& fs = Editor::getFileSystem();
 	Actor* actor = fs.getActor();
 
-	if (actor != nullptr)
+	if (fs.getType() == FILE_ACTOR && actor != nullptr)
 	{
 		collisionBox.setRect(actor->getCollisionRect());
 		currentAnim = 0;
 		animPlaying = false;
 		currentFrame = 0;
 		currentAnimFrames = std::vector<Vector2>{};
+		actorRect = actor->getRect();
 	}
 }
 
@@ -76,7 +78,7 @@ void ActorView::update()
     }
 
 	if (fs.fileIsOpen() && fs.getActor() != nullptr) {
-		Rectangle actorRect = fs.getActor()->getRect();
+		//Rectangle actorRect = fs.getActor()->getRect();
 		camera.target = Vector2 { actorRect.width / 2, actorRect.height / 2 };
 
 		//animation playing
@@ -144,6 +146,10 @@ void ActorView::drawActor()
 	Texture texture = tileSet.getTexture();
 
 	auto firstAnim = actor->getAnimationsRaw().at(currentAnim);
+	if (firstAnim.size() == 0)
+		return;
+	if (currentFrame >= firstAnim.size())
+		currentFrame = 0;
 	Vector2 firstFrame = firstAnim.at(currentFrame);
 	Vector2 atlasCoords = firstFrame;
 

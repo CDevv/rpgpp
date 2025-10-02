@@ -20,7 +20,7 @@ ActorPropertiesBox::ActorPropertiesBox(Rectangle rect)
 void ActorPropertiesBox::setDefaults()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    
+
     if (fs.getType() == FILE_ACTOR) {
         this->actor = fs.getActor();
     }
@@ -28,12 +28,21 @@ void ActorPropertiesBox::setDefaults()
 
 void ActorPropertiesBox::update()
 {
-
+    FileSystemService& fs = Editor::getFileSystem();
+    if (fs.getType() == FILE_ACTOR) {
+        this->actor = fs.getActor();
+    }
 }
 
 void ActorPropertiesBox::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
+    if (fs.getType() == FILE_ACTOR) {
+        this->actor = fs.getActor();
+    }
+    if (actor == nullptr) {
+        return;
+    }
 
     ImGui::Checkbox("Collision View", &collisionViewActive);
 

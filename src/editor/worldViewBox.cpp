@@ -1,6 +1,7 @@
 #include "worldViewBox.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "imgui.h"
 #include "room.hpp"
 #include "tileset.hpp"
 #include <memory>
@@ -16,6 +17,7 @@ WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLay
 {
     windowTitle = "WorldViewBox";
     this->type = type;
+    this->isChild = false;
 
     camera = Camera2D { {0} };
     camera.target = Vector2 { 0, 0 };
@@ -26,7 +28,7 @@ WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLay
     this->hoverPos = Vector2 { 0, 0 };
 
     this->windowRect = windowRect;
-    this->renderRect = Rectangle 
+    this->renderRect = Rectangle
     {
         (windowRect.x + 2), (windowRect.y + 24),
         (windowRect.width - 4), (windowRect.height - 30)
@@ -50,6 +52,11 @@ WorldViewBox::~WorldViewBox()
 void WorldViewBox::setWindowTitle(std::string windowTitle)
 {
     this->windowTitle = windowTitle;
+}
+
+void WorldViewBox::asChild()
+{
+    this->isChild = true;
 }
 
 Rectangle WorldViewBox::getWindowRect()
@@ -131,9 +138,10 @@ void WorldViewBox::update()
 
 void WorldViewBox::draw()
 {
-    /*
     FileSystemService& fs = Editor::getFileSystem();
 
+    if (!fs.fileIsOpen()) return;
+
     if (type == FILE_TILESET) {
         tilesView.isHoverOnValidTile();
     } else {
@@ -141,11 +149,13 @@ void WorldViewBox::draw()
     }
 
     BeginTextureMode(renderTexture);
+
     if (type == FILE_ROOM) {
         ClearBackground(GRAY);
     } else {
         ClearBackground(RAYWHITE);
     }
+
     BeginMode2D(camera);
 
     rlPushMatrix();
@@ -172,68 +182,22 @@ void WorldViewBox::draw()
 
     EndTextureMode();
 
-    GuiPanel(windowRect, windowTitle.c_str());
 
-    Rectangle cameraRect = Rectangle {
-        0, 0,
-        static_cast<float>(renderTexture.texture.width), static_cast<float>(-renderTexture.texture.height)
-    };
-    DrawTextureRec(renderTexture.texture, cameraRect, Vector2 { renderRect.x, renderRect.y }, WHITE);
-    */
-
-    if (type == FILE_TILESET) {
-        tilesView.isHoverOnValidTile();
-    } else {
-        mapView.isHoverOnValidTile();
-    }
-
-    BeginTextureMode(renderTexture);
-
-    if (type == FILE_ROOM) {
-        ClearBackground(GRAY);
-    } else {
-        ClearBackground(RAYWHITE);
-    }
-    //DrawRectangleRec(Rectangle { 20, 20, 100, 100 }, RED);
-
-    /*
-    if (mouseInput->isInRect()) {
-
-        Vector2 mouse = mouseInput->getMouseWorldPos();
-        DrawCircleV(mouse, 4.0f, GREEN);
-    }*/
-    
-    BeginMode2D(camera);
-
-    rlPushMatrix();
-    if (type == FILE_TILESET) {
-        tilesView.drawGrid();
-    } else {
-        mapView.drawGrid();
-    }
-    rlPopMatrix();
-
-    if (type == FILE_TILESET) {
-        tilesView.drawTiles();
-    } else {
-        mapView.drawTiles();
-    }
-
-    EndMode2D();
-
-    if (type == FILE_TILESET) {
-        tilesView.drawMouse();
-    } else {
-        mapView.drawMouse();
-    }
-
-    EndTextureMode();
-
-    ImGui::SetNextWindowPos(ImVec2 { windowRect.x, windowRect.y });
-    ImGui::SetNextWindowSize(ImVec2 { windowRect.width, windowRect.height });
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    if (ImGui::Begin(windowTitle.c_str(), NULL, 
-        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollWithMouse)) {
+
+    bool success = false;
+    if (!isChild) {
+        ImGui::SetNextWindowPos(ImVec2 { windowRect.x, windowRect.y });
+        ImGui::SetNextWindowSize(ImVec2 { windowRect.width, windowRect.height });
+        success = ImGui::Begin(windowTitle.c_str(), NULL,
+            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize |
+            ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollWithMouse);
+    } else {
+        ImGui::SetNextWindowSize(ImVec2 { windowRect.width, -1 });
+        success = ImGui::BeginChild(windowTitle.c_str());
+    }
+
+    if (success) {
 
         ImVec2 pos = ImGui::GetWindowPos();
         ImVec2 size = ImGui::GetWindowSize();
@@ -253,10 +217,14 @@ void WorldViewBox::draw()
         }
 
         this->mouseInput->setCameraRect(renderRect);
-        
+
         rlImGuiImageRenderTexture(&renderTexture);
 
-        ImGui::End();
+        if (isChild) {
+            ImGui::EndChild();
+        } else {
+            ImGui::End();
+        }
     }
     ImGui::PopStyleVar();
 }
@@ -265,4 +233,3 @@ void WorldViewBox::unload()
 {
     UnloadRenderTexture(renderTexture);
 }
-

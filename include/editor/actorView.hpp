@@ -21,6 +21,7 @@ private:
 	int currentFrame;
 	std::vector<Vector2> currentAnimFrames;
 	bool animPlaying;
+	Rectangle actorRect;
 	void drawActor();
 public:
 	ActorView();

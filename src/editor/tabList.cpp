@@ -8,6 +8,8 @@ TabList::TabList() {}
 
 TabList::TabList(Rectangle rect)
 {
+    Texture2D closeTexture = LoadTexture("close.png");
+    this->closeTexture = closeTexture;
 	this->rect = rect;
 	this->scissorRect = rect;
 	this->scissorOffset = Vector2 { 0, 0 };
@@ -55,7 +57,7 @@ void TabList::update()
 int TabList::drawTabButton(float offset, std::string title, bool active)
 {
 	int result = 0;
-	float tabTextWidth = ImGui::CalcTextSize(title.c_str()).x; 
+	float tabTextWidth = ImGui::CalcTextSize(title.c_str()).x;
 	float closeButtonWidth = (rect.height - 4);
 
 	ImDrawList* draw = ImGui::GetBackgroundDrawList();
@@ -69,15 +71,15 @@ int TabList::drawTabButton(float offset, std::string title, bool active)
     }
 
     ImVec2 buttonMin = ImVec2 { rect.x + 4 + offset, rect.y };
-    ImVec2 buttonMax = ImVec2 { rect.x + 4 + offset + tabTextWidth + closeButtonWidth + 8, 
+    ImVec2 buttonMax = ImVec2 { rect.x + 4 + offset + tabTextWidth + closeButtonWidth + 8,
     	rect.y + rect.height };
 
     ImVec2 closeMin = ImVec2 { rect.x + offset + 4 + tabTextWidth + 4, rect.y + 2};
-	ImVec2 closeMax = ImVec2 { rect.x + offset + 4 + tabTextWidth + 4 + closeButtonWidth, 
+	ImVec2 closeMax = ImVec2 { rect.x + offset + 4 + tabTextWidth + 4 + closeButtonWidth,
 		rect.y + 2 + closeButtonWidth };
 
 	//interaction check
-    if (ImGui::IsMouseHoveringRect(buttonMin, 
+    if (ImGui::IsMouseHoveringRect(buttonMin,
     	buttonMax, false)) {
     	buttonColor = style.Colors[ImGuiCol_ButtonHovered];
 
@@ -106,13 +108,7 @@ int TabList::drawTabButton(float offset, std::string title, bool active)
 	draw->AddRectFilled(closeMin, closeMax,
 		ImGui::ColorConvertFloat4ToU32(closeColor));
 
-	draw->AddLine(ImVec2 { closeMin.x + 2, closeMin.y + 2 }, 
-		ImVec2 { closeMin.x + (closeButtonWidth - 2), closeMin.y + (closeButtonWidth - 2) }, 
-		IM_COL32_WHITE);
-	
-	draw->AddLine(ImVec2 { closeMin.x + (closeButtonWidth - 2), closeMin.y + 1 }, 
-		ImVec2 { closeMin.x + 2, closeMin.y + (closeButtonWidth - 2) - 1 }, 
-		IM_COL32_WHITE);
+	draw->AddImage((ImTextureRef)closeTexture.id, closeMin, closeMax);
 
 	//tab label
     draw->AddText(ImVec2 { rect.x + 4 + offset + 4, rect.y + 2 }, IM_COL32_WHITE, title.c_str());
@@ -132,6 +128,7 @@ void TabList::draw()
     ImDrawList* draw = ImGui::GetBackgroundDrawList();
 
     int i = 0;
+    bool actionLock = false;
     float addedWidth = 0.0f;
     float closeButtonWidth = (rect.height - 4);
 
@@ -147,18 +144,26 @@ void TabList::draw()
 
     	if (result == 1) {
     		activeIndex = i;
+    		fs.setActiveProjectFile(i);
+            ui.setInitial();
     	} else if (result == 2) {
-    		tabs.erase(tabs.begin() + i);
+    		if (!actionLock) {
+                actionLock = true;
+                tabs.erase(tabs.begin() + i);
+                fs.closeProjectFile(i);
 
-    		if (activeIndex == i) {
-    			activeIndex = 0;
-    		}
+        		if (activeIndex == i) {
+        			activeIndex = 0;
+        			fs.setActiveProjectFile(0);
+                    ui.setInitial();
+        		}
+            }
     	}
 
     	addedWidth += tabTextWidth + 8 + closeButtonWidth;
     	i++;
     }
 
-    draw->AddLine(ImVec2 { rect.x, rect.y + rect.height }, 
+    draw->AddLine(ImVec2 { rect.x, rect.y + rect.height },
     	ImVec2 { rect.x + rect.width, rect.y + rect.height }, ImGui::ColorConvertFloat4ToU32(activeColor));
 }

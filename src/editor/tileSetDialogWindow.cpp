@@ -3,6 +3,7 @@
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
+#include "imgui.h"
 
 TileSetDialogWindow::TileSetDialogWindow() {}
 
@@ -14,15 +15,17 @@ TileSetDialogWindow::TileSetDialogWindow(Rectangle rect)
 	this->chosenTile = Vector2 { -1, -1 };
 
 	Rectangle tileSetViewRect = Rectangle {
-		rect.x + 4, rect.y + 28, rect.width - 84, rect.height - 34
+		rect.x + 8, rect.y + 8 + 16 + 24, rect.width - 84, rect.height - (34 + 24)
 	};
 	this->tileSetView = std::make_unique<WorldViewBox>(tileSetViewRect, FILE_TILESET, VIEWBOX_LAYER_DIALOG);
 	this->tileSetView->enableTileSelection();
+	//this->tileSetView->asChild();
 }
 
 void TileSetDialogWindow::setActive()
 {
 	active = true;
+	ImGui::OpenPopup("Actor TileSet");
 	this->chosenTile = Vector2 { -1, -1 };
 }
 
@@ -32,43 +35,34 @@ void TileSetDialogWindow::closeWindow()
 	ui.setMouseLock(false);
 	ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
 	active = false;
+	ImGui::CloseCurrentPopup();
 }
 
 void TileSetDialogWindow::update()
 {
-
+    tileSetView->update();
 }
 
 void TileSetDialogWindow::draw()
 {
-	this->tileSetView->update();
+    ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
+    if (ImGui::BeginPopupModal("Actor TileSet", nullptr,
+        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize)) {
+        tileSetView->draw();
 
-	if (active) {
-		FileSystemService& fs = Editor::getFileSystem();
-        EditorInterfaceService& ui = Editor::getUi();
-
-		if (GuiWindowBox(rect, "Actor TileSet..")) {
-			closeWindow();
-		}
-
-		this->tileSetView->draw();
-		if (GuiButton(Rectangle { rect.x + (rect.width - 80) + 4, rect.y + 28, 72, 24 }, "Save")) {
-			if (getSelectedTile().x != -1) {
-				callback(getSelectedTile());
-			}
-			closeWindow();
-		}
-
-		if (active) {
-            if (CheckCollisionPointRec(GetMousePosition(), rect)) {
-            	ui.setMouseBoxLayer(boxLayer);
-                ui.setMouseLock(true);
-            } else {
-            	ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
-                ui.setMouseLock(false);
+        if (ImGui::Button("Save")) {
+            if (getSelectedTile().x != -1) {
+                callback(getSelectedTile());
             }
+            closeWindow();
         }
-	}
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel")) {
+            closeWindow();
+        }
+
+        ImGui::EndPopup();
+    }
 }
 
 void TileSetDialogWindow::setTileSet(TileSet* tileSet)

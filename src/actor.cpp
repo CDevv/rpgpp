@@ -188,7 +188,7 @@ json Actor::dumpJson()
             outFrame.push_back(static_cast<int>(frameVector.y));
             framesVec.push_back(outFrame);
         }
-        
+
         Direction direction = static_cast<Direction>(i);
         std::string keyName = "untitled";
         switch (direction) {
@@ -300,9 +300,12 @@ Vector2 Actor::getPosition()
 
 Rectangle Actor::getRect()
 {
+    if (tileSet.get() == nullptr)
+        return Rectangle { 0, 0, 0, 0 };
+
     Vector2 atlasTileSize = tileSet->getTileSize();
     Rectangle result = Rectangle {
-        position.x, position.y, 
+        position.x, position.y,
         atlasTileSize.x * RPGPP_DRAW_MULTIPLIER, atlasTileSize.y * RPGPP_DRAW_MULTIPLIER
     };
     return result;
@@ -411,6 +414,9 @@ std::array<std::vector<Vector2>, 8> Actor::getAnimationsRaw()
 
 std::vector<Vector2> Actor::getAnimationRaw(Direction id)
 {
+    if (animations[static_cast<int>(id)].get() == nullptr) {
+        return std::vector<Vector2>();
+    }
     std::vector<Vector2> animFrames = *animations[static_cast<int>(id)];
     return animFrames;
 }

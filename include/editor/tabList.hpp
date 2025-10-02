@@ -13,6 +13,7 @@ struct TabData
 class TabList {
 private:
 	Rectangle rect;
+	Texture2D closeTexture;
 	std::vector<TabData> tabs;
 	int activeIndex;
 	float tabWidth;
