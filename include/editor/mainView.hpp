@@ -12,6 +12,7 @@ private:
 	TextArea area;
 public:
 	MainView();
+	void setRect(Rectangle rect);
 	void update();
 	void draw();
 };

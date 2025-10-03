@@ -2,16 +2,13 @@
 #include <raylib.h>
 #include <raymath.h>
 #include <rlgl.h>
-#include "gamedata.hpp"
 #include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
 #include "editor.hpp"
 #include "resourceViewerBox.hpp"
 #include "windowContainer.hpp"
-#include "tabButton.hpp"
 
 #include <sol/sol.hpp>
-#include "game.hpp"
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
@@ -134,7 +131,7 @@ void EditorInterfaceService::draw()
     }
 
     if (!fs.projectIsOpen()) {
-        //drawMainView();
+        drawMainView();
     } else {
         drawProjectView();
     }
@@ -149,6 +146,9 @@ void EditorInterfaceService::draw()
 
 void EditorInterfaceService::drawMainView()
 {
+    mainView.setRect(Rectangle {
+        0, 0, static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight())
+    });
     mainView.draw();
 }
 

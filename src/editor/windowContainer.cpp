@@ -115,3 +115,8 @@ void WindowContainer::drawTileSetDialog()
 {
     tileSetDialog.draw();
 }
+
+void WindowContainer::drawProjectInit()
+{
+    projectInit.draw();
+}

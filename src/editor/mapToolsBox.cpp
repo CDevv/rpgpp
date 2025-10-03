@@ -1,16 +1,17 @@
 #include "mapToolsBox.hpp"
+#include "IconsKenney.h"
 #include <imgui.h>
 #include <raygui.h>
 
 #include <array>
 #include <string>
-#include <IconsFontAwesome6.h>
+#include <IconsKenney.h>
 
 static std::array<std::string, 4> buttonIcons = {
-	ICON_FA_PERSON,
-	ICON_FA_PENCIL,
-	ICON_FA_ERASER,
-	ICON_FA_FILE_PEN
+	ICON_KI_CURSOR,
+	ICON_KI_PENCIL,
+	ICON_KI_ERASER,
+	ICON_KI_COG
 };
 
 MapToolsBox::MapToolsBox() {}
@@ -44,11 +45,11 @@ void MapToolsBox::draw()
 	ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
 	ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
-	if (ImGui::Begin("MapToolsBox", nullptr, 
-		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | 
+	if (ImGui::Begin("MapToolsBox", nullptr,
+		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse)) {
 
-		for (int i = 1; i < buttonIcons.size(); i++) {
+		for (int i = 0; i < buttonIcons.size(); i++) {
 			if (actionInt != i) {
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4 { 38, 38, 38, 0 });
             	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, IM_COL32(53,53,53, 255));

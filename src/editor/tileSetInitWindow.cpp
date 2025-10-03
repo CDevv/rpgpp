@@ -5,9 +5,7 @@
 #include "imgui.h"
 #include "nfd.h"
 #include "tileset.hpp"
-#include <cstdio>
 #include <cstring>
-#include <memory>
 #include <raygui.h>
 #include <raylib.h>
 

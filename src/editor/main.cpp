@@ -3,9 +3,8 @@
 #include <raygui.h>
 #include <imgui.h>
 #include <rlImGui.h>
+#include <IconsKenney.h>
 #include "editor.hpp"
-
-#include "layoutContainer.hpp"
 
 int main()
 {
@@ -22,7 +21,14 @@ int main()
 
     rlImGuiSetup(true);
 
-    char input[256] = "";
+    ImGui::GetIO().Fonts->ClearFonts();
+    ImGui::GetIO().Fonts->AddFontFromFileTTF("LanaPixel.ttf", 13.0f);
+
+    ImFontConfig config;
+    config.MergeMode = true;
+    static const ImWchar icon_ranges[] = { ICON_MIN_KI, ICON_MAX_KI, 0 };
+
+    ImGui::GetIO().Fonts->AddFontFromFileTTF("kenney-icon-font.ttf", 13.0f, &config, icon_ranges);
 
     while (!WindowShouldClose()) {
         editor.update();
@@ -38,7 +44,7 @@ int main()
         EndDrawing();
     }
 
-    //editor.unload();
+    editor.unload();
     rlImGuiShutdown();
     CloseWindow();
 

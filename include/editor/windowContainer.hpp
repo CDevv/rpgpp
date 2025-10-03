@@ -29,6 +29,7 @@ public:
     TileSetDialogWindow& openTileSetDialog();
     void draw();
     void drawTileSetDialog();
+    void drawProjectInit();
 };
 
 #endif
