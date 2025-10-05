@@ -1,5 +1,4 @@
 #include "propertiesBox.hpp"
-#include <raygui.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "mapPropertiesBox.hpp"
@@ -70,9 +69,9 @@ void PropertiesBox::draw()
 
     ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
     ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
-    if (ImGui::Begin("Props", NULL, 
+    if (ImGui::Begin("Props", NULL,
         ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_Tooltip)) {
-        
+
         if (fs.fileIsOpen()) {
         switch (fs.getType()) {
             default:

@@ -1,5 +1,4 @@
 #include "collisionInfoPanel.hpp"
-#include <raygui.h>
 #include <imgui.h>
 #include "worldViewBox.hpp"
 
@@ -20,7 +19,7 @@ void CollisionInfoPanel::draw()
 {
     ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
     ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
-    if (ImGui::Begin("Collisions", nullptr, 
+    if (ImGui::Begin("Collisions", nullptr,
         ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
         switch (action) {
             case ACTION_PLACE:

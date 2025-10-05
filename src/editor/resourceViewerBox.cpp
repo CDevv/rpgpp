@@ -1,6 +1,6 @@
 #include "resourceViewerBox.hpp"
-#include <raygui.h>
 #include <raylib.h>
+#include <IconsKenney.h>
 #include <string>
 #include <vector>
 #include "editor.hpp"
@@ -43,7 +43,8 @@ void ResourceViewerBox::draw()
         if (ImGui::Begin("Project", nullptr,
             ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)) {
             ImGui::Text("Resources");
-            if (ImGui::Button(arr[dropdownActive].c_str(), ImVec2 { rect.width - (8 * 2), 24 })) {
+            std::string buttonText = TextFormat("%s %s", ICON_KI_CARET_BOTTOM, arr[dropdownActive].c_str());
+            if (ImGui::Button(buttonText.c_str(), ImVec2 { rect.width - (8 * 2), 24 })) {
                 ImGui::OpenPopup("res_choose");
             }
             if (ImGui::Button("New..", ImVec2 { rect.width - (8 * 2), 24.0f })) {

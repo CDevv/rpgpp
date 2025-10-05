@@ -1,7 +1,6 @@
 #include "mapToolsBox.hpp"
 #include "IconsKenney.h"
 #include <imgui.h>
-#include <raygui.h>
 
 #include <array>
 #include <string>

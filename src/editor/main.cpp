@@ -28,7 +28,7 @@ int main()
     config.MergeMode = true;
     static const ImWchar icon_ranges[] = { ICON_MIN_KI, ICON_MAX_KI, 0 };
 
-    ImGui::GetIO().Fonts->AddFontFromFileTTF("kenney-icon-font.ttf", 13.0f, &config, icon_ranges);
+    ImGui::GetIO().Fonts->AddFontFromFileTTF("Kenney-Icon-Font.ttf", 13.0f, &config, icon_ranges);
 
     while (!WindowShouldClose()) {
         editor.update();

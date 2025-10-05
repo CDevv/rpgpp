@@ -1,6 +1,4 @@
 #include "tileSetPropertiesBox.hpp"
-#include <cstddef>
-#include <raygui.h>
 #include <raylib.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
@@ -89,4 +87,3 @@ void TileSetPropertiesBox::draw()
         }
     }
 }
-

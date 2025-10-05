@@ -1,7 +1,6 @@
 #include "mapPanelView.hpp"
 #include <memory>
 #include <raylib.h>
-#include <raygui.h>
 #include "collisionInfoPanel.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
@@ -147,8 +146,6 @@ void MapPanelView::update()
 
 void MapPanelView::draw()
 {
-    if (layoutDropdownEditMode) GuiLock();
-
     toolsBox.draw();
     worldView->draw();
 
@@ -173,8 +170,8 @@ void MapPanelView::draw()
     ImGui::SetNextWindowPos(ImVec2 { rect.x + (rect.width * 0.7f) + 4, rect.y });
     ImGui::SetNextWindowSize(ImVec2 { (rect.width * 0.3f) - 8, 28 });
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
-    if (ImGui::Begin("MapLayerSelect", nullptr, 
-        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | 
+    if (ImGui::Begin("MapLayerSelect", nullptr,
+        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse)) {
 
         ImGui::Combo("Layer", &layoutModeToggle, "Tiles\0Collisions\0Interactables\0");

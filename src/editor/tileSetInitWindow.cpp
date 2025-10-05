@@ -1,13 +1,12 @@
 #include "tileSetInitWindow.hpp"
+#include <cstring>
+#include <raylib.h>
+#include <imgui.h>
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
-#include "imgui.h"
 #include "nfd.h"
 #include "tileset.hpp"
-#include <cstring>
-#include <raygui.h>
-#include <raylib.h>
 
 TileSetInitWindow::TileSetInitWindow() {}
 

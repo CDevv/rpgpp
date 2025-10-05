@@ -1,5 +1,4 @@
 #include <mainViewPanel.hpp>
-#include <raygui.h>
 #include <IconsKenney.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"

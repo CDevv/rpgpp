@@ -1,5 +1,4 @@
 #include "actorInitWindow.hpp"
-#include <raygui.h>
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"

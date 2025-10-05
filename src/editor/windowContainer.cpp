@@ -46,6 +46,11 @@ WindowContainer::WindowContainer()
     tileSetDialog = TileSetDialogWindow(tileSetDialogSize);
 }
 
+void WindowContainer::update()
+{
+    tileSetDialog.update();
+}
+
 bool WindowContainer::isWindowOpen()
 {
     return this->windowOpen;
@@ -119,4 +124,9 @@ void WindowContainer::drawTileSetDialog()
 void WindowContainer::drawProjectInit()
 {
     projectInit.draw();
+}
+
+void WindowContainer::drawProjectBinaryView()
+{
+    projectBinaryView.draw();
 }

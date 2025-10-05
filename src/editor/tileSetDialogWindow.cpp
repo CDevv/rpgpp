@@ -1,9 +1,8 @@
 #include "tileSetDialogWindow.hpp"
-#include <raygui.h>
+#include <imgui.h>
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
-#include "fileSystemService.hpp"
-#include "imgui.h"
+#include "worldViewBox.hpp"
 
 TileSetDialogWindow::TileSetDialogWindow() {}
 
@@ -19,7 +18,6 @@ TileSetDialogWindow::TileSetDialogWindow(Rectangle rect)
 	};
 	this->tileSetView = std::make_unique<WorldViewBox>(tileSetViewRect, FILE_TILESET, VIEWBOX_LAYER_DIALOG);
 	this->tileSetView->enableTileSelection();
-	//this->tileSetView->asChild();
 }
 
 void TileSetDialogWindow::setActive()

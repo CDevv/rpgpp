@@ -5,7 +5,6 @@
 #include "room.hpp"
 #include "tileset.hpp"
 #include <memory>
-#include <raygui.h>
 #include <raylib.h>
 #include <raymath.h>
 #include <rlgl.h>
@@ -36,7 +35,8 @@ WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLay
 
     renderTexture = LoadRenderTexture(this->renderRect.width, this->renderRect.height);
 
-    mouseInput = std::make_unique<MouseInputComponent>(Vector2 { this->renderRect.x, this->renderRect.y }, camera, this->renderRect, static_cast<int>(boxLayer));
+    mouseInput = std::make_unique<MouseInputComponent>(Vector2 { this->renderRect.x, this->renderRect.y },
+        camera, this->renderRect, static_cast<int>(boxLayer));
 
     tilesView = TileSetViewBox(this, boxLayer);
     mapView = MapViewBox(this, boxLayer);
@@ -139,8 +139,6 @@ void WorldViewBox::update()
 void WorldViewBox::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
-
-    if (!fs.fileIsOpen()) return;
 
     if (type == FILE_TILESET) {
         tilesView.isHoverOnValidTile();

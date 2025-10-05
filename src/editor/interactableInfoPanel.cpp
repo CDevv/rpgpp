@@ -2,7 +2,6 @@
 #include <raymath.h>
 #include <raylib.h>
 #include <imgui.h>
-#include <raygui.h>
 #include "worldViewBox.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
@@ -42,7 +41,7 @@ void InteractableInfoPanel::update()
     type = static_cast<InteractableType>(typeNumber);
 
     FileSystemService& fs = Editor::getFileSystem();
-    
+
     if (lastType != type) {
         if (interactableWorldPos.x != -1) {
             fs.getRoom()->getInteractables().setInteractableType(interactableWorldPos.x, interactableWorldPos.y, type);

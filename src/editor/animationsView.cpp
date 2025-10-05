@@ -1,7 +1,6 @@
 #include "animationsView.hpp"
 #include <string>
-#include <raygui.h>
-#include <IconsFontAwesome6.h>
+#include <IconsKenney.h>
 #include "actor.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
@@ -13,9 +12,6 @@ bool rlImGuiImageButtonRect(const char* str_id, const Texture* image, int destWi
 {
     if (!image)
         return false;
-
-    //if (GlobalContext)
-        //ImGui::SetCurrentContext(GlobalContext);
 
     ImVec2 uv0;
     ImVec2 uv1;
@@ -107,12 +103,12 @@ void AnimationsView::draw()
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 
-			if (ImGui::Button(ICON_FA_PLAY " Play")) {
+			if (ImGui::Button(ICON_KI_CARET_RIGHT " Play")) {
 				animPlaying = !animPlaying;
 			}
 			ImGui::SameLine();
 
-			if (ImGui::Button(ICON_FA_STOP " Stop")) {
+			if (ImGui::Button(ICON_KI_STOP " Stop")) {
 				animPlaying = false;
 				if (actorView != nullptr) {
 					actorView->setAnimPlaying(false);
@@ -121,7 +117,7 @@ void AnimationsView::draw()
 			}
 			ImGui::SameLine();
 
-			if (ImGui::Button(ICON_FA_FILE_PEN " Add")) {
+			if (ImGui::Button(ICON_KI_PLUS " Add")) {
 				animPlaying = false;
 
 				if (actor != nullptr) {
@@ -130,7 +126,7 @@ void AnimationsView::draw()
 			}
 			ImGui::SameLine();
 
-			if (ImGui::Button(ICON_FA_FILE_PEN " Remove")) {
+			if (ImGui::Button(ICON_KI_MINUS " Remove")) {
 				animPlaying = false;
 
 				if (actor != nullptr) {
@@ -140,14 +136,13 @@ void AnimationsView::draw()
 			}
 			ImGui::SameLine();
 
-			if (ImGui::Button(ICON_FA_FILE_PEN " Edit")) {
+			if (ImGui::Button(ICON_KI_WRENCH " Edit")) {
                 TileSetDialogWindow& tileSetDialog = windows.openTileSetDialog();
                 tileSetDialog.setTileSet(&actor->getTileSet());
                 tileSetDialog.setSelectedTile(animFrames.at(actorView->getFrame()));
                 tileSetDialog.setCallback([this, actor](Vector2 atlas)
     				{ actor->setAnimationFrame(static_cast<Direction>(currentAnim), actorView->getFrame(), atlas); }
     			);
-                //tileSetDialog.setTile(actor->getTileSet().getTile(actorView->getFrame()));
 			}
 			ImGui::SameLine();
 

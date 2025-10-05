@@ -1,5 +1,4 @@
 #include "projectMenuBox.hpp"
-#include <raygui.h>
 #include <IconsKenney.h>
 #include "gamedata.hpp"
 #include "editor.hpp"
@@ -33,7 +32,7 @@ void ProjectMenuBox::draw()
 		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
 
 		//Open Project
-		if (ImGui::Button(ICON_KI_QUESTION, buttonVec)) {
+		if (ImGui::Button(ICON_KI_UPLOAD, buttonVec)) {
 			fs.promptOpenProject();
 			ui.setInitial();
 		}
@@ -83,7 +82,7 @@ void ProjectMenuBox::draw()
 		ImGui::SameLine(0, 4);
 
 		//Export Binary
-		if (ImGui::Button(ICON_KI_QUESTION, buttonVec)) {
+		if (ImGui::Button(ICON_KI_BIN, buttonVec)) {
 			std::string binFile = std::string(fs.getProject()->getProjectBasePath());
         	binFile.append("/game.bin");
     		serializeDataToFile(binFile, fs.getProject()->generateStruct());

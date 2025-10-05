@@ -1,8 +1,6 @@
 #include "actorPropertiesBox.hpp"
-#include <raygui.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
-#include <cstdio>
 
 ActorPropertiesBox::ActorPropertiesBox() {}
 

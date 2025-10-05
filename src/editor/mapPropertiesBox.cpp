@@ -1,5 +1,4 @@
 #include "mapPropertiesBox.hpp"
-#include <raygui.h>
 #include <raylib.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
@@ -66,4 +65,3 @@ void MapPropertiesBox::draw()
         }
     }
 }
-

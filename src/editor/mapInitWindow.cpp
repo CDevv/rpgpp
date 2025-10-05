@@ -1,7 +1,6 @@
 #include "mapInitWindow.hpp"
 #include <cstring>
 #include <memory>
-#include <raygui.h>
 #include <raylib.h>
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"

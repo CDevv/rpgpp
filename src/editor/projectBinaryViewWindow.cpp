@@ -1,7 +1,10 @@
 #include "projectBinaryViewWindow.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
-#include <raygui.h>
+#include <imgui.h>
+#include "tileset.hpp"
+#include <memory>
+#include <raylib.h>
 
 ProjectBinaryViewWindow::ProjectBinaryViewWindow() {}
 
@@ -18,8 +21,8 @@ ProjectBinaryViewWindow::ProjectBinaryViewWindow(Rectangle rect)
 
 	Rectangle viewRect = Rectangle
 	{
-		rect.x + 140, rect.y + 28,
-		rect.width - 144, rect.height - 32
+		rect.x + 240 + 8, rect.y + 24,
+		rect.width - (240 + 12), rect.height - 28
 	};
 	this->tilesView = std::make_unique<WorldViewBox>(viewRect, FILE_TILESET, VIEWBOX_LAYER_BINVIEW);
 	this->roomView = std::make_unique<WorldViewBox>(viewRect, FILE_ROOM, VIEWBOX_LAYER_BINVIEW);
@@ -28,6 +31,9 @@ ProjectBinaryViewWindow::ProjectBinaryViewWindow(Rectangle rect)
 void ProjectBinaryViewWindow::setActive()
 {
 	this->active = true;
+
+	EditorInterfaceService& ui = Editor::getUi();
+	ui.setMouseBoxLayer(VIEWBOX_LAYER_BINVIEW);
 }
 
 void ProjectBinaryViewWindow::closeWindow()
@@ -51,46 +57,98 @@ void ProjectBinaryViewWindow::draw()
 	this->tilesView->update();
 	this->roomView->update();
 
-	if (pageEditMode) GuiLock();
+	EditorInterfaceService& ui = Editor::getUi();
 
-	if (active) {
+	float closeHeight = 20 - 8;
+	Rectangle closeRect = Rectangle {
+	    rect.x + (rect.width - closeHeight - 4), rect.y + 4,
+		closeHeight, closeHeight
+	};
+
+	ImDrawList* draw = ImGui::GetBackgroundDrawList();
+	if (active && dataAvailable) {
+	    ImVec4 windowBg = ImGui::GetStyleColorVec4(ImGuiCol_WindowBg);
+
+		draw->AddRectFilled(ImVec2 { rect.x, rect.y },
+		ImVec2 { rect.x + rect.width, rect.y + rect.height }, ImGui::ColorConvertFloat4ToU32(windowBg));
+        draw->AddRectFilled(ImVec2 { rect.x, rect.y }, ImVec2 { rect.x + rect.width, rect.y + 20 }, IM_COL32_BLACK);
+        draw->AddText(ImVec2 { rect.x + 4, rect.y + 4 }, IM_COL32_WHITE, TextFormat("Project Binary - %s", data->title.c_str()));
+        drawCloseButton(draw);
+
 		if (dataAvailable) {
-			if (GuiWindowBox(rect, data->title.c_str())) {
-				closeWindow();
-			}
-
-			if (dataAvailable) {
-				switch (fileType) {
-				case FILE_TILESET:
-					this->tilesView->draw();
-					break;
-				case FILE_ROOM:
-					this->roomView->draw();
-					break;
-				default:
-					break;
-				}
-
-				drawResourcesList();
-			}
-		} else {
-			if (GuiWindowBox(rect, "GameData")) {
-				closeWindow();
-			}
-		}
-
-		if (active) {
-			EditorInterfaceService& ui = Editor::getUi();
-
-			if (CheckCollisionPointRec(GetMousePosition(), rect)) {
-				ui.setMouseBoxLayer(VIEWBOX_LAYER_BINVIEW);
-                ui.setMouseLock(true);
-            } else {
-            	ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
-                ui.setMouseLock(false);
+            switch (fileType) {
+            case FILE_TILESET:
+                this->tilesView->draw();
+                break;
+            case FILE_ROOM:
+                this->roomView->draw();
+                break;
+            default:
+                break;
             }
+
+		    drawResourcesList();
 		}
 	}
+}
+
+void ProjectBinaryViewWindow::drawResourcesList()
+{
+	ImGui::SetNextWindowPos(ImVec2 { rect.x + 4, rect.y + 24 });
+	ImGui::SetNextWindowSize(ImVec2 { 240, rect.height - 20 - 8 });
+	if (ImGui::Begin("Resources##BinResList", nullptr,
+	ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize)) {
+		ImGui::Combo("Page", &currentPageNum, "TileSets\0Rooms\0Actors\0");
+		if (ImGui::BeginChild("ResourcesList", ImVec2(0, 0),
+		    ImGuiChildFlags_Borders)) {
+			switch (currentPage) {
+			case FILE_TILESET:
+				for (auto [name, tileSetData] : data->tilesets) {
+					if (ImGui::Button(tileSetData.name.c_str())) {
+						setTileSet(name);
+					}
+				}
+				break;
+			case FILE_ROOM:
+				for (auto roomData : data->rooms) {
+					if (ImGui::Button(roomData.name.c_str())) {
+						setRoom(roomData);
+					}
+				}
+				break;
+			default:
+				break;
+			}
+			ImGui::EndChild();
+		}
+		ImGui::End();
+	}
+
+	currentPage = static_cast<EngineFileType>(currentPageNum);
+}
+
+void ProjectBinaryViewWindow::drawCloseButton(ImDrawList* draw)
+{
+    EditorInterfaceService& ui = Editor::getUi();
+    ImVec4 closeColor = ImVec4 { 0, 0, 0, 0 };
+
+    float closeHeight = 20 - 8;
+	Rectangle closeRect = Rectangle {
+	    rect.x + (rect.width - closeHeight - 4), rect.y + 4,
+		closeHeight, closeHeight
+	};
+
+	if (CheckCollisionPointRec(GetMousePosition(), closeRect)) {
+	    closeColor = ImVec4 { 0.4f, 0.4f, 0.4f, 1.0f };
+	    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
+			closeWindow();
+		}
+	}
+
+	draw->AddRectFilled(ImVec2 { closeRect.x, closeRect.y },
+	ImVec2 { closeRect.x + closeRect.width, closeRect.y + closeRect.height }, ImGui::ColorConvertFloat4ToU32(closeColor));
+	draw->AddImage((ImTextureRef)ui.getCloseTexture().id,
+            ImVec2 { closeRect.x, closeRect.y }, ImVec2 { closeRect.x + closeRect.width, closeRect.y + closeRect.height });
 }
 
 void ProjectBinaryViewWindow::setTileSet(std::string name)
@@ -102,7 +160,8 @@ void ProjectBinaryViewWindow::setTileSet(std::string name)
 	Texture texture = LoadTextureFromImage(image);
 
 	Vector2 tileSizeVec = Vector2 { static_cast<float>(tileSetData.tileSize.x), static_cast<float>(tileSetData.tileSize.y) };
-	this->tileset = std::make_unique<TileSet>(texture, tileSizeVec);
+	//this->tileset = std::make_unique<TileSet>(texture, tileSizeVec);
+	this->tileset = std::make_unique<TileSet>(tileSetData);
 
 	this->tilesView->setTileSet(tileset.get());
 	this->fileType = FILE_TILESET;
@@ -143,45 +202,4 @@ void ProjectBinaryViewWindow::setData(GameData data)
 
 	//load first tileset
 	setTileSet("tiles.rtiles");
-}
-
-void ProjectBinaryViewWindow::drawResourcesList()
-{
-	GuiPanel(Rectangle { rect.x + 4, rect.y + 28, 132, rect.height - 32 }, "Resources");
-
-	Rectangle labelBaseRect = Rectangle
-	{
-		rect.x + 8, rect.y + 52 + 24,
-		112, 24
-	};
-	switch (currentPage) {
-	case FILE_TILESET:
-		for (auto [name, tileSetData] : data->tilesets) {
-			if (GuiLabelButton(labelBaseRect, tileSetData.name.c_str())) {
-				setTileSet(name);
-			}
-			labelBaseRect.y += 24;
-		}
-		break;
-	case FILE_ROOM:
-		for (auto roomData : data->rooms) {
-			if (GuiLabelButton(labelBaseRect, roomData.name.c_str())) {
-				setRoom(roomData);
-			}
-			labelBaseRect.y += 24;
-		}
-		break;
-	default:
-		break;
-	}
-
-	Rectangle dropdownRect = Rectangle
-	{
-		rect.x + 8, rect.y + 52,
-		122, 24
-	};
-	if (GuiDropdownBox(dropdownRect, "TileSets;Rooms", &currentPageNum, pageEditMode)) {
-		pageEditMode = !pageEditMode;
-	}
-	currentPage = static_cast<EngineFileType>(currentPageNum);
 }
