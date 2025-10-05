@@ -38,7 +38,7 @@ void MapViewBox::setMap(Room* map)
     viewBox->windowTitle = "Map View";
 }
 
-void MapViewBox::setActionMode(RoomAction mode) 
+void MapViewBox::setActionMode(RoomAction mode)
 {
     this->action = mode;
 }
@@ -79,6 +79,7 @@ void MapViewBox::isHoverOnValidTile()
     bool hoverValidY = false;
 
     TileMap *tileMap = room->getTileMap();
+    if (tileMap == nullptr) return;
     int tileSize = tileMap->getAtlasTileSize();
 
     Vector2 sizeInTiles = tileMap->getMaxWorldSize();
@@ -147,10 +148,12 @@ void MapViewBox::drawGrid()
 
     if (fs.fileIsOpen() || room != nullptr) {
         TileMap *tileMap = room->getTileMap();
+        if (tileMap == nullptr) return;
+        int tileSize = tileMap->getAtlasTileSize();
         //draw a big white rectangle instead
         Rectangle rect = Rectangle {
             0, 0,
-            (tileMap->getMaxWorldSize().x * tileMap->getAtlasTileSize()), (tileMap->getMaxWorldSize().y * tileMap->getAtlasTileSize())
+            (tileMap->getMaxWorldSize().x * tileSize), (tileMap->getMaxWorldSize().y * tileSize)
         };
 
         DrawRectangleRec(rect, RAYWHITE);
@@ -164,6 +167,8 @@ void MapViewBox::drawGrid()
 void MapViewBox::drawTiles()
 {
     TileMap *tileMap = room->getTileMap();
+    if (tileMap == nullptr) return;
+
     int atlasTileSize = tileMap->getAtlasTileSize();
     Vector2 sizeInTiles = tileMap->getMaxWorldSize();
     for (int x = 0; x < sizeInTiles.x; x++) {
@@ -255,6 +260,7 @@ void MapViewBox::drawTiles()
 void MapViewBox::drawHoverTile(int atlasTileSize, Vector2 tileWorldPos)
 {
     TileMap *tileMap = room->getTileMap();
+    if (tileMap == nullptr) return;
 
     if (hoverValidTile) {
         if (action == ACTION_ERASE) {
@@ -339,7 +345,6 @@ void MapViewBox::drawMouse()
         Vector2 selectedTileTextPos = Vector2 { 8, 8 };
         int selectedTileWorldPosX = selectedWorldTile.x;
         int selectedTileWorldPosY = selectedWorldTile.y;
-        DrawTextEx(ui.getFont(), TextFormat("Selected Tile: [%d, %d]", selectedTileWorldPosX, selectedTileWorldPosY), selectedTileTextPos, 26, 2, ORANGE);       
+        DrawTextEx(ui.getFont(), TextFormat("Selected Tile: [%d, %d]", selectedTileWorldPosX, selectedTileWorldPosY), selectedTileTextPos, 26, 2, ORANGE);
     }
 }
-

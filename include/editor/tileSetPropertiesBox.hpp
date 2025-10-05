@@ -2,6 +2,7 @@
 #define _RPGPP_EDITOR_TILESETPROPERTIESBOX_H
 
 #include <raylib.h>
+#include <array>
 #include "tileset.hpp"
 
 class TileSetPropertiesBox {
@@ -17,6 +18,7 @@ private:
     bool chosenTileHeightEditMode;
     Vector2 scrollVec;
     Rectangle viewRec;
+    std::array<int, 2> tileSizeArr;
 public:
     TileSetPropertiesBox();
     TileSetPropertiesBox(Rectangle rect);

@@ -3,7 +3,6 @@
 
 #include <raylib.h>
 #include <string>
-#include <memory>
 
 class TileSetInitWindow {
 private:
@@ -11,7 +10,7 @@ private:
     Rectangle rect;
     bool titleEditMode;
     std::string titleText;
-    std::unique_ptr<char> title;
+    char title[256];
     bool hasSetTextureSource;
     std::string textureSource;
 public:

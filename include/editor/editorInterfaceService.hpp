@@ -3,8 +3,8 @@
 
 #include <memory>
 #include <raylib.h>
-#include <string>
-#include <vector>
+#include <imgui.h>
+#include <rlImGui.h>
 #include "mainView.hpp"
 #include "projectMenuBox.hpp"
 #include "tabList.hpp"
@@ -18,6 +18,7 @@ class MouseInputComponent;
 class EditorInterfaceService {
 private:
     Font uiFont;
+    Texture2D closeTexture;
     MainView mainView;
     ProjectMenuBox projectMenu;
     TabList tabList;
@@ -29,6 +30,7 @@ private:
     Vector2 hoverPos;
     bool mouseLock;
     ViewBoxLayer mouseBoxLayer;
+    bool demoGuiActive;
     void drawMainView();
     void drawProjectView();
 public:
@@ -39,7 +41,7 @@ public:
     void update();
     void draw();
     Font getFont();
-    void drawTooltip(Rectangle rect, std::string text);
+    Texture2D getCloseTexture();
     void setMouseLock(bool value);
     bool getMouseLock();
     void setMouseBoxLayer(ViewBoxLayer boxLayer);
@@ -47,7 +49,5 @@ public:
     TabList& getTabList();
     WindowContainer& getWindowContainer();
 };
-
-bool EditorGuiDropdown(Rectangle rect, std::vector<std::string>* items, int* active, bool* editMode);
 
 #endif

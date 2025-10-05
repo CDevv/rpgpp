@@ -2,6 +2,7 @@
 #include "gamedata.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "projectFile.hpp"
 #include <raymath.h>
 
 ActorView::ActorView() {}
@@ -33,18 +34,30 @@ ActorView::ActorView(Rectangle rect)
 	collisionViewActive = false;
 }
 
+void ActorView::setRect(Rectangle rect)
+{
+	this->rect = rect;
+	this->renderRect = Rectangle {
+		rect.x + 4, rect.y + 4,
+		rect.width - 8, rect.height - 8
+	};
+
+	camera.offset = Vector2 { renderRect.width / 2, renderRect.height / 2 };
+}
+
 void ActorView::setInitial()
 {
 	FileSystemService& fs = Editor::getFileSystem();
 	Actor* actor = fs.getActor();
 
-	if (actor != nullptr)
+	if (fs.getType() == FILE_ACTOR && actor != nullptr)
 	{
 		collisionBox.setRect(actor->getCollisionRect());
 		currentAnim = 0;
 		animPlaying = false;
 		currentFrame = 0;
 		currentAnimFrames = std::vector<Vector2>{};
+		actorRect = actor->getRect();
 	}
 }
 
@@ -65,7 +78,7 @@ void ActorView::update()
     }
 
 	if (fs.fileIsOpen() && fs.getActor() != nullptr) {
-		Rectangle actorRect = fs.getActor()->getRect();
+		//Rectangle actorRect = fs.getActor()->getRect();
 		camera.target = Vector2 { actorRect.width / 2, actorRect.height / 2 };
 
 		//animation playing
@@ -91,6 +104,13 @@ void ActorView::update()
 
 void ActorView::draw()
 {
+	if ((renderTexture.texture.width != static_cast<int>(renderRect.width)) ||
+		(renderTexture.texture.height != static_cast<int>(renderRect.height))) {
+		printf("reload.. \n");
+		UnloadRenderTexture(renderTexture);
+		renderTexture = LoadRenderTexture(renderRect.width, renderRect.height);
+	}
+
 	DrawRectangleLinesEx(rect, 1.0f, GRAY);
 
 	//texture mode
@@ -126,6 +146,10 @@ void ActorView::drawActor()
 	Texture texture = tileSet.getTexture();
 
 	auto firstAnim = actor->getAnimationsRaw().at(currentAnim);
+	if (firstAnim.size() == 0)
+		return;
+	if (currentFrame >= firstAnim.size())
+		currentFrame = 0;
 	Vector2 firstFrame = firstAnim.at(currentFrame);
 	Vector2 atlasCoords = firstFrame;
 

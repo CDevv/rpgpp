@@ -10,6 +10,7 @@ private:
 public:
 	MainViewPanel();
 	MainViewPanel(Rectangle rect);
+	void setRect(Rectangle rect);
 	void update();
 	void draw();
 };

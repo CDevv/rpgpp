@@ -1,4 +1,5 @@
 #include "mouseInput.hpp"
+#include <cstdio>
 #include <raymath.h>
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
@@ -43,7 +44,7 @@ void MouseInputComponent::update()
     }
 
     EditorInterfaceService& ui = Editor::getUi();
-    
+
     if (!isInRect() || static_cast<int>(ui.getMouseBoxLayer()) != this->layer) {
         return;
     }
@@ -86,4 +87,10 @@ Vector2 MouseInputComponent::getMousePos()
 bool MouseInputComponent::isInRect()
 {
     return CheckCollisionPointRec(GetMousePosition(), cameraRect);
+}
+
+void MouseInputComponent::setCameraRect(Rectangle rect)
+{
+    this->cameraRect = rect;
+    this->offset = Vector2 { rect.x, rect.y };
 }

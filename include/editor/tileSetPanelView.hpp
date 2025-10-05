@@ -13,6 +13,7 @@ private:
 public:
     TileSetPanelView();
     TileSetPanelView(Rectangle rect);
+    void setRect(Rectangle rect);
     void setInitial();
     void update();
     void draw();

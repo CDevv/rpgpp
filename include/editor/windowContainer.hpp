@@ -27,7 +27,11 @@ public:
     void openActorInit();
     ProjectBinaryViewWindow& openProjectBinaryView();
     TileSetDialogWindow& openTileSetDialog();
+    void update();
     void draw();
+    void drawTileSetDialog();
+    void drawProjectInit();
+    void drawProjectBinaryView();
 };
 
 #endif

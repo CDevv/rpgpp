@@ -1,10 +1,9 @@
 #include "projectInitWindow.hpp"
-#include <raygui.h>
+#include <imgui.h>
 #include "project.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
-#include <memory>
 
 ProjectInitWindow::ProjectInitWindow() {}
 
@@ -18,13 +17,13 @@ ProjectInitWindow::ProjectInitWindow(Rectangle rect)
     this->hasSetDirPath = false;
     this->dirPath = "";
 
-    this->title = std::make_unique<char>();
-    *title = '\0';
+    strcpy(this->title, "");
 }
 
 void ProjectInitWindow::setActive()
 {
 	active = true;
+	ImGui::OpenPopup("New Project..");
 }
 
 void ProjectInitWindow::closeWindow()
@@ -36,61 +35,51 @@ void ProjectInitWindow::closeWindow()
     dirPath = "";
     hasSetDirPath = false;
     titleText = "";
-    *title = '\0';
+    strcpy(this->title, "");
     active = false;
+
+    ImGui::CloseCurrentPopup();
 }
 
 void ProjectInitWindow::draw()
 {
-	if (active) {
-		FileSystemService& fs = Editor::getFileSystem();
-        EditorInterfaceService& ui = Editor::getUi();
+    FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
 
-        if (GuiWindowBox(rect, "New Project..")) {
-            closeWindow();
-        }
+	ImGui::SetNextWindowSize(ImVec2 { rect.width, -1 });
+	if (ImGui::BeginPopupModal("New Project..")) {
+	    ImGui::InputText("Title", title, IM_ARRAYSIZE(title));
 
-        GuiLabel(Rectangle { rect.x + 8, rect.y + 40, rect.width - 16, 24 }, "Title..");
-        if (GuiTextBox(Rectangle { rect.x + 8, rect.y + 64, rect.width - 16, 24 }, title.get(), 13, titleEditMode)) {
-            titleEditMode = !titleEditMode;
-        }
+		dirPath.push_back('\0');
+		ImGui::InputText("Location", dirPath.data(), dirPath.size(), ImGuiInputTextFlags_ReadOnly);
 
-        GuiLabel(Rectangle { rect.x + 8, rect.y + 96, rect.width - 16, 24 }, "Directory..");
-        Rectangle dirPathLabelRect = Rectangle { rect.x + 8, rect.y + 120, rect.width - (16 + 24), 24 };
-        if (hasSetDirPath) {
-            GuiLabel(dirPathLabelRect, dirPath.c_str());
-        } else {
-            GuiLabel(dirPathLabelRect, "Not set..");
-        }
-        if (GuiButton(Rectangle { rect.x + 8 + (rect.width - (16 + 24)), rect.y + 120, 24, 24 }, GuiIconText(ICON_FOLDER_OPEN, NULL))) {
-            FS_Result fsResult = fs.openFolder();
+		if (ImGui::Button("Browse..", ImVec2(-1, 0))) {
+			FS_Result fsResult = fs.openFolder();
             if (fsResult.result == NFD_OKAY) {
                 dirPath = fsResult.path;
                 hasSetDirPath = true;
             }
-        }
+		}
 
-        if (GuiButton(Rectangle { rect.x + 184, rect.y + (rect.height - (24 + 8)), 120, 24 }, "Submit..")) {
-        	titleText = title.get();
-            
-            if (titleText.empty()) return;
-            if (!hasSetDirPath) return;
+		if (ImGui::Button("Submit..")) {
+			titleText = title;
 
-            Project::generateNewProj(titleText, dirPath);
+			bool validated = !titleText.empty() && hasSetDirPath;
 
-            fs.setProject(TextFormat("%s/%s/proj.rpgpp", dirPath.c_str(), titleText.c_str()));
-            
-            closeWindow();
-        }
+            if (validated) {
+                Project::generateNewProj(titleText, dirPath);
 
-        if (active) {
-        	if (CheckCollisionPointRec(GetMousePosition(), rect)) {
-                ui.setMouseBoxLayer(VIEWBOX_LAYER_WINDOW);
-                ui.setMouseLock(true);
-            } else {
-                ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
-                ui.setMouseLock(false);
+                fs.setProject(TextFormat("%s/%s/proj.rpgpp", dirPath.c_str(), titleText.c_str()));
+
+                closeWindow();
             }
         }
+		ImGui::SameLine();
+
+		if (ImGui::Button("Cancel")) {
+			closeWindow();
+		}
+
+	    ImGui::EndPopup();
 	}
 }

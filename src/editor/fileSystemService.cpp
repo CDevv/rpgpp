@@ -122,6 +122,7 @@ void FileSystemService::closeProjectFile(int index)
     for (std::vector<std::unique_ptr<ProjectFile>>::iterator i = openedFiles.begin(); i != openedFiles.end(); ++i)
     {
         if (currentIndex == index) {
+            i->reset();
             openedFiles.erase(i);
             if (index == 0) {
                 switch (lastType) {
@@ -273,4 +274,3 @@ FS_Result FileSystemService::openTileSetResource()
     nfdu8filteritem_t filters[1] = { { "RPG++ TileSet", "rtiles" } };
     return openFile(filters);
 }
-

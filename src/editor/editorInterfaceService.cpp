@@ -1,17 +1,19 @@
-#include <raygui.h>
+#include "editorInterfaceService.hpp"
+#include <cstdio>
 #include <raylib.h>
 #include <raymath.h>
 #include <rlgl.h>
-#include "gamedata.hpp"
+#include <imgui_internal.h>
 #include "fileSystemService.hpp"
-#include "editorInterfaceService.hpp"
 #include "editor.hpp"
+#include "gamedata.hpp"
+#include "imgui.h"
+#include "nfd.h"
+#include "projectBinaryViewWindow.hpp"
 #include "resourceViewerBox.hpp"
 #include "windowContainer.hpp"
-#include "tabButton.hpp"
 
 #include <sol/sol.hpp>
-#include "game.hpp"
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
@@ -25,6 +27,8 @@
 
 EditorInterfaceService::EditorInterfaceService()
 {
+    demoGuiActive = false;
+
     //get codepoints
     std::vector<int> codepoints;
     //ASCII latin
@@ -39,9 +43,8 @@ EditorInterfaceService::EditorInterfaceService()
     //load the font
     uiFont = LoadFontEx("resources/LanaPixel.ttf", 13, codepoints.data(), codepoints.size());
 
-    GuiLoadStyle("rpgpp.rgs");
-    GuiLoadIcons("iconset.rgi", true);
-    GuiSetFont(uiFont);
+    Texture2D closeTexture = LoadTexture("close.png");
+    this->closeTexture = closeTexture;
 
     mousePos = Vector2 { 0, 0 };
     hoverPos = Vector2 { 0, 0 };
@@ -102,23 +105,61 @@ void EditorInterfaceService::update()
     tabList.update();
     panelView->update();
     resourceView.update();
+
+    windowContainer.update();
 }
 
 void EditorInterfaceService::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
+
+    if (ImGui::BeginMainMenuBar()) {
+        if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Open Project..")) {
+                fs.promptOpenProject();
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Project")) {
+            if (ImGui::MenuItem("Open Project..")) {
+                fs.promptOpenProject();
+            }
+            if (ImGui::MenuItem("Open Binary..")) {
+                ProjectBinaryViewWindow& projectBinary = windowContainer.openProjectBinaryView();
+                FS_Result fsResult = fs.openGameData();
+                if (fsResult.result == NFD_OKAY) {
+                    GameData gameData = deserializeFile(fsResult.path);
+                    projectBinary.setData(gameData);
+                }
+            }
+
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Dev")) {
+            ImGui::MenuItem("ImGui Demo", nullptr, &demoGuiActive);
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+
     if (!fs.projectIsOpen()) {
         drawMainView();
     } else {
         drawProjectView();
     }
-    windowContainer.draw();
 
-    GuiUnlock();
+    windowContainer.drawProjectBinaryView();
+
+    if (demoGuiActive) {
+        ImGui::ShowDemoWindow();
+    }
 }
 
 void EditorInterfaceService::drawMainView()
 {
+    mainView.setRect(Rectangle {
+        0, 0, static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight())
+    });
     mainView.draw();
 }
 
@@ -126,25 +167,37 @@ void EditorInterfaceService::drawProjectView()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
-    Rectangle appMenuRect = Rectangle
-    {
-        0, 0, static_cast<float>(GetScreenWidth()), 16
-    };
-    DrawRectangleRec(appMenuRect, DARKGRAY);
-
+    Rectangle projectMenuRect = Rectangle { 0, 16, static_cast<float>(GetScreenWidth()), 36 };
+    projectMenu.setRect(projectMenuRect);
     projectMenu.draw();
 
     if (fs.projectIsOpen()) {
+        tabList.setRect(Rectangle {
+            static_cast<float>(GetScreenWidth() * 0.2) + 8, 36 + 16 + 4, static_cast<float>(GetScreenWidth() * 0.8) - (8 * 2), 18
+        });
         tabList.draw();
     }
+
+    panelView->setRect(Rectangle {
+        static_cast<float>(GetScreenWidth() * 0.2) + 4, (36 + 24 + 18 + 4),
+        static_cast<float>(GetScreenWidth() * 0.8) - 8, static_cast<float>(GetScreenHeight() - (36 + 24 + 18 + 4  + 4))
+    });
     panelView->draw();
 
+    resourceView.setRect(Rectangle {
+        0, 36 + 18, static_cast<float>(GetScreenWidth() * 0.2), static_cast<float>(GetScreenHeight() - (38 + 18 + 4))
+    });
     resourceView.draw();
 }
 
 Font EditorInterfaceService::getFont()
 {
     return uiFont;
+}
+
+Texture2D EditorInterfaceService::getCloseTexture()
+{
+    return closeTexture;
 }
 
 WindowContainer& EditorInterfaceService::getWindowContainer()
@@ -155,23 +208,6 @@ WindowContainer& EditorInterfaceService::getWindowContainer()
 TabList& EditorInterfaceService::getTabList()
 {
     return tabList;
-}
-
-void EditorInterfaceService::drawTooltip(Rectangle rect, std::string text)
-{
-    if (CheckCollisionPointRec(GetMousePosition(), rect)) {
-        DrawRectangleLinesEx(rect, 1.0f, GRAY);
-
-        Vector2 mousePos = Vector2Add(GetMousePosition(), Vector2 { 16, 0 });
-        Vector2 textPos = Vector2Add(mousePos, Vector2 { 4, 4 });
-        Vector2 textSize = MeasureTextEx(uiFont, text.c_str(), 13, 1);
-        GuiPanel(
-            Rectangle {
-                mousePos.x, mousePos.y,
-                textSize.x + 8, textSize.y + 8
-            }, NULL);
-        DrawTextEx(uiFont, text.c_str(), textPos, 13, 1, GRAY);
-    }
 }
 
 void EditorInterfaceService::setMouseLock(bool value)

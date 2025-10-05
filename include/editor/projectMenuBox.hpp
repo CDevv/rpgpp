@@ -9,6 +9,7 @@ private:
 public:
 	ProjectMenuBox();
 	ProjectMenuBox(Rectangle rect);
+	void setRect(Rectangle rect);
 	void draw();
 };
 

@@ -21,10 +21,12 @@ private:
 	int currentFrame;
 	std::vector<Vector2> currentAnimFrames;
 	bool animPlaying;
+	Rectangle actorRect;
 	void drawActor();
 public:
 	ActorView();
 	ActorView(Rectangle rect);
+	void setRect(Rectangle rect);
 	void setInitial();
 	void updateData();
 	void update();

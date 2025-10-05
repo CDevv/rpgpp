@@ -16,6 +16,14 @@ PanelView::PanelView(Rectangle rect)
     this->actorPanel = ActorPanelView(rect);
 }
 
+void PanelView::setRect(Rectangle rect)
+{
+    this->rect = rect;
+    tileSetPanel.setRect(rect);
+    mapPanel.setRect(rect);
+    actorPanel.setRect(rect);
+}
+
 void PanelView::setInitial()
 {
     tileSetPanel.setInitial();
@@ -33,7 +41,10 @@ void PanelView::update()
 
 void PanelView::draw()
 {
+    this->setRect(rect);
+
     FileSystemService& fs = Editor::getFileSystem();
+
     if (fs.fileIsOpen()) {
 
         switch (fs.getType()) {

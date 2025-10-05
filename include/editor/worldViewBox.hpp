@@ -83,6 +83,7 @@ class WorldViewBox {
     friend class MapViewBox;
 private:
     std::string windowTitle;
+    bool isChild;
     Rectangle windowRect;
     Rectangle renderRect;
     bool mouseLock;
@@ -98,7 +99,11 @@ public:
     WorldViewBox();
     WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLayer boxLayer);
     ~WorldViewBox();
+    void setWindowTitle(std::string title);
+    void asChild();
     Rectangle getWindowRect();
+    void setRect(Rectangle rect);
+    Rectangle getRenderRect();
     void setMouseLock(bool value);
     void setTileSet(TileSet* tileSet);
     void setRoom(Room* map);

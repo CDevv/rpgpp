@@ -1,10 +1,10 @@
 #include "worldViewBox.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "imgui.h"
 #include "room.hpp"
 #include "tileset.hpp"
 #include <memory>
-#include <raygui.h>
 #include <raylib.h>
 #include <raymath.h>
 #include <rlgl.h>
@@ -14,8 +14,9 @@ WorldViewBox::WorldViewBox()
 
 WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLayer boxLayer)
 {
-    windowTitle = "File not opened..";
+    windowTitle = "WorldViewBox";
     this->type = type;
+    this->isChild = false;
 
     camera = Camera2D { {0} };
     camera.target = Vector2 { 0, 0 };
@@ -26,7 +27,7 @@ WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLay
     this->hoverPos = Vector2 { 0, 0 };
 
     this->windowRect = windowRect;
-    this->renderRect = Rectangle 
+    this->renderRect = Rectangle
     {
         (windowRect.x + 2), (windowRect.y + 24),
         (windowRect.width - 4), (windowRect.height - 30)
@@ -34,7 +35,8 @@ WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLay
 
     renderTexture = LoadRenderTexture(this->renderRect.width, this->renderRect.height);
 
-    mouseInput = std::make_unique<MouseInputComponent>(Vector2 { this->renderRect.x, this->renderRect.y }, camera, this->renderRect, static_cast<int>(boxLayer));
+    mouseInput = std::make_unique<MouseInputComponent>(Vector2 { this->renderRect.x, this->renderRect.y },
+        camera, this->renderRect, static_cast<int>(boxLayer));
 
     tilesView = TileSetViewBox(this, boxLayer);
     mapView = MapViewBox(this, boxLayer);
@@ -47,9 +49,32 @@ WorldViewBox::~WorldViewBox()
     UnloadRenderTexture(renderTexture);
 }
 
+void WorldViewBox::setWindowTitle(std::string windowTitle)
+{
+    this->windowTitle = windowTitle;
+}
+
+void WorldViewBox::asChild()
+{
+    this->isChild = true;
+}
+
 Rectangle WorldViewBox::getWindowRect()
 {
     return this->windowRect;
+}
+
+Rectangle WorldViewBox::getRenderRect()
+{
+    Rectangle rec = windowRect;
+    rec.y += 21;
+    rec.height -= 21;
+    return rec;
+}
+
+void WorldViewBox::setRect(Rectangle rect)
+{
+    this->windowRect = rect;
 }
 
 void WorldViewBox::setMouseLock(bool value)
@@ -122,11 +147,13 @@ void WorldViewBox::draw()
     }
 
     BeginTextureMode(renderTexture);
+
     if (type == FILE_ROOM) {
         ClearBackground(GRAY);
     } else {
         ClearBackground(RAYWHITE);
     }
+
     BeginMode2D(camera);
 
     rlPushMatrix();
@@ -153,17 +180,54 @@ void WorldViewBox::draw()
 
     EndTextureMode();
 
-    GuiPanel(windowRect, windowTitle.c_str());
 
-    Rectangle cameraRect = Rectangle {
-        0, 0,
-        static_cast<float>(renderTexture.texture.width), static_cast<float>(-renderTexture.texture.height)
-    };
-    DrawTextureRec(renderTexture.texture, cameraRect, Vector2 { renderRect.x, renderRect.y }, WHITE);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+
+    bool success = false;
+    if (!isChild) {
+        ImGui::SetNextWindowPos(ImVec2 { windowRect.x, windowRect.y });
+        ImGui::SetNextWindowSize(ImVec2 { windowRect.width, windowRect.height });
+        success = ImGui::Begin(windowTitle.c_str(), NULL,
+            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize |
+            ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollWithMouse);
+    } else {
+        ImGui::SetNextWindowSize(ImVec2 { windowRect.width, -1 });
+        success = ImGui::BeginChild(windowTitle.c_str());
+    }
+
+    if (success) {
+
+        ImVec2 pos = ImGui::GetWindowPos();
+        ImVec2 size = ImGui::GetWindowSize();
+        Rectangle windowRect = Rectangle {
+            pos.x, pos.y, size.x, size.y
+        };
+
+        Rectangle rec = windowRect;
+        rec.y += 21;
+        rec.height -= 21;
+
+        this->renderRect = rec;
+
+        if (renderRect.width != renderTexture.texture.width) {
+            UnloadRenderTexture(renderTexture);
+            renderTexture = LoadRenderTexture(renderRect.width, renderRect.height);
+        }
+
+        this->mouseInput->setCameraRect(renderRect);
+
+        rlImGuiImageRenderTexture(&renderTexture);
+
+        if (isChild) {
+            ImGui::EndChild();
+        } else {
+            ImGui::End();
+        }
+    }
+    ImGui::PopStyleVar();
 }
 
 void WorldViewBox::unload()
 {
     UnloadRenderTexture(renderTexture);
 }
-

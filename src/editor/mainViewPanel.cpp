@@ -1,8 +1,10 @@
 #include <mainViewPanel.hpp>
-#include <raygui.h>
+#include <IconsKenney.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
+#include "imgui.h"
+#include "rlImGui.h"
 
 MainViewPanel::MainViewPanel() {}
 
@@ -10,6 +12,11 @@ MainViewPanel::MainViewPanel(Rectangle rect)
 {
 	this->rect = rect;
 	this->logoTexture = LoadTexture("logo.png");
+}
+
+void MainViewPanel::setRect(Rectangle rect)
+{
+	this->rect = rect;
 }
 
 void MainViewPanel::update()
@@ -22,23 +29,26 @@ void MainViewPanel::draw()
 	FileSystemService& fs = Editor::getFileSystem();
 	EditorInterfaceService& ui = Editor::getUi();
 
-	GuiPanel(rect, "RPG++");
+	float indent = ((rect.width / 2) - (static_cast<float>(logoTexture.width) / 2));
 
-	Rectangle originRect = {
-		0, 0, static_cast<float>(logoTexture.width), static_cast<float>(logoTexture.height)
-	};
-	Rectangle destRect = Rectangle {
-		rect.x + (((rect.width / 2) - (originRect.width / 2))), rect.y + 24, originRect.width, originRect.height
-	};
+	ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
+	ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
+	if (ImGui::Begin("Main View Panel", nullptr,
+	ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse)) {
+		ImGui::Indent(indent);
+		rlImGuiImage(&logoTexture);
 
-	DrawTexturePro(logoTexture, originRect, destRect, Vector2 { 0, 0 }, 0.0f, WHITE);
+		ImGui::Indent(-indent);
+		if (ImGui::Button("Create Project..", ImVec2(-1, 24))) {
+		    ui.getWindowContainer().openProjectInit();
+		}
+		if (ImGui::Button("Open Project..", ImVec2(-1, 24))) {
+			fs.promptOpenProject();
+			ui.setInitial();
+		}
 
-	if (GuiButton(Rectangle { rect.x + 8, rect.y + 32 + destRect.height, (rect.width - 16), 24 }, GuiIconText(ICON_FOLDER_OPEN, "Open Project.."))) {
-		fs.promptOpenProject();
-		ui.setInitial();
-	}
+		ui.getWindowContainer().drawProjectInit();
 
-	if (GuiButton(Rectangle { rect.x + 8, rect.y + 64 + destRect.height, (rect.width - 16), 24 }, GuiIconText(ICON_FOLDER_ADD, "Create Project.."))) {
-		ui.getWindowContainer().openProjectInit();
+		ImGui::End();
 	}
 }

@@ -16,6 +16,7 @@ private:
 public:
     PropertiesBox();
     PropertiesBox(Rectangle rect);
+    void setRect(Rectangle rect);
     void update();
     void draw();
     void setDefaults();

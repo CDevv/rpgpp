@@ -2,9 +2,10 @@
 #define _RPGPP_EDITOR_PROJECTBINARYVIEWWINDOW_H
 
 #include "gamedata.hpp"
-#include "fileSystemService.hpp"
-#include <raylib.h>
 #include <memory>
+#include <imgui.h>
+#include <raylib.h>
+#include "imgui.h"
 #include "tileset.hpp"
 #include "room.hpp"
 #include "worldViewBox.hpp"
@@ -25,6 +26,7 @@ private:
 	std::unique_ptr<Room> room;
 	void setTileSet(std::string name);
 	void setRoom(RoomBin roomBin);
+	void drawCloseButton(ImDrawList* draw);
 	void drawResourcesList();
 public:
 	ProjectBinaryViewWindow();
@@ -35,4 +37,4 @@ public:
 	void setData(GameData data);
 };
 
-#endif	
+#endif

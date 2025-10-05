@@ -3,7 +3,6 @@
 
 #include <raylib.h>
 #include <string>
-#include <memory>
 
 class ProjectInitWindow {
 private:
@@ -11,7 +10,7 @@ private:
 	bool active;
 	bool titleEditMode;
     std::string titleText;
-    std::unique_ptr<char> title;
+    char title[256];
     bool hasSetDirPath;
     std::string dirPath;
 public:

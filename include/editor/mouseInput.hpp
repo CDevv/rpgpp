@@ -22,6 +22,7 @@ public:
     Vector2 getMousePos();
     void update();
     bool isInRect();
+    void setCameraRect(Rectangle rect);
 };
 
 #endif

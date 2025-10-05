@@ -12,6 +12,7 @@ private:
 public:
 	MapToolsBox();
 	MapToolsBox(Rectangle rect);
+	void setRect(Rectangle rect);
 	RoomAction getActionMode();
 	void update();
 	void draw();

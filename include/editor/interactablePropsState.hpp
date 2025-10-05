@@ -8,8 +8,10 @@ class InteractablePropsState {
 private:
 	Dialogue dialogue;
 public:
+	char diagText[256];
 	InteractablePropsState();
 	void setDefaults(Interactable* interactable);
+	void updateProps(Interactable* interactable);
 	void setDialogue(Dialogue dialogue);
 	Dialogue getDialogue();
 };

@@ -3,14 +3,13 @@
 
 #include <raylib.h>
 #include <string>
-#include <memory>
 
 class MapInitWindow {
 private:
     bool active;
     Rectangle rect;
     std::string titleText;
-    std::unique_ptr<char> title;
+    char title[256];
     bool titleEditMode;
     std::string tileSetSource;
     bool hasSetTileSet;

@@ -1,6 +1,4 @@
 #include "tileSetPropertiesBox.hpp"
-#include <cstddef>
-#include <raygui.h>
 #include <raylib.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
@@ -23,6 +21,8 @@ TileSetPropertiesBox::TileSetPropertiesBox(Rectangle rect)
 
     scrollVec = Vector2 { 0, 0 };
     viewRec = Rectangle { 0 };
+
+    tileSizeArr = { 0, 0 };
 }
 
 void TileSetPropertiesBox::setDefaults()
@@ -33,6 +33,9 @@ void TileSetPropertiesBox::setDefaults()
     chosenTileSize = tileSet->getTileSize().x;
     chosenTileWidth = tileSet->getTileSize().x;
     chosenTileHeight = tileSet->getTileSize().y;
+
+    tileSizeArr[0] = tileSet->getTileSize().x;
+    tileSizeArr[1] = tileSet->getTileSize().y;
 
     if (chosenTileWidth != chosenTileHeight) {
         multiSizeCheckBox = false;
@@ -51,8 +54,8 @@ void TileSetPropertiesBox::update()
             tileSet->setTileSize(chosenTileSize);
         }
     } else {
-        if (chosenTileWidth >= 16 && chosenTileHeight >= 16) {
-            Vector2 sizeVec = Vector2 { static_cast<float>(chosenTileWidth), static_cast<float>(chosenTileHeight) };
+        if (tileSizeArr[0] >= 16 && tileSizeArr[1] >= 16) {
+            Vector2 sizeVec = Vector2 { static_cast<float>(tileSizeArr[0]), static_cast<float>(tileSizeArr[1]) };
             tileSet->setTileSizeVector(sizeVec);
         }
     }
@@ -64,47 +67,23 @@ void TileSetPropertiesBox::draw()
     TileSet *tileSet = fs.getTileSet();
     //this->tileSet = tileSet;
 
-    Rectangle contentRec = rect;
-    contentRec.height += 100;
-    contentRec.width -= 16;
-    GuiScrollPanel(rect, "TileSet Props", contentRec, &scrollVec, &viewRec);
-
-    BeginScissorMode(viewRec.x, viewRec.y, viewRec.width, viewRec.height);
-
-    GuiCheckBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 32, 24, 24 }, "Square Tiles", &multiSizeCheckBox);
-
-    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 8, (viewRec.width - 16), 24 }, "Tile Size");
+    ImGui::Checkbox("Square Tiles?", &multiSizeCheckBox);
 
     if (multiSizeCheckBox) {
-        if (GuiValueBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 64, (viewRec.width - 16), 24 }, NULL, &chosenTileSize, 16, 100, chosenTileSizeEditMode)) {
-            chosenTileSizeEditMode = !chosenTileSizeEditMode;
-        }
+        ImGui::InputInt("Tile Size", &chosenTileSize);
     } else {
-        float halfWidth = (viewRec.width - 16) / 2;
-        if (GuiValueBox(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 64, halfWidth, 24 }, NULL, &chosenTileWidth, 16, 100, chosenTileWidthEditMode)) {
-            chosenTileWidthEditMode = !chosenTileWidthEditMode;
-        }
-        if (GuiValueBox(Rectangle { viewRec.x + 8 + halfWidth, viewRec.y + scrollVec.y + 64, halfWidth, 24 }, NULL, &chosenTileHeight, 16, 100, chosenTileHeightEditMode)) {
-            chosenTileHeightEditMode = !chosenTileHeightEditMode;
-        }
+        ImGui::InputInt2("Tile Size", tileSizeArr.data());
     }
 
-    GuiLine(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 88, (viewRec.width - 16), 16 }, NULL);
-
-    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 104, (viewRec.width - 16), 24 }, "Texture");
     std::string sourceFileName = GetFileName(tileSet->getTextureSource().c_str());
-    GuiLabel(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 128, (viewRec.width - (16 + 24)), 24 }, sourceFileName.c_str());
+    sourceFileName.push_back('\0');
 
-    if (GuiButton(Rectangle { viewRec.x + 8 + (viewRec.width - (16 + 24)), viewRec.y + scrollVec.y + 128, 24, 24 }, GuiIconText(ICON_FILE_OPEN, NULL))) {
+    ImGui::InputText("Texture", const_cast<char*>(sourceFileName.data()), sourceFileName.size(), ImGuiInputTextFlags_ReadOnly);
+
+    if (ImGui::Button("Change Texture..", ImVec2(-1, 0))) {
         FS_Result fsResult = fs.openImage();
         if (fsResult.result == NFD_OKAY) {
             tileSet->setTextureSource(fsResult.path);
         }
     }
-
-    EndScissorMode();
-
-    EditorInterfaceService& ui = Editor::getUi();
-    ui.drawTooltip(Rectangle { viewRec.x + 8, viewRec.y + scrollVec.y + 128, (viewRec.width - (16 + 24)), 24 }, tileSet->getTextureSource());
 }
-
