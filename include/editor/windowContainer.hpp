@@ -7,6 +7,7 @@
 #include "projectBinaryViewWindow.hpp"
 #include "tileSetDialogWindow.hpp"
 #include "actorInitWindow.hpp"
+#include "deleteConfirmWindow.hpp"
 
 class WindowContainer {
 private:
@@ -17,6 +18,7 @@ private:
     ActorInitWindow actorInit;
     ProjectBinaryViewWindow projectBinaryView;
     TileSetDialogWindow tileSetDialog;
+    DeleteConfirmWindow deleteConfirm;
 public:
     WindowContainer();
     bool isWindowOpen();
@@ -27,11 +29,13 @@ public:
     void openActorInit();
     ProjectBinaryViewWindow& openProjectBinaryView();
     TileSetDialogWindow& openTileSetDialog();
+    DeleteConfirmWindow& openDeleteConfirm();
     void update();
     void draw();
     void drawTileSetDialog();
     void drawProjectInit();
     void drawProjectBinaryView();
+    void drawDeleteConfirm();
 };
 
 #endif

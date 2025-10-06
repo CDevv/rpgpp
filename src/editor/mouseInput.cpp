@@ -1,5 +1,4 @@
 #include "mouseInput.hpp"
-#include <cstdio>
 #include <raymath.h>
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"

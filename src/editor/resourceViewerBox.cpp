@@ -3,9 +3,11 @@
 #include <IconsKenney.h>
 #include <string>
 #include <vector>
+#include "deleteConfirmWindow.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
+#include "imgui.h"
 #include "windowContainer.hpp"
 #include "projectFile.hpp"
 #include "worldViewBox.hpp"
@@ -17,6 +19,8 @@ ResourceViewerBox::ResourceViewerBox(Rectangle rect)
     this->rect = rect;
     this->dropdownEditMode = false;
     this->dropdownActive = 0;
+    this->deleteConfirmOpen = false;
+    this->deleteConfirmPath = "";
 }
 
 void ResourceViewerBox::setRect(Rectangle rect)
@@ -82,6 +86,7 @@ void ResourceViewerBox::draw()
                     drawActors();
                     break;
                 }
+                windows.drawDeleteConfirm();
 
                 ImGui::EndChild();
             }
@@ -92,11 +97,11 @@ void ResourceViewerBox::draw()
             ImGui::SetNextWindowPos(ImVec2 { rect.x + 8, rect.y + 70 });
             if (ImGui::BeginPopup("res_choose")) {
                 for (int i = 0; i < arr.size(); i++) {
-                    ImGui::SameLine();
                     if (ImGui::Button(arr[i].c_str(), resourceButtonSize)) {
                         dropdownActive = i;
                         ImGui::CloseCurrentPopup();
                     }
+                    ImGui::SameLine();
                 }
 
                 ImGui::EndPopup();
@@ -104,9 +109,47 @@ void ResourceViewerBox::draw()
 
             windows.draw();
 
+            if (deleteConfirmOpen) {
+                DeleteConfirmWindow& deleteConfirm = windows.openDeleteConfirm();
+                deleteConfirm.setFilePath(deleteConfirmPath);
+                deleteConfirmOpen = false;
+            }
+
+            windows.drawDeleteConfirm();
+
             ImGui::End();
         }
     }
+}
+
+void ResourceViewerBox::drawContextMenu(std::string resPath)
+{
+    FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
+    WindowContainer& windows = ui.getWindowContainer();
+    std::string resFileName = GetFileNameWithoutExt(resPath.c_str());
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2, 2));
+    if (ImGui::BeginPopupContextItem()) {
+        ImGui::Text("%s", resFileName.c_str());
+        ImGui::Separator();
+
+        std::string fullPath = TextFormat("%s/%s", fs.getProject()->getProjectBasePath().c_str(),
+            resPath.c_str());
+        if (ImGui::MenuItem("Copy relative path")) {
+            SetClipboardText(resPath.c_str());
+        }
+        if (ImGui::MenuItem("Copy full path")) {
+            SetClipboardText(fullPath.c_str());
+        }
+        if (ImGui::MenuItem("Delete")) {
+            deleteConfirmPath = fullPath;
+            deleteConfirmOpen = true;
+        }
+
+        ImGui::EndPopup();
+    }
+    ImGui::PopStyleVar();
 }
 
 void ResourceViewerBox::drawTileSets()
@@ -122,6 +165,9 @@ void ResourceViewerBox::drawTileSets()
             fs.openProjectFile(tileSetPath);
             ui.setInitial();
         }
+
+        drawContextMenu(tileSetPath);
+        windows.drawDeleteConfirm();
     }
 }
 
@@ -139,6 +185,8 @@ void ResourceViewerBox::drawMaps()
             fs.openProjectFile(mapPath);
             ui.setInitial();
         }
+
+        drawContextMenu(mapPath);
     }
 }
 
@@ -155,5 +203,7 @@ void ResourceViewerBox::drawActors()
             fs.openProjectFile(actorPath);
             ui.setInitial();
         }
+
+        drawContextMenu(actorPath);
     }
 }
