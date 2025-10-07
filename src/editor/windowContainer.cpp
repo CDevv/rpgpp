@@ -1,7 +1,8 @@
 #include "windowContainer.hpp"
-#include "deleteConfirmWindow.hpp"
-#include "mapInitWindow.hpp"
-#include "tileSetInitWindow.hpp"
+#include "windows/aboutWindow.hpp"
+#include "windows/deleteConfirmWindow.hpp"
+#include "windows/mapInitWindow.hpp"
+#include "windows/tileSetInitWindow.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "worldViewBox.hpp"
@@ -47,6 +48,8 @@ WindowContainer::WindowContainer()
     tileSetDialog = TileSetDialogWindow(tileSetDialogSize);
 
     deleteConfirm = DeleteConfirmWindow(tileSetWindowSize);
+
+    about = AboutWindow(tileSetWindowSize);
 }
 
 void WindowContainer::update()
@@ -110,6 +113,11 @@ DeleteConfirmWindow& WindowContainer::openDeleteConfirm()
     return deleteConfirm;
 }
 
+void WindowContainer::openAbout()
+{
+    about.setActive();
+}
+
 void WindowContainer::draw()
 {
     //projectInit.draw();
@@ -143,4 +151,9 @@ void WindowContainer::drawProjectBinaryView()
 void WindowContainer::drawDeleteConfirm()
 {
     deleteConfirm.draw();
+}
+
+void WindowContainer::drawAbout()
+{
+    about.draw();
 }

@@ -1,4 +1,4 @@
-#include "actorInitWindow.hpp"
+#include "windows/actorInitWindow.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"

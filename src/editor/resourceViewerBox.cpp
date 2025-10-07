@@ -1,9 +1,12 @@
 #include "resourceViewerBox.hpp"
+#include <cstdio>
+#include <exception>
+#include <nlohmann/json.hpp>
 #include <raylib.h>
 #include <IconsKenney.h>
 #include <string>
 #include <vector>
-#include "deleteConfirmWindow.hpp"
+#include "windows/deleteConfirmWindow.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
@@ -21,6 +24,8 @@ ResourceViewerBox::ResourceViewerBox(Rectangle rect)
     this->dropdownActive = 0;
     this->deleteConfirmOpen = false;
     this->deleteConfirmPath = "";
+
+    this->errorMessage = "";
 }
 
 void ResourceViewerBox::setRect(Rectangle rect)
@@ -37,6 +42,8 @@ void ResourceViewerBox::draw()
     FileSystemService& fs = Editor::getFileSystem();
     EditorInterfaceService& ui = Editor::getUi();
     WindowContainer& windows = ui.getWindowContainer();
+
+    bool gotError = false;
 
     if (fs.getProject() != nullptr) {
         auto arr = ProjectFile::getTypeNames();
@@ -73,20 +80,41 @@ void ResourceViewerBox::draw()
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4 { 38, 38, 38, 0 });
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, IM_COL32(53,53,53, 255));
             if (ImGui::BeginChild("res_list")) {
-                switch (fileTypeActive) {
-                default:
-                    break;
-                case FILE_TILESET:
-                    drawTileSets();
-                    break;
-                case FILE_ROOM:
-                    drawMaps();
-                    break;
-                case FILE_ACTOR:
-                    drawActors();
-                    break;
+                try {
+                    switch (fileTypeActive) {
+                    default:
+                        break;
+                    case FILE_TILESET:
+                        drawTileSets();
+                        break;
+                    case FILE_ROOM:
+                        drawMaps();
+                        break;
+                    case FILE_ACTOR:
+                        drawActors();
+                        break;
+                    }
+                }
+                catch (nlohmann::json::out_of_range& ex) {
+                    gotError = true;
+                    errorMessage = std::string(ex.what());
                 }
                 windows.drawDeleteConfirm();
+
+                if (gotError) {
+                    ImGui::OpenPopup("Runtime Error");
+                    gotError = false;
+                }
+
+                ImGui::SetNextWindowSize(ImVec2 { 240, -1 });
+
+                if (ImGui::BeginPopupModal("Runtime Error")) {
+                    ImGui::TextWrapped("%s", errorMessage.c_str());
+                    if (ImGui::Button("Close")) {
+                        ImGui::CloseCurrentPopup();
+                    }
+                    ImGui::EndPopup();
+                }
 
                 ImGui::EndChild();
             }

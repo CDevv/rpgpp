@@ -1,5 +1,6 @@
 #include "editorInterfaceService.hpp"
 #include <cstdio>
+#include <exception>
 #include <raylib.h>
 #include <raymath.h>
 #include <rlgl.h>
@@ -8,8 +9,9 @@
 #include "editor.hpp"
 #include "gamedata.hpp"
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "nfd.h"
-#include "projectBinaryViewWindow.hpp"
+#include "windows/projectBinaryViewWindow.hpp"
 #include "resourceViewerBox.hpp"
 #include "windowContainer.hpp"
 
@@ -45,6 +47,8 @@ EditorInterfaceService::EditorInterfaceService()
 
     Texture2D closeTexture = LoadTexture("close.png");
     this->closeTexture = closeTexture;
+
+    this->logoTexture = LoadTexture("logo.png");
 
     mousePos = Vector2 { 0, 0 };
     hoverPos = Vector2 { 0, 0 };
@@ -113,6 +117,8 @@ void EditorInterfaceService::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
+    bool openedAboutWIndow = false;
+
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Open Project..")) {
@@ -139,8 +145,17 @@ void EditorInterfaceService::draw()
             ImGui::MenuItem("ImGui Demo", nullptr, &demoGuiActive);
             ImGui::EndMenu();
         }
+        if (ImGui::BeginMenu("Help")) {
+            if (ImGui::MenuItem("About RPG++")) {
+                openedAboutWIndow = true;
+            }
+            ImGui::EndMenu();
+        }
         ImGui::EndMainMenuBar();
     }
+
+    ImGuiErrorRecoveryState state;
+    ImGui::ErrorRecoveryStoreState(&state);
 
     if (!fs.projectIsOpen()) {
         drawMainView();
@@ -153,6 +168,13 @@ void EditorInterfaceService::draw()
     if (demoGuiActive) {
         ImGui::ShowDemoWindow();
     }
+
+    if (openedAboutWIndow) {
+        windowContainer.openAbout();
+        openedAboutWIndow = false;
+    }
+
+    windowContainer.drawAbout();
 }
 
 void EditorInterfaceService::drawMainView()
@@ -198,6 +220,11 @@ Font EditorInterfaceService::getFont()
 Texture2D EditorInterfaceService::getCloseTexture()
 {
     return closeTexture;
+}
+
+Texture2D EditorInterfaceService::getLogoTexture()
+{
+    return logoTexture;
 }
 
 WindowContainer& EditorInterfaceService::getWindowContainer()

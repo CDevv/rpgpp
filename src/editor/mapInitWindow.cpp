@@ -1,4 +1,4 @@
-#include "mapInitWindow.hpp"
+#include "windows/mapInitWindow.hpp"
 #include <cstring>
 #include <memory>
 #include <raylib.h>

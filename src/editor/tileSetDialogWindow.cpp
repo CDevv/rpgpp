@@ -1,4 +1,4 @@
-#include "tileSetDialogWindow.hpp"
+#include "windows/tileSetDialogWindow.hpp"
 #include <imgui.h>
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"

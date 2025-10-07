@@ -1,4 +1,4 @@
-#include "projectBinaryViewWindow.hpp"
+#include "windows/projectBinaryViewWindow.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include <imgui.h>

@@ -10,6 +10,8 @@ class WorldService;
 #include "worldService.hpp"
 #include "interfaceService.hpp"
 
+#define RPGPP_VER "0.1"
+
 class Game {
 private:
     static Game *instance_;

@@ -19,6 +19,7 @@ class EditorInterfaceService {
 private:
     Font uiFont;
     Texture2D closeTexture;
+    Texture2D logoTexture;
     MainView mainView;
     ProjectMenuBox projectMenu;
     TabList tabList;
@@ -42,6 +43,7 @@ public:
     void draw();
     Font getFont();
     Texture2D getCloseTexture();
+    Texture2D getLogoTexture();
     void setMouseLock(bool value);
     bool getMouseLock();
     void setMouseBoxLayer(ViewBoxLayer boxLayer);

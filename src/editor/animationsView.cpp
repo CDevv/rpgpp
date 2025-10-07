@@ -5,7 +5,7 @@
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
-#include "tileSetDialogWindow.hpp"
+#include "windows/tileSetDialogWindow.hpp"
 #include "windowContainer.hpp"
 
 bool rlImGuiImageButtonRect(const char* str_id, const Texture* image, int destWidth, int destHeight, Rectangle sourceRect)

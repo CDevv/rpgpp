@@ -21,6 +21,8 @@ int main()
 
     rlImGuiSetup(true);
 
+    ImGui::GetIO().ConfigErrorRecovery = true;
+    ImGui::GetIO().ConfigErrorRecoveryEnableAssert = true;
     ImGui::GetIO().Fonts->ClearFonts();
     ImGui::GetIO().Fonts->AddFontFromFileTTF("LanaPixel.ttf", 13.0f);
 

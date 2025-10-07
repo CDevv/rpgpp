@@ -15,6 +15,7 @@ private:
     void drawTileSets();
     void drawMaps();
     void drawActors();
+    std::string errorMessage;
 public:
     ResourceViewerBox();
     ResourceViewerBox(Rectangle rect);
