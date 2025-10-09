@@ -3,14 +3,15 @@
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
 #include "imgui.h"
+#include "windowPopup.hpp"
 #include <nlohmann/json.hpp>
 
 ActorInitWindow::ActorInitWindow() {}
 
 ActorInitWindow::ActorInitWindow(Rectangle rect)
+: WindowPopup("New Actor..", rect)
 {
 	this->rect = rect;
-	this->active = false;
 
 	this->titleEditMode = false;
 	strcpy(this->title, "");
@@ -19,10 +20,9 @@ ActorInitWindow::ActorInitWindow(Rectangle rect)
 	this->tileSetSource = "";
 }
 
-void ActorInitWindow::setActive()
+void ActorInitWindow::openWindow()
 {
-	active = true;
-	ImGui::OpenPopup("New Actor..");
+    WindowPopup::openWindow();
 }
 
 void ActorInitWindow::closeWindow()
@@ -31,14 +31,13 @@ void ActorInitWindow::closeWindow()
 	ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
 	ui.setMouseLock(false);
 
-	active = false;
 	strcpy(this->title, "");
 	titleEditMode = false;
 	titleText = "";
 	hasSetTileSet = false;
 	tileSetSource = "";
 
-	ImGui::CloseCurrentPopup();
+	WindowPopup::closeWindow();
 }
 
 void ActorInitWindow::draw()

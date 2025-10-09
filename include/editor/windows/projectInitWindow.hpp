@@ -4,10 +4,11 @@
 #include <raylib.h>
 #include <string>
 
-class ProjectInitWindow {
+#include "windowPopup.hpp"
+
+class ProjectInitWindow : public WindowPopup {
 private:
 	Rectangle rect;
-	bool active;
 	bool titleEditMode;
     std::string titleText;
     char title[256];
@@ -16,7 +17,7 @@ private:
 public:
 	ProjectInitWindow();
 	ProjectInitWindow(Rectangle rect);
-	void setActive();
+	void openWindow();
 	void closeWindow();
 	void draw();
 };

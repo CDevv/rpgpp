@@ -7,13 +7,14 @@
 #include "fileSystemService.hpp"
 #include "room.hpp"
 #include "tilemap.hpp"
+#include "windowPopup.hpp"
 
 MapInitWindow::MapInitWindow() {}
 
 MapInitWindow::MapInitWindow(Rectangle rect)
+: WindowPopup("New Room..", rect)
 {
     this->rect = rect;
-    this->active = false;
 
     this->titleText = "";
     strcpy(title, "");
@@ -22,10 +23,9 @@ MapInitWindow::MapInitWindow(Rectangle rect)
     this->hasSetTileSet = false;
 }
 
-void MapInitWindow::setActive()
+void MapInitWindow::openWindow()
 {
-    active = true;
-    ImGui::OpenPopup("New Room..");
+    WindowPopup::openWindow();
 }
 
 void MapInitWindow::closeWindow()
@@ -34,15 +34,13 @@ void MapInitWindow::closeWindow()
     ui.setMouseBoxLayer(VIEWBOX_LAYER_BASE);
     ui.setMouseLock(false);
 
-    active = false;
-
     this->titleText = "";
     strcpy(title, "");
     this->titleEditMode = false;
     this->tileSetSource = "";
     this->hasSetTileSet = false;
 
-    ImGui::CloseCurrentPopup();
+    WindowPopup::closeWindow();
 }
 
 void MapInitWindow::draw()

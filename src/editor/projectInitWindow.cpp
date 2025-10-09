@@ -4,13 +4,14 @@
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
+#include "windowPopup.hpp"
 
 ProjectInitWindow::ProjectInitWindow() {}
 
 ProjectInitWindow::ProjectInitWindow(Rectangle rect)
+: WindowPopup("New Project..", rect)
 {
 	this->rect = rect;
-	this->active = false;
 
 	this->titleEditMode = false;
     this->titleText = "";
@@ -20,10 +21,9 @@ ProjectInitWindow::ProjectInitWindow(Rectangle rect)
     strcpy(this->title, "");
 }
 
-void ProjectInitWindow::setActive()
+void ProjectInitWindow::openWindow()
 {
-	active = true;
-	ImGui::OpenPopup("New Project..");
+    WindowPopup::openWindow();
 }
 
 void ProjectInitWindow::closeWindow()
@@ -36,9 +36,8 @@ void ProjectInitWindow::closeWindow()
     hasSetDirPath = false;
     titleText = "";
     strcpy(this->title, "");
-    active = false;
 
-    ImGui::CloseCurrentPopup();
+    WindowPopup::closeWindow();
 }
 
 void ProjectInitWindow::draw()
@@ -68,9 +67,7 @@ void ProjectInitWindow::draw()
 
             if (validated) {
                 Project::generateNewProj(titleText, dirPath);
-
                 fs.setProject(TextFormat("%s/%s/proj.rpgpp", dirPath.c_str(), titleText.c_str()));
-
                 closeWindow();
             }
         }

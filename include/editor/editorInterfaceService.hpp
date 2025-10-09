@@ -20,6 +20,8 @@ private:
     Font uiFont;
     Texture2D closeTexture;
     Texture2D logoTexture;
+    Texture2D dialogTexture;
+    Texture2D blankTexture;
     MainView mainView;
     ProjectMenuBox projectMenu;
     TabList tabList;
@@ -44,6 +46,8 @@ public:
     Font getFont();
     Texture2D getCloseTexture();
     Texture2D getLogoTexture();
+    Texture2D getBlankTexture();
+    Texture2D getDialogTexture();
     void setMouseLock(bool value);
     bool getMouseLock();
     void setMouseBoxLayer(ViewBoxLayer boxLayer);

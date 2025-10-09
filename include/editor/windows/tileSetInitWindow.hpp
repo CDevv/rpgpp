@@ -3,10 +3,10 @@
 
 #include <raylib.h>
 #include <string>
+#include "windowPopup.hpp"
 
-class TileSetInitWindow {
+class TileSetInitWindow : public WindowPopup {
 private:
-    bool active;
     Rectangle rect;
     bool titleEditMode;
     std::string titleText;
@@ -16,7 +16,7 @@ private:
 public:
     TileSetInitWindow();
     TileSetInitWindow(Rectangle rect);
-    void setActive();
+    void openWindow();
     void closeWindow();
     void draw();
 };

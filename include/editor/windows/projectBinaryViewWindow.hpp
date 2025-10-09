@@ -1,21 +1,23 @@
 #ifndef _RPGPP_EDITOR_PROJECTBINARYVIEWWINDOW_H
 #define _RPGPP_EDITOR_PROJECTBINARYVIEWWINDOW_H
 
-#include "gamedata.hpp"
 #include <memory>
 #include <imgui.h>
 #include <raylib.h>
+#include "windowPopup.hpp"
+
+#include "gamedata.hpp"
 #include "imgui.h"
 #include "tileset.hpp"
 #include "room.hpp"
 #include "worldViewBox.hpp"
 
-class ProjectBinaryViewWindow {
+class ProjectBinaryViewWindow{
 private:
+    bool active;
 	Rectangle rect;
 	std::unique_ptr<WorldViewBox> tilesView;
 	std::unique_ptr<WorldViewBox> roomView;
-	bool active;
 	bool dataAvailable;
 	bool pageEditMode;
 	int currentPageNum;

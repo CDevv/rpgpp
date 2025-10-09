@@ -4,6 +4,10 @@
 #include "game.hpp"
 #include "interfaceService.hpp"
 
+std::array<std::string, 2> Interactable::interactableTypeNames = {
+    "Blank", "Dialogue"
+};
+
 Interactable::Interactable()
 {
     this->valid = false;
@@ -25,6 +29,11 @@ Interactable::Interactable(InteractableType type, Vector2 tilePos, int tileSize)
 
 Interactable::~Interactable()
 {
+}
+
+std::array<std::string, 2>& Interactable::getTypeNames()
+{
+    return interactableTypeNames;
 }
 
 bool Interactable::isValid()

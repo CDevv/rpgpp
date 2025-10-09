@@ -2,19 +2,16 @@
 #define _RPGPP_DELETECONFIRMWINDOW_H
 
 #include <raylib.h>
-#include <string>
+#include "windowPopup.hpp"
 
-class DeleteConfirmWindow {
+class DeleteConfirmWindow : public WindowPopup {
 private:
-    bool active;
     Rectangle rect;
-    std::string filePath;
 public:
     DeleteConfirmWindow();
     DeleteConfirmWindow(Rectangle rect);
-    void setActive();
+    void openWindow();
     void closeWindow();
-    void setFilePath(std::string filePath);
     void draw();
 };
 

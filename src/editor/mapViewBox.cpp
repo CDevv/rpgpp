@@ -1,4 +1,6 @@
 #include "editorInterfaceService.hpp"
+#include "imgui.h"
+#include "imgui_internal.h"
 #include "interactable.hpp"
 #include "room.hpp"
 #include "tilemap.hpp"
@@ -140,6 +142,15 @@ void MapViewBox::isHoverOnValidTile()
             }
         }
     }
+
+    if (hoverValidTile) {
+        if (currentLayer == LAYER_INTERACTABLES) {
+            Interactable* inter = room->getInteractables().get(static_cast<int>(tileAtlasPos.x), static_cast<int>(tileAtlasPos.y));
+            if (inter != nullptr) {
+                ImGui::SetTooltip("Interactable\nType: %s", Interactable::getTypeNames()[inter->getType()].c_str());
+            }
+        }
+    }
 }
 
 void MapViewBox::drawGrid()
@@ -239,7 +250,28 @@ void MapViewBox::drawTiles()
 
             int typeNum = static_cast<int>(i->getType());
             Vector2 intPos = Vector2 { intRect.x, intRect.y };
-            DrawTextEx(font, TextFormat("Type: %i", typeNum), intPos, 6, 0.5f, BLACK);
+            //DrawTextEx(font, TextFormat("Type: %i", typeNum), intPos, 6, 0.5f, BLACK);
+
+            bool validTexture = false;
+            Texture2D textureIntType;
+            switch (i->getType()) {
+                case INT_BLANK:
+                    validTexture = true;
+                    textureIntType = ui.getBlankTexture();
+                    break;
+                case INT_TWO:
+                    validTexture = true;
+                    textureIntType = ui.getDialogTexture();
+                    break;
+                default:
+                    break;
+            }
+            if (validTexture) {
+                DrawTexturePro(textureIntType,
+                    Rectangle { 0, 0, static_cast<float>(textureIntType.width), static_cast<float>(textureIntType.height) },
+                    intRect,
+                    Vector2 { 0, 0 }, 0.0f, WHITE);
+            }
         }
     }
 

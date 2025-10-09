@@ -4,25 +4,24 @@
 #include "game.hpp"
 #include <rlImGui.h>
 #include "editor.hpp"
+#include "windowPopup.hpp"
 
 AboutWindow::AboutWindow() {}
 
 AboutWindow::AboutWindow(Rectangle rect)
+: WindowPopup("About RPG++", rect)
 {
-    this->active = false;
     this->rect = rect;
 }
 
-void AboutWindow::setActive()
+void AboutWindow::openWindow()
 {
-    this->active = true;
-    ImGui::OpenPopup("About RPG++");
+    WindowPopup::openWindow();
 }
 
 void AboutWindow::closeWindow()
 {
-    this->active = false;
-    ImGui::CloseCurrentPopup();
+    WindowPopup::closeWindow();
 }
 
 void AboutWindow::draw()

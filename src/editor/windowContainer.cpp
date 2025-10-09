@@ -1,12 +1,20 @@
 #include "windowContainer.hpp"
-#include "windows/aboutWindow.hpp"
-#include "windows/deleteConfirmWindow.hpp"
-#include "windows/mapInitWindow.hpp"
-#include "windows/tileSetInitWindow.hpp"
+#include <memory>
+#include <raylib.h>
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
+#include "windowPopup.hpp"
 #include "worldViewBox.hpp"
-#include <raylib.h>
+
+#include "windows/projectInitWindow.hpp"
+#include "windows/tileSetInitWindow.hpp"
+#include "windows/mapInitWindow.hpp"
+#include "windows/actorInitWindow.hpp"
+#include "windows/projectBinaryViewWindow.hpp"
+#include "windows/tileSetDialogWindow.hpp"
+#include "windows/deleteConfirmWindow.hpp"
+#include "windows/aboutWindow.hpp"
+#include "windows/errorWindow.hpp"
 
 WindowContainer::WindowContainer()
 {
@@ -16,14 +24,6 @@ WindowContainer::WindowContainer()
         (GetScreenHeight() - baseTileSetSize.height) / 2,
         baseTileSetSize.width, baseTileSetSize.height
     };
-    tileSetInit = TileSetInitWindow(tileSetWindowSize);
-
-    Rectangle mapWindowSize = Rectangle(tileSetWindowSize);
-    mapInit = MapInitWindow(mapWindowSize);
-
-    actorInit = ActorInitWindow(tileSetWindowSize);
-
-    projectInit = ProjectInitWindow(tileSetWindowSize);
 
     Rectangle baseProjectViewWindowSize = Rectangle
     {
@@ -47,9 +47,15 @@ WindowContainer::WindowContainer()
     };
     tileSetDialog = TileSetDialogWindow(tileSetDialogSize);
 
-    deleteConfirm = DeleteConfirmWindow(tileSetWindowSize);
+    mapW = std::map<std::string, std::unique_ptr<WindowPopup>>{};
 
-    about = AboutWindow(tileSetWindowSize);
+    mapW.emplace("ProjectInit", std::unique_ptr<WindowPopup>(new ProjectInitWindow(tileSetWindowSize)));
+    mapW.emplace("TileSetInit", std::unique_ptr<WindowPopup>(new TileSetInitWindow(tileSetWindowSize)));
+    mapW.emplace("MapInit", std::unique_ptr<WindowPopup>(new MapInitWindow(tileSetWindowSize)));
+    mapW.emplace("ActorInit", std::unique_ptr<WindowPopup>(new ActorInitWindow(tileSetWindowSize)));
+    mapW.emplace("About",  std::unique_ptr<WindowPopup>(new AboutWindow(tileSetWindowSize)));
+    mapW.emplace("Error",  std::unique_ptr<WindowPopup>(new ErrorWindow(Rectangle { 20, 20, 240, 30 })));
+    mapW.emplace("DeleteConfirm",  std::unique_ptr<WindowPopup>(new DeleteConfirmWindow(tileSetWindowSize)));
 }
 
 void WindowContainer::update()
@@ -65,30 +71,6 @@ bool WindowContainer::isWindowOpen()
 void WindowContainer::setWindowOpen(bool value)
 {
     this->windowOpen = value;
-}
-
-void WindowContainer::openProjectInit()
-{
-    windowOpen = true;
-    projectInit.setActive();
-}
-
-void WindowContainer::openTileSetInit()
-{
-    windowOpen = true;
-    tileSetInit.setActive();
-}
-
-void WindowContainer::openMapInit()
-{
-    windowOpen = true;
-    mapInit.setActive();
-}
-
-void WindowContainer::openActorInit()
-{
-    windowOpen = true;
-    actorInit.setActive();
 }
 
 ProjectBinaryViewWindow& WindowContainer::openProjectBinaryView()
@@ -107,25 +89,11 @@ TileSetDialogWindow& WindowContainer::openTileSetDialog()
     return tileSetDialog;
 }
 
-DeleteConfirmWindow& WindowContainer::openDeleteConfirm()
-{
-    deleteConfirm.setActive();
-    return deleteConfirm;
-}
-
-void WindowContainer::openAbout()
-{
-    about.setActive();
-}
-
 void WindowContainer::draw()
 {
-    //projectInit.draw();
-    tileSetInit.draw();
-    mapInit.draw();
-    actorInit.draw();
-    //projectBinaryView.draw();
-    //tileSetDialog.draw();
+    drawWindow("TileSetInit");
+    drawWindow("MapInit");
+    drawWindow("ActorInit");
 
     if (!windowOpen) {
         EditorInterfaceService& ui = Editor::getUi();
@@ -138,22 +106,18 @@ void WindowContainer::drawTileSetDialog()
     tileSetDialog.draw();
 }
 
-void WindowContainer::drawProjectInit()
-{
-    projectInit.draw();
-}
-
 void WindowContainer::drawProjectBinaryView()
 {
     projectBinaryView.draw();
 }
 
-void WindowContainer::drawDeleteConfirm()
+WindowPopup& WindowContainer::open(std::string id)
 {
-    deleteConfirm.draw();
+    mapW[id]->openWindow();
+    return *mapW[id].get();
 }
 
-void WindowContainer::drawAbout()
+void WindowContainer::drawWindow(std::string id)
 {
-    about.draw();
+    mapW[id]->draw();
 }

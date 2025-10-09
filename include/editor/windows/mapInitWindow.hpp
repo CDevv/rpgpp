@@ -3,10 +3,10 @@
 
 #include <raylib.h>
 #include <string>
+#include "windowPopup.hpp"
 
-class MapInitWindow {
+class MapInitWindow : public WindowPopup {
 private:
-    bool active;
     Rectangle rect;
     std::string titleText;
     char title[256];
@@ -16,7 +16,7 @@ private:
 public:
     MapInitWindow();
     MapInitWindow(Rectangle rect);
-    void setActive();
+    void openWindow();
     void closeWindow();
     void draw();
 };

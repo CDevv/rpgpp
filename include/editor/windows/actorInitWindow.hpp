@@ -3,11 +3,11 @@
 
 #include <raylib.h>
 #include <string>
+#include "windowPopup.hpp"
 
-class ActorInitWindow {
+class ActorInitWindow : public WindowPopup {
 private:
 	Rectangle rect;
-	bool active;
 	bool titleEditMode;
 	char title[256];
 	std::string titleText;
@@ -17,7 +17,7 @@ public:
 	ActorInitWindow();
 	ActorInitWindow(Rectangle rect);
 	void closeWindow();
-	void setActive();
+	void openWindow();
 	void draw();
 };
 

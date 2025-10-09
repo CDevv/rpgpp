@@ -40,14 +40,14 @@ void MainViewPanel::draw()
 
 		ImGui::Indent(-indent);
 		if (ImGui::Button("Create Project..", ImVec2(-1, 24))) {
-		    ui.getWindowContainer().openProjectInit();
+			ui.getWindowContainer().open("ProjectInit");
 		}
 		if (ImGui::Button("Open Project..", ImVec2(-1, 24))) {
 			fs.promptOpenProject();
 			ui.setInitial();
 		}
 
-		ui.getWindowContainer().drawProjectInit();
+		ui.getWindowContainer().drawWindow("ProjectInit");
 
 		ImGui::End();
 	}

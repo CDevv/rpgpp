@@ -1,27 +1,16 @@
 #include "editorInterfaceService.hpp"
-#include <cstdio>
-#include <exception>
 #include <raylib.h>
-#include <raymath.h>
-#include <rlgl.h>
+#include <imgui.h>
 #include <imgui_internal.h>
 #include "fileSystemService.hpp"
 #include "editor.hpp"
 #include "gamedata.hpp"
-#include "imgui.h"
-#include "imgui_internal.h"
 #include "nfd.h"
 #include "windows/projectBinaryViewWindow.hpp"
 #include "resourceViewerBox.hpp"
 #include "windowContainer.hpp"
 
-#include <sol/sol.hpp>
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
-
 #include <filesystem>
-#include <reproc++/run.hpp>
 
 #ifdef _WIN32
 #include "winapi.hpp"
@@ -49,6 +38,8 @@ EditorInterfaceService::EditorInterfaceService()
     this->closeTexture = closeTexture;
 
     this->logoTexture = LoadTexture("logo.png");
+    this->dialogTexture = LoadTexture("dialog.png");
+    this->blankTexture = LoadTexture("cross.png");
 
     mousePos = Vector2 { 0, 0 };
     hoverPos = Vector2 { 0, 0 };
@@ -170,11 +161,11 @@ void EditorInterfaceService::draw()
     }
 
     if (openedAboutWIndow) {
-        windowContainer.openAbout();
+        windowContainer.open("About");
         openedAboutWIndow = false;
     }
 
-    windowContainer.drawAbout();
+    windowContainer.drawWindow("About");
 }
 
 void EditorInterfaceService::drawMainView()
@@ -255,4 +246,14 @@ void EditorInterfaceService::setMouseBoxLayer(ViewBoxLayer boxLayer)
 ViewBoxLayer EditorInterfaceService::getMouseBoxLayer()
 {
     return this->mouseBoxLayer;
+}
+
+Texture2D EditorInterfaceService::getBlankTexture()
+{
+    return this->blankTexture;
+}
+
+Texture2D EditorInterfaceService::getDialogTexture()
+{
+    return this->dialogTexture;
 }

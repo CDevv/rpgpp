@@ -7,12 +7,13 @@
 #include "fileSystemService.hpp"
 #include "nfd.h"
 #include "tileset.hpp"
+#include "windowPopup.hpp"
 
 TileSetInitWindow::TileSetInitWindow() {}
 
 TileSetInitWindow::TileSetInitWindow(Rectangle rect)
+: WindowPopup("New TileSet..", rect)
 {
-    this->active = false;
     this->rect = rect;
 
     strcpy(title, "");
@@ -21,10 +22,9 @@ TileSetInitWindow::TileSetInitWindow(Rectangle rect)
     this->hasSetTextureSource = false;
 }
 
-void TileSetInitWindow::setActive()
+void TileSetInitWindow::openWindow()
 {
-    active = true;
-    ImGui::OpenPopup("New TileSet..");
+    WindowPopup::openWindow();
 }
 
 void TileSetInitWindow::closeWindow()
@@ -37,9 +37,8 @@ void TileSetInitWindow::closeWindow()
     textureSource = "";
     titleText = "";
     strcpy(title, "");
-    active = false;
 
-    ImGui::CloseCurrentPopup();
+    WindowPopup::closeWindow();
 }
 
 void TileSetInitWindow::draw()

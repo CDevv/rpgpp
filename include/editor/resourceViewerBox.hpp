@@ -7,15 +7,15 @@
 class ResourceViewerBox {
 private:
     Rectangle rect;
-    bool dropdownEditMode;
     int dropdownActive;
     bool deleteConfirmOpen;
     std::string deleteConfirmPath;
+    void onNewButton();
+    void drawResourcesList();
     void drawContextMenu(std::string resPath);
     void drawTileSets();
     void drawMaps();
     void drawActors();
-    std::string errorMessage;
 public:
     ResourceViewerBox();
     ResourceViewerBox(Rectangle rect);

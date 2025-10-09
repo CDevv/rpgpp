@@ -3,11 +3,12 @@
 
 #include <raylib.h>
 #include <map>
+#include <array>
 #include <string>
 
 #include "dialogueBalloon.hpp"
 
-/** ENum for interactable types */
+/** Enum for interactable types */
 enum InteractableType {
     INT_BLANK,
     INT_TWO
@@ -30,11 +31,15 @@ private:
 protected:
     /** Interactable properties. */
     std::map<std::string, std::string> props;
+    /** Array for descriptive names of interactable types */
+    static std::array<std::string, 2> interactableTypeNames;
 public:
     /** Empty constructor */
     Interactable();
     /** Construct from the type, tile position and size */
     Interactable(InteractableType type, Vector2 tilePos, int tileSize);
+    /** Get the array containing names of the Interactable names */
+    static std::array<std::string, 2>& getTypeNames();
     /** Whether this Interactable is valid */
     bool isValid();
     virtual ~Interactable();
@@ -44,7 +49,7 @@ public:
     InteractableType getType();
     /** Get the World position of this Interactable */
     Vector2 getWorldPos();
-    /** Invoke the virtual interact method. Each Interactable has its own interact method. 
+    /** Invoke the virtual interact method. Each Interactable has its own interact method.
      * Shall be invoked when the player interacts with the Interactable */
     virtual void interact();
     /** Set a property of this interactable. */

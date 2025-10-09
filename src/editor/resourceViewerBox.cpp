@@ -1,12 +1,9 @@
 #include "resourceViewerBox.hpp"
-#include <cstdio>
-#include <exception>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
 #include <IconsKenney.h>
 #include <string>
 #include <vector>
-#include "windows/deleteConfirmWindow.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
@@ -20,12 +17,9 @@ ResourceViewerBox::ResourceViewerBox() {}
 ResourceViewerBox::ResourceViewerBox(Rectangle rect)
 {
     this->rect = rect;
-    this->dropdownEditMode = false;
     this->dropdownActive = 0;
     this->deleteConfirmOpen = false;
     this->deleteConfirmPath = "";
-
-    this->errorMessage = "";
 }
 
 void ResourceViewerBox::setRect(Rectangle rect)
@@ -33,7 +27,49 @@ void ResourceViewerBox::setRect(Rectangle rect)
     this->rect = rect;
 }
 
+void ResourceViewerBox::onNewButton()
+{
+    EditorInterfaceService& ui = Editor::getUi();
+    WindowContainer& windows = ui.getWindowContainer();
+    EngineFileType fileTypeActive = static_cast<EngineFileType>(dropdownActive);
+
+    if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
+        switch (fileTypeActive) {
+        default:
+            break;
+        case FILE_TILESET:
+            windows.open("TileSetInit");
+            break;
+        case FILE_ROOM:
+            windows.open("MapInit");
+            break;
+        case FILE_ACTOR:
+            windows.open("ActorInit");
+            break;
+        }
+    }
+}
+
 void ResourceViewerBox::update() {}
+
+void ResourceViewerBox::drawResourcesList()
+{
+    EngineFileType fileTypeActive = static_cast<EngineFileType>(dropdownActive);
+
+    switch (fileTypeActive) {
+    default:
+        break;
+    case FILE_TILESET:
+        drawTileSets();
+        break;
+    case FILE_ROOM:
+        drawMaps();
+        break;
+    case FILE_ACTOR:
+        drawActors();
+        break;
+    }
+}
 
 void ResourceViewerBox::draw()
 {
@@ -47,7 +83,6 @@ void ResourceViewerBox::draw()
 
     if (fs.getProject() != nullptr) {
         auto arr = ProjectFile::getTypeNames();
-        EngineFileType fileTypeActive = static_cast<EngineFileType>(dropdownActive);
 
         ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
         ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
@@ -59,21 +94,7 @@ void ResourceViewerBox::draw()
                 ImGui::OpenPopup("res_choose");
             }
             if (ImGui::Button("New..", ImVec2 { rect.width - (8 * 2), 24.0f })) {
-                if (ui.getMouseBoxLayer() == VIEWBOX_LAYER_BASE) {
-                    switch (fileTypeActive) {
-                    default:
-                        break;
-                    case FILE_TILESET:
-                        windows.openTileSetInit();
-                        break;
-                    case FILE_ROOM:
-                        windows.openMapInit();
-                        break;
-                    case FILE_ACTOR:
-                        windows.openActorInit();
-                        break;
-                    }
-                }
+                onNewButton();
             }
 
             ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2 { 0, 0 });
@@ -81,40 +102,19 @@ void ResourceViewerBox::draw()
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, IM_COL32(53,53,53, 255));
             if (ImGui::BeginChild("res_list")) {
                 try {
-                    switch (fileTypeActive) {
-                    default:
-                        break;
-                    case FILE_TILESET:
-                        drawTileSets();
-                        break;
-                    case FILE_ROOM:
-                        drawMaps();
-                        break;
-                    case FILE_ACTOR:
-                        drawActors();
-                        break;
-                    }
+                    drawResourcesList();
                 }
-                catch (nlohmann::json::out_of_range& ex) {
+                catch (nlohmann::json::exception& ex) {
                     gotError = true;
-                    errorMessage = std::string(ex.what());
+                    windows.open("Error").setProp(ex.what());
                 }
-                windows.drawDeleteConfirm();
 
                 if (gotError) {
-                    ImGui::OpenPopup("Runtime Error");
+                    windows.open("Error");
                     gotError = false;
                 }
 
-                ImGui::SetNextWindowSize(ImVec2 { 240, -1 });
-
-                if (ImGui::BeginPopupModal("Runtime Error")) {
-                    ImGui::TextWrapped("%s", errorMessage.c_str());
-                    if (ImGui::Button("Close")) {
-                        ImGui::CloseCurrentPopup();
-                    }
-                    ImGui::EndPopup();
-                }
+                windows.drawWindow("Error");
 
                 ImGui::EndChild();
             }
@@ -138,12 +138,11 @@ void ResourceViewerBox::draw()
             windows.draw();
 
             if (deleteConfirmOpen) {
-                DeleteConfirmWindow& deleteConfirm = windows.openDeleteConfirm();
-                deleteConfirm.setFilePath(deleteConfirmPath);
+                windows.open("DeleteConfirm").setProp(deleteConfirmPath);
                 deleteConfirmOpen = false;
             }
 
-            windows.drawDeleteConfirm();
+            windows.drawWindow("DeleteConfirm");
 
             ImGui::End();
         }
@@ -195,7 +194,7 @@ void ResourceViewerBox::drawTileSets()
         }
 
         drawContextMenu(tileSetPath);
-        windows.drawDeleteConfirm();
+        windows.drawWindow("DeleteConfirm");
     }
 }
 
@@ -215,6 +214,7 @@ void ResourceViewerBox::drawMaps()
         }
 
         drawContextMenu(mapPath);
+        windows.drawWindow("DeleteConfirm");
     }
 }
 
@@ -233,5 +233,6 @@ void ResourceViewerBox::drawActors()
         }
 
         drawContextMenu(actorPath);
+        windows.drawWindow("DeleteConfirm");
     }
 }
