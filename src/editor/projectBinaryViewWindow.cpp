@@ -1,6 +1,7 @@
 #include "windows/projectBinaryViewWindow.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
+#include "resourceService.hpp"
 #include <imgui.h>
 #include "tileset.hpp"
 #include <memory>
@@ -129,6 +130,7 @@ void ProjectBinaryViewWindow::drawResourcesList()
 
 void ProjectBinaryViewWindow::drawCloseButton(ImDrawList* draw)
 {
+    ResourceService& resources = Editor::getResources();
     EditorInterfaceService& ui = Editor::getUi();
     ImVec4 closeColor = ImVec4 { 0, 0, 0, 0 };
 
@@ -145,9 +147,11 @@ void ProjectBinaryViewWindow::drawCloseButton(ImDrawList* draw)
 		}
 	}
 
+	Texture2D closeTexture = resources.getTexture("close");
+
 	draw->AddRectFilled(ImVec2 { closeRect.x, closeRect.y },
 	ImVec2 { closeRect.x + closeRect.width, closeRect.y + closeRect.height }, ImGui::ColorConvertFloat4ToU32(closeColor));
-	draw->AddImage((ImTextureRef)ui.getCloseTexture().id,
+	draw->AddImage((ImTextureRef)closeTexture.id,
             ImVec2 { closeRect.x, closeRect.y }, ImVec2 { closeRect.x + closeRect.width, closeRect.y + closeRect.height });
 }
 

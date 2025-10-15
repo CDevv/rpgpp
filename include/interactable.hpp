@@ -62,14 +62,35 @@ public:
     void interact() override;
 };
 
-class InteractableTwo : public Interactable {
+class DialogueInt : public Interactable {
 private:
     Dialogue dialogue;
 public:
-    InteractableTwo(Vector2 tilePos, int tileSize);
+    DialogueInt(Vector2 tilePos, int tileSize);
     void interact() override;
     Dialogue getDialogue();
     void setDialogue(Dialogue dialogue);
+};
+
+class IntBaseWrapper {
+public:
+    InteractableType type;
+    Vector2 pos;
+    IntBaseWrapper();
+    virtual ~IntBaseWrapper();
+    virtual void interact();
+};
+
+template<typename T>
+class IntBase : public IntBaseWrapper {
+private:
+    T data;
+public:
+    IntBase<T>(Vector2 pos, InteractableType type) { this->pos = pos; this->type = type; };
+    IntBase<T>(T value) { data = value; };
+    void set(T data) { this->data = data; };
+    T get() { return data; };
+    void interact();
 };
 
 #endif

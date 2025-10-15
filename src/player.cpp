@@ -111,9 +111,12 @@ void Player::handleCollision()
     }
 
     //interactable tiles
-    std::vector<Interactable*> interactableTiles = this->room.getInteractables().getVector();
-    for (Interactable* interactable : interactableTiles) {
-        Rectangle tileRect = interactable->getRect();
+    std::vector<IntBaseWrapper*> interactableTiles = this->room.getInteractables().getList();
+    for (IntBaseWrapper* interactable : interactableTiles) {
+        Rectangle tileRect = Rectangle {
+            interactable->pos.x * room.getWorldTileSize(), interactable->pos.y * room.getWorldTileSize(),
+            static_cast<float>(room.getWorldTileSize()), static_cast<float>(room.getWorldTileSize())
+        };
 
         if (CheckCollisionRecs(playerRect, tileRect)) {
             velocity = Vector2 { 0, 0 };
@@ -124,9 +127,12 @@ void Player::handleCollision()
 
 void Player::handleInteraction()
 {
-    std::vector<Interactable*> interactableTiles = this->room.getInteractables().getVector();
-    for (Interactable* interactable : interactableTiles) {
-        Rectangle tileRect = interactable->getRect();
+    std::vector<IntBaseWrapper*> interactableTiles = this->room.getInteractables().getList();
+    for (IntBaseWrapper* interactable : interactableTiles) {
+        Rectangle tileRect = Rectangle {
+            interactable->pos.x * room.getWorldTileSize(), interactable->pos.y * room.getWorldTileSize(),
+            static_cast<float>(room.getWorldTileSize()), static_cast<float>(room.getWorldTileSize())
+        };
 
         if (CheckCollisionRecs(interactableArea, tileRect)) {
             interactable->interact();

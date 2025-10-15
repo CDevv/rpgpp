@@ -1,38 +1,45 @@
 #include "interactablePropsState.hpp"
+#include "dialogueBalloon.hpp"
+#include "interactable.hpp"
 #include <cstring>
 
-InteractablePropsState::InteractablePropsState() 
+InteractablePropsState::InteractablePropsState()
 {
 	strcpy(diagText, "");
 }
 
-void InteractablePropsState::setDefaults(Interactable *interactable)
+void InteractablePropsState::setDefaults(IntBaseWrapper *interactable)
 {
-	if (interactable == nullptr) return;
+    if (interactable == nullptr) return;
 
-	switch (interactable->getType()) {
+    IntBase<Dialogue>* diag;
+    switch (interactable->type) {
 	case INT_TWO:
-		this->dialogue = (static_cast<InteractableTwo*>(interactable))->getDialogue();
-		std::strcpy(diagText, 
-			(static_cast<InteractableTwo*>(interactable))->getDialogue().lines.at(0).text.c_str());
+		diag = static_cast<IntBase<Dialogue>*>(interactable);
+		this->dialogue = diag->get();
+		if (!dialogue.lines.empty()) {
+		    strcpy(diagText, dialogue.lines.at(0).text.c_str());
+		} else {
+		    strcpy(diagText, "Empty dialogue!");
+		}
 		break;
 	default:
 		break;
 	}
 }
 
-void InteractablePropsState::updateProps(Interactable *interactable)
+void InteractablePropsState::updateProps(IntBaseWrapper *interactable)
 {
 	if (interactable == nullptr) return;
 
 	Dialogue dialogue;
-	switch (interactable->getType()) {
+	switch (interactable->type) {
 	case INT_TWO:
 		dialogue.lines.push_back(DialogueLine {
 			diagText
 		});
 
-        (static_cast<InteractableTwo*>(interactable))->setDialogue(dialogue);
+        (static_cast<IntBase<Dialogue>*>(interactable))->set(dialogue);
 		break;
 	default:
 		break;

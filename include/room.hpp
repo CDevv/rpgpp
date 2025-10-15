@@ -54,6 +54,7 @@ public:
     void update();
     /** Draw routine for this Room. */
     void draw();
+    int getWorldTileSize();
     /** Add an actor to this Room
      * @param actor The actor to be added to the Room's collection.
      */
@@ -72,7 +73,6 @@ public:
     TileMap *getTileMap();
 
     std::vector<Vector2> getCollisionTiles();
-    std::vector<Interactable*> getInteractableTiles();
     /** Get a reference to the CollisionsContainer of this Room. */
     CollisionsContainer& getCollisions();
     /** Get a reference to the InteractablesContainer of this Room. */

@@ -7,7 +7,7 @@ TabList::TabList() {}
 
 TabList::TabList(Rectangle rect)
 {
-    Texture2D closeTexture = LoadTexture("close.png");
+    Texture2D closeTexture = Editor::getResources().getTexture("close");
     this->closeTexture = closeTexture;
 	this->rect = rect;
 	this->scissorRect = rect;

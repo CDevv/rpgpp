@@ -34,13 +34,6 @@ EditorInterfaceService::EditorInterfaceService()
     //load the font
     uiFont = LoadFontEx("resources/LanaPixel.ttf", 13, codepoints.data(), codepoints.size());
 
-    Texture2D closeTexture = LoadTexture("close.png");
-    this->closeTexture = closeTexture;
-
-    this->logoTexture = LoadTexture("logo.png");
-    this->dialogTexture = LoadTexture("dialog.png");
-    this->blankTexture = LoadTexture("cross.png");
-
     mousePos = Vector2 { 0, 0 };
     hoverPos = Vector2 { 0, 0 };
     mouseLock = false;
@@ -208,16 +201,6 @@ Font EditorInterfaceService::getFont()
     return uiFont;
 }
 
-Texture2D EditorInterfaceService::getCloseTexture()
-{
-    return closeTexture;
-}
-
-Texture2D EditorInterfaceService::getLogoTexture()
-{
-    return logoTexture;
-}
-
 WindowContainer& EditorInterfaceService::getWindowContainer()
 {
     return windowContainer;
@@ -246,14 +229,4 @@ void EditorInterfaceService::setMouseBoxLayer(ViewBoxLayer boxLayer)
 ViewBoxLayer EditorInterfaceService::getMouseBoxLayer()
 {
     return this->mouseBoxLayer;
-}
-
-Texture2D EditorInterfaceService::getBlankTexture()
-{
-    return this->blankTexture;
-}
-
-Texture2D EditorInterfaceService::getDialogTexture()
-{
-    return this->dialogTexture;
 }

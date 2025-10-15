@@ -16,7 +16,7 @@ private:
     Vector2 interactableWorldPos;
     int typeNumber;
     bool typeDropdownEditMode;
-    Interactable* interactable;
+    IntBaseWrapper* interBase;
     InteractablePropsState propsState;
     std::unique_ptr<char[]> diagText;
     char diagChars[125];
@@ -32,7 +32,7 @@ public:
     void draw();
     void setActionMode(RoomAction mode);
     InteractableType getType();
-    void setSelectedInteractable(Interactable* interactable);
+    void setSelected(IntBaseWrapper* inter);
 };
 
 #endif

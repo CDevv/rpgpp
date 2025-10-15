@@ -10,8 +10,8 @@ private:
 public:
 	char diagText[256];
 	InteractablePropsState();
-	void setDefaults(Interactable* interactable);
-	void updateProps(Interactable* interactable);
+	void setDefaults(IntBaseWrapper* interactable);
+	void updateProps(IntBaseWrapper* interactable);
 	void setDialogue(Dialogue dialogue);
 	Dialogue getDialogue();
 };

@@ -1,6 +1,7 @@
 #include "interactable.hpp"
 #include <stdio.h>
 #include <raylib.h>
+#include "dialogueBalloon.hpp"
 #include "game.hpp"
 #include "interfaceService.hpp"
 
@@ -80,7 +81,7 @@ void InteractableOne::interact()
     printf("one test.\n");
 }
 
-InteractableTwo::InteractableTwo(Vector2 tilePos, int tileSize)
+DialogueInt::DialogueInt(Vector2 tilePos, int tileSize)
 : Interactable(INT_TWO, tilePos, tileSize)
 {
     Dialogue defDialog;
@@ -90,18 +91,43 @@ InteractableTwo::InteractableTwo(Vector2 tilePos, int tileSize)
     this->dialogue = defDialog;
 }
 
-void InteractableTwo::interact()
+void DialogueInt::interact()
 {
     InterfaceService& ui = Game::getUi();
     ui.showDialogue(dialogue);
 }
 
-Dialogue InteractableTwo::getDialogue()
+Dialogue DialogueInt::getDialogue()
 {
     return dialogue;
 }
 
-void InteractableTwo::setDialogue(Dialogue dialogue)
+void DialogueInt::setDialogue(Dialogue dialogue)
 {
     this->dialogue = dialogue;
+}
+
+IntBaseWrapper::IntBaseWrapper() {};
+
+IntBaseWrapper::~IntBaseWrapper() {};
+
+void IntBaseWrapper::interact() {};
+
+template <typename T>
+void IntBase<T>::interact()
+{
+    printf("<T>\n");
+}
+
+template <>
+void IntBase<int>::interact()
+{
+    printf("Blank \n");
+}
+
+template <>
+void IntBase<Dialogue>::interact()
+{
+    InterfaceService& ui = Game::getUi();
+    ui.showDialogue(data);
 }

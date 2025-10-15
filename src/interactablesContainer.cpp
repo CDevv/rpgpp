@@ -1,7 +1,19 @@
 #include "interactablesContainer.hpp"
+#include "dialogueBalloon.hpp"
 #include "interactable.hpp"
+#include <memory>
 #include <raylib.h>
 #include <vector>
+
+template <typename T>
+std::unique_ptr<IntBaseWrapper> make_item(T const& value) {
+    return std::unique_ptr<IntBaseWrapper>(new IntBase<T>(value));
+}
+
+template <typename T>
+std::unique_ptr<IntBaseWrapper> make_item(Vector2 pos, InteractableType type) {
+    return std::unique_ptr<IntBaseWrapper>(new IntBase<T>(pos, type));
+}
 
 InteractablesContainer::InteractablesContainer() {}
 
@@ -10,30 +22,43 @@ void InteractablesContainer::add(int x, int y, InteractableType type) {
 
     switch (type) {
         case INT_BLANK:
-            vec.push_back(std::make_unique<InteractableOne>(position, 48));
+            //vec.push_back(std::make_unique<InteractableOne>(position, 48));
+            add<int>(x, y, type);
             break;
         case INT_TWO:
-            vec.push_back(std::make_unique<InteractableTwo>(position, 48));
+            //vec.push_back(std::make_unique<DialogueInt>(position, 48));
+            add<Dialogue>(x, y, type);
             break;
     }
+
+    //test.push_back(make_item<Dialogue>());
 }
 
-Interactable* InteractablesContainer::get(int x, int y)
+template <typename T>
+void InteractablesContainer::add(int x, int y, InteractableType type)
 {
-    Interactable* result = nullptr;
-    for (auto&& i : vec) {
-        if (i->getWorldPos().x == x && i->getWorldPos().y == y) {
-            result = i.get();
+    test.push_back(make_item<T>(Vector2 {
+        static_cast<float>(x), static_cast<float>(y)
+    }, type));
+}
+
+IntBaseWrapper* InteractablesContainer::getInt(int x, int y)
+{
+    IntBaseWrapper* res = nullptr;
+    for (auto&& i : test) {
+        if (i->pos.x == x && i->pos.y == y) {
+            res = i.get();
         }
     }
 
-    return result;
+    return res;
 }
 
-void InteractablesContainer::removeInteractable(int x, int y) {
-    for (std::vector<std::unique_ptr<Interactable>>::iterator it = vec.begin(); it != vec.end();) {
-        if (it->get()->getWorldPos().x == x && it->get()->getWorldPos().y == y) {
-            vec.erase(it);
+void InteractablesContainer::removeInteractable(int x, int y)
+{
+    for (std::vector<std::unique_ptr<IntBaseWrapper>>::iterator it = test.begin(); it != test.end(); ) {
+        if (it->get()->pos.x == x && it->get()->pos.y == y) {
+            test.erase(it);
         } else {
             ++it;
         }
@@ -42,14 +67,18 @@ void InteractablesContainer::removeInteractable(int x, int y) {
 
 void InteractablesContainer::setInteractableType(int x, int y, InteractableType type)
 {
+    if (getInt(x, y)->type == type) {
+        return;
+    }
+
     this->removeInteractable(x, y);
     this->add(x, y, type);
 }
 
-std::vector<Interactable*> InteractablesContainer::getVector() 
+std::vector<IntBaseWrapper*> InteractablesContainer::getList()
 {
-    std::vector<Interactable*> result;
-    for (auto&& in : this->vec) {
+    std::vector<IntBaseWrapper*> result;
+    for (auto&& in : this->test) {
         result.push_back(in.get());
     }
     return result;
@@ -61,11 +90,11 @@ void InteractablesContainer::addBinVector(std::vector<InteractableBin> bin)
         InteractableType itype = static_cast<InteractableType>(intBin.type);
         this->add(intBin.x, intBin.y, itype);
 
-        InteractableTwo* diag;
+        IntBase<Dialogue>* diag;
         switch (itype) {
         case INT_TWO:
-            diag = static_cast<InteractableTwo*>(this->get(intBin.x, intBin.y));
-            diag->setDialogue(intBin.dialogue);
+            diag = static_cast<IntBase<Dialogue>*>(this->getInt(intBin.x, intBin.y));
+            diag->set(intBin.dialogue);
             break;
         default:
             break;
@@ -96,14 +125,14 @@ void InteractablesContainer::addJsonData(json roomJson)
             int x = std::stoi(std::string(textSplit[0]));
             int y = std::stoi(std::string(textSplit[1]));
 
-            Interactable* inter = this->get(x, y);
-            if (inter->getType() == INT_TWO) {
+            IntBaseWrapper* inter = this->getInt(x, y);
+            if (inter->type == INT_TWO) {
                 Dialogue dialogue;
                 dialogue.lines.push_back(DialogueLine {
                     "Character", value.at(0)
                 });
 
-                (static_cast<InteractableTwo*>(inter))->setDialogue(dialogue);
+                (static_cast<IntBase<Dialogue>*>(inter))->set(dialogue);
             }
         }
     }

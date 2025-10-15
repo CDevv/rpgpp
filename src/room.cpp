@@ -70,7 +70,7 @@ Room::Room(RoomBin bin)
     std::unique_ptr<Actor> actor = std::make_unique<Actor>(Game::getBin().actors.at(0));
     actor->setTilePosition(Vector2 {1, 0}, tileMap->getTileSet()->getTileSize());
     std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
-    
+
     this->addPlayer(std::move(player));
 
     interactables->addBinVector(bin.interactables);
@@ -83,7 +83,7 @@ Room::Room(RoomBin bin)
 json Room::dumpJson()
 {
     json roomJson = this->tileMap->dumpJson();
-    
+
     //Vector for collisions
     auto collisionsVector = std::vector<std::vector<int>>();
     for (Vector2 collisionPos : collisions->getVector()) {
@@ -99,21 +99,21 @@ json Room::dumpJson()
     auto interactablesProps = std::map<std::string, std::vector<std::string>>();
 
     auto interactablesVector = std::vector<std::vector<int>>();
-    for (auto&& interactable : interactables->getVector()) {
+    for (auto&& interactable : interactables->getList()) {
         std::vector<int> interactableVector;
-        interactableVector.push_back(interactable->getWorldPos().x);
-        interactableVector.push_back(interactable->getWorldPos().y);
-        interactableVector.push_back(static_cast<int>(interactable->getType()));
+        interactableVector.push_back(interactable->pos.x);
+        interactableVector.push_back(interactable->pos.y);
+        interactableVector.push_back(static_cast<int>(interactable->type));
 
-        if (interactable->getType() == INT_TWO) {
-            InteractableTwo* dialogueInter = static_cast<InteractableTwo*>(interactable);
+        if (interactable->type == INT_TWO) {
+            IntBase<Dialogue>* dialogueInter = static_cast<IntBase<Dialogue>*>(interactable);
             //
-            std::string key = TextFormat("%i;%i", 
-                static_cast<int>(interactable->getWorldPos().x),
-                static_cast<int>(interactable->getWorldPos().y));
+            std::string key = TextFormat("%i;%i",
+                static_cast<int>(interactable->pos.x),
+                static_cast<int>(interactable->pos.y));
 
             std::vector<std::string> propsVec;
-            propsVec.push_back(dialogueInter->getDialogue().lines.at(0).text);
+            propsVec.push_back(dialogueInter->get().lines.at(0).text);
 
             interactablesProps[key] = propsVec;
         }
@@ -148,8 +148,11 @@ void Room::update()
 void Room::draw()
 {
     this->tileMap->draw();
-    for (auto i : interactables->getVector()) {
-        Rectangle rect = i->getRect();
+    for (auto i : interactables->getList()) {
+        Rectangle rect = Rectangle {
+            i->pos.x * getWorldTileSize(), i->pos.y * getWorldTileSize(),
+            static_cast<float>(getWorldTileSize()), static_cast<float>(getWorldTileSize())
+        };
         DrawRectangleRec(rect, Fade(YELLOW, 0.5f));
     }
     for (auto c : collisions->getVector()) {
@@ -164,6 +167,11 @@ void Room::draw()
         actor.draw();
     }
     player->draw();
+}
+
+int Room::getWorldTileSize()
+{
+    return worldTileSize;
 }
 
 void Room::addActor(Actor actor) {
@@ -190,11 +198,6 @@ std::vector<Vector2> Room::getCollisionTiles()
     return this->collisions->getVector();
 }
 
-std::vector<Interactable*> Room::getInteractableTiles()
-{
-    return this->interactables->getVector();
-}
-
 CollisionsContainer& Room::getCollisions()
 {
     return *this->collisions;
@@ -204,4 +207,3 @@ InteractablesContainer& Room::getInteractables()
 {
     return *this->interactables;
 }
-

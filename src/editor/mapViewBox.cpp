@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "interactable.hpp"
+#include "resourceService.hpp"
 #include "room.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
@@ -145,9 +146,9 @@ void MapViewBox::isHoverOnValidTile()
 
     if (hoverValidTile) {
         if (currentLayer == LAYER_INTERACTABLES) {
-            Interactable* inter = room->getInteractables().get(static_cast<int>(tileAtlasPos.x), static_cast<int>(tileAtlasPos.y));
+            IntBaseWrapper* inter = room->getInteractables().getInt(static_cast<int>(tileAtlasPos.x), static_cast<int>(tileAtlasPos.y));
             if (inter != nullptr) {
-                ImGui::SetTooltip("Interactable\nType: %s", Interactable::getTypeNames()[inter->getType()].c_str());
+                ImGui::SetTooltip("Interactable\nType: %s", Interactable::getTypeNames()[inter->type].c_str());
             }
         }
     }
@@ -235,33 +236,31 @@ void MapViewBox::drawTiles()
         }
     }
     if (currentLayer == LAYER_INTERACTABLES) {
-        EditorInterfaceService& ui = Editor::getUi();
-        Font font = ui.getFont();
+        ResourceService& resources = Editor::getResources();
 
-        for (auto i : room->getInteractableTiles()) {
+        for (auto i : room->getInteractables().getList()) {
             Rectangle intRect = Rectangle
             {
-                (i->getWorldPos().x * atlasTileSize), (i->getWorldPos().y * atlasTileSize),
+                (i->pos.x * atlasTileSize), (i->pos.y * atlasTileSize),
                 static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
             };
 
             DrawRectangleRec(intRect, Fade(YELLOW, 0.8f));
             DrawRectangleLinesEx(intRect, 0.5f, YELLOW);
 
-            int typeNum = static_cast<int>(i->getType());
+            int typeNum = static_cast<int>(i->type);
             Vector2 intPos = Vector2 { intRect.x, intRect.y };
-            //DrawTextEx(font, TextFormat("Type: %i", typeNum), intPos, 6, 0.5f, BLACK);
 
             bool validTexture = false;
             Texture2D textureIntType;
-            switch (i->getType()) {
+            switch (i->type) {
                 case INT_BLANK:
                     validTexture = true;
-                    textureIntType = ui.getBlankTexture();
+                    textureIntType = resources.getTexture("cross");
                     break;
                 case INT_TWO:
                     validTexture = true;
-                    textureIntType = ui.getDialogTexture();
+                    textureIntType = resources.getTexture("dialog");
                     break;
                 default:
                     break;

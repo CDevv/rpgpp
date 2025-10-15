@@ -26,7 +26,7 @@ void AboutWindow::closeWindow()
 
 void AboutWindow::draw()
 {
-    Texture2D logo = Editor::getUi().getLogoTexture();
+    Texture2D logo = Editor::getResources().getTexture("logo");
 
     ImGui::SetNextWindowSize(ImVec2 { rect.width, -1 });
     if (ImGui::BeginPopupModal("About RPG++")) {

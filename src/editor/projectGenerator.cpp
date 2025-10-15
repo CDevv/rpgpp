@@ -1,4 +1,6 @@
 #include "projectGenerator.hpp"
+#include "dialogueBalloon.hpp"
+#include "interactable.hpp"
 #include "tileset.hpp"
 #include "tilemap.hpp"
 #include "room.hpp"
@@ -66,7 +68,7 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
 
     for (auto roomPath : proj.mapPathsList) {
         std::unique_ptr<TileMap> map = std::make_unique<TileMap>(roomPath);
-        
+
         RoomBin roomBin;
         roomBin.name = GetFileName(roomPath.c_str());
         roomBin.tileSetName = GetFileName(map->getTileSetSource().c_str());
@@ -78,7 +80,7 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
             std::vector<TileBin> row;
             for (int y = 0; y < roomBin.height; y++) {
                 TileBin tile;
-                row.push_back(tile);   
+                row.push_back(tile);
             }
             roomBin.tiles.push_back(row);
         }
@@ -111,15 +113,15 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
             intVec.y = static_cast<int>(collisionVec.y);
             roomBin.collisions.push_back(intVec);
         }
-        for (auto interactable : room->getInteractableTiles()) {
+        for (auto interactable : room->getInteractables().getList()) {
             InteractableBin intBin;
-            intBin.x = static_cast<int>(interactable->getRect().x / 48);
-            intBin.y = static_cast<int>(interactable->getRect().y / 48);
-            intBin.type = static_cast<int>(interactable->getType());
+            intBin.x = static_cast<int>(interactable->pos.x);
+            intBin.y = static_cast<int>(interactable->pos.y);
+            intBin.type = static_cast<int>(interactable->type);
 
-            switch (interactable->getType()) {
+            switch (interactable->type) {
             case INT_TWO:
-                intBin.dialogue = (static_cast<InteractableTwo*>(interactable))->getDialogue();
+                intBin.dialogue = (static_cast<IntBase<Dialogue>*>(interactable))->get();
                 break;
             default:
                 break;
@@ -139,7 +141,7 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
         actorBin.tileSetName = GetFileName(actor->getTileSetSource().c_str());
 
         Rectangle collisionRect = actor->getCollisionRect();
-        actorBin.collision = IRect 
+        actorBin.collision = IRect
         {
             static_cast<int>(collisionRect.x), static_cast<int>(collisionRect.y),
             static_cast<int>(collisionRect.width), static_cast<int>(collisionRect.height)
@@ -148,7 +150,7 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
         for (int i = 0; i < 8; i++) {
             for (int frameIndex = 0; frameIndex < animations[i].size(); frameIndex++) {
                 Vector2 vec = animations[i][frameIndex];
-                IVector intVec = IVector 
+                IVector intVec = IVector
                 {
                     static_cast<int>(vec.x), static_cast<int>(vec.y)
                 };
