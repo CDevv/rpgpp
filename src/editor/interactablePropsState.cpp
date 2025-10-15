@@ -5,12 +5,15 @@
 
 InteractablePropsState::InteractablePropsState()
 {
+    onTouch = false;
 	strcpy(diagText, "");
 }
 
 void InteractablePropsState::setDefaults(IntBaseWrapper *interactable)
 {
     if (interactable == nullptr) return;
+
+    onTouch = interactable->onTouch;
 
     IntBase<Dialogue>* diag;
     switch (interactable->type) {
@@ -32,11 +35,13 @@ void InteractablePropsState::updateProps(IntBaseWrapper *interactable)
 {
 	if (interactable == nullptr) return;
 
+	interactable->setOnTouch(onTouch);
+
 	Dialogue dialogue;
 	switch (interactable->type) {
 	case INT_TWO:
 		dialogue.lines.push_back(DialogueLine {
-			diagText
+			"Character", diagText
 		});
 
         (static_cast<IntBase<Dialogue>*>(interactable))->set(dialogue);

@@ -1,5 +1,6 @@
 #include "projectMenuBox.hpp"
 #include <IconsKenney.h>
+#include <cstdio>
 #include "gamedata.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"

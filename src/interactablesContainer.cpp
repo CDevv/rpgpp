@@ -89,6 +89,8 @@ void InteractablesContainer::addBinVector(std::vector<InteractableBin> bin)
     for (auto intBin : bin) {
         InteractableType itype = static_cast<InteractableType>(intBin.type);
         this->add(intBin.x, intBin.y, itype);
+        bool onTouch = static_cast<bool>(intBin.onTouch);
+        getInt(intBin.x, intBin.y)->setOnTouch(onTouch);
 
         IntBase<Dialogue>* diag;
         switch (itype) {
@@ -111,8 +113,10 @@ void InteractablesContainer::addJsonData(json roomJson)
         int x = v[0];
         int y = v[1];
         InteractableType itype = static_cast<InteractableType>(v[2]);
+        bool onTouch = static_cast<bool>(v[3]);
 
         this->add(x, y, itype);
+        getInt(x, y)->setOnTouch(onTouch);
     }
 
     if (roomJson.contains("interactable_props")) {

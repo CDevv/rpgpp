@@ -49,6 +49,10 @@ void InteractableInfoPanel::update()
             lastType = type;
         }
     }
+
+    if (interactableWorldPos.x != -1 && interBase != nullptr) {
+        propsState.updateProps(interBase);
+    }
 }
 
 void InteractableInfoPanel::draw()
@@ -69,10 +73,11 @@ void InteractableInfoPanel::draw()
             if (interactableWorldPos.x != -1) {
                 ImGui::Text("Edit the selected interactable");
                 ImGui::Combo("Type", &typeNumber, "Blank\0Dialogue\0");
+                ImGui::Checkbox("Interact On Touch", &propsState.onTouch);
 
                 int posX = static_cast<int>(interBase->pos.x);
                 int posY = static_cast<int>(interBase->pos.y);
-                ImGui::Text("Base* pos: [%i, %i]", posX, posY);
+                ImGui::Text("Interactable pos: [%i, %i]", posX, posY);
 
                 drawTypeProps();
             }
@@ -118,6 +123,7 @@ InteractableType InteractableInfoPanel::getType()
 void InteractableInfoPanel::setSelected(IntBaseWrapper* inter)
 {
     if (inter == nullptr) {
+        interBase = nullptr;
         interactableWorldPos = Vector2 { -1, -1 };
         return;
     }

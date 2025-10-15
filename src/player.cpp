@@ -120,6 +120,11 @@ void Player::handleCollision()
 
         if (CheckCollisionRecs(playerRect, tileRect)) {
             velocity = Vector2 { 0, 0 };
+
+            if (interactable->onTouch) {
+                interactable->interact();
+            }
+
             break;
         }
     }

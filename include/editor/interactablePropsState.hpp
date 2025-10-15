@@ -8,6 +8,7 @@ class InteractablePropsState {
 private:
 	Dialogue dialogue;
 public:
+    bool onTouch;
 	char diagText[256];
 	InteractablePropsState();
 	void setDefaults(IntBaseWrapper* interactable);

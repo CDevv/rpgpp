@@ -12,7 +12,7 @@
 
 #define RPGPP_DRAW_MULTIPLIER (3)
 
-struct IVector 
+struct IVector
 {
 	int x;
 	int y;
@@ -45,6 +45,7 @@ struct InteractableBin
 	int x;
 	int y;
 	int type;
+	bool onTouch;
 	Dialogue dialogue;
 };
 

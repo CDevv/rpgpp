@@ -118,6 +118,7 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
             intBin.x = static_cast<int>(interactable->pos.x);
             intBin.y = static_cast<int>(interactable->pos.y);
             intBin.type = static_cast<int>(interactable->type);
+            intBin.onTouch = interactable->onTouch;
 
             switch (interactable->type) {
             case INT_TWO:

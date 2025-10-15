@@ -1,4 +1,5 @@
 #include "projectCompiler.hpp"
+#include <cstdio>
 #include <filesystem>
 
 #ifdef _WIN32
@@ -41,7 +42,7 @@ void ProjectCompiler::generateCmdScript(std::string projectTitle)
     SaveFileText("build.cmd", const_cast<char*>(scriptSource.data()));
     #else
     //Linux sh file
-    std::string shellString = TextFormat(R"(g++ -I"%sinclude" -I"%sgame-src/include" main.cpp -o %s -L"%sgame-src/lib" -lraylib -lrpgpp)", 
+    std::string shellString = TextFormat(R"(g++ -I"%sinclude" -I"%sgame-src/include" main.cpp -o %s -L"%sgame-src/lib" -lraylib -lrpgpp)",
         GetApplicationDirectory(), GetApplicationDirectory(), projectTitle.c_str(), GetApplicationDirectory());
     printf("%s \n", shellString.c_str());
     SaveFileText("build.sh", const_cast<char*>(shellString.data()));
@@ -85,6 +86,8 @@ int main()
     std::string cmdLine = TextFormat("C:\\Windows\\System32\\cmd.exe /c \"%s\"", "build.cmd");
     WinCreateProc(cmdLine);
     #else
+
+    /*
     std::vector<std::string> rargs;
     rargs.push_back("sh");
     rargs.push_back("build.sh");
@@ -93,7 +96,22 @@ int main()
     options.redirect.parent = true;
 
     reproc::process p;
-    p.start(rargs, options);
+    p.start(rargs, options);*/
+    std::string outData;
+    char buffer[256];
+    FILE* stream;
+    stream = popen("sh build.sh", "r");
+    if (stream) {
+        while (!feof(stream)) {
+            if (fgets(buffer, 256, stream) != NULL) {
+                outData.append(buffer);
+            }
+        }
+        pclose(stream);
+    }
+
+    printf("Stream data: \n");
+    printf("%s", outData.c_str());
     #endif
 }
 

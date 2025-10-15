@@ -104,15 +104,16 @@ json Room::dumpJson()
         interactableVector.push_back(interactable->pos.x);
         interactableVector.push_back(interactable->pos.y);
         interactableVector.push_back(static_cast<int>(interactable->type));
+        interactableVector.push_back(static_cast<int>(interactable->onTouch));
 
+        std::vector<std::string> propsVec;
         if (interactable->type == INT_TWO) {
             IntBase<Dialogue>* dialogueInter = static_cast<IntBase<Dialogue>*>(interactable);
-            //
+
             std::string key = TextFormat("%i;%i",
                 static_cast<int>(interactable->pos.x),
                 static_cast<int>(interactable->pos.y));
 
-            std::vector<std::string> propsVec;
             propsVec.push_back(dialogueInter->get().lines.at(0).text);
 
             interactablesProps[key] = propsVec;

@@ -76,9 +76,11 @@ class IntBaseWrapper {
 public:
     InteractableType type;
     Vector2 pos;
+    bool onTouch = false;
     IntBaseWrapper();
     virtual ~IntBaseWrapper();
     virtual void interact();
+    void setOnTouch(bool val) { onTouch = val; };
 };
 
 template<typename T>
