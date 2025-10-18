@@ -1,10 +1,12 @@
 #include "projectMenuBox.hpp"
 #include <IconsKenney.h>
-#include <cstdio>
+#include "actor.hpp"
 #include "gamedata.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
+#include "room.hpp"
+#include "tileset.hpp"
 
 ProjectMenuBox::ProjectMenuBox() {}
 
@@ -45,19 +47,19 @@ void ProjectMenuBox::draw()
 		if (ImGui::Button(ICON_KI_SAVE, buttonVec)) {
 			if (fs.fileIsOpen()) {
 				if (fs.getType() == FILE_TILESET) {
-	                TileSet *tileSet = fs.getTileSet();
+	                TileSet *tileSet = fs.getCurrentFile()->getData<TileSet>();
 
 	                std::string jsonString = tileSet->dumpJson().dump(4);
 
 	                char *text = const_cast<char*>(jsonString.data());
 	                SaveFileText(fs.getOpenedFilePath().c_str(), text);
 	            } else if (fs.getType() == FILE_ROOM) {
-	                std::string mapJsonString = fs.getRoom()->dumpJson().dump(4);
+	                std::string mapJsonString = fs.getCurrentFile()->getData<Room>()->dumpJson().dump(4);
 
 	                char *text = const_cast<char*>(mapJsonString.data());
 	                SaveFileText(fs.getOpenedFilePath().c_str(), text);
 	            } else if (fs.getType() == FILE_ACTOR) {
-	            	std::string actorJsonString = fs.getActor()->dumpJson().dump(4);
+	            	std::string actorJsonString = fs.getCurrentFile()->getData<Actor>()->dumpJson().dump(4);
 
 	            	char *text = const_cast<char*>(actorJsonString.data());
 	                SaveFileText(fs.getOpenedFilePath().c_str(), text);

@@ -129,7 +129,7 @@ void ResourceViewerBox::draw()
                         dropdownActive = i;
                         ImGui::CloseCurrentPopup();
                     }
-                    if (i % 3 == 0) {
+                    if (i % 4 == 0) {
                         ImGui::SameLine();
                     }
                 }

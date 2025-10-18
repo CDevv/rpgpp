@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include <imgui.h>
 #include "interactable.hpp"
+#include "room.hpp"
 #include "worldViewBox.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
@@ -45,7 +46,8 @@ void InteractableInfoPanel::update()
 
     if (lastType != type) {
         if (interactableWorldPos.x != -1) {
-            fs.getRoom()->getInteractables().setInteractableType(interactableWorldPos.x, interactableWorldPos.y, type);
+            Room* room = fs.getCurrentFile()->getData<Room>();
+            room->getInteractables().setInteractableType(interactableWorldPos.x, interactableWorldPos.y, type);
             lastType = type;
         }
     }

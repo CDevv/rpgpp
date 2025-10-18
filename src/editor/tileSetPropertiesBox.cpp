@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "tileset.hpp"
 
 TileSetPropertiesBox::TileSetPropertiesBox() {}
 
@@ -28,7 +29,7 @@ TileSetPropertiesBox::TileSetPropertiesBox(Rectangle rect)
 void TileSetPropertiesBox::setDefaults()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    TileSet *tileSet = fs.getTileSet();
+    TileSet *tileSet = fs.getCurrentFile()->getData<TileSet>();
     this->tileSet = tileSet;
     chosenTileSize = tileSet->getTileSize().x;
     chosenTileWidth = tileSet->getTileSize().x;
@@ -45,9 +46,7 @@ void TileSetPropertiesBox::setDefaults()
 void TileSetPropertiesBox::update()
 {
     FileSystemService& fs = Editor::getFileSystem();
-
-    TileSet *tileSet = fs.getTileSet();
-    //this->tileSet = tileSet;
+    TileSet *tileSet = fs.getCurrentFile()->getData<TileSet>();
 
     if (multiSizeCheckBox) {
         if (chosenTileSize >= 16) {
@@ -64,8 +63,7 @@ void TileSetPropertiesBox::update()
 void TileSetPropertiesBox::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    TileSet *tileSet = fs.getTileSet();
-    //this->tileSet = tileSet;
+    TileSet *tileSet = fs.getCurrentFile()->getData<TileSet>();
 
     ImGui::Checkbox("Square Tiles?", &multiSizeCheckBox);
 

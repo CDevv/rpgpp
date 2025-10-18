@@ -94,19 +94,6 @@ void FileSystemService::setActiveProjectFile(int index)
         if (currentIndex == index) {
             activeIndex = index;
             lastType = i->get()->getFileType();
-            switch (lastType) {
-            case FILE_TILESET:
-                lastTileSet = i->get()->getTileSet();
-                break;
-            case FILE_ROOM:
-                lastRoom = i->get()->getRoom();
-                break;
-            case FILE_ACTOR:
-                lastActor = i->get()->getActor();
-                break;
-            default:
-                break;
-            }
             lastOpenPath = i->get()->getRelativePath();
             isOpen = true;
 
@@ -125,20 +112,6 @@ void FileSystemService::closeProjectFile(int index)
             i->reset();
             openedFiles.erase(i);
             if (index == 0) {
-                switch (lastType) {
-                case FILE_TILESET:
-                    lastTileSet = nullptr;
-                    break;
-                case FILE_ROOM:
-                    lastRoom = nullptr;
-                    break;
-                case FILE_ACTOR:
-                    lastActor = nullptr;
-                    break;
-                default:
-                    break;
-                }
-
                 isOpen = false;
             }
 
@@ -193,19 +166,17 @@ EngineFileType FileSystemService::getType()
     return lastType;
 }
 
-TileSet *FileSystemService::getTileSet()
+bool FileSystemService::isAvailable(EngineFileType type)
 {
-    return lastTileSet;
-}
+    if (!fileIsOpen()) return false;
 
-Room *FileSystemService::getRoom()
-{
-    return lastRoom;
-}
-
-Actor *FileSystemService::getActor()
-{
-    return lastActor;
+    if (getCurrentFile() != nullptr) {
+        if (getCurrentFile()->getFileType() == type) {
+            return true;
+        } else { return false; }
+    } else {
+        return false;
+    }
 }
 
 FS_Result FileSystemService::openFile(nfdu8filteritem_t filters[])
@@ -273,4 +244,10 @@ FS_Result FileSystemService::openTileSetResource()
 
     nfdu8filteritem_t filters[1] = { { "RPG++ TileSet", "rtiles" } };
     return openFile(filters);
+}
+
+ProjectFile* FileSystemService::getCurrentFile()
+{
+    if (activeIndex >= openedFiles.size()) return nullptr;
+    return openedFiles.at(activeIndex).get();
 }

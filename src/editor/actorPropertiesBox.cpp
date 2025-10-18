@@ -1,4 +1,5 @@
 #include "actorPropertiesBox.hpp"
+#include "actor.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 
@@ -19,25 +20,23 @@ void ActorPropertiesBox::setDefaults()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
-    if (fs.getType() == FILE_ACTOR) {
-        this->actor = fs.getActor();
+    if (fs.fileIsOpen() && fs.getType() == FILE_ACTOR) {
+        this->actor = fs.getCurrentFile()->getData<Actor>();
     }
 }
 
 void ActorPropertiesBox::update()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    if (fs.getType() == FILE_ACTOR) {
-        this->actor = fs.getActor();
+    if (fs.fileIsOpen() && fs.getType() == FILE_ACTOR) {
+        this->actor = fs.getCurrentFile()->getData<Actor>();
     }
 }
 
 void ActorPropertiesBox::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    if (fs.getType() == FILE_ACTOR) {
-        this->actor = fs.getActor();
-    }
+
     if (actor == nullptr) {
         return;
     }

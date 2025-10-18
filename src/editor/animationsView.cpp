@@ -71,18 +71,26 @@ void AnimationsView::setRect(Rectangle rect)
 void AnimationsView::update()
 {
 	FileSystemService& fs = Editor::getFileSystem();
-	Actor* actor = fs.getActor();
 
-	if (actor != nullptr)
-	{
-		animFrames = actor->getAnimationRaw(static_cast<Direction>(currentAnim));
+	if (fs.getCurrentFile() != nullptr) {
+	    if (fs.getType() == FILE_ACTOR && fs.fileIsOpen()) {
+			Actor* actor = fs.getCurrentFile()->getData<Actor>();
+
+			if (actor != nullptr)
+			{
+				animFrames = actor->getAnimationRaw(static_cast<Direction>(currentAnim));
+			}
+		}
 	}
 }
 
 void AnimationsView::draw()
 {
 	FileSystemService& fs = Editor::getFileSystem();
-	Actor* actor = fs.getActor();
+
+	if (!fs.isAvailable(FILE_ACTOR)) return;
+
+	Actor* actor = fs.getCurrentFile()->getData<Actor>();
 
 	EditorInterfaceService& ui = Editor::getUi();
 	WindowContainer& windows = ui.getWindowContainer();
@@ -176,7 +184,7 @@ void AnimationsView::draw()
 					}
 
 					if (rlImGuiImageButtonRect(TextFormat("frame-%i", frameIndex), &texture, 48, 48, source)) {
-						ImGui::PopStyleColor(2);
+						if (actorView->getFrame() != frameIndex) ImGui::PopStyleColor(2);
 
 						if (actorView != nullptr) {
 							actorView->setFrame(frameIndex);

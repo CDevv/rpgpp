@@ -1,7 +1,9 @@
 #include "tileSetPanelView.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "projectFile.hpp"
 #include "propertiesBox.hpp"
+#include "tileset.hpp"
 #include <raylib.h>
 
 TileSetPanelView::TileSetPanelView()
@@ -48,7 +50,9 @@ void TileSetPanelView::setRect(Rectangle rect)
 void TileSetPanelView::setInitial()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    worldView->setTileSet(fs.getTileSet());
+    if (fs.fileIsOpen() && fs.getType() == FILE_TILESET) {
+        worldView->setTileSet(fs.getCurrentFile()->getData<TileSet>());
+    }
     propBox.setDefaults();
 }
 

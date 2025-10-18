@@ -1,11 +1,11 @@
 #include "collisionbox.hpp"
+#include "actor.hpp"
 #include "gamedata.hpp"
 #include <raymath.h>
-#include <cstdio>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 
-CollisionBox::CollisionBox() 
+CollisionBox::CollisionBox()
 {
 	this->rect = Rectangle { 0, 0, 0, 0 };
 	this->mouseWorldPos = Vector2 { 0, 0 };
@@ -23,7 +23,7 @@ CollisionBox::CollisionBox()
 	mouseOffset = Vector2 { 0, 0 };
 }
 
-CollisionBox::CollisionBox(Rectangle rect) 
+CollisionBox::CollisionBox(Rectangle rect)
 {
 	this->rect = rect;
 	this->mouseWorldPos = Vector2 { 0, 0 };
@@ -73,7 +73,7 @@ Rectangle CollisionBox::getRect()
 void CollisionBox::update()
 {
 
-	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
+	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
 	{
 		if (CheckCollisionPointRec(mouseWorldPos, topLeft))
 		{
@@ -114,10 +114,10 @@ void CollisionBox::update()
 			this->setRect(newRect);
 
 			FileSystemService& fs = Editor::getFileSystem();
-			Actor* actor = fs.getActor();
+			ProjectFile* file = fs.getCurrentFile();
 
-			if (actor != nullptr)
-			{
+			if (fs.fileIsOpen() && fs.getType() && file != nullptr) {
+			    Actor* actor = file->getData<Actor>();
 				actor->setCollisionRect(rect);
 			}
 		}
@@ -142,7 +142,7 @@ void CollisionBox::update()
 
 			newRect = Rectangle {
 				floor(mouseWorldPos.x / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor(mouseWorldPos.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER, 
+				floor(mouseWorldPos.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
 				floor((rect.width + (rect.x - oldMousePos.x)) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER,
 				floor((rect.height + (rect.y - oldMousePos.y)) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
 			};
@@ -152,7 +152,7 @@ void CollisionBox::update()
 
 			newRect = Rectangle {
 				floor(rect.x / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor(mouseWorldPos.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER, 
+				floor(mouseWorldPos.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
 				floor((rect.width + widthChangeTopRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
 				floor((rect.height + heightChangeTopRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
 			};
@@ -217,7 +217,7 @@ void CollisionBox::draw()
     	DrawRectangleRec(bottomRight, ORANGE);
     }
 
-    if (holdingMouse) 
+    if (holdingMouse)
     {
 		DrawRectangleLinesEx(newRect, 1.0f, GRAY);
     }

@@ -20,6 +20,8 @@ private:
     /** The path to the used texture. May be a .png file or other image format. */
     std::string textureSource;
 public:
+    /** Empty constructor. */
+    TileSet();
     /** Constructor that takes the path to the .rtiles file */
     TileSet(std::string fileName);
     /** Constructor that takes the path of the texture (image file) and a Vector2 that represents the tile size */

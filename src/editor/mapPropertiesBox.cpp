@@ -2,11 +2,16 @@
 #include <raylib.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "projectFile.hpp"
+#include "room.hpp"
 
 MapPropertiesBox::MapPropertiesBox() {}
 
 MapPropertiesBox::MapPropertiesBox(Rectangle rect)
 {
+    this->room = nullptr;
+    this->map = nullptr;
+
     this->rect = rect;
 
     mapWidth = 0;
@@ -22,14 +27,17 @@ MapPropertiesBox::MapPropertiesBox(Rectangle rect)
 void MapPropertiesBox::setDefaults()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    Room *room = fs.getRoom();
-    this->room = room;
-    TileMap *map = room->getTileMap();
-    this->map = map;
 
-    Vector2 mapSize = map->getMaxWorldSize();
-    this->mapWidth = mapSize.x;
-    this->mapHeight = mapSize.y;
+    if (fs.isAvailable(FILE_ROOM)) {
+        Room *room = fs.getCurrentFile()->getData<Room>();
+        this->room = room;
+        TileMap *map = room->getTileMap();
+        this->map = map;
+
+        Vector2 mapSize = map->getMaxWorldSize();
+        this->mapWidth = mapSize.x;
+        this->mapHeight = mapSize.y;
+    }
 }
 
 void MapPropertiesBox::update()
@@ -39,7 +47,7 @@ void MapPropertiesBox::update()
 void MapPropertiesBox::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    TileMap *map = fs.getRoom()->getTileMap();
+    TileMap *map = fs.getCurrentFile()->getData<Room>()->getTileMap();
     this->map = map;
 
     ImGui::SeparatorText("Map Size");

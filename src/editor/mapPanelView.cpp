@@ -5,7 +5,9 @@
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "interactableInfoPanel.hpp"
+#include "projectFile.hpp"
 #include "propertiesBox.hpp"
+#include "room.hpp"
 #include "worldViewBox.hpp"
 
 MapPanelView::MapPanelView()
@@ -109,17 +111,17 @@ void MapPanelView::update()
 
     worldView->setMouseLock(ui.getMouseLock());
 
-    worldView->setRoom(fs.getRoom());
-    worldView->update();
-
-    if (fs.getType() == FILE_ROOM && fs.getRoom() != nullptr) {
-        tileSetView->setTileSet(fs.getRoom()->getTileMap()->getTileSet());
+    if (fs.isAvailable(FILE_ROOM)) {
+        Room* room = fs.getCurrentFile()->getData<Room>();
+        worldView->setRoom(room);
+        tileSetView->setTileSet(room->getTileMap()->getTileSet());
     }
+    worldView->update();
     tileSetView->update();
 
     worldView->setSelectedTile(tileSetView->getSelectedTile());
 
-    if (fs.fileIsOpen() && fs.getType() == FILE_ROOM) {
+    if (fs.isAvailable(FILE_ROOM)) {
         propBox.update();
     }
 
@@ -135,10 +137,10 @@ void MapPanelView::update()
 
     worldView->setCurrentInteractableType(interactableInfo.getType());
 
-    if (fs.getType() == FILE_ROOM && fs.getRoom() != nullptr) {
+    if (fs.isAvailable(FILE_ROOM)) {
         Vector2 selectedTileWorldPos = worldView->getSelectedWorldTile();
         if (selectedTileWorldPos.x != -1) {
-            IntBaseWrapper* selectedInteractable = fs.getRoom()->getInteractables().getInt(selectedTileWorldPos.x, selectedTileWorldPos.y);
+            IntBaseWrapper* selectedInteractable = fs.getCurrentFile()->getData<Room>()->getInteractables().getInt(selectedTileWorldPos.x, selectedTileWorldPos.y);
             interactableInfo.setSelected(selectedInteractable);
         }
     }

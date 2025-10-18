@@ -6,6 +6,8 @@
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
+Actor::Actor() {}
+
 Actor::Actor(std::string fileName)
 {
     this->position = Vector2 { 0, 0 };
@@ -34,7 +36,6 @@ Actor::Actor(std::string fileName)
     this->tileSetSource = tileSetSource;
 
     for (int i = 0; i < 8; i++) {
-        //std::vector<Vector2> *frames = new std::vector<Vector2>;
         animations[i] = std::make_unique<std::vector<Vector2>>();
     }
 

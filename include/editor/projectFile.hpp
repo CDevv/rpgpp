@@ -3,37 +3,47 @@
 
 #include <memory>
 #include <string>
-#include "tileset.hpp"
-#include "room.hpp"
-#include "actor.hpp"
 
 enum EngineFileType {
     FILE_TILESET,
     FILE_ROOM,
-    FILE_ACTOR
+    FILE_ACTOR,
+    FILE_DIALOGUE
+};
+
+class VariantWrapper {
+public:
+    VariantWrapper() {};
+    virtual ~VariantWrapper() {};
+};
+
+template<typename T>
+class Variant : public VariantWrapper {
+public:
+    std::unique_ptr<T> data;
+    Variant<T>() {};
+    Variant<T>(T* p) { data = std::make_unique<T>(); data.reset(p); };
+    void set(T* data) { this->data.reset(data); };
+    T* get() { return data.get(); };
 };
 
 class ProjectFile {
 private:
     std::string relativePath;
     EngineFileType fileType;
-    static std::array<std::string, 3> fileTypeNames;
-    std::unique_ptr<TileSet> tileSet;
-    std::unique_ptr<Room> room;
-    std::unique_ptr<Actor> actor;
+    static std::array<std::string, 4> fileTypeNames;
+    std::unique_ptr<VariantWrapper> variant;
 public:
     ProjectFile();
     ProjectFile(std::string relativePath, EngineFileType fileType);
-    static std::array<std::string, 3> getTypeNames();
+    static std::array<std::string, 4> getTypeNames();
     void setFromPath(std::string relativePath);
     std::string getRelativePath();
     EngineFileType getFileType();
-    void setTileSet(TileSet* tileSet);
-    TileSet* getTileSet();
-    void setRoom(Room* room);
-    Room* getRoom();
-    void setActor(Actor* actor);
-    Actor* getActor();
+    template<typename T>
+    T* getData() { return (static_cast<Variant<T>*>(variant.get()))->get(); };
+    template<typename T>
+    void setData(T* data) { variant.reset(new Variant<T>(data)); };
 };
 
 #endif

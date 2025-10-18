@@ -1,4 +1,5 @@
 #include "actorView.hpp"
+#include "actor.hpp"
 #include "gamedata.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
@@ -48,10 +49,11 @@ void ActorView::setRect(Rectangle rect)
 void ActorView::setInitial()
 {
 	FileSystemService& fs = Editor::getFileSystem();
-	Actor* actor = fs.getActor();
 
-	if (fs.getType() == FILE_ACTOR && actor != nullptr)
+	if (fs.getType() == FILE_ACTOR && fs.getCurrentFile() != nullptr)
 	{
+	    Actor* actor = fs.getCurrentFile()->getData<Actor>();
+
 		collisionBox.setRect(actor->getCollisionRect());
 		currentAnim = 0;
 		animPlaying = false;
@@ -67,6 +69,14 @@ void ActorView::update()
 
 	FileSystemService& fs = Editor::getFileSystem();
 
+	//rect
+	if (fs.isAvailable(FILE_ACTOR)) {
+	    ProjectFile* file = fs.getCurrentFile();
+		if (file != nullptr) {
+		    actorRect = file->getData<Actor>()->getRect();
+		}
+	}
+
 	//mouse
 	mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera);
     mouseWorldPos = Vector2Subtract(mouseWorldPos, Vector2Scale(Vector2 {rect.x, rect.y}, 1/camera.zoom));
@@ -77,8 +87,7 @@ void ActorView::update()
     	collisionBox.update();
     }
 
-	if (fs.fileIsOpen() && fs.getActor() != nullptr) {
-		//Rectangle actorRect = fs.getActor()->getRect();
+	if (fs.isAvailable(FILE_ACTOR)) {
 		camera.target = Vector2 { actorRect.width / 2, actorRect.height / 2 };
 
 		//animation playing
@@ -123,8 +132,6 @@ void ActorView::draw()
     	collisionBox.draw();
     }
 
-    //DrawCircleV(mouseWorldPos, 2.0f, PURPLE);
-
 	EndMode2D();
 	EndTextureMode();
 
@@ -139,8 +146,10 @@ void ActorView::drawActor()
 {
 	FileSystemService& fs = Editor::getFileSystem();
 
+	if (!fs.isAvailable(FILE_ACTOR)) return;
+
 	//draw the actor..
-	Actor* actor = fs.getActor();
+	Actor* actor = fs.getCurrentFile()->getData<Actor>();
 
 	TileSet& tileSet = actor->getTileSet();
 	Texture texture = tileSet.getTexture();
@@ -179,8 +188,9 @@ void ActorView::updateData()
 {
 	FileSystemService& fs = Editor::getFileSystem();
 
-	if (fs.fileIsOpen() && fs.getActor() != nullptr) {
-		this->currentAnimFrames = fs.getActor()->getAnimationRaw(static_cast<Direction>(currentAnim));
+	if (fs.isAvailable(FILE_ACTOR)) {
+	    ProjectFile* file = fs.getCurrentFile();
+		this->currentAnimFrames = file->getData<Actor>()->getAnimationRaw(static_cast<Direction>(currentAnim));
 		if (currentFrame >= currentAnimFrames.size()) {
 			currentFrame = 0;
 		}
@@ -198,8 +208,9 @@ void ActorView::setAnimation(int id)
 	this->currentAnim = id;
 
 	FileSystemService& fs = Editor::getFileSystem();
-	if (fs.fileIsOpen() && fs.getActor() != nullptr) {
-		this->currentAnimFrames = fs.getActor()->getAnimationRaw(static_cast<Direction>(id));
+	ProjectFile* file = fs.getCurrentFile();
+	if (fs.fileIsOpen() && fs.getType() == FILE_ACTOR && file != nullptr) {
+		this->currentAnimFrames = file->getData<Actor>()->getAnimationRaw(static_cast<Direction>(id));
 	}
 }
 

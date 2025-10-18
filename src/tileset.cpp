@@ -4,6 +4,8 @@
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
+TileSet::TileSet() {}
+
 TileSet::TileSet(std::string textureSource, Vector2 tileSize)
 {
     this->textureSource = textureSource;

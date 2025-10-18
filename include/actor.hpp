@@ -46,6 +46,8 @@ private:
     /** A Direction enum, showing the current animation that is being played. */
     Direction currentAnimation;
 public:
+    /** Empty constructor. */
+    Actor();
     /** Constructor that takes a path to the .ractor file. */
     Actor(std::string fileName);
     /** Constructor that takes a TileSet, the atlas position of the tile to use, and the path to the TileSet. */

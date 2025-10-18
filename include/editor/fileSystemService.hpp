@@ -46,9 +46,8 @@ public:
     bool fileIsOpen();
     std::string getOpenedFilePath();
     EngineFileType getType();
-    TileSet *getTileSet();
-    Room *getRoom();
-    Actor *getActor();
+    bool isAvailable(EngineFileType type);
+    ProjectFile* getCurrentFile();
     FS_Result openFile(nfdu8filteritem_t filters[]);
     FS_Result openFolder();
     FS_Result openGameData();
