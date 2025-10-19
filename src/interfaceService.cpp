@@ -22,8 +22,8 @@ InterfaceService::InterfaceService()
 
 InterfaceService::~InterfaceService()
 {
-    UnloadFont(font);
-    UnloadTexture(this->uiTexture);
+    //UnloadFont(font);
+    //UnloadTexture(this->uiTexture);
 }
 
 Font InterfaceService::getFont()
@@ -62,5 +62,6 @@ void InterfaceService::draw()
 
 void InterfaceService::unload()
 {
-    //UnloadFont(font);
+    UnloadFont(font);
+    UnloadTexture(this->uiTexture);
 }
