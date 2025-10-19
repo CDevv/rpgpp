@@ -1,6 +1,8 @@
 #include "dialogueBalloon.hpp"
 #include "game.hpp"
 #include "interfaceService.hpp"
+#include <nlohmann/json.hpp>
+#include <raylib.h>
 
 DialogueBalloon::DialogueBalloon() {}
 
@@ -20,7 +22,7 @@ DialogueBalloon::DialogueBalloon(Rectangle rect)
 	this->rowIndex = 0;
 	this->colIndex = 0;
 	this->lineTextStart = 0;
-	
+
 	this->text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec placerat vel nulla eget ullamcorper. Proin varius erat in tristique dignissim. Aliquam erat volutpat.";
 	this->lineText = text;
 }
@@ -71,7 +73,7 @@ void DialogueBalloon::draw()
 		Texture uiTexture = Game::getUi().getTexture();
 
 		Vector2 origin = { 0.0f, 0.0f };
-		NPatchInfo info = NPatchInfo { 
+		NPatchInfo info = NPatchInfo {
 	        Rectangle { 0, 0, static_cast<float>(uiTexture.width), static_cast<float>(uiTexture.height) },
 	        3 * 3, 3 * 3, uiTexture.width - (3 * 3), uiTexture.height - (3 * 3)
 	    };

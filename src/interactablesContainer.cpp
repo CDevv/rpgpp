@@ -22,16 +22,12 @@ void InteractablesContainer::add(int x, int y, InteractableType type) {
 
     switch (type) {
         case INT_BLANK:
-            //vec.push_back(std::make_unique<InteractableOne>(position, 48));
             add<int>(x, y, type);
             break;
         case INT_TWO:
-            //vec.push_back(std::make_unique<DialogueInt>(position, 48));
-            add<Dialogue>(x, y, type);
+            add<DiagInt>(x, y, type);
             break;
     }
-
-    //test.push_back(make_item<Dialogue>());
 }
 
 template <typename T>
@@ -92,11 +88,11 @@ void InteractablesContainer::addBinVector(std::vector<InteractableBin> bin)
         bool onTouch = static_cast<bool>(intBin.onTouch);
         getInt(intBin.x, intBin.y)->setOnTouch(onTouch);
 
-        IntBase<Dialogue>* diag;
+        IntBase<DiagInt>* diag;
         switch (itype) {
         case INT_TWO:
-            diag = static_cast<IntBase<Dialogue>*>(this->getInt(intBin.x, intBin.y));
-            diag->set(intBin.dialogue);
+            diag = static_cast<IntBase<DiagInt>*>(this->getInt(intBin.x, intBin.y));
+            diag->set(DiagInt {intBin.dialogue});
             break;
         default:
             break;
@@ -131,12 +127,10 @@ void InteractablesContainer::addJsonData(json roomJson)
 
             IntBaseWrapper* inter = this->getInt(x, y);
             if (inter->type == INT_TWO) {
-                Dialogue dialogue;
-                dialogue.lines.push_back(DialogueLine {
-                    "Character", value.at(0)
-                });
+                DiagInt diagInt;
+                diagInt.dialogueSource = value.at(0);
 
-                (static_cast<IntBase<Dialogue>*>(inter))->set(dialogue);
+                (static_cast<IntBase<DiagInt>*>(inter))->set(diagInt);
             }
         }
     }

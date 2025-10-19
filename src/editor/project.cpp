@@ -30,27 +30,26 @@ Project::Project(std::string filePath)
     char* jsonString = LoadFileText(filePath.c_str());
     json projectJson = json::parse(jsonString);
 
-    std::string projectTitle = projectJson.at("title");
-    this->projectTitle = projectTitle;
-    std::string tileSetsPath = projectJson.at("tilesets");
-    this->tileSetsPath = tileSetsPath;
-    std::string mapsPath = projectJson.at("maps");
-    this->mapsPath = mapsPath;
-    std::string actorsPath = projectJson.at("actors");
-    this->actorsPath = actorsPath;
+    this->projectTitle = projectJson.at("title");
+    this->tileSetsPath = projectJson.at("tilesets");
+    this->mapsPath = projectJson.at("maps");
+    this->actorsPath = projectJson.at("actors");
+    this->dialoguesPath = projectJson.at("dialogues");
 
-    this->tileSetPathsList = makeTileSetPaths();
-    this->mapPathsList = makeMapPaths();
-    this->actorPathsList = makeActorPaths();
+    this->tileSetPathsList = makePaths(this->tileSetsPath);
+    this->mapPathsList = makePaths(this->mapsPath);
+    this->actorPathsList = makePaths(this->actorsPath);
+    this->dialoguePathsList = makePaths(this->dialoguesPath);
 
     UnloadFileText(jsonString);
 }
 
 void Project::reloadPaths()
 {
-    this->tileSetPathsList = makeTileSetPaths();
-    this->mapPathsList = makeMapPaths();
-    this->actorPathsList = makeActorPaths();
+    this->tileSetPathsList = makePaths(this->tileSetsPath);
+    this->mapPathsList = makePaths(this->mapsPath);
+    this->actorPathsList = makePaths(this->actorsPath);
+    this->dialoguePathsList = makePaths(this->dialoguesPath);
 }
 
 void Project::generateNewProj(std::string title, std::string path)
@@ -64,6 +63,7 @@ GameData Project::generateStruct()
     paths.tileSetPathsList = tileSetPathsList;
     paths.mapPathsList = mapPathsList;
     paths.actorPathsList = actorPathsList;
+    paths.dialoguesPathsList = dialoguePathsList;
     return projectGenerator.generateStruct(paths, projectTitle);
 }
 
@@ -160,7 +160,7 @@ void Project::runProject()
     #endif
 
     rargs.push_back("-lrpgpplua");
-            
+
     #ifdef _WIN32
     rargs.push_back(std::string("\"").append(projectBasePath).append("\\").append("run.lua").append("\""));
     #else
@@ -196,35 +196,9 @@ std::string Project::getProjectBasePath()
     return projectBasePath;
 }
 
-std::vector<std::string> Project::makeTileSetPaths()
+std::vector<std::string> Project::makePaths(std::string dirPath)
 {
-    FilePathList pathList = LoadDirectoryFiles(tileSetsPath.c_str());
-
-    auto vec = std::vector<std::string>();
-    for (int i = 0; i < pathList.count; i++) {
-        std::string pathStr = pathList.paths[i];
-        vec.push_back(pathStr);
-    }
-
-    return vec;
-}
-
-std::vector<std::string> Project::makeMapPaths()
-{
-    FilePathList pathList = LoadDirectoryFiles(mapsPath.c_str());
-
-    auto vec = std::vector<std::string>();
-    for (int i = 0; i < pathList.count; i++) {
-        std::string pathStr = pathList.paths[i];
-        vec.push_back(pathStr);
-    }
-
-    return vec;
-}
-
-std::vector<std::string> Project::makeActorPaths()
-{
-    FilePathList pathList = LoadDirectoryFiles(actorsPath.c_str());
+    FilePathList pathList = LoadDirectoryFiles(dirPath.c_str());
 
     auto vec = std::vector<std::string>();
     for (int i = 0; i < pathList.count; i++) {
@@ -248,4 +222,9 @@ std::vector<std::string> Project::getMapPaths()
 std::vector<std::string> Project::getActorPaths()
 {
     return actorPathsList;
+}
+
+std::vector<std::string> Project::getDialoguePaths()
+{
+    return dialoguePathsList;
 }

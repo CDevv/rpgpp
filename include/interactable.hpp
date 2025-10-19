@@ -56,20 +56,8 @@ public:
     void setProp(std::string key, std::string value);
 };
 
-class InteractableOne : public Interactable {
-public:
-    InteractableOne(Vector2 tilePos, int tileSize);
-    void interact() override;
-};
-
-class DialogueInt : public Interactable {
-private:
-    Dialogue dialogue;
-public:
-    DialogueInt(Vector2 tilePos, int tileSize);
-    void interact() override;
-    Dialogue getDialogue();
-    void setDialogue(Dialogue dialogue);
+struct DiagInt {
+    std::string dialogueSource;
 };
 
 class IntBaseWrapper {
@@ -83,15 +71,22 @@ public:
     void setOnTouch(bool val) { onTouch = val; };
 };
 
+/** Templated class for Interactable types */
 template<typename T>
 class IntBase : public IntBaseWrapper {
 private:
+    /** The data */
     T data;
 public:
+    /** Constructor, which takes the position and the type enum. */
     IntBase<T>(Vector2 pos, InteractableType type) { this->pos = pos; this->type = type; };
+    /** Constructor, which takes the data itself. */
     IntBase<T>(T value) { data = value; };
+    /** Data setter. */
     void set(T data) { this->data = data; };
+    /** Data getter. */
     T get() { return data; };
+    /** The interact method. */
     void interact();
 };
 

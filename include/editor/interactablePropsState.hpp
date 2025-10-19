@@ -9,7 +9,7 @@ private:
 	Dialogue dialogue;
 public:
     bool onTouch;
-	char diagText[256];
+	std::string diagSource;
 	InteractablePropsState();
 	void setDefaults(IntBaseWrapper* interactable);
 	void updateProps(IntBaseWrapper* interactable);

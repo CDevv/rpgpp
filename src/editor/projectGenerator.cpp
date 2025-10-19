@@ -1,11 +1,13 @@
 #include "projectGenerator.hpp"
 #include "dialogueBalloon.hpp"
+#include "dialogueParser.hpp"
 #include "interactable.hpp"
 #include "tileset.hpp"
 #include "tilemap.hpp"
 #include "room.hpp"
 #include "actor.hpp"
 #include <nlohmann/json.hpp>
+#include <raylib.h>
 using json = nlohmann::json;
 
 ProjectGenerator::ProjectGenerator() {}
@@ -122,7 +124,7 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
 
             switch (interactable->type) {
             case INT_TWO:
-                intBin.dialogue = (static_cast<IntBase<Dialogue>*>(interactable))->get();
+                intBin.dialogue = (static_cast<IntBase<DiagInt>*>(interactable))->get().dialogueSource;
                 break;
             default:
                 break;
@@ -134,6 +136,7 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
         struc.rooms.push_back(roomBin);
     }
 
+    //Actors
     for (auto actorPath : proj.actorPathsList) {
         std::unique_ptr<Actor> actor = std::make_unique<Actor>(actorPath);
 
@@ -161,6 +164,15 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
         }
 
         struc.actors.push_back(actorBin);
+    }
+
+    for (auto diagPath : proj.dialoguesPathsList) {
+        std::string diagText = LoadFileText(diagPath.c_str());
+        Dialogue diag = parseDialogueText(diagText);
+
+        diag.title = GetFileNameWithoutExt(diagPath.c_str());
+
+        struc.dialogues.push_back(diag);
     }
 
     return struc;

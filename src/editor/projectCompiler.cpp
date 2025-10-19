@@ -87,16 +87,6 @@ int main()
     WinCreateProc(cmdLine);
     #else
 
-    /*
-    std::vector<std::string> rargs;
-    rargs.push_back("sh");
-    rargs.push_back("build.sh");
-
-    reproc::options options;
-    options.redirect.parent = true;
-
-    reproc::process p;
-    p.start(rargs, options);*/
     std::string outData;
     char buffer[256];
     FILE* stream;

@@ -5,6 +5,7 @@
 #include "tileSetPanelView.hpp"
 #include "mapPanelView.hpp"
 #include "actorPanelView.hpp"
+#include "dialoguePanelView.hpp"
 
 class PanelView {
 private:
@@ -13,6 +14,7 @@ private:
     TileSetPanelView tileSetPanel;
     MapPanelView mapPanel;
     ActorPanelView actorPanel;
+    DialoguePanelView dialoguePanel;
 public:
     PanelView();
     PanelView(Rectangle rect);

@@ -1,10 +1,13 @@
 #include "projectMenuBox.hpp"
 #include <IconsKenney.h>
 #include "actor.hpp"
+#include "dialogueBalloon.hpp"
+#include "dialogueParser.hpp"
 #include "gamedata.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
+#include "projectFile.hpp"
 #include "room.hpp"
 #include "tileset.hpp"
 
@@ -63,7 +66,12 @@ void ProjectMenuBox::draw()
 
 	            	char *text = const_cast<char*>(actorJsonString.data());
 	                SaveFileText(fs.getOpenedFilePath().c_str(), text);
-	            }
+	            } else if (fs.getType() == FILE_DIALOGUE) {
+					std::string dialogJsonString = dialogueDumpJson(*fs.getCurrentFile()->getData<Dialogue>()).dump(4);
+
+					char *text = const_cast<char*>(dialogJsonString.data());
+                    SaveFileText(fs.getOpenedFilePath().c_str(), text);
+				}
 			}
 		}
 		ImGui::SameLine(0, 4);

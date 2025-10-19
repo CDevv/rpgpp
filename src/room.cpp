@@ -108,13 +108,13 @@ json Room::dumpJson()
 
         std::vector<std::string> propsVec;
         if (interactable->type == INT_TWO) {
-            IntBase<Dialogue>* dialogueInter = static_cast<IntBase<Dialogue>*>(interactable);
+            IntBase<DiagInt>* dialogueInter = static_cast<IntBase<DiagInt>*>(interactable);
 
             std::string key = TextFormat("%i;%i",
                 static_cast<int>(interactable->pos.x),
                 static_cast<int>(interactable->pos.y));
 
-            propsVec.push_back(dialogueInter->get().lines.at(0).text);
+            propsVec.push_back(dialogueInter->get().dialogueSource);
 
             interactablesProps[key] = propsVec;
         }

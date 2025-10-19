@@ -46,7 +46,7 @@ struct InteractableBin
 	int y;
 	int type;
 	bool onTouch;
-	Dialogue dialogue;
+	std::string dialogue;
 };
 
 struct TileSetBin
@@ -75,6 +75,7 @@ struct GameData
 	std::map<std::string, TileSetBin> tilesets;
 	std::vector<RoomBin> rooms;
 	std::vector<ActorBin> actors;
+	std::vector<Dialogue> dialogues;
 };
 
 struct DataSerialization

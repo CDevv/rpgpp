@@ -53,6 +53,7 @@ public:
     FS_Result openGameData();
     FS_Result openImage();
     FS_Result openTileSetResource();
+    FS_Result openDialogueResource();
 };
 
 #endif

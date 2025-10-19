@@ -16,6 +16,7 @@ private:
     void drawTileSets();
     void drawMaps();
     void drawActors();
+    void drawDialogues();
 public:
     ResourceViewerBox();
     ResourceViewerBox(Rectangle rect);

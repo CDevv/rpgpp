@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include <imgui.h>
 #include "interactable.hpp"
+#include "nfd.h"
 #include "room.hpp"
 #include "worldViewBox.hpp"
 #include "editor.hpp"
@@ -109,7 +110,16 @@ void InteractableInfoPanel::drawTypeProps()
 
 void InteractableInfoPanel::drawDialogueProps()
 {
-    ImGui::InputTextMultiline("Dialogue.", propsState.diagText, IM_ARRAYSIZE(propsState.diagText));
+    propsState.diagSource.push_back('\0');
+    ImGui::InputText("Dialogue.", propsState.diagSource.data(), propsState.diagSource.size(),
+        ImGuiInputTextFlags_ReadOnly);
+    if (ImGui::Button("Open..", ImVec2(-1, 16))) {
+        FS_Result fsResult = Editor::getFileSystem().openDialogueResource();
+
+        if (fsResult.result == NFD_OKAY) {
+            propsState.diagSource = fsResult.path;
+        }
+    }
 }
 
 void InteractableInfoPanel::setActionMode(RoomAction mode)

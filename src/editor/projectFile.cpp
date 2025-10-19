@@ -1,6 +1,8 @@
 #include "projectFile.hpp"
+#include "dialogueParser.hpp"
 #include "tileset.hpp"
 #include <memory>
+#include <raylib.h>
 
 #include "dialogueBalloon.hpp"
 #include "tileset.hpp"
@@ -38,6 +40,12 @@ void ProjectFile::setFromPath(std::string relativePath)
     } else if (TextIsEqual(fileExtension.c_str(), ".ractor")) {
         setData(new Actor(relativePath));
         fileType = FILE_ACTOR;
+    } else if (TextIsEqual(fileExtension.c_str(), ".rdiag")) {
+        std::string fileText = LoadFileText(relativePath.c_str());
+        Dialogue* diag = new Dialogue(parseDialogueText(fileText));
+        diag->title = GetFileNameWithoutExt(relativePath.c_str());
+        setData(diag);
+        fileType = FILE_DIALOGUE;
     }
 }
 

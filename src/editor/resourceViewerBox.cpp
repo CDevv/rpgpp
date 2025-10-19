@@ -1,9 +1,11 @@
 #include "resourceViewerBox.hpp"
+#include <cstdio>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
 #include <IconsKenney.h>
 #include <string>
 #include <vector>
+#include "dialogueParser.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
@@ -68,6 +70,9 @@ void ResourceViewerBox::drawResourcesList()
     case FILE_ACTOR:
         drawActors();
         break;
+    case FILE_DIALOGUE:
+        drawDialogues();
+        break;
     }
 }
 
@@ -129,7 +134,7 @@ void ResourceViewerBox::draw()
                         dropdownActive = i;
                         ImGui::CloseCurrentPopup();
                     }
-                    if (i % 4 == 0) {
+                    if ((i + 1) % 3 != 0) {
                         ImGui::SameLine();
                     }
                 }
@@ -235,6 +240,25 @@ void ResourceViewerBox::drawActors()
         }
 
         drawContextMenu(actorPath);
+        windows.drawWindow("DeleteConfirm");
+    }
+}
+
+void ResourceViewerBox::drawDialogues()
+{
+    FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
+    WindowContainer& windows = ui.getWindowContainer();
+
+    std::vector<std::string> dialoguePaths = fs.getProject()->getDialoguePaths();
+    for (std::string dialoguePath : dialoguePaths) {
+        std::string dialogueFileName = GetFileNameWithoutExt(dialoguePath.c_str());
+        if (ImGui::Button(dialogueFileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
+            fs.openProjectFile(dialoguePath);
+            ui.setInitial();
+        }
+
+        drawContextMenu(dialoguePath);
         windows.drawWindow("DeleteConfirm");
     }
 }

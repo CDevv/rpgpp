@@ -19,14 +19,14 @@ private:
     std::string tileSetsPath;
     std::string mapsPath;
     std::string actorsPath;
+    std::string dialoguesPath;
     std::vector<std::string> tileSetPathsList;
-    std::vector<std::string> makeTileSetPaths();
     std::vector<std::string> mapPathsList;
-    std::vector<std::string> makeMapPaths();
     std::vector<std::string> actorPathsList;
-    std::vector<std::string> makeActorPaths();
+    std::vector<std::string> dialoguePathsList;
     void generateCmdScript();
     void callCompiler();
+    std::vector<std::string> makePaths(std::string dirPath);
 public:
     Project();
     Project(std::string filePath);
@@ -41,6 +41,7 @@ public:
     std::vector<std::string> getTileSetPaths();
     std::vector<std::string> getMapPaths();
     std::vector<std::string> getActorPaths();
+    std::vector<std::string> getDialoguePaths();
 };
 
 #endif

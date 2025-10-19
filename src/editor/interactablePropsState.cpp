@@ -1,12 +1,11 @@
 #include "interactablePropsState.hpp"
 #include "dialogueBalloon.hpp"
 #include "interactable.hpp"
-#include <cstring>
 
 InteractablePropsState::InteractablePropsState()
 {
     onTouch = false;
-	strcpy(diagText, "");
+    diagSource = "";
 }
 
 void InteractablePropsState::setDefaults(IntBaseWrapper *interactable)
@@ -15,16 +14,11 @@ void InteractablePropsState::setDefaults(IntBaseWrapper *interactable)
 
     onTouch = interactable->onTouch;
 
-    IntBase<Dialogue>* diag;
+    IntBase<DiagInt>* diag;
     switch (interactable->type) {
 	case INT_TWO:
-		diag = static_cast<IntBase<Dialogue>*>(interactable);
-		this->dialogue = diag->get();
-		if (!dialogue.lines.empty()) {
-		    strcpy(diagText, dialogue.lines.at(0).text.c_str());
-		} else {
-		    strcpy(diagText, "Empty dialogue!");
-		}
+		diag = static_cast<IntBase<DiagInt>*>(interactable);
+		diagSource = diag->get().dialogueSource;
 		break;
 	default:
 		break;
@@ -37,14 +31,12 @@ void InteractablePropsState::updateProps(IntBaseWrapper *interactable)
 
 	interactable->setOnTouch(onTouch);
 
-	Dialogue dialogue;
+	DiagInt dialogue;
 	switch (interactable->type) {
 	case INT_TWO:
-		dialogue.lines.push_back(DialogueLine {
-			"Character", diagText
-		});
+		dialogue.dialogueSource = diagSource;
 
-        (static_cast<IntBase<Dialogue>*>(interactable))->set(dialogue);
+        (static_cast<IntBase<DiagInt>*>(interactable))->set(dialogue);
 		break;
 	default:
 		break;

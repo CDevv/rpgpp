@@ -246,6 +246,14 @@ FS_Result FileSystemService::openTileSetResource()
     return openFile(filters);
 }
 
+FS_Result FileSystemService::openDialogueResource()
+{
+    FS_Result fsResult;
+
+    nfdu8filteritem_t filters[1] = { { "RPG++ Dialogue", "rdiag" } };
+    return openFile(filters);
+}
+
 ProjectFile* FileSystemService::getCurrentFile()
 {
     if (activeIndex >= openedFiles.size()) return nullptr;

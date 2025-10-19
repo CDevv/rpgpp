@@ -1,7 +1,9 @@
 #include "panelView.hpp"
+#include "dialoguePanelView.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "mapPanelView.hpp"
+#include "projectFile.hpp"
 #include "tileSetPanelView.hpp"
 
 PanelView::PanelView() {}
@@ -14,6 +16,7 @@ PanelView::PanelView(Rectangle rect)
     this->tileSetPanel = TileSetPanelView(rect);
     this->mapPanel = MapPanelView(rect);
     this->actorPanel = ActorPanelView(rect);
+    this->dialoguePanel = DialoguePanelView(rect);
 }
 
 void PanelView::setRect(Rectangle rect)
@@ -22,6 +25,7 @@ void PanelView::setRect(Rectangle rect)
     tileSetPanel.setRect(rect);
     mapPanel.setRect(rect);
     actorPanel.setRect(rect);
+    dialoguePanel.setRect(rect);
 }
 
 void PanelView::setInitial()
@@ -29,6 +33,7 @@ void PanelView::setInitial()
     tileSetPanel.setInitial();
     mapPanel.setInitial();
     actorPanel.setInitial();
+    dialoguePanel.setInitial();
 }
 
 void PanelView::update()
@@ -37,6 +42,7 @@ void PanelView::update()
     tileSetPanel.update();
     mapPanel.update();
     actorPanel.update();
+    dialoguePanel.update();
 }
 
 void PanelView::draw()
@@ -59,7 +65,9 @@ void PanelView::draw()
         case FILE_ACTOR:
             actorPanel.draw();
             break;
+        case FILE_DIALOGUE:
+            dialoguePanel.draw();
+            break;
         }
     }
 }
-

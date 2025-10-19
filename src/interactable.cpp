@@ -66,47 +66,6 @@ void Interactable::interact()
     }
 }
 
-void Interactable::setProp(std::string key, std::string value)
-{
-    props[key] = value;
-}
-
-InteractableOne::InteractableOne(Vector2 tilePos, int tileSize)
-: Interactable(INT_BLANK, tilePos, tileSize)
-{
-}
-
-void InteractableOne::interact()
-{
-    printf("one test.\n");
-}
-
-DialogueInt::DialogueInt(Vector2 tilePos, int tileSize)
-: Interactable(INT_TWO, tilePos, tileSize)
-{
-    Dialogue defDialog;
-    defDialog.lines.push_back(DialogueLine {
-        "Character", "Lorem ipsum!"
-    });
-    this->dialogue = defDialog;
-}
-
-void DialogueInt::interact()
-{
-    InterfaceService& ui = Game::getUi();
-    ui.showDialogue(dialogue);
-}
-
-Dialogue DialogueInt::getDialogue()
-{
-    return dialogue;
-}
-
-void DialogueInt::setDialogue(Dialogue dialogue)
-{
-    this->dialogue = dialogue;
-}
-
 IntBaseWrapper::IntBaseWrapper() {};
 
 IntBaseWrapper::~IntBaseWrapper() {};
@@ -126,8 +85,17 @@ void IntBase<int>::interact()
 }
 
 template <>
-void IntBase<Dialogue>::interact()
+void IntBase<DiagInt>::interact()
 {
-    InterfaceService& ui = Game::getUi();
-    ui.showDialogue(data);
+    Dialogue diag;
+    for (Dialogue i : Game::getBin().dialogues) {
+        if (i.title == data.dialogueSource) {
+            diag = i;
+        }
+    }
+
+    if (!diag.title.empty()) {
+        InterfaceService& ui = Game::getUi();
+        ui.showDialogue(diag);
+    }
 }

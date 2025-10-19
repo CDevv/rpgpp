@@ -13,6 +13,7 @@ struct DialogueLine {
 };
 
 struct Dialogue {
+    std::string title;
 	std::vector<DialogueLine> lines;
 };
 

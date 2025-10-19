@@ -49,6 +49,7 @@ void Game::useBin(std::string filePath)
 
     SetWindowTitle(gameData->title.c_str());
 
+    printf("%i \n", gameData->rooms.size());
     world->setRoomBin(gameData->rooms.at(0));
 }
 
