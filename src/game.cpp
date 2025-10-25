@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "gamedata.hpp"
 #include <cstdio>
+#include <memory>
 #include <raylib.h>
 #include <sol/sol.hpp>
 #include <sol/forward.hpp>
@@ -14,6 +15,7 @@ bool Game::usesBin = false;
 std::unique_ptr<StateService> Game::state = std::unique_ptr<StateService>{};
 std::unique_ptr<WorldService> Game::world = std::unique_ptr<WorldService>{};
 std::unique_ptr<InterfaceService> Game::ui = std::unique_ptr<InterfaceService>{};
+std::unique_ptr<ResourceService> Game::resources = std::unique_ptr<ResourceService>{};
 
 Game::Game()
 {
@@ -37,6 +39,7 @@ void Game::init()
 {
     gameData = std::make_unique<GameData>();
     usesBin = false;
+    resources = std::make_unique<ResourceService>();
     state = std::make_unique<StateService>();
     world = std::make_unique<WorldService>();
     ui = std::make_unique<InterfaceService>();
@@ -46,6 +49,20 @@ void Game::useBin(std::string filePath)
 {
     gameData = std::make_unique<GameData>(deserializeFile(filePath));
     usesBin = true;
+
+    for (auto pair : gameData->images) {
+        printf("PAIR IMG: %s \n", pair.first.c_str());
+
+        unsigned char* imgData = pair.second.data.data();
+        std::string ext = GetFileExtension(pair.first.c_str());
+        Image img = LoadImageFromMemory(
+            ext.c_str(),
+            imgData, pair.second.dataSize);
+        Texture2D text = LoadTextureFromImage(img);
+
+        resources->addTexture(pair.first, text);
+        //UnloadImage(img);
+    }
 
     SetWindowTitle(gameData->title.c_str());
 
@@ -58,6 +75,11 @@ void Game::useBin(std::string filePath)
 GameData& Game::getBin()
 {
     return *gameData;
+}
+
+ResourceService& Game::getResources()
+{
+    return *resources;
 }
 
 StateService& Game::getState()

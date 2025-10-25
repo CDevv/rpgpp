@@ -58,6 +58,12 @@ struct TileSetBin
 	int dataSize;
 };
 
+struct ImageBin
+{
+    std::vector<unsigned char> data;
+    int dataSize;
+};
+
 struct RoomBin
 {
 	std::string name;
@@ -72,6 +78,7 @@ struct RoomBin
 struct GameData
 {
 	std::string title;
+	std::map<std::string, ImageBin> images;
 	std::map<std::string, TileSetBin> tilesets;
 	std::vector<RoomBin> rooms;
 	std::vector<ActorBin> actors;

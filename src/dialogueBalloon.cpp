@@ -69,6 +69,8 @@ void DialogueBalloon::update()
 void DialogueBalloon::draw()
 {
 	if (active) {
+	    DrawTexture(Game::getResources().getTexture("Hills.png"), 20, 20, WHITE);
+
 		Font font = Game::getUi().getFont();
 		Texture uiTexture = Game::getUi().getTexture();
 

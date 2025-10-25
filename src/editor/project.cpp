@@ -36,11 +36,15 @@ Project::Project(std::string filePath)
     this->mapsPath = projectJson.at("maps");
     this->actorsPath = projectJson.at("actors");
     this->dialoguesPath = projectJson.at("dialogues");
+    this->imagesPath = projectJson.at("images");
+    this->fontsPath = projectJson.at("fonts");
 
     this->tileSetPathsList = makePaths(this->tileSetsPath);
     this->mapPathsList = makePaths(this->mapsPath);
     this->actorPathsList = makePaths(this->actorsPath);
     this->dialoguePathsList = makePaths(this->dialoguesPath);
+    this->imagePathsList = makePaths(this->imagesPath);
+    this->fontPathsList = makePaths(this->fontsPath);
 
     UnloadFileText(jsonString);
 }
@@ -51,6 +55,8 @@ void Project::reloadPaths()
     this->mapPathsList = makePaths(this->mapsPath);
     this->actorPathsList = makePaths(this->actorsPath);
     this->dialoguePathsList = makePaths(this->dialoguesPath);
+    this->imagePathsList = makePaths(this->imagesPath);
+    this->fontPathsList = makePaths(this->fontsPath);
 }
 
 void Project::generateNewProj(std::string title, std::string path)
@@ -65,6 +71,8 @@ GameData Project::generateStruct()
     paths.mapPathsList = mapPathsList;
     paths.actorPathsList = actorPathsList;
     paths.dialoguesPathsList = dialoguePathsList;
+    paths.imagesPathsList = imagePathsList;
+    paths.fontsPathsList = fontPathsList;
     return projectGenerator.generateStruct(paths, projectTitle);
 }
 
@@ -229,4 +237,14 @@ std::vector<std::string> Project::getActorPaths()
 std::vector<std::string> Project::getDialoguePaths()
 {
     return dialoguePathsList;
+}
+
+std::vector<std::string> Project::getImagePaths()
+{
+    return imagePathsList;
+}
+
+std::vector<std::string> Project::getFontPaths()
+{
+    return fontPathsList;
 }

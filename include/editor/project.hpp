@@ -20,10 +20,14 @@ private:
     std::string mapsPath;
     std::string actorsPath;
     std::string dialoguesPath;
+    std::string imagesPath;
+    std::string fontsPath;
     std::vector<std::string> tileSetPathsList;
     std::vector<std::string> mapPathsList;
     std::vector<std::string> actorPathsList;
     std::vector<std::string> dialoguePathsList;
+    std::vector<std::string> imagePathsList;
+    std::vector<std::string> fontPathsList;
     void generateCmdScript();
     void callCompiler();
     std::vector<std::string> makePaths(std::string dirPath);
@@ -42,6 +46,8 @@ public:
     std::vector<std::string> getMapPaths();
     std::vector<std::string> getActorPaths();
     std::vector<std::string> getDialoguePaths();
+    std::vector<std::string> getImagePaths();
+    std::vector<std::string> getFontPaths();
 };
 
 #endif

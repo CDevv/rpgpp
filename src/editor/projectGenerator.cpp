@@ -1,6 +1,7 @@
 #include "projectGenerator.hpp"
 #include "dialogueBalloon.hpp"
 #include "dialogueParser.hpp"
+#include "gamedata.hpp"
 #include "interactable.hpp"
 #include "tileset.hpp"
 #include "tilemap.hpp"
@@ -26,12 +27,18 @@ void ProjectGenerator::generateNewProj(std::string title, std::string path)
     MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "tilesets"));
     MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "maps"));
     MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "actors"));
+    MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "dialogues"));
+    MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "images"));
+    MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "fonts"));
 
     json projectJson = {
         {"title", title},
         {"tilesets", "tilesets"},
         {"maps", "maps"},
-        {"actors", "actors"}
+        {"actors", "actors"},
+        {"dialogues", "dialogues"},
+        {"images", "images"},
+        {"fonts", "fonts"}
     };
     std::string jsonString = projectJson.dump(4);
 
@@ -166,16 +173,37 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
         struc.actors.push_back(actorBin);
     }
 
-    printf("generateStruct: EXPORTING DIALOGUES \n");
+    //Dialogues
     for (auto diagPath : proj.dialoguesPathsList) {
         std::string diagText = LoadFileText(diagPath.c_str());
         Dialogue diag = parseDialogueText(diagText);
 
         diag.title = GetFileNameWithoutExt(diagPath.c_str());
-
         struc.dialogues[GetFileNameWithoutExt(diagPath.c_str())] = diag;
+    }
 
-        printf("%s ; %s \n", diagPath.c_str(), diag.title.c_str());
+    //Images
+    for (auto imagePath : proj.imagesPathsList) {
+        Image img = LoadImage(imagePath.c_str());
+        ImageBin bin;
+
+        int fileSize = 0;
+
+        unsigned char* data = ExportImageToMemory(img, GetFileExtension(imagePath.c_str()), &fileSize);
+        for (int i = 0; i < fileSize; i++) {
+            bin.data.push_back(*data);
+            data++;
+        }
+        bin.dataSize = fileSize;
+
+        UnloadImage(img);
+
+        struc.images[GetFileName(imagePath.c_str())] = bin;
+    }
+
+    //Fonts
+    for (auto fontPath : proj.fontsPathsList) {
+
     }
 
     return struc;

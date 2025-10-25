@@ -12,10 +12,14 @@ struct ProjectPaths {
     std::string mapsPath;
     std::string actorsPath;
     std::string dialoguesPath;
+    std::string imagesPath;
+    std::string fontsPath;
     std::vector<std::string> tileSetPathsList;
     std::vector<std::string> mapPathsList;
     std::vector<std::string> actorPathsList;
     std::vector<std::string> dialoguesPathsList;
+    std::vector<std::string> imagesPathsList;
+    std::vector<std::string> fontsPathsList;
 };
 
 class ProjectGenerator {

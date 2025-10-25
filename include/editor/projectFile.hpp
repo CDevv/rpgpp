@@ -8,8 +8,12 @@ enum EngineFileType {
     FILE_TILESET,
     FILE_ROOM,
     FILE_ACTOR,
-    FILE_DIALOGUE
+    FILE_DIALOGUE,
+    FILE_IMAGE,
+    FILE_FONT
 };
+
+#define ENGINEFILETYPE_MAX (6)
 
 class VariantWrapper {
 public:
@@ -31,12 +35,12 @@ class ProjectFile {
 private:
     std::string relativePath;
     EngineFileType fileType;
-    static std::array<std::string, 4> fileTypeNames;
+    static std::array<std::string, ENGINEFILETYPE_MAX> fileTypeNames;
     std::unique_ptr<VariantWrapper> variant;
 public:
     ProjectFile();
     ProjectFile(std::string relativePath, EngineFileType fileType);
-    static std::array<std::string, 4> getTypeNames();
+    static std::array<std::string, ENGINEFILETYPE_MAX> getTypeNames();
     void setFromPath(std::string relativePath);
     std::string getRelativePath();
     EngineFileType getFileType();

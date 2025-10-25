@@ -9,8 +9,9 @@
 #include "room.hpp"
 #include "actor.hpp"
 
-std::array<std::string, 4> ProjectFile::fileTypeNames = std::array<std::string, 4>{
-    "TileSet", "Map", "Actor", "Dialogues"
+std::array<std::string, ENGINEFILETYPE_MAX> ProjectFile::fileTypeNames =
+std::array<std::string, ENGINEFILETYPE_MAX>{
+    "TileSet", "Map", "Actor", "Dialogues", "Images", "Fonts"
 };
 
 ProjectFile::ProjectFile() {}
@@ -23,7 +24,7 @@ ProjectFile::ProjectFile(std::string relativePath, EngineFileType fileType)
     this->variant = std::unique_ptr<VariantWrapper>{};
 }
 
-std::array<std::string, 4> ProjectFile::getTypeNames()
+std::array<std::string, ENGINEFILETYPE_MAX> ProjectFile::getTypeNames()
 {
     return fileTypeNames;
 }

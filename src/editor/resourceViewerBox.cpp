@@ -74,12 +74,18 @@ void ResourceViewerBox::drawResourcesList()
     case FILE_DIALOGUE:
         drawDialogues();
         break;
+    case FILE_IMAGE:
+        drawImages();
+        break;
+    case FILE_FONT:
+        drawFonts();
+        break;
     }
 }
 
 void ResourceViewerBox::draw()
 {
-    const ImVec2 resourceButtonSize = ImVec2 { 76, 76 };
+    const ImVec2 resourceButtonSize = ImVec2 { 76, 26 };
 
     FileSystemService& fs = Editor::getFileSystem();
     EditorInterfaceService& ui = Editor::getUi();
@@ -260,6 +266,44 @@ void ResourceViewerBox::drawDialogues()
         }
 
         drawContextMenu(dialoguePath);
+        windows.drawWindow("DeleteConfirm");
+    }
+}
+
+void ResourceViewerBox::drawImages()
+{
+    FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
+    WindowContainer& windows = ui.getWindowContainer();
+
+    std::vector<std::string> paths = fs.getProject()->getImagePaths();
+    for (std::string path : paths) {
+        std::string fileName = GetFileName(path.c_str());
+        if (ImGui::Button(fileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
+            //fs.openProjectFile(path);
+            //ui.setInitial();
+        }
+
+        drawContextMenu(path);
+        windows.drawWindow("DeleteConfirm");
+    }
+}
+
+void ResourceViewerBox::drawFonts()
+{
+    FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
+    WindowContainer& windows = ui.getWindowContainer();
+
+    std::vector<std::string> paths = fs.getProject()->getFontPaths();
+    for (std::string path : paths) {
+        std::string fileName = GetFileName(path.c_str());
+        if (ImGui::Button(fileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
+            //fs.openProjectFile(path);
+            //ui.setInitial();
+        }
+
+        drawContextMenu(path);
         windows.drawWindow("DeleteConfirm");
     }
 }

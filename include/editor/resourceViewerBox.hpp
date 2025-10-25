@@ -17,6 +17,8 @@ private:
     void drawMaps();
     void drawActors();
     void drawDialogues();
+    void drawImages();
+    void drawFonts();
 public:
     ResourceViewerBox();
     ResourceViewerBox(Rectangle rect);

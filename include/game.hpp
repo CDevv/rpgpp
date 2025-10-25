@@ -9,6 +9,7 @@ class WorldService;
 #include "stateService.hpp"
 #include "worldService.hpp"
 #include "interfaceService.hpp"
+#include "resourceService.hpp"
 
 #define RPGPP_VER "0.1"
 
@@ -20,6 +21,7 @@ private:
     static std::unique_ptr<StateService> state;
     static std::unique_ptr<WorldService> world;
     static std::unique_ptr<InterfaceService> ui;
+    static std::unique_ptr<ResourceService> resources;
 public:
     Game();
     static Game& instance();
@@ -28,6 +30,7 @@ public:
     static StateService& getState();
     static WorldService& getWorld();
     static InterfaceService& getUi();
+    static ResourceService& getResources();
     void init();
     void update();
     void draw();
