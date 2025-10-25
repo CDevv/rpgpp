@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include "gamedata.hpp"
 #include "tileset.hpp"
 #include "tilemap.hpp"
 #include "room.hpp"
@@ -111,7 +112,8 @@ void Project::runProject()
 {
     //Save game.bin first
     std::string binFile = std::string(projectBasePath).append("/game.bin");
-    serializeDataToFile(binFile, this->generateStruct());
+    GameData data =  this->generateStruct();
+    serializeDataToFile(binFile, data);
 
     std::string luaCodeString = R"(
     printer()

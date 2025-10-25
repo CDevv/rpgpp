@@ -31,5 +31,9 @@ GameData deserializeFile(std::string fileName)
     auto data = alpaca::deserialize<GameData>(is, size, error);
     is.close();
 
+    if (error.value() != 0) {
+        printf("deserializeFile error: %s", error.message().c_str());
+    }
+
     return data;
 }

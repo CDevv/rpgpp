@@ -87,15 +87,8 @@ void IntBase<int>::interact()
 template <>
 void IntBase<DiagInt>::interact()
 {
-    Dialogue diag;
-    for (Dialogue i : Game::getBin().dialogues) {
-        if (i.title == data.dialogueSource) {
-            diag = i;
-        }
-    }
-
-    if (!diag.title.empty()) {
+    if (Game::getBin().dialogues.count(data.dialogueSource)) {
         InterfaceService& ui = Game::getUi();
-        ui.showDialogue(diag);
+        ui.showDialogue(Game::getBin().dialogues[data.dialogueSource]);
     }
 }

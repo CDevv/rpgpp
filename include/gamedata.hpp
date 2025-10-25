@@ -75,7 +75,7 @@ struct GameData
 	std::map<std::string, TileSetBin> tilesets;
 	std::vector<RoomBin> rooms;
 	std::vector<ActorBin> actors;
-	std::vector<Dialogue> dialogues;
+	std::map<std::string, Dialogue> dialogues;
 };
 
 struct DataSerialization

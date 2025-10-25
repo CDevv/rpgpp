@@ -166,13 +166,16 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
         struc.actors.push_back(actorBin);
     }
 
+    printf("generateStruct: EXPORTING DIALOGUES \n");
     for (auto diagPath : proj.dialoguesPathsList) {
         std::string diagText = LoadFileText(diagPath.c_str());
         Dialogue diag = parseDialogueText(diagText);
 
         diag.title = GetFileNameWithoutExt(diagPath.c_str());
 
-        struc.dialogues.push_back(diag);
+        struc.dialogues[GetFileNameWithoutExt(diagPath.c_str())] = diag;
+
+        printf("%s ; %s \n", diagPath.c_str(), diag.title.c_str());
     }
 
     return struc;

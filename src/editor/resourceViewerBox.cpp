@@ -1,11 +1,9 @@
 #include "resourceViewerBox.hpp"
-#include <cstdio>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
 #include <IconsKenney.h>
 #include <string>
 #include <vector>
-#include "dialogueParser.hpp"
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
@@ -47,6 +45,9 @@ void ResourceViewerBox::onNewButton()
             break;
         case FILE_ACTOR:
             windows.open("ActorInit");
+            break;
+        case FILE_DIALOGUE:
+            windows.open("DialogueInit");
             break;
         }
     }

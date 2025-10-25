@@ -9,7 +9,7 @@ class DialogueViewer {
 private:
     Rectangle rect;
     Dialogue* diag;
-    //Str256 str;
+    char newLineName[256];
 public:
     DialogueViewer();
     DialogueViewer(Rectangle rect);

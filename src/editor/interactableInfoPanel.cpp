@@ -110,14 +110,15 @@ void InteractableInfoPanel::drawTypeProps()
 
 void InteractableInfoPanel::drawDialogueProps()
 {
-    propsState.diagSource.push_back('\0');
-    ImGui::InputText("Dialogue.", propsState.diagSource.data(), propsState.diagSource.size(),
+    std::string diagSource = propsState.diagSource;
+    diagSource.push_back('\0');
+    ImGui::InputText("Dialogue.", diagSource.data(), diagSource.size(),
         ImGuiInputTextFlags_ReadOnly);
     if (ImGui::Button("Open..", ImVec2(-1, 16))) {
         FS_Result fsResult = Editor::getFileSystem().openDialogueResource();
 
         if (fsResult.result == NFD_OKAY) {
-            propsState.diagSource = fsResult.path;
+            propsState.diagSource = std::string(GetFileNameWithoutExt(fsResult.path.c_str()));
         }
     }
 }

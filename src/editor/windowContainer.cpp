@@ -4,6 +4,7 @@
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "windowPopup.hpp"
+#include "windows/dialogueInitWindow.hpp"
 #include "worldViewBox.hpp"
 
 #include "windows/projectInitWindow.hpp"
@@ -56,6 +57,7 @@ WindowContainer::WindowContainer()
     mapW.emplace("About",  std::unique_ptr<WindowPopup>(new AboutWindow(tileSetWindowSize)));
     mapW.emplace("Error",  std::unique_ptr<WindowPopup>(new ErrorWindow(Rectangle { 20, 20, 240, 30 })));
     mapW.emplace("DeleteConfirm",  std::unique_ptr<WindowPopup>(new DeleteConfirmWindow(tileSetWindowSize)));
+    mapW.emplace("DialogueInit", std::unique_ptr<WindowPopup>(new DialogueInitWindow(tileSetWindowSize)));
 }
 
 void WindowContainer::update()
@@ -94,6 +96,7 @@ void WindowContainer::draw()
     drawWindow("TileSetInit");
     drawWindow("MapInit");
     drawWindow("ActorInit");
+    drawWindow("DialogueInit");
 
     if (!windowOpen) {
         EditorInterfaceService& ui = Editor::getUi();

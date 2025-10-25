@@ -49,7 +49,9 @@ void Game::useBin(std::string filePath)
 
     SetWindowTitle(gameData->title.c_str());
 
-    printf("%i \n", gameData->rooms.size());
+    for (auto i : gameData->dialogues) {
+        printf("%s \n", i.first.c_str());
+    }
     world->setRoomBin(gameData->rooms.at(0));
 }
 

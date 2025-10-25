@@ -9,7 +9,6 @@ struct DialogueLine {
 	std::string characterName;
 	std::string text;
 	bool hasPortrait;
-	Texture portrait;
 };
 
 struct Dialogue {
