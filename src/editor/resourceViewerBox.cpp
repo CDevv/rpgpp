@@ -12,6 +12,8 @@
 #include "projectFile.hpp"
 #include "worldViewBox.hpp"
 
+std::array<EngineFileType, 3> noFuncTypes = { FILE_FONT, FILE_IMAGE, FILE_SOUND };
+
 ResourceViewerBox::ResourceViewerBox() {}
 
 ResourceViewerBox::ResourceViewerBox(Rectangle rect)
@@ -59,27 +61,29 @@ void ResourceViewerBox::drawResourcesList()
 {
     EngineFileType fileTypeActive = static_cast<EngineFileType>(dropdownActive);
 
-    switch (fileTypeActive) {
-    default:
-        break;
-    case FILE_TILESET:
-        drawTileSets();
-        break;
-    case FILE_ROOM:
-        drawMaps();
-        break;
-    case FILE_ACTOR:
-        drawActors();
-        break;
-    case FILE_DIALOGUE:
-        drawDialogues();
-        break;
-    case FILE_IMAGE:
-        drawImages();
-        break;
-    case FILE_FONT:
-        drawFonts();
-        break;
+    FileSystemService& fs = Editor::getFileSystem();
+    EditorInterfaceService& ui = Editor::getUi();
+    WindowContainer& windows = ui.getWindowContainer();
+
+    std::vector<std::string> paths = fs.getProject()->getTypePaths(fileTypeActive);
+    for (std::string path : paths) {
+        std::string fileName = GetFileNameWithoutExt(path.c_str());
+        if (ImGui::Button(fileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
+            bool noFuncType = false;
+            for (EngineFileType arrType : noFuncTypes) {
+                if (arrType == fileTypeActive) {
+                    noFuncType = true;
+                }
+            }
+
+            if (!noFuncType) {
+                fs.openProjectFile(path);
+                ui.setInitial();
+            }
+        }
+
+        drawContextMenu(path);
+        windows.drawWindow("DeleteConfirm");
     }
 }
 
@@ -195,119 +199,4 @@ void ResourceViewerBox::drawContextMenu(std::string resPath)
         ImGui::EndPopup();
     }
     ImGui::PopStyleVar();
-}
-
-void ResourceViewerBox::drawTileSets()
-{
-    FileSystemService& fs = Editor::getFileSystem();
-    EditorInterfaceService& ui = Editor::getUi();
-    WindowContainer& windows = ui.getWindowContainer();
-
-    std::vector<std::string> tileSetPaths = fs.getProject()->getTileSetPaths();
-    for (std::string tileSetPath : tileSetPaths) {
-        std::string tileSetFileName = GetFileNameWithoutExt(tileSetPath.c_str());
-        if (ImGui::Button(tileSetFileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
-            fs.openProjectFile(tileSetPath);
-            ui.setInitial();
-        }
-
-        drawContextMenu(tileSetPath);
-        windows.drawWindow("DeleteConfirm");
-    }
-}
-
-void ResourceViewerBox::drawMaps()
-{
-    FileSystemService& fs = Editor::getFileSystem();
-    EditorInterfaceService& ui = Editor::getUi();
-    WindowContainer& windows = ui.getWindowContainer();
-
-    std::vector<std::string> mapPaths = fs.getProject()->getMapPaths();
-
-    for (std::string mapPath : mapPaths) {
-        std::string mapFileName = GetFileNameWithoutExt(mapPath.c_str());
-        if (ImGui::Button(mapFileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
-            fs.openProjectFile(mapPath);
-            ui.setInitial();
-        }
-
-        drawContextMenu(mapPath);
-        windows.drawWindow("DeleteConfirm");
-    }
-}
-
-void ResourceViewerBox::drawActors()
-{
-    FileSystemService& fs = Editor::getFileSystem();
-    EditorInterfaceService& ui = Editor::getUi();
-    WindowContainer& windows = ui.getWindowContainer();
-
-    std::vector<std::string> actorPaths = fs.getProject()->getActorPaths();
-    for (std::string actorPath : actorPaths) {
-        std::string actorFileName = GetFileNameWithoutExt(actorPath.c_str());
-        if (ImGui::Button(actorFileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
-            fs.openProjectFile(actorPath);
-            ui.setInitial();
-        }
-
-        drawContextMenu(actorPath);
-        windows.drawWindow("DeleteConfirm");
-    }
-}
-
-void ResourceViewerBox::drawDialogues()
-{
-    FileSystemService& fs = Editor::getFileSystem();
-    EditorInterfaceService& ui = Editor::getUi();
-    WindowContainer& windows = ui.getWindowContainer();
-
-    std::vector<std::string> dialoguePaths = fs.getProject()->getDialoguePaths();
-    for (std::string dialoguePath : dialoguePaths) {
-        std::string dialogueFileName = GetFileNameWithoutExt(dialoguePath.c_str());
-        if (ImGui::Button(dialogueFileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
-            fs.openProjectFile(dialoguePath);
-            ui.setInitial();
-        }
-
-        drawContextMenu(dialoguePath);
-        windows.drawWindow("DeleteConfirm");
-    }
-}
-
-void ResourceViewerBox::drawImages()
-{
-    FileSystemService& fs = Editor::getFileSystem();
-    EditorInterfaceService& ui = Editor::getUi();
-    WindowContainer& windows = ui.getWindowContainer();
-
-    std::vector<std::string> paths = fs.getProject()->getImagePaths();
-    for (std::string path : paths) {
-        std::string fileName = GetFileName(path.c_str());
-        if (ImGui::Button(fileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
-            //fs.openProjectFile(path);
-            //ui.setInitial();
-        }
-
-        drawContextMenu(path);
-        windows.drawWindow("DeleteConfirm");
-    }
-}
-
-void ResourceViewerBox::drawFonts()
-{
-    FileSystemService& fs = Editor::getFileSystem();
-    EditorInterfaceService& ui = Editor::getUi();
-    WindowContainer& windows = ui.getWindowContainer();
-
-    std::vector<std::string> paths = fs.getProject()->getFontPaths();
-    for (std::string path : paths) {
-        std::string fileName = GetFileName(path.c_str());
-        if (ImGui::Button(fileName.c_str(), ImVec2 { ImGui::GetWindowWidth(), 24.0f })) {
-            //fs.openProjectFile(path);
-            //ui.setInitial();
-        }
-
-        drawContextMenu(path);
-        windows.drawWindow("DeleteConfirm");
-    }
 }

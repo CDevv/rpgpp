@@ -10,10 +10,11 @@ enum EngineFileType {
     FILE_ACTOR,
     FILE_DIALOGUE,
     FILE_IMAGE,
-    FILE_FONT
+    FILE_FONT,
+    FILE_SOUND
 };
 
-#define ENGINEFILETYPE_MAX (6)
+#define ENGINEFILETYPE_MAX (7)
 
 class VariantWrapper {
 public:

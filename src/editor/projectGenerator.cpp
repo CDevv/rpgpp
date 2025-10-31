@@ -30,6 +30,7 @@ void ProjectGenerator::generateNewProj(std::string title, std::string path)
     MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "dialogues"));
     MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "images"));
     MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "fonts"));
+    MakeDirectory(TextFormat("%s/%s", newDirPath.c_str(), "sounds"));
 
     json projectJson = {
         {"title", title},

@@ -28,23 +28,18 @@ private:
 	Rectangle rect;
 	Rectangle textRect;
 	Rectangle textPortraitRect;
+	Dialogue dialogue;
+	std::string text;
+	DialogueTextSection sectionText;
 	bool firstCharTyped;
 	bool active;
 	int frameCounter;
 	int charIndex;
-	int rowIndex;
-	int colIndex;
-	int lineTextStart;
-	Dialogue dialogue;
 	int lineIndex;
 	int sectionIndex;
 	Color textColor;
-	std::string text;
-	std::string lineText;
-	DialogueTextSection sectionText;
 	int lastSectionLen;
 	Vector2 textPos;
-	
 	void drawPortrait();
 public:
 	DialogueBalloon();
@@ -53,8 +48,6 @@ public:
 	void draw();
 	void showDialogue(Dialogue dialogue);
 	void hideDialogue();
-	void putChar(int charIndex);
-	void putChar(int charIndex, Color color);
 	void charP(Vector2 charMeasure, const char* c, Color color);
 };
 

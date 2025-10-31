@@ -6,6 +6,7 @@
 #include <vector>
 #include <filesystem>
 #include "gamedata.hpp"
+#include "projectFile.hpp"
 #include "tileset.hpp"
 #include "tilemap.hpp"
 #include "room.hpp"
@@ -39,24 +40,28 @@ Project::Project(std::string filePath)
     this->imagesPath = projectJson.at("images");
     this->fontsPath = projectJson.at("fonts");
 
-    this->tileSetPathsList = makePaths(this->tileSetsPath);
-    this->mapPathsList = makePaths(this->mapsPath);
-    this->actorPathsList = makePaths(this->actorsPath);
-    this->dialoguePathsList = makePaths(this->dialoguesPath);
-    this->imagePathsList = makePaths(this->imagesPath);
-    this->fontPathsList = makePaths(this->fontsPath);
+    pathsList = std::array<std::vector<std::string>, ENGINEFILETYPE_MAX>{};
+
+    pathsList[FILE_TILESET] = makePaths(this->tileSetsPath);
+    pathsList[FILE_ROOM] = makePaths(this->mapsPath);
+    pathsList[FILE_ACTOR] = makePaths(this->actorsPath);
+    pathsList[FILE_DIALOGUE] = makePaths(this->dialoguesPath);
+    pathsList[FILE_IMAGE] = makePaths(this->imagesPath);
+    pathsList[FILE_FONT] = makePaths(this->fontsPath);
+    pathsList[FILE_SOUND] = makePaths("sounds");
 
     UnloadFileText(jsonString);
 }
 
 void Project::reloadPaths()
 {
-    this->tileSetPathsList = makePaths(this->tileSetsPath);
-    this->mapPathsList = makePaths(this->mapsPath);
-    this->actorPathsList = makePaths(this->actorsPath);
-    this->dialoguePathsList = makePaths(this->dialoguesPath);
-    this->imagePathsList = makePaths(this->imagesPath);
-    this->fontPathsList = makePaths(this->fontsPath);
+    pathsList[FILE_TILESET] = makePaths(this->tileSetsPath);
+    pathsList[FILE_ROOM] = makePaths(this->mapsPath);
+    pathsList[FILE_ACTOR] = makePaths(this->actorsPath);
+    pathsList[FILE_DIALOGUE] = makePaths(this->dialoguesPath);
+    pathsList[FILE_IMAGE] = makePaths(this->imagesPath);
+    pathsList[FILE_FONT] = makePaths(this->fontsPath);
+    pathsList[FILE_SOUND] = makePaths("sounds");
 }
 
 void Project::generateNewProj(std::string title, std::string path)
@@ -67,12 +72,12 @@ void Project::generateNewProj(std::string title, std::string path)
 GameData Project::generateStruct()
 {
     ProjectPaths paths;
-    paths.tileSetPathsList = tileSetPathsList;
-    paths.mapPathsList = mapPathsList;
-    paths.actorPathsList = actorPathsList;
-    paths.dialoguesPathsList = dialoguePathsList;
-    paths.imagesPathsList = imagePathsList;
-    paths.fontsPathsList = fontPathsList;
+    paths.tileSetPathsList = getTypePaths(FILE_TILESET);
+    paths.mapPathsList = getTypePaths(FILE_ROOM);
+    paths.actorPathsList = getTypePaths(FILE_ACTOR);
+    paths.dialoguesPathsList = getTypePaths(FILE_DIALOGUE);
+    paths.imagesPathsList = getTypePaths(FILE_IMAGE);
+    paths.fontsPathsList = getTypePaths(FILE_FONT);
     return projectGenerator.generateStruct(paths, projectTitle);
 }
 
@@ -219,32 +224,7 @@ std::vector<std::string> Project::makePaths(std::string dirPath)
     return vec;
 }
 
-std::vector<std::string> Project::getTileSetPaths()
+std::vector<std::string> Project::getTypePaths(EngineFileType type)
 {
-    return tileSetPathsList;
-}
-
-std::vector<std::string> Project::getMapPaths()
-{
-    return mapPathsList;
-}
-
-std::vector<std::string> Project::getActorPaths()
-{
-    return actorPathsList;
-}
-
-std::vector<std::string> Project::getDialoguePaths()
-{
-    return dialoguePathsList;
-}
-
-std::vector<std::string> Project::getImagePaths()
-{
-    return imagePathsList;
-}
-
-std::vector<std::string> Project::getFontPaths()
-{
-    return fontPathsList;
+    return pathsList[type];
 }

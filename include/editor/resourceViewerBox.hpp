@@ -13,12 +13,6 @@ private:
     void onNewButton();
     void drawResourcesList();
     void drawContextMenu(std::string resPath);
-    void drawTileSets();
-    void drawMaps();
-    void drawActors();
-    void drawDialogues();
-    void drawImages();
-    void drawFonts();
 public:
     ResourceViewerBox();
     ResourceViewerBox(Rectangle rect);

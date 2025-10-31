@@ -24,13 +24,9 @@ DialogueBalloon::DialogueBalloon(Rectangle rect)
 	this->active = false;
 	this->frameCounter = 0;
 	this->charIndex = 0;
-	this->rowIndex = 0;
-	this->colIndex = 0;
-	this->lineTextStart = 0;
 
 	this->textColor = WHITE;
 	this->text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec placerat vel nulla eget ullamcorper. Proin varius erat in tristique dignissim. Aliquam erat volutpat.";
-	this->lineText = text;
 	this->sectionText = { "", text };
 	this->lastSectionLen = 0;
 
@@ -56,23 +52,18 @@ void DialogueBalloon::update()
 				if (lineIndex == (dialogue.lines.size() - 1)) {
 					hideDialogue();
 				} else {
-				    printf("finish line. \n");
+				    lineIndex++;
+                    text = "";
+    				for (auto k : dialogue.lines.at(lineIndex).sections) {
+    				    text = text.append(k.text);
+    				}
 
-					lineIndex++;
-					text = dialogue.lines.at(lineIndex).text;
-					//sectionText = dialogue.lines.at(lineIndex).sections[0];
 					charIndex = 0;
-					rowIndex = 0;
 					firstCharTyped = false;
 					sectionIndex = 0;
 					lastSectionLen = 0;
 
 					textPos = Vector2 { 0, 0 };
-
-					text = "";
-					for (auto k : dialogue.lines.at(lineIndex).sections) {
-					    text = text.append(k.text);
-					}
 				}
 			} else {
 				charIndex = (text.size() - 1);
@@ -86,23 +77,6 @@ void DialogueBalloon::update()
 				charIndex++;
 			}
 		}
-
-
-
-		/*
-		sectionText = dialogue.lines.at(lineIndex).sections[sectionIndex];
-		if (!finished) {
-		if (lastSectionLen + charIndex >= sectionText.text.size()) {
-            lastSectionLen += sectionText.text.size();
-            sectionIndex++;
-
-            sectionText = dialogue.lines.at(lineIndex).sections[sectionIndex];
-            if (sectionText.key == "red") {
-                textColor = RED;
-            }
-		}
-		}
-		*/
 	}
 }
 
@@ -132,10 +106,6 @@ void DialogueBalloon::draw()
 		    drawPortrait();
 		}
 
-	    lineText = text;
-	    lineTextStart = 0;
-	    rowIndex = 0;
-
 		textPos = Vector2{ 0, 0 };
 		sectionIndex = 0;
 		Vector2 charMeasure = Vector2 { 0, 0 };
@@ -149,6 +119,10 @@ void DialogueBalloon::draw()
     				sectionIndex = idx;
                     if (section.key == "red") {
                         textColor = RED;
+                    } else if (section.key == "blue") {
+                        textColor = BLUE;
+                    } else if (section.key == "green") {
+                        textColor = GREEN;
                     }
                     break;
     			} else {
@@ -202,56 +176,12 @@ void DialogueBalloon::showDialogue(Dialogue dialogue)
 	firstCharTyped = false;
 	active = true;
 	this->text = dialogue.lines.at(0).text;
-	this->lineText = text;
 
 	this->frameCounter = 0;
 	this->charIndex = 0;
-	this->rowIndex = 0;
 }
 
 void DialogueBalloon::hideDialogue()
 {
 	active = false;
-}
-
-void DialogueBalloon::putChar(int charIndex)
-{
-	putChar(charIndex, WHITE);
-}
-
-void DialogueBalloon::putChar(int charIndex, Color color)
-{
-    Rectangle resRect = this->textRect;
-
-    if (dialogue.lines.at(lineIndex).hasPortrait) {
-        resRect = textPortraitRect;
-    }
-
-	lineText = TextSubtext(text.c_str(), lineTextStart, (charIndex + 1) - lineTextStart);
-
-	Font font = Game::getUi().getFont();
-	if (charIndex == 0) {
-		DrawTextEx(font, TextSubtext(text.c_str(), lineTextStart, 1), Vector2 { resRect.x, resRect.y }, 13 * 3, 1, color);
-	} else {
-		colIndex++;
-		Vector2 stringSize = MeasureTextEx(font, TextSubtext(text.c_str(), lineTextStart, charIndex - lineTextStart), 13 * 3, 1.0f);
-		Vector2 singleCharSize = MeasureTextEx(font, TextSubtext(text.c_str(), charIndex, 1), 13 * 3, 1.0f);
-
-		textPos.x += singleCharSize.x;
-
-		float resultX = (resRect.x + stringSize.x);
-		if ((resRect.x + stringSize.x + singleCharSize.x) > (resRect.x + resRect.width)) {
-			lineTextStart = charIndex;
-			resultX = resRect.x;
-			rowIndex++;
-
-			textPos.y += singleCharSize.y;
-			textPos.x = 0;
-		}
-
-		//Vector2 charPosition = Vector2 { resultX, resRect.y + (stringSize.y * rowIndex)};
-		Vector2 charPosition = textPos;
-		DrawTextEx(font, TextSubtext(text.c_str(), charIndex, 1), charPosition, 13 * 3, 1, color);
-		//DrawTextEx(font, TextSubtext(text.c_str(), charIndex, 1), charPosition, 13 * 3, 1, color);
-	}
 }

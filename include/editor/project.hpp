@@ -3,7 +3,9 @@
 
 #include <string>
 #include <vector>
+#include <array>
 #include "gamedata.hpp"
+#include "projectFile.hpp"
 #include "projectGenerator.hpp"
 #include "projectCompiler.hpp"
 #include <nlohmann/json.hpp>
@@ -22,15 +24,10 @@ private:
     std::string dialoguesPath;
     std::string imagesPath;
     std::string fontsPath;
-    std::vector<std::string> tileSetPathsList;
-    std::vector<std::string> mapPathsList;
-    std::vector<std::string> actorPathsList;
-    std::vector<std::string> dialoguePathsList;
-    std::vector<std::string> imagePathsList;
-    std::vector<std::string> fontPathsList;
     void generateCmdScript();
     void callCompiler();
     std::vector<std::string> makePaths(std::string dirPath);
+    std::array<std::vector<std::string>, ENGINEFILETYPE_MAX> pathsList;
 public:
     Project();
     Project(std::string filePath);
@@ -42,12 +39,7 @@ public:
     void cleanCompilation();
     std::string getProjectTitle();
     std::string getProjectBasePath();
-    std::vector<std::string> getTileSetPaths();
-    std::vector<std::string> getMapPaths();
-    std::vector<std::string> getActorPaths();
-    std::vector<std::string> getDialoguePaths();
-    std::vector<std::string> getImagePaths();
-    std::vector<std::string> getFontPaths();
+    std::vector<std::string> getTypePaths(EngineFileType type);
 };
 
 #endif

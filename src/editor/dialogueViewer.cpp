@@ -5,6 +5,7 @@
 #include "fileSystemService.hpp"
 #include "nfd.h"
 #include "rlImGui.h"
+#include <algorithm>
 #include <cstring>
 #include <imgui.h>
 #include <raylib.h>
@@ -48,6 +49,19 @@ bool DialogueViewer::drawDialogueLine(int idx, std::vector<DialogueLine>::iterat
 {
     if (ImGui::BeginChild(TextFormat("line-%i", idx), ImVec2(-1, 120),
         ImGuiChildFlags_Borders)) {
+
+        if (ImGui::Button(ICON_KI_ARROW_TOP " Move Up")) {
+            if (idx != 0) {
+                std::iter_swap(it, it - 1);
+            }
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(ICON_KI_ARROW_BOTTOM " Move Down")) {
+            if (it != diag->lines.cend()) {
+                std::iter_swap(it, it + 1);
+            }
+        }
+        ImGui::SameLine();
         if (ImGui::Button(ICON_KI_TRASH_ALT " Delete Line")) {
             diag->lines.erase(it);
             ImGui::EndChild();
