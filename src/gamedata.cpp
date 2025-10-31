@@ -32,7 +32,7 @@ GameData deserializeFile(std::string fileName)
     is.close();
 
     if (error.value() != 0) {
-        printf("deserializeFile error: %s", error.message().c_str());
+        printf("deserializeFile error: %s \n", error.message().c_str());
     }
 
     return data;

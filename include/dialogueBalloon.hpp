@@ -5,10 +5,17 @@
 #include <vector>
 #include <raylib.h>
 
+struct DialogueTextSection {
+    std::string key;
+    std::string text;
+};
+
 struct DialogueLine {
 	std::string characterName;
 	std::string text;
 	bool hasPortrait;
+	std::string imageId;
+	std::vector<DialogueTextSection> sections;
 };
 
 struct Dialogue {
@@ -20,6 +27,7 @@ class DialogueBalloon {
 private:
 	Rectangle rect;
 	Rectangle textRect;
+	Rectangle textPortraitRect;
 	bool firstCharTyped;
 	bool active;
 	int frameCounter;
@@ -29,8 +37,15 @@ private:
 	int lineTextStart;
 	Dialogue dialogue;
 	int lineIndex;
+	int sectionIndex;
+	Color textColor;
 	std::string text;
 	std::string lineText;
+	DialogueTextSection sectionText;
+	int lastSectionLen;
+	Vector2 textPos;
+	
+	void drawPortrait();
 public:
 	DialogueBalloon();
 	DialogueBalloon(Rectangle rect);
@@ -40,6 +55,7 @@ public:
 	void hideDialogue();
 	void putChar(int charIndex);
 	void putChar(int charIndex, Color color);
+	void charP(Vector2 charMeasure, const char* c, Color color);
 };
 
 #endif

@@ -105,7 +105,11 @@ void ResourceViewerBox::draw()
             if (ImGui::Button(buttonText.c_str(), ImVec2 { rect.width - (8 * 2), 24 })) {
                 ImGui::OpenPopup("res_choose");
             }
-            if (ImGui::Button("New..", ImVec2 { rect.width - (8 * 2), 24.0f })) {
+            if (ImGui::Button("Refresh", ImVec2 {52.0f, 24.0f})) {
+                fs.getProject()->reloadPaths();
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("New..", ImVec2 { rect.width - (8 * 3) - 52, 24.0f })) {
                 onNewButton();
             }
 
