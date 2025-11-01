@@ -92,7 +92,7 @@ void MapPropertiesBox::draw()
         if (ImGui::Button("Change Music..", ImVec2(-1, 0))) {
             FS_Result fsResult = fs.openMusic();
             if (fsResult.result == NFD_OKAY) {
-                room->setMusicSource(fsResult.fileName);
+                room->setMusicSource(fsResult.path);
             }
         }
     } else {

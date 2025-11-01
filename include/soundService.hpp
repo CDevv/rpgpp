@@ -12,6 +12,7 @@ public:
     SoundService();
     bool loadMusic(std::string id);
     void playMusic();
+    void playSound(std::string id);
     void update();
     void unload();
 };

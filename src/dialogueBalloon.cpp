@@ -75,6 +75,9 @@ void DialogueBalloon::update()
 			frameCounter = 0;
 			if (charIndex < text.size()) {
 				charIndex++;
+
+				//play sound
+				Game::getSounds().playSound("sounds/Text 1.wav");
 			}
 		}
 	}
@@ -131,7 +134,8 @@ void DialogueBalloon::draw()
     			idx++;
     		}
 
-			charP(charMeasure, TextSubtext(text.c_str(), i, 1), textColor);
+            const char* subText = TextSubtext(text.c_str(), i, 1);
+			charP(charMeasure, subText, textColor);
 
 			Vector2 newMeasure = MeasureTextEx(font,
 			    TextSubtext(text.c_str(), i, 1), 13 * 3, 1.0f);

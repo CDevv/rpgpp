@@ -15,6 +15,8 @@ bool SoundService::loadMusic(std::string id)
     if (lastId == id) return true;
 
     if (gameData.music.count(id) != 0) {
+        if (gameData.music[id].isSound) return musicLoaded;
+
         Music music = LoadMusicStream(gameData.music[id].relativePath.c_str());
         if (IsMusicValid(music)) {
             unload();
@@ -31,6 +33,19 @@ void SoundService::playMusic()
 {
     if (musicLoaded) {
         PlayMusicStream(music);
+    }
+}
+
+void SoundService::playSound(std::string id)
+{
+    GameData& gameData = Game::getBin();
+
+    if (gameData.music.count(id) != 0) {
+        if (gameData.music[id].isSound) {
+            Sound sound = LoadSound(gameData.music[id].relativePath.c_str());
+
+            PlaySound(sound);
+        }
     }
 }
 

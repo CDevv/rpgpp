@@ -213,7 +213,12 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
 
     //Sounds
     for (auto soundPath : proj->at(FILE_SOUND)) {
-        struc.music[GetFileName(soundPath.c_str())] = {soundPath};
+        struc.music[soundPath] = {soundPath, true};
+    }
+
+    //Music
+    for (auto musicPath : proj->at(FILE_MUSIC)) {
+        struc.music[musicPath] = {musicPath, false};
     }
 
     return struc;

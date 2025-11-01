@@ -42,13 +42,7 @@ Project::Project(std::string filePath)
 
     pathsList = std::array<std::vector<std::string>, ENGINEFILETYPE_MAX>{};
 
-    pathsList[FILE_TILESET] = makePaths(this->tileSetsPath);
-    pathsList[FILE_ROOM] = makePaths(this->mapsPath);
-    pathsList[FILE_ACTOR] = makePaths(this->actorsPath);
-    pathsList[FILE_DIALOGUE] = makePaths(this->dialoguesPath);
-    pathsList[FILE_IMAGE] = makePaths(this->imagesPath);
-    pathsList[FILE_FONT] = makePaths(this->fontsPath);
-    pathsList[FILE_SOUND] = makePaths("sounds");
+    reloadPaths();
 
     UnloadFileText(jsonString);
 }
@@ -62,6 +56,7 @@ void Project::reloadPaths()
     pathsList[FILE_IMAGE] = makePaths(this->imagesPath);
     pathsList[FILE_FONT] = makePaths(this->fontsPath);
     pathsList[FILE_SOUND] = makePaths("sounds");
+    pathsList[FILE_MUSIC] = makePaths("music");
 }
 
 void Project::generateNewProj(std::string title, std::string path)

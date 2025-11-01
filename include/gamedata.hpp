@@ -67,6 +67,7 @@ struct ImageBin
 struct MusicBin
 {
     std::string relativePath;
+    bool isSound;
 };
 
 struct RoomBin
