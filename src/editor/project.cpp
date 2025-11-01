@@ -78,7 +78,7 @@ GameData Project::generateStruct()
     paths.dialoguesPathsList = getTypePaths(FILE_DIALOGUE);
     paths.imagesPathsList = getTypePaths(FILE_IMAGE);
     paths.fontsPathsList = getTypePaths(FILE_FONT);
-    return projectGenerator.generateStruct(paths, projectTitle);
+    return projectGenerator.generateStruct(&pathsList, projectTitle);
 }
 
 void Project::generateCmdScript()
@@ -132,6 +132,7 @@ void Project::runProject()
     printer()
 
     init_window(640, 480, "lraylib")
+    init_audio()
 
     g = game.new()
     g:init()
@@ -149,6 +150,7 @@ void Project::runProject()
     end
 
     close_window()
+    close_audio()
     )";
     SaveFileText("run.lua", const_cast<char*>(luaCodeString.data()));
 

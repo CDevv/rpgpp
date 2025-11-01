@@ -64,6 +64,11 @@ struct ImageBin
     int dataSize;
 };
 
+struct MusicBin
+{
+    std::string relativePath;
+};
+
 struct RoomBin
 {
 	std::string name;
@@ -73,6 +78,7 @@ struct RoomBin
 	std::vector<IVector> collisions;
 	std::vector<InteractableBin> interactables;
 	std::vector<std::vector<TileBin>> tiles;
+	std::string musicSource;
 };
 
 struct GameData
@@ -83,6 +89,7 @@ struct GameData
 	std::vector<RoomBin> rooms;
 	std::vector<ActorBin> actors;
 	std::map<std::string, Dialogue> dialogues;
+	std::map<std::string, MusicBin> music;
 };
 
 struct DataSerialization

@@ -4,6 +4,7 @@
 int main()
 {
     InitWindow(640, 480, "RPG++ Game.");
+    InitAudioDevice();
 
     Game game;
     game.init();
@@ -25,6 +26,7 @@ int main()
 
     game.unload();
     CloseWindow();
+    CloseAudioDevice();
 
     return 0;
 }

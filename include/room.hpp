@@ -4,8 +4,8 @@
 class Player;
 class TileMap;
 
-#include "game.hpp"
 #include "gamedata.hpp"
+#include <string>
 #include <memory>
 #include <vector>
 #include <raylib.h>
@@ -16,7 +16,6 @@ using json = nlohmann::json;
 #include "collisionsContainer.hpp"
 #include "player.hpp"
 #include "tilemap.hpp"
-#include "interactable.hpp"
 
 /**
  * This class represents a game's room. It can contain the Player, interactables, collisions and the TileMap
@@ -24,6 +23,8 @@ using json = nlohmann::json;
 class Room {
 private:
     int worldTileSize;
+    /** Source of the background music for this room. */
+    std::string musicSource;
     /** Container of the interactable tiles */
     std::unique_ptr<InteractablesContainer> interactables;
     /** Container of the collision tiles */
@@ -71,6 +72,11 @@ public:
      * @returns A pointer to the room's TileMap.
      */
     TileMap *getTileMap();
+
+    /** Get filename of the source music. */
+    std::string getMusicSource();
+    /** Set music source. */
+    void setMusicSource(std::string musicSource);
 
     std::vector<Vector2> getCollisionTiles();
     /** Get a reference to the CollisionsContainer of this Room. */

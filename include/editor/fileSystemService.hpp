@@ -54,6 +54,7 @@ public:
     FS_Result openImage();
     FS_Result openTileSetResource();
     FS_Result openDialogueResource();
+    FS_Result openMusic();
 };
 
 #endif

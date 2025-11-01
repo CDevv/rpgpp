@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "gamedata.hpp"
+#include "soundService.hpp"
 #include <cstdio>
 #include <memory>
 #include <raylib.h>
@@ -16,6 +17,7 @@ std::unique_ptr<StateService> Game::state = std::unique_ptr<StateService>{};
 std::unique_ptr<WorldService> Game::world = std::unique_ptr<WorldService>{};
 std::unique_ptr<InterfaceService> Game::ui = std::unique_ptr<InterfaceService>{};
 std::unique_ptr<ResourceService> Game::resources = std::unique_ptr<ResourceService>{};
+std::unique_ptr<SoundService> Game::sounds = std::unique_ptr<SoundService>{};
 
 Game::Game()
 {
@@ -43,6 +45,7 @@ void Game::init()
     state = std::make_unique<StateService>();
     world = std::make_unique<WorldService>();
     ui = std::make_unique<InterfaceService>();
+    sounds = std::make_unique<SoundService>();
 }
 
 void Game::useBin(std::string filePath)
@@ -97,8 +100,14 @@ InterfaceService& Game::getUi()
     return *ui;
 }
 
+SoundService& Game::getSounds()
+{
+    return *sounds;
+}
+
 void Game::update()
 {
+    sounds->update();
     world->update();
     ui->update();
 }
@@ -111,6 +120,7 @@ void Game::draw()
 
 void Game::unload()
 {
+    sounds->unload();
     world->unload();
     ui->unload();
 }

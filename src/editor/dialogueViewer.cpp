@@ -57,7 +57,7 @@ bool DialogueViewer::drawDialogueLine(int idx, std::vector<DialogueLine>::iterat
         }
         ImGui::SameLine();
         if (ImGui::Button(ICON_KI_ARROW_BOTTOM " Move Down")) {
-            if (it != diag->lines.cend()) {
+            if (idx != (diag->lines.size() - 1)) {
                 std::iter_swap(it, it + 1);
             }
         }

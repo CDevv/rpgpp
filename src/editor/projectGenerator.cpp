@@ -3,6 +3,7 @@
 #include "dialogueParser.hpp"
 #include "gamedata.hpp"
 #include "interactable.hpp"
+#include "projectFile.hpp"
 #include "tileset.hpp"
 #include "tilemap.hpp"
 #include "room.hpp"
@@ -39,20 +40,22 @@ void ProjectGenerator::generateNewProj(std::string title, std::string path)
         {"actors", "actors"},
         {"dialogues", "dialogues"},
         {"images", "images"},
-        {"fonts", "fonts"}
+        {"fonts", "fonts"},
+        {"sounds", "sounds"}
     };
     std::string jsonString = projectJson.dump(4);
 
     SaveFileText(TextFormat("%s/%s", newDirPath.c_str(), "proj.rpgpp"), const_cast<char*>(jsonString.data()));
 }
 
-GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
+GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, ENGINEFILETYPE_MAX>* proj,
+    std::string title)
 {
 	GameData struc;
     struc.title = title;
 
     //TileSets
-    for (auto tileSetPath : proj.tileSetPathsList) {
+    for (auto tileSetPath : proj->at(FILE_TILESET)) {
         TileSet tileSet(tileSetPath);
         Texture texture = tileSet.getTexture();
         Image image = LoadImageFromTexture(texture);
@@ -76,7 +79,7 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
         UnloadImage(image);
     }
 
-    for (auto roomPath : proj.mapPathsList) {
+    for (auto roomPath : proj->at(FILE_ROOM)) {
         std::unique_ptr<TileMap> map = std::make_unique<TileMap>(roomPath);
 
         RoomBin roomBin;
@@ -139,13 +142,14 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
             }
             roomBin.interactables.push_back(intBin);
         }
-        room.reset();
+        roomBin.musicSource = room->getMusicSource();
 
+        room.reset();
         struc.rooms.push_back(roomBin);
     }
 
     //Actors
-    for (auto actorPath : proj.actorPathsList) {
+    for (auto actorPath : proj->at(FILE_ACTOR)) {
         std::unique_ptr<Actor> actor = std::make_unique<Actor>(actorPath);
 
         ActorBin actorBin;
@@ -175,7 +179,7 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
     }
 
     //Dialogues
-    for (auto diagPath : proj.dialoguesPathsList) {
+    for (auto diagPath : proj->at(FILE_DIALOGUE)) {
         std::string diagText = LoadFileText(diagPath.c_str());
         Dialogue diag = parseDialogueText(diagText);
 
@@ -184,7 +188,7 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
     }
 
     //Images
-    for (auto imagePath : proj.imagesPathsList) {
+    for (auto imagePath : proj->at(FILE_IMAGE)) {
         Image img = LoadImage(imagePath.c_str());
         ImageBin bin;
 
@@ -203,8 +207,13 @@ GameData ProjectGenerator::generateStruct(ProjectPaths proj, std::string title)
     }
 
     //Fonts
-    for (auto fontPath : proj.fontsPathsList) {
+    for (auto fontPath : proj->at(FILE_FONT)) {
 
+    }
+
+    //Sounds
+    for (auto soundPath : proj->at(FILE_SOUND)) {
+        struc.music[GetFileName(soundPath.c_str())] = {soundPath};
     }
 
     return struc;

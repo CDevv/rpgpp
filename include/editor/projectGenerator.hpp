@@ -4,6 +4,7 @@
 #include <string>
 #include <raylib.h>
 #include <gamedata.hpp>
+#include <projectFile.hpp>
 
 class Project;
 
@@ -26,7 +27,8 @@ class ProjectGenerator {
 public:
 	ProjectGenerator();
 	static void generateNewProj(std::string title, std::string path);
-	GameData generateStruct(ProjectPaths proj, std::string title);
+	GameData generateStruct(std::array<std::vector<std::string>, ENGINEFILETYPE_MAX>* proj,
+	    std::string title);
 };
 
 #endif

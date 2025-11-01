@@ -21,7 +21,7 @@ void clear_bg_lua()
 {
     ClearBackground(RAYWHITE);
 }
-extern "C" 
+extern "C"
 #ifdef _WIN32
 __declspec(dllexport)
 #endif
@@ -32,7 +32,9 @@ int luaopen_rpgpplua(lua_State* L)
     lua.set_function("printer", &printer);
 
     lua.set_function("init_window", &InitWindow);
+    lua.set_function("init_audio", &InitAudioDevice);
     lua.set_function("close_window", &CloseWindow);
+    lua.set_function("close_audio", &CloseAudioDevice);
     lua.set_function("window_should_close", &WindowShouldClose);
     lua.set_function("begin_drawing", &BeginDrawing);
     lua.set_function("end_drawing", &EndDrawing);

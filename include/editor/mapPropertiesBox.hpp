@@ -14,6 +14,7 @@ private:
     bool heightEdit;
     int mapWidth;
     bool widthEdit;
+    bool musicOn;
     Vector2 scrollVec;
     Rectangle viewRec;
 public:

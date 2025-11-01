@@ -12,6 +12,7 @@ using json = nlohmann::json;
 Room::Room()
 {
     this->worldTileSize = 48;
+    this->musicSource = "";
     this->interactables = std::make_unique<InteractablesContainer>();
     this->collisions = std::make_unique<CollisionsContainer>();
     this->tileMap = std::unique_ptr<TileMap>{};
@@ -21,6 +22,7 @@ Room::Room()
 
 Room::Room(std::string fileName)
 {
+    this->musicSource = "";
     this->worldTileSize = 48;
 
     this->interactables = std::make_unique<InteractablesContainer>();
@@ -46,6 +48,8 @@ Room::Room(std::string fileName)
     }
 
     interactables->addJsonData(roomJson);
+
+    musicSource = roomJson.at("music_source");
 
     UnloadFileText(jsonString);
 }
@@ -74,6 +78,12 @@ Room::Room(RoomBin bin)
     this->addPlayer(std::move(player));
 
     interactables->addBinVector(bin.interactables);
+
+    musicSource = bin.musicSource;
+    if (!bin.musicSource.empty()) {
+        Game::getSounds().loadMusic(bin.musicSource);
+        Game::getSounds().playMusic();
+    }
 
     for (auto collisionBin : bin.collisions) {
         collisions->addCollisionTile(collisionBin.x, collisionBin.y);
@@ -123,6 +133,7 @@ json Room::dumpJson()
     }
     roomJson.push_back({"interactables", interactablesVector});
     roomJson.push_back({"interactable_props", interactablesProps});
+    roomJson.push_back({"music_source", musicSource});
 
     return roomJson;
 }
@@ -197,6 +208,16 @@ TileMap *Room::getTileMap()
 std::vector<Vector2> Room::getCollisionTiles()
 {
     return this->collisions->getVector();
+}
+
+std::string Room::getMusicSource()
+{
+    return musicSource;
+}
+
+void Room::setMusicSource(std::string musicSource)
+{
+    this->musicSource = musicSource;
 }
 
 CollisionsContainer& Room::getCollisions()

@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "imgui.h"
 #include "projectFile.hpp"
 #include "room.hpp"
 
@@ -20,6 +21,8 @@ MapPropertiesBox::MapPropertiesBox(Rectangle rect)
     mapHeight = 0;
     heightEdit = false;
 
+    musicOn = false;
+
     scrollVec = Vector2 { 0 ,0 };
     viewRec = Rectangle { 0 };
 }
@@ -37,6 +40,10 @@ void MapPropertiesBox::setDefaults()
         Vector2 mapSize = map->getMaxWorldSize();
         this->mapWidth = mapSize.x;
         this->mapHeight = mapSize.y;
+
+        if (!room->getMusicSource().empty()) {
+            this->musicOn = true;
+        }
     }
 }
 
@@ -71,5 +78,24 @@ void MapPropertiesBox::draw()
         if (fsResult.result == NFD_OKAY) {
             map->setTileSet(fsResult.path);
         }
+    }
+
+    ImGui::SeparatorText("Music");
+    ImGui::Checkbox("Has BG Music", &musicOn);
+
+    if (musicOn) {
+        std::string musicSource = room->getMusicSource();
+        musicSource.push_back('\0');
+
+        ImGui::InputText("Music Source", const_cast<char*>(musicSource.data()), musicSource.size(),
+            ImGuiInputTextFlags_ReadOnly);
+        if (ImGui::Button("Change Music..", ImVec2(-1, 0))) {
+            FS_Result fsResult = fs.openMusic();
+            if (fsResult.result == NFD_OKAY) {
+                room->setMusicSource(fsResult.fileName);
+            }
+        }
+    } else {
+        room->setMusicSource("");
     }
 }
