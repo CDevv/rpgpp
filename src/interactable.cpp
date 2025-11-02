@@ -5,8 +5,8 @@
 #include "game.hpp"
 #include "interfaceService.hpp"
 
-std::array<std::string, 2> Interactable::interactableTypeNames = {
-    "Blank", "Dialogue"
+std::array<std::string, INTTYPE_MAX> Interactable::interactableTypeNames = {
+    "Blank", "Dialogue", "Warper"
 };
 
 Interactable::Interactable()
@@ -32,7 +32,7 @@ Interactable::~Interactable()
 {
 }
 
-std::array<std::string, 2>& Interactable::getTypeNames()
+std::array<std::string, INTTYPE_MAX>& Interactable::getTypeNames()
 {
     return interactableTypeNames;
 }
@@ -91,4 +91,11 @@ void IntBase<DiagInt>::interact()
         InterfaceService& ui = Game::getUi();
         ui.showDialogue(Game::getBin().dialogues[data.dialogueSource]);
     }
+}
+
+template <>
+void IntBase<WarperInt>::interact()
+{
+    WorldService& world = Game::getWorld();
+    world.setRoom(data.targetRoom);
 }

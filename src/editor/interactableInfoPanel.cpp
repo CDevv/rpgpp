@@ -67,7 +67,7 @@ void InteractableInfoPanel::draw()
         switch (action) {
         case ACTION_PLACE:
             ImGui::Text("Place an interactable");
-            ImGui::Combo("Type", &typeNumber, "Blank\0Dialogue\0");
+            ImGui::Combo("Type", &typeNumber, "Blank\0Dialogue\0Warper\0");
             break;
         case ACTION_ERASE:
             ImGui::Text("Erase an interactable..");
@@ -75,7 +75,7 @@ void InteractableInfoPanel::draw()
         case ACTION_EDIT:
             if (interactableWorldPos.x != -1) {
                 ImGui::Text("Edit the selected interactable");
-                ImGui::Combo("Type", &typeNumber, "Blank\0Dialogue\0");
+                ImGui::Combo("Type", &typeNumber, "Blank\0Dialogue\0Warper\0");
                 ImGui::Checkbox("Interact On Touch", &propsState.onTouch);
 
                 int posX = static_cast<int>(interBase->pos.x);
@@ -100,6 +100,9 @@ void InteractableInfoPanel::drawTypeProps()
         case INT_TWO:
             drawDialogueProps();
             break;
+        case INT_WARPER:
+            drawWarperProps();
+            break;
         default:
             break;
         }
@@ -119,6 +122,22 @@ void InteractableInfoPanel::drawDialogueProps()
 
         if (fsResult.result == NFD_OKAY) {
             propsState.diagSource = std::string(GetFileNameWithoutExt(fsResult.path.c_str()));
+        }
+    }
+}
+
+void InteractableInfoPanel::drawWarperProps()
+{
+    std::string warperTarget = propsState.diagSource;
+    warperTarget.push_back('\0');
+    ImGui::InputText("Target Room", warperTarget.data(), warperTarget.size(),
+        ImGuiInputTextFlags_ReadOnly);
+    if (ImGui::Button("Open..", ImVec2(-1, 16))) {
+        nfdu8filteritem_t filters[1] = { { "RPG++ Room", "rmap" } };
+        FS_Result fsResult = Editor::getFileSystem().openFile(filters);
+
+        if (fsResult.result == NFD_OKAY) {
+            propsState.diagSource = std::string(GetFileName(fsResult.path.c_str()));
         }
     }
 }

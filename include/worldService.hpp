@@ -13,6 +13,9 @@ class WorldService {
 private:
     /** The current room in this World. */
     std::unique_ptr<Room> room;
+    bool lock;
+    std::string deferredRoomId;
+    bool deferRoomChange;
 public:
     /** Empty constructor. */
     WorldService();

@@ -1,8 +1,3 @@
-#include "actor.hpp"
-#include "room.hpp"
-#include "tilemap.hpp"
-#include "tileset.hpp"
-#include "player.hpp"
 #include "game.hpp"
 #include <raylib.h>
 

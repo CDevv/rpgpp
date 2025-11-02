@@ -6,13 +6,14 @@
 #include <array>
 #include <string>
 
-#include "dialogueBalloon.hpp"
-
 /** Enum for interactable types */
 enum InteractableType {
     INT_BLANK,
-    INT_TWO
+    INT_TWO,
+    INT_WARPER
 };
+
+#define INTTYPE_MAX (3)
 
 /** Defines an object that is interactable in-game by a player's action */
 class Interactable {
@@ -32,14 +33,14 @@ protected:
     /** Interactable properties. */
     std::map<std::string, std::string> props;
     /** Array for descriptive names of interactable types */
-    static std::array<std::string, 2> interactableTypeNames;
+    static std::array<std::string, INTTYPE_MAX> interactableTypeNames;
 public:
     /** Empty constructor */
     Interactable();
     /** Construct from the type, tile position and size */
     Interactable(InteractableType type, Vector2 tilePos, int tileSize);
     /** Get the array containing names of the Interactable names */
-    static std::array<std::string, 2>& getTypeNames();
+    static std::array<std::string, INTTYPE_MAX>& getTypeNames();
     /** Whether this Interactable is valid */
     bool isValid();
     virtual ~Interactable();
@@ -58,6 +59,10 @@ public:
 
 struct DiagInt {
     std::string dialogueSource;
+};
+
+struct WarperInt {
+    std::string targetRoom;
 };
 
 class IntBaseWrapper {

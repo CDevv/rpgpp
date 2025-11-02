@@ -2,7 +2,10 @@
 
 WorldService::WorldService()
 {
+    this->lock = false;
     this->room = std::unique_ptr<Room>{};
+    this->deferRoomChange = false;
+    this->deferredRoomId = "";
 }
 
 Room& WorldService::getRoom()
@@ -12,7 +15,13 @@ Room& WorldService::getRoom()
 
 void WorldService::setRoom(std::string filePath)
 {
-    this->room = std::make_unique<Room>(filePath);
+    for (RoomBin bin : Game::getBin().rooms) {
+        if (bin.name == filePath) {
+            deferRoomChange = true;
+            deferredRoomId = bin.name;
+            break;
+        }
+    }
 }
 
 void WorldService::setRoomBin(RoomBin bin)
@@ -27,7 +36,17 @@ Player& WorldService::getPlayer()
 
 void WorldService::update()
 {
-    room->update();
+    if (deferRoomChange) {
+        for (RoomBin bin : Game::getBin().rooms) {
+            if (bin.name == deferredRoomId) {
+                setRoomBin(bin);
+                break;
+            }
+        }
+        deferRoomChange = false;
+    } else {
+        room->update();
+    }
 }
 
 void WorldService::draw()
@@ -39,4 +58,3 @@ void WorldService::unload()
 {
     //room->unload();
 }
-

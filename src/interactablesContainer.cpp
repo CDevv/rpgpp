@@ -27,6 +27,9 @@ void InteractablesContainer::add(int x, int y, InteractableType type) {
         case INT_TWO:
             add<DiagInt>(x, y, type);
             break;
+        case INT_WARPER:
+            add<WarperInt>(x, y, type);
+            break;
     }
 }
 
@@ -94,6 +97,11 @@ void InteractablesContainer::addBinVector(std::vector<InteractableBin> bin)
             diag = static_cast<IntBase<DiagInt>*>(this->getInt(intBin.x, intBin.y));
             diag->set(DiagInt {intBin.dialogue});
             break;
+        case INT_WARPER:
+            static_cast<IntBase<WarperInt>*>(this->getInt(intBin.x, intBin.y))->set({
+                intBin.dialogue
+            });
+            break;
         default:
             break;
         }
@@ -131,6 +139,9 @@ void InteractablesContainer::addJsonData(json roomJson)
                 diagInt.dialogueSource = value.at(0);
 
                 (static_cast<IntBase<DiagInt>*>(inter))->set(diagInt);
+            }
+            if (inter->type == INT_WARPER) {
+                (static_cast<IntBase<WarperInt>*>(inter))->set({value.at(0)});
             }
         }
     }

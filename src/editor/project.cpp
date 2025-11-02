@@ -66,13 +66,6 @@ void Project::generateNewProj(std::string title, std::string path)
 
 GameData Project::generateStruct()
 {
-    ProjectPaths paths;
-    paths.tileSetPathsList = getTypePaths(FILE_TILESET);
-    paths.mapPathsList = getTypePaths(FILE_ROOM);
-    paths.actorPathsList = getTypePaths(FILE_ACTOR);
-    paths.dialoguesPathsList = getTypePaths(FILE_DIALOGUE);
-    paths.imagesPathsList = getTypePaths(FILE_IMAGE);
-    paths.fontsPathsList = getTypePaths(FILE_FONT);
     return projectGenerator.generateStruct(&pathsList, projectTitle);
 }
 

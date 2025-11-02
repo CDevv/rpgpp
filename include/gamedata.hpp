@@ -76,6 +76,7 @@ struct RoomBin
 	std::string tileSetName;
 	int width;
 	int height;
+	IVector startPoint;
 	std::vector<IVector> collisions;
 	std::vector<InteractableBin> interactables;
 	std::vector<std::vector<TileBin>> tiles;

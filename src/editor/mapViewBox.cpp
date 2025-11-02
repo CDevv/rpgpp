@@ -140,6 +140,8 @@ void MapViewBox::isHoverOnValidTile()
                 }
             } else if (action == ACTION_EDIT) {
                 this->selectedWorldTile = tileAtlasPos;
+            } else if (action == ACTION_STARTTILE) {
+                room->setStartTile(tileAtlasPos);
             }
         }
     }
@@ -150,6 +152,9 @@ void MapViewBox::isHoverOnValidTile()
             if (inter != nullptr) {
                 ImGui::SetTooltip("Interactable\nType: %s", Interactable::getTypeNames()[inter->type].c_str());
             }
+        }
+        if (action == ACTION_STARTTILE) {
+
         }
     }
 }
@@ -262,6 +267,9 @@ void MapViewBox::drawTiles()
                     validTexture = true;
                     textureIntType = resources.getTexture("dialog");
                     break;
+                case INT_WARPER:
+                    validTexture = true;
+                    textureIntType = resources.getTexture("figurine");
                 default:
                     break;
             }
@@ -283,6 +291,19 @@ void MapViewBox::drawTiles()
 
             DrawRectangleLinesEx(hoverTileRect, 1.0f, Fade(ORANGE, 0.7f));
         }
+    }
+    if (action == ACTION_STARTTILE) {
+        //draw the room's current startTile
+        Vector2 startTileWorldCoords = Vector2 {
+            static_cast<float>(room->getStartTile().x * tileMap->getAtlasTileSize()),
+            static_cast<float>(room->getStartTile().y * tileMap->getAtlasTileSize())
+        };
+        Rectangle startTileRect = Rectangle {
+            startTileWorldCoords.x, startTileWorldCoords.y,
+            static_cast<float>(tileMap->getAtlasTileSize()), static_cast<float>(tileMap->getAtlasTileSize())
+        };
+
+        DrawRectangleLinesEx(startTileRect, 2.0f, GREEN);
     }
 
     drawHoverTile(atlasTileSize, tileWorldPos);
@@ -345,6 +366,13 @@ void MapViewBox::drawHoverTile(int atlasTileSize, Vector2 tileWorldPos)
             };
 
             DrawRectangleLinesEx(hoverTileRect, 1.0f, Fade(ORANGE, 0.5f));
+        } else if (action == ACTION_STARTTILE) {
+            Rectangle hoverTileRect = Rectangle {
+                tileWorldPos.x, tileWorldPos.y,
+                static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+            };
+
+            DrawRectangleLinesEx(hoverTileRect, 1.0f, Fade(GREEN, 0.5f));
         }
     }
 }

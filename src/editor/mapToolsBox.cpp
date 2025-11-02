@@ -6,11 +6,12 @@
 #include <string>
 #include <IconsKenney.h>
 
-static std::array<std::string, 4> buttonIcons = {
+static std::array<std::string, 5> buttonIcons = {
 	ICON_KI_CURSOR,
 	ICON_KI_PENCIL,
 	ICON_KI_ERASER,
-	ICON_KI_COG
+	ICON_KI_COG,
+	ICON_KI_FLAG
 };
 
 MapToolsBox::MapToolsBox() {}

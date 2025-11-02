@@ -10,6 +10,7 @@ class Room;
 /** THe Player class represents the player character that the player controls. */
 class Player {
 private:
+    bool lock;
     /** Reference to the Room that the Player is currently in. */
     Room& room;
     /** The Actor that this Player controls. */
@@ -40,6 +41,8 @@ public:
     void setRoom(Room& room);
     /** Move the player by a certain velocity. */
     void moveByVelocity(Vector2 velocity);
+    /** Get the player's position. */
+    Vector2 getPosition();
 };
 
 #endif

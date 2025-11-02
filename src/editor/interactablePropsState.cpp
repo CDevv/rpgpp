@@ -20,6 +20,9 @@ void InteractablePropsState::setDefaults(IntBaseWrapper *interactable)
 		diag = static_cast<IntBase<DiagInt>*>(interactable);
 		diagSource = diag->get().dialogueSource;
 		break;
+	case INT_WARPER:
+        diagSource = (static_cast<IntBase<WarperInt>*>(interactable))->get().targetRoom;
+	    break;
 	default:
 		break;
 	}
@@ -38,6 +41,9 @@ void InteractablePropsState::updateProps(IntBaseWrapper *interactable)
 
         (static_cast<IntBase<DiagInt>*>(interactable))->set(dialogue);
 		break;
+	case INT_WARPER:
+	    (static_cast<IntBase<WarperInt>*>(interactable))->set({diagSource});
+	    break;
 	default:
 		break;
 	}

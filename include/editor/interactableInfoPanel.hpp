@@ -23,6 +23,7 @@ private:
     bool diagTextEditMode;
     void drawTypeProps();
     void drawDialogueProps();
+    void drawWarperProps();
 public:
     InteractableInfoPanel();
     InteractableInfoPanel(Rectangle rect);

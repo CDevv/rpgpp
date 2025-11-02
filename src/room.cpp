@@ -11,6 +11,15 @@ using json = nlohmann::json;
 
 Room::Room()
 {
+    this->lock = false;
+
+    Camera2D camera;
+    camera.offset = Vector2 { 0, 0 };
+    camera.target = Vector2 { 0, 0 };
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+    this->camera = camera;
+
     this->worldTileSize = 48;
     this->musicSource = "";
     this->interactables = std::make_unique<InteractablesContainer>();
@@ -22,8 +31,23 @@ Room::Room()
 
 Room::Room(std::string fileName)
 {
+    this->lock = false;
+
+    Camera2D camera;
+    camera.offset = Vector2 { 0, 0 };
+    camera.target = Vector2 { 0, 0 };
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+    this->camera = camera;
+
     this->musicSource = "";
     this->worldTileSize = 48;
+
+    char* jsonString = LoadFileText(fileName.c_str());
+    json roomJson = json::parse(jsonString);
+
+    std::vector<int> startPosVec = roomJson.at("start_pos");
+    startTile = Vector2 { static_cast<float>(startPosVec[0]), static_cast<float>(startPosVec[1]) };
 
     this->interactables = std::make_unique<InteractablesContainer>();
     this->collisions = std::make_unique<CollisionsContainer>();
@@ -31,13 +55,10 @@ Room::Room(std::string fileName)
 
     this->tileMap = std::make_unique<TileMap>(fileName);
     std::unique_ptr<Actor> actor = std::make_unique<Actor>("actors/playerActor.ractor");
-    actor->setTilePosition(Vector2 {1, 0}, tileMap->getTileSet()->getTileSize());
+    actor->setTilePosition(Vector2 {startTile.x, startTile.y}, tileMap->getTileSet()->getTileSize());
     std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
 
     this->addPlayer(std::move(player));
-
-    char* jsonString = LoadFileText(fileName.c_str());
-    json roomJson = json::parse(jsonString);
 
     std::vector<std::vector<int>> collisionsVec = roomJson.at("collision");
     for (auto v : collisionsVec) {
@@ -72,7 +93,9 @@ Room::Room(RoomBin bin)
     this->tileMap = std::make_unique<TileMap>(bin);
 
     std::unique_ptr<Actor> actor = std::make_unique<Actor>(Game::getBin().actors.at(0));
-    actor->setTilePosition(Vector2 {1, 0}, tileMap->getTileSet()->getTileSize());
+    actor->setTilePosition(Vector2 {
+        static_cast<float>(bin.startPoint.x), static_cast<float>(bin.startPoint.y)
+    }, tileMap->getTileSet()->getTileSize());
     std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
 
     this->addPlayer(std::move(player));
@@ -119,13 +142,18 @@ json Room::dumpJson()
         std::vector<std::string> propsVec;
         if (interactable->type == INT_TWO) {
             IntBase<DiagInt>* dialogueInter = static_cast<IntBase<DiagInt>*>(interactable);
-
             std::string key = TextFormat("%i;%i",
                 static_cast<int>(interactable->pos.x),
                 static_cast<int>(interactable->pos.y));
-
             propsVec.push_back(dialogueInter->get().dialogueSource);
-
+            interactablesProps[key] = propsVec;
+        }
+        if (interactable->type == INT_WARPER) {
+            IntBase<WarperInt>* dialogueInter = static_cast<IntBase<WarperInt>*>(interactable);
+            std::string key = TextFormat("%i;%i",
+                static_cast<int>(interactable->pos.x),
+                static_cast<int>(interactable->pos.y));
+            propsVec.push_back(dialogueInter->get().targetRoom);
             interactablesProps[key] = propsVec;
         }
 
@@ -134,6 +162,9 @@ json Room::dumpJson()
     roomJson.push_back({"interactables", interactablesVector});
     roomJson.push_back({"interactable_props", interactablesProps});
     roomJson.push_back({"music_source", musicSource});
+    roomJson.push_back({"start_pos", {
+        static_cast<int>(startTile.x), static_cast<int>(startTile.y)
+    }});
 
     return roomJson;
 }
@@ -155,10 +186,31 @@ void Room::update()
         actor.update();
     }
     player->update();
+    if (!lock) updateCamera();
+}
+
+void Room::updateCamera()
+{
+    Vector2 playerPos = player->getPosition();
+    Vector2 cameraOffset = Vector2 { 0, 0 };
+    Vector2 cameraTarget = Vector2 { 0, 0 };
+
+    if (playerPos.x >= 320.0f) {
+        cameraOffset.x = 320.0f;
+        cameraTarget.x = playerPos.x;
+    }
+    if (playerPos.y >= 240.0f) {
+        cameraOffset.y = 240.0f;
+        cameraTarget.y = playerPos.y;
+    }
+    camera.target = cameraTarget;
+    camera.offset = cameraOffset;
 }
 
 void Room::draw()
 {
+    BeginMode2D(camera);
+
     this->tileMap->draw();
     for (auto i : interactables->getList()) {
         Rectangle rect = Rectangle {
@@ -179,11 +231,18 @@ void Room::draw()
         actor.draw();
     }
     player->draw();
+
+    EndMode2D();
 }
 
 int Room::getWorldTileSize()
 {
     return worldTileSize;
+}
+
+void Room::setLock(bool val)
+{
+    this->lock = val;
 }
 
 void Room::addActor(Actor actor) {
@@ -218,6 +277,16 @@ std::string Room::getMusicSource()
 void Room::setMusicSource(std::string musicSource)
 {
     this->musicSource = musicSource;
+}
+
+Vector2 Room::getStartTile()
+{
+    return startTile;
+}
+
+void Room::setStartTile(Vector2 startTile)
+{
+    this->startTile = startTile;
 }
 
 CollisionsContainer& Room::getCollisions()

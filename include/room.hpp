@@ -22,7 +22,12 @@ using json = nlohmann::json;
  */
 class Room {
 private:
+    bool lock;
     int worldTileSize;
+    /** The camera. */
+    Camera2D camera;
+    /** Start point of the player. (tile position) */
+    Vector2 startTile;
     /** Source of the background music for this room. */
     std::string musicSource;
     /** Container of the interactable tiles */
@@ -35,6 +40,7 @@ private:
     std::unique_ptr<std::vector<Actor>> actors;
     /** This Room's only Player. */
     std::unique_ptr<Player> player;
+    void updateCamera();
 public:
     /** Empty constructor */
     Room();
@@ -56,6 +62,7 @@ public:
     /** Draw routine for this Room. */
     void draw();
     int getWorldTileSize();
+    void setLock(bool val);
     /** Add an actor to this Room
      * @param actor The actor to be added to the Room's collection.
      */
@@ -77,6 +84,10 @@ public:
     std::string getMusicSource();
     /** Set music source. */
     void setMusicSource(std::string musicSource);
+    /** Get the start tile position. */
+    Vector2 getStartTile();
+    /** Set the start tile position. */
+    void setStartTile(Vector2 startTile);
 
     std::vector<Vector2> getCollisionTiles();
     /** Get a reference to the CollisionsContainer of this Room. */

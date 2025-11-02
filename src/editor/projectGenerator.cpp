@@ -79,6 +79,7 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
         UnloadImage(image);
     }
 
+    //Rooms
     for (auto roomPath : proj->at(FILE_ROOM)) {
         std::unique_ptr<TileMap> map = std::make_unique<TileMap>(roomPath);
 
@@ -88,6 +89,7 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
         Vector2 worldSize = map->getMaxWorldSize();
         roomBin.width = static_cast<int>(worldSize.x);
         roomBin.height = static_cast<int>(worldSize.y);
+
 
         for (int x = 0; x < roomBin.width; x++) {
             std::vector<TileBin> row;
@@ -120,6 +122,7 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
         map.reset();
 
         std::unique_ptr<Room> room = std::make_unique<Room>(roomPath);
+        roomBin.startPoint = IVector { static_cast<int>(room->getStartTile().x), static_cast<int>(room->getStartTile().y) };
         for (auto collisionVec : room->getCollisionTiles()) {
             IVector intVec;
             intVec.x = static_cast<int>(collisionVec.x);
@@ -136,6 +139,9 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
             switch (interactable->type) {
             case INT_TWO:
                 intBin.dialogue = (static_cast<IntBase<DiagInt>*>(interactable))->get().dialogueSource;
+                break;
+            case INT_WARPER:
+                intBin.dialogue = (static_cast<IntBase<WarperInt>*>(interactable))->get().targetRoom;
                 break;
             default:
                 break;

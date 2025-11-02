@@ -1,9 +1,11 @@
 #include "player.hpp"
+#include "interactable.hpp"
 #include <raymath.h>
 
 Player::Player(std::unique_ptr<Actor> actor, Room& room)
 : room(room)
 {
+    this->lock = false;
     this->position = Vector2 { 0, 0 };
     this->velocity = Vector2 { 0, 0 };
     this->size = 48;
@@ -65,7 +67,9 @@ void Player::update()
         this->handleInteraction();
     }
 
-    this->handleCollision();
+    if (!lock) this->handleCollision();
+
+    if (lock) return;
 
     if (Vector2Equals(velocity, Vector2 { 0, 0 })) {
         actor->changeAnimation(idleDirection);
@@ -91,6 +95,8 @@ void Player::draw()
 
 void Player::handleCollision()
 {
+    if (actor == nullptr) return;
+
     Rectangle playerRect = actor->getCollisionRect(velocity);
 
     TileMap *tileMap = room.getTileMap();
@@ -123,6 +129,10 @@ void Player::handleCollision()
 
             if (interactable->onTouch) {
                 interactable->interact();
+                if (interactable->type == INT_WARPER) {
+                    lock = true;
+                    room.setLock(true);
+                }
             }
 
             break;
@@ -140,7 +150,13 @@ void Player::handleInteraction()
         };
 
         if (CheckCollisionRecs(interactableArea, tileRect)) {
+            if (interactable->type == INT_WARPER) {
+                lock = true;
+                room.setLock(true);
+            }
+
             interactable->interact();
+
             break;
         }
     }
@@ -157,4 +173,12 @@ void Player::moveByVelocity(Vector2 velocity)
     position = resultVector;
 
     actor->moveByVelocity(velocity);
+}
+
+Vector2 Player::getPosition()
+{
+    if (actor == nullptr) return Vector2 { 0, 0 };
+
+    Rectangle actorRect = actor->getRect();
+    return Vector2 { actorRect.x + (actorRect.width / 2), actorRect.y + (actorRect.height / 2) };
 }

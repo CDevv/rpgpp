@@ -9,6 +9,7 @@ ResourceService::ResourceService()
     addTextureFromFile("resources/close.png");
     addTextureFromFile("resources/cross.png");
     addTextureFromFile("resources/dialog.png");
+    addTextureFromFile("resources/figurine.png");
 }
 
 ResourceService::~ResourceService() {}
