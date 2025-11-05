@@ -11,7 +11,7 @@
 
 std::array<std::string, ENGINEFILETYPE_MAX> ProjectFile::fileTypeNames =
 std::array<std::string, ENGINEFILETYPE_MAX>{
-    "TileSet", "Map", "Actor", "Dialogues", "Images", "Fonts", "Sounds", "Music"
+    "TileSet", "Map", "Actor", "Dialogues", "Images", "Fonts", "Sounds", "Music", "Props"
 };
 
 ProjectFile::ProjectFile() {}

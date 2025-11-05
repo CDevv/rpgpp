@@ -78,6 +78,8 @@ public:
     void moveByVelocity(Vector2 velocity);
     /** Get the collision rectangle of this Actor if it was moved by the velocity vector */
     Rectangle getCollisionRect(Vector2 velocity);
+    /** Get collision center point. */
+    Vector2 getCollisionCenter();
     /** Add a frame in the chosen animation. The frame represents an atlas tile from this Actor's TileSet. */
     void addAnimationFrame(Direction id, Vector2 atlasPos);
     /** Remove a frame in the chosen animation, specified by an index. */

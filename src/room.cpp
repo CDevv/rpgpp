@@ -24,9 +24,15 @@ Room::Room()
     this->musicSource = "";
     this->interactables = std::make_unique<InteractablesContainer>();
     this->collisions = std::make_unique<CollisionsContainer>();
+    this->props = std::make_unique<std::vector<Prop>>();
     this->tileMap = std::unique_ptr<TileMap>{};
     this->actors = std::unique_ptr<std::vector<Actor>>{};
     this->player = std::unique_ptr<Player>{};
+
+    Prop p(Rectangle { 0, 0, 16, 16 }, Vector2 { 0, 48 });
+    p.setTexture(Game::getResources().getTexture("prop.png"));
+    p.setCollisionRect(Rectangle { 0, 8, 16, 8 });
+    addProp(p);
 }
 
 Room::Room(std::string fileName)
@@ -227,10 +233,22 @@ void Room::draw()
         DrawRectangleRec(rect, Fade(RED, 0.5f));
     }
 
+    for (auto p : *props) {
+        if (p.getCollisionCenter().y <= player->getCollisionPos().y) {
+            p.draw();
+        }
+    }
+
     for (auto&& actor : *actors) {
         actor.draw();
     }
     player->draw();
+
+    for (auto p : *props) {
+        if (p.getCollisionCenter().y > player->getCollisionPos().y) {
+            p.draw();
+        }
+    }
 
     EndMode2D();
 }
@@ -297,4 +315,23 @@ CollisionsContainer& Room::getCollisions()
 InteractablesContainer& Room::getInteractables()
 {
     return *this->interactables;
+}
+
+std::vector<Prop>& Room::getProps()
+{
+    return *props;
+}
+
+void Room::addProp(Prop prop)
+{
+    props->push_back(prop);
+}
+
+void Room::removeProp(Vector2 worldPos)
+{
+    for (std::vector<Prop>::iterator it = props->begin(); it < props->end(); ++it) {
+        if (it->getWorldPos().x == worldPos.x && it->getWorldPos().y == worldPos.y) {
+            props->erase(it);
+        }
+    }
 }

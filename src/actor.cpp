@@ -359,6 +359,12 @@ Rectangle Actor::getCollisionRect(Vector2 velocity)
     return result;
 }
 
+Vector2 Actor::getCollisionCenter()
+{
+    Vector2 result = { position.x + (collisionRect.width / 2), position.y + (collisionRect.height / 2) };
+    return result;
+}
+
 void Actor::addAnimationFrame(Direction id, Vector2 atlasPos)
 {
     animations[static_cast<int>(id)]->push_back(atlasPos);

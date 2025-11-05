@@ -14,6 +14,7 @@ using json = nlohmann::json;
 #include "actor.hpp"
 #include "interactablesContainer.hpp"
 #include "collisionsContainer.hpp"
+#include "prop.hpp"
 #include "player.hpp"
 #include "tilemap.hpp"
 
@@ -34,6 +35,7 @@ private:
     std::unique_ptr<InteractablesContainer> interactables;
     /** Container of the collision tiles */
     std::unique_ptr<CollisionsContainer> collisions;
+    std::unique_ptr<std::vector<Prop>> props;
     /** This Room's TileMap, which contains all placed tiles. */
     std::unique_ptr<TileMap> tileMap;
     /** A collection of all Actors in this Room */
@@ -94,6 +96,10 @@ public:
     CollisionsContainer& getCollisions();
     /** Get a reference to the InteractablesContainer of this Room. */
     InteractablesContainer& getInteractables();
+
+    std::vector<Prop>& getProps();
+    void addProp(Prop prop);
+    void removeProp(Vector2 worldPos);
 };
 
 #endif

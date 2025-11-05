@@ -43,6 +43,7 @@ public:
     void moveByVelocity(Vector2 velocity);
     /** Get the player's position. */
     Vector2 getPosition();
+    Vector2 getCollisionPos();
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include "player.hpp"
 #include "interactable.hpp"
+#include <raylib.h>
 #include <raymath.h>
 
 Player::Player(std::unique_ptr<Actor> actor, Room& room)
@@ -116,6 +117,14 @@ void Player::handleCollision()
         }
     }
 
+    //props
+    for (auto p : room.getProps()) {
+        if (CheckCollisionRecs(playerRect, p.getWorldCollisionRect())) {
+            velocity = Vector2 { 0, 0 };
+            break;
+        }
+    }
+
     //interactable tiles
     std::vector<IntBaseWrapper*> interactableTiles = this->room.getInteractables().getList();
     for (IntBaseWrapper* interactable : interactableTiles) {
@@ -181,4 +190,11 @@ Vector2 Player::getPosition()
 
     Rectangle actorRect = actor->getRect();
     return Vector2 { actorRect.x + (actorRect.width / 2), actorRect.y + (actorRect.height / 2) };
+}
+
+Vector2 Player::getCollisionPos()
+{
+    if (actor == nullptr) return Vector2 { 0, 0 };
+
+    return actor->getCollisionCenter();
 }
