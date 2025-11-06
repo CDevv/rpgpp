@@ -1,5 +1,6 @@
 #include "projectFile.hpp"
 #include "dialogueParser.hpp"
+#include "prop.hpp"
 #include "tileset.hpp"
 #include <memory>
 #include <raylib.h>
@@ -11,7 +12,10 @@
 
 std::array<std::string, ENGINEFILETYPE_MAX> ProjectFile::fileTypeNames =
 std::array<std::string, ENGINEFILETYPE_MAX>{
-    "TileSet", "Map", "Actor", "Dialogues", "Images", "Fonts", "Sounds", "Music", "Props"
+    "TileSets", "Maps", "Actors",
+    "Dialogues", "Images", "Fonts",
+    "Sounds", "Music", "Props",
+    "UI Views", "Scripts"
 };
 
 ProjectFile::ProjectFile() {}
@@ -47,6 +51,9 @@ void ProjectFile::setFromPath(std::string relativePath)
         diag->title = GetFileNameWithoutExt(relativePath.c_str());
         setData(diag);
         fileType = FILE_DIALOGUE;
+    } else if (TextIsEqual(fileExtension.c_str(), ".rprop")) {
+        setData(new Prop(relativePath));
+        fileType = FILE_PROP;
     }
 }
 

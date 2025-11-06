@@ -30,7 +30,7 @@ Room::Room()
     this->player = std::unique_ptr<Player>{};
 
     Prop p(Rectangle { 0, 0, 16, 16 }, Vector2 { 0, 48 });
-    p.setTexture(Game::getResources().getTexture("prop.png"));
+    //p.setTexture(Game::getResources().getTexture("prop.png"));
     p.setCollisionRect(Rectangle { 0, 8, 16, 8 });
     addProp(p);
 }

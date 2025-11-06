@@ -57,6 +57,9 @@ void Project::reloadPaths()
     pathsList[FILE_FONT] = makePaths(this->fontsPath);
     pathsList[FILE_SOUND] = makePaths("sounds");
     pathsList[FILE_MUSIC] = makePaths("music");
+    pathsList[FILE_PROP] = makePaths("props");
+    pathsList[FILE_UI] = makePaths("ui");
+    pathsList[FILE_SCRIPT] = makePaths("scripts");
 }
 
 void Project::generateNewProj(std::string title, std::string path)

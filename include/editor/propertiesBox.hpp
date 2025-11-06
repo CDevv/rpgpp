@@ -5,6 +5,7 @@
 #include "tileSetPropertiesBox.hpp"
 #include "mapPropertiesBox.hpp"
 #include "actorPropertiesBox.hpp"
+#include "propPropertiesBox.hpp"
 
 class PropertiesBox {
 private:
@@ -13,6 +14,7 @@ private:
     TileSetPropertiesBox tileSetProps;
     MapPropertiesBox mapProps;
     ActorPropertiesBox actorProps;
+    PropPropertiesBox propProps;
 public:
     PropertiesBox();
     PropertiesBox(Rectangle rect);
@@ -21,6 +23,7 @@ public:
     void draw();
     void setDefaults();
     ActorPropertiesBox& getActorProps();
+    PropPropertiesBox& getPropProps();
 };
 
 #endif

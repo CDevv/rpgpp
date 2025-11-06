@@ -2,6 +2,8 @@
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "mapPropertiesBox.hpp"
+#include "projectFile.hpp"
+#include "propPropertiesBox.hpp"
 #include "tileSetPropertiesBox.hpp"
 
 PropertiesBox::PropertiesBox() {}
@@ -14,6 +16,7 @@ PropertiesBox::PropertiesBox(Rectangle rect)
     tileSetProps = TileSetPropertiesBox(rect);
     mapProps = MapPropertiesBox(rect);
     actorProps = ActorPropertiesBox(rect);
+    propProps = PropPropertiesBox();
 }
 
 void PropertiesBox::setRect(Rectangle rect)
@@ -38,6 +41,9 @@ void PropertiesBox::setDefaults()
         case FILE_ACTOR:
             actorProps.setDefaults();
             break;
+        case FILE_PROP:
+            propProps.setDefaults();
+            break;
         }
     }
 }
@@ -58,6 +64,9 @@ void PropertiesBox::update()
             break;
         case FILE_ACTOR:
             actorProps.update();
+            break;
+        case FILE_PROP:
+            propProps.update();
             break;
         }
     }
@@ -85,6 +94,9 @@ void PropertiesBox::draw()
             case FILE_ACTOR:
                 actorProps.draw();
                 break;
+            case FILE_PROP:
+                propProps.draw();
+                break;
             }
         }
 
@@ -95,4 +107,9 @@ void PropertiesBox::draw()
 ActorPropertiesBox& PropertiesBox::getActorProps()
 {
     return actorProps;
+}
+
+PropPropertiesBox& PropertiesBox::getPropProps()
+{
+    return propProps;
 }

@@ -4,6 +4,7 @@
 #include <raymath.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "projectFile.hpp"
 
 CollisionBox::CollisionBox()
 {
@@ -116,7 +117,7 @@ void CollisionBox::update()
 			FileSystemService& fs = Editor::getFileSystem();
 			ProjectFile* file = fs.getCurrentFile();
 
-			if (fs.fileIsOpen() && fs.getType() && file != nullptr) {
+			if (fs.isAvailable(FILE_ACTOR)) {
 			    Actor* actor = file->getData<Actor>();
 				actor->setCollisionRect(rect);
 			}
@@ -193,6 +194,8 @@ void CollisionBox::update()
 
 void CollisionBox::draw()
 {
+    printf("draw collisionbox: [%f, %f] \n", rect.x, rect.y);
+
 	DrawRectangleRec(rect, Fade(RED, 0.5f));
 
 	DrawRectangleRec(topLeft, RED);

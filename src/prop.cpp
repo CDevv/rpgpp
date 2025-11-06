@@ -1,8 +1,45 @@
 #include "prop.hpp"
 #include "gamedata.hpp"
 #include <raylib.h>
+#include <nlohmann/json.hpp>
+#include <stdexcept>
+using json = nlohmann::json;
 
 Prop::Prop() {}
+
+Prop::Prop(std::string filePath)
+{
+    this->worldPos = Vector2 { 0, 0 };
+
+    std::string jsonString = LoadFileText(filePath.c_str());
+
+    json json = json::parse(jsonString);
+    std::vector<int> atlasRectVec = json.at("atlas_rect");
+    if (atlasRectVec.size() != 4) {
+        throw std::runtime_error("Not enough items in atlas_rect.");
+    }
+    this->atlasRect = Rectangle {
+        static_cast<float>(atlasRectVec[0]),
+        static_cast<float>(atlasRectVec[1]),
+        static_cast<float>(atlasRectVec[2]),
+        static_cast<float>(atlasRectVec[3])
+    };
+
+    std::vector<int> collisionRectVec = json.at("collision_rect");
+    if (collisionRectVec.size() != 4) {
+        throw std::runtime_error("Not enough items in collision_rect.");
+    }
+    this->collisionRect = Rectangle {
+        static_cast<float>(collisionRectVec[0]),
+        static_cast<float>(collisionRectVec[1]),
+        static_cast<float>(collisionRectVec[2]),
+        static_cast<float>(collisionRectVec[3])
+    };
+
+    std::string imagePath = json.at("image");
+    this->imagePath = imagePath;
+    this->texture = LoadTexture(imagePath.c_str());
+}
 
 Prop::Prop(Rectangle atlasRect, Vector2 worldPos)
 {
@@ -11,9 +48,44 @@ Prop::Prop(Rectangle atlasRect, Vector2 worldPos)
     this->collisionRect = Rectangle { 0, 0, 16, 16 };
 }
 
+json Prop::dumpJson()
+{
+    std::vector<int> atlasRectVec = {
+        static_cast<int>(atlasRect.x), static_cast<int>(atlasRect.y),
+        static_cast<int>(atlasRect.width), static_cast<int>(atlasRect.height)
+    };
+    std::vector<int> collisionRectVec = {
+        static_cast<int>(collisionRect.x), static_cast<int>(collisionRect.y),
+        static_cast<int>(collisionRect.width), static_cast<int>(collisionRect.height)
+    };
+
+    json j{
+        {"atlas_rect", atlasRectVec},
+        {"collision_rect", collisionRectVec},
+        {"image", imagePath}
+    };
+    return j;
+}
+
 void Prop::setTexture(Texture2D texture)
 {
     this->texture = texture;
+}
+
+Texture2D Prop::getTexture()
+{
+    return texture;
+}
+
+void Prop::setTextureFromPath(std::string imagePath)
+{
+    this->imagePath = imagePath;
+    this->texture = LoadTexture(imagePath.c_str());
+}
+
+const char* Prop::getImagePath()
+{
+    return this->imagePath.c_str();
 }
 
 void Prop::setCollisionRect(Rectangle collisionRect)
@@ -24,6 +96,16 @@ void Prop::setCollisionRect(Rectangle collisionRect)
 Vector2 Prop::getWorldPos()
 {
     return worldPos;
+}
+
+void Prop::setAtlasRect(Rectangle atlasRect)
+{
+    this->atlasRect = atlasRect;
+}
+
+Rectangle Prop::getAtlasRect()
+{
+    return atlasRect;
 }
 
 Rectangle Prop::getWorldCollisionRect()
