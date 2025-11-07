@@ -5,6 +5,7 @@
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "projectFile.hpp"
+#include "prop.hpp"
 
 CollisionBox::CollisionBox()
 {
@@ -120,6 +121,13 @@ void CollisionBox::update()
 			if (fs.isAvailable(FILE_ACTOR)) {
 			    Actor* actor = file->getData<Actor>();
 				actor->setCollisionRect(rect);
+			}
+			if (fs.isAvailable(FILE_PROP)) {
+			    Prop* prop = file->getData<Prop>();
+				prop->setCollisionRect(Rectangle {
+				    rect.x / RPGPP_DRAW_MULTIPLIER, rect.y / RPGPP_DRAW_MULTIPLIER,
+					rect.width / RPGPP_DRAW_MULTIPLIER, rect.height / RPGPP_DRAW_MULTIPLIER
+				});
 			}
 		}
 	}

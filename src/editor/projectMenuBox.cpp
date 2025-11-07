@@ -1,5 +1,6 @@
 #include "projectMenuBox.hpp"
 #include <IconsKenney.h>
+#include <raylib.h>
 #include "actor.hpp"
 #include "dialogueBalloon.hpp"
 #include "dialogueParser.hpp"
@@ -71,6 +72,11 @@ void ProjectMenuBox::draw()
 
 					char *text = const_cast<char*>(dialogJsonString.data());
                     SaveFileText(fs.getOpenedFilePath().c_str(), text);
+				} else if (fs.getType() == FILE_PROP) {
+				    std::string propJsonString = fs.getCurrentFile()->getData<Prop>()->dumpJson().dump(4);
+
+					char *text = const_cast<char*>(propJsonString.data());
+					SaveFileText(fs.getOpenedFilePath().c_str(), text);
 				}
 			}
 		}

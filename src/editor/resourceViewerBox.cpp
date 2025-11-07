@@ -51,6 +51,9 @@ void ResourceViewerBox::onNewButton()
         case FILE_DIALOGUE:
             windows.open("DialogueInit");
             break;
+        case FILE_PROP:
+            windows.open("PropInit");
+            break;
         }
     }
 }

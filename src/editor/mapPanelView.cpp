@@ -6,6 +6,8 @@
 #include "fileSystemService.hpp"
 #include "interactableInfoPanel.hpp"
 #include "projectFile.hpp"
+#include "prop.hpp"
+#include "propInfoPanel.hpp"
 #include "propertiesBox.hpp"
 #include "room.hpp"
 #include "worldViewBox.hpp"
@@ -49,6 +51,7 @@ MapPanelView::MapPanelView(Rectangle rect)
 
     collisionInfo = CollisionInfoPanel(tileSetWindowRect);
     interactableInfo = InteractableInfoPanel(tileSetWindowRect);
+    propInfo = PropInfoPanel(tileSetWindowRect);
 
     Rectangle propRect = Rectangle
     {
@@ -86,6 +89,7 @@ void MapPanelView::setRect(Rectangle rect)
     tileSetView->setRect(tileSetWindowRect);
     collisionInfo.setRect(tileSetWindowRect);
     interactableInfo.setRect(tileSetWindowRect);
+    propInfo.setRect(tileSetWindowRect);
 
     remainingHeight -= tileSetWindowRect.height;
 
@@ -132,6 +136,9 @@ void MapPanelView::update()
     interactableInfo.update();
     interactableInfo.setActionMode(actionMode);
 
+    propInfo.update();
+    propInfo.setActionMode(actionMode);
+
     RoomLayer layerMode = static_cast<RoomLayer>(layoutModeToggle);
     worldView->setLayerMode(layerMode);
 
@@ -162,6 +169,9 @@ void MapPanelView::draw()
         case LAYER_INTERACTABLES:
             interactableInfo.draw();
             break;
+        case LAYER_PROP:
+            propInfo.draw();
+            break;
         default:
             break;
     }
@@ -176,7 +186,7 @@ void MapPanelView::draw()
         ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse)) {
 
-        ImGui::Combo("Layer", &layoutModeToggle, "Tiles\0Collisions\0Interactables\0");
+        ImGui::Combo("Layer", &layoutModeToggle, "Tiles\0Collisions\0Interactables\0Props\0Actors\0");
 
         ImGui::End();
     }

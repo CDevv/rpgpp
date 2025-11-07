@@ -6,6 +6,7 @@
 #include "mapToolsBox.hpp"
 #include "collisionInfoPanel.hpp"
 #include "interactableInfoPanel.hpp"
+#include "propInfoPanel.hpp"
 #include "worldViewBox.hpp"
 #include "propertiesBox.hpp"
 
@@ -17,6 +18,7 @@ private:
     std::unique_ptr<WorldViewBox> tileSetView;
     CollisionInfoPanel collisionInfo;
     InteractableInfoPanel interactableInfo;
+    PropInfoPanel propInfo;
     PropertiesBox propBox;
     int actionModeToggle;
     int layoutModeToggle;

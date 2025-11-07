@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
+#include "propInitWindow.hpp"
 #include "windowPopup.hpp"
 #include "windows/dialogueInitWindow.hpp"
 #include "worldViewBox.hpp"
@@ -58,6 +59,7 @@ WindowContainer::WindowContainer()
     mapW.emplace("Error",  std::unique_ptr<WindowPopup>(new ErrorWindow(Rectangle { 20, 20, 240, 30 })));
     mapW.emplace("DeleteConfirm",  std::unique_ptr<WindowPopup>(new DeleteConfirmWindow(tileSetWindowSize)));
     mapW.emplace("DialogueInit", std::unique_ptr<WindowPopup>(new DialogueInitWindow(tileSetWindowSize)));
+    mapW.emplace("PropInit", std::unique_ptr<WindowPopup>(new PropInitWindow(tileSetWindowSize)));
 }
 
 void WindowContainer::update()
@@ -97,6 +99,7 @@ void WindowContainer::draw()
     drawWindow("MapInit");
     drawWindow("ActorInit");
     drawWindow("DialogueInit");
+    drawWindow("PropInit");
 
     if (!windowOpen) {
         EditorInterfaceService& ui = Editor::getUi();
