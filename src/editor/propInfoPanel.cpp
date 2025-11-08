@@ -13,6 +13,21 @@ PropInfoPanel::PropInfoPanel(Rectangle rect)
     this->currentProp = 0;
 }
 
+void PropInfoPanel::setRect(Rectangle rect)
+{
+    this->rect = rect;
+}
+
+void PropInfoPanel::setActionMode(RoomAction action)
+{
+    this->action = action;
+}
+
+int PropInfoPanel::getCurrentPropIndex()
+{
+    return currentProp;
+}
+
 void PropInfoPanel::update()
 {
 
@@ -44,14 +59,4 @@ void PropInfoPanel::draw()
         }
         ImGui::End();
     }
-}
-
-void PropInfoPanel::setRect(Rectangle rect)
-{
-    this->rect = rect;
-}
-
-void PropInfoPanel::setActionMode(RoomAction action)
-{
-    this->action = action;
 }

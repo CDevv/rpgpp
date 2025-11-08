@@ -1,6 +1,7 @@
 #include "mapPanelView.hpp"
 #include <memory>
 #include <raylib.h>
+#include "actorInfoPanel.hpp"
 #include "collisionInfoPanel.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
@@ -52,6 +53,7 @@ MapPanelView::MapPanelView(Rectangle rect)
     collisionInfo = CollisionInfoPanel(tileSetWindowRect);
     interactableInfo = InteractableInfoPanel(tileSetWindowRect);
     propInfo = PropInfoPanel(tileSetWindowRect);
+    actorInfo = ActorInfoPanel(tileSetWindowRect);
 
     Rectangle propRect = Rectangle
     {
@@ -90,6 +92,7 @@ void MapPanelView::setRect(Rectangle rect)
     collisionInfo.setRect(tileSetWindowRect);
     interactableInfo.setRect(tileSetWindowRect);
     propInfo.setRect(tileSetWindowRect);
+    actorInfo.setRect(tileSetWindowRect);
 
     remainingHeight -= tileSetWindowRect.height;
 
@@ -139,10 +142,25 @@ void MapPanelView::update()
     propInfo.update();
     propInfo.setActionMode(actionMode);
 
+    actorInfo.update();
+    actorInfo.setActionMode(actionMode);
+
     RoomLayer layerMode = static_cast<RoomLayer>(layoutModeToggle);
     worldView->setLayerMode(layerMode);
 
     worldView->setCurrentInteractableType(interactableInfo.getType());
+
+    if (layerMode == LAYER_PROP) {
+        worldView->setStringProp(
+            std::string(fs.getProject()->getTypePaths(FILE_PROP)[propInfo.getCurrentPropIndex()])
+        );
+    } else if (layerMode == LAYER_ACTOR) {
+        worldView->setStringProp(
+            std::string(fs.getProject()->getTypePaths(FILE_ACTOR)[actorInfo.getCurrentActorIndex()])
+        );
+    } else {
+        worldView->setStringProp("");
+    }
 
     if (fs.isAvailable(FILE_ROOM)) {
         Vector2 selectedTileWorldPos = worldView->getSelectedWorldTile();
@@ -171,6 +189,9 @@ void MapPanelView::draw()
             break;
         case LAYER_PROP:
             propInfo.draw();
+            break;
+        case LAYER_ACTOR:
+            actorInfo.draw();
             break;
         default:
             break;

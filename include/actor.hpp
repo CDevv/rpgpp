@@ -28,6 +28,7 @@ enum Direction {
  */
 class Actor {
 private:
+    std::string sourcePath;
     /** The used TileSet for this Actor's sprites. */
     std::unique_ptr<TileSet> tileSet;
     /** The path to the TileSet file. */
@@ -36,6 +37,8 @@ private:
     AtlasTile tile;
     /** Current position in the world of this Actor. */
     Vector2 position;
+    /** Current tile position of this Actor if such is set. */
+    Vector2 tilePosition;
     int frameCounter;
     int frameSpeed;
     int currentFrame;
@@ -62,20 +65,24 @@ public:
     void update();
     /** Draw routine. */
     void draw();
+    /** Get the source file's path for this Actor. */
+    std::string getSourcePath();
     /** Get this actor's position in the world. */
     Vector2 getPosition();
     /** Set this Actor's position. */
     void setPosition(Vector2 position);
     /** Set Actor position relative to a tile in the world. */
     void setTilePosition(Vector2 position, Vector2 tileSize);
+    /** Get this Actor's tile position. */
+    Vector2 getTilePosition();
+    /** Move the Actor using a velocity vector. */
+    void moveByVelocity(Vector2 velocity);
     /** Get the bounding box of this Actor. */
     Rectangle getRect();
     /** Get a reference to this Actor's TileSet. */
     TileSet& getTileSet();
     /** Set this Actor's TileSet using a path to the tileset file. */
     void setTileSet(std::string tileSetSource);
-    /** Move the Actor using a velocity vector. */
-    void moveByVelocity(Vector2 velocity);
     /** Get the collision rectangle of this Actor if it was moved by the velocity vector */
     Rectangle getCollisionRect(Vector2 velocity);
     /** Get collision center point. */

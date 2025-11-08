@@ -1,7 +1,8 @@
+#include "actor.hpp"
 #include "editorInterfaceService.hpp"
 #include "imgui.h"
-#include "imgui_internal.h"
 #include "interactable.hpp"
+#include "prop.hpp"
 #include "resourceService.hpp"
 #include "room.hpp"
 #include "tilemap.hpp"
@@ -33,6 +34,7 @@ MapViewBox::MapViewBox(WorldViewBox *viewBox, ViewBoxLayer boxLayer)
     this->currentInteractableType = INT_BLANK;
     this->isTileValid = false;
     this->selectedTileAtlasCoords = Vector2 { 0, 0 };
+    this->stringProp = "";
 }
 
 void MapViewBox::setMap(Room* map)
@@ -64,6 +66,11 @@ void MapViewBox::setSelectedTile(Vector2 tile)
         isTileValid = true;
         selectedTileAtlasCoords = tile;
     }
+}
+
+void MapViewBox::setStringProp(std::string str)
+{
+    stringProp = str;
 }
 
 Vector2 MapViewBox::getSelectedWorldTile()
@@ -108,6 +115,9 @@ void MapViewBox::isHoverOnValidTile()
 
     if (ui.getMouseBoxLayer() != this->layer) return;
 
+    Prop p;
+    Actor a;
+
     bool isInViewport = viewBox->mouseInput->isInRect();
     bool isInMapRect = CheckCollisionPointRec(viewBox->mouseInput->getMouseWorldPos(), rect);
     if (isInViewport && isInMapRect) {
@@ -125,6 +135,22 @@ void MapViewBox::isHoverOnValidTile()
                     case LAYER_INTERACTABLES:
                         room->getInteractables().add(tileAtlasPos.x, tileAtlasPos.y, currentInteractableType);
                         break;
+                    case LAYER_PROP:
+                        p = Prop(stringProp);
+                        printf("%i \n", room->getTileMap()->getAtlasTileSize());
+                        p.setWorldTilePos(tileAtlasPos, room->getTileMap()->getAtlasTileSize());
+                        room->addProp(p);
+                        break;
+                    case LAYER_ACTOR:
+                        a = Actor(stringProp);
+                        a.setTilePosition(tileAtlasPos, Vector2 {
+                            static_cast<float>(room->getWorldTileSize()),
+                            static_cast<float>(room->getWorldTileSize())
+                        });
+                        room->addActor(std::move(a));
+                        break;
+                    default:
+                        break;
                 }
             } else if (action == ACTION_ERASE) {
                 switch (currentLayer) {
@@ -136,6 +162,14 @@ void MapViewBox::isHoverOnValidTile()
                         break;
                     case LAYER_INTERACTABLES:
                         room->getInteractables().removeInteractable(tileAtlasPos.x, tileAtlasPos.y);
+                        break;
+                    case LAYER_PROP:
+                        room->removeProp(tileAtlasPos);
+                        break;
+                    case LAYER_ACTOR:
+                        room->removeActor(tileAtlasPos);
+                        break;
+                    default:
                         break;
                 }
             } else if (action == ACTION_EDIT) {
@@ -281,6 +315,18 @@ void MapViewBox::drawTiles()
             }
         }
     }
+    if (currentLayer == LAYER_PROP) {
+        for (auto p : room->getProps()) {
+            Texture2D texture = p.getTexture();
+            Vector2 worldPos = p.getWorldPos();
+            Rectangle atlasRect = p.getAtlasRect();
+            Rectangle dest = Rectangle {
+                worldPos.x, worldPos.y,
+                atlasRect.width, atlasRect.height
+            };
+            DrawTexturePro(texture, atlasRect, dest, Vector2 { 0, 0 }, 0.0f, Fade(WHITE, 0.5f));
+        }
+    }
 
     if (action == ACTION_EDIT) {
         if (selectedWorldTile.x > -1) {
@@ -323,6 +369,11 @@ void MapViewBox::drawHoverTile(int atlasTileSize, Vector2 tileWorldPos)
 
             DrawRectangleRec(hoverTileRect, Fade(GRAY, 0.5f));
         } else if (action == ACTION_PLACE) {
+                Rectangle hoverTileRect = Rectangle {
+                    tileWorldPos.x, tileWorldPos.y,
+                    static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
+                };
+
                 if (currentLayer == LAYER_TILES && isTileValid) {
                     //defaults
                     Vector2 origin = Vector2 { 0, 0 };
@@ -337,27 +388,15 @@ void MapViewBox::drawHoverTile(int atlasTileSize, Vector2 tileWorldPos)
                         (selectedTileAtlasCoords.x * atlasTileSize), (selectedTileAtlasCoords.y * atlasTileSize),
                         static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
                     };
-                    Rectangle hoverTileRect = Rectangle {
-                        tileWorldPos.x, tileWorldPos.y,
-                        static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
-                    };
 
                     //draw it
                     DrawTexturePro(rectTexture, selectedTileRect, hoverTileRect, origin, rotation, rectColor);
                 } else if (currentLayer == LAYER_COLLISIONS) {
-                    Rectangle hoverTileRect = Rectangle {
-                        tileWorldPos.x, tileWorldPos.y,
-                        static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
-                    };
-
                     DrawRectangleRec(hoverTileRect, Fade(RED, 0.7f));
                 } else if (currentLayer == LAYER_INTERACTABLES) {
-                    Rectangle hoverTileRect = Rectangle {
-                        tileWorldPos.x, tileWorldPos.y,
-                        static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)
-                    };
-
                     DrawRectangleRec(hoverTileRect, Fade(YELLOW, 0.7f));
+                } else if (currentLayer == LAYER_PROP) {
+                    DrawRectangleRec(hoverTileRect, Fade(ORANGE, 0.7f));
                 }
         } else if (action == ACTION_EDIT) {
             Rectangle hoverTileRect = Rectangle {

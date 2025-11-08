@@ -148,6 +148,24 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
             }
             roomBin.interactables.push_back(intBin);
         }
+        for (auto&& prop : room->getProps()) {
+            ActorInRoomBin pBin;
+            pBin.name = prop.getSourcePath();
+            pBin.tilePos = IVector {
+                static_cast<int>(prop.getWorldTilePos().x),
+                static_cast<int>(prop.getWorldTilePos().y)
+            };
+            roomBin.props.push_back(pBin);
+        }
+        for (auto&& actor : room->getActors()) {
+            ActorInRoomBin aBin;
+            aBin.name = actor.getSourcePath();
+            aBin.tilePos = IVector {
+                static_cast<int>(actor.getTilePosition().x),
+                static_cast<int>(actor.getTilePosition().y)
+            };
+            roomBin.props.push_back(aBin);
+        }
         roomBin.musicSource = room->getMusicSource();
 
         room.reset();

@@ -7,6 +7,7 @@
 #include "collisionInfoPanel.hpp"
 #include "interactableInfoPanel.hpp"
 #include "propInfoPanel.hpp"
+#include "actorInfoPanel.hpp"
 #include "worldViewBox.hpp"
 #include "propertiesBox.hpp"
 
@@ -19,6 +20,7 @@ private:
     CollisionInfoPanel collisionInfo;
     InteractableInfoPanel interactableInfo;
     PropInfoPanel propInfo;
+    ActorInfoPanel actorInfo;
     PropertiesBox propBox;
     int actionModeToggle;
     int layoutModeToggle;

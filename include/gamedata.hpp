@@ -34,6 +34,12 @@ struct ActorBin
 	std::array<std::vector<IVector>, 8> animations;
 };
 
+struct ActorInRoomBin
+{
+    std::string name;
+    IVector tilePos;
+};
+
 struct TileBin
 {
 	IVector atlasPos;
@@ -70,6 +76,13 @@ struct MusicBin
     bool isSound;
 };
 
+struct PropBin
+{
+    std::string name;
+    IRect atlasRect;
+    IRect collisionRect;
+};
+
 struct RoomBin
 {
 	std::string name;
@@ -79,6 +92,8 @@ struct RoomBin
 	IVector startPoint;
 	std::vector<IVector> collisions;
 	std::vector<InteractableBin> interactables;
+	std::vector<ActorInRoomBin> props;
+	std::vector<ActorInRoomBin> actors;
 	std::vector<std::vector<TileBin>> tiles;
 	std::string musicSource;
 };
@@ -90,6 +105,7 @@ struct GameData
 	std::map<std::string, TileSetBin> tilesets;
 	std::vector<RoomBin> rooms;
 	std::vector<ActorBin> actors;
+	std::vector<PropBin> props;
 	std::map<std::string, Dialogue> dialogues;
 	std::map<std::string, MusicBin> music;
 };

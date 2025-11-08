@@ -9,7 +9,9 @@ Prop::Prop() {}
 
 Prop::Prop(std::string filePath)
 {
+    this->sourcePath = filePath;
     this->worldPos = Vector2 { 0, 0 };
+    this->tilePos = Vector2 { 0, 0 };
 
     std::string jsonString = LoadFileText(filePath.c_str());
 
@@ -43,9 +45,26 @@ Prop::Prop(std::string filePath)
 
 Prop::Prop(Rectangle atlasRect, Vector2 worldPos)
 {
+    this->sourcePath = "";
     this->atlasRect = atlasRect;
     this->worldPos = worldPos;
+    this->tilePos = Vector2 { static_cast<float>(worldPos.x / 16.0f), static_cast<float>(worldPos.y / 16.0f) };
     this->collisionRect = Rectangle { 0, 0, 16, 16 };
+}
+
+Prop::Prop(PropBin bin)
+{
+    this->sourcePath = bin.name;
+    this->worldPos = Vector2 { 0, 0 };
+    this->tilePos = Vector2 { 0, 0 };
+    this->atlasRect = Rectangle {
+        static_cast<float>(bin.atlasRect.x), static_cast<float>(bin.atlasRect.y),
+        static_cast<float>(bin.atlasRect.width), static_cast<float>(bin.atlasRect.height)
+    };
+    this->collisionRect = Rectangle {
+        static_cast<float>(bin.collisionRect.x), static_cast<float>(bin.collisionRect.y),
+        static_cast<float>(bin.collisionRect.width), static_cast<float>(bin.collisionRect.height)
+    };
 }
 
 json Prop::dumpJson()
@@ -93,9 +112,28 @@ void Prop::setCollisionRect(Rectangle collisionRect)
     this->collisionRect = collisionRect;
 }
 
+void Prop::setWorldTilePos(Vector2 worldPos, int tileSize)
+{
+    this->worldPos = Vector2 {
+        static_cast<float>(worldPos.x * tileSize),
+        static_cast<float>(worldPos.y * tileSize)
+    };
+    this->tilePos = worldPos;
+}
+
+void Prop::setWorldPos(Vector2 worldPos)
+{
+    this->worldPos = worldPos;
+}
+
 Vector2 Prop::getWorldPos()
 {
     return worldPos;
+}
+
+Vector2 Prop::getWorldTilePos()
+{
+    return tilePos;
 }
 
 void Prop::setAtlasRect(Rectangle atlasRect)
@@ -122,6 +160,11 @@ Vector2 Prop::getCollisionCenter()
     return Vector2 {
         rect.x + (rect.width / 2), rect.y + (rect.height / 2)
     };
+}
+
+std::string Prop::getSourcePath()
+{
+    return sourcePath;
 }
 
 void Prop::draw()

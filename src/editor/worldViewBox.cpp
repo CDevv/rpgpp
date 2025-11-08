@@ -124,6 +124,11 @@ void WorldViewBox::setSelectedTile(Vector2 tile)
     mapView.setSelectedTile(tile);
 }
 
+void WorldViewBox::setStringProp(std::string str)
+{
+    mapView.setStringProp(str);
+}
+
 Vector2 WorldViewBox::getSelectedWorldTile()
 {
     return mapView.getSelectedWorldTile();

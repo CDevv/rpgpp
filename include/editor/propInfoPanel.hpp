@@ -15,6 +15,7 @@ public:
     PropInfoPanel(Rectangle rect);
     void setRect(Rectangle rect);
     void setActionMode(RoomAction action);
+    int getCurrentPropIndex();
     void update();
     void draw();
 };

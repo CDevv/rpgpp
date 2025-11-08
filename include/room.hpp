@@ -35,6 +35,7 @@ private:
     std::unique_ptr<InteractablesContainer> interactables;
     /** Container of the collision tiles */
     std::unique_ptr<CollisionsContainer> collisions;
+    /** A collection of the Props in this Room. */
     std::unique_ptr<std::vector<Prop>> props;
     /** This Room's TileMap, which contains all placed tiles. */
     std::unique_ptr<TileMap> tileMap;
@@ -65,10 +66,6 @@ public:
     void draw();
     int getWorldTileSize();
     void setLock(bool val);
-    /** Add an actor to this Room
-     * @param actor The actor to be added to the Room's collection.
-     */
-    void addActor(Actor actor);
     /** Add the Player into this Room. A unique_ptr is passed whose ownership will be moved into the Room.
      * @param player A pointer to the player that will be moved into this Room.
      */
@@ -97,9 +94,21 @@ public:
     /** Get a reference to the InteractablesContainer of this Room. */
     InteractablesContainer& getInteractables();
 
+    /** Get a reference to the Props container (vector). */
     std::vector<Prop>& getProps();
+    /** Add a Prop to this Room. */
     void addProp(Prop prop);
+    /** Remove a prop from this room using a world tile position. */
     void removeProp(Vector2 worldPos);
+
+    /** Get a refernece to the collection of Actors. */
+    std::vector<Actor>& getActors();
+    /** Add an actor to this Room
+     * @param actor The actor to be added to the Room's collection.
+     */
+    void addActor(Actor actor);
+    /** Remove an Actor using a tilePosition. */
+    void removeActor(Vector2 tilePosition);
 };
 
 #endif

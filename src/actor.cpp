@@ -10,7 +10,9 @@ Actor::Actor() {}
 
 Actor::Actor(std::string fileName)
 {
+    this->sourcePath = fileName;
     this->position = Vector2 { 0, 0 };
+    this->tilePosition = Vector2 { -1, -1 };
     this->frameCounter = 0;
     this->frameSpeed = 2;
     this->currentFrame = 0;
@@ -71,6 +73,8 @@ Actor::Actor(std::string fileName)
 
 Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos, std::string tileSetSource)
 {
+    this->sourcePath = "";
+    this->tilePosition = Vector2 { -1, -1 };
     this->position = Vector2 { 0, 0 };
 
     this->tileSet = std::move(tileSet);
@@ -124,6 +128,7 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos, std::string til
 
 Actor::Actor(ActorBin bin)
 {
+    this->sourcePath = bin.name;
     this->position = Vector2 { 0, 0 };
 
     this->frameCounter = 0;
@@ -294,9 +299,9 @@ void Actor::draw()
     DrawRectanglePro(collisionRect, origin, rotation, collisionDebugColor);
 }
 
-Vector2 Actor::getPosition()
+std::string Actor::getSourcePath()
 {
-    return position;
+    return sourcePath;
 }
 
 Rectangle Actor::getRect()
@@ -328,11 +333,9 @@ void Actor::setPosition(Vector2 position)
     this->position = position;
 }
 
-void Actor::moveByVelocity(Vector2 velocity)
+Vector2 Actor::getPosition()
 {
-    Vector2 resultVector = Vector2Add(position, velocity);
-
-    this->position = resultVector;
+    return position;
 }
 
 void Actor::setTilePosition(Vector2 position, Vector2 tileSize)
@@ -345,6 +348,19 @@ void Actor::setTilePosition(Vector2 position, Vector2 tileSize)
     Vector2 resultVector = Vector2 {
         absolutePos.x, absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) - (tileSize.y * RPGPP_DRAW_MULTIPLIER))
     };
+    this->position = resultVector;
+    this->tilePosition = position;
+}
+
+Vector2 Actor::getTilePosition()
+{
+    return tilePosition;
+}
+
+void Actor::moveByVelocity(Vector2 velocity)
+{
+    Vector2 resultVector = Vector2Add(position, velocity);
+
     this->position = resultVector;
 }
 
