@@ -245,5 +245,24 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
         struc.music[musicPath] = {musicPath, false};
     }
 
+    //Props
+    for (auto propPath : proj->at(FILE_PROP)) {
+        Prop prop = Prop(propPath);
+
+        PropBin bin;
+        bin.name = propPath;
+        bin.atlasRect = IRect {
+            static_cast<int>(prop.getAtlasRect().x), static_cast<int>(prop.getAtlasRect().y),
+            static_cast<int>(prop.getAtlasRect().width), static_cast<int>(prop.getAtlasRect().height)
+        };
+        bin.collisionRect = IRect {
+            static_cast<int>(prop.getCollisionRect().x), static_cast<int>(prop.getCollisionRect().y),
+            static_cast<int>(prop.getCollisionRect().width), static_cast<int>(prop.getCollisionRect().height)
+        };
+        bin.imagePath = std::string(prop.getImagePath());
+
+        struc.props.push_back(bin);
+    }
+
     return struc;
 }

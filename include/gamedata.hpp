@@ -81,6 +81,7 @@ struct PropBin
     std::string name;
     IRect atlasRect;
     IRect collisionRect;
+    std::string imagePath;
 };
 
 struct RoomBin

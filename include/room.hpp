@@ -48,7 +48,7 @@ public:
     /** Empty constructor */
     Room();
     /** Construct a Room from an .rmap file */
-    Room(std::string fileName);
+    Room(std::string fileName, int tileSize = 48);
     /** Construct a Room by using a TileMap pointer */
     Room(std::unique_ptr<TileMap> tileMap);
     /** Construct a Room by using the RoomBin binary structure
@@ -64,6 +64,7 @@ public:
     void update();
     /** Draw routine for this Room. */
     void draw();
+    void setWorldTileSize(int tileSize);
     int getWorldTileSize();
     void setLock(bool val);
     /** Add the Player into this Room. A unique_ptr is passed whose ownership will be moved into the Room.

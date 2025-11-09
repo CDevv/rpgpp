@@ -37,7 +37,7 @@ Room::Room()
     addProp(p);
 }
 
-Room::Room(std::string fileName)
+Room::Room(std::string fileName, int tileSize)
 {
     this->lock = false;
 
@@ -49,7 +49,7 @@ Room::Room(std::string fileName)
     this->camera = camera;
 
     this->musicSource = "";
-    this->worldTileSize = 48;
+    this->worldTileSize = tileSize;
 
     char* jsonString = LoadFileText(fileName.c_str());
     json roomJson = json::parse(jsonString);
@@ -86,7 +86,8 @@ Room::Room(std::string fileName)
         int y = std::stoi(std::string(textSplit[1]));
 
         Prop p = Prop(value.c_str());
-        p.setWorldTilePos(Vector2 { static_cast<float>(x), static_cast<float>(y) }, 48);
+        p.setWorldTilePos(Vector2 { static_cast<float>(x), static_cast<float>(y) }, worldTileSize);
+        addProp(p);
         //p.setWorldPos(Vector2 { static_cast<float>(x * worldTileSize), static_cast<float>(y * worldTileSize) });
     }
 
@@ -101,6 +102,7 @@ Room::Room(std::string fileName)
         Actor a = Actor(value.c_str());
         a.setTilePosition(Vector2 { static_cast<float>(x), static_cast<float>(y) },
             Vector2 { static_cast<float>(worldTileSize), static_cast<float>(worldTileSize) });
+        addActor(std::move(a));
     }
 
     interactables->addJsonData(roomJson);
@@ -146,10 +148,10 @@ Room::Room(RoomBin bin)
         for (auto propBin : Game::getBin().props) {
             if (propBin.name == propSource.name) {
                 Prop p = Prop(propBin);
-                p.setWorldPos(Vector2 {
+                p.setWorldTilePos(Vector2 {
                     static_cast<float>(propSource.tilePos.x),
                     static_cast<float>(propSource.tilePos.y)
-                });
+                }, worldTileSize);
                 addProp(p);
                 break;
             }

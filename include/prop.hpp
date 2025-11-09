@@ -34,6 +34,7 @@ public:
     Vector2 getWorldTilePos();
     void setAtlasRect(Rectangle atlasRect);
     Rectangle getAtlasRect();
+    Rectangle getCollisionRect();
     Rectangle getWorldCollisionRect();
     Vector2 getCollisionCenter();
     void draw();

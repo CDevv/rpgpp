@@ -1,5 +1,6 @@
 #include "prop.hpp"
 #include "gamedata.hpp"
+#include "game.hpp"
 #include <raylib.h>
 #include <nlohmann/json.hpp>
 #include <stdexcept>
@@ -65,6 +66,13 @@ Prop::Prop(PropBin bin)
         static_cast<float>(bin.collisionRect.x), static_cast<float>(bin.collisionRect.y),
         static_cast<float>(bin.collisionRect.width), static_cast<float>(bin.collisionRect.height)
     };
+
+    ImageBin imgBin = Game::getBin().images.at(GetFileName(bin.imagePath.c_str()));
+    Image img = LoadImageFromMemory(
+        GetFileExtension(bin.imagePath.c_str()),
+        imgBin.data.data(), imgBin.dataSize);
+    setTexture(LoadTextureFromImage(img));
+    UnloadImage(img);
 }
 
 json Prop::dumpJson()
@@ -144,6 +152,11 @@ void Prop::setAtlasRect(Rectangle atlasRect)
 Rectangle Prop::getAtlasRect()
 {
     return atlasRect;
+}
+
+Rectangle Prop::getCollisionRect()
+{
+    return collisionRect;
 }
 
 Rectangle Prop::getWorldCollisionRect()

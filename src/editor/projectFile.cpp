@@ -40,7 +40,8 @@ void ProjectFile::setFromPath(std::string relativePath)
         setData(new TileSet(relativePath));
         fileType = FILE_TILESET;
     } else if (TextIsEqual(fileExtension.c_str(), ".rmap")) {
-        setData(new Room(relativePath));
+        Room* room = new Room(relativePath, 16);
+        setData(room);
         fileType = FILE_ROOM;
     } else if (TextIsEqual(fileExtension.c_str(), ".ractor")) {
         setData(new Actor(relativePath));
