@@ -55,6 +55,14 @@ struct InteractableBin
 	std::string dialogue;
 };
 
+struct PropInRoomBin
+{
+    std::string name;
+    IVector tilePos;
+    bool onTouch;
+    std::string dialogue;
+};
+
 struct TileSetBin
 {
 	std::string name;
@@ -95,7 +103,7 @@ struct RoomBin
 	IVector startPoint;
 	std::vector<IVector> collisions;
 	std::vector<InteractableBin> interactables;
-	std::vector<ActorInRoomBin> props;
+	std::vector<PropInRoomBin> props;
 	std::vector<ActorInRoomBin> actors;
 	std::vector<std::vector<TileBin>> tiles;
 	std::string musicSource;

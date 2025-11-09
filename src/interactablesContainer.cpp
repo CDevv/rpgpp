@@ -90,6 +90,8 @@ void InteractablesContainer::addBinVector(std::vector<InteractableBin> bin)
         bool onTouch = static_cast<bool>(intBin.onTouch);
         getInt(intBin.x, intBin.y)->setOnTouch(onTouch);
 
+        inter_apply_bin(getInt(intBin.x, intBin.y), intBin);
+        /*
         IntBase<DiagInt>* diag;
         switch (itype) {
         case INT_TWO:
@@ -104,6 +106,7 @@ void InteractablesContainer::addBinVector(std::vector<InteractableBin> bin)
         default:
             break;
         }
+        */
     }
 }
 

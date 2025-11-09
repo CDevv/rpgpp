@@ -117,6 +117,10 @@ std::unique_ptr<IntBaseWrapper> make_inter_item(Vector2 pos, InteractableType ty
 
 void inter_apply_vec(IntBaseWrapper* inter, std::vector<std::string> props)
 {
+    if (inter->type != INT_BLANK && props.size() == 0) {
+        props.push_back("");
+    }
+
     if (inter->type == INT_TWO) {
         DiagInt diagInt;
         diagInt.dialogueSource = props.at(0);
@@ -125,5 +129,23 @@ void inter_apply_vec(IntBaseWrapper* inter, std::vector<std::string> props)
     }
     if (inter->type == INT_WARPER) {
         (static_cast<IntBase<WarperInt>*>(inter))->set({props.at(0)});
+    }
+}
+
+void inter_apply_bin(IntBaseWrapper* inter, InteractableBin intBin)
+{
+    IntBase<DiagInt>* diag;
+    switch (intBin.type) {
+    case INT_TWO:
+        diag = static_cast<IntBase<DiagInt>*>(inter);
+        diag->set(DiagInt {intBin.dialogue});
+        break;
+    case INT_WARPER:
+        static_cast<IntBase<WarperInt>*>(inter)->set({
+            intBin.dialogue
+        });
+        break;
+    default:
+        break;
     }
 }

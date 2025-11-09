@@ -112,8 +112,8 @@ json Prop::dumpJson()
         {"atlas_rect", atlasRectVec},
         {"collision_rect", collisionRectVec},
         {"image", imagePath},
-        {"has_interactable", static_cast<int>(hasInteractable)},
-        {"interactable", intNum}
+        {"has_interactable", hasInteractable},
+        {"interactable_type", intNum}
     };
     return j;
 }

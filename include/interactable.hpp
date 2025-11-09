@@ -1,6 +1,7 @@
 #ifndef _RPGPP_INTERACTABLE_H
 #define _RPGPP_INTERACTABLE_H
 
+#include "gamedata.hpp"
 #include <raylib.h>
 #include <map>
 #include <array>
@@ -99,5 +100,6 @@ public:
 
 std::unique_ptr<IntBaseWrapper> make_inter_item(Vector2 pos, InteractableType type);
 void inter_apply_vec(IntBaseWrapper* inter, std::vector<std::string> props);
+void inter_apply_bin(IntBaseWrapper* inter, InteractableBin bin);
 
 #endif

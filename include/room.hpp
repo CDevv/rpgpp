@@ -101,6 +101,8 @@ public:
     void addProp(Prop prop);
     /** Remove a prop from this room using a world tile position. */
     void removeProp(Vector2 worldPos);
+    /** Get the Prop at the specified tile position. */
+    Prop* getPropAt(Vector2 worldPos);
 
     /** Get a refernece to the collection of Actors. */
     std::vector<Actor>& getActors();

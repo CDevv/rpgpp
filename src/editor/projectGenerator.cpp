@@ -149,12 +149,29 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
             roomBin.interactables.push_back(intBin);
         }
         for (auto&& prop : room->getProps()) {
-            ActorInRoomBin pBin;
+            PropInRoomBin pBin;
             pBin.name = prop.getSourcePath();
             pBin.tilePos = IVector {
                 static_cast<int>(prop.getWorldTilePos().x),
                 static_cast<int>(prop.getWorldTilePos().y)
             };
+
+            if (prop.getHasInteractable()) {
+                switch (prop.getInteractable()->type) {
+                    case INT_TWO:
+                        pBin.dialogue = (
+                            (static_cast<IntBase<DiagInt>*>(prop.getInteractable()))->get().dialogueSource
+                        );
+                        break;
+                    case INT_WARPER:
+                        pBin.dialogue = (
+                            (static_cast<IntBase<WarperInt>*>(prop.getInteractable()))->get().targetRoom
+                        );
+                        break;
+                    default:
+                        break;
+                }
+            }
             roomBin.props.push_back(pBin);
         }
         for (auto&& actor : room->getActors()) {
@@ -164,7 +181,7 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
                 static_cast<int>(actor.getTilePosition().x),
                 static_cast<int>(actor.getTilePosition().y)
             };
-            roomBin.props.push_back(aBin);
+            roomBin.actors.push_back(aBin);
         }
         roomBin.musicSource = room->getMusicSource();
 

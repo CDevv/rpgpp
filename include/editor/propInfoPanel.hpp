@@ -12,12 +12,14 @@ private:
     std::string propConcat;
     int currentProp;
     InteractablePropsState intPropsState;
+    Prop* prop;
 public:
     PropInfoPanel();
     PropInfoPanel(Rectangle rect);
     void setRect(Rectangle rect);
     void setActionMode(RoomAction action);
     int getCurrentPropIndex();
+    void setProp(Prop* p);
     void update();
     void draw();
 };

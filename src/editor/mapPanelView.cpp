@@ -167,6 +167,11 @@ void MapPanelView::update()
         if (selectedTileWorldPos.x != -1) {
             IntBaseWrapper* selectedInteractable = fs.getCurrentFile()->getData<Room>()->getInteractables().getInt(selectedTileWorldPos.x, selectedTileWorldPos.y);
             interactableInfo.setSelected(selectedInteractable);
+
+            if (layerMode == LAYER_PROP) {
+                Prop* selectedProp = fs.getCurrentFile()->getData<Room>()->getPropAt(selectedTileWorldPos);
+                propInfo.setProp(selectedProp);
+            }
         }
     }
 }

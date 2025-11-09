@@ -1,8 +1,10 @@
 #include "room.hpp"
 #include "actor.hpp"
 #include "collisionsContainer.hpp"
+#include "gamedata.hpp"
 #include "interactable.hpp"
 #include "interactablesContainer.hpp"
+#include "prop.hpp"
 #include "tilemap.hpp"
 #include <memory>
 #include <raylib.h>
@@ -72,7 +74,7 @@ Room::Room(std::string fileName, int tileSize)
         collisions->addCollisionTile(x, y);
     }
 
-    std::map<std::string, std::string> propsVec = roomJson.at("props");
+    std::map<std::string, nlohmann::basic_json<>> propsVec = roomJson.at("props");
     for (auto [key, value] : propsVec) {
         int count = 0;
         char** textSplit = TextSplit(key.c_str(), ';', &count);
@@ -80,10 +82,14 @@ Room::Room(std::string fileName, int tileSize)
         int x = std::stoi(std::string(textSplit[0]));
         int y = std::stoi(std::string(textSplit[1]));
 
-        Prop p = Prop(value.c_str());
+        std::vector<std::string> propVec = value;
+        Prop p = Prop(propVec.at(0).c_str());
         p.setWorldTilePos(Vector2 { static_cast<float>(x), static_cast<float>(y) }, worldTileSize);
+
+        propVec.erase(propVec.begin());
+        inter_apply_vec(p.getInteractable(), propVec);
+
         addProp(std::move(p));
-        //p.setWorldPos(Vector2 { static_cast<float>(x * worldTileSize), static_cast<float>(y * worldTileSize) });
     }
 
     std::map<std::string, std::string> actorsVec = roomJson.at("actors");
@@ -147,6 +153,16 @@ Room::Room(RoomBin bin)
                     static_cast<float>(propSource.tilePos.x),
                     static_cast<float>(propSource.tilePos.y)
                 }, worldTileSize);
+
+                if (p.getHasInteractable()) {
+                    p.getInteractable()->setOnTouch(propSource.onTouch);
+
+                    InteractableBin intBin = {
+                        0, 0, static_cast<int>(p.getInteractable()->type),
+                        propSource.onTouch, propSource.dialogue
+                    };
+                    inter_apply_bin(p.getInteractable(), intBin);
+                }
                 addProp(std::move(p));
                 break;
             }
@@ -222,13 +238,33 @@ json Room::dumpJson()
         interactablesVector.push_back(interactableVector);
     }
 
-    auto propsMap = std::map<std::string, std::string>{};
+    auto propsMap = std::map<std::string, std::vector<std::string>>{};
     for (auto&& p : *props) {
         std::string key = TextFormat("%i;%i",
             static_cast<int>(p.getWorldTilePos().x),
             static_cast<int>(p.getWorldTilePos().y));
 
-        propsMap[key] = p.getSourcePath();
+        auto propVec = std::vector<std::string>{};
+        propVec.push_back(p.getSourcePath());
+
+        if (p.getHasInteractable()) {
+            switch (p.getInteractable()->type) {
+                case INT_TWO:
+                    propVec.push_back(
+                        (static_cast<IntBase<DiagInt>*>(p.getInteractable()))->get().dialogueSource
+                    );
+                    break;
+                case INT_WARPER:
+                    propVec.push_back(
+                        (static_cast<IntBase<WarperInt>*>(p.getInteractable()))->get().targetRoom
+                    );
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        propsMap[key] = propVec;
     }
 
     auto actorsMap = std::map<std::string, std::string>{};
@@ -407,6 +443,17 @@ void Room::removeProp(Vector2 worldPos)
             props->erase(it);
         }
     }
+}
+
+Prop* Room::getPropAt(Vector2 worldPos)
+{
+    Prop* p = nullptr;;
+    for (std::vector<Prop>::iterator it = props->begin(); it < props->end(); ++it) {
+        if (it->getWorldTilePos().x == worldPos.x && it->getWorldTilePos().y == worldPos.y) {
+            p = it.base();
+        }
+    }
+    return p;
 }
 
 std::vector<Actor>& Room::getActors()

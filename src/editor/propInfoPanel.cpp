@@ -2,6 +2,7 @@
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "imgui.h"
+#include "interactableInfoPanel.hpp"
 #include "worldViewBox.hpp"
 
 PropInfoPanel::PropInfoPanel() {}
@@ -11,6 +12,7 @@ PropInfoPanel::PropInfoPanel(Rectangle rect)
     this->rect = rect;
     this->propConcat = "";
     this->currentProp = 0;
+    this->prop = nullptr;
 }
 
 void PropInfoPanel::setRect(Rectangle rect)
@@ -28,9 +30,21 @@ int PropInfoPanel::getCurrentPropIndex()
     return currentProp;
 }
 
+void PropInfoPanel::setProp(Prop* p)
+{
+    this->prop = p;
+    if (p != nullptr) {
+        if (p->getHasInteractable()) {
+            intPropsState.setDefaults(prop->getInteractable());
+        }
+    }
+}
+
 void PropInfoPanel::update()
 {
-
+    if (prop != nullptr) {
+        intPropsState.updateProps(prop->getInteractable());
+    }
 }
 
 void PropInfoPanel::draw()
@@ -52,6 +66,15 @@ void PropInfoPanel::draw()
         switch (action) {
             case ACTION_PLACE:
                 ImGui::Combo("Prop", &currentProp, propConcat.data());
+                break;
+            case ACTION_EDIT:
+                if (prop != nullptr) {
+                    ImGui::LabelText("Source", "%s", prop->getSourcePath().c_str());
+                    ImGui::Checkbox("Interactable: On Touch", &intPropsState.onTouch);
+                    InteractableInfoPanel::drawTypeProps(prop->getInteractable()->type, &intPropsState);
+                } else {
+                    currentProp = 0;
+                }
                 break;
             default:
                 break;
