@@ -1,6 +1,7 @@
 #ifndef _RPGPP_EDITOR_PROPINFOPANEL_H
 #define _RPGPP_EDITOR_PROPINFOPANEL_H
 
+#include "interactablePropsState.hpp"
 #include "worldViewBox.hpp"
 #include <raylib.h>
 
@@ -10,6 +11,7 @@ private:
     RoomAction action;
     std::string propConcat;
     int currentProp;
+    InteractablePropsState intPropsState;
 public:
     PropInfoPanel();
     PropInfoPanel(Rectangle rect);

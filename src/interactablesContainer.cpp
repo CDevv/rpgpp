@@ -1,5 +1,4 @@
 #include "interactablesContainer.hpp"
-#include "dialogueBalloon.hpp"
 #include "interactable.hpp"
 #include <memory>
 #include <raylib.h>
@@ -134,6 +133,9 @@ void InteractablesContainer::addJsonData(json roomJson)
             int y = std::stoi(std::string(textSplit[1]));
 
             IntBaseWrapper* inter = this->getInt(x, y);
+
+            inter_apply_vec(inter, value);
+            /*
             if (inter->type == INT_TWO) {
                 DiagInt diagInt;
                 diagInt.dialogueSource = value.at(0);
@@ -143,6 +145,7 @@ void InteractablesContainer::addJsonData(json roomJson)
             if (inter->type == INT_WARPER) {
                 (static_cast<IntBase<WarperInt>*>(inter))->set({value.at(0)});
             }
+             */
         }
     }
 }

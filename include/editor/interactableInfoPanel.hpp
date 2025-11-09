@@ -21,9 +21,9 @@ private:
     std::unique_ptr<char[]> diagText;
     char diagChars[125];
     bool diagTextEditMode;
-    void drawTypeProps();
-    void drawDialogueProps();
-    void drawWarperProps();
+    static void drawTypeProps(InteractableType intType, InteractablePropsState* propsState);
+    static void drawDialogueProps(InteractablePropsState* propsState);
+    static void drawWarperProps(InteractablePropsState* propsState);
 public:
     InteractableInfoPanel();
     InteractableInfoPanel(Rectangle rect);

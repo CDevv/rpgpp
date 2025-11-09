@@ -1,6 +1,7 @@
 #include "prop.hpp"
 #include "gamedata.hpp"
 #include "game.hpp"
+#include "interactable.hpp"
 #include <raylib.h>
 #include <nlohmann/json.hpp>
 #include <stdexcept>
@@ -42,6 +43,14 @@ Prop::Prop(std::string filePath)
     std::string imagePath = json.at("image");
     this->imagePath = imagePath;
     this->texture = LoadTexture(imagePath.c_str());
+
+    this->hasInteractable = static_cast<bool>(json.at("has_interactable"));
+
+    this->interactable = std::make_unique<IntBaseWrapper>();
+    if (hasInteractable) {
+        InteractableType intType = static_cast<InteractableType>(json.at("interactable_type"));
+        this->interactable = make_inter_item(Vector2 { 0, 0 }, intType);
+    }
 }
 
 Prop::Prop(Rectangle atlasRect, Vector2 worldPos)
@@ -51,6 +60,8 @@ Prop::Prop(Rectangle atlasRect, Vector2 worldPos)
     this->worldPos = worldPos;
     this->tilePos = Vector2 { static_cast<float>(worldPos.x / 16.0f), static_cast<float>(worldPos.y / 16.0f) };
     this->collisionRect = Rectangle { 0, 0, 16, 16 };
+    this->hasInteractable = false;
+    this->interactable = std::make_unique<IntBaseWrapper>();
 }
 
 Prop::Prop(PropBin bin)
@@ -73,6 +84,12 @@ Prop::Prop(PropBin bin)
         imgBin.data.data(), imgBin.dataSize);
     setTexture(LoadTextureFromImage(img));
     UnloadImage(img);
+
+    this->hasInteractable = bin.hasInteractable;
+    this->interactable = std::make_unique<IntBaseWrapper>();
+    if (hasInteractable) {
+        this->interactable = make_inter_item(Vector2 { 0, 0 }, static_cast<InteractableType>(bin.intType));
+    }
 }
 
 json Prop::dumpJson()
@@ -86,12 +103,24 @@ json Prop::dumpJson()
         static_cast<int>(collisionRect.width), static_cast<int>(collisionRect.height)
     };
 
+    int intNum = 0;
+    if (hasInteractable) {
+        intNum = static_cast<int>(interactable->type);
+    }
+
     json j{
         {"atlas_rect", atlasRectVec},
         {"collision_rect", collisionRectVec},
-        {"image", imagePath}
+        {"image", imagePath},
+        {"has_interactable", static_cast<int>(hasInteractable)},
+        {"interactable", intNum}
     };
     return j;
+}
+
+std::string Prop::getSourcePath()
+{
+    return sourcePath;
 }
 
 void Prop::setTexture(Texture2D texture)
@@ -175,9 +204,23 @@ Vector2 Prop::getCollisionCenter()
     };
 }
 
-std::string Prop::getSourcePath()
+bool Prop::getHasInteractable()
 {
-    return sourcePath;
+    return hasInteractable;
+}
+
+IntBaseWrapper* Prop::getInteractable()
+{
+    return interactable.get();
+}
+
+void Prop::setInteractableType(InteractableType type)
+{
+    if (hasInteractable) {
+        if (interactable->type == type) return;
+    }
+    this->interactable = make_inter_item(Vector2 { 0, 0 }, type);
+    this->hasInteractable = true;
 }
 
 void Prop::draw()

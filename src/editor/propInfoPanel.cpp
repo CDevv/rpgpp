@@ -51,7 +51,6 @@ void PropInfoPanel::draw()
 
         switch (action) {
             case ACTION_PLACE:
-
                 ImGui::Combo("Prop", &currentProp, propConcat.data());
                 break;
             default:

@@ -30,11 +30,6 @@ Room::Room()
     this->actors = std::unique_ptr<std::vector<Actor>>{};
     this->props = std::make_unique<std::vector<Prop>>();
     this->player = std::unique_ptr<Player>{};
-
-    Prop p(Rectangle { 0, 0, 16, 16 }, Vector2 { 0, 48 });
-    //p.setTexture(Game::getResources().getTexture("prop.png"));
-    p.setCollisionRect(Rectangle { 0, 8, 16, 8 });
-    addProp(p);
 }
 
 Room::Room(std::string fileName, int tileSize)
@@ -87,7 +82,7 @@ Room::Room(std::string fileName, int tileSize)
 
         Prop p = Prop(value.c_str());
         p.setWorldTilePos(Vector2 { static_cast<float>(x), static_cast<float>(y) }, worldTileSize);
-        addProp(p);
+        addProp(std::move(p));
         //p.setWorldPos(Vector2 { static_cast<float>(x * worldTileSize), static_cast<float>(y * worldTileSize) });
     }
 
@@ -152,7 +147,7 @@ Room::Room(RoomBin bin)
                     static_cast<float>(propSource.tilePos.x),
                     static_cast<float>(propSource.tilePos.y)
                 }, worldTileSize);
-                addProp(p);
+                addProp(std::move(p));
                 break;
             }
         }
@@ -315,7 +310,7 @@ void Room::draw()
         DrawRectangleRec(rect, Fade(RED, 0.5f));
     }
 
-    for (auto p : *props) {
+    for (auto&& p : *props) {
         if (p.getCollisionCenter().y <= player->getCollisionPos().y) {
             p.draw();
         }
@@ -326,7 +321,7 @@ void Room::draw()
     }
     player->draw();
 
-    for (auto p : *props) {
+    for (auto&& p : *props) {
         if (p.getCollisionCenter().y > player->getCollisionPos().y) {
             p.draw();
         }
@@ -402,7 +397,7 @@ std::vector<Prop>& Room::getProps()
 
 void Room::addProp(Prop prop)
 {
-    props->push_back(prop);
+    props->push_back(std::move(prop));
 }
 
 void Room::removeProp(Vector2 worldPos)

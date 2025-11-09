@@ -5,6 +5,8 @@
 #include <map>
 #include <array>
 #include <string>
+#include <memory>
+#include <vector>
 
 /** Enum for interactable types */
 enum InteractableType {
@@ -94,5 +96,8 @@ public:
     /** The interact method. */
     void interact();
 };
+
+std::unique_ptr<IntBaseWrapper> make_inter_item(Vector2 pos, InteractableType type);
+void inter_apply_vec(IntBaseWrapper* inter, std::vector<std::string> props);
 
 #endif

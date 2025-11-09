@@ -260,6 +260,8 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
             static_cast<int>(prop.getCollisionRect().width), static_cast<int>(prop.getCollisionRect().height)
         };
         bin.imagePath = std::string(prop.getImagePath());
+        bin.hasInteractable = prop.getHasInteractable();
+        bin.intType = prop.getInteractable()->type;
 
         struc.props.push_back(bin);
     }

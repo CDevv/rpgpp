@@ -2,9 +2,9 @@
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "imgui.h"
+#include "interactable.hpp"
 #include <raylib.h>
 #include <string>
-#include <string_view>
 
 PropPropertiesBox::PropPropertiesBox()
 {
@@ -12,6 +12,8 @@ PropPropertiesBox::PropPropertiesBox()
     rectPos = { 0, 0 };
     rectSize = { 0, 0 };
     collisionViewActive = false;
+    propHasInteractable = false;
+    intType = INT_BLANK;
 }
 
 void PropPropertiesBox::setDefaults()
@@ -24,6 +26,7 @@ void PropPropertiesBox::setDefaults()
         Rectangle atlasRect = prop->getAtlasRect();
         rectPos = { static_cast<int>(atlasRect.x), static_cast<int>(atlasRect.y) };
         rectSize = { static_cast<int>(atlasRect.width), static_cast<int>(atlasRect.height) };
+        propHasInteractable = prop->getHasInteractable();
     }
 }
 
@@ -41,6 +44,9 @@ void PropPropertiesBox::update()
             static_cast<float>(rectSize[1])
         };
         prop->setAtlasRect(newAtlasRect);
+        if (propHasInteractable) {
+            prop->setInteractableType(static_cast<InteractableType>(intType));
+        }
     }
 }
 
@@ -52,11 +58,7 @@ void PropPropertiesBox::draw()
 
     ImGui::Checkbox("Collision View", &collisionViewActive);
 
-
-    //std::string imageSource = prop->getImagePath();
-    //imageSource.push_back('\0');
     std::string imageSource = std::string(prop->getImagePath());
-    //imageSource.push_back('\0');
 
     ImGui::InputText("Image", imageSource.data(), imageSource.size(),
         ImGuiInputTextFlags_ReadOnly);
@@ -70,6 +72,18 @@ void PropPropertiesBox::draw()
 
     ImGui::InputInt2("Atlas X, Y", rectPos.data());
     ImGui::InputInt2("Atlas Width, Height", rectSize.data());
+
+    ImGui::Checkbox("Has Interactable?", &propHasInteractable);
+
+    std::string intTypeNames = "";
+    for (auto typeNameStr : Interactable::getTypeNames()) {
+        intTypeNames = intTypeNames.append(typeNameStr);
+        intTypeNames.push_back('\0');
+    }
+
+    if (propHasInteractable) {
+        ImGui::Combo("Interactable Type", &intType, intTypeNames.c_str(), INTTYPE_MAX);
+    }
 }
 
 bool PropPropertiesBox::getCollisionViewActive()

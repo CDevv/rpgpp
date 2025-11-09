@@ -82,6 +82,8 @@ struct PropBin
     IRect atlasRect;
     IRect collisionRect;
     std::string imagePath;
+    bool hasInteractable;
+    int intType;
 };
 
 struct RoomBin

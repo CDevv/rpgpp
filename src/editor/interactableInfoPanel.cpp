@@ -82,7 +82,7 @@ void InteractableInfoPanel::draw()
                 int posY = static_cast<int>(interBase->pos.y);
                 ImGui::Text("Interactable pos: [%i, %i]", posX, posY);
 
-                drawTypeProps();
+                drawTypeProps(interBase->type, &this->propsState);
             }
             break;
         default:
@@ -93,15 +93,15 @@ void InteractableInfoPanel::draw()
     }
 }
 
-void InteractableInfoPanel::drawTypeProps()
+void InteractableInfoPanel::drawTypeProps(InteractableType intType, InteractablePropsState* propsState)
 {
     if (ImGui::BeginChild("type_props", ImVec2(0, 0), ImGuiChildFlags_Borders, 0)) {
-        switch (interBase->type) {
+        switch (intType) {
         case INT_TWO:
-            drawDialogueProps();
+            drawDialogueProps(propsState);
             break;
         case INT_WARPER:
-            drawWarperProps();
+            drawWarperProps(propsState);
             break;
         default:
             break;
@@ -111,9 +111,9 @@ void InteractableInfoPanel::drawTypeProps()
     }
 }
 
-void InteractableInfoPanel::drawDialogueProps()
+void InteractableInfoPanel::drawDialogueProps(InteractablePropsState* propsState)
 {
-    std::string diagSource = propsState.diagSource;
+    std::string diagSource = propsState->diagSource;
     diagSource.push_back('\0');
     ImGui::InputText("Dialogue.", diagSource.data(), diagSource.size(),
         ImGuiInputTextFlags_ReadOnly);
@@ -121,14 +121,14 @@ void InteractableInfoPanel::drawDialogueProps()
         FS_Result fsResult = Editor::getFileSystem().openDialogueResource();
 
         if (fsResult.result == NFD_OKAY) {
-            propsState.diagSource = std::string(GetFileNameWithoutExt(fsResult.path.c_str()));
+            propsState->diagSource = std::string(GetFileNameWithoutExt(fsResult.path.c_str()));
         }
     }
 }
 
-void InteractableInfoPanel::drawWarperProps()
+void InteractableInfoPanel::drawWarperProps(InteractablePropsState* propsState)
 {
-    std::string warperTarget = propsState.diagSource;
+    std::string warperTarget = propsState->diagSource;
     warperTarget.push_back('\0');
     ImGui::InputText("Target Room", warperTarget.data(), warperTarget.size(),
         ImGuiInputTextFlags_ReadOnly);
@@ -137,7 +137,7 @@ void InteractableInfoPanel::drawWarperProps()
         FS_Result fsResult = Editor::getFileSystem().openFile(filters);
 
         if (fsResult.result == NFD_OKAY) {
-            propsState.diagSource = std::string(GetFileName(fsResult.path.c_str()));
+            propsState->diagSource = std::string(GetFileName(fsResult.path.c_str()));
         }
     }
 }

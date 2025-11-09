@@ -118,7 +118,7 @@ void Player::handleCollision()
     }
 
     //props
-    for (auto p : room.getProps()) {
+    for (auto&& p : room.getProps()) {
         if (CheckCollisionRecs(playerRect, p.getWorldCollisionRect())) {
             velocity = Vector2 { 0, 0 };
             break;
@@ -167,6 +167,15 @@ void Player::handleInteraction()
             interactable->interact();
 
             break;
+        }
+    }
+
+    for (auto&& p : room.getProps()) {
+        if (p.getHasInteractable()) {
+            if (CheckCollisionRecs(interactableArea, p.getWorldCollisionRect())) {
+                p.getInteractable()->interact();
+                break;
+            }
         }
     }
 }

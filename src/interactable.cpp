@@ -99,3 +99,31 @@ void IntBase<WarperInt>::interact()
     WorldService& world = Game::getWorld();
     world.setRoom(data.targetRoom);
 }
+
+std::unique_ptr<IntBaseWrapper> make_inter_item(Vector2 pos, InteractableType type)
+{
+    switch (type) {
+        case INT_BLANK:
+            return std::unique_ptr<IntBaseWrapper>(new IntBase<int>(pos, type));
+            break;
+        case INT_TWO:
+            return std::unique_ptr<IntBaseWrapper>(new IntBase<DiagInt>(pos, type));
+            break;
+        case INT_WARPER:
+            return std::unique_ptr<IntBaseWrapper>(new IntBase<WarperInt>(pos, type));
+            break;
+    }
+}
+
+void inter_apply_vec(IntBaseWrapper* inter, std::vector<std::string> props)
+{
+    if (inter->type == INT_TWO) {
+        DiagInt diagInt;
+        diagInt.dialogueSource = props.at(0);
+
+        (static_cast<IntBase<DiagInt>*>(inter))->set(diagInt);
+    }
+    if (inter->type == INT_WARPER) {
+        (static_cast<IntBase<WarperInt>*>(inter))->set({props.at(0)});
+    }
+}

@@ -139,7 +139,7 @@ void MapViewBox::isHoverOnValidTile()
                         p = Prop(stringProp);
                         printf("%i \n", room->getTileMap()->getAtlasTileSize());
                         p.setWorldTilePos(tileAtlasPos, room->getTileMap()->getAtlasTileSize());
-                        room->addProp(p);
+                        room->addProp(std::move(p));
                         break;
                     case LAYER_ACTOR:
                         a = Actor(stringProp);
@@ -316,7 +316,7 @@ void MapViewBox::drawTiles()
         }
     }
     if (currentLayer == LAYER_PROP) {
-        for (auto p : room->getProps()) {
+        for (auto&& p : room->getProps()) {
             Texture2D texture = p.getTexture();
             Vector2 worldPos = p.getWorldPos();
             Rectangle atlasRect = p.getAtlasRect();

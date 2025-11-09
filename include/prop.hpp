@@ -2,7 +2,9 @@
 #define _RPGPP_PROP_H
 
 #include "gamedata.hpp"
+#include "interactable.hpp"
 #include <string>
+#include <memory>
 #include <raylib.h>
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
@@ -16,6 +18,8 @@ private:
     Texture2D texture;
     Rectangle collisionRect;
     std::string imagePath;
+    bool hasInteractable = false;
+    std::unique_ptr<IntBaseWrapper> interactable;
 public:
     Prop();
     Prop(std::string filePath);
@@ -37,6 +41,9 @@ public:
     Rectangle getCollisionRect();
     Rectangle getWorldCollisionRect();
     Vector2 getCollisionCenter();
+    bool getHasInteractable();
+    IntBaseWrapper* getInteractable();
+    void setInteractableType(InteractableType type);
     void draw();
 };
 
