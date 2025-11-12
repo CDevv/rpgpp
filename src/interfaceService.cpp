@@ -1,4 +1,10 @@
 #include "interfaceService.hpp"
+#include "colorRect.hpp"
+#include "imageRect.hpp"
+#include "interfaceView.hpp"
+#include "resourceService.hpp"
+#include "textArea.hpp"
+#include <raylib.h>
 
 InterfaceService::InterfaceService()
 {
@@ -18,6 +24,26 @@ InterfaceService::InterfaceService()
     destRec.x = (GetScreenWidth() - destRec.width) / 2;
     destRec.y = (GetScreenHeight() - destRec.height) - 20;
     this->dialogue = DialogueBalloon(destRec);
+
+    this->views = std::make_unique<std::map<std::string, InterfaceView>>();
+
+    Rectangle screenRect = Rectangle { 0, 0,
+        static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight()) };
+    InterfaceView view = InterfaceView(screenRect);
+
+    TextArea* tArea = new TextArea(Rectangle { 0, 0, 300, 200 });
+    tArea->setText("Text!");
+    view.addElement(tArea);
+
+    ColorRect* colorRect = new ColorRect(Rectangle { 0, 50, 50, 75 });
+    colorRect->setColor(RED);
+    view.addElement(colorRect);
+
+    ImageRect* imageRect = new ImageRect(Rectangle { 50, 50, 50, 50 });
+    imageRect->setTexture(LoadTexture("logo-sq.png"));
+    view.addElement(imageRect);
+
+    views->emplace("test", std::move(view));
 }
 
 InterfaceService::~InterfaceService()
@@ -48,6 +74,10 @@ void InterfaceService::update()
     }
 
     dialogue.update();
+
+    for (auto&& item : *views) {
+        item.second.update();
+    }
 }
 
 void InterfaceService::draw()
@@ -58,6 +88,10 @@ void InterfaceService::draw()
     }
 
     dialogue.draw();
+
+    for (auto&& item : *views) {
+        item.second.draw();
+    }
 }
 
 void InterfaceService::unload()

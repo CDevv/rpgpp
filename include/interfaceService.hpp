@@ -1,8 +1,12 @@
 #ifndef _RPGPP_INTERFACESERVICE_H
 #define _RPGPP_INTERFACESERVICE_H
 
+#include <map>
 #include <raylib.h>
+#include <string>
+#include <memory>
 #include "dialogueBalloon.hpp"
+#include "interfaceView.hpp"
 
 /** The InterfaceService acts for the User Interface (UI). */
 class InterfaceService {
@@ -14,6 +18,8 @@ private:
     Texture uiTexture;
     /** Component for in-game dialogue. */
     DialogueBalloon dialogue;
+    /** Available UI Views. */
+    std::unique_ptr<std::map<std::string, InterfaceView>> views;
 public:
     /** Empty constructor. */
     InterfaceService();
