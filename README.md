@@ -7,6 +7,7 @@ RPG++ is an experimental 2D RPG game engine written in C++. It is currently in e
 This project uses [Xmake](https://xmake.io/) so you may need to download it for your system. 
 You can build the project with:
 ```
+sh deps.sh
 xmake
 ```
 

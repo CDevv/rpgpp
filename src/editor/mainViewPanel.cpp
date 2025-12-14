@@ -11,7 +11,7 @@ MainViewPanel::MainViewPanel() {}
 MainViewPanel::MainViewPanel(Rectangle rect)
 {
 	this->rect = rect;
-	this->logoTexture = LoadTexture("logo.png");
+	this->logoTexture = LoadTexture("resources/logo.png");
 }
 
 void MainViewPanel::setRect(Rectangle rect)

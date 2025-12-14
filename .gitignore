@@ -36,24 +36,19 @@
 *.ilk
 
 rpgpp
+librpgpp.so
 /editor
 /game
-librpgpp.so
 build/
 bin/
+execs/**
 *.bin
 .cache/
 .xmake/
 *.kdev4
 .kdev4/
-build/
 *.sublime-project
 *.sublime-workspace
 docs/C++ API
 site/
-
-!lua.exe
-!vswhere.exe
-!/game-src/** 
-
 imgui.ini

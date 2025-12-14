@@ -1,0 +1,421 @@
+[
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-o", "build/.objs/game/linux/x86_64/debug/src/game/main.cpp.o", "src/game/main.cpp"],
+  "file": "src/game/main.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/actor.cpp.o", "src/actor.cpp"],
+  "file": "src/actor.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/atlasTile.cpp.o", "src/atlasTile.cpp"],
+  "file": "src/atlasTile.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/collisionsContainer.cpp.o", "src/collisionsContainer.cpp"],
+  "file": "src/collisionsContainer.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/colorRect.cpp.o", "src/colorRect.cpp"],
+  "file": "src/colorRect.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/dialogueBalloon.cpp.o", "src/dialogueBalloon.cpp"],
+  "file": "src/dialogueBalloon.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/game.cpp.o", "src/game.cpp"],
+  "file": "src/game.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/gamedata.cpp.o", "src/gamedata.cpp"],
+  "file": "src/gamedata.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/imageRect.cpp.o", "src/imageRect.cpp"],
+  "file": "src/imageRect.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/interactable.cpp.o", "src/interactable.cpp"],
+  "file": "src/interactable.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/interactablesContainer.cpp.o", "src/interactablesContainer.cpp"],
+  "file": "src/interactablesContainer.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/interfaceService.cpp.o", "src/interfaceService.cpp"],
+  "file": "src/interfaceService.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/interfaceView.cpp.o", "src/interfaceView.cpp"],
+  "file": "src/interfaceView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/main.cpp.o", "src/main.cpp"],
+  "file": "src/main.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/player.cpp.o", "src/player.cpp"],
+  "file": "src/player.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/prop.cpp.o", "src/prop.cpp"],
+  "file": "src/prop.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/resourceService.cpp.o", "src/resourceService.cpp"],
+  "file": "src/resourceService.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/room.cpp.o", "src/room.cpp"],
+  "file": "src/room.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/soundService.cpp.o", "src/soundService.cpp"],
+  "file": "src/soundService.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/stateService.cpp.o", "src/stateService.cpp"],
+  "file": "src/stateService.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/textArea.cpp.o", "src/textArea.cpp"],
+  "file": "src/textArea.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/tile.cpp.o", "src/tile.cpp"],
+  "file": "src/tile.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/tilemap.cpp.o", "src/tilemap.cpp"],
+  "file": "src/tilemap.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/tileset.cpp.o", "src/tileset.cpp"],
+  "file": "src/tileset.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/uiElement.cpp.o", "src/uiElement.cpp"],
+  "file": "src/uiElement.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/winapi.cpp.o", "src/winapi.cpp"],
+  "file": "src/winapi.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-fPIC", "-o", "build/.objs/rpgpp/linux/x86_64/debug/src/worldService.cpp.o", "src/worldService.cpp"],
+  "file": "src/worldService.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/aboutWindow.cpp.o", "src/editor/aboutWindow.cpp"],
+  "file": "src/editor/aboutWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/actorInfoPanel.cpp.o", "src/editor/actorInfoPanel.cpp"],
+  "file": "src/editor/actorInfoPanel.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/actorInitWindow.cpp.o", "src/editor/actorInitWindow.cpp"],
+  "file": "src/editor/actorInitWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/actorPanelView.cpp.o", "src/editor/actorPanelView.cpp"],
+  "file": "src/editor/actorPanelView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/actorPropertiesBox.cpp.o", "src/editor/actorPropertiesBox.cpp"],
+  "file": "src/editor/actorPropertiesBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/actorView.cpp.o", "src/editor/actorView.cpp"],
+  "file": "src/editor/actorView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/animationsView.cpp.o", "src/editor/animationsView.cpp"],
+  "file": "src/editor/animationsView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/collisionInfoPanel.cpp.o", "src/editor/collisionInfoPanel.cpp"],
+  "file": "src/editor/collisionInfoPanel.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/collisionbox.cpp.o", "src/editor/collisionbox.cpp"],
+  "file": "src/editor/collisionbox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/deleteConfirmWindow.cpp.o", "src/editor/deleteConfirmWindow.cpp"],
+  "file": "src/editor/deleteConfirmWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/dialogueInitWindow.cpp.o", "src/editor/dialogueInitWindow.cpp"],
+  "file": "src/editor/dialogueInitWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/dialogueLineWindow.cpp.o", "src/editor/dialogueLineWindow.cpp"],
+  "file": "src/editor/dialogueLineWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/dialoguePanelView.cpp.o", "src/editor/dialoguePanelView.cpp"],
+  "file": "src/editor/dialoguePanelView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/dialogueParser.cpp.o", "src/editor/dialogueParser.cpp"],
+  "file": "src/editor/dialogueParser.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/dialogueViewer.cpp.o", "src/editor/dialogueViewer.cpp"],
+  "file": "src/editor/dialogueViewer.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/editor.cpp.o", "src/editor/editor.cpp"],
+  "file": "src/editor/editor.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/editorInterfaceService.cpp.o", "src/editor/editorInterfaceService.cpp"],
+  "file": "src/editor/editorInterfaceService.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/errorWindow.cpp.o", "src/editor/errorWindow.cpp"],
+  "file": "src/editor/errorWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/fileSystemService.cpp.o", "src/editor/fileSystemService.cpp"],
+  "file": "src/editor/fileSystemService.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/imgui_stdlib.cpp.o", "src/editor/imgui_stdlib.cpp"],
+  "file": "src/editor/imgui_stdlib.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/interactableInfoPanel.cpp.o", "src/editor/interactableInfoPanel.cpp"],
+  "file": "src/editor/interactableInfoPanel.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/interactablePropsState.cpp.o", "src/editor/interactablePropsState.cpp"],
+  "file": "src/editor/interactablePropsState.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/layoutContainer.cpp.o", "src/editor/layoutContainer.cpp"],
+  "file": "src/editor/layoutContainer.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/main.cpp.o", "src/editor/main.cpp"],
+  "file": "src/editor/main.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mainView.cpp.o", "src/editor/mainView.cpp"],
+  "file": "src/editor/mainView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mainViewPanel.cpp.o", "src/editor/mainViewPanel.cpp"],
+  "file": "src/editor/mainViewPanel.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mapInitWindow.cpp.o", "src/editor/mapInitWindow.cpp"],
+  "file": "src/editor/mapInitWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mapPanelView.cpp.o", "src/editor/mapPanelView.cpp"],
+  "file": "src/editor/mapPanelView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mapPropertiesBox.cpp.o", "src/editor/mapPropertiesBox.cpp"],
+  "file": "src/editor/mapPropertiesBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mapToolsBox.cpp.o", "src/editor/mapToolsBox.cpp"],
+  "file": "src/editor/mapToolsBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mapViewBox.cpp.o", "src/editor/mapViewBox.cpp"],
+  "file": "src/editor/mapViewBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/mouseInput.cpp.o", "src/editor/mouseInput.cpp"],
+  "file": "src/editor/mouseInput.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/panelView.cpp.o", "src/editor/panelView.cpp"],
+  "file": "src/editor/panelView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/project.cpp.o", "src/editor/project.cpp"],
+  "file": "src/editor/project.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/projectBinaryViewWindow.cpp.o", "src/editor/projectBinaryViewWindow.cpp"],
+  "file": "src/editor/projectBinaryViewWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/projectCompiler.cpp.o", "src/editor/projectCompiler.cpp"],
+  "file": "src/editor/projectCompiler.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/projectFile.cpp.o", "src/editor/projectFile.cpp"],
+  "file": "src/editor/projectFile.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/projectGenerator.cpp.o", "src/editor/projectGenerator.cpp"],
+  "file": "src/editor/projectGenerator.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/projectInitWindow.cpp.o", "src/editor/projectInitWindow.cpp"],
+  "file": "src/editor/projectInitWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/projectMenuBox.cpp.o", "src/editor/projectMenuBox.cpp"],
+  "file": "src/editor/projectMenuBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/propInfoPanel.cpp.o", "src/editor/propInfoPanel.cpp"],
+  "file": "src/editor/propInfoPanel.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/propInitWindow.cpp.o", "src/editor/propInitWindow.cpp"],
+  "file": "src/editor/propInitWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/propPanelView.cpp.o", "src/editor/propPanelView.cpp"],
+  "file": "src/editor/propPanelView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/propPropertiesBox.cpp.o", "src/editor/propPropertiesBox.cpp"],
+  "file": "src/editor/propPropertiesBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/propView.cpp.o", "src/editor/propView.cpp"],
+  "file": "src/editor/propView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/propertiesBox.cpp.o", "src/editor/propertiesBox.cpp"],
+  "file": "src/editor/propertiesBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/resourceViewerBox.cpp.o", "src/editor/resourceViewerBox.cpp"],
+  "file": "src/editor/resourceViewerBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/tabList.cpp.o", "src/editor/tabList.cpp"],
+  "file": "src/editor/tabList.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/tileSetDialogWindow.cpp.o", "src/editor/tileSetDialogWindow.cpp"],
+  "file": "src/editor/tileSetDialogWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/tileSetInitWindow.cpp.o", "src/editor/tileSetInitWindow.cpp"],
+  "file": "src/editor/tileSetInitWindow.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/tileSetPanelView.cpp.o", "src/editor/tileSetPanelView.cpp"],
+  "file": "src/editor/tileSetPanelView.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/tileSetPropertiesBox.cpp.o", "src/editor/tileSetPropertiesBox.cpp"],
+  "file": "src/editor/tileSetPropertiesBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/tileSetViewBox.cpp.o", "src/editor/tileSetViewBox.cpp"],
+  "file": "src/editor/tileSetViewBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/windowContainer.cpp.o", "src/editor/windowContainer.cpp"],
+  "file": "src/editor/windowContainer.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/windowPopup.cpp.o", "src/editor/windowPopup.cpp"],
+  "file": "src/editor/windowPopup.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-g", "-O0", "-std=c++17", "-Iinclude", "-Iinclude/editor", "-Iinclude/imgui", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/n/nativefiledialog-extended/v1.2.1/075ff09be0f94f4a9bbd5478dada6e83/include", "-I", "/usr/include/dbus-1.0", "-I", "/usr/lib/dbus-1.0/include", "-I", "/home/nikodev/.xmake/packages/r/reproc/v14.2.5/d66059e707ba46f0968c0826d0939b42/include", "-o", "build/.objs/editor/linux/x86_64/debug/src/editor/worldViewBox.cpp.o", "src/editor/worldViewBox.cpp"],
+  "file": "src/editor/worldViewBox.cpp"
+},
+{
+  "directory": "/home/nikodev/Документи/Projects/rpgpp",
+  "arguments": ["/usr/bin/g++", "-c", "-m64", "-fPIC", "-g", "-O0", "-std=c++17", "-Iinclude", "-I", "/home/nikodev/.xmake/packages/r/raylib/5.5/efaf75c5cc7042868d9f9fc4196a080a/include", "-I", "/home/nikodev/.xmake/packages/a/alpaca/v0.2.1/5184f13fb9d74af599f0f89fc3ae4005/include", "-o", "build/.objs/rpgpplua/linux/x86_64/debug/src/rpgpplua/rpgpplua.cpp.o", "src/rpgpplua/rpgpplua.cpp"],
+  "file": "src/rpgpplua/rpgpplua.cpp"
+}]

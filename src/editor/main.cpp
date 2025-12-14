@@ -1,6 +1,4 @@
-#include <raylib.h>
-#define RAYGUI_IMPLEMENTATION
-#include <raygui.h>
+#include "raylib.h"
 #include <imgui.h>
 #include <rlImGui.h>
 #include <IconsKenney.h>
@@ -24,13 +22,14 @@ int main()
     ImGui::GetIO().ConfigErrorRecovery = true;
     ImGui::GetIO().ConfigErrorRecoveryEnableAssert = true;
     ImGui::GetIO().Fonts->ClearFonts();
-    ImGui::GetIO().Fonts->AddFontFromFileTTF("LanaPixel.ttf", 13.0f);
+    ImGui::GetIO().Fonts->AddFontFromFileTTF("resources/LanaPixel.ttf", 13.0f);
 
     ImFontConfig config;
     config.MergeMode = true;
     static const ImWchar icon_ranges[] = { ICON_MIN_KI, ICON_MAX_KI, 0 };
 
-    ImGui::GetIO().Fonts->AddFontFromFileTTF("Kenney-Icon-Font.ttf", 13.0f, &config, icon_ranges);
+    ImGui::GetIO().Fonts->AddFontFromFileTTF("resources/Kenney-Icon-Font.ttf", 13.0f, &config, icon_ranges);
+
 
     while (!WindowShouldClose()) {
         editor.update();
