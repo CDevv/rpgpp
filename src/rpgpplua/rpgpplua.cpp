@@ -28,7 +28,6 @@ __declspec(dllexport)
 int luaopen_rpgpplua(lua_State* L)
 {
     sol::state_view lua(L);
-    lua.open_libraries(sol::lib::base);
     lua.set_function("printer", &printer);
 
     lua.set_function("init_window", &InitWindow);

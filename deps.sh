@@ -1,5 +1,5 @@
 git submodule update --init --recursive
 
-make -C ./libs/lua/ MYCFLAGS="-fPIC"
-cp ./libs/lua/lua ./execs/lua
-cp ./libs/lua/liblua.a ./libs/liblua.a
+make -C ./libs/luajit/
+cp ./libs/luajit/src/luajit ./execs/luajit
+cp ./libs/luajit/src/libluajit.so ./libs/libluajit.so

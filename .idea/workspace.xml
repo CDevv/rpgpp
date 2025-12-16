@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakeProjectFlavorService">
+    <option name="flavorId" value="CMakePlainProjectFlavor" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/libs/luajit" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deps.sh" beforeDir="false" afterPath="$PROJECT_DIR$/deps.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lapi.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lauxlib.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lcode.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lctype.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/ldebug.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/ldo.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lfunc.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lgc.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/ljumptab.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/llex.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/llimits.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lmem.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lobject.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lopcodes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lopnames.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lparser.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lprefix.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lstate.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lstring.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/ltable.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/ltm.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lua.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/luaconf.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lualib.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lundump.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lvm.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lua/lzio.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/lua" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/rpgpplua/rpgpplua.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/rpgpplua/rpgpplua.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xmake.lua" beforeDir="false" afterPath="$PROJECT_DIR$/xmake.lua" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="CompDBLocalSettings">
+    <option name="availableProjects">
+      <map>
+        <entry>
+          <key>
+            <ExternalProjectPojo>
+              <option name="name" value="rpgpp" />
+              <option name="path" value="$PROJECT_DIR$" />
+            </ExternalProjectPojo>
+          </key>
+          <value>
+            <list>
+              <ExternalProjectPojo>
+                <option name="name" value="rpgpp" />
+                <option name="path" value="$PROJECT_DIR$" />
+              </ExternalProjectPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="ZG2lrFL6" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2025" />
+    <option name="minorVersion" value="3" />
+    <option name="productBranch" value="Classic" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="36t0yEuttJ7A3ZzFTheqmCjqV6k" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/nikodev/Документи/Projects/rpgpp",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.first.attach.projects": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="" />
+      <created>1765810815546</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1765810815546</updated>
+      <workItem from="1765810817210" duration="384000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

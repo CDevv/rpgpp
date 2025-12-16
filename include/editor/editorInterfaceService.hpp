@@ -13,10 +13,14 @@
 #include "worldViewBox.hpp"
 #include "panelView.hpp"
 
+#include "edui.hpp"
+
 class MouseInputComponent;
 
 class EditorInterfaceService {
 private:
+    EdUi::Appearance appearance;
+    EdUi::UiState state;
     Font uiFont;
     MainView mainView;
     ProjectMenuBox projectMenu;
@@ -39,6 +43,8 @@ public:
     void unload();
     void update();
     void draw();
+    EdUi::Appearance& getAppearance();
+    EdUi::UiState& getState();
     Font getFont();
     void setMouseLock(bool value);
     bool getMouseLock();

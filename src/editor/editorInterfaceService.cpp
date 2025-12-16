@@ -1,7 +1,9 @@
 #include "editorInterfaceService.hpp"
+#include <cstdio>
 #include <raylib.h>
 #include <imgui.h>
 #include <imgui_internal.h>
+#include "edui.hpp"
 #include "fileSystemService.hpp"
 #include "editor.hpp"
 #include "gamedata.hpp"
@@ -19,6 +21,13 @@
 EditorInterfaceService::EditorInterfaceService()
 {
     demoGuiActive = false;
+
+    //appearance
+    appearance.border = BLACK;
+    appearance.primaryColor = Color { 30, 30, 30, 255 };
+    appearance.secondaryColor = Color { 35, 35, 35, 255 };
+    appearance.fontSize = 22;
+    appearance.textColor = WHITE;
 
     //get codepoints
     std::vector<int> codepoints;
@@ -97,12 +106,38 @@ void EditorInterfaceService::update()
     windowContainer.update();
 }
 
+
+
 void EditorInterfaceService::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
     bool openedAboutWIndow = false;
 
+    if (EdUi::Button(Rectangle { 0, 50, 200, 50 }, "Blep") == EdUi::EDUI_CLICK) {
+        printf("hello! \n");
+    }
+
+    Texture cross = Editor::getResources().getTexture("cross");
+    EdUi::IconButton(Rectangle { 200, 50, 50, 50 }, cross);
+
+    EdUi::BeginAppMenu();
+    if (EdUi::MenuButton("Menu..") == EdUi::EDUI_CLICK) {
+        printf("hello menu.\n");
+    }
+    if (EdUi::MenuButton("Button 2") == EdUi::EDUI_CLICK) {
+
+    }
+    {
+        EdUi::BeginAppSubmenu("Button 2");
+        EdUi::SubmenuButton("Item 1");
+        EdUi::SubmenuButton("Item 2");
+        EdUi::EndAppSubmenu();
+    }
+
+    EdUi::EndAppMenu();
+
+    /*
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Open Project..")) {
@@ -159,6 +194,7 @@ void EditorInterfaceService::draw()
     }
 
     windowContainer.drawWindow("About");
+    */
 }
 
 void EditorInterfaceService::drawMainView()
@@ -199,6 +235,16 @@ void EditorInterfaceService::drawProjectView()
 Font EditorInterfaceService::getFont()
 {
     return uiFont;
+}
+
+EdUi::Appearance& EditorInterfaceService::getAppearance()
+{
+    return appearance;
+}
+
+EdUi::UiState& EditorInterfaceService::getState()
+{
+    return state;
 }
 
 WindowContainer& EditorInterfaceService::getWindowContainer()
