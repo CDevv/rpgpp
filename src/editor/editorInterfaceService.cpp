@@ -98,6 +98,31 @@ void EditorInterfaceService::unload()
 
 void EditorInterfaceService::update()
 {
+    //update gui state
+    state.mousePos = GetMousePosition();
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        state.mouseDown = 1;
+    } else {
+        state.mouseDown = 0;
+    }
+
+
+    state.keyEntered = GetKeyPressed();
+    if (IsKeyPressed(KEY_LEFT_SHIFT)) {
+        state.keyMod = KEY_LEFT_SHIFT;
+    }
+    if (IsKeyDown(KEY_BACKSPACE)) {
+        state.keyDown = KEY_BACKSPACE;
+    }
+    if (IsKeyDown(KEY_LEFT)) {
+        state.keyDown = KEY_LEFT;
+    }
+    if (IsKeyDown(KEY_RIGHT)) {
+        state.keyDown = KEY_RIGHT;
+    }
+
+    state.keyChar = GetCharPressed();
+
     mainView.update();
     tabList.update();
     panelView->update();
@@ -106,36 +131,26 @@ void EditorInterfaceService::update()
     windowContainer.update();
 }
 
-
-
 void EditorInterfaceService::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
     bool openedAboutWIndow = false;
 
-    if (EdUi::Button(Rectangle { 0, 50, 200, 50 }, "Blep") == EdUi::EDUI_CLICK) {
+    if (EdUi::Button(1, Rectangle { 0, 50, 200, 50 }, "Blep")) {
         printf("hello! \n");
     }
-
-    Texture cross = Editor::getResources().getTexture("cross");
-    EdUi::IconButton(Rectangle { 200, 50, 50, 50 }, cross);
-
-    EdUi::BeginAppMenu();
-    if (EdUi::MenuButton("Menu..") == EdUi::EDUI_CLICK) {
-        printf("hello menu.\n");
-    }
-    if (EdUi::MenuButton("Button 2") == EdUi::EDUI_CLICK) {
-
-    }
-    {
-        EdUi::BeginAppSubmenu("Button 2");
-        EdUi::SubmenuButton("Item 1");
-        EdUi::SubmenuButton("Item 2");
-        EdUi::EndAppSubmenu();
+    if (EdUi::Button(2, Rectangle { 200, 50, 200, 50 }, "Blep2")) {
+        printf("hello 2! \n");
     }
 
-    EdUi::EndAppMenu();
+    static char buf[20] = "Hi.";
+    EdUi::TextField(3, Rectangle { 0, 120, 200, 26 }, buf, 256);
+
+    EdUi::End();
+
+    //Texture cross = Editor::getResources().getTexture("cross");
+    //EdUi::IconButton(Rectangle { 200, 50, 50, 50 }, cross);
 
     /*
     if (ImGui::BeginMainMenuBar()) {
