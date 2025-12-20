@@ -27,7 +27,7 @@ package("raylib")
     end)
 package_end()
 
-add_requires("raylib", "libsdl2", "nlohmann_json", "nativefiledialog-extended", "alpaca", "reproc")
+add_requires("raylib", "libsdl2", "nlohmann_json", "nativefiledialog-extended", "alpaca", "reproc", "luajit")
 add_rules("mode.debug")
 set_defaultmode("debug")
 
@@ -44,27 +44,27 @@ target("rlImGui")
     add_packages("raylib")
 
 target("rpgpp")
-    set_kind("static")
+    	set_kind("static")
 	set_languages("cxx17")
-    add_includedirs("include/", "include/luajit/")
-    add_linkdirs("libs/")
-    add_files("src/*.cpp")
-    add_packages("raylib", "nlohmann_json", "alpaca")
-    if is_plat("linux", "macosx") then
-        add_packages("libsdl2", {public = true})
-    end
-    if is_plat("linux") then
-        add_cxxflags("-fPIC")
-    end
+    	add_includedirs("include/", "include/luajit/")
+    	add_linkdirs("libs/")
+    	add_files("src/*.cpp")
+    	add_packages("raylib", "nlohmann_json", "alpaca")
+    	if is_plat("linux", "macosx") then
+    	    add_packages("libsdl2", {public = true})
+    	end
+    	if is_plat("linux") then
+    	    add_cxxflags("-fPIC")
+    	end
 
 target("rpgpplua")
-    set_kind("shared")
+    	set_kind("shared")
 	set_languages("cxx17")
-    add_includedirs("include/", "libs/luajit/src/", "include/luajit/")
-    add_files("src/rpgpplua/*.cpp")
-    add_packages("nlohmann_json", "raylib", "alpaca", {public = true})
-    add_linkdirs("libs/")
-    add_links("luajit")
+    	add_includedirs("include/", "libs/luajit/src/", "include/luajit/")
+    	add_files("src/rpgpplua/*.cpp")
+    	add_packages("nlohmann_json", "raylib", "alpaca", "luajit", {public = true})
+    	add_linkdirs("libs/")
+    	add_links("luajit")
 	add_deps("rpgpp")
 
 target("editor")
