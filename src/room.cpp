@@ -447,10 +447,11 @@ void Room::removeProp(Vector2 worldPos)
 
 Prop* Room::getPropAt(Vector2 worldPos)
 {
-    Prop* p = nullptr;;
-    for (std::vector<Prop>::iterator it = props->begin(); it < props->end(); ++it) {
+    Prop* p = nullptr;
+    int idx = 0;
+    for (std::vector<Prop>::iterator it = props->begin(); it < props->end(); ++it, idx++) {
         if (it->getWorldTilePos().x == worldPos.x && it->getWorldTilePos().y == worldPos.y) {
-            p = it.base();
+            p = &props->at(idx);
         }
     }
     return p;

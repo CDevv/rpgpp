@@ -77,5 +77,6 @@
         "span": "cpp",
         "valarray": "cpp"
     },
-    "C_Cpp.default.compilerPath": "/usr/bin/clang"
+    "C_Cpp.default.compilerPath": "cl.exe",
+    "cmake.ignoreCMakeListsMissing": true
 }

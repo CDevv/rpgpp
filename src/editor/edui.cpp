@@ -136,8 +136,17 @@ int EdUi::TextField(int id, Rectangle rect, char *buffer, int size)
     float offsetX = 4.0f;
     float offsetY = (rect.height - measure.y) / 2.0f;
 
-    const char* subtext = TextSubtext(buffer, 0, state.cursorIndex);
-    Vector2 subtextMeasure = MeasureTextEx(Editor::getUi().getFont(), subtext, app.fontSize, 1);
+    const char* subtext;
+    Vector2 subtextMeasure = Vector2 { 0, 0 };
+    if (state.cursorIndex == -1) {
+        subtext = "";
+        subtextMeasure = Vector2 { 0, 0 };
+    } else {
+        subtext = TextSubtext(buffer, 0, state.cursorIndex);
+        subtextMeasure = MeasureTextEx(Editor::getUi().getFont(), subtext, app.fontSize, 1);
+    }
+
+    
 
     Vector2 cursorPos = Vector2 { rect.x + offsetX + subtextMeasure.x, rect.y + offsetY };
     cursorPos.x -= state.drawOffset.x;

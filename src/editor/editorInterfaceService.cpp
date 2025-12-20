@@ -73,8 +73,7 @@ EditorInterfaceService::EditorInterfaceService()
 
     windowContainer = WindowContainer();
 
-    test_str = std::make_unique<char>();
-    strcpy(test_str.get(), "Hi!");
+    strcpy(testStr, "Hi.");
 }
 
 EditorInterfaceService::~EditorInterfaceService()
@@ -154,7 +153,7 @@ void EditorInterfaceService::draw()
 
     }
 
-    EdUi::TextField(3, Rectangle { 0, 120, 200, 26 }, test_str.get(), 256);
+    EdUi::TextField(3, Rectangle { 0, 120, 200, 26 }, testStr, 256);
 
     EdUi::End();
 

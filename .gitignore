@@ -41,6 +41,7 @@ librpgpp.so
 /game
 build/
 bin/
+libs/
 execs/**
 *.bin
 .cache/
@@ -52,3 +53,5 @@ execs/**
 docs/C++ API
 site/
 imgui.ini
+clangd/
+rlImGui/
