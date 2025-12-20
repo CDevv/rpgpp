@@ -39,7 +39,7 @@ task("resources")
 target("rlImGui")
     set_kind("static")
     set_languages("cxx17")
-    add_includedirs("rlImGui/", "rlImGui/imgui-master/")
+    add_includedirs("rlImGui/", "rlImGui/imgui-master/", "include/raylib/")
     add_files("rlImGui/*.cpp")
     add_packages("raylib")
 
