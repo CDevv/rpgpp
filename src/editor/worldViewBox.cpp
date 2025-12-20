@@ -46,7 +46,7 @@ WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLay
 
 WorldViewBox::~WorldViewBox()
 {
-    UnloadRenderTexture(renderTexture);
+    //UnloadRenderTexture(renderTexture);
 }
 
 void WorldViewBox::setWindowTitle(std::string windowTitle)

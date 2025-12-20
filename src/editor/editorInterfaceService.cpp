@@ -1,5 +1,6 @@
 #include "editorInterfaceService.hpp"
 #include <cstdio>
+#include <cstring>
 #include <raylib.h>
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -71,11 +72,14 @@ EditorInterfaceService::EditorInterfaceService()
     panelView = std::make_unique<PanelView>(windowRect);
 
     windowContainer = WindowContainer();
+
+    test_str = std::make_unique<char>();
+    strcpy(test_str.get(), "Hi!");
 }
 
 EditorInterfaceService::~EditorInterfaceService()
 {
-    UnloadFont(uiFont);
+    //UnloadFont(uiFont);
 }
 
 void EditorInterfaceService::setInitial()
@@ -85,6 +89,7 @@ void EditorInterfaceService::setInitial()
 
 void EditorInterfaceService::unload()
 {
+    UnloadFont(uiFont);
     FileSystemService& fs = Editor::getFileSystem();
     if (fs.projectIsOpen()) {
         std::filesystem::path fPath = std::string(fs.getProject()->getProjectBasePath()).append("/").append("run.lua");
@@ -123,12 +128,12 @@ void EditorInterfaceService::update()
 
     state.keyChar = GetCharPressed();
 
-    mainView.update();
-    tabList.update();
-    panelView->update();
-    resourceView.update();
+    //mainView.update();
+    //tabList.update();
+    //panelView->update();
+    //resourceView.update();
 
-    windowContainer.update();
+    //windowContainer.update();
 }
 
 void EditorInterfaceService::draw()
@@ -142,10 +147,14 @@ void EditorInterfaceService::draw()
     }
     if (EdUi::Button(2, Rectangle { 200, 50, 200, 50 }, "Blep2")) {
         printf("hello 2! \n");
+        FS_Result fsResult = fs.openImage();
+        if (fsResult.result == NFD_OKAY) {
+            printf("%s \n", fsResult.absolutePath.c_str());
+        }
+
     }
 
-    static char buf[20] = "Hi.";
-    EdUi::TextField(3, Rectangle { 0, 120, 200, 26 }, buf, 256);
+    EdUi::TextField(3, Rectangle { 0, 120, 200, 26 }, test_str.get(), 256);
 
     EdUi::End();
 

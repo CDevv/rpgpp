@@ -8,7 +8,7 @@
       "name": "C/C++ Debug (gdb Launch)",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/editor",
+      "program": "${workspaceFolder}/build/linux/x86_64/debug/editor",
       "args": [],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}",

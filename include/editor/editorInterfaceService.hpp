@@ -36,6 +36,7 @@ private:
     bool demoGuiActive;
     void drawMainView();
     void drawProjectView();
+    std::unique_ptr<char> test_str;
 public:
     EditorInterfaceService();
     ~EditorInterfaceService();
