@@ -127,12 +127,12 @@ void EditorInterfaceService::update()
 
     state.keyChar = GetCharPressed();
 
-    //mainView.update();
-    //tabList.update();
-    //panelView->update();
-    //resourceView.update();
+    mainView.update();
+    tabList.update();
+    panelView->update();
+    resourceView.update();
 
-    //windowContainer.update();
+    windowContainer.update();
 }
 
 void EditorInterfaceService::draw()
@@ -141,6 +141,7 @@ void EditorInterfaceService::draw()
 
     bool openedAboutWIndow = false;
 
+    /*
     if (EdUi::Button(1, Rectangle { 0, 50, 200, 50 }, "Blep")) {
         printf("hello! \n");
     }
@@ -156,11 +157,12 @@ void EditorInterfaceService::draw()
     EdUi::TextField(3, Rectangle { 0, 120, 200, 26 }, testStr, 256);
 
     EdUi::End();
+    */
 
     //Texture cross = Editor::getResources().getTexture("cross");
     //EdUi::IconButton(Rectangle { 200, 50, 50, 50 }, cross);
 
-    /*
+
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Open Project..")) {
@@ -217,7 +219,7 @@ void EditorInterfaceService::draw()
     }
 
     windowContainer.drawWindow("About");
-    */
+
 }
 
 void EditorInterfaceService::drawMainView()
