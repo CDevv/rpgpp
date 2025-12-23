@@ -25,6 +25,7 @@ void serializeDataToFile(std::string fileName, GameData data)
 GameData deserializeFile(std::string fileName)
 {
 	auto size = std::filesystem::file_size(fileName);
+	//auto size = 9UL;
     std::error_code error;
     std::ifstream is;
     is.open(fileName, std::ios::in | std::ios::binary);

@@ -1,4 +1,5 @@
 #include "project.hpp"
+#include <cstdio>
 #include <raylib.h>
 #include <nlohmann/json.hpp>
 #include <stdexcept>
@@ -164,7 +165,7 @@ void Project::runProject()
     #ifdef _WIN32
     rargs.push_back(std::string("\"").append(GetApplicationDirectory()).append("lua.exe").append("\""));
     #else
-    rargs.push_back(std::string(GetApplicationDirectory()).append("lua"));
+    rargs.push_back(std::string(TextFormat("%s%s", GetApplicationDirectory(), "execs/luajit")));
     #endif
 
     rargs.push_back("-lrpgpplua");
@@ -178,10 +179,26 @@ void Project::runProject()
     printf("%s \n", rargs[0].c_str());
     printf("%s \n", rargs[1].c_str());
     printf("%s \n", rargs[2].c_str());
+    /*
     reproc::process p;
     std::error_code ec = p.start(rargs, options);
     if (ec) {
-        printf("%s \n", ec.message().c_str());
+        printf("reproc error: %s \n", ec.message().c_str());
+    }
+    */
+    FILE* cmdFd = popen(TextFormat("%s %s %s", rargs[0].c_str(), rargs[1].c_str(), rargs[2].c_str()), "r");
+    if (cmdFd == nullptr) {
+        printf("popen() error\n");
+    }
+
+    char outLine[512];
+    while (std::fgets(outLine, 512, cmdFd)) {
+        printf("cmd output: %s\n", outLine);
+    }
+
+    int status = pclose(cmdFd);
+    if (status == -1) {
+        printf("pclose() error.. \n");
     }
     printf("ended\n");
 

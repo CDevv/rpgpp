@@ -6,6 +6,7 @@
 #include "interactablesContainer.hpp"
 #include "prop.hpp"
 #include "tilemap.hpp"
+#include <cstdio>
 #include <memory>
 #include <raylib.h>
 #include <nlohmann/json.hpp>
@@ -131,10 +132,11 @@ Room::Room(RoomBin bin)
 
     this->tileMap = std::make_unique<TileMap>(bin);
 
-    std::unique_ptr<Actor> actor = std::make_unique<Actor>(Game::getBin().actors.at(0));
+    std::unique_ptr<Actor> actor = std::make_unique<Actor>("actors/playerActor.ractor");
     actor->setTilePosition(Vector2 {
         static_cast<float>(bin.startPoint.x), static_cast<float>(bin.startPoint.y)
     }, tileMap->getTileSet()->getTileSize());
+    printf("%s \n", actor->getSourcePath().c_str());
     std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
 
     this->addPlayer(std::move(player));

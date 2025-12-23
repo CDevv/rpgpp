@@ -35,8 +35,7 @@
 *.pdb
 *.ilk
 
-rpgpp
-librpgpp.so
+game-src/*/lib/
 /editor
 /game
 build/

@@ -31,9 +31,17 @@ add_requires("raylib", "libsdl2", "nlohmann_json", "nativefiledialog-extended", 
 add_rules("mode.debug")
 set_defaultmode("debug")
 
+final_build = "$(builddir)/$(plat)/$(arch)/$(mode)"
+
 task("resources")
     on_run(function()
        os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/resources")
+       os.cp("$(curdir)/execs", "$(builddir)/$(plat)/$(arch)/$(mode)/execs")
+       if is_plat("linux", "macosx") then
+           os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpp.a", "$(curdir)/game-src/lib/librpgpp.a")
+           os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpplua.so", "$(curdir)/game-src/lib/librpgpplua.so")
+       end
+       os.cp("$(curdir)/game-src", "$(builddir)/$(plat)/$(arch)/$(mode)/")
     end)
 
 target("rlImGui")
@@ -49,7 +57,7 @@ target("rpgpp")
     add_includedirs("include/", "include/luajit/")
     add_linkdirs("libs/")
     add_files("src/*.cpp")
-    add_packages("raylib", "nlohmann_json", "alpaca")
+    add_packages("raylib", "nlohmann_json", "alpaca", "luajit")
     if is_plat("linux", "macosx") then
         add_packages("libsdl2", {public = true})
     end

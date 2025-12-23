@@ -54,6 +54,8 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
 	GameData struc;
     struc.title = title;
 
+    //struc.playerActor = "actors/playerActor.ractor";
+
     //TileSets
     for (auto tileSetPath : proj->at(FILE_TILESET)) {
         TileSet tileSet(tileSetPath);

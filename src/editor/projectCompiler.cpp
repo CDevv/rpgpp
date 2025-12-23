@@ -42,7 +42,7 @@ void ProjectCompiler::generateCmdScript(std::string projectTitle)
     SaveFileText("build.cmd", const_cast<char*>(scriptSource.data()));
     #else
     //Linux sh file
-    std::string shellString = TextFormat(R"(g++ -I"%sinclude" -I"%sgame-src/include" main.cpp -o %s -L"%sgame-src/lib" -lraylib -lrpgpp)",
+    std::string shellString = TextFormat(R"(g++ -I"%sinclude" -I"%sgame-src/include" main.cpp -o %s -L"%sgame-src/lib" -lSDL2 -lraylib -lrpgpp -lluajit)",
         GetApplicationDirectory(), GetApplicationDirectory(), projectTitle.c_str(), GetApplicationDirectory());
     printf("%s \n", shellString.c_str());
     SaveFileText("build.sh", const_cast<char*>(shellString.data()));
