@@ -38,7 +38,7 @@ void DialogueBalloon::update()
 	if (active) {
 		if (firstCharTyped == false) {
 			firstCharTyped = true;
-			Game::getSounds().playSound("sounds/Text 1.wav");
+			Game::getSounds().playSound("Text 1.wav");
 			return;
 		}
 
@@ -80,7 +80,7 @@ void DialogueBalloon::update()
 				//play sound
 				if (charIndex < text.size()) {
                     if (text.at(charIndex) != ' ') {
-				        Game::getSounds().playSound("sounds/Text 1.wav");
+				        Game::getSounds().playSound("Text 1.wav");
 				    }
 				}
 			}
