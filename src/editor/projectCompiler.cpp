@@ -14,30 +14,36 @@ void ProjectCompiler::generateCmdScript(std::string projectTitle)
 {
 	#ifdef _WIN32
     //Generate a .cmd file on Windows
-    VsInfo vsInfo = WinVsWhere(std::string(GetApplicationDirectory()).append("vswhere.exe"));
+    std::filesystem::path vswherePath = std::string(GetApplicationDirectory());
+    vswherePath /= "execs";
+    vswherePath /= "vswhere.exe";
+    VsInfo vsInfo = WinVsWhere(vswherePath.string());
     printf("%s \n", vsInfo.auxiliaryPath.c_str());
 
     std::string scriptSource;
     std::string callVcBat = "call ";
     callVcBat.append("\"").append(vsInfo.auxiliaryPath).append("\\vcvars64.bat").append("\"");
 
-    std::string clLine = "cl /nologo /c /EHs /I ";
-    clLine.append("\"").append(GetApplicationDirectory()).append("\include").append("\"")
+    std::string clLine = "cl /nologo /c /EHs /Zi /MDd /I";
+    clLine.append("\"").append(GetApplicationDirectory()).append("\\include").append("\"")
     .append(" /I ./include /I \"").append(GetApplicationDirectory()).append("game-src\\include\" main.cpp");
 
     std::string appDir = std::string(GetApplicationDirectory()).substr(0, TextLength(GetApplicationDirectory()) - 1);
 
     std::string exeName = TextFormat("%s.exe", projectTitle.c_str());
     std::string linkLine = "link ";
-    linkLine.append("/NOLOGO /LIBPATH:\"").append(GetApplicationDirectory()).append("\lib").append("\"")
+    linkLine.append("/NOLOGO /LIBPATH:\"").append(GetApplicationDirectory()).append("\\lib").append("\"")
     .append(" /LIBPATH:").append("\"").append(appDir).append("\"")
     .append(" /LIBPATH:\"").append(appDir).append("\\game-src\\lib\"")
     .append(" /OUT:").append(exeName)
+    .append(" /DEBUG /NODEFAULTLIB:LIBCMT")
     .append(" raylib.lib rpgpp.lib opengl32.lib gdi32.lib shell32.lib user32.lib winmm.lib")
     .append(" main.obj");
 
     scriptSource.append(callVcBat).append("\n\n").append(clLine).append("\n").append(linkLine).append("\n");
     printf("%s \n", scriptSource.c_str());
+
+    
 
     SaveFileText("build.cmd", const_cast<char*>(scriptSource.data()));
     #else
