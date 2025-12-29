@@ -49,6 +49,7 @@ execs/**
 .kdev4/
 *.sublime-project
 *.sublime-workspace
+.vs/
 docs/C++ API
 site/
 imgui.ini

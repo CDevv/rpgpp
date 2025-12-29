@@ -53,6 +53,16 @@ void Game::useBin(std::string filePath)
     gameData = std::make_unique<GameData>(deserializeFile(filePath));
     usesBin = true;
 
+    for (auto item : gameData->dialogues) {
+        printf("dialogue: %s \n", item.first.c_str());
+    }
+
+    for (auto item : gameData->images) {
+        Image image = LoadImageFromMemory(".png", item.second.data.data(), item.second.dataSize);
+        Texture2D texture = LoadTextureFromImage(image);
+        resources->addTexture(item.first, texture);
+    }
+
     SetWindowTitle(gameData->title.c_str());
 
     world->setRoomBin(gameData->rooms.at(0));

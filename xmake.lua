@@ -35,11 +35,15 @@ final_build = "$(builddir)/$(plat)/$(arch)/$(mode)"
 
 task("resources")
     on_run(function()
-       os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/resources")
-       os.cp("$(curdir)/execs", "$(builddir)/$(plat)/$(arch)/$(mode)/execs")
+       os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/")
+       os.cp("$(curdir)/execs", "$(builddir)/$(plat)/$(arch)/$(mode)/")
        if is_plat("linux", "macosx") then
            os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpp.a", "$(curdir)/game-src/lib/librpgpp.a")
            os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpplua.so", "$(curdir)/game-src/lib/librpgpplua.so")
+       end
+       if is_plat("windows") then
+           os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/rpgpplua.lib", "$(curdir)/game-src/lib/rpgpplua.lib")
+           os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/rpgpplua.dll", "$(curdir)/game-src/lib/rpgpplua.dll")
        end
        os.cp("$(curdir)/game-src", "$(builddir)/$(plat)/$(arch)/$(mode)/")
     end)
@@ -56,8 +60,9 @@ target("rpgpp")
     set_languages("cxx17")
     add_includedirs("include/", "include/luajit/")
     add_linkdirs("libs/")
+    add_links("luajit")
     add_files("src/*.cpp")
-    add_packages("raylib", "nlohmann_json", "alpaca", "luajit")
+    add_packages("raylib", "nlohmann_json", "alpaca")
     if is_plat("linux", "macosx") then
         add_packages("libsdl2", {public = true})
     end
@@ -70,9 +75,10 @@ target("rpgpplua")
     set_languages("cxx17")
     add_includedirs("include/", "libs/luajit/src/", "include/luajit/")
     add_files("src/rpgpplua/*.cpp")
-    add_packages("nlohmann_json", "raylib", "alpaca", "luajit", {public = true})
+    add_packages("nlohmann_json", "raylib", "alpaca", {public = true})
     add_linkdirs("libs/")
     add_deps("rpgpp", "rlImGui")
+    add_links("luajit")
 
 target("editor")
     set_kind("binary")

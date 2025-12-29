@@ -87,6 +87,7 @@ void IntBase<int>::interact()
 template <>
 void IntBase<DiagInt>::interact()
 {
+    printf("DiagInt.. %s\n", data.dialogueSource.c_str());
     if (Game::getBin().dialogues.count(data.dialogueSource)) {
         InterfaceService& ui = Game::getUi();
         ui.showDialogue(Game::getBin().dialogues[data.dialogueSource]);

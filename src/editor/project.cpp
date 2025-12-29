@@ -163,7 +163,7 @@ void Project::runProject()
 
     std::vector<std::string> rargs;
     #ifdef _WIN32
-    rargs.push_back(std::string("\"").append(GetApplicationDirectory()).append("lua.exe").append("\""));
+    rargs.push_back(std::string(TextFormat("%s%s", GetApplicationDirectory(), "execs\\luajit.exe")));
     #else
     rargs.push_back(std::string(TextFormat("%s%s", GetApplicationDirectory(), "execs/luajit")));
     #endif
@@ -171,7 +171,7 @@ void Project::runProject()
     rargs.push_back("-lrpgpplua");
 
     #ifdef _WIN32
-    rargs.push_back(std::string("\"").append(projectBasePath).append("\\").append("run.lua").append("\""));
+    rargs.push_back(TextFormat("\"%s\\run.lua\"", projectBasePath.c_str()));
     #else
     rargs.push_back(std::string(projectBasePath).append("/").append("run.lua"));
     #endif
@@ -179,13 +179,14 @@ void Project::runProject()
     printf("%s \n", rargs[0].c_str());
     printf("%s \n", rargs[1].c_str());
     printf("%s \n", rargs[2].c_str());
-    /*
-    reproc::process p;
-    std::error_code ec = p.start(rargs, options);
-    if (ec) {
-        printf("reproc error: %s \n", ec.message().c_str());
-    }
-    */
+
+    #ifdef _WIN32
+    std::string cmdLine = std::string(rargs[0]).append(" ").append(rargs[1]).append(" ").append(rargs[2]);
+    printf("%s \n", cmdLine.c_str());
+    WinCreateProc(cmdLine);
+
+    std::filesystem::remove(toLuaLib);
+    #else
     FILE* cmdFd = popen(TextFormat("%s %s %s", rargs[0].c_str(), rargs[1].c_str(), rargs[2].c_str()), "r");
     if (cmdFd == nullptr) {
         printf("popen() error\n");
@@ -201,13 +202,6 @@ void Project::runProject()
         printf("pclose() error.. \n");
     }
     printf("ended\n");
-
-    #ifdef _WIN32
-    std::string cmdLine = std::string(rargs[0]).append(" ").append(rargs[1]).append(" ").append(rargs[2]);
-    printf("%s \n", cmdLine.c_str());
-    WinCreateProc(cmdLine);
-
-    std::filesystem::remove(toLuaLib);
     #endif
 }
 

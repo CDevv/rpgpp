@@ -133,6 +133,26 @@ struct DataSerialization
 	int count;
 };
 
+namespace bitsery {
+  template <typename S>
+  void serialize(S& s, std::vector<std::vector<TileBin>>& c) {
+    s.container(c, 1000, [&s](std::vector<TileBin>& b) {
+      s.container(b, 10000);
+    })
+  }
+
+  template <typename S>
+  void serialize(S& s, std::array<std::vector<IVector>, 8>& c) {
+	std::vector<std::vector<IVector>> v;
+	for (auto vec : c) {
+		v.push_back(vec);
+	}
+    s.container(v, 8, [&s](std::vector<IVector>& b) {
+      s.container(b, 40);
+    })
+  }
+}
+
 DataSerialization serializeGameData(GameData data);
 void serializeDataToFile(std::string fileName, GameData data);
 GameData deserializeFile(std::string fileName);

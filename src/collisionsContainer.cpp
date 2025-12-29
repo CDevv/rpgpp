@@ -11,13 +11,13 @@ void CollisionsContainer::addCollisionTile(int x, int y)
 
 void CollisionsContainer::removeCollisionTile(int x, int y)
 {
-    for (std::vector<Vector2>::iterator it = vec.begin(); it != vec.end();) {
-        if (it->x == x && it->y == y) {
-            vec.erase(it);
-        } else {
-            ++it;
+    int idx = 0;
+    for (Vector2 item : vec) {
+        if (item.x == x && item.y == y) {
+            vec.erase(vec.begin() + idx);
         }
-    }
+        idx++;
+    }  
 }
 
 const std::vector<Vector2>& CollisionsContainer::getVector()

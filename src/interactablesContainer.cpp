@@ -54,12 +54,15 @@ IntBaseWrapper* InteractablesContainer::getInt(int x, int y)
 
 void InteractablesContainer::removeInteractable(int x, int y)
 {
-    for (std::vector<std::unique_ptr<IntBaseWrapper>>::iterator it = test.begin(); it != test.end(); ) {
-        if (it->get()->pos.x == x && it->get()->pos.y == y) {
-            test.erase(it);
-        } else {
-            ++it;
+    int idx = 0;
+    for (auto&& interactable : this->test) {
+        IntBaseWrapper* i = interactable.get();
+        if (i != nullptr) {
+            if (i->pos.x == x && i->pos.y == y) {
+                test.erase(test.begin() + idx);
+            }
         }
+        idx++;
     }
 }
 
@@ -91,22 +94,6 @@ void InteractablesContainer::addBinVector(std::vector<InteractableBin> bin)
         getInt(intBin.x, intBin.y)->setOnTouch(onTouch);
 
         inter_apply_bin(getInt(intBin.x, intBin.y), intBin);
-        /*
-        IntBase<DiagInt>* diag;
-        switch (itype) {
-        case INT_TWO:
-            diag = static_cast<IntBase<DiagInt>*>(this->getInt(intBin.x, intBin.y));
-            diag->set(DiagInt {intBin.dialogue});
-            break;
-        case INT_WARPER:
-            static_cast<IntBase<WarperInt>*>(this->getInt(intBin.x, intBin.y))->set({
-                intBin.dialogue
-            });
-            break;
-        default:
-            break;
-        }
-        */
     }
 }
 
