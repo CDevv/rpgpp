@@ -27,6 +27,7 @@ private:
     InteractableType type;
     /** The position of this Interactable in terms of tiles */
     Vector2 tilePos;
+    /** Tile size in pixels */
     int tileSize;
     /** The absolute position of this Interactable in the world scene */
     Vector2 absolutePos;

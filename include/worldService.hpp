@@ -14,8 +14,15 @@ private:
     /** The current room in this World. */
     std::unique_ptr<Room> room;
     bool lock;
+    /** Id for the next room. */
     std::string deferredRoomId;
     bool deferRoomChange;
+    /** Frame counter for transition tween */
+    int frameCounter;
+    bool transitionActive;
+    Color transitionColor;
+    float alpha;
+    bool transitionSecondStage;
 public:
     /** Empty constructor. */
     WorldService();
@@ -25,6 +32,8 @@ public:
     void setRoom(std::string filePath);
     /** Set the current room using a RoomBin binary structure. */
     void setRoomBin(RoomBin bin);
+    /** Activate transition effect (warper) */
+    void doFadeTransition();
     /** Get a reference to the Player object. */
     Player& getPlayer();
     /** Update routine. */

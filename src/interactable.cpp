@@ -98,6 +98,7 @@ template <>
 void IntBase<WarperInt>::interact()
 {
     WorldService& world = Game::getWorld();
+    world.doFadeTransition();
     world.setRoom(data.targetRoom);
 }
 

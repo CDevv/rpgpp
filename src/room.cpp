@@ -190,6 +190,8 @@ Room::Room(RoomBin bin)
     if (!bin.musicSource.empty()) {
         Game::getSounds().loadMusic(bin.musicSource);
         Game::getSounds().playMusic();
+    } else {
+        Game::getSounds().unload();
     }
 }
 

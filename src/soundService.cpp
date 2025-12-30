@@ -59,6 +59,7 @@ void SoundService::update()
 void SoundService::unload()
 {
     if (musicLoaded) {
+        StopMusicStream(music);
         UnloadMusicStream(music);
     }
 }
