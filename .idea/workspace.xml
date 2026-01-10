@@ -23,60 +23,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="Refactorings on the base rpgpp library code.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compile_commands.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/game-src/lib/rpgpplua.dll" beforeDir="false" afterPath="$PROJECT_DIR$/game-src/lib/rpgpplua.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/actor.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/actor.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/atlasTile.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/atlasTile.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/colorRect.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/colorRect.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/dialogueBalloon.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/dialogueBalloon.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/game.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/game.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/imageRect.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/imageRect.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/interactable.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/interactable.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/interactablesContainer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/interactablesContainer.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/interfaceService.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/interfaceService.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/interfaceView.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/interfaceView.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/player.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/player.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/prop.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/prop.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/resourceService.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/resourceService.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/room.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/room.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/soundService.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/soundService.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/stateService.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/stateService.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/textArea.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/textArea.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/tile.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/tile.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/tilemap.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/tilemap.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/tileset.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/tileset.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/uiElement.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/uiElement.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/worldService.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/worldService.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/actor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/actor.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/atlasTile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/atlasTile.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collisionsContainer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/collisionsContainer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/colorRect.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/colorRect.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dialogueBalloon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/dialogueBalloon.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/editor/project.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/project.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/imageRect.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/imageRect.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interactable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/interactable.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interactablesContainer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/interactablesContainer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interfaceService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaceService.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interfaceView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaceView.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/player.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/player.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prop.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/prop.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resourceService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/resourceService.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/room.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/room.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/soundService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/soundService.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stateService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/stateService.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/textArea.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/textArea.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/tile.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tilemap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilemap.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tileset.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/tileset.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/worldService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/worldService.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.kdev4/rpgpp.kdev4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/c_cpp_properties.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/compile_commands.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zed/debug.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.zed/settings.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,6 +103,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
@@ -215,12 +171,25 @@
       <workItem from="1767973282100" duration="1460000" />
       <workItem from="1767975701701" duration="1912000" />
       <workItem from="1767989340795" duration="582000" />
-      <workItem from="1768031827883" duration="10549000" />
+      <workItem from="1768031827883" duration="11181000" />
     </task>
+    <task id="LOCAL-00001" summary="Refactorings on the base rpgpp library code.">
+      <option name="closed" value="true" />
+      <created>1768042766772</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1768042766772</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Refactorings on the base rpgpp library code." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactorings on the base rpgpp library code." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
