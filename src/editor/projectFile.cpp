@@ -1,14 +1,14 @@
 #include "projectFile.hpp"
-#include "dialogueParser.hpp"
-#include "prop.hpp"
-#include "tileset.hpp"
+
 #include <memory>
 #include <raylib.h>
 
-#include "dialogueBalloon.hpp"
-#include "tileset.hpp"
-#include "room.hpp"
 #include "actor.hpp"
+#include "dialogueBalloon.hpp"
+#include "dialogueParser.hpp"
+#include "prop.hpp"
+#include "room.hpp"
+#include "tileset.hpp"
 
 std::array<std::string, ENGINEFILETYPE_MAX> ProjectFile::fileTypeNames =
 std::array<std::string, ENGINEFILETYPE_MAX>{
@@ -18,9 +18,11 @@ std::array<std::string, ENGINEFILETYPE_MAX>{
     "UI Views", "Scripts"
 };
 
-ProjectFile::ProjectFile() {}
+ProjectFile::ProjectFile() : fileType()
+{
+}
 
-ProjectFile::ProjectFile(std::string relativePath, EngineFileType fileType)
+ProjectFile::ProjectFile(const std::string &relativePath, EngineFileType fileType)
 {
     this->relativePath = relativePath;
     this->fileType = fileType;
@@ -33,7 +35,7 @@ std::array<std::string, ENGINEFILETYPE_MAX> ProjectFile::getTypeNames()
     return fileTypeNames;
 }
 
-void ProjectFile::setFromPath(std::string relativePath)
+void ProjectFile::setFromPath(const std::string &relativePath)
 {
     std::string fileExtension = GetFileExtension(relativePath.c_str());
     if (TextIsEqual(fileExtension.c_str(), ".rtiles")) {

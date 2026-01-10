@@ -1,19 +1,18 @@
 #include "editorInterfaceService.hpp"
-#include <cstdio>
-#include <cstring>
-#include <raylib.h>
-#include <imgui.h>
-#include <imgui_internal.h>
-#include "edui.hpp"
-#include "fileSystemService.hpp"
-#include "editor.hpp"
-#include "gamedata.hpp"
-#include "nfd.h"
-#include "windows/projectBinaryViewWindow.hpp"
-#include "resourceViewerBox.hpp"
-#include "windowContainer.hpp"
 
 #include <filesystem>
+#include <imgui.h>
+#include <imgui_internal.h>
+#include <raylib.h>
+
+#include "editor.hpp"
+#include "edui.hpp"
+#include "fileSystemService.hpp"
+#include "gamedata.hpp"
+#include "nfd.h"
+#include "resourceViewerBox.hpp"
+#include "windowContainer.hpp"
+#include "windows/projectBinaryViewWindow.hpp"
 
 #ifdef _WIN32
 #include "winapi.hpp"

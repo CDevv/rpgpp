@@ -1,9 +1,13 @@
 #include "windows/errorWindow.hpp"
-#include "windowPopup.hpp"
-#include <raylib.h>
-#include <imgui.h>
 
-ErrorWindow::ErrorWindow() {}
+#include <imgui.h>
+#include <raylib.h>
+
+#include "windowPopup.hpp"
+
+ErrorWindow::ErrorWindow() : rect()
+{
+}
 
 ErrorWindow::ErrorWindow(Rectangle rect)
 : WindowPopup("Runtime Error", rect)

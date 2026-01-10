@@ -72,7 +72,7 @@ public:
     void setLayerMode(RoomLayer mode);
     void setSelectedTile(Vector2 tile);
     void setCurrentInteractableType(InteractableType type);
-    void setStringProp(std::string str);
+    void setStringProp(const std::string &str);
     Vector2 getSelectedWorldTile();
     void isHoverOnValidTile();
     void drawGrid();
@@ -101,7 +101,7 @@ public:
     WorldViewBox();
     WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLayer boxLayer);
     ~WorldViewBox();
-    void setWindowTitle(std::string title);
+    void setWindowTitle(const std::string &title);
     void asChild();
     Rectangle getWindowRect();
     void setRect(Rectangle rect);
@@ -115,7 +115,7 @@ public:
     void setLayerMode(RoomLayer mode);
     void setCurrentInteractableType(InteractableType type);
     void setSelectedTile(Vector2 tile);
-    void setStringProp(std::string str);
+    void setStringProp(const std::string &str);
     Vector2 getSelectedWorldTile();
     void update();
     void draw();

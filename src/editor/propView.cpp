@@ -7,7 +7,8 @@
 #include <raylib.h>
 #include <raymath.h>
 
-PropView::PropView() {}
+PropView::PropView() : rect(Rectangle {}), renderRect(), camera(), renderTexture(), collisionBoxActive(false) {
+}
 
 PropView::PropView(Rectangle rect)
 {
@@ -97,7 +98,6 @@ void PropView::draw()
     DrawRectangleLinesEx(rect, 1.0f, GRAY);
 
     FileSystemService& fs = Editor::getFileSystem();
-    EngineFileType fileType = fs.getCurrentFile()->getFileType();
 
     BeginTextureMode(renderTexture);
 	ClearBackground(RAYWHITE);

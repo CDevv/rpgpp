@@ -25,8 +25,8 @@ public:
     void draw();
     void drawTileSetDialog();
     void drawProjectBinaryView();
-    WindowPopup& open(std::string id);
-    void drawWindow(std::string id);
+    WindowPopup& open(const std::string &id);
+    void drawWindow(const std::string &id);
 };
 
 #endif

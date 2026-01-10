@@ -1,12 +1,14 @@
 #include "dialogueParser.hpp"
-#include "dialogueBalloon.hpp"
+
 #include <cstdio>
-#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
+
+#include "dialogueBalloon.hpp"
 using json = nlohmann::json;
 
-std::vector<DialogueTextSection> parseDialogueContent(std::string t)
+std::vector<DialogueTextSection> parseDialogueContent(const std::string &t)
 {
     std::string tagName = "";
     std::string tagContent = "";
@@ -114,7 +116,7 @@ Dialogue parseDialogueText(std::string text)
     return result;
 }
 
-json dialogueDumpJson(Dialogue diag)
+json dialogueDumpJson(const Dialogue &diag)
 {
     std::vector<std::vector<std::string>> diagVec;
     for (DialogueLine line : diag.lines) {

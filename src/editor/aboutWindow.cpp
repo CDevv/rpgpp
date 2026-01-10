@@ -6,7 +6,8 @@
 #include "editor.hpp"
 #include "windowPopup.hpp"
 
-AboutWindow::AboutWindow() {}
+AboutWindow::AboutWindow() : rect(Rectangle {}) {
+}
 
 AboutWindow::AboutWindow(Rectangle rect)
 : WindowPopup("About RPG++", rect)

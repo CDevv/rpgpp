@@ -1,10 +1,10 @@
 #include "mapToolsBox.hpp"
-#include "IconsKenney.h"
-#include <imgui.h>
 
 #include <array>
+#include <imgui.h>
 #include <string>
-#include <IconsKenney.h>
+
+#include "IconsKenney.h"
 
 static std::array<std::string, 5> buttonIcons = {
 	ICON_KI_CURSOR,
@@ -14,7 +14,9 @@ static std::array<std::string, 5> buttonIcons = {
 	ICON_KI_FLAG
 };
 
-MapToolsBox::MapToolsBox() {}
+MapToolsBox::MapToolsBox() : rect(), actionInt(0), action()
+{
+}
 
 MapToolsBox::MapToolsBox(Rectangle rect)
 {

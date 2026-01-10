@@ -24,7 +24,7 @@ public:
 	void setTileSet(TileSet* tileSet);
 	void setSelectedTile(Vector2 atlasTile);
 	Vector2 getSelectedTile();
-	void setCallback(std::function<void(Vector2)> func);
+	void setCallback(const std::function<void(Vector2)> &func);
 };
 
 #endif

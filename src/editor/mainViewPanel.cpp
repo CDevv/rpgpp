@@ -1,12 +1,14 @@
 #include <mainViewPanel.hpp>
-#include <IconsKenney.h>
+
 #include "editor.hpp"
-#include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
+#include "fileSystemService.hpp"
 #include "imgui.h"
 #include "rlImGui.h"
 
-MainViewPanel::MainViewPanel() {}
+MainViewPanel::MainViewPanel() : rect(), logoTexture()
+{
+}
 
 MainViewPanel::MainViewPanel(Rectangle rect)
 {

@@ -1,6 +1,8 @@
 #include "editor.hpp"
-#include "resourceService.hpp"
+
 #include <memory>
+
+#include "resourceService.hpp"
 
 Editor *Editor::instance_ = nullptr;
 std::unique_ptr<EditorInterfaceService> Editor::ui = std::unique_ptr<EditorInterfaceService>{};

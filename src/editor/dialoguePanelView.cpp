@@ -1,11 +1,14 @@
 #include "dialoguePanelView.hpp"
+
 #include "dialogueBalloon.hpp"
 #include "dialogueViewer.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "projectFile.hpp"
 
-DialoguePanelView::DialoguePanelView() {}
+DialoguePanelView::DialoguePanelView() : rect()
+{
+}
 
 DialoguePanelView::DialoguePanelView(Rectangle rect)
 {

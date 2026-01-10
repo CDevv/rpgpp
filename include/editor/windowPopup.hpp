@@ -13,8 +13,8 @@ public:
     std::string imPopupId;
     virtual ~WindowPopup() {};
     WindowPopup();
-    WindowPopup(std::string imPopupId, Rectangle rect);
-    void setProp(std::string prop);
+    WindowPopup(const std::string &imPopupId, Rectangle rect);
+    void setProp(const std::string &prop);
     std::string getProp();
     bool hasProp();
     void openWindow();

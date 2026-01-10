@@ -6,8 +6,6 @@
 #include "winapi.hpp"
 #endif
 
-#include <reproc++/run.hpp>
-
 ProjectCompiler::ProjectCompiler() {}
 
 void ProjectCompiler::generateCmdScript(std::string projectTitle)
@@ -42,8 +40,6 @@ void ProjectCompiler::generateCmdScript(std::string projectTitle)
 
     scriptSource.append(callVcBat).append("\n\n").append(clLine).append("\n").append(linkLine).append("\n");
     printf("%s \n", scriptSource.c_str());
-
-    
 
     SaveFileText("build.cmd", const_cast<char*>(scriptSource.data()));
     #else
@@ -113,7 +109,7 @@ int main()
     #endif
 }
 
-void ProjectCompiler::cleanCompilation(std::string projectBasePath)
+void ProjectCompiler::cleanCompilation(const std::string &projectBasePath)
 {
 	#ifdef _WIN32
     std::filesystem::remove(std::string(TextFormat("%s\\build.cmd", projectBasePath.c_str())));

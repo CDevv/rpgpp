@@ -1,15 +1,17 @@
 #include "windows/dialogueLineWindow.hpp"
+
+#include <imgui.h>
+#include <raylib.h>
+
 #include "dialogueBalloon.hpp"
 #include "editor.hpp"
+#include "fileSystemService.hpp"
 #include "projectFile.hpp"
 #include "windowPopup.hpp"
-#include <cstring>
-#include <raylib.h>
-#include <imgui.h>
-#include "editor.hpp"
-#include "fileSystemService.hpp"
 
-DialogueLineWindow::DialogueLineWindow() {}
+DialogueLineWindow::DialogueLineWindow() : rect(), lineTitle{}
+{
+}
 
 DialogueLineWindow::DialogueLineWindow(Rectangle rect)
 : WindowPopup("New Dialogue Line..", rect)

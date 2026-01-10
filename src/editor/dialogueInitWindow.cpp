@@ -1,17 +1,21 @@
 #include "windows/dialogueInitWindow.hpp"
+
 #include <imgui.h>
 #include <raylib.h>
-#include "windowPopup.hpp"
 
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
+#include "windowPopup.hpp"
 
-DialogueInitWindow::DialogueInitWindow() {}
+DialogueInitWindow::DialogueInitWindow() : rect(), title{}
+{
+}
 
 DialogueInitWindow::DialogueInitWindow(Rectangle rect)
 : WindowPopup("New Dialogue..", rect)
 {
+    strcpy(title, "");
     this->rect = rect;
 }
 

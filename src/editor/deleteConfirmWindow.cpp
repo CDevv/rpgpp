@@ -1,14 +1,18 @@
 #include "windows/deleteConfirmWindow.hpp"
+
 #include <cstdio>
-#include <raylib.h>
-#include <imgui.h>
 #include <filesystem>
+#include <imgui.h>
+#include <raylib.h>
 #include <system_error>
+
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "windowPopup.hpp"
 
-DeleteConfirmWindow::DeleteConfirmWindow() {}
+DeleteConfirmWindow::DeleteConfirmWindow() : rect()
+{
+}
 
 DeleteConfirmWindow::DeleteConfirmWindow(Rectangle rect)
 : WindowPopup("Confirm Delete..", rect)

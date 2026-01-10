@@ -1,8 +1,12 @@
 #include "collisionInfoPanel.hpp"
+
 #include <imgui.h>
+
 #include "worldViewBox.hpp"
 
-CollisionInfoPanel::CollisionInfoPanel() {}
+CollisionInfoPanel::CollisionInfoPanel() : rect(), action()
+{
+}
 
 CollisionInfoPanel::CollisionInfoPanel(Rectangle rect)
 {

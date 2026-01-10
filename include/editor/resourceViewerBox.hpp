@@ -12,7 +12,7 @@ private:
     std::string deleteConfirmPath;
     void onNewButton();
     void drawResourcesList();
-    void drawContextMenu(std::string resPath);
+    void drawContextMenu(const std::string &resPath);
 public:
     ResourceViewerBox();
     ResourceViewerBox(Rectangle rect);

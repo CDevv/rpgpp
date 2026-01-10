@@ -1,11 +1,12 @@
 #include "propInitWindow.hpp"
-#include "windowPopup.hpp"
-#include <complex>
-#include <cstring>
+
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "windowPopup.hpp"
 
-PropInitWindow::PropInitWindow() {}
+PropInitWindow::PropInitWindow() : rect(), title{}, hasSetImageSource(false)
+{
+}
 
 PropInitWindow::PropInitWindow(Rectangle rect)
 : WindowPopup("New Prop..", rect)

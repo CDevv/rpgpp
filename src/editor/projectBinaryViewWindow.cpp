@@ -1,13 +1,19 @@
 #include "windows/projectBinaryViewWindow.hpp"
-#include "editor.hpp"
-#include "editorInterfaceService.hpp"
-#include "resourceService.hpp"
+
 #include <imgui.h>
-#include "tileset.hpp"
 #include <memory>
 #include <raylib.h>
 
-ProjectBinaryViewWindow::ProjectBinaryViewWindow() {}
+#include "editor.hpp"
+#include "editorInterfaceService.hpp"
+#include "resourceService.hpp"
+#include "tileset.hpp"
+
+ProjectBinaryViewWindow::ProjectBinaryViewWindow() : active(false), rect(), dataAvailable(false), pageEditMode(false),
+                                                     currentPageNum(0),
+                                                     currentPage(), fileType()
+{
+}
 
 ProjectBinaryViewWindow::ProjectBinaryViewWindow(Rectangle rect)
 {
@@ -57,14 +63,6 @@ void ProjectBinaryViewWindow::draw()
 {
 	this->tilesView->update();
 	this->roomView->update();
-
-	EditorInterfaceService& ui = Editor::getUi();
-
-	float closeHeight = 20 - 8;
-	Rectangle closeRect = Rectangle {
-	    rect.x + (rect.width - closeHeight - 4), rect.y + 4,
-		closeHeight, closeHeight
-	};
 
 	ImDrawList* draw = ImGui::GetBackgroundDrawList();
 	if (active && dataAvailable) {
@@ -131,7 +129,6 @@ void ProjectBinaryViewWindow::drawResourcesList()
 void ProjectBinaryViewWindow::drawCloseButton(ImDrawList* draw)
 {
     ResourceService& resources = Editor::getResources();
-    EditorInterfaceService& ui = Editor::getUi();
     ImVec4 closeColor = ImVec4 { 0, 0, 0, 0 };
 
     float closeHeight = 20 - 8;
@@ -159,12 +156,14 @@ void ProjectBinaryViewWindow::setTileSet(std::string name)
 {
 	auto tileSetData = data->tilesets.at(name);
 
+	/*
 	unsigned char* imageData = tileSetData.image.data();
 	Image image = LoadImageFromMemory(tileSetData.extension.c_str(), imageData, tileSetData.dataSize);
 	Texture texture = LoadTextureFromImage(image);
 
 	Vector2 tileSizeVec = Vector2 { static_cast<float>(tileSetData.tileSize.x), static_cast<float>(tileSetData.tileSize.y) };
-	//this->tileset = std::make_unique<TileSet>(texture, tileSizeVec);
+	this->tileset = std::make_unique<TileSet>(texture, tileSizeVec);
+	*/
 	this->tileset = std::make_unique<TileSet>(tileSetData);
 
 	this->tilesView->setTileSet(tileset.get());

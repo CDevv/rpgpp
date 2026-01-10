@@ -1,4 +1,5 @@
 #include "panelView.hpp"
+
 #include "dialoguePanelView.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
@@ -7,7 +8,9 @@
 #include "propPanelView.hpp"
 #include "tileSetPanelView.hpp"
 
-PanelView::PanelView() {}
+PanelView::PanelView() : pos(), rect()
+{
+}
 
 PanelView::PanelView(Rectangle rect)
 {

@@ -1,16 +1,21 @@
 #include "worldViewBox.hpp"
+
+#include <memory>
+#include <raylib.h>
+#include <rlgl.h>
+
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "imgui.h"
 #include "room.hpp"
 #include "tileset.hpp"
-#include <memory>
-#include <raylib.h>
-#include <raymath.h>
-#include <rlgl.h>
 
-WorldViewBox::WorldViewBox()
-{}
+WorldViewBox::WorldViewBox() : isChild(false), windowRect(), renderRect(), mouseLock(false), camera(), renderTexture(),
+                               type(),
+                               mousePos(),
+                               hoverPos()
+{
+}
 
 WorldViewBox::WorldViewBox(Rectangle windowRect, EngineFileType type, ViewBoxLayer boxLayer)
 {
@@ -49,7 +54,7 @@ WorldViewBox::~WorldViewBox()
     //UnloadRenderTexture(renderTexture);
 }
 
-void WorldViewBox::setWindowTitle(std::string windowTitle)
+void WorldViewBox::setWindowTitle(const std::string &windowTitle)
 {
     this->windowTitle = windowTitle;
 }
@@ -124,7 +129,7 @@ void WorldViewBox::setSelectedTile(Vector2 tile)
     mapView.setSelectedTile(tile);
 }
 
-void WorldViewBox::setStringProp(std::string str)
+void WorldViewBox::setStringProp(const std::string &str)
 {
     mapView.setStringProp(str);
 }
@@ -143,8 +148,6 @@ void WorldViewBox::update()
 
 void WorldViewBox::draw()
 {
-    FileSystemService& fs = Editor::getFileSystem();
-
     if (type == FILE_TILESET) {
         tilesView.isHoverOnValidTile();
     } else {
@@ -192,7 +195,7 @@ void WorldViewBox::draw()
     if (!isChild) {
         ImGui::SetNextWindowPos(ImVec2 { windowRect.x, windowRect.y });
         ImGui::SetNextWindowSize(ImVec2 { windowRect.width, windowRect.height });
-        success = ImGui::Begin(windowTitle.c_str(), NULL,
+        success = ImGui::Begin(windowTitle.c_str(), nullptr,
             ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize |
             ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollWithMouse);
     } else {

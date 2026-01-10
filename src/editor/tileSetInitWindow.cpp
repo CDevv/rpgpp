@@ -1,7 +1,8 @@
 #include "windows/tileSetInitWindow.hpp"
-#include <cstring>
-#include <raylib.h>
+
 #include <imgui.h>
+#include <raylib.h>
+
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
@@ -9,7 +10,9 @@
 #include "tileset.hpp"
 #include "windowPopup.hpp"
 
-TileSetInitWindow::TileSetInitWindow() {}
+TileSetInitWindow::TileSetInitWindow() : rect(), titleEditMode(false), title{}, hasSetTextureSource(false)
+{
+}
 
 TileSetInitWindow::TileSetInitWindow(Rectangle rect)
 : WindowPopup("New TileSet..", rect)

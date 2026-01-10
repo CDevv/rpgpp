@@ -1,17 +1,17 @@
 #include "dialogueViewer.hpp"
-#include "IconsKenney.h"
+#include <algorithm>
+#include <imgui.h>
+#include <imgui_stdlib.h>
+#include <raylib.h>
 #include "dialogueBalloon.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "IconsKenney.h"
 #include "nfd.h"
 #include "rlImGui.h"
-#include <algorithm>
-#include <cstring>
-#include <imgui.h>
-#include <raylib.h>
-#include <imgui_stdlib.h>
 
-DialogueViewer::DialogueViewer() {}
+DialogueViewer::DialogueViewer() : rect(), diag(nullptr), newLineName{} {
+}
 
 DialogueViewer::DialogueViewer(Rectangle rect)
 {

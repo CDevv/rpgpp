@@ -1,17 +1,20 @@
 #include "tileSetPanelView.hpp"
+
+#include <raylib.h>
+
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "projectFile.hpp"
 #include "propertiesBox.hpp"
 #include "tileset.hpp"
-#include <raylib.h>
 
-TileSetPanelView::TileSetPanelView()
+TileSetPanelView::TileSetPanelView() : rect()
 {
 }
 
 TileSetPanelView::TileSetPanelView(Rectangle rect)
 {
+    this->rect = Rectangle {};
     Rectangle windowRect = Rectangle
     {
         rect.x, rect.y,

@@ -1,12 +1,16 @@
 #include "windows/actorInitWindow.hpp"
+
+#include <nlohmann/json.hpp>
+
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
 #include "imgui.h"
 #include "windowPopup.hpp"
-#include <nlohmann/json.hpp>
 
-ActorInitWindow::ActorInitWindow() {}
+ActorInitWindow::ActorInitWindow() : rect(), titleEditMode(false), title{}, hasSetTileSet(false)
+{
+}
 
 ActorInitWindow::ActorInitWindow(Rectangle rect)
 : WindowPopup("New Actor..", rect)

@@ -14,7 +14,7 @@ using json = nlohmann::json;
 
 ProjectGenerator::ProjectGenerator() {}
 
-void ProjectGenerator::generateNewProj(std::string title, std::string path)
+void ProjectGenerator::generateNewProj(std::string title, const std::string &path)
 {
 	std::string newDirPath = TextFormat("%s/%s", path.c_str(), title.c_str());
     int dirSuccess = MakeDirectory(newDirPath.c_str());

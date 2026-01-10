@@ -1,18 +1,22 @@
 #include "projectMenuBox.hpp"
+
 #include <IconsKenney.h>
 #include <raylib.h>
+
 #include "actor.hpp"
 #include "dialogueBalloon.hpp"
 #include "dialogueParser.hpp"
-#include "gamedata.hpp"
 #include "editor.hpp"
-#include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
+#include "fileSystemService.hpp"
+#include "gamedata.hpp"
 #include "projectFile.hpp"
 #include "room.hpp"
 #include "tileset.hpp"
 
-ProjectMenuBox::ProjectMenuBox() {}
+ProjectMenuBox::ProjectMenuBox() : rect()
+{
+}
 
 ProjectMenuBox::ProjectMenuBox(Rectangle rect)
 {

@@ -15,8 +15,8 @@ public:
     ActorInfoPanel(Rectangle rect);
     void setRect(Rectangle rect);
     void setActionMode(RoomAction action);
-    int getCurrentActorIndex();
-    void update();
+    int getCurrentActorIndex() const;
+    void update() const;
     void draw();
 };
 

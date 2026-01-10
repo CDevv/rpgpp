@@ -1,16 +1,16 @@
 #include "project.hpp"
+
 #include <cstdio>
+#include <filesystem>
 #include <raylib.h>
-#include <nlohmann/json.hpp>
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <filesystem>
+#include <nlohmann/json.hpp>
+
 #include "gamedata.hpp"
 #include "projectFile.hpp"
-#include "tileset.hpp"
 #include "tilemap.hpp"
-#include "room.hpp"
 using json = nlohmann::json;
 
 #ifdef _WIN32
@@ -21,7 +21,7 @@ using json = nlohmann::json;
 
 Project::Project() {}
 
-Project::Project(std::string filePath)
+Project::Project(const std::string &filePath)
 {
     this->projectPath = filePath;
     this->projectBasePath = GetDirectoryPath(filePath.c_str());
@@ -63,7 +63,7 @@ void Project::reloadPaths()
     pathsList[FILE_SCRIPT] = makePaths("scripts");
 }
 
-void Project::generateNewProj(std::string title, std::string path)
+void Project::generateNewProj(const std::string &title, const std::string &path)
 {
     ProjectGenerator::generateNewProj(title, path);
 }
@@ -215,7 +215,7 @@ std::string Project::getProjectBasePath()
     return projectBasePath;
 }
 
-std::vector<std::string> Project::makePaths(std::string dirPath)
+std::vector<std::string> Project::makePaths(const std::string &dirPath)
 {
     FilePathList pathList = LoadDirectoryFiles(dirPath.c_str());
 

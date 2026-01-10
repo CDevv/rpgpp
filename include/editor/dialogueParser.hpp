@@ -7,6 +7,6 @@
 using json = nlohmann::json;
 
 Dialogue parseDialogueText(std::string text);
-json dialogueDumpJson(Dialogue diag);
+json dialogueDumpJson(const Dialogue &diag);
 
 #endif

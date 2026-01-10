@@ -13,6 +13,7 @@ FileSystemService::FileSystemService()
     project = std::unique_ptr<Project>{};
     projectAvailable = false;
     activeIndex = 0;
+    lastType = FILE_ACTOR;
 
     lastTileSet = nullptr;
     lastRoom = nullptr;
@@ -43,7 +44,7 @@ void FileSystemService::promptOpenProject()
     }
 }
 
-void FileSystemService::setProject(std::string projectPath)
+void FileSystemService::setProject(const std::string &projectPath)
 {
     project.reset(new Project(projectPath));
     projectAvailable = true;
@@ -125,7 +126,7 @@ void FileSystemService::promptOpenFile()
 {
     nfdu8char_t *outPath;
     nfdu8filteritem_t filters[1] = { { "RPG++ Resource", "rtiles,rmap" } };
-    nfdopendialogu8args_t args = {0};
+    nfdopendialogu8args_t args = {nullptr};
     args.filterList = filters;
     args.filterCount = 1;
     nfdresult_t result = NFD_OpenDialogU8_With(&outPath, &args);
@@ -184,7 +185,7 @@ FS_Result FileSystemService::openFile(nfdu8filteritem_t filters[])
     FS_Result fsResult;
 
     nfdu8char_t *outPath;
-    nfdopendialogu8args_t args = {0};
+    nfdopendialogu8args_t args = {nullptr};
     args.filterList = filters;
     args.filterCount = 1;
     nfdresult_t result = NFD_OpenDialogU8_With(&outPath, &args);
@@ -212,7 +213,7 @@ FS_Result FileSystemService::openFolder()
     FS_Result fsResult;
 
     nfdu8char_t *outPath;
-    nfdresult_t result = NFD_PickFolder(&outPath, NULL);
+    nfdresult_t result = NFD_PickFolder(&outPath, nullptr);
 
     fsResult.result = result;
 

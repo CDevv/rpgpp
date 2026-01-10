@@ -1,14 +1,17 @@
 #include "propInfoPanel.hpp"
+
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "imgui.h"
 #include "interactableInfoPanel.hpp"
 #include "worldViewBox.hpp"
 
-PropInfoPanel::PropInfoPanel() {}
+PropInfoPanel::PropInfoPanel() : rect(), action(), currentProp(0), prop(nullptr) {
+}
 
 PropInfoPanel::PropInfoPanel(Rectangle rect)
 {
+    this->action = ACTION_NONE;
     this->rect = rect;
     this->propConcat = "";
     this->currentProp = 0;

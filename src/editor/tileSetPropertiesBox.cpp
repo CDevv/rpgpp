@@ -4,7 +4,15 @@
 #include "fileSystemService.hpp"
 #include "tileset.hpp"
 
-TileSetPropertiesBox::TileSetPropertiesBox() {}
+TileSetPropertiesBox::TileSetPropertiesBox() : rect(), tileSet(nullptr), chosenTileSize(0), chosenTileWidth(0),
+                                               chosenTileHeight(0),
+                                               multiSizeCheckBox(false),
+                                               chosenTileSizeEditMode(false),
+                                               chosenTileWidthEditMode(false),
+                                               chosenTileHeightEditMode(false),
+                                               scrollVec(), viewRec(), tileSizeArr()
+{
+}
 
 TileSetPropertiesBox::TileSetPropertiesBox(Rectangle rect)
 {
@@ -19,6 +27,7 @@ TileSetPropertiesBox::TileSetPropertiesBox(Rectangle rect)
     multiSizeCheckBox = true;
 
     this->rect = rect;
+    this->tileSet = nullptr;
 
     scrollVec = Vector2 { 0, 0 };
     viewRec = Rectangle { 0 };

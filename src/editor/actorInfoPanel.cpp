@@ -4,10 +4,13 @@
 #include "fileSystemService.hpp"
 #include <imgui.h>
 
-ActorInfoPanel::ActorInfoPanel() {}
+ActorInfoPanel::ActorInfoPanel() : rect(Rectangle {}), action(ACTION_NONE), currentActor(0)
+{
+}
 
 ActorInfoPanel::ActorInfoPanel(Rectangle rect)
 {
+    this->action = ACTION_NONE;
     this->rect = rect;
     this->actorConcat = "";
     this->currentActor = 0;
@@ -23,12 +26,12 @@ void ActorInfoPanel::setActionMode(RoomAction action)
     this->action = action;
 }
 
-int ActorInfoPanel::getCurrentActorIndex()
+int ActorInfoPanel::getCurrentActorIndex() const
 {
     return currentActor;
 }
 
-void ActorInfoPanel::update()
+void ActorInfoPanel::update() const
 {
 
 }

@@ -1,11 +1,13 @@
 #include "propPanelView.hpp"
+
 #include "editor.hpp"
 #include "projectFile.hpp"
-#include "propView.hpp"
 #include "propertiesBox.hpp"
-#include <cstdio>
+#include "propView.hpp"
 
-PropPanelView::PropPanelView() {}
+PropPanelView::PropPanelView() : rect()
+{
+}
 
 PropPanelView::PropPanelView(Rectangle rect)
 {

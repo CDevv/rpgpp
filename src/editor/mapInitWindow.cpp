@@ -9,7 +9,9 @@
 #include "tilemap.hpp"
 #include "windowPopup.hpp"
 
-MapInitWindow::MapInitWindow() {}
+MapInitWindow::MapInitWindow() : rect(), title{}, titleEditMode(false), hasSetTileSet(false)
+{
+}
 
 MapInitWindow::MapInitWindow(Rectangle rect)
 : WindowPopup("New Room..", rect)

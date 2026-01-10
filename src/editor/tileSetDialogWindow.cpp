@@ -1,10 +1,14 @@
 #include "windows/tileSetDialogWindow.hpp"
+
 #include <imgui.h>
+
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "worldViewBox.hpp"
 
-TileSetDialogWindow::TileSetDialogWindow() {}
+TileSetDialogWindow::TileSetDialogWindow() : active(false), boxLayer(), rect(), chosenTile()
+{
+}
 
 TileSetDialogWindow::TileSetDialogWindow(Rectangle rect)
 {
@@ -78,7 +82,7 @@ Vector2 TileSetDialogWindow::getSelectedTile()
 	return this->tileSetView->getSelectedTile();
 }
 
-void TileSetDialogWindow::setCallback(std::function<void(Vector2)> func)
+void TileSetDialogWindow::setCallback(const std::function<void(Vector2)> &func)
 {
 	this->callback = func;
 }
