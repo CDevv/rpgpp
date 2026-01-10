@@ -1,13 +1,10 @@
 #include "game.hpp"
 #include "gamedata.hpp"
 #include "soundService.hpp"
-#include <cstdio>
 #include <memory>
 #include <raylib.h>
 #include <sol/sol.hpp>
 #include <sol/forward.hpp>
-#include <sol/state_view.hpp>
-#include <sol/types.hpp>
 #include <stdexcept>
 
 Game *Game::instance_ = nullptr;
@@ -48,7 +45,7 @@ void Game::init()
     sounds = std::make_unique<SoundService>();
 }
 
-void Game::useBin(std::string filePath)
+void Game::useBin(const std::string &filePath)
 {
     gameData = std::make_unique<GameData>(deserializeFile(filePath));
     usesBin = true;

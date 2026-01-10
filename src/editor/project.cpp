@@ -127,17 +127,17 @@ void Project::runProject()
     init_audio()
 
     g = game.new()
-    g:init()
+    game.init()
 
     game.use_bin("game.bin")
 
     set_fps(60)
 
     while not window_should_close() do
-        g:update()
+        game.update()
         begin_drawing()
         clear_background()
-        g:draw()
+        game.draw()
         end_drawing()
     end
 

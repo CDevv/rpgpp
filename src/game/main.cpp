@@ -7,7 +7,7 @@ int main()
     InitAudioDevice();
 
     Game game;
-    game.init();
+    Game::init();
 
     Game::useBin("game.bin");
 
@@ -16,15 +16,15 @@ int main()
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
-        game.update();
+        Game::update();
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        game.draw();
+        Game::draw();
         EndDrawing();
     }
 
-    game.unload();
+    Game::unload();
     CloseWindow();
     CloseAudioDevice();
 

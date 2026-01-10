@@ -17,7 +17,7 @@ void CollisionsContainer::removeCollisionTile(int x, int y)
             vec.erase(vec.begin() + idx);
         }
         idx++;
-    }  
+    }
 }
 
 const std::vector<Vector2>& CollisionsContainer::getVector()

@@ -16,9 +16,8 @@ std::unique_ptr<IntBaseWrapper> make_item(Vector2 pos, InteractableType type) {
 
 InteractablesContainer::InteractablesContainer() {}
 
-void InteractablesContainer::add(int x, int y, InteractableType type) {
-    Vector2 position = { static_cast<float>(x), static_cast<float>(y) };
-
+void InteractablesContainer::add(int x, int y, InteractableType type)
+{
     switch (type) {
         case INT_BLANK:
             add<int>(x, y, type);
@@ -40,7 +39,7 @@ void InteractablesContainer::add(int x, int y, InteractableType type)
     }, type));
 }
 
-IntBaseWrapper* InteractablesContainer::getInt(int x, int y)
+IntBaseWrapper* InteractablesContainer::getInt(int x, int y) const
 {
     IntBaseWrapper* res = nullptr;
     for (auto&& i : test) {
@@ -76,7 +75,7 @@ void InteractablesContainer::setInteractableType(int x, int y, InteractableType 
     this->add(x, y, type);
 }
 
-std::vector<IntBaseWrapper*> InteractablesContainer::getList()
+std::vector<IntBaseWrapper*> InteractablesContainer::getList() const
 {
     std::vector<IntBaseWrapper*> result;
     for (auto&& in : this->test) {
@@ -85,7 +84,7 @@ std::vector<IntBaseWrapper*> InteractablesContainer::getList()
     return result;
 }
 
-void InteractablesContainer::addBinVector(std::vector<InteractableBin> bin)
+void InteractablesContainer::addBinVector(const std::vector<InteractableBin> &bin)
 {
     for (auto intBin : bin) {
         InteractableType itype = static_cast<InteractableType>(intBin.type);

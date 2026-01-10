@@ -4,28 +4,28 @@
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
-TileSet::TileSet() {}
+TileSet::TileSet() : texture(), tileSize(Vector2 { 16, 16 }) {
+}
 
-TileSet::TileSet(std::string textureSource, Vector2 tileSize)
+TileSet::TileSet(const std::string &textureSource, Vector2 tileSize)
 {
     this->textureSource = textureSource;
-    Texture texture = LoadTexture(textureSource.c_str());
-    this->texture = texture;
+    this->texture = LoadTexture(textureSource.c_str());
     this->tileSize = tileSize;
 }
 
-TileSet::TileSet(std::string textureSource, int tileSizeInt)
+TileSet::TileSet(const std::string &textureSource, int tileSizeInt)
 : TileSet(textureSource, Vector2 { static_cast<float>(tileSizeInt), static_cast<float>(tileSizeInt) })
 {
 }
 
-TileSet::TileSet(Texture texture, Vector2 tileSize)
+TileSet::TileSet(const Texture &texture, Vector2 tileSize)
 {
     this->texture = texture;
     this->tileSize = tileSize;
 }
 
-TileSet::TileSet(std::string fileName)
+TileSet::TileSet(const std::string &fileName)
 {
     //Get text from JSON file
     char *jsonContent = LoadFileText(fileName.c_str());
@@ -34,12 +34,7 @@ TileSet::TileSet(std::string fileName)
     //Load Texture
     std::string sourcePath = j.at("source");
     this->textureSource = sourcePath;
-    Texture texture = LoadTexture(sourcePath.c_str());
-    this->texture = texture;
-
-    //Set tile size
-    int tileSize = j.at("tileSize");
-    //this->tileSize = tileSize;
+    this->texture = LoadTexture(sourcePath.c_str());
 
     int tileWidth = j.at("tileWidth");
     int tileHeight = j.at("tileHeight");
@@ -55,9 +50,8 @@ TileSet::TileSet(TileSetBin bin)
 
     unsigned char* imageData = bin.image.data();
     Image image = LoadImageFromMemory(bin.extension.c_str(), imageData, bin.dataSize);
-    Texture texture = LoadTextureFromImage(image);
 
-    this->texture = texture;
+    this->texture = LoadTextureFromImage(image);
 }
 
 TileSet::~TileSet()
@@ -77,12 +71,12 @@ json TileSet::dumpJson()
     return tileSetJson;
 }
 
-void TileSet::unload()
+void TileSet::unload() const
 {
     UnloadTexture(texture);
 }
 
-Vector2 TileSet::getTileSize()
+Vector2 TileSet::getTileSize() const
 {
     return this->tileSize;
 }
@@ -97,7 +91,7 @@ void TileSet::setTileSizeVector(Vector2 vec)
     this->tileSize = vec;
 }
 
-Texture TileSet::getTexture()
+Texture TileSet::getTexture() const
 {
     return this->texture;
 }
@@ -107,13 +101,13 @@ std::string TileSet::getTextureSource()
     return this->textureSource;
 }
 
-void TileSet::setTextureSource(std::string source)
+void TileSet::setTextureSource(const std::string &source)
 {
     this->textureSource = source;
     this->texture = LoadTexture(source.c_str());
 }
 
-bool TileSet::areAtlasCoordsValid(Vector2 atlasCoords)
+bool TileSet::areAtlasCoordsValid(Vector2 atlasCoords) const
 {
     bool xValid = false;
     bool yValid = false;

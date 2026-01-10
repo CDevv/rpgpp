@@ -10,11 +10,11 @@ class SoundService {
     std::string lastId;
 public:
     SoundService();
-    bool loadMusic(std::string id);
-    void playMusic();
-    void playSound(std::string id);
-    void update();
-    void unload();
+    bool loadMusic(const std::string &id);
+    void playMusic() const;
+    void playSound(const std::string &id) const;
+    void update() const;
+    void unload() const;
 };
 
 #endif

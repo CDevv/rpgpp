@@ -50,9 +50,10 @@ execs/**
 *.sublime-project
 *.sublime-workspace
 .vs/
+.idea/
 docs/C++ API
 site/
 imgui.ini
 clangd/
 rlImGui/
-/game-src
+game-src/

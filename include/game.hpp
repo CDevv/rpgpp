@@ -27,17 +27,19 @@ private:
 public:
     Game();
     static Game& instance();
-    static void useBin(std::string filePath);
+    static void useBin(const std::string &filePath);
     static GameData& getBin();
     static StateService& getState();
     static WorldService& getWorld();
     static InterfaceService& getUi();
     static ResourceService& getResources();
     static SoundService& getSounds();
-    void init();
-    void update();
-    void draw();
-    void unload();
+
+    static void init();
+
+    static void update();
+    static void draw();
+    static void unload();
 };
 
 #endif

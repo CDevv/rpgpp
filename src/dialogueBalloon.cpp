@@ -88,7 +88,7 @@ void DialogueBalloon::update()
 	}
 }
 
-void DialogueBalloon::drawPortrait()
+void DialogueBalloon::drawPortrait() const
 {
     Texture2D texture = Game::getResources().getTexture(dialogue.lines.at(lineIndex).imageId);
 	Rectangle source = Rectangle { 0.0f, 0.0f, static_cast<float>(texture.width), static_cast<float>(texture.height) };
@@ -118,7 +118,7 @@ void DialogueBalloon::draw()
 		sectionIndex = 0;
 		Vector2 charMeasure = Vector2 { 0, 0 };
 	    for (int i = 0; i < charIndex; i++) {
-			Color textColor = WHITE;
+			Color newTextColor = WHITE;
 
 			int size = 0;
     		int idx = 0;
@@ -126,11 +126,11 @@ void DialogueBalloon::draw()
     		    if (i < (size + TextLength(section.text.c_str()))) {
     				sectionIndex = idx;
                     if (section.key == "red") {
-                        textColor = RED;
+                        newTextColor = RED;
                     } else if (section.key == "blue") {
-                        textColor = BLUE;
+                        newTextColor = BLUE;
                     } else if (section.key == "green") {
-                        textColor = GREEN;
+                        newTextColor = GREEN;
                     }
                     break;
     			} else {
@@ -140,7 +140,7 @@ void DialogueBalloon::draw()
     		}
 
             const char* subText = TextSubtext(text.c_str(), i, 1);
-			charP(charMeasure, subText, textColor);
+			charP(charMeasure, subText, newTextColor);
 
 			Vector2 newMeasure = MeasureTextEx(font,
 			    TextSubtext(text.c_str(), i, 1), 13 * 3, 1.0f);
@@ -175,16 +175,16 @@ void DialogueBalloon::charP(Vector2 charMeasure, const char* c, Color color)
     DrawTextEx(font, c, finalCharPos, 13 * 3, 1, color);
 }
 
-void DialogueBalloon::showDialogue(Dialogue dialogue)
+void DialogueBalloon::showDialogue(const Dialogue &newDialogue)
 {
 	if (active) return;
 
-	this->dialogue = dialogue;
+	this->dialogue = newDialogue;
 	this->lineIndex = 0;
 
 	firstCharTyped = false;
 	active = true;
-	this->text = dialogue.lines.at(0).text;
+	this->text = newDialogue.lines.at(0).text;
 
 	this->frameCounter = 0;
 	this->charIndex = 0;

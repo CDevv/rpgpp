@@ -1,7 +1,9 @@
 #include "colorRect.hpp"
 #include <raylib.h>
 
-ColorRect::ColorRect() {}
+ColorRect::ColorRect() : rect(Rectangle { 1, 1, 1, 1 }), color()
+{
+}
 
 ColorRect::ColorRect(Rectangle rect)
 {
@@ -9,9 +11,9 @@ ColorRect::ColorRect(Rectangle rect)
     this->color = RAYWHITE;
 }
 
-void ColorRect::setColor(Color color)
+void ColorRect::setColor(Color newColor)
 {
-    this->color = color;
+    this->color = newColor;
 }
 
 void ColorRect::update()

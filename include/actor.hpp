@@ -36,23 +36,23 @@ private:
     /** The currently shown tile from the TileSet. */
     AtlasTile tile;
     /** Current position in the world of this Actor. */
-    Vector2 position;
+    Vector2 position{};
     /** Current tile position of this Actor if such is set. */
-    Vector2 tilePosition;
-    int frameCounter;
-    int frameSpeed;
-    int currentFrame;
+    Vector2 tilePosition{};
+    int frameCounter{};
+    int frameSpeed{};
+    int currentFrame{};
     /** Rectangle, representing the collision of this Actor. */
-    Rectangle collisionRect;
+    Rectangle collisionRect{};
     /** An array of the animations. Each std::vector<Vector2> represents the frames of an animation. */
     std::array<std::unique_ptr<std::vector<Vector2>>, 8> animations;
     /** A Direction enum, showing the current animation that is being played. */
     Direction currentAnimation;
 public:
     /** Empty constructor. */
-    Actor();
+    Actor() = default;
     /** Constructor that takes a path to the .ractor file. */
-    Actor(std::string fileName);
+    Actor(const std::string& fileName);
     /** Constructor that takes a TileSet, the atlas position of the tile to use, and the path to the TileSet. */
     Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos, std::string tileSetSource);
     /** Constructor that takes an ActorBin binary structure */
@@ -60,51 +60,51 @@ public:
     /** Dump this Actor's data to a nlohmann::json object. */
     json dumpJson();
     /** Unload routine. The UnloadTexture function will called here. */
-    void unload();
+    void unload() const;
     /** Update routine. */
     void update();
     /** Draw routine. */
     void draw();
     /** Get the source file's path for this Actor. */
-    std::string getSourcePath();
+    std::string getSourcePath() const;
     /** Get this actor's position in the world. */
-    Vector2 getPosition();
+    Vector2 getPosition() const;
     /** Set this Actor's position. */
-    void setPosition(Vector2 position);
+    void setPosition(Vector2 newPosition);
     /** Set Actor position relative to a tile in the world. */
-    void setTilePosition(Vector2 position, Vector2 tileSize);
+    void setTilePosition(Vector2 newPosition, Vector2 tileSize);
     /** Get this Actor's tile position. */
-    Vector2 getTilePosition();
+    Vector2 getTilePosition() const;
     /** Move the Actor using a velocity vector. */
     void moveByVelocity(Vector2 velocity);
     /** Get the bounding box of this Actor. */
-    Rectangle getRect();
+    Rectangle getRect() const;
     /** Get a reference to this Actor's TileSet. */
-    TileSet& getTileSet();
+    TileSet& getTileSet() const;
     /** Set this Actor's TileSet using a path to the tileset file. */
-    void setTileSet(std::string tileSetSource);
+    void setTileSet(const std::string& newTileSetSource);
     /** Get the collision rectangle of this Actor if it was moved by the velocity vector */
-    Rectangle getCollisionRect(Vector2 velocity);
+    Rectangle getCollisionRect(Vector2 velocity) const;
     /** Get collision center point. */
-    Vector2 getCollisionCenter();
+    Vector2 getCollisionCenter() const;
     /** Add a frame in the chosen animation. The frame represents an atlas tile from this Actor's TileSet. */
-    void addAnimationFrame(Direction id, Vector2 atlasPos);
+    void addAnimationFrame(Direction id, Vector2 atlasPos) const;
     /** Remove a frame in the chosen animation, specified by an index. */
     void removeAnimationFrame(Direction id, int frameIndex);
     /** Change a frame in the chosen animation to another atlas tile from the TileSet. */
-    void setAnimationFrame(Direction id, int frameIndex, Vector2 atlasTile);
+    void setAnimationFrame(Direction id, int frameIndex, Vector2 atlasTile) const;
     /** Add multiple frames to the chosen animation. */
-    void addAnimationFrames(Direction id, std::vector<std::vector<int>> frames);
+    void addAnimationFrames(Direction id, const std::vector<std::vector<int>> &frames) const;
     /** Change the Actor's current animation and play it. */
     void changeAnimation(Direction id);
     /** Get the path of the used TileSet. */
-    std::string getTileSetSource();
+    std::string getTileSetSource() const;
     /** Get an array of this Actor's animations */
-    std::array<std::vector<Vector2>, 8> getAnimationsRaw();
+    std::array<std::vector<Vector2>, 8> getAnimationsRaw() const;
     /** Get a specific animation */
-    std::vector<Vector2> getAnimationRaw(Direction id);
+    std::vector<Vector2> getAnimationRaw(Direction id) const;
     /** Get the collision Rectangle of this Actor */
-    Rectangle getCollisionRect();
+    Rectangle getCollisionRect() const;
     /** Set the Actor's collision Rectangle */
     void setCollisionRect(Rectangle rect);
 };

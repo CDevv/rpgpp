@@ -2,7 +2,9 @@
 #include "game.hpp"
 #include <raylib.h>
 
-TextArea::TextArea() {}
+TextArea::TextArea() : rect(Rectangle {})
+{
+}
 
 TextArea::TextArea(Rectangle rect)
 {
@@ -24,7 +26,7 @@ void TextArea::draw()
     }
 }
 
-void TextArea::putChar(int i, Vector2 *charPos, Vector2 *charMeasure)
+void TextArea::putChar(int i, Vector2 *charPos, Vector2 *charMeasure) const
 {
     charPos->x += charMeasure->x;
 
@@ -35,7 +37,7 @@ void TextArea::putChar(int i, Vector2 *charPos, Vector2 *charMeasure)
 			    TextSubtext(content.c_str(), i, 1), 13 * 3, 1.0f);
 }
 
-void TextArea::setText(std::string text)
+void TextArea::setText(const std::string &text)
 {
     this->content = text;
 }

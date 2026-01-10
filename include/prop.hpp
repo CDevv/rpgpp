@@ -22,29 +22,29 @@ private:
     std::unique_ptr<IntBaseWrapper> interactable;
 public:
     Prop();
-    Prop(std::string filePath);
+    Prop(const std::string &filePath);
     Prop(Rectangle atlasRect, Vector2 worldPos);
     Prop(PropBin bin);
     json dumpJson();
     std::string getSourcePath();
     void setTexture(Texture2D texture);
-    Texture2D getTexture();
-    void setTextureFromPath(std::string imagePath);
-    const char* getImagePath();
+    Texture2D getTexture() const;
+    void setTextureFromPath(const std::string &imagePath);
+    const char* getImagePath() const;
     void setCollisionRect(Rectangle collisionRect);
     void setWorldTilePos(Vector2 worldPos, int tileSize);
     void setWorldPos(Vector2 worldPos);
-    Vector2 getWorldPos();
-    Vector2 getWorldTilePos();
+    Vector2 getWorldPos() const;
+    Vector2 getWorldTilePos() const;
     void setAtlasRect(Rectangle atlasRect);
-    Rectangle getAtlasRect();
-    Rectangle getCollisionRect();
-    Rectangle getWorldCollisionRect();
-    Vector2 getCollisionCenter();
-    bool getHasInteractable();
-    IntBaseWrapper* getInteractable();
+    Rectangle getAtlasRect() const;
+    Rectangle getCollisionRect() const;
+    Rectangle getWorldCollisionRect() const;
+    Vector2 getCollisionCenter() const;
+    bool getHasInteractable() const;
+    IntBaseWrapper* getInteractable() const;
     void setInteractableType(InteractableType type);
-    void draw();
+    void draw() const;
 };
 
 #endif

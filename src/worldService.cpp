@@ -13,12 +13,12 @@ WorldService::WorldService()
     this->transitionSecondStage = false;
 }
 
-Room& WorldService::getRoom()
+Room& WorldService::getRoom() const
 {
     return *this->room;
 }
 
-void WorldService::setRoom(std::string filePath)
+void WorldService::setRoom(const std::string &filePath)
 {
     for (RoomBin bin : Game::getBin().rooms) {
         if (bin.name == filePath) {
@@ -43,7 +43,7 @@ void WorldService::doFadeTransition()
     this->transitionSecondStage = false;
 }
 
-Player& WorldService::getPlayer()
+Player& WorldService::getPlayer() const
 {
     return this->room->getPlayer();
 }
@@ -87,18 +87,18 @@ void WorldService::update()
     room->update();
 }
 
-void WorldService::draw()
+void WorldService::draw() const
 {
     room->draw();
 
     if (transitionActive) {
-        DrawRectangleRec(Rectangle { 
+        DrawRectangleRec(Rectangle {
             0, 0, static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight())
          }, transitionColor);
     }
 }
 
-void WorldService::unload()
+void WorldService::unload() const
 {
     //room->unload();
 }

@@ -3,6 +3,8 @@
 
 class UIElement {
 public:
+    virtual ~UIElement() = default;
+
     UIElement();
     virtual void update();
     virtual void draw();

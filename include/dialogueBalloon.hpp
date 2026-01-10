@@ -40,13 +40,13 @@ private:
 	Color textColor;
 	int lastSectionLen;
 	Vector2 textPos;
-	void drawPortrait();
+	void drawPortrait() const;
 public:
 	DialogueBalloon();
 	DialogueBalloon(Rectangle rect);
 	void update();
 	void draw();
-	void showDialogue(Dialogue dialogue);
+	void showDialogue(const Dialogue &newDialogue);
 	void hideDialogue();
 	void charP(Vector2 charMeasure, const char* c, Color color);
 };

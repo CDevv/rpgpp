@@ -17,12 +17,12 @@ Room::Room()
 {
     this->lock = false;
 
-    Camera2D camera;
-    camera.offset = Vector2 { 0, 0 };
-    camera.target = Vector2 { 0, 0 };
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
-    this->camera = camera;
+    Camera2D initialCamera;
+    initialCamera.offset = Vector2 { 0, 0 };
+    initialCamera.target = Vector2 { 0, 0 };
+    initialCamera.rotation = 0.0f;
+    initialCamera.zoom = 1.0f;
+    this->camera = initialCamera;
 
     this->worldTileSize = 48;
     this->musicSource = "";
@@ -35,16 +35,16 @@ Room::Room()
     this->player = std::unique_ptr<Player>{};
 }
 
-Room::Room(std::string fileName, int tileSize)
+Room::Room(const std::string& fileName, int tileSize)
 {
     this->lock = false;
 
-    Camera2D camera;
-    camera.offset = Vector2 { 0, 0 };
-    camera.target = Vector2 { 0, 0 };
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
-    this->camera = camera;
+    Camera2D initialCamera;
+    initialCamera.offset = Vector2 { 0, 0 };
+    initialCamera.target = Vector2 { 0, 0 };
+    initialCamera.rotation = 0.0f;
+    initialCamera.zoom = 1.0f;
+    this->camera = initialCamera;
 
     this->musicSource = "";
     this->worldTileSize = tileSize;
@@ -63,9 +63,9 @@ Room::Room(std::string fileName, int tileSize)
     this->tileMap = std::make_unique<TileMap>(fileName);
     std::unique_ptr<Actor> actor = std::make_unique<Actor>("actors/playerActor.ractor");
     actor->setTilePosition(Vector2 {startTile.x, startTile.y}, tileMap->getTileSet()->getTileSize());
-    std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
+    std::unique_ptr<Player> initialPlayer = std::make_unique<Player>(std::move(actor), *this);
 
-    this->addPlayer(std::move(player));
+    this->addPlayer(std::move(initialPlayer));
 
     std::vector<std::vector<int>> collisionsVec = roomJson.at("collision");
     for (auto v : collisionsVec) {
@@ -76,7 +76,7 @@ Room::Room(std::string fileName, int tileSize)
     }
 
     std::map<std::string, nlohmann::basic_json<>> propsVec = roomJson.at("props");
-    for (auto [key, value] : propsVec) {
+    for (auto const& [key, value] : propsVec) {
         int count = 0;
         char** textSplit = TextSplit(key.c_str(), ';', &count);
         if (count != 2) return;
@@ -84,7 +84,7 @@ Room::Room(std::string fileName, int tileSize)
         int y = std::stoi(std::string(textSplit[1]));
 
         std::vector<std::string> propVec = value;
-        Prop p = Prop(propVec.at(0).c_str());
+        Prop p = Prop(propVec.at(0));
         p.setWorldTilePos(Vector2 { static_cast<float>(x), static_cast<float>(y) }, worldTileSize);
 
         propVec.erase(propVec.begin());
@@ -94,14 +94,14 @@ Room::Room(std::string fileName, int tileSize)
     }
 
     std::map<std::string, std::string> actorsVec = roomJson.at("actors");
-    for (auto [key, value] : actorsVec) {
+    for (auto const& [key, value] : actorsVec) {
         int count = 0;
         char** textSplit = TextSplit(key.c_str(), ';', &count);
         if (count != 2) return;
         int x = std::stoi(std::string(textSplit[0]));
         int y = std::stoi(std::string(textSplit[1]));
 
-        Actor a = Actor(value.c_str());
+        Actor a = Actor(value);
         a.setTilePosition(Vector2 { static_cast<float>(x), static_cast<float>(y) },
             Vector2 { static_cast<float>(worldTileSize), static_cast<float>(worldTileSize) });
         addActor(std::move(a));
@@ -120,7 +120,7 @@ Room::Room(std::unique_ptr<TileMap> tileMap)
     this->tileMap = std::move(tileMap);
 }
 
-Room::Room(RoomBin bin)
+Room::Room(const RoomBin& bin)
 : Room()
 {
     this->worldTileSize = 48;
@@ -137,9 +137,9 @@ Room::Room(RoomBin bin)
         static_cast<float>(bin.startPoint.x), static_cast<float>(bin.startPoint.y)
     }, tileMap->getTileSet()->getTileSize());
     printf("%s \n", actor->getSourcePath().c_str());
-    std::unique_ptr<Player> player = std::make_unique<Player>(std::move(actor), *this);
+    std::unique_ptr<Player> initialPlayer = std::make_unique<Player>(std::move(actor), *this);
 
-    this->addPlayer(std::move(player));
+    this->addPlayer(std::move(initialPlayer));
 
     interactables->addBinVector(bin.interactables);
 
@@ -147,8 +147,8 @@ Room::Room(RoomBin bin)
         collisions->addCollisionTile(collisionBin.x, collisionBin.y);
     }
 
-    for (auto propSource : bin.props) {
-        for (auto propBin : Game::getBin().props) {
+    for (auto const& propSource : bin.props) {
+        for (auto const& propBin : Game::getBin().props) {
             if (propBin.name == propSource.name) {
                 Prop p = Prop(propBin);
                 p.setWorldTilePos(Vector2 {
@@ -171,8 +171,8 @@ Room::Room(RoomBin bin)
         }
     }
 
-    for (auto actorSource : bin.actors) {
-        for (auto actorBin : Game::getBin().actors) {
+    for (const auto& actorSource : bin.actors) {
+        for (const auto& actorBin : Game::getBin().actors) {
             if (actorBin.name == actorSource.name) {
                 Actor a = Actor(actorBin);
                 a.setTilePosition(Vector2 {
@@ -203,8 +203,8 @@ json Room::dumpJson()
     auto collisionsVector = std::vector<std::vector<int>>();
     for (Vector2 collisionPos : collisions->getVector()) {
         std::vector<int> collision;
-        collision.push_back(collisionPos.x);
-        collision.push_back(collisionPos.y);
+        collision.push_back(static_cast<int>(collisionPos.x));
+        collision.push_back(static_cast<int>(collisionPos.y));
 
         collisionsVector.push_back(collision);
     }
@@ -216,14 +216,14 @@ json Room::dumpJson()
     auto interactablesVector = std::vector<std::vector<int>>();
     for (auto&& interactable : interactables->getList()) {
         std::vector<int> interactableVector;
-        interactableVector.push_back(interactable->pos.x);
-        interactableVector.push_back(interactable->pos.y);
-        interactableVector.push_back(static_cast<int>(interactable->type));
-        interactableVector.push_back(static_cast<int>(interactable->onTouch));
+        interactableVector.push_back(static_cast<int>(interactable->pos.x));
+        interactableVector.push_back(static_cast<int>(interactable->pos.y));
+        interactableVector.push_back(interactable->type);
+        interactableVector.push_back(interactable->onTouch);
 
         std::vector<std::string> propsVec;
         if (interactable->type == INT_TWO) {
-            IntBase<DiagInt>* dialogueInter = static_cast<IntBase<DiagInt>*>(interactable);
+            auto* dialogueInter = dynamic_cast<IntBase<DiagInt>*>(interactable);
             std::string key = TextFormat("%i;%i",
                 static_cast<int>(interactable->pos.x),
                 static_cast<int>(interactable->pos.y));
@@ -231,7 +231,7 @@ json Room::dumpJson()
             interactablesProps[key] = propsVec;
         }
         if (interactable->type == INT_WARPER) {
-            IntBase<WarperInt>* dialogueInter = static_cast<IntBase<WarperInt>*>(interactable);
+            auto* dialogueInter = dynamic_cast<IntBase<WarperInt>*>(interactable);
             std::string key = TextFormat("%i;%i",
                 static_cast<int>(interactable->pos.x),
                 static_cast<int>(interactable->pos.y));
@@ -255,12 +255,12 @@ json Room::dumpJson()
             switch (p.getInteractable()->type) {
                 case INT_TWO:
                     propVec.push_back(
-                        (static_cast<IntBase<DiagInt>*>(p.getInteractable()))->get().dialogueSource
+                        (dynamic_cast<IntBase<DiagInt>*>(p.getInteractable()))->get().dialogueSource
                     );
                     break;
                 case INT_WARPER:
                     propVec.push_back(
-                        (static_cast<IntBase<WarperInt>*>(p.getInteractable()))->get().targetRoom
+                        (dynamic_cast<IntBase<WarperInt>*>(p.getInteractable()))->get().targetRoom
                     );
                     break;
                 default:
@@ -292,7 +292,7 @@ json Room::dumpJson()
     return roomJson;
 }
 
-void Room::unload()
+void Room::unload() const
 {
     tileMap->unload();
 
@@ -315,8 +315,8 @@ void Room::update()
 void Room::updateCamera()
 {
     Vector2 playerPos = player->getPosition();
-    Vector2 cameraOffset = Vector2 { 0, 0 };
-    Vector2 cameraTarget = Vector2 { 0, 0 };
+    Vector2 cameraOffset = { 0, 0 };
+    Vector2 cameraTarget = { 0, 0 };
 
     if (playerPos.x >= 320.0f) {
         cameraOffset.x = 320.0f;
@@ -330,21 +330,21 @@ void Room::updateCamera()
     camera.offset = cameraOffset;
 }
 
-void Room::draw()
+void Room::draw() const
 {
     BeginMode2D(camera);
 
     this->tileMap->draw();
     for (auto i : interactables->getList()) {
-        Rectangle rect = Rectangle {
-            i->pos.x * getWorldTileSize(), i->pos.y * getWorldTileSize(),
+        auto rect = Rectangle {
+            i->pos.x * static_cast<float>(getWorldTileSize()), i->pos.y * static_cast<float>(getWorldTileSize()),
             static_cast<float>(getWorldTileSize()), static_cast<float>(getWorldTileSize())
         };
         DrawRectangleRec(rect, Fade(YELLOW, 0.5f));
     }
     for (auto c : collisions->getVector()) {
-        Rectangle rect = Rectangle {
-            c.x * worldTileSize, c.y * worldTileSize,
+        auto rect = Rectangle {
+            c.x * static_cast<float>(worldTileSize), c.y * static_cast<float>(worldTileSize),
             static_cast<float>(worldTileSize), static_cast<float>(worldTileSize)
         };
         DrawRectangleRec(rect, Fade(RED, 0.5f));
@@ -370,7 +370,12 @@ void Room::draw()
     EndMode2D();
 }
 
-int Room::getWorldTileSize()
+void Room::setWorldTileSize(int tileSize)
+{
+    this->worldTileSize = tileSize;
+}
+
+int Room::getWorldTileSize() const
 {
     return worldTileSize;
 }
@@ -380,22 +385,22 @@ void Room::setLock(bool val)
     this->lock = val;
 }
 
-void Room::addPlayer(std::unique_ptr<Player> player)
+void Room::addPlayer(std::unique_ptr<Player> newPlayer)
 {
-    this->player = std::move(player);
+    this->player = std::move(newPlayer);
 }
 
-Player& Room::getPlayer()
+Player& Room::getPlayer() const
 {
     return *player;
 }
 
-TileMap *Room::getTileMap()
+TileMap *Room::getTileMap() const
 {
     return this->tileMap.get();
 }
 
-std::vector<Vector2> Room::getCollisionTiles()
+std::vector<Vector2> Room::getCollisionTiles() const
 {
     return this->collisions->getVector();
 }
@@ -405,55 +410,55 @@ std::string Room::getMusicSource()
     return musicSource;
 }
 
-void Room::setMusicSource(std::string musicSource)
+void Room::setMusicSource(const std::string& newMusicSource)
 {
-    this->musicSource = musicSource;
+    this->musicSource = newMusicSource;
 }
 
-Vector2 Room::getStartTile()
+Vector2 Room::getStartTile() const
 {
     return startTile;
 }
 
-void Room::setStartTile(Vector2 startTile)
+void Room::setStartTile(Vector2 newStartTile)
 {
-    this->startTile = startTile;
+    this->startTile = newStartTile;
 }
 
-CollisionsContainer& Room::getCollisions()
+CollisionsContainer& Room::getCollisions() const
 {
     return *this->collisions;
 }
 
-InteractablesContainer& Room::getInteractables()
+InteractablesContainer& Room::getInteractables() const
 {
     return *this->interactables;
 }
 
-std::vector<Prop>& Room::getProps()
+std::vector<Prop>& Room::getProps() const
 {
     return *props;
 }
 
-void Room::addProp(Prop prop)
+void Room::addProp(Prop prop) const
 {
     props->push_back(std::move(prop));
 }
 
-void Room::removeProp(Vector2 worldPos)
+void Room::removeProp(Vector2 worldPos) const
 {
-    for (std::vector<Prop>::iterator it = props->begin(); it < props->end(); ++it) {
+    for (auto it = props->begin(); it < props->end(); ++it) {
         if (it->getWorldTilePos().x == worldPos.x && it->getWorldTilePos().y == worldPos.y) {
             props->erase(it);
         }
     }
 }
 
-Prop* Room::getPropAt(Vector2 worldPos)
+Prop* Room::getPropAt(Vector2 worldPos) const
 {
     Prop* p = nullptr;
     int idx = 0;
-    for (std::vector<Prop>::iterator it = props->begin(); it < props->end(); ++it, idx++) {
+    for (auto it = props->begin(); it < props->end(); ++it, idx++) {
         if (it->getWorldTilePos().x == worldPos.x && it->getWorldTilePos().y == worldPos.y) {
             p = &props->at(idx);
         }
@@ -461,19 +466,19 @@ Prop* Room::getPropAt(Vector2 worldPos)
     return p;
 }
 
-std::vector<Actor>& Room::getActors()
+std::vector<Actor>& Room::getActors() const
 {
     return *actors;
 }
 
-void Room::addActor(Actor actor)
+void Room::addActor(Actor actor) const
 {
     this->actors->push_back(std::move(actor));
 }
 
-void Room::removeActor(Vector2 tilePosition)
+void Room::removeActor(Vector2 tilePosition) const
 {
-    for (std::vector<Actor>::iterator it = actors->begin(); it < actors->end(); ++it) {
+    for (auto it = actors->begin(); it < actors->end(); ++it) {
         if (it->getTilePosition().x == tilePosition.x && it->getTilePosition().y == tilePosition.y) {
             actors->erase(it);
         }

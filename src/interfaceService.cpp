@@ -10,8 +10,7 @@ InterfaceService::InterfaceService()
 {
     fpsVisible = false;
 
-    Font font = LoadFontEx("LanaPixel.ttf", 13, 0, 250);
-    this->font = font;
+    this->font = LoadFontEx("LanaPixel.ttf", 13, nullptr, 250);
 
     Image img = LoadImage("ui-npatch.png");
     ImageResizeNN(&img, img.width * 3, img.height * 3);
@@ -52,17 +51,17 @@ InterfaceService::~InterfaceService()
     //UnloadTexture(this->uiTexture);
 }
 
-Font InterfaceService::getFont()
+Font InterfaceService::getFont() const
 {
     return font;
 }
 
-Texture InterfaceService::getTexture()
+Texture InterfaceService::getTexture() const
 {
     return uiTexture;
 }
 
-void InterfaceService::showDialogue(Dialogue dialogue)
+void InterfaceService::showDialogue(const Dialogue &dialogue)
 {
     this->dialogue.showDialogue(dialogue);
 }
@@ -84,7 +83,7 @@ void InterfaceService::draw()
 {
     if (fpsVisible) {
         DrawFPS(10, 10);
-        DrawTextEx(font, "rpgpp", Vector2 { 10, 36 }, (float)font.baseSize, 2, RED);
+        DrawTextEx(font, "rpgpp", Vector2 { 10, 36 }, static_cast<float>(font.baseSize), 2, RED);
     }
 
     dialogue.draw();
@@ -94,7 +93,7 @@ void InterfaceService::draw()
     }
 }
 
-void InterfaceService::unload()
+void InterfaceService::unload() const
 {
     UnloadFont(font);
     UnloadTexture(this->uiTexture);
