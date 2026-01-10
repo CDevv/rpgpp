@@ -1,7 +1,6 @@
 #include "interactable.hpp"
 #include <stdio.h>
 #include <raylib.h>
-#include "dialogueBalloon.hpp"
 #include "game.hpp"
 #include "interfaceService.hpp"
 
@@ -9,8 +8,7 @@ std::array<std::string, INTTYPE_MAX> Interactable::interactableTypeNames = {
     "Blank", "Dialogue", "Warper"
 };
 
-Interactable::Interactable()
-{
+Interactable::Interactable() : type(), tilePos(), tileSize(0), absolutePos(), rect() {
     this->valid = false;
 }
 
@@ -37,22 +35,22 @@ std::array<std::string, INTTYPE_MAX>& Interactable::getTypeNames()
     return interactableTypeNames;
 }
 
-bool Interactable::isValid()
+bool Interactable::isValid() const
 {
     return this->valid;
 }
 
-Rectangle Interactable::getRect()
+Rectangle Interactable::getRect() const
 {
     return this->rect;
 }
 
-Vector2 Interactable::getWorldPos()
+Vector2 Interactable::getWorldPos() const
 {
     return this->tilePos;
 }
 
-InteractableType Interactable::getType()
+InteractableType Interactable::getType() const
 {
     return this->type;
 }
@@ -66,7 +64,8 @@ void Interactable::interact()
     }
 }
 
-IntBaseWrapper::IntBaseWrapper() {};
+IntBaseWrapper::IntBaseWrapper() : type(), pos() {
+} ;
 
 IntBaseWrapper::~IntBaseWrapper() {};
 
@@ -87,6 +86,7 @@ void IntBase<int>::interact()
 template <>
 void IntBase<DiagInt>::interact()
 {
+    printf("DiagInt.. %s\n", data.dialogueSource.c_str());
     if (Game::getBin().dialogues.count(data.dialogueSource)) {
         InterfaceService& ui = Game::getUi();
         ui.showDialogue(Game::getBin().dialogues[data.dialogueSource]);
@@ -97,6 +97,7 @@ template <>
 void IntBase<WarperInt>::interact()
 {
     WorldService& world = Game::getWorld();
+    world.doFadeTransition();
     world.setRoom(data.targetRoom);
 }
 
@@ -105,14 +106,12 @@ std::unique_ptr<IntBaseWrapper> make_inter_item(Vector2 pos, InteractableType ty
     switch (type) {
         case INT_BLANK:
             return std::unique_ptr<IntBaseWrapper>(new IntBase<int>(pos, type));
-            break;
         case INT_TWO:
             return std::unique_ptr<IntBaseWrapper>(new IntBase<DiagInt>(pos, type));
-            break;
         case INT_WARPER:
             return std::unique_ptr<IntBaseWrapper>(new IntBase<WarperInt>(pos, type));
-            break;
     }
+    return std::unique_ptr<IntBaseWrapper>(new IntBase<int>(pos, type));
 }
 
 void inter_apply_vec(IntBaseWrapper* inter, std::vector<std::string> props)
@@ -132,7 +131,7 @@ void inter_apply_vec(IntBaseWrapper* inter, std::vector<std::string> props)
     }
 }
 
-void inter_apply_bin(IntBaseWrapper* inter, InteractableBin intBin)
+void inter_apply_bin(IntBaseWrapper* inter, const InteractableBin &intBin)
 {
     IntBase<DiagInt>* diag;
     switch (intBin.type) {

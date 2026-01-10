@@ -1,9 +1,12 @@
 #include "windowPopup.hpp"
+
 #include <imgui.h>
 
-WindowPopup::WindowPopup() {}
+WindowPopup::WindowPopup() : rect(), propExists(false)
+{
+}
 
-WindowPopup::WindowPopup(std::string imPopupId, Rectangle rect)
+WindowPopup::WindowPopup(const std::string &imPopupId, Rectangle rect)
 {
     this->imPopupId = imPopupId;
     this->rect = rect;
@@ -23,7 +26,7 @@ void WindowPopup::closeWindow()
 
 void WindowPopup::update() {}
 
-void WindowPopup::setProp(std::string prop)
+void WindowPopup::setProp(const std::string &prop)
 {
     this->propExists = true;
     this->prop = prop;

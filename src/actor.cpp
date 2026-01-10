@@ -1,14 +1,15 @@
 #include "actor.hpp"
 #include "game.hpp"
 #include "gamedata.hpp"
+#include <functional>
 #include <raylib.h>
 #include <raymath.h>
+#include <memory>
 #include <nlohmann/json.hpp>
+#include <utility>
 using json = nlohmann::json;
 
-Actor::Actor() {}
-
-Actor::Actor(std::string fileName)
+Actor::Actor(const std::string& fileName)
 {
     this->sourcePath = fileName;
     this->position = Vector2 { 0, 0 };
@@ -27,15 +28,13 @@ Actor::Actor(std::string fileName)
     int width = collisionInfo.at(2);
     int height = collisionInfo.at(3);
 
-    Rectangle collisionRect = Rectangle {
+    this->collisionRect = Rectangle {
         static_cast<float>(x), static_cast<float>(y),
         static_cast<float>(width), static_cast<float>(height)
     };
-    this->collisionRect = collisionRect;
 
-    std::string tileSetSource = j.at("tileset");
+    this->tileSetSource = j.at("tileset");
     this->tileSet = std::make_unique<TileSet>(tileSetSource);
-    this->tileSetSource = tileSetSource;
 
     for (int i = 0; i < 8; i++) {
         animations[i] = std::make_unique<std::vector<Vector2>>();
@@ -65,7 +64,7 @@ Actor::Actor(std::string fileName)
     std::vector<std::vector<int>> rightIdle = j.at("animations").at("right-idle");
     addAnimationFrames(RPGPP_RIGHT_IDLE, rightIdle);
 
-    Vector2 defaultTileAtlasPos = animations[(int)currentAnimation]->at(0);
+    Vector2 defaultTileAtlasPos = animations[static_cast<int>(currentAnimation)]->at(0);
     this->tile = tileSet->getTile(defaultTileAtlasPos);
 
     UnloadFileText(jsonContent);
@@ -79,7 +78,7 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos, std::string til
 
     this->tileSet = std::move(tileSet);
     this->tile = tileSet->getTile(atlasPos);
-    this->tileSetSource = tileSetSource;
+    this->tileSetSource = std::move(tileSetSource);
 
     this->frameCounter = 0;
     this->frameSpeed = 2;
@@ -115,7 +114,7 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos, std::string til
     std::vector<std::vector<int>> rightIdle = {{0,3}, {1,3}};
     addAnimationFrames(RPGPP_RIGHT_IDLE, rightIdle);
 
-    Vector2 defaultTileAtlasPos = animations[(int)currentAnimation]->at(0);
+    Vector2 defaultTileAtlasPos = animations[static_cast<int>(currentAnimation)]->at(0);
     this->tile = tileSet->getTile(defaultTileAtlasPos);
 
     //Default collision box..
@@ -154,10 +153,6 @@ Actor::Actor(ActorBin bin)
         std::vector<IVector> binFrames = bin.animations[i];
         std::vector<std::vector<int>> frames;
         for (int j = 0; j < bin.animations[i].size(); j++) {
-            Vector2 frame = Vector2
-            {
-                static_cast<float>(binFrames[j].x), static_cast<float>(binFrames[j].y)
-            };
             std::vector<int> frameVec;
             frameVec.push_back(binFrames[j].x);
             frameVec.push_back(binFrames[j].y);
@@ -176,13 +171,8 @@ json Actor::dumpJson()
     collisionVec.push_back(static_cast<int>(collisionRect.width));
     collisionVec.push_back(static_cast<int>(collisionRect.height));
 
-    std::map<std::string, std::vector<std::vector<int>>> animsVec;
+    std::map<std::string, std::vector<std::vector<int>>, std::less<>> animsVec;
 
-    for (auto&& anim : animations)
-    {
-        std::vector<std::vector<int>> framesVec;
-
-    }
     for (int i = 0; i < 8; i++) {
         std::vector<std::vector<int>> framesVec;
         std::vector<Vector2> animFrames = *animations[i];
@@ -195,7 +185,7 @@ json Actor::dumpJson()
             framesVec.push_back(outFrame);
         }
 
-        Direction direction = static_cast<Direction>(i);
+        auto direction = static_cast<Direction>(i);
         std::string keyName = "untitled";
         switch (direction) {
         case RPGPP_DOWN_IDLE:
@@ -236,7 +226,7 @@ json Actor::dumpJson()
     return j;
 }
 
-void Actor::unload()
+void Actor::unload() const
 {
     tileSet->unload();
 }
@@ -252,7 +242,7 @@ void Actor::update()
         if (currentFrame >= 2) currentFrame = 0;
 
         Vector2 atlasTileSize = tileSet->getTileSize();
-        int animId = static_cast<int>(currentAnimation);
+        auto animId = static_cast<int>(currentAnimation);
         Vector2 atlasPos = animations[animId]->at(currentFrame);
         atlasPos = Vector2 {
             atlasPos.x * atlasTileSize.x,
@@ -266,10 +256,10 @@ void Actor::update()
 void Actor::draw()
 {
     //defaults..
-    const Vector2 origin = Vector2 { 0.0f, 0.0f };
-    const float rotation = 0.0f;
+    constexpr auto origin = Vector2 { 0.0f, 0.0f };
+    constexpr float rotation = 0.0f;
     const Vector2 atlasTileSize = tileSet->getTileSize();
-    Vector2 worldTileSize = Vector2 {
+    auto worldTileSize = Vector2 {
         atlasTileSize.x * RPGPP_DRAW_MULTIPLIER, atlasTileSize.y * RPGPP_DRAW_MULTIPLIER
     };
 
@@ -280,11 +270,11 @@ void Actor::draw()
     Vector2 atlasCoords = this->tile.getAtlasCoords();
 
     //build rects
-    Rectangle atlasRect = Rectangle {
+    auto atlasRect = Rectangle {
         atlasCoords.x, atlasCoords.y,
         atlasTileSize.x, atlasTileSize.y
     };
-    Rectangle worldRect = Rectangle {
+    auto worldRect = Rectangle {
         position.x, position.y,
         worldTileSize.x, worldTileSize.y
     };
@@ -292,67 +282,67 @@ void Actor::draw()
     DrawTexturePro(texture, atlasRect, worldRect, origin, rotation, WHITE);
 
     //draw collision rect..
-    Color collisionDebugColor = GRAY;
+    auto collisionDebugColor = GRAY;
     collisionDebugColor.a = (255 / 2);
 
-    Rectangle collisionRect = getCollisionRect(Vector2 { 0, 0 });
-    DrawRectanglePro(collisionRect, origin, rotation, collisionDebugColor);
+    Rectangle drawnCollisionRect = getCollisionRect(Vector2 { 0, 0 });
+    DrawRectanglePro(drawnCollisionRect, origin, rotation, collisionDebugColor);
 }
 
-std::string Actor::getSourcePath()
+std::string Actor::getSourcePath() const
 {
     return sourcePath;
 }
 
-Rectangle Actor::getRect()
+Rectangle Actor::getRect() const
 {
-    if (tileSet.get() == nullptr)
+    if (tileSet == nullptr)
         return Rectangle { 0, 0, 0, 0 };
 
     Vector2 atlasTileSize = tileSet->getTileSize();
-    Rectangle result = Rectangle {
+    auto result = Rectangle {
         position.x, position.y,
         atlasTileSize.x * RPGPP_DRAW_MULTIPLIER, atlasTileSize.y * RPGPP_DRAW_MULTIPLIER
     };
     return result;
 }
 
-TileSet& Actor::getTileSet()
+TileSet& Actor::getTileSet() const
 {
     return *tileSet;
 }
 
-void Actor::setTileSet(std::string tileSetSource)
+void Actor::setTileSet(const std::string& newTileSetSource)
 {
-    tileSet.reset(new TileSet(tileSetSource));
-    this->tileSetSource = tileSetSource;
+    tileSet = std::make_unique<TileSet>(newTileSetSource);
+    this->tileSetSource = newTileSetSource;
 }
 
-void Actor::setPosition(Vector2 position)
+void Actor::setPosition(Vector2 newPosition)
 {
-    this->position = position;
+    this->position = newPosition;
 }
 
-Vector2 Actor::getPosition()
+Vector2 Actor::getPosition() const
 {
     return position;
 }
 
-void Actor::setTilePosition(Vector2 position, Vector2 tileSize)
+void Actor::setTilePosition(Vector2 newPosition, Vector2 tileSize)
 {
     Vector2 actorTileSize = tileSet->getTileSize();
-    Vector2 absolutePos = Vector2 {
-        position.x * tileSize.x * RPGPP_DRAW_MULTIPLIER, position.y * tileSize.y * RPGPP_DRAW_MULTIPLIER
+    auto absolutePos = Vector2 {
+        newPosition.x * tileSize.x * RPGPP_DRAW_MULTIPLIER, newPosition.y * tileSize.y * RPGPP_DRAW_MULTIPLIER
     };
 
-    Vector2 resultVector = Vector2 {
+    auto resultVector = Vector2 {
         absolutePos.x, absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) - (tileSize.y * RPGPP_DRAW_MULTIPLIER))
     };
     this->position = resultVector;
-    this->tilePosition = position;
+    this->tilePosition = newPosition;
 }
 
-Vector2 Actor::getTilePosition()
+Vector2 Actor::getTilePosition() const
 {
     return tilePosition;
 }
@@ -364,10 +354,10 @@ void Actor::moveByVelocity(Vector2 velocity)
     this->position = resultVector;
 }
 
-Rectangle Actor::getCollisionRect(Vector2 velocity)
+Rectangle Actor::getCollisionRect(Vector2 velocity) const
 {
     Vector2 newPos = Vector2Add(position, velocity);
-    Rectangle result = Rectangle {
+    auto result = Rectangle {
         newPos.x + collisionRect.x, newPos.y + collisionRect.y,
         collisionRect.width, collisionRect.height
     };
@@ -375,13 +365,13 @@ Rectangle Actor::getCollisionRect(Vector2 velocity)
     return result;
 }
 
-Vector2 Actor::getCollisionCenter()
+Vector2 Actor::getCollisionCenter() const
 {
     Vector2 result = { position.x + (collisionRect.width / 2), position.y + (collisionRect.height / 2) };
     return result;
 }
 
-void Actor::addAnimationFrame(Direction id, Vector2 atlasPos)
+void Actor::addAnimationFrame(Direction id, Vector2 atlasPos) const
 {
     animations[static_cast<int>(id)]->push_back(atlasPos);
 }
@@ -396,19 +386,19 @@ void Actor::removeAnimationFrame(Direction id, int frameIndex)
         animations[static_cast<int>(id)]->begin() + frameIndex);
 }
 
-void Actor::setAnimationFrame(Direction id, int frameIndex, Vector2 atlasTile)
+void Actor::setAnimationFrame(Direction id, int frameIndex, Vector2 atlasTile) const
 {
     animations[static_cast<int>(id)]->at(frameIndex) = atlasTile;
 }
 
-void Actor::addAnimationFrames(Direction id, std::vector<std::vector<int>> frames)
+void Actor::addAnimationFrames(const Direction id, const std::vector<std::vector<int>> &frames) const
 {
-    int idNum = static_cast<int>(id);
+    auto idNum = static_cast<int>(id);
 
     for (int i = 0; i < frames.size(); i++) {
         int x = frames.at(i).at(0);
         int y = frames.at(i).at(1);
-        Vector2 pos = Vector2 { static_cast<float>(x), static_cast<float>(y) };
+        auto pos = Vector2 { static_cast<float>(x), static_cast<float>(y) };
 
         animations[idNum]->push_back(pos);
     }
@@ -425,7 +415,7 @@ void Actor::changeAnimation(Direction id)
     }
 }
 
-std::array<std::vector<Vector2>, 8> Actor::getAnimationsRaw()
+std::array<std::vector<Vector2>, 8> Actor::getAnimationsRaw() const
 {
     std::array<std::vector<Vector2>, 8> result;
     for (int i = 0; i < 8; i++) {
@@ -435,21 +425,21 @@ std::array<std::vector<Vector2>, 8> Actor::getAnimationsRaw()
     return result;
 }
 
-std::vector<Vector2> Actor::getAnimationRaw(Direction id)
+std::vector<Vector2> Actor::getAnimationRaw(const Direction id) const
 {
-    if (animations[static_cast<int>(id)].get() == nullptr) {
-        return std::vector<Vector2>();
+    if (animations[static_cast<int>(id)] == nullptr) {
+        return {};
     }
     std::vector<Vector2> animFrames = *animations[static_cast<int>(id)];
     return animFrames;
 }
 
-std::string Actor::getTileSetSource()
+std::string Actor::getTileSetSource() const
 {
     return tileSetSource;
 }
 
-Rectangle Actor::getCollisionRect()
+Rectangle Actor::getCollisionRect() const
 {
     return collisionRect;
 }

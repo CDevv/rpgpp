@@ -12,7 +12,7 @@ private:
     /** The Tile's source AtlasTile. */
     AtlasTile atlasTile;
     /** The Tile's World coordinates. */
-    Vector2 worldCoords;
+    Vector2 worldCoords{};
     /** Whether this Tile is placed and will be drawn or not. */
     bool placed;
 public:
@@ -21,7 +21,7 @@ public:
     /**
      * Check if it was placed or not.
      */
-    bool isPlaced();
+    bool isPlaced() const;
 
     /**
      * Place the tile using a source AtlasTile and world coordinates.
@@ -39,13 +39,13 @@ public:
      * Get the source AtlasTile that originates from the used TileSet.
      * @returns The source AtlasTile.
      */
-    AtlasTile getAtlasTile();
+    AtlasTile getAtlasTile() const;
 
     /**
      * Get the world coordinates, at which the Tile is placed.
      * @returns The world coordinates.
      */
-    Vector2 getWorldCoords();
+    Vector2 getWorldCoords() const;
 };
 
 #endif

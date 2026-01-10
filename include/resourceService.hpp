@@ -11,10 +11,10 @@ private:
 public:
     ResourceService();
     ~ResourceService();
-    void addTextureFromFile(std::string filePath);
-    void addTexture(std::string id, Texture2D texture);
-    Texture2D getTexture(std::string id);
-    void unload();
+    void addTextureFromFile(const std::string &filePath);
+    void addTexture(const std::string &id, Texture2D texture);
+    Texture2D getTexture(const std::string &id);
+    void unload() const;
 };
 
 #endif

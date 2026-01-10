@@ -16,9 +16,8 @@ std::unique_ptr<IntBaseWrapper> make_item(Vector2 pos, InteractableType type) {
 
 InteractablesContainer::InteractablesContainer() {}
 
-void InteractablesContainer::add(int x, int y, InteractableType type) {
-    Vector2 position = { static_cast<float>(x), static_cast<float>(y) };
-
+void InteractablesContainer::add(int x, int y, InteractableType type)
+{
     switch (type) {
         case INT_BLANK:
             add<int>(x, y, type);
@@ -40,7 +39,7 @@ void InteractablesContainer::add(int x, int y, InteractableType type)
     }, type));
 }
 
-IntBaseWrapper* InteractablesContainer::getInt(int x, int y)
+IntBaseWrapper* InteractablesContainer::getInt(int x, int y) const
 {
     IntBaseWrapper* res = nullptr;
     for (auto&& i : test) {
@@ -54,12 +53,15 @@ IntBaseWrapper* InteractablesContainer::getInt(int x, int y)
 
 void InteractablesContainer::removeInteractable(int x, int y)
 {
-    for (std::vector<std::unique_ptr<IntBaseWrapper>>::iterator it = test.begin(); it != test.end(); ) {
-        if (it->get()->pos.x == x && it->get()->pos.y == y) {
-            test.erase(it);
-        } else {
-            ++it;
+    int idx = 0;
+    for (auto&& interactable : this->test) {
+        IntBaseWrapper* i = interactable.get();
+        if (i != nullptr) {
+            if (i->pos.x == x && i->pos.y == y) {
+                test.erase(test.begin() + idx);
+            }
         }
+        idx++;
     }
 }
 
@@ -73,7 +75,7 @@ void InteractablesContainer::setInteractableType(int x, int y, InteractableType 
     this->add(x, y, type);
 }
 
-std::vector<IntBaseWrapper*> InteractablesContainer::getList()
+std::vector<IntBaseWrapper*> InteractablesContainer::getList() const
 {
     std::vector<IntBaseWrapper*> result;
     for (auto&& in : this->test) {
@@ -82,7 +84,7 @@ std::vector<IntBaseWrapper*> InteractablesContainer::getList()
     return result;
 }
 
-void InteractablesContainer::addBinVector(std::vector<InteractableBin> bin)
+void InteractablesContainer::addBinVector(const std::vector<InteractableBin> &bin)
 {
     for (auto intBin : bin) {
         InteractableType itype = static_cast<InteractableType>(intBin.type);
@@ -91,22 +93,6 @@ void InteractablesContainer::addBinVector(std::vector<InteractableBin> bin)
         getInt(intBin.x, intBin.y)->setOnTouch(onTouch);
 
         inter_apply_bin(getInt(intBin.x, intBin.y), intBin);
-        /*
-        IntBase<DiagInt>* diag;
-        switch (itype) {
-        case INT_TWO:
-            diag = static_cast<IntBase<DiagInt>*>(this->getInt(intBin.x, intBin.y));
-            diag->set(DiagInt {intBin.dialogue});
-            break;
-        case INT_WARPER:
-            static_cast<IntBase<WarperInt>*>(this->getInt(intBin.x, intBin.y))->set({
-                intBin.dialogue
-            });
-            break;
-        default:
-            break;
-        }
-        */
     }
 }
 

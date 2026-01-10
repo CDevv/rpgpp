@@ -25,17 +25,17 @@ public:
     InterfaceService();
     ~InterfaceService();
     /** Get the font used for the game's UI. */
-    Font getFont();
+    Font getFont() const;
     /** Get the texture, used for UI nine-patch components. */
-    Texture getTexture();
+    Texture getTexture() const;
     /** Open the dialogue with a Dialogue structure */
-    void showDialogue(Dialogue dialogue);
+    void showDialogue(const Dialogue &dialogue);
     /** Update routine. */
     void update();
     /** Draw routine. */
     void draw();
     /** Unload routine. */
-    void unload();
+    void unload() const;
 };
 
 #endif

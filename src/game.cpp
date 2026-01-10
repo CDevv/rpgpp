@@ -1,13 +1,10 @@
 #include "game.hpp"
 #include "gamedata.hpp"
 #include "soundService.hpp"
-#include <cstdio>
 #include <memory>
 #include <raylib.h>
 #include <sol/sol.hpp>
 #include <sol/forward.hpp>
-#include <sol/state_view.hpp>
-#include <sol/types.hpp>
 #include <stdexcept>
 
 Game *Game::instance_ = nullptr;
@@ -48,30 +45,19 @@ void Game::init()
     sounds = std::make_unique<SoundService>();
 }
 
-void Game::useBin(std::string filePath)
+void Game::useBin(const std::string &filePath)
 {
     gameData = std::make_unique<GameData>(deserializeFile(filePath));
     usesBin = true;
 
-    for (auto pair : gameData->images) {
-        printf("PAIR IMG: %s \n", pair.first.c_str());
-
-        unsigned char* imgData = pair.second.data.data();
-        std::string ext = GetFileExtension(pair.first.c_str());
-        Image img = LoadImageFromMemory(
-            ext.c_str(),
-            imgData, pair.second.dataSize);
-        Texture2D text = LoadTextureFromImage(img);
-
-        resources->addTexture(pair.first, text);
-        //UnloadImage(img);
+    for (auto item : gameData->images) {
+        Image image = LoadImageFromMemory(".png", item.second.data.data(), item.second.dataSize);
+        Texture2D texture = LoadTextureFromImage(image);
+        resources->addTexture(item.first, texture);
     }
 
     SetWindowTitle(gameData->title.c_str());
 
-    for (auto i : gameData->dialogues) {
-        printf("%s \n", i.first.c_str());
-    }
     world->setRoomBin(gameData->rooms.at(0));
 }
 

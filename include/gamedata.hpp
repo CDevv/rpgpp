@@ -109,9 +109,15 @@ struct RoomBin
 	std::string musicSource;
 };
 
+struct GameBinSettings {
+    std::string playerActor;
+};
+
 struct GameData
 {
 	std::string title;
+	//GameBinSettings proj;
+	//std::string playerActor;
 	std::map<std::string, ImageBin> images;
 	std::map<std::string, TileSetBin> tilesets;
 	std::vector<RoomBin> rooms;
@@ -127,7 +133,6 @@ struct DataSerialization
 	int count;
 };
 
-DataSerialization serializeGameData(GameData data);
 void serializeDataToFile(std::string fileName, GameData data);
 GameData deserializeFile(std::string fileName);
 

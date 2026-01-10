@@ -1,12 +1,14 @@
 #include "animationsView.hpp"
-#include <string>
+
 #include <IconsKenney.h>
+#include <string>
+
 #include "actor.hpp"
 #include "editor.hpp"
-#include "fileSystemService.hpp"
 #include "editorInterfaceService.hpp"
-#include "windows/tileSetDialogWindow.hpp"
+#include "fileSystemService.hpp"
 #include "windowContainer.hpp"
+#include "windows/tileSetDialogWindow.hpp"
 
 bool rlImGuiImageButtonRect(const char* str_id, const Texture* image, int destWidth, int destHeight, Rectangle sourceRect)
 {
@@ -19,12 +21,12 @@ bool rlImGuiImageButtonRect(const char* str_id, const Texture* image, int destWi
     if (sourceRect.width < 0)
     {
         uv0.x = -sourceRect.x / image->width;
-        uv1.x = (uv0.x - float(fabs(sourceRect.width) / image->width));
+        uv1.x = (uv0.x - (fabs(sourceRect.width) / image->width));
     }
     else
     {
         uv0.x = sourceRect.x / image->width;
-        uv1.x = uv0.x + float(sourceRect.width / image->width);
+        uv1.x = uv0.x + (sourceRect.width / image->width);
     }
 
     if (sourceRect.height < 0)
@@ -38,10 +40,14 @@ bool rlImGuiImageButtonRect(const char* str_id, const Texture* image, int destWi
         uv1.y = uv0.y + sourceRect.height / image->height;
     }
 
-    return ImGui::ImageButton(str_id, (ImTextureID)image->id, ImVec2(float(destWidth), float(destHeight)), uv0, uv1);
+    return ImGui::ImageButton(str_id, (ImTextureID)image->id, ImVec2(static_cast<float>(destWidth), static_cast<float>(destHeight)), uv0, uv1);
 }
 
-AnimationsView::AnimationsView() {}
+AnimationsView::AnimationsView() : actorView(nullptr), rect(), animDropdownActive(false), animDropdownEditMode(false),
+                                   currentAnim(0),
+                                   animPlaying(false)
+{
+}
 
 AnimationsView::AnimationsView(Rectangle rect)
 {
@@ -51,6 +57,7 @@ AnimationsView::AnimationsView(Rectangle rect)
 	this->animPlaying = false;
 	this->animFrames = std::vector<Vector2>{};
 	this->animDropdownEditMode = false;
+	this->animDropdownActive = false;
 	this->animNames = std::vector<std::string>{};
 
 	animNames.push_back("Down Idle");
@@ -94,8 +101,6 @@ void AnimationsView::draw()
 
 	EditorInterfaceService& ui = Editor::getUi();
 	WindowContainer& windows = ui.getWindowContainer();
-
-	ImVec2 cursorScreen = ImVec2(0, 0);
 
 	ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
 	ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
@@ -164,8 +169,6 @@ void AnimationsView::draw()
 		if (actor != nullptr) {
 			Texture texture = actor->getTileSet().getTexture();
 			Vector2 tileSize = actor->getTileSet().getTileSize();
-			Vector2 origin = Vector2 { 0, 0 };
-			float rotation = 0.0f;
 
 			ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_COL32(0, 0, 0, 0));
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2 { 0, 0 });

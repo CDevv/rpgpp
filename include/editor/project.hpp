@@ -26,13 +26,13 @@ private:
     std::string fontsPath;
     void generateCmdScript();
     void callCompiler();
-    std::vector<std::string> makePaths(std::string dirPath);
+    std::vector<std::string> makePaths(const std::string &dirPath);
     std::array<std::vector<std::string>, ENGINEFILETYPE_MAX> pathsList;
 public:
     Project();
-    Project(std::string filePath);
+    Project(const std::string &filePath);
     void reloadPaths();
-    static void generateNewProj(std::string title, std::string path);
+    static void generateNewProj(const std::string &title, const std::string &path);
     GameData generateStruct();
     void compileProject();
     void runProject();

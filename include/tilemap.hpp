@@ -17,7 +17,7 @@ using json = nlohmann::json;
 class TileMap {
 private:
     /** Base position of this TileMap. */
-    Vector2 basePos;
+    Vector2 basePos{};
     /** File path to the source of the used TileSet. */
     std::string tileSetSource;
     /** A unique_ptr to the used TileSet. */
@@ -34,47 +34,47 @@ private:
     std::vector<std::vector<Tile>> tiles;
 public:
     /** Construct from a file name/path */
-    TileMap(std::string fileName);
+    TileMap(const std::string& fileName);
     /** Construct using a TileSet path, width, height */
-    TileMap(std::string tileSetSource, int width, int height, int atlasTileSize, int worldTileSize);
+    TileMap(const std::string& tileSetSource, int width, int height, int atlasTileSize, int worldTileSize);
     /** Constructor using a TileSet object */
-    TileMap(TileSet tileSet, int width, int height, int atlasTileSize, int worldTileSize);
+    TileMap(const TileSet& tileSet, int width, int height, int atlasTileSize, int worldTileSize);
     /** Constructor using a unique_ptr of a TileSet */
     TileMap(std::unique_ptr<TileSet> tileSetPtr, int width, int height, int atlasTileSize, int worldTileSize);
     /** Constructor using a RoomBin binary structure */
-    TileMap(RoomBin bin);
+    TileMap(const RoomBin &bin);
     /** Dump the TileMap's data into a nlohmann::json object */
     json dumpJson();
     /** Unload routine. Typically calls raylib's UnloadTexture. */
-    void unload();
+    void unload() const;
     /** Update routine. */
     void update();
     /** Draw routine. */
-    void draw();
+    void draw() const;
     /** Get the path of the TileSet resource */
     std::string getTileSetSource();
     /** Get a pointer to the used TileSet */
-    TileSet* getTileSet();
+    TileSet* getTileSet() const;
     /** Set a new TileSet for this TileMap using a path for the new TileSet */
-    void setTileSet(std::string tileSetSource);
-    int getAtlasTileSize();
-    int getWorldTileSize();
-    bool atlasPosIsValid(Vector2 atlasPos);
+    void setTileSet(const std::string& tileSetSource);
+    int getAtlasTileSize() const;
+    int getWorldTileSize() const;
+    bool atlasPosIsValid(Vector2 atlasPos) const;
     /** Get the Tile at the specified x and y position */
-    Tile getTile(int x, int y);
+    Tile getTile(int x, int y) const;
     /** Set the tile at the specified world position to be a tile at the specified atlas position from the TileSet */
     void setTile(Vector2 worldPos, Vector2 atlasPos);
     /** Set the tile at the specified world position to be empty (not drawn) */
     void setEmptyTile(Vector2 worldPos);
     /** Draw the tile at the specified world x and y coordinates */
-    void drawTile(int x, int y);
-    void drawTile(Vector2 worldPos, Vector2 atlasPos);
-    void drawTile(Vector2 worldPos, AtlasTile tile);
-    Vector2 getMaxAtlasSize();
+    void drawTile(int x, int y) const;
+    void drawTile(Vector2 worldPos, Vector2 atlasPos) const;
+    void drawTile(Vector2 worldPos, AtlasTile tile) const;
+    Vector2 getMaxAtlasSize() const;
     /** Get the size of this TileMap
      * @returns the size in a Vector2. The x component is the width; the y component is the height.
      */
-    Vector2 getMaxWorldSize();
+    Vector2 getMaxWorldSize() const;
     /** Set the size of this TileSet using the provided Vector2 argument. The x ocmponent will be the new width; the y component will be the new height. */
     void setWorldSize(Vector2 size);
 };

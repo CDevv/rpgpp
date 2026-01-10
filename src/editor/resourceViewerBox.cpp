@@ -1,20 +1,24 @@
 #include "resourceViewerBox.hpp"
-#include <nlohmann/json.hpp>
-#include <raylib.h>
+
 #include <IconsKenney.h>
+#include <raylib.h>
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
+
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
 #include "imgui.h"
-#include "windowContainer.hpp"
 #include "projectFile.hpp"
+#include "windowContainer.hpp"
 #include "worldViewBox.hpp"
 
 std::array<EngineFileType, 3> noFuncTypes = { FILE_FONT, FILE_IMAGE, FILE_SOUND };
 
-ResourceViewerBox::ResourceViewerBox() {}
+ResourceViewerBox::ResourceViewerBox() : rect(), dropdownActive(0), deleteConfirmOpen(false)
+{
+}
 
 ResourceViewerBox::ResourceViewerBox(Rectangle rect)
 {
@@ -92,13 +96,11 @@ void ResourceViewerBox::drawResourcesList()
 
 void ResourceViewerBox::draw()
 {
-    const ImVec2 resourceButtonSize = ImVec2 { 76, 26 };
+    constexpr ImVec2 resourceButtonSize = ImVec2 { 76, 26 };
 
     FileSystemService& fs = Editor::getFileSystem();
     EditorInterfaceService& ui = Editor::getUi();
     WindowContainer& windows = ui.getWindowContainer();
-
-    bool gotError = false;
 
     if (fs.getProject() != nullptr) {
         auto arr = ProjectFile::getTypeNames();
@@ -124,6 +126,7 @@ void ResourceViewerBox::draw()
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4 { 38, 38, 38, 0 });
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, IM_COL32(53,53,53, 255));
             if (ImGui::BeginChild("res_list")) {
+                bool gotError = false;
                 try {
                     drawResourcesList();
                 }
@@ -174,11 +177,9 @@ void ResourceViewerBox::draw()
     }
 }
 
-void ResourceViewerBox::drawContextMenu(std::string resPath)
+void ResourceViewerBox::drawContextMenu(const std::string &resPath)
 {
     FileSystemService& fs = Editor::getFileSystem();
-    EditorInterfaceService& ui = Editor::getUi();
-    WindowContainer& windows = ui.getWindowContainer();
     std::string resFileName = GetFileNameWithoutExt(resPath.c_str());
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2, 2));

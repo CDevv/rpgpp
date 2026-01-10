@@ -1,6 +1,7 @@
 #ifndef _RPGPP_EDITOR_INTERFACE_H
 #define _RPGPP_EDITOR_INTERFACE_H
 
+#include <string>
 #include <memory>
 #include <raylib.h>
 #include <imgui.h>
@@ -36,6 +37,7 @@ private:
     bool demoGuiActive;
     void drawMainView();
     void drawProjectView();
+    char testStr[256];
 public:
     EditorInterfaceService();
     ~EditorInterfaceService();

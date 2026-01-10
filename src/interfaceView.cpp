@@ -2,7 +2,8 @@
 #include "uiElement.hpp"
 #include <memory>
 
-InterfaceView::InterfaceView() {}
+InterfaceView::InterfaceView() : rect(Rectangle {}) {
+}
 
 InterfaceView::InterfaceView(Rectangle rect)
 {
@@ -17,7 +18,7 @@ void InterfaceView::addElement(UIElement* element)
     this->elements.push_back(std::move(ptr));
 }
 
-void InterfaceView::update()
+void InterfaceView::update() const
 {
     for (auto&& i : elements) {
         i->update();

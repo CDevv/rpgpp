@@ -6,11 +6,13 @@ AtlasTile::AtlasTile() {
     this->atlasCoords = Vector2 { 0 };
 }
 
-AtlasTile::AtlasTile(Texture *texture, Vector2 atlasCoords) {
+AtlasTile::AtlasTile(Texture *texture, Vector2 atlasCoords)
+{
     this->texture = texture;
     this->atlasCoords = atlasCoords;
 }
 
-Vector2 AtlasTile::getAtlasCoords() {
+Vector2 AtlasTile::getAtlasCoords() const
+{
     return this->atlasCoords;
 }

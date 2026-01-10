@@ -3,27 +3,24 @@
 #include "tileset.hpp"
 #include <memory>
 #include <raylib.h>
-#include <raymath.h>
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
-TileMap::TileMap(std::string fileName)
+TileMap::TileMap(const std::string& fileName)
 {
     this->basePos = Vector2 { 0.0f, 0.0f };
 
     char *jsonContent = LoadFileText(fileName.c_str());
-    json j = json::parse(jsonContent);
+    json jsonObj = json::parse(jsonContent);
 
-    std::string tileSetSource = j.at("tileset");
-    this->tileSetSource = tileSetSource;
+    this->tileSetSource = jsonObj.at("tileset");
     this->tileSet = std::make_unique<TileSet>(tileSetSource);
 
-    this->atlasTileSize = tileSet->getTileSize().x;
-    int worldTileSize = j.at("tileSize");
-    this->worldTileSize = worldTileSize;
+    this->atlasTileSize = static_cast<int>(tileSet->getTileSize().x);
+    this->worldTileSize = jsonObj.at("tileSize");
 
-    this->width = j.at("width");
-    this->height = j.at("height");
+    this->width = jsonObj.at("width");
+    this->height = jsonObj.at("height");
 
     this->maxAtlasWidth = this->tileSet->getTexture().width / atlasTileSize;
     this->maxAtlasHeight = this->tileSet->getTexture().height / atlasTileSize;
@@ -42,10 +39,10 @@ TileMap::TileMap(std::string fileName)
     //Place the tiles..
     //this->tiles = std::vector<std::vector<Tile>>{};
 
-    auto tileRows = j.at("map");
+    auto tileRows = jsonObj.at("map");
     size_t rowsCount = tileRows.size();
     for (int64_t y = 0; y < rowsCount; y++) {
-        std::vector<std::vector<int>> tileCol = j.at("map").at(y);
+        std::vector<std::vector<int>> tileCol = jsonObj.at("map").at(y);
         size_t colCount = tileCol.size();
 
         for (int x = 0; x < colCount; x++) {
@@ -53,8 +50,8 @@ TileMap::TileMap(std::string fileName)
             int atlasY = tileCol.at(x).at(1);
 
             if (atlasX >= 0 && atlasY >= 0) {
-                Vector2 worldPos = Vector2 { static_cast<float>(x), static_cast<float>(y) };
-                Vector2 atlasPos = Vector2 { static_cast<float>(atlasX), static_cast<float>(atlasY) };
+                Vector2 worldPos = { static_cast<float>(x), static_cast<float>(y) };
+                Vector2 atlasPos = { static_cast<float>(atlasX), static_cast<float>(atlasY) };
 
                 this->setTile(worldPos, atlasPos);
             }
@@ -64,12 +61,12 @@ TileMap::TileMap(std::string fileName)
     UnloadFileText(jsonContent);
 }
 
-TileMap::TileMap(std::string tileSetSource, int width, int height, int atlasTileSize, int worldTileSize) {
+TileMap::TileMap(const std::string& tileSetSource, int width, int height, int atlasTileSize, int worldTileSize) {
     this->basePos = Vector2 { 0.0f, 0.0f };
     this->tileSet = std::make_unique<TileSet>(tileSetSource);
     this->tileSetSource = tileSetSource;
 
-    this->atlasTileSize = tileSet->getTileSize().x;
+    this->atlasTileSize = static_cast<int>(tileSet->getTileSize().x);
     this->worldTileSize = worldTileSize;
 
     this->width = width;
@@ -89,7 +86,7 @@ TileMap::TileMap(std::string tileSetSource, int width, int height, int atlasTile
     }
 }
 
-TileMap::TileMap(TileSet tileSet, int width, int height, int atlasTileSize, int worldTileSize) 
+TileMap::TileMap(const TileSet& tileSet, int width, int height, int atlasTileSize, int worldTileSize)
 {
     this->basePos = Vector2 { 0.0f, 0.0f };
     this->tileSet = std::make_unique<TileSet>(tileSet);
@@ -119,7 +116,7 @@ TileMap::TileMap(std::unique_ptr<TileSet> tileSetPtr, int width, int height, int
     this->basePos = Vector2 { 0.0f, 0.0f };
     this->tileSet = std::move(tileSetPtr);
 
-    this->atlasTileSize = this->tileSet->getTileSize().x;
+    this->atlasTileSize = static_cast<int>(this->tileSet->getTileSize().x);
     this->worldTileSize = worldTileSize;
 
     this->width = width;
@@ -139,7 +136,7 @@ TileMap::TileMap(std::unique_ptr<TileSet> tileSetPtr, int width, int height, int
     }
 }
 
-TileMap::TileMap(RoomBin bin)
+TileMap::TileMap(const RoomBin &bin)
 {
     this->basePos = Vector2 { 0.0f, 0.0f };
     this->tileSet = std::make_unique<TileSet>(Game::getBin().tilesets.at(bin.tileSetName));
@@ -176,15 +173,15 @@ json TileMap::dumpJson()
     //Make a vector for the tiles
     auto tilesVector = std::vector<std::vector<std::vector<int>>>();
     for (int i = 0; i < height; i++) {
-        tilesVector.push_back(std::vector<std::vector<int>>());
+        tilesVector.emplace_back();
         for (int j = 0; j < width; j++) {
             Tile tile = getTile(j, i);
             std::vector<int> atlasPosVector;
             if (tile.isPlaced()) {
                 AtlasTile atlasTile = tile.getAtlasTile();
                 Vector2 atlasCoords = atlasTile.getAtlasCoords();
-                atlasPosVector.push_back((atlasCoords.x / atlasTileSize));
-                atlasPosVector.push_back((atlasCoords.y / atlasTileSize));
+                atlasPosVector.push_back(static_cast<int>(atlasCoords.x / atlasTileSize));
+                atlasPosVector.push_back(static_cast<int>(atlasCoords.y / atlasTileSize));
             } else {
                 atlasPosVector.push_back(-1);
                 atlasPosVector.push_back(-1);
@@ -205,7 +202,7 @@ json TileMap::dumpJson()
     return tileMapJson;
 }
 
-void TileMap::unload()
+void TileMap::unload() const
 {
     tileSet->unload();
 }
@@ -215,7 +212,7 @@ void TileMap::update()
     //this->draw();
 }
 
-void TileMap::draw()
+void TileMap::draw() const
 {
     if (tileSet->getTileSize().x != tileSet->getTileSize().y) {
         DrawText("Tile size must be square", 20, 20, 36, RED);
@@ -235,50 +232,50 @@ std::string TileMap::getTileSetSource()
     return tileSetSource;
 }
 
-TileSet* TileMap::getTileSet()
+TileSet* TileMap::getTileSet() const
 {
     return tileSet.get();
 }
 
-void TileMap::setTileSet(std::string tileSetSource)
+void TileMap::setTileSet(const std::string& tileSetSource)
 {
-    this->tileSet.reset(new TileSet(tileSetSource));
+    this->tileSet = std::make_unique<TileSet>(tileSetSource);
     this->tileSetSource = tileSetSource;
 }
 
-int TileMap::getAtlasTileSize()
+int TileMap::getAtlasTileSize() const
 {
     return atlasTileSize;
 }
 
-int TileMap::getWorldTileSize()
+int TileMap::getWorldTileSize() const
 {
     return worldTileSize;
 }
 
-Tile TileMap::getTile(int x, int y)
+Tile TileMap::getTile(int x, int y) const
 {
     return this->tiles[x][y];
 }
 
 void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos)
 {
-    Vector2 resultAtlasCoords = Vector2 {
+    Vector2 resultAtlasCoords = {
         atlasPos.x * atlasTileSize,
         atlasPos.y * atlasTileSize
     };
 
     AtlasTile atlasTile = tileSet->getTile(resultAtlasCoords);
 
-    this->tiles[(int)worldPos.x][(int)worldPos.y].place(atlasTile, worldPos);
+    this->tiles[static_cast<int>(worldPos.x)][static_cast<int>(worldPos.y)].place(atlasTile, worldPos);
 }
 
 void TileMap::setEmptyTile(Vector2 worldPos)
 {
-    this->tiles[(int)worldPos.x][(int)worldPos.y].erase();
+    this->tiles[static_cast<int>(worldPos.x)][static_cast<int>(worldPos.y)].erase();
 }
 
-void TileMap::drawTile(int x, int y)
+void TileMap::drawTile(int x, int y) const
 {
     Tile tile = this->tiles[x][y];
 
@@ -287,7 +284,7 @@ void TileMap::drawTile(int x, int y)
     }
 }
 
-bool TileMap::atlasPosIsValid(Vector2 atlasPos)
+bool TileMap::atlasPosIsValid(Vector2 atlasPos) const
 {
     bool atlasXFits = false;
     bool atlasYFits = false;
@@ -302,13 +299,13 @@ bool TileMap::atlasPosIsValid(Vector2 atlasPos)
     return (atlasXFits && atlasYFits);
 }
 
-void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos)
+void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos) const
 {
     if (!atlasPosIsValid(atlasPos)) {
         return;
     }
 
-    Vector2 resultVector = Vector2 {
+    Vector2 resultVector = {
         atlasPos.x * atlasTileSize,
         atlasPos.y * atlasTileSize
     };
@@ -318,36 +315,38 @@ void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos)
     this->drawTile(worldPos, tile);
 }
 
-void TileMap::drawTile(Vector2 worldPos, AtlasTile tile)
+void TileMap::drawTile(Vector2 worldPos, AtlasTile tile) const
 {
     //defaults..
-    const Vector2 origin = Vector2 { 0.0f, 0.0f };
-    const float rotation = 0.0f;
+    constexpr Vector2 origin = Vector2 { 0.0f, 0.0f };
+    constexpr float rotation = 0.0f;
 
     //texture..
     Texture texture = this->tileSet->getTexture();
 
     //actual coordinates
     Vector2 atlasCoords = tile.getAtlasCoords();
-    Vector2 worldCoords = Vector2 {
-        this->basePos.x + (worldPos.x * worldTileSize),
-        this->basePos.y + (worldPos.y * worldTileSize)
+    Vector2 worldCoords = {
+        this->basePos.x + (worldPos.x * static_cast<float>(worldTileSize)),
+        this->basePos.y + (worldPos.y * static_cast<float>(worldTileSize))
     };
 
     //Build rects
-    Rectangle atlasCoordsRect = Rectangle { atlasCoords.x, atlasCoords.y, static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize) };
-    Rectangle worldCoordsRect = Rectangle { worldCoords.x, worldCoords.y, static_cast<float>(worldTileSize), static_cast<float>(worldTileSize) };
+    Rectangle atlasCoordsRect = { atlasCoords.x, atlasCoords.y, static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize) };
+    Rectangle worldCoordsRect = { worldCoords.x, worldCoords.y, static_cast<float>(worldTileSize), static_cast<float>(worldTileSize) };
 
     //draw it
     DrawTexturePro(texture, atlasCoordsRect, worldCoordsRect, origin, rotation, WHITE);
 }
 
-Vector2 TileMap::getMaxAtlasSize() {
+Vector2 TileMap::getMaxAtlasSize() const
+{
     Vector2 result = Vector2 { static_cast<float>(maxAtlasWidth), static_cast<float>(maxAtlasHeight) };
     return result;
 }
 
-Vector2 TileMap::getMaxWorldSize() {
+Vector2 TileMap::getMaxWorldSize() const
+{
     Vector2 result = Vector2 { static_cast<float>(width), static_cast<float>(height) };
     return result;
 }

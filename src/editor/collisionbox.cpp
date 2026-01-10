@@ -1,9 +1,9 @@
 #include "collisionbox.hpp"
+
 #include "actor.hpp"
-#include "gamedata.hpp"
-#include <raymath.h>
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "gamedata.hpp"
 #include "projectFile.hpp"
 #include "prop.hpp"
 
@@ -25,23 +25,24 @@ CollisionBox::CollisionBox()
 	mouseOffset = Vector2 { 0, 0 };
 }
 
-CollisionBox::CollisionBox(Rectangle rect)
+CollisionBox::CollisionBox(Rectangle rect) : oldMousePos(), newRect(), mouseOffset(), resizeMode(), mouseDelta(),
+                                             holdingMouse(false)
 {
 	this->rect = rect;
-	this->mouseWorldPos = Vector2 { 0, 0 };
+	this->mouseWorldPos = Vector2{0, 0};
 
-	topLeft = Rectangle {
-    	rect.x, rect.y, 4, 4
-    };
-    topRight = Rectangle {
-    	rect.x + (rect.width - 4), rect.y, 4, 4
-    };
-    bottomLeft = Rectangle {
-    	rect.x, rect.y + (rect.height - 4), 4, 4
-    };
-    bottomRight = Rectangle {
-    	rect.x + (rect.width - 4), rect.y + (rect.height - 4), 4, 4
-    };
+	topLeft = Rectangle{
+		rect.x, rect.y, 4, 4
+	};
+	topRight = Rectangle{
+		rect.x + (rect.width - 4), rect.y, 4, 4
+	};
+	bottomLeft = Rectangle{
+		rect.x, rect.y + (rect.height - 4), 4, 4
+	};
+	bottomRight = Rectangle{
+		rect.x + (rect.width - 4), rect.y + (rect.height - 4), 4, 4
+	};
 }
 
 void CollisionBox::setMouseWorldPos(Vector2 pos)

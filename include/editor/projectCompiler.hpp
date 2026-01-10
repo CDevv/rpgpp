@@ -10,7 +10,7 @@ public:
 	ProjectCompiler();
 	void generateCmdScript(std::string projectTitle);
 	void callCompiler();
-	void cleanCompilation(std::string projectBase);
+	void cleanCompilation(const std::string &projectBase);
 };
 
 #endif

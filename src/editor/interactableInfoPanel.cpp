@@ -1,15 +1,24 @@
 #include "interactableInfoPanel.hpp"
-#include <raymath.h>
-#include <raylib.h>
+
 #include <imgui.h>
+#include <raylib.h>
+#include <raymath.h>
+
+#include "editor.hpp"
+#include "fileSystemService.hpp"
 #include "interactable.hpp"
 #include "nfd.h"
 #include "room.hpp"
 #include "worldViewBox.hpp"
-#include "editor.hpp"
-#include "fileSystemService.hpp"
 
-InteractableInfoPanel::InteractableInfoPanel() {}
+InteractableInfoPanel::InteractableInfoPanel() : rect(), action(), lastType(), type(), interactableWorldPos(),
+                                                 typeNumber(0),
+                                                 typeDropdownEditMode(false),
+                                                 interBase(nullptr),
+                                                 diagChars{},
+                                                 diagTextEditMode(false)
+{
+}
 
 InteractableInfoPanel::InteractableInfoPanel(Rectangle rect)
 {

@@ -1,15 +1,16 @@
 #include "project.hpp"
+
+#include <cstdio>
+#include <filesystem>
 #include <raylib.h>
-#include <nlohmann/json.hpp>
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <filesystem>
+#include <nlohmann/json.hpp>
+
 #include "gamedata.hpp"
 #include "projectFile.hpp"
-#include "tileset.hpp"
 #include "tilemap.hpp"
-#include "room.hpp"
 using json = nlohmann::json;
 
 #ifdef _WIN32
@@ -20,7 +21,7 @@ using json = nlohmann::json;
 
 Project::Project() {}
 
-Project::Project(std::string filePath)
+Project::Project(const std::string &filePath)
 {
     this->projectPath = filePath;
     this->projectBasePath = GetDirectoryPath(filePath.c_str());
@@ -62,7 +63,7 @@ void Project::reloadPaths()
     pathsList[FILE_SCRIPT] = makePaths("scripts");
 }
 
-void Project::generateNewProj(std::string title, std::string path)
+void Project::generateNewProj(const std::string &title, const std::string &path)
 {
     ProjectGenerator::generateNewProj(title, path);
 }
@@ -126,17 +127,17 @@ void Project::runProject()
     init_audio()
 
     g = game.new()
-    g:init()
+    game.init()
 
     game.use_bin("game.bin")
 
     set_fps(60)
 
     while not window_should_close() do
-        g:update()
+        game.update()
         begin_drawing()
         clear_background()
-        g:draw()
+        game.draw()
         end_drawing()
     end
 
@@ -162,15 +163,15 @@ void Project::runProject()
 
     std::vector<std::string> rargs;
     #ifdef _WIN32
-    rargs.push_back(std::string("\"").append(GetApplicationDirectory()).append("lua.exe").append("\""));
+    rargs.push_back(std::string(TextFormat("%s%s", GetApplicationDirectory(), "execs\\luajit.exe")));
     #else
-    rargs.push_back(std::string(GetApplicationDirectory()).append("lua"));
+    rargs.push_back(std::string(TextFormat("%s%s", GetApplicationDirectory(), "execs/luajit")));
     #endif
 
     rargs.push_back("-lrpgpplua");
 
     #ifdef _WIN32
-    rargs.push_back(std::string("\"").append(projectBasePath).append("\\").append("run.lua").append("\""));
+    rargs.push_back(TextFormat("\"%s\\run.lua\"", projectBasePath.c_str()));
     #else
     rargs.push_back(std::string(projectBasePath).append("/").append("run.lua"));
     #endif
@@ -178,12 +179,6 @@ void Project::runProject()
     printf("%s \n", rargs[0].c_str());
     printf("%s \n", rargs[1].c_str());
     printf("%s \n", rargs[2].c_str());
-    reproc::process p;
-    std::error_code ec = p.start(rargs, options);
-    if (ec) {
-        printf("%s \n", ec.message().c_str());
-    }
-    printf("ended\n");
 
     #ifdef _WIN32
     std::string cmdLine = std::string(rargs[0]).append(" ").append(rargs[1]).append(" ").append(rargs[2]);
@@ -191,6 +186,22 @@ void Project::runProject()
     WinCreateProc(cmdLine);
 
     std::filesystem::remove(toLuaLib);
+    #else
+    FILE* cmdFd = popen(TextFormat("%s %s %s", rargs[0].c_str(), rargs[1].c_str(), rargs[2].c_str()), "r");
+    if (cmdFd == nullptr) {
+        printf("popen() error\n");
+    }
+
+    char outLine[512];
+    while (std::fgets(outLine, 512, cmdFd)) {
+        printf("cmd output: %s\n", outLine);
+    }
+
+    int status = pclose(cmdFd);
+    if (status == -1) {
+        printf("pclose() error.. \n");
+    }
+    printf("ended\n");
     #endif
 }
 
@@ -204,7 +215,7 @@ std::string Project::getProjectBasePath()
     return projectBasePath;
 }
 
-std::vector<std::string> Project::makePaths(std::string dirPath)
+std::vector<std::string> Project::makePaths(const std::string &dirPath)
 {
     FilePathList pathList = LoadDirectoryFiles(dirPath.c_str());
 

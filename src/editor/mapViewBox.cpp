@@ -1,21 +1,30 @@
+#include <raylib.h>
+#include <raymath.h>
+#include <rlgl.h>
+
 #include "actor.hpp"
+#include "editor.hpp"
 #include "editorInterfaceService.hpp"
+#include "fileSystemService.hpp"
 #include "imgui.h"
 #include "interactable.hpp"
 #include "prop.hpp"
 #include "resourceService.hpp"
 #include "room.hpp"
+#include "tile.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
 #include "worldViewBox.hpp"
-#include "tile.hpp"
-#include "editor.hpp"
-#include "fileSystemService.hpp"
-#include <raylib.h>
-#include <rlgl.h>
-#include <raymath.h>
 
-MapViewBox::MapViewBox() {}
+MapViewBox::MapViewBox() : room(nullptr), viewBox(nullptr), layer(), tileAtlasPos(), tileWorldPos(),
+                           hoverValidTile(false),
+                           selectedWorldTile(),
+                           action(),
+                           currentLayer(),
+                           isTileValid(false),
+                           selectedTileAtlasCoords(),
+                           currentInteractableType() {
+}
 
 MapViewBox::MapViewBox(WorldViewBox *viewBox, ViewBoxLayer boxLayer)
 {
@@ -68,7 +77,7 @@ void MapViewBox::setSelectedTile(Vector2 tile)
     }
 }
 
-void MapViewBox::setStringProp(std::string str)
+void MapViewBox::setStringProp(const std::string &str)
 {
     stringProp = str;
 }
@@ -82,7 +91,6 @@ void MapViewBox::isHoverOnValidTile()
 {
     if (room == nullptr) return;
 
-    FileSystemService& fs = Editor::getFileSystem();
     EditorInterfaceService& ui = Editor::getUi();
 
     bool hoverValidX = false;
@@ -115,14 +123,13 @@ void MapViewBox::isHoverOnValidTile()
 
     if (ui.getMouseBoxLayer() != this->layer) return;
 
-    Prop p;
-    Actor a;
-
     bool isInViewport = viewBox->mouseInput->isInRect();
     bool isInMapRect = CheckCollisionPointRec(viewBox->mouseInput->getMouseWorldPos(), rect);
     if (isInViewport && isInMapRect) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             if (action == ACTION_PLACE) {
+                Actor a;
+                Prop p;
                 switch (currentLayer) {
                     case LAYER_TILES:
                         if (isTileValid) {
@@ -202,7 +209,7 @@ void MapViewBox::drawGrid()
         if (tileMap == nullptr) return;
         int tileSize = tileMap->getAtlasTileSize();
         //draw a big white rectangle instead
-        Rectangle rect = Rectangle {
+        Rectangle rect = {
             0, 0,
             (tileMap->getMaxWorldSize().x * tileSize), (tileMap->getMaxWorldSize().y * tileSize)
         };
@@ -228,11 +235,10 @@ void MapViewBox::drawTiles()
 
             if (tile.isPlaced()) {
                 //defaults..
-                const Vector2 origin = Vector2 { 0.0f, 0.0f };
-                const float rotation = 0.0f;
+                constexpr Vector2 origin = Vector2 { 0.0f, 0.0f };
+                constexpr float rotation = 0.0f;
 
                 //texture..
-                TileSet* tileSet = tileMap->getTileSet();
                 Texture texture = tileMap->getTileSet()->getTexture();
 
                 //actual coordinates
@@ -286,9 +292,6 @@ void MapViewBox::drawTiles()
 
             DrawRectangleRec(intRect, Fade(YELLOW, 0.8f));
             DrawRectangleLinesEx(intRect, 0.5f, YELLOW);
-
-            int typeNum = static_cast<int>(i->type);
-            Vector2 intPos = Vector2 { intRect.x, intRect.y };
 
             bool validTexture = false;
             Texture2D textureIntType;

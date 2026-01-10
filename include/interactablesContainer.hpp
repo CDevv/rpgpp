@@ -20,15 +20,15 @@ public:
     /** Add a new Interactable with tile position and type */
     void add(int x, int y, InteractableType type);
     /** Get an Interactable by its tile position */
-    IntBaseWrapper* getInt(int x, int y);
+    IntBaseWrapper* getInt(int x, int y) const;
     /** Remove an Interactable by its tile position */
     void removeInteractable(int x, int y);
     /** Change the Interactable's type at the specified tile position */
     void setInteractableType(int x, int y, InteractableType type);
     /** Get the vector that contains all Interactables */
-    std::vector<IntBaseWrapper*> getList();
+    std::vector<IntBaseWrapper*> getList() const;
     /** Add interactables from binary structures. */
-    void addBinVector(std::vector<InteractableBin> bin);
+    void addBinVector(const std::vector<InteractableBin> &bin);
     /** Add interactables from a Room json object. Must contain 'interactables'
      * and 'interactables_props' keys. */
     void addJsonData(json roomJson);

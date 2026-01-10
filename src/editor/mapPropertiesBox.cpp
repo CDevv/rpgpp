@@ -6,7 +6,14 @@
 #include "projectFile.hpp"
 #include "room.hpp"
 
-MapPropertiesBox::MapPropertiesBox() {}
+MapPropertiesBox::MapPropertiesBox() : rect(), room(nullptr), map(nullptr), mapHeight(0), heightEdit(false),
+                                       mapWidth(0),
+                                       widthEdit(false),
+                                       musicOn(false),
+                                       scrollVec(),
+                                       viewRec()
+{
+}
 
 MapPropertiesBox::MapPropertiesBox(Rectangle rect)
 {

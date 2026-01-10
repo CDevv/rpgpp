@@ -1,18 +1,18 @@
 #include "editorInterfaceService.hpp"
-#include <cstdio>
-#include <raylib.h>
-#include <imgui.h>
-#include <imgui_internal.h>
-#include "edui.hpp"
-#include "fileSystemService.hpp"
-#include "editor.hpp"
-#include "gamedata.hpp"
-#include "nfd.h"
-#include "windows/projectBinaryViewWindow.hpp"
-#include "resourceViewerBox.hpp"
-#include "windowContainer.hpp"
 
 #include <filesystem>
+#include <imgui.h>
+#include <imgui_internal.h>
+#include <raylib.h>
+
+#include "editor.hpp"
+#include "edui.hpp"
+#include "fileSystemService.hpp"
+#include "gamedata.hpp"
+#include "nfd.h"
+#include "resourceViewerBox.hpp"
+#include "windowContainer.hpp"
+#include "windows/projectBinaryViewWindow.hpp"
 
 #ifdef _WIN32
 #include "winapi.hpp"
@@ -71,11 +71,13 @@ EditorInterfaceService::EditorInterfaceService()
     panelView = std::make_unique<PanelView>(windowRect);
 
     windowContainer = WindowContainer();
+
+    strcpy(testStr, "Hi.");
 }
 
 EditorInterfaceService::~EditorInterfaceService()
 {
-    UnloadFont(uiFont);
+    //UnloadFont(uiFont);
 }
 
 void EditorInterfaceService::setInitial()
@@ -85,6 +87,7 @@ void EditorInterfaceService::setInitial()
 
 void EditorInterfaceService::unload()
 {
+    UnloadFont(uiFont);
     FileSystemService& fs = Editor::getFileSystem();
     if (fs.projectIsOpen()) {
         std::filesystem::path fPath = std::string(fs.getProject()->getProjectBasePath()).append("/").append("run.lua");
@@ -98,6 +101,31 @@ void EditorInterfaceService::unload()
 
 void EditorInterfaceService::update()
 {
+    //update gui state
+    state.mousePos = GetMousePosition();
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        state.mouseDown = 1;
+    } else {
+        state.mouseDown = 0;
+    }
+
+
+    state.keyEntered = GetKeyPressed();
+    if (IsKeyPressed(KEY_LEFT_SHIFT)) {
+        state.keyMod = KEY_LEFT_SHIFT;
+    }
+    if (IsKeyDown(KEY_BACKSPACE)) {
+        state.keyDown = KEY_BACKSPACE;
+    }
+    if (IsKeyDown(KEY_LEFT)) {
+        state.keyDown = KEY_LEFT;
+    }
+    if (IsKeyDown(KEY_RIGHT)) {
+        state.keyDown = KEY_RIGHT;
+    }
+
+    state.keyChar = GetCharPressed();
+
     mainView.update();
     tabList.update();
     panelView->update();
@@ -106,38 +134,34 @@ void EditorInterfaceService::update()
     windowContainer.update();
 }
 
-
-
 void EditorInterfaceService::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
 
     bool openedAboutWIndow = false;
 
-    if (EdUi::Button(Rectangle { 0, 50, 200, 50 }, "Blep") == EdUi::EDUI_CLICK) {
+    /*
+    if (EdUi::Button(1, Rectangle { 0, 50, 200, 50 }, "Blep")) {
         printf("hello! \n");
     }
-
-    Texture cross = Editor::getResources().getTexture("cross");
-    EdUi::IconButton(Rectangle { 200, 50, 50, 50 }, cross);
-
-    EdUi::BeginAppMenu();
-    if (EdUi::MenuButton("Menu..") == EdUi::EDUI_CLICK) {
-        printf("hello menu.\n");
-    }
-    if (EdUi::MenuButton("Button 2") == EdUi::EDUI_CLICK) {
+    if (EdUi::Button(2, Rectangle { 200, 50, 200, 50 }, "Blep2")) {
+        printf("hello 2! \n");
+        FS_Result fsResult = fs.openImage();
+        if (fsResult.result == NFD_OKAY) {
+            printf("%s \n", fsResult.absolutePath.c_str());
+        }
 
     }
-    {
-        EdUi::BeginAppSubmenu("Button 2");
-        EdUi::SubmenuButton("Item 1");
-        EdUi::SubmenuButton("Item 2");
-        EdUi::EndAppSubmenu();
-    }
 
-    EdUi::EndAppMenu();
+    EdUi::TextField(3, Rectangle { 0, 120, 200, 26 }, testStr, 256);
 
-    /*
+    EdUi::End();
+    */
+
+    //Texture cross = Editor::getResources().getTexture("cross");
+    //EdUi::IconButton(Rectangle { 200, 50, 50, 50 }, cross);
+
+
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Open Project..")) {
@@ -194,7 +218,7 @@ void EditorInterfaceService::draw()
     }
 
     windowContainer.drawWindow("About");
-    */
+
 }
 
 void EditorInterfaceService::drawMainView()

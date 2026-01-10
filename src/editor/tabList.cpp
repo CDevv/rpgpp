@@ -1,9 +1,13 @@
 #include "tabList.hpp"
-#include <raymath.h>
+
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 
-TabList::TabList() {}
+TabList::TabList() : rect(), closeTexture(), activeIndex(0), tabWidth(0), drawOverflow(false), scissorRect(),
+                     scissorOffset(),
+                     maxScissorOffset(0)
+{
+}
 
 TabList::TabList(Rectangle rect)
 {
@@ -12,6 +16,7 @@ TabList::TabList(Rectangle rect)
 	this->rect = rect;
 	this->scissorRect = rect;
 	this->scissorOffset = Vector2 { 0, 0 };
+	this->maxScissorOffset = 0.0f;
 	this->activeIndex = 0;
 	this->tabWidth = 120.0f;
 	this->drawOverflow = false;
@@ -22,7 +27,7 @@ void TabList::setRect(Rectangle rect)
 	this->rect = rect;
 }
 
-void TabList::addItem(std::string title)
+void TabList::addItem(const std::string &title)
 {
 	bool exists = false;
 	for (std::vector<TabData>::iterator i = tabs.begin(); i != tabs.end(); ++i)
@@ -53,7 +58,7 @@ void TabList::update()
 	}
 }
 
-int TabList::drawTabButton(float offset, std::string title, bool active)
+int TabList::drawTabButton(float offset, const std::string &title, bool active)
 {
 	int result = 0;
 	float tabTextWidth = ImGui::CalcTextSize(title.c_str()).x;

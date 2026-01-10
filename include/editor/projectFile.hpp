@@ -44,9 +44,9 @@ private:
     std::unique_ptr<VariantWrapper> variant;
 public:
     ProjectFile();
-    ProjectFile(std::string relativePath, EngineFileType fileType);
+    ProjectFile(const std::string &relativePath, EngineFileType fileType);
     static std::array<std::string, ENGINEFILETYPE_MAX> getTypeNames();
-    void setFromPath(std::string relativePath);
+    void setFromPath(const std::string &relativePath);
     std::string getRelativePath();
     EngineFileType getFileType();
     template<typename T>

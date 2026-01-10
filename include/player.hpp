@@ -32,18 +32,18 @@ public:
     /** Construct from an Actor and the Room where the Player shall be contained. */
     Player(std::unique_ptr<Actor> actor, Room& room);
     /** Unload routine. */
-    void unload();
+    void unload() const;
     /** Update routine. */
     void update();
     /** Draw routine. */
-    void draw();
+    void draw() const;
     /** Set the Player's current room. */
-    void setRoom(Room& room);
+    void setRoom(Room& room) const;
     /** Move the player by a certain velocity. */
     void moveByVelocity(Vector2 velocity);
     /** Get the player's position. */
-    Vector2 getPosition();
-    Vector2 getCollisionPos();
+    Vector2 getPosition() const;
+    Vector2 getCollisionPos() const;
 };
 
 #endif

@@ -24,7 +24,7 @@ Player::Player(std::unique_ptr<Actor> actor, Room& room)
     this->position = this->actor->getPosition();
 }
 
-void Player::unload()
+void Player::unload() const
 {
     actor->unload();
 }
@@ -83,7 +83,7 @@ void Player::update()
     actor->update();
 }
 
-void Player::draw()
+void Player::draw() const
 {
     actor->draw();
 
@@ -108,7 +108,7 @@ void Player::handleCollision()
     for (Vector2 v : collisionTiles) {
         Rectangle tileRect = Rectangle {
             v.x * worldTileSize, v.y * worldTileSize,
-            (float)worldTileSize, (float)worldTileSize
+            static_cast<float>(worldTileSize), static_cast<float>(worldTileSize)
         };
 
         if (CheckCollisionRecs(playerRect, tileRect)) {
@@ -180,7 +180,7 @@ void Player::handleInteraction()
     }
 }
 
-void Player::setRoom(Room& room)
+void Player::setRoom(Room& room) const
 {
     //this->room = Room(room);
 }
@@ -193,7 +193,7 @@ void Player::moveByVelocity(Vector2 velocity)
     actor->moveByVelocity(velocity);
 }
 
-Vector2 Player::getPosition()
+Vector2 Player::getPosition() const
 {
     if (actor == nullptr) return Vector2 { 0, 0 };
 
@@ -201,7 +201,7 @@ Vector2 Player::getPosition()
     return Vector2 { actorRect.x + (actorRect.width / 2), actorRect.y + (actorRect.height / 2) };
 }
 
-Vector2 Player::getCollisionPos()
+Vector2 Player::getCollisionPos() const
 {
     if (actor == nullptr) return Vector2 { 0, 0 };
 

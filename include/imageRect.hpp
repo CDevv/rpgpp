@@ -13,7 +13,7 @@ private:
 public:
     ImageRect();
     ImageRect(Rectangle rect);
-    void setSource(std::string source);
+    void setSource(const std::string &source);
     void setTexture(Texture2D texture);
     void update();
     void draw();

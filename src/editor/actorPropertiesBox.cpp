@@ -1,9 +1,11 @@
 #include "actorPropertiesBox.hpp"
+
 #include "actor.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 
-ActorPropertiesBox::ActorPropertiesBox() {}
+ActorPropertiesBox::ActorPropertiesBox() : rect(), scrollVec(), viewRec(), actor(nullptr), collisionViewActive(false) {
+}
 
 ActorPropertiesBox::ActorPropertiesBox(Rectangle rect)
 {
@@ -14,6 +16,7 @@ ActorPropertiesBox::ActorPropertiesBox(Rectangle rect)
 
 	scrollVec = Vector2 { 0, 0 };
     viewRec = Rectangle { 0 };
+    collisionViewActive = false;
 }
 
 void ActorPropertiesBox::setDefaults()

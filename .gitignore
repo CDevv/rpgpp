@@ -35,12 +35,12 @@
 *.pdb
 *.ilk
 
-rpgpp
-librpgpp.so
+game-src/*/lib/
 /editor
 /game
 build/
 bin/
+libs/
 execs/**
 *.bin
 .cache/
@@ -49,6 +49,11 @@ execs/**
 .kdev4/
 *.sublime-project
 *.sublime-workspace
+.vs/
+.idea/
 docs/C++ API
 site/
 imgui.ini
+clangd/
+rlImGui/
+game-src/

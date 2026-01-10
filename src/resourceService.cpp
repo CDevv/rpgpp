@@ -12,29 +12,29 @@ ResourceService::ResourceService()
     addTextureFromFile("resources/figurine.png");
 }
 
-ResourceService::~ResourceService() {}
+ResourceService::~ResourceService() = default;
 
-void ResourceService::addTexture(std::string id, Texture2D texture)
+void ResourceService::addTexture(const std::string &id, Texture2D texture)
 {
     printf("%s was added \n", id.c_str());
     textures[id] = texture;
 }
 
-void ResourceService::addTextureFromFile(std::string filePath)
+void ResourceService::addTextureFromFile(const std::string &filePath)
 {
     Texture2D text = LoadTexture(filePath.c_str());
     std::string newId = GetFileNameWithoutExt(filePath.c_str());
     addTexture(newId, text);
 }
 
-void ResourceService::unload()
+void ResourceService::unload() const
 {
     for (std::pair<std::string, Texture2D> pair : textures) {
         UnloadTexture(pair.second);
     }
 }
 
-Texture2D ResourceService::getTexture(std::string id)
+Texture2D ResourceService::getTexture(const std::string &id)
 {
     return textures[id];
 }

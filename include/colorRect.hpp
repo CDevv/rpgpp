@@ -11,9 +11,9 @@ private:
 public:
     ColorRect();
     ColorRect(Rectangle rect);
-    void setColor(Color color);
-    void update();
-    void draw();
+    void setColor(Color newColor);
+    void update() override;
+    void draw() override;
 };
 
 #endif

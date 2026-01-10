@@ -14,9 +14,9 @@ public:
     /** Empty constructor */
     StateService();
     /** Get a boolean property from the container. */
-    bool getProp(std::string prop);
+    bool getProp(const std::string &prop) const;
     /** Unload routine. */
-    void unload();
+    void unload() const;
 };
 
 #endif

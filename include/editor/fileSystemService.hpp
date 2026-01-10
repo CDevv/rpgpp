@@ -35,7 +35,7 @@ public:
     ~FileSystemService();
     void unload();
     void promptOpenProject();
-    void setProject(std::string projectPath);
+    void setProject(const std::string &projectPath);
     Project *getProject();
     bool projectIsOpen();
     void openProjectFile(std::string absolutePath);

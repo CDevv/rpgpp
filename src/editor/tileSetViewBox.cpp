@@ -1,12 +1,18 @@
-#include "tileset.hpp"
-#include "worldViewBox.hpp"
-#include "editor.hpp"
-#include "fileSystemService.hpp"
 #include <raylib.h>
-#include <rlgl.h>
 #include <raymath.h>
 
-TileSetViewBox::TileSetViewBox() {}
+#include "editor.hpp"
+#include "tileset.hpp"
+#include "worldViewBox.hpp"
+
+TileSetViewBox::TileSetViewBox() : tileSet(nullptr), layer(), viewBox(nullptr), tileAtlasPos(), tileWorldPos(),
+                                   hoverValidTile(false),
+                                   isSelectingTile(false),
+                                   hasSelectedTile(false),
+                                   selectedTileAtlasPos(),
+                                   selectedTileWorldPos()
+{
+}
 
 TileSetViewBox::TileSetViewBox(WorldViewBox* viewBox, ViewBoxLayer boxLayer)
 {
@@ -48,14 +54,12 @@ void TileSetViewBox::isHoverOnValidTile()
 {
     if (tileSet == nullptr) return;
 
-    FileSystemService& fs = Editor::getFileSystem();
     EditorInterfaceService& ui = Editor::getUi();
 
     bool hoverValidX = false;
     bool hoverValidY = false;
 
     Texture tileSetTexture = tileSet->getTexture();
-    
     Vector2 tileSize = tileSet->getTileSize();
     int tileWidth = tileSize.x;
     int tileHeight = tileSize.y;
@@ -124,7 +128,7 @@ void TileSetViewBox::drawTiles()
     for (int y = 0; y < tilesHeight; y++) {
         for (int x = 0; x < tilesWidth; x++){
             Rectangle tileBorder = Rectangle {
-                tileSize.x * (float)x, tileSize.y * (float)y,
+                tileSize.x * static_cast<float>(x), tileSize.y * static_cast<float>(y),
                 tileSize.x, tileSize.y
             };
 
@@ -156,7 +160,6 @@ void TileSetViewBox::drawMouse()
     EditorInterfaceService& ui = Editor::getUi();
 
     if (ui.getMouseBoxLayer() != this->layer) return;
-    
     if (viewBox->mouseInput->isInRect()) {
         //small circle on mouse pos
         DrawCircleV(viewBox->mousePos, 4, DARKGRAY);

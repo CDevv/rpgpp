@@ -27,6 +27,7 @@ private:
     InteractableType type;
     /** The position of this Interactable in terms of tiles */
     Vector2 tilePos;
+    /** Tile size in pixels */
     int tileSize;
     /** The absolute position of this Interactable in the world scene */
     Vector2 absolutePos;
@@ -45,14 +46,14 @@ public:
     /** Get the array containing names of the Interactable names */
     static std::array<std::string, INTTYPE_MAX>& getTypeNames();
     /** Whether this Interactable is valid */
-    bool isValid();
+    bool isValid() const;
     virtual ~Interactable();
     /** Get the Rectangle of this Interactable */
-    Rectangle getRect();
+    Rectangle getRect() const;
     /** Get this Interactable's type */
-    InteractableType getType();
+    InteractableType getType() const;
     /** Get the World position of this Interactable */
-    Vector2 getWorldPos();
+    Vector2 getWorldPos() const;
     /** Invoke the virtual interact method. Each Interactable has its own interact method.
      * Shall be invoked when the player interacts with the Interactable */
     virtual void interact();
@@ -100,6 +101,6 @@ public:
 
 std::unique_ptr<IntBaseWrapper> make_inter_item(Vector2 pos, InteractableType type);
 void inter_apply_vec(IntBaseWrapper* inter, std::vector<std::string> props);
-void inter_apply_bin(IntBaseWrapper* inter, InteractableBin bin);
+void inter_apply_bin(IntBaseWrapper* inter, const InteractableBin &bin);
 
 #endif

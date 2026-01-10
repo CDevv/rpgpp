@@ -14,7 +14,7 @@ using json = nlohmann::json;
 
 ProjectGenerator::ProjectGenerator() {}
 
-void ProjectGenerator::generateNewProj(std::string title, std::string path)
+void ProjectGenerator::generateNewProj(std::string title, const std::string &path)
 {
 	std::string newDirPath = TextFormat("%s/%s", path.c_str(), title.c_str());
     int dirSuccess = MakeDirectory(newDirPath.c_str());
@@ -53,6 +53,8 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
 {
 	GameData struc;
     struc.title = title;
+
+    //struc.playerActor = "actors/playerActor.ractor";
 
     //TileSets
     for (auto tileSetPath : proj->at(FILE_TILESET)) {
@@ -254,7 +256,7 @@ GameData ProjectGenerator::generateStruct(std::array<std::vector<std::string>, E
 
     //Sounds
     for (auto soundPath : proj->at(FILE_SOUND)) {
-        struc.music[soundPath] = {soundPath, true};
+        struc.music[GetFileName(soundPath.c_str())] = {soundPath, true};
     }
 
     //Music

@@ -27,7 +27,7 @@ public:
      * Get the atlas coordinates
      * @returns A Vector2 which represents the atlas coordinates
      */
-    Vector2 getAtlasCoords();
+    Vector2 getAtlasCoords() const;
 };
 
 #endif

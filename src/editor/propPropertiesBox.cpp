@@ -8,6 +8,7 @@
 
 PropPropertiesBox::PropPropertiesBox()
 {
+    rect = Rectangle {};
     prop = nullptr;
     rectPos = { 0, 0 };
     rectSize = { 0, 0 };

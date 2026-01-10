@@ -26,7 +26,7 @@ struct ProjectPaths {
 class ProjectGenerator {
 public:
 	ProjectGenerator();
-	static void generateNewProj(std::string title, std::string path);
+	static void generateNewProj(std::string title, const std::string &path);
 	GameData generateStruct(std::array<std::vector<std::string>, ENGINEFILETYPE_MAX>* proj,
 	    std::string title);
 };

@@ -7,9 +7,10 @@
 #include <stdexcept>
 using json = nlohmann::json;
 
-Prop::Prop() {}
+Prop::Prop() : worldPos(Vector2 {}), tilePos(Vector2 {}), atlasRect(), texture(), collisionRect() {
+}
 
-Prop::Prop(std::string filePath)
+Prop::Prop(const std::string &filePath)
 {
     this->sourcePath = filePath;
     this->worldPos = Vector2 { 0, 0 };
@@ -40,8 +41,7 @@ Prop::Prop(std::string filePath)
         static_cast<float>(collisionRectVec[3])
     };
 
-    std::string imagePath = json.at("image");
-    this->imagePath = imagePath;
+    this->imagePath = json.at("image");
     this->texture = LoadTexture(imagePath.c_str());
 
     this->hasInteractable = static_cast<bool>(json.at("has_interactable"));
@@ -53,13 +53,13 @@ Prop::Prop(std::string filePath)
     }
 }
 
-Prop::Prop(Rectangle atlasRect, Vector2 worldPos)
+Prop::Prop(Rectangle atlasRect, Vector2 worldPos) : texture()
 {
     this->sourcePath = "";
     this->atlasRect = atlasRect;
     this->worldPos = worldPos;
-    this->tilePos = Vector2 { static_cast<float>(worldPos.x / 16.0f), static_cast<float>(worldPos.y / 16.0f) };
-    this->collisionRect = Rectangle { 0, 0, 16, 16 };
+    this->tilePos = Vector2{static_cast<float>(worldPos.x / 16.0f), static_cast<float>(worldPos.y / 16.0f)};
+    this->collisionRect = Rectangle{0, 0, 16, 16};
     this->hasInteractable = false;
     this->interactable = std::make_unique<IntBaseWrapper>();
 }
@@ -128,18 +128,18 @@ void Prop::setTexture(Texture2D texture)
     this->texture = texture;
 }
 
-Texture2D Prop::getTexture()
+Texture2D Prop::getTexture() const
 {
     return texture;
 }
 
-void Prop::setTextureFromPath(std::string imagePath)
+void Prop::setTextureFromPath(const std::string &imagePath)
 {
     this->imagePath = imagePath;
     this->texture = LoadTexture(imagePath.c_str());
 }
 
-const char* Prop::getImagePath()
+const char* Prop::getImagePath() const
 {
     return this->imagePath.c_str();
 }
@@ -163,12 +163,12 @@ void Prop::setWorldPos(Vector2 worldPos)
     this->worldPos = worldPos;
 }
 
-Vector2 Prop::getWorldPos()
+Vector2 Prop::getWorldPos() const
 {
     return worldPos;
 }
 
-Vector2 Prop::getWorldTilePos()
+Vector2 Prop::getWorldTilePos() const
 {
     return tilePos;
 }
@@ -178,17 +178,17 @@ void Prop::setAtlasRect(Rectangle atlasRect)
     this->atlasRect = atlasRect;
 }
 
-Rectangle Prop::getAtlasRect()
+Rectangle Prop::getAtlasRect() const
 {
     return atlasRect;
 }
 
-Rectangle Prop::getCollisionRect()
+Rectangle Prop::getCollisionRect() const
 {
     return collisionRect;
 }
 
-Rectangle Prop::getWorldCollisionRect()
+Rectangle Prop::getWorldCollisionRect() const
 {
     return Rectangle {
         worldPos.x + (collisionRect.x * RPGPP_DRAW_MULTIPLIER), worldPos.y + (collisionRect.y * RPGPP_DRAW_MULTIPLIER),
@@ -196,7 +196,7 @@ Rectangle Prop::getWorldCollisionRect()
     };
 }
 
-Vector2 Prop::getCollisionCenter()
+Vector2 Prop::getCollisionCenter() const
 {
     Rectangle rect = getWorldCollisionRect();
     return Vector2 {
@@ -204,12 +204,12 @@ Vector2 Prop::getCollisionCenter()
     };
 }
 
-bool Prop::getHasInteractable()
+bool Prop::getHasInteractable() const
 {
     return hasInteractable;
 }
 
-IntBaseWrapper* Prop::getInteractable()
+IntBaseWrapper* Prop::getInteractable() const
 {
     return interactable.get();
 }
@@ -223,9 +223,9 @@ void Prop::setInteractableType(InteractableType type)
     this->hasInteractable = true;
 }
 
-void Prop::draw()
+void Prop::draw() const
 {
-    Rectangle dest = Rectangle {
+    Rectangle dest = {
         worldPos.x, worldPos.y,
         atlasRect.width * RPGPP_DRAW_MULTIPLIER, atlasRect.height * RPGPP_DRAW_MULTIPLIER
     };

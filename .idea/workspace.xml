@@ -3,6 +3,14 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppGeneralOptions" type="string" />
+    <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
+  </component>
   <component name="CMakeProjectFlavorService">
     <option name="flavorId" value="CMakePlainProjectFlavor" />
   </component>
@@ -15,40 +23,73 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/libs/luajit" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps.sh" beforeDir="false" afterPath="$PROJECT_DIR$/deps.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lapi.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lauxlib.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lcode.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lctype.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/ldebug.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/ldo.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lfunc.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lgc.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/ljumptab.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/llex.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/llimits.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lmem.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lobject.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lopcodes.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lopnames.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lparser.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lprefix.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lstate.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lstring.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/ltable.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/ltm.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lua.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/luaconf.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lualib.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lundump.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lvm.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/lua/lzio.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/lua" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rpgpplua/rpgpplua.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/rpgpplua/rpgpplua.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xmake.lua" beforeDir="false" afterPath="$PROJECT_DIR$/xmake.lua" afterDir="false" />
+    <list default="true" id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="Remove unused files">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/actorInfoPanel.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/actorInfoPanel.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/dialogueParser.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/dialogueParser.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/fileSystemService.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/fileSystemService.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/project.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/project.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/projectCompiler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/projectCompiler.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/projectFile.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/projectFile.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/projectGenerator.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/projectGenerator.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/resourceViewerBox.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/resourceViewerBox.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/tabList.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/tabList.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/windowContainer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/windowContainer.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/windowPopup.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/windowPopup.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/windows/tileSetDialogWindow.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/windows/tileSetDialogWindow.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/worldViewBox.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/worldViewBox.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/aboutWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/aboutWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/actorInfoPanel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/actorInfoPanel.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/actorInitWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/actorInitWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/actorPanelView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/actorPanelView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/actorPropertiesBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/actorPropertiesBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/actorView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/actorView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/animationsView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/animationsView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/collisionInfoPanel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/collisionInfoPanel.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/collisionbox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/collisionbox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/deleteConfirmWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/deleteConfirmWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/dialogueInitWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/dialogueInitWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/dialogueLineWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/dialogueLineWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/dialoguePanelView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/dialoguePanelView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/dialogueParser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/dialogueParser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/dialogueViewer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/dialogueViewer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/editor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/editor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/editorInterfaceService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/editorInterfaceService.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/errorWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/errorWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/fileSystemService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/fileSystemService.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/interactableInfoPanel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/interactableInfoPanel.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/interactablePropsState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/interactablePropsState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/mainViewPanel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/mainViewPanel.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/mapInitWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/mapInitWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/mapPanelView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/mapPanelView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/mapPropertiesBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/mapPropertiesBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/mapToolsBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/mapToolsBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/mapViewBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/mapViewBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/mouseInput.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/mouseInput.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/panelView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/panelView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/project.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/project.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/projectBinaryViewWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/projectBinaryViewWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/projectCompiler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/projectCompiler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/projectFile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/projectFile.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/projectGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/projectGenerator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/projectInitWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/projectInitWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/projectMenuBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/projectMenuBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/propInfoPanel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/propInfoPanel.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/propInitWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/propInitWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/propPanelView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/propPanelView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/propPropertiesBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/propPropertiesBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/propView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/propView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/propertiesBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/propertiesBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/resourceViewerBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/resourceViewerBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/tabList.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/tabList.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/tileSetDialogWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/tileSetDialogWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/tileSetInitWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/tileSetInitWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/tileSetPanelView.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/tileSetPanelView.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/tileSetPropertiesBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/tileSetPropertiesBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/tileSetViewBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/tileSetViewBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/windowContainer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/windowContainer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/windowPopup.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/windowPopup.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/worldViewBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/worldViewBox.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +98,7 @@
   </component>
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
+    <option name="clangWarnings" value="-Wno-unused-variable,-Wno-infinite-recursion,-Wno-array-bounds,-Wno-return-stack-address,-Werror=implicit-function-declaration,-Wno-shadow-field-in-constructor-modified,-Wno-shadow-ivar,-Wuninitialized,-Wunused-label,-Wunused-lambda-capture" />
   </component>
   <component name="CompDBLocalSettings">
     <option name="availableProjects">
@@ -92,9 +134,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="ZG2lrFL6" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="groupByToolId" value="true" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
@@ -102,9 +149,9 @@
     <option name="minorVersion" value="3" />
     <option name="productBranch" value="Classic" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="36t0yEuttJ7A3ZzFTheqmCjqV6k" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -115,12 +162,13 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "edui-api",
     "last_opened_file_path": "/home/nikodev/Документи/Projects/rpgpp",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -128,14 +176,41 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "org.rust.first.attach.projects": "true",
+    "settings.editor.selected.configurable": "language.cpp.clangd",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
+    <configuration name="editor" type="XMakeRunConfiguration" factoryName="Start and Debug" show_console_on_std_err="false" show_console_on_std_out="false">
+      <target name="runTarget" />
+      <option name="allowRunningInParallel" value="false" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <activatedToolkit name="runToolkit">
+        <toolkit name="Windows" path="C:\Program Files\xmake\xmake.exe" version="v3.0.5+HEAD.f20295f25" id="71b71581-c7a7-3f49-ba64-625b37e8485a">
+          <toolkitHost type="LOCAL">
+            <option name="target" />
+          </toolkitHost>
+        </toolkit>
+      </activatedToolkit>
+      <target name="runTarget" value="editor" />
+      <platform name="runPlatform" value="default" />
+      <architecture name="runArchitecture" value="default" />
+      <toolchain name="runToolchain" value="default" />
+      <mode name="runMode" value="debug" />
+      <arguments name="runArguments" value="" />
+      <workingDirectory name="runWorkingDir" value="$PROJECT_DIR$" />
+      <buildDirectory name="buildDirectory" value="" />
+      <androidNDKDirectory name="androidNDKDirectory" value="" />
+      <enableVerbose name="enableVerbose" value="false" />
+      <additionalConfiguration name="additionalConfiguration" value="" />
+      <dapDriverPath name="dapDriverPath" value="" />
+      <dapDriverAutoDetect name="dapDriverAutoDetect" value="true" />
+      <launchConfiguration name="launchConfiguration" value="{&#10;    &quot;stopOnEntry&quot;: true,&#10;    &quot;sourceMap&quot;: {&#10;        &quot;enabled&quot;: &quot;true&quot;&#10;    },&#10;    &quot;showDisassembly&quot;: &quot;auto&quot;,&#10;    &quot;initCommands&quot;: [],&#10;    &quot;variables&quot;: {&#10;        &quot;showArguments&quot;: true,&#10;        &quot;showLocals&quot;: true,&#10;        &quot;showGlobals&quot;: true,&#10;        &quot;showStatics&quot;: true,&#10;        &quot;showRegisters&quot;: true&#10;    }&#10;}" />
+      <envs />
+      <method v="2" />
     </configuration>
   </component>
   <component name="TaskManager">
@@ -146,10 +221,80 @@
       <option name="presentableId" value="Default" />
       <updated>1765810815546</updated>
       <workItem from="1765810817210" duration="384000" />
+      <workItem from="1767886977738" duration="1294000" />
+      <workItem from="1767888313165" duration="1216000" />
+      <workItem from="1767889619614" duration="363000" />
+      <workItem from="1767972806625" duration="89000" />
+      <workItem from="1767972908718" duration="110000" />
+      <workItem from="1767973031454" duration="236000" />
+      <workItem from="1767973282100" duration="1460000" />
+      <workItem from="1767975701701" duration="1912000" />
+      <workItem from="1767989340795" duration="582000" />
+      <workItem from="1768031827883" duration="12229000" />
+      <workItem from="1768044363646" duration="254000" />
+      <workItem from="1768055082787" duration="4568000" />
     </task>
+    <task id="LOCAL-00001" summary="Refactorings on the base rpgpp library code.">
+      <option name="closed" value="true" />
+      <created>1768042766772</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1768042766772</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Remove IDE-specific directories">
+      <option name="closed" value="true" />
+      <created>1768043168473</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1768043168473</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Remove unused files">
+      <option name="closed" value="true" />
+      <created>1768043858572</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1768043858572</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="edui-api" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Refactorings on the base rpgpp library code." />
+    <MESSAGE value="Remove IDE-specific directories" />
+    <MESSAGE value="Remove unused files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove unused files" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

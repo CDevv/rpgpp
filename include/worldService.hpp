@@ -1,7 +1,6 @@
 #ifndef _RPGPP_WORLDSERVICE_H
 #define _RPGPP_WORLDSERVICE_H
 
-#include "game.hpp"
 #include "gamedata.hpp"
 #include <memory>
 #include "room.hpp"
@@ -14,25 +13,34 @@ private:
     /** The current room in this World. */
     std::unique_ptr<Room> room;
     bool lock;
+    /** Id for the next room. */
     std::string deferredRoomId;
     bool deferRoomChange;
+    /** Frame counter for transition tween */
+    int frameCounter;
+    bool transitionActive;
+    Color transitionColor;
+    float alpha;
+    bool transitionSecondStage;
 public:
     /** Empty constructor. */
     WorldService();
     /** Get a reference to the current room. */
-    Room& getRoom();
+    Room& getRoom() const;
     /** Set the current room using path to a .rmap file. */
-    void setRoom(std::string filePath);
+    void setRoom(const std::string &filePath);
     /** Set the current room using a RoomBin binary structure. */
     void setRoomBin(RoomBin bin);
+    /** Activate transition effect (warper) */
+    void doFadeTransition();
     /** Get a reference to the Player object. */
-    Player& getPlayer();
+    Player& getPlayer() const;
     /** Update routine. */
     void update();
     /** Draw routine. */
-    void draw();
+    void draw() const;
     /** Unload routine. */
-    void unload();
+    void unload() const;
 };
 
 #endif

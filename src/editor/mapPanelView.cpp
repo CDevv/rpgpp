@@ -13,7 +13,7 @@
 #include "room.hpp"
 #include "worldViewBox.hpp"
 
-MapPanelView::MapPanelView()
+MapPanelView::MapPanelView() : rect(), actionModeToggle(0), layoutModeToggle(0), layoutDropdownEditMode(false)
 {
 }
 

@@ -1,25 +1,27 @@
 #include "windowContainer.hpp"
+
 #include <memory>
 #include <raylib.h>
+
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "propInitWindow.hpp"
 #include "windowPopup.hpp"
-#include "windows/dialogueInitWindow.hpp"
 #include "worldViewBox.hpp"
-
-#include "windows/projectInitWindow.hpp"
-#include "windows/tileSetInitWindow.hpp"
-#include "windows/mapInitWindow.hpp"
-#include "windows/actorInitWindow.hpp"
-#include "windows/projectBinaryViewWindow.hpp"
-#include "windows/tileSetDialogWindow.hpp"
-#include "windows/deleteConfirmWindow.hpp"
 #include "windows/aboutWindow.hpp"
+#include "windows/actorInitWindow.hpp"
+#include "windows/deleteConfirmWindow.hpp"
+#include "windows/dialogueInitWindow.hpp"
 #include "windows/errorWindow.hpp"
+#include "windows/mapInitWindow.hpp"
+#include "windows/projectBinaryViewWindow.hpp"
+#include "windows/projectInitWindow.hpp"
+#include "windows/tileSetDialogWindow.hpp"
+#include "windows/tileSetInitWindow.hpp"
 
 WindowContainer::WindowContainer()
 {
+    windowOpen = false;
     Rectangle baseTileSetSize = Rectangle { 0, 0, 312, 184 };
     Rectangle tileSetWindowSize = Rectangle {
         (GetScreenWidth() - baseTileSetSize.width) / 2,
@@ -117,13 +119,13 @@ void WindowContainer::drawProjectBinaryView()
     projectBinaryView.draw();
 }
 
-WindowPopup& WindowContainer::open(std::string id)
+WindowPopup& WindowContainer::open(const std::string &id)
 {
     mapW[id]->openWindow();
     return *mapW[id].get();
 }
 
-void WindowContainer::drawWindow(std::string id)
+void WindowContainer::drawWindow(const std::string &id)
 {
     mapW[id]->draw();
 }

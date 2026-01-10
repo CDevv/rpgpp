@@ -1,12 +1,15 @@
 #include "windows/projectInitWindow.hpp"
+
 #include <imgui.h>
-#include "project.hpp"
+
 #include "editor.hpp"
 #include "editorInterfaceService.hpp"
 #include "fileSystemService.hpp"
+#include "project.hpp"
 #include "windowPopup.hpp"
 
-ProjectInitWindow::ProjectInitWindow() {}
+ProjectInitWindow::ProjectInitWindow() : rect(), titleEditMode(false), title{}, hasSetDirPath(false) {
+}
 
 ProjectInitWindow::ProjectInitWindow(Rectangle rect)
 : WindowPopup("New Project..", rect)
@@ -43,7 +46,6 @@ void ProjectInitWindow::closeWindow()
 void ProjectInitWindow::draw()
 {
     FileSystemService& fs = Editor::getFileSystem();
-    EditorInterfaceService& ui = Editor::getUi();
 
 	ImGui::SetNextWindowSize(ImVec2 { rect.width, -1 });
 	if (ImGui::BeginPopupModal("New Project..")) {

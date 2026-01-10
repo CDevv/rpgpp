@@ -1,4 +1,5 @@
 #include "propertiesBox.hpp"
+
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "mapPropertiesBox.hpp"
@@ -6,7 +7,9 @@
 #include "propPropertiesBox.hpp"
 #include "tileSetPropertiesBox.hpp"
 
-PropertiesBox::PropertiesBox() {}
+PropertiesBox::PropertiesBox() : pos(), rect()
+{
+}
 
 PropertiesBox::PropertiesBox(Rectangle rect)
 {
@@ -78,7 +81,7 @@ void PropertiesBox::draw()
 
     ImGui::SetNextWindowPos(ImVec2 { rect.x, rect.y });
     ImGui::SetNextWindowSize(ImVec2 { rect.width, rect.height });
-    if (ImGui::Begin("Props", NULL,
+    if (ImGui::Begin("Props", nullptr,
         ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_Tooltip)) {
 
         if (fs.fileIsOpen()) {

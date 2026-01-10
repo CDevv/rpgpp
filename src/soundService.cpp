@@ -4,11 +4,12 @@
 
 SoundService::SoundService()
 {
+    music = {};
     musicLoaded = false;
     lastId = "";
 }
 
-bool SoundService::loadMusic(std::string id)
+bool SoundService::loadMusic(const std::string &id)
 {
     GameData& gameData = Game::getBin();
 
@@ -17,11 +18,11 @@ bool SoundService::loadMusic(std::string id)
     if (gameData.music.count(id) != 0) {
         if (gameData.music[id].isSound) return musicLoaded;
 
-        Music music = LoadMusicStream(gameData.music[id].relativePath.c_str());
-        if (IsMusicValid(music)) {
+        Music newMusic = LoadMusicStream(gameData.music[id].relativePath.c_str());
+        if (IsMusicValid(newMusic)) {
             unload();
 
-            this->music = music;
+            this->music = newMusic;
             musicLoaded = true;
         }
     }
@@ -29,14 +30,14 @@ bool SoundService::loadMusic(std::string id)
     return musicLoaded;
 }
 
-void SoundService::playMusic()
+void SoundService::playMusic() const
 {
     if (musicLoaded) {
         PlayMusicStream(music);
     }
 }
 
-void SoundService::playSound(std::string id)
+void SoundService::playSound(const std::string &id) const
 {
     GameData& gameData = Game::getBin();
 
@@ -49,16 +50,17 @@ void SoundService::playSound(std::string id)
     }
 }
 
-void SoundService::update()
+void SoundService::update() const
 {
     if (musicLoaded) {
         UpdateMusicStream(music);
     }
 }
 
-void SoundService::unload()
+void SoundService::unload() const
 {
     if (musicLoaded) {
+        StopMusicStream(music);
         UnloadMusicStream(music);
     }
 }

@@ -14,7 +14,7 @@ public:
     InterfaceView();
     InterfaceView(Rectangle rect);
     void addElement(UIElement* element);
-    void update();
+    void update() const;
     void draw();
 };
 

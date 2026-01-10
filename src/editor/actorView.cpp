@@ -1,12 +1,19 @@
 #include "actorView.hpp"
-#include "actor.hpp"
-#include "gamedata.hpp"
-#include "editor.hpp"
-#include "fileSystemService.hpp"
-#include "projectFile.hpp"
+
 #include <raymath.h>
 
-ActorView::ActorView() {}
+#include "actor.hpp"
+#include "editor.hpp"
+#include "fileSystemService.hpp"
+#include "gamedata.hpp"
+#include "projectFile.hpp"
+
+ActorView::ActorView() : frameCounter(0), rect(), renderRect(), renderTexture(), camera(), mouseWorldPos(),
+                         collisionViewActive(false),
+                         currentAnim(0),
+                         currentFrame(0),
+                         animPlaying(false), actorRect() {
+}
 
 ActorView::ActorView(Rectangle rect)
 {
@@ -17,6 +24,7 @@ ActorView::ActorView(Rectangle rect)
 		rect.x + 4, rect.y + 4,
 		rect.width - 8, rect.height - 8
 	};
+	this->actorRect = Rectangle {};
 	renderTexture = LoadRenderTexture(renderRect.width, renderRect.height);
 
 	camera = Camera2D { 0 };
