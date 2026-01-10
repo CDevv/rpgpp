@@ -23,15 +23,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="Refactorings on the base rpgpp library code.">
+    <list default="true" id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="Remove IDE-specific directories">
+      <change beforePath="$PROJECT_DIR$/.clang-complete" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.clangd" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.kdev4/rpgpp.kdev4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/c_cpp_properties.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/compile_commands.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.zed/debug.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.zed/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.sconsign.dblite" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/copy-src.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deps.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/iconset.rgi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpgpp.rgs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rpgpplua.exp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui-npatch.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +119,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "org.rust.first.attach.projects": "true",
-    "settings.editor.selected.configurable": "language.cpp.clangd",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -171,7 +173,7 @@
       <workItem from="1767973282100" duration="1460000" />
       <workItem from="1767975701701" duration="1912000" />
       <workItem from="1767989340795" duration="582000" />
-      <workItem from="1768031827883" duration="11181000" />
+      <workItem from="1768031827883" duration="11854000" />
     </task>
     <task id="LOCAL-00001" summary="Refactorings on the base rpgpp library code.">
       <option name="closed" value="true" />
@@ -181,15 +183,47 @@
       <option name="project" value="LOCAL" />
       <updated>1768042766772</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Remove IDE-specific directories">
+      <option name="closed" value="true" />
+      <created>1768043168473</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1768043168473</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="edui-api" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Refactorings on the base rpgpp library code." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactorings on the base rpgpp library code." />
+    <MESSAGE value="Remove IDE-specific directories" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove IDE-specific directories" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
