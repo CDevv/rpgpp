@@ -6,19 +6,20 @@
 
 class ResourceViewerBox {
 private:
-    Rectangle rect;
-    int dropdownActive;
-    bool deleteConfirmOpen;
-    std::string deleteConfirmPath;
-    void onNewButton();
-    void drawResourcesList();
-    void drawContextMenu(const std::string &resPath);
+  Rectangle rect;
+  int dropdownActive;
+  bool deleteConfirmOpen;
+  std::string deleteConfirmPath;
+  void onNewButton() const;
+  void drawResourcesList();
+  void drawContextMenu(const std::string &resPath);
+
 public:
-    ResourceViewerBox();
-    ResourceViewerBox(Rectangle rect);
-    void setRect(Rectangle rect);
-    void update();
-    void draw();
+  ResourceViewerBox();
+  explicit ResourceViewerBox(Rectangle rect);
+  void setRect(Rectangle m_rect);
+  void update() const;
+  void draw();
 };
 
 #endif

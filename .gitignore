@@ -56,6 +56,5 @@ docs/C++ API
 site/
 imgui.ini
 clangd/
-rlImGui/
 game-src/
 compile_commands.json

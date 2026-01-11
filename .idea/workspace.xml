@@ -23,14 +23,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="Refactor the RPG++ Editor program's code.">
+    <list default="true" id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="Remove unused files">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/editor/editorInterfaceService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/editorInterfaceService.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/editor/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/editor/mapInitWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/mapInitWindow.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/editor/project.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/project.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/room.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/room.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xmake.lua" beforeDir="false" afterPath="$PROJECT_DIR$/xmake.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/luajit" beforeDir="false" afterPath="$PROJECT_DIR$/libs/luajit" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/raylib" beforeDir="false" afterPath="$PROJECT_DIR$/libs/raylib" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,31 +95,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;XMake.Unnamed.executor&quot;: &quot;Debug&quot;,
-    &quot;XMake.editor.executor&quot;: &quot;Debug&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;edui-api&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/nikodev/Документи/Projects/rpgpp&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CPPToolchains&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "XMake.Unnamed.executor": "Debug",
+    "XMake.editor.executor": "Debug",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/nikodev/Документи/Projects/rpgpp",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.first.attach.projects": "true",
+    "settings.editor.selected.configurable": "CPPToolchains",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="editor" type="XMakeRunConfiguration" factoryName="Start and Debug" show_console_on_std_err="false" show_console_on_std_out="false">
       <target name="runTarget" />
@@ -132,7 +129,7 @@
         <list />
       </option>
       <activatedToolkit name="runToolkit">
-        <toolkit name="Windows" path="C:\Program Files\xmake\xmake.exe" version="v3.0.5+HEAD.f20295f25" id="71b71581-c7a7-3f49-ba64-625b37e8485a">
+        <toolkit name="Windows" path="C:\Users\mmeth\xmake\xmake.exe" version="v3.0.4+master.100900c95" id="6af1b7e5-6fb3-3bad-9442-3d5bc59694a4">
           <toolkitHost type="LOCAL">
             <option name="target" />
           </toolkitHost>

@@ -75,10 +75,11 @@ target("rpgpplua")
     set_languages("cxx17")
     add_includedirs("include/", "libs/luajit/src/", "include/luajit/")
     add_files("src/rpgpplua/*.cpp")
-    add_packages("nlohmann_json", "raylib", "alpaca", {public = true})
+    add_packages("nlohmann_json", "raylib", "alpaca", "luajit", {public = true})
     add_linkdirs("libs/")
     add_deps("rpgpp")
-    add_links("luajit")
+    -- add_links("luajit")
+    -- there were some linking issues with MSVC, removed for testing
 
 target("editor")
     set_kind("binary")

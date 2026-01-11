@@ -17,7 +17,7 @@ private:
     std::map<std::string, std::unique_ptr<WindowPopup>> mapW;
 public:
     WindowContainer();
-    bool isWindowOpen();
+    bool isWindowOpen() const;
     void setWindowOpen(bool value);
     ProjectBinaryViewWindow& openProjectBinaryView();
     TileSetDialogWindow& openTileSetDialog();

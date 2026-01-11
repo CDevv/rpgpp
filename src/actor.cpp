@@ -253,7 +253,7 @@ void Actor::update()
     }
 }
 
-void Actor::draw()
+void Actor::draw() const
 {
     //defaults..
     constexpr auto origin = Vector2 { 0.0f, 0.0f };

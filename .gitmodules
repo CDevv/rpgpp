@@ -4,3 +4,6 @@
 [submodule "libs/raylib"]
 	path = libs/raylib
 	url = https://github.com/raysan5/raylib.git
+[submodule "rlImGui"]
+	path = "rlImGui"
+	url = https://github.com/raylib-extras/rlImGui.git
