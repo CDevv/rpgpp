@@ -19,6 +19,8 @@ int main()
 
     rlImGuiSetup(true);
 
+    ImGui::GetIO().WantCaptureKeyboard = true;
+
     ImGui::GetIO().Fonts->ClearFonts();
     ImGui::GetIO().Fonts->AddFontFromFileTTF("resources/LanaPixel.ttf", 13.0f);
 

@@ -52,7 +52,7 @@ void MapInitWindow::draw()
 
     ImGui::SetNextWindowSize(ImVec2 { rect.width, -1 });
     if (ImGui::BeginPopupModal("New Room..")) {
-		ImGui::InputText("Title", title, 256);
+		ImGui::InputText("Title", title, IM_ARRAYSIZE(title));
 
 		tileSetSource.push_back('\0');
 		ImGui::InputText("TileSet", tileSetSource.data(), tileSetSource.size());
@@ -85,6 +85,8 @@ void MapInitWindow::draw()
                 ui.setInitial();
 
     			closeWindow();
+			} else {
+				printf("Not validated.. (mapInitWindow)\n");
 			}
 		}
 		ImGui::SameLine();

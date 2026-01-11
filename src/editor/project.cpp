@@ -50,12 +50,12 @@ Project::Project(const std::string &filePath)
 
 void Project::reloadPaths()
 {
-    pathsList[FILE_TILESET] = makePaths(this->tileSetsPath);
-    pathsList[FILE_ROOM] = makePaths(this->mapsPath);
-    pathsList[FILE_ACTOR] = makePaths(this->actorsPath);
-    pathsList[FILE_DIALOGUE] = makePaths(this->dialoguesPath);
-    pathsList[FILE_IMAGE] = makePaths(this->imagesPath);
-    pathsList[FILE_FONT] = makePaths(this->fontsPath);
+    pathsList[FILE_TILESET] = makePaths("tilesets");
+    pathsList[FILE_ROOM] = makePaths("maps");
+    pathsList[FILE_ACTOR] = makePaths("actors");
+    pathsList[FILE_DIALOGUE] = makePaths("dialogues");
+    pathsList[FILE_IMAGE] = makePaths("images");
+    pathsList[FILE_FONT] = makePaths("fonts");
     pathsList[FILE_SOUND] = makePaths("sounds");
     pathsList[FILE_MUSIC] = makePaths("music");
     pathsList[FILE_PROP] = makePaths("props");
@@ -217,6 +217,12 @@ std::string Project::getProjectBasePath()
 
 std::vector<std::string> Project::makePaths(const std::string &dirPath)
 {
+    if (!DirectoryExists(dirPath.c_str())) {
+        int dirCreateSuccess = MakeDirectory(dirPath.c_str());
+        if (dirCreateSuccess != 0) {
+            printf("makePaths: directory creation error\n");
+        }
+    }
     FilePathList pathList = LoadDirectoryFiles(dirPath.c_str());
 
     auto vec = std::vector<std::string>();

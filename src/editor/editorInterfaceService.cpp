@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <raylib.h>
+#include "imgui_stdlib.h"
 
 #include "editor.hpp"
 #include "edui.hpp"
@@ -101,31 +102,6 @@ void EditorInterfaceService::unload()
 
 void EditorInterfaceService::update()
 {
-    //update gui state
-    state.mousePos = GetMousePosition();
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        state.mouseDown = 1;
-    } else {
-        state.mouseDown = 0;
-    }
-
-
-    state.keyEntered = GetKeyPressed();
-    if (IsKeyPressed(KEY_LEFT_SHIFT)) {
-        state.keyMod = KEY_LEFT_SHIFT;
-    }
-    if (IsKeyDown(KEY_BACKSPACE)) {
-        state.keyDown = KEY_BACKSPACE;
-    }
-    if (IsKeyDown(KEY_LEFT)) {
-        state.keyDown = KEY_LEFT;
-    }
-    if (IsKeyDown(KEY_RIGHT)) {
-        state.keyDown = KEY_RIGHT;
-    }
-
-    state.keyChar = GetCharPressed();
-
     mainView.update();
     tabList.update();
     panelView->update();
@@ -139,28 +115,6 @@ void EditorInterfaceService::draw()
     FileSystemService& fs = Editor::getFileSystem();
 
     bool openedAboutWIndow = false;
-
-    /*
-    if (EdUi::Button(1, Rectangle { 0, 50, 200, 50 }, "Blep")) {
-        printf("hello! \n");
-    }
-    if (EdUi::Button(2, Rectangle { 200, 50, 200, 50 }, "Blep2")) {
-        printf("hello 2! \n");
-        FS_Result fsResult = fs.openImage();
-        if (fsResult.result == NFD_OKAY) {
-            printf("%s \n", fsResult.absolutePath.c_str());
-        }
-
-    }
-
-    EdUi::TextField(3, Rectangle { 0, 120, 200, 26 }, testStr, 256);
-
-    EdUi::End();
-    */
-
-    //Texture cross = Editor::getResources().getTexture("cross");
-    //EdUi::IconButton(Rectangle { 200, 50, 50, 50 }, cross);
-
 
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {

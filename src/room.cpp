@@ -30,7 +30,7 @@ Room::Room()
     this->collisions = std::make_unique<CollisionsContainer>();
     this->props = std::make_unique<std::vector<Prop>>();
     this->tileMap = std::unique_ptr<TileMap>{};
-    this->actors = std::unique_ptr<std::vector<Actor>>{};
+    this->actors = std::make_unique<std::vector<Actor>>();
     this->props = std::make_unique<std::vector<Prop>>();
     this->player = std::unique_ptr<Player>{};
 }
