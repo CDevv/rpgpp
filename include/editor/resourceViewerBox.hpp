@@ -6,7 +6,7 @@
 
 class ResourceViewerBox {
 private:
-  Rectangle rect;
+  Rectangle rect{};
   int dropdownActive;
   bool deleteConfirmOpen;
   std::string deleteConfirmPath;

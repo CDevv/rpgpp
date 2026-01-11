@@ -14,8 +14,8 @@
 #include "windowContainer.hpp"
 #include "worldViewBox.hpp"
 
-const std::array<EngineFileType, 3> noFuncTypes = {FILE_FONT, FILE_IMAGE,
-                                                   FILE_SOUND};
+const std::array<EngineFileType, 4> noFuncTypes = {FILE_FONT, FILE_IMAGE,
+                                                   FILE_SOUND, FILE_MUSIC};
 
 ResourceViewerBox::ResourceViewerBox()
     : rect(), dropdownActive(0), deleteConfirmOpen(false) {}

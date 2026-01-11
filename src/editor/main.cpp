@@ -12,6 +12,9 @@ int main()
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(width, height, "Editor [Dear ImGui]");
 
+    Image iconImage = LoadImage("resources/app-icon.png");
+    SetWindowIcon(iconImage);
+
     Editor editor;
     editor.init();
 

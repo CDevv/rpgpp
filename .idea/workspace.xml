@@ -23,11 +23,20 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="Remove unused files">
+    <list default="true" id="294141f8-53d6-4ced-bc7a-fef0bc8d7e44" name="Changes" comment="Improve Build instructions">
       <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/editor/resourceViewerBox.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/editor/resourceViewerBox.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libs/luajit" beforeDir="false" afterPath="$PROJECT_DIR$/libs/luajit" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libs/raylib" beforeDir="false" afterPath="$PROJECT_DIR$/libs/raylib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/resources/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rlImGui" beforeDir="false" afterPath="$PROJECT_DIR$/rlImGui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rlImGui/premake5" beforeDir="false" afterPath="$PROJECT_DIR$/rlImGui/premake5" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/mainViewPanel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/mainViewPanel.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/editor/resourceViewerBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/editor/resourceViewerBox.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,11 +125,16 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "org.rust.first.attach.projects": "true",
-    "settings.editor.selected.configurable": "CPPToolchains",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="editor" type="XMakeRunConfiguration" factoryName="Start and Debug" show_console_on_std_err="false" show_console_on_std_out="false">
       <target name="runTarget" />
       <option name="allowRunningInParallel" value="false" />
@@ -129,7 +143,7 @@
         <list />
       </option>
       <activatedToolkit name="runToolkit">
-        <toolkit name="Windows" path="C:\Users\mmeth\xmake\xmake.exe" version="v3.0.4+master.100900c95" id="6af1b7e5-6fb3-3bad-9442-3d5bc59694a4">
+        <toolkit name="Linux" path="/usr/bin/xmake" version="v3.0.5+20251125" id="8453afd4-f7bb-3b8e-afd6-a11ef0273e1c">
           <toolkitHost type="LOCAL">
             <option name="target" />
           </toolkitHost>
@@ -147,7 +161,7 @@
       <enableVerbose name="enableVerbose" value="false" />
       <additionalConfiguration name="additionalConfiguration" value="" />
       <dapDriverPath name="dapDriverPath" value="C:\Users\Kaloyan\Documents\Software\llvm\llvm\bin\lldb-dap.exe" />
-      <dapDriverAutoDetect name="dapDriverAutoDetect" value="false" />
+      <dapDriverAutoDetect name="dapDriverAutoDetect" value="true" />
       <launchConfiguration name="launchConfiguration" value="{&#10;    &quot;stopOnEntry&quot;: true,&#10;    &quot;sourceMap&quot;: {&#10;        &quot;enabled&quot;: &quot;true&quot;&#10;    },&#10;    &quot;showDisassembly&quot;: &quot;auto&quot;,&#10;    &quot;initCommands&quot;: [],&#10;    &quot;variables&quot;: {&#10;        &quot;showArguments&quot;: true,&#10;        &quot;showLocals&quot;: true,&#10;        &quot;showGlobals&quot;: true,&#10;        &quot;showStatics&quot;: true,&#10;        &quot;showRegisters&quot;: true&#10;    }&#10;}" />
       <envs />
       <method v="2" />
@@ -179,6 +193,10 @@
       <workItem from="1768123669012" duration="195000" />
       <workItem from="1768123986916" duration="174000" />
       <workItem from="1768124256340" duration="96000" />
+      <workItem from="1768141441859" duration="281000" />
+      <workItem from="1768141737758" duration="315000" />
+      <workItem from="1768142063037" duration="125000" />
+      <workItem from="1768142471813" duration="7536000" />
     </task>
     <task id="LOCAL-00001" summary="Refactorings on the base rpgpp library code.">
       <option name="closed" value="true" />
@@ -246,7 +264,8 @@
     <MESSAGE value="Remove IDE-specific directories" />
     <MESSAGE value="Remove unused files" />
     <MESSAGE value="Refactor the RPG++ Editor program's code." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor the RPG++ Editor program's code." />
+    <MESSAGE value="Improve Build instructions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve Build instructions" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

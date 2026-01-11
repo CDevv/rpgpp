@@ -13,7 +13,7 @@ MainViewPanel::MainViewPanel() : rect(), logoTexture()
 MainViewPanel::MainViewPanel(Rectangle rect)
 {
 	this->rect = rect;
-	this->logoTexture = LoadTexture("resources/logo.png");
+	this->logoTexture = LoadTexture("resources/logo-ups.png");
 }
 
 void MainViewPanel::setRect(Rectangle rect)
