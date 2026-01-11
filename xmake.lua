@@ -31,8 +31,6 @@ add_requires("raylib", "libsdl2", "nlohmann_json", "nativefiledialog-extended", 
 add_rules("mode.debug")
 set_defaultmode("debug")
 
-final_build = "$(builddir)/$(plat)/$(arch)/$(mode)"
-
 task("resources")
     on_run(function()
        os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/")
@@ -51,7 +49,7 @@ task("resources")
 target("rlImGui")
     set_kind("static")
     set_languages("cxx17")
-    add_includedirs("rlImGui/", "rlImGui/imgui-master/", "rlImGui/extras/")
+    add_includedirs("rlImGui/", "rlImGui/imgui-master/", "rlImGui/extras/", "include/raylib/")
     add_files("rlImGui/*.cpp", "rlImGui/imgui-master/*.cpp")
     add_packages("raylib")
 
@@ -64,7 +62,8 @@ target("rpgpp")
     add_files("src/*.cpp")
     add_packages("raylib", "nlohmann_json", "alpaca")
     if is_plat("linux", "macosx") then
-        add_packages("libsdl2", {public = true})
+        --add_packages("libsdl2", {public = true})
+        add_links("SDL2", "SDL2main", {public = true})
     end
     if is_plat("linux") then
         add_cxxflags("-fPIC")
@@ -86,9 +85,7 @@ target("editor")
     set_languages("cxx17")
     add_includedirs("include/", "include/editor/", "include/imgui/", "libs/raylib/src/", "rlImGui/")
     add_files("src/editor/*.cpp")
-    --add_deps("rpgpp", "rlImGui")
-    add_deps("rpgpp")
-    add_links("rlImGui")
+    add_deps("rpgpp", "rlImGui")
     add_packages("raylib", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
     add_linkdirs("libs/")
     after_build(function ()
