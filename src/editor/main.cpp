@@ -4,8 +4,51 @@
 #include <IconsKenney.h>
 #include "editor.hpp"
 
+#include <TGUI/Core.hpp>
+#include <TGUI/Backend/raylib.hpp>
+#include <TGUI/Widgets/Button.hpp>
+#include <TGUI/Widgets/CheckBox.hpp>
+
+void run_app()
+{
+    tgui::Gui gui;
+    auto btn = tgui::Button::create("Test..");
+    gui.add(btn, "button");
+
+    while (!WindowShouldClose())
+    {
+        gui.handleEvents(); // Handles all non-keyboard events
+
+        while (int pressedChar = GetCharPressed())
+            gui.handleCharPressed(pressedChar);
+
+        while (int pressedKey = GetKeyPressed())
+            gui.handleKeyPressed(pressedKey);
+
+        BeginDrawing();
+        ClearBackground({240, 240, 240, 255});
+        gui.draw();
+        EndDrawing();
+    }
+}
+
 int main()
 {
+    const int width = 1280;
+    const int height = 720;
+
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    SetTraceLogLevel(LOG_WARNING);
+    InitWindow(width, height, "Editor [Dear ImGui]");
+
+    Image iconImage = LoadImage("resources/app-icon.png");
+    SetWindowIcon(iconImage);
+
+    run_app();
+
+    CloseWindow();
+
+    /*
     const int width = 1280;
     const int height = 720;
 
@@ -52,4 +95,5 @@ int main()
     CloseWindow();
 
     return 0;
+    */
 }

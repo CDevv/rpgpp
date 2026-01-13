@@ -10,24 +10,25 @@ package("raylib")
     end
 
     on_install("linux", "macosx", "mingw", "windows", function (package)
-    if is_plat("windows") then
         os.cd(path.join(os.scriptdir(), "libs/raylib/"))
         import("package.tools.cmake").install(package, {})
-        elseif is_plat("mingw") then
-            import("package.tools.make").make(package, {})
-            os.cp(path.join(os.scriptdir(), "libs/raylib/src/libraylib.a"),
-                    path.join(os.scriptdir(), "libs/libraylib.a"))
-        else
-            os.cp(path.join(os.scriptdir(), "libs/SDL2"),
-                    path.join(os.scriptdir(), "libs/raylib/src/external/SDL2"))
-            import("package.tools.make").make(package, {"PLATFORM=PLATFORM_DESKTOP_SDL"})
-            os.cp(path.join(os.scriptdir(), "libs/raylib/src/libraylib.a"),
-            path.join(os.scriptdir(), "libs/libraylib.a"))
-        end
     end)
 package_end()
 
-add_requires("raylib", "libsdl2", "nlohmann_json", "nativefiledialog-extended", "alpaca", "reproc", "luajit")
+package("tgui")
+    set_sourcedir(path.join(os.scriptdir(), "libs/tgui/"))
+    add_deps("cmake", "raylib")
+    add_extsources("raylib")
+    on_install(function (package)
+        local configs = {}
+        table.insert(configs, "-DCMAKE_BUILD_TYPE=" .. (package:debug() and "Debug" or "Release"))
+        table.insert(configs, "-DBUILD_SHARED_LIBS=OFF")
+        table.insert(configs, "-DTGUI_BACKEND=RAYLIB")
+        import("package.tools.cmake").install(package, configs)
+    end)
+package_end()
+
+add_requires("raylib", "tgui", "libsdl2", "nlohmann_json", "nativefiledialog-extended", "alpaca", "reproc", "luajit")
 add_rules("mode.debug")
 set_defaultmode("debug")
 
@@ -83,10 +84,10 @@ target("rpgpplua")
 target("editor")
     set_kind("binary")
     set_languages("cxx17")
-    add_includedirs("include/", "include/editor/", "include/imgui/", "libs/raylib/src/", "rlImGui/")
+    add_includedirs("include/", "include/editor/", "include/imgui/", "libs/raylib/src/", "rlImGui/", "libs/tgui/include/")
     add_files("src/editor/*.cpp")
     add_deps("rpgpp", "rlImGui")
-    add_packages("raylib", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
+    add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
     add_linkdirs("libs/")
     after_build(function ()
         import("core.project.task")
