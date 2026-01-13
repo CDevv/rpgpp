@@ -7,3 +7,6 @@
 [submodule "rlImGui"]
 	path = rlImGui
 	url = https://github.com/raylib-extras/rlImGui
+[submodule "libs/tgui"]
+	path = libs/tgui
+	url = https://github.com/texus/TGUI.git
