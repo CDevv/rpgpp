@@ -6,7 +6,7 @@
 
 class AboutWindow : public WindowPopup {
 private:
-    Rectangle rect;
+    Rectangle rect{};
 public:
     AboutWindow();
     AboutWindow(Rectangle rect);

@@ -3,9 +3,11 @@
 
 #include <string>
 #include <raylib.h>
+#include <TGUI/AllWidgets.hpp>
 
 class WindowPopup {
 protected:
+    tgui::ChildWindow::Ptr childWindow;
     Rectangle rect;
     bool propExists;
     std::string prop;

@@ -2,6 +2,8 @@
 
 #include <imgui.h>
 
+#include "editor.hpp"
+
 WindowPopup::WindowPopup() : rect(), propExists(false)
 {
 }
@@ -16,12 +18,14 @@ WindowPopup::WindowPopup(const std::string &imPopupId, Rectangle rect)
 
 void WindowPopup::openWindow()
 {
-    ImGui::OpenPopup(imPopupId.c_str());
+    //ImGui::OpenPopup(imPopupId.c_str());
+    Editor::getUi().getGui()->add(childWindow);
 }
 
 void WindowPopup::closeWindow()
 {
-    ImGui::CloseCurrentPopup();
+    //ImGui::CloseCurrentPopup();
+    Editor::getUi().getGui()->remove(childWindow);
 }
 
 void WindowPopup::update() {}

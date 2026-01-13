@@ -12,33 +12,35 @@
 #include <raylib.h>
 #include <imgui.h>
 #include <rlImGui.h>
+#include <TGUI/Backend/raylib.hpp>
 
 class MouseInputComponent;
 
 class EditorInterfaceService {
 private:
-  Font uiFont;
+  std::unique_ptr<tgui::Gui> gui;
+  Font uiFont{};
   MainView mainView;
   ProjectMenuBox projectMenu;
   TabList tabList;
-  WindowContainer windowContainer;
+  std::unique_ptr<WindowContainer> windowContainer;
   std::unique_ptr<WorldViewBox> worldView;
   std::unique_ptr<PanelView> panelView;
   ResourceViewerBox resourceView;
-  Vector2 mousePos;
-  Vector2 hoverPos;
+  Vector2 mousePos{};
+  Vector2 hoverPos{};
   bool mouseLock;
   ViewBoxLayer mouseBoxLayer;
   bool demoGuiActive;
   void drawMainView();
   void drawProjectView();
-  char testStr[256];
 
 public:
   EditorInterfaceService();
   ~EditorInterfaceService();
+  tgui::Gui* getGui();
   void setInitial();
-  void unload() const;
+  void unload();
   void update();
   void draw();
   Font getFont() const;

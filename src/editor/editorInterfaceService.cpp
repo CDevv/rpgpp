@@ -5,7 +5,13 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <raylib.h>
+#include <TGUI/Core.hpp>
+#include <TGUI/Backend/raylib.hpp>
+#include <TGUI/Widgets/Button.hpp>
+#include <TGUI/Widgets/MenuBar.hpp>
+#include <TGUI/AllWidgets.hpp>
 
+#include "editor.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "gamedata.hpp"
@@ -19,6 +25,39 @@
 #endif
 
 EditorInterfaceService::EditorInterfaceService() {
+  gui = std::make_unique<tgui::Gui>();
+
+  auto menu = tgui::MenuBar::create();
+  menu->addMenuItem({"File", "Open Project.."});
+  menu->addMenuItem({"Project", "Open Project.."});
+  menu->addMenuItem({"Dev", "Open TGUI Website.."});
+  menu->addMenuItem({"Help", "About RPG++"});
+
+  menu->connectMenuItem({"File", "Open Project.."}, []
+  {
+    FileSystemService &fs = Editor::getFileSystem();
+    fs.promptOpenProject();
+  });
+  menu->connectMenuItem({"Project", "Open Project.."}, []
+  {
+    FileSystemService &fs = Editor::getFileSystem();
+    fs.promptOpenProject();
+  });
+  menu->connectMenuItem({"Dev", "Open TGUI Website.."}, []
+  {
+    OpenURL("tgui.eu");
+  });
+  menu->connectMenuItem({"Help", "About RPG++"}, [this]
+  {
+    //gui->add(aboutWindow);
+    getWindowContainer().open("About");
+  });
+
+  auto btn = tgui::Button::create("Title.");
+  btn->setPosition({ 40, 40 });
+  gui->add(btn, "button");
+  gui->add(menu);
+
   demoGuiActive = false;
 
   // get codepoints
@@ -61,16 +100,22 @@ EditorInterfaceService::EditorInterfaceService() {
       GetScreenHeight() - (elementBaseY + 8) - (tabListRect.height + 4)};
   panelView = std::make_unique<PanelView>(windowRect);
 
-  windowContainer = WindowContainer();
-
-  strcpy(testStr, "Hi.");
+  windowContainer = std::make_unique<WindowContainer>();
 }
 
 EditorInterfaceService::~EditorInterfaceService() = default;
 
+tgui::Gui* EditorInterfaceService::getGui()
+{
+  return gui.get();
+}
+
 void EditorInterfaceService::setInitial() { panelView->setInitial(); }
 
-void EditorInterfaceService::unload() const {
+void EditorInterfaceService::unload() {
+  windowContainer.reset(nullptr);
+  gui.reset(nullptr);
+
   UnloadFont(uiFont);
   FileSystemService &fs = Editor::getFileSystem();
   if (fs.projectIsOpen()) {
@@ -87,17 +132,26 @@ void EditorInterfaceService::unload() const {
 }
 
 void EditorInterfaceService::update() {
+  gui->handleEvents(); // Handles all non-keyboard events
+
+  while (int pressedChar = GetCharPressed())
+    gui->handleCharPressed(pressedChar);
+
+  while (int pressedKey = GetKeyPressed())
+    gui->handleKeyPressed(pressedKey);
+
   mainView.update();
   tabList.update();
   panelView->update();
   resourceView.update();
 
-  windowContainer.update();
+  windowContainer->update();
 }
 
 void EditorInterfaceService::draw() {
   FileSystemService &fs = Editor::getFileSystem();
 
+  /*
   bool openedAboutWIndow = false;
 
   if (ImGui::BeginMainMenuBar()) {
@@ -157,6 +211,9 @@ void EditorInterfaceService::draw() {
   }
 
   windowContainer.drawWindow("About");
+  */
+
+  gui->draw();
 }
 
 void EditorInterfaceService::drawMainView() {
@@ -195,7 +252,7 @@ void EditorInterfaceService::drawProjectView() {
 Font EditorInterfaceService::getFont() const { return uiFont; }
 
 WindowContainer &EditorInterfaceService::getWindowContainer() {
-  return windowContainer;
+  return *windowContainer;
 }
 
 TabList &EditorInterfaceService::getTabList() { return tabList; }
