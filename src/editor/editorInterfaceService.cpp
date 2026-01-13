@@ -7,7 +7,6 @@
 #include <raylib.h>
 
 #include "editor.hpp"
-#include "edui.hpp"
 #include "fileSystemService.hpp"
 #include "gamedata.hpp"
 #include "nfd.h"
@@ -21,13 +20,6 @@
 
 EditorInterfaceService::EditorInterfaceService() {
   demoGuiActive = false;
-
-  // appearance
-  appearance.border = BLACK;
-  appearance.primaryColor = Color{30, 30, 30, 255};
-  appearance.secondaryColor = Color{35, 35, 35, 255};
-  appearance.fontSize = 22;
-  appearance.textColor = WHITE;
 
   // get codepoints
   std::vector<int> codepoints;
@@ -201,10 +193,6 @@ void EditorInterfaceService::drawProjectView() {
 }
 
 Font EditorInterfaceService::getFont() const { return uiFont; }
-
-EdUi::Appearance &EditorInterfaceService::getAppearance() { return appearance; }
-
-EdUi::UiState &EditorInterfaceService::getState() { return state; }
 
 WindowContainer &EditorInterfaceService::getWindowContainer() {
   return windowContainer;

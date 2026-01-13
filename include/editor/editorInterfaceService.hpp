@@ -8,20 +8,15 @@
 #include "tabList.hpp"
 #include "windowContainer.hpp"
 #include "worldViewBox.hpp"
-#include <imgui.h>
 #include <memory>
 #include <raylib.h>
+#include <imgui.h>
 #include <rlImGui.h>
-#include <string>
-
-#include "edui.hpp"
 
 class MouseInputComponent;
 
 class EditorInterfaceService {
 private:
-  EdUi::Appearance appearance;
-  EdUi::UiState state;
   Font uiFont;
   MainView mainView;
   ProjectMenuBox projectMenu;
@@ -46,8 +41,6 @@ public:
   void unload() const;
   void update();
   void draw();
-  EdUi::Appearance &getAppearance();
-  EdUi::UiState &getState();
   Font getFont() const;
   void setMouseLock(bool value);
   bool getMouseLock() const;
