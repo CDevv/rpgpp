@@ -6,6 +6,7 @@
 #include "gamedata.hpp"
 #include "projectFile.hpp"
 #include "prop.hpp"
+#include <cmath>
 
 CollisionBox::CollisionBox()
 {
@@ -151,48 +152,48 @@ void CollisionBox::update()
 			SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 
 			newRect = Rectangle {
-				floor(mouseWorldPos.x / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor(mouseWorldPos.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor((rect.width + (rect.x - oldMousePos.x)) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER,
-				floor((rect.height + (rect.y - oldMousePos.y)) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
+				std::floor(mouseWorldPos.x / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor(mouseWorldPos.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor((rect.width + (rect.x - oldMousePos.x)) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER,
+				std::floor((rect.height + (rect.y - oldMousePos.y)) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
 			};
 			break;
 		case RESIZE_TOP_RIGHT:
 			SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 
 			newRect = Rectangle {
-				floor(rect.x / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor(mouseWorldPos.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor((rect.width + widthChangeTopRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor((rect.height + heightChangeTopRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
+				std::floor(rect.x / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor(mouseWorldPos.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor((rect.width + widthChangeTopRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor((rect.height + heightChangeTopRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
 			};
 			break;
 		case RESIZE_BOTTOM_LEFT:
 			SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 
 			newRect = Rectangle {
-				floor((mouseWorldPos.x)/ RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor(rect.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor((rect.width + widthChangeBottomLeft) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor((rect.height + heightChangeBottomLeft) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
+				std::floor((mouseWorldPos.x)/ RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor(rect.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor((rect.width + widthChangeBottomLeft) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor((rect.height + heightChangeBottomLeft) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
 			};
 			break;
 		case RESIZE_BOTTOM_RIGHT:
 			SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 
 			newRect = Rectangle {
-				floor(rect.x / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor(rect.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor((rect.width + widthChangeBottomRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor((rect.height + heigthChangeBottomRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
+				std::floor(rect.x / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor(rect.y / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor((rect.width + widthChangeBottomRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor((rect.height + heigthChangeBottomRight) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER + RPGPP_DRAW_MULTIPLIER
 			};
 			break;
 		case RESIZE_MOVE:
 			SetMouseCursor(MOUSE_CURSOR_RESIZE_ALL);
 
 			newRect = Rectangle {
-				floor((oldMousePos.x - mouseOffset.x) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
-				floor((oldMousePos.y - mouseOffset.y) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor((oldMousePos.x - mouseOffset.x) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
+				std::floor((oldMousePos.y - mouseOffset.y) / RPGPP_DRAW_MULTIPLIER) * RPGPP_DRAW_MULTIPLIER,
 				rect.width,
 				rect.height
 			};
