@@ -4,6 +4,7 @@
 #include "project.hpp"
 #include "projectFile.hpp"
 #include "room.hpp"
+#include <array>
 #include <memory>
 #include <nfd.h>
 #include <raylib.h>
@@ -160,7 +161,7 @@ bool FileSystemService::isAvailable(EngineFileType type) {
   }
 }
 
-FS_Result FileSystemService::openFile(nfdu8filteritem_t filters[]) {
+FS_Result FileSystemService::openFile(const nfdu8filteritem_t filters[]) {
   FS_Result fsResult;
 
   nfdu8char_t *outPath;
@@ -207,34 +208,40 @@ FS_Result FileSystemService::openFolder() {
 }
 
 FS_Result FileSystemService::openGameData() {
-  nfdu8filteritem_t filters[1] = {{"RPG++ GameData", "bin"}};
-  return openFile(filters);
+  std::array<nfdu8filteritem_t, 1> filters = {{"RPG++ GameData", "bin"}};
+  return openFile(filters.data());
 }
 
 FS_Result FileSystemService::openImage() {
-  nfdu8filteritem_t filters[1] = {{"Texture", "png"}};
-  return openFile(filters);
+  std::array<nfdu8filteritem_t, 1> filters = {{"Texture", "png"}};
+  return openFile(filters.data());
 }
 
 FS_Result FileSystemService::openTileSetResource() {
   FS_Result fsResult;
 
-  nfdu8filteritem_t filters[1] = {{"RPG++ TileSet", "rtiles"}};
-  return openFile(filters);
+  std::array<nfdu8filteritem_t, 1> filters = {{"RPG++ TileSet", "rtiles"}};
+  return openFile(filters.data());
 }
 
 FS_Result FileSystemService::openDialogueResource() {
   FS_Result fsResult;
 
-  nfdu8filteritem_t filters[1] = {{"RPG++ Dialogue", "rdiag"}};
-  return openFile(filters);
+  std::array<nfdu8filteritem_t, 1> filters = {{"RPG++ Dialogue", "rdiag"}};
+  return openFile(filters.data());
+}
+
+FS_Result FileSystemService::openThemeFile() {
+  FS_Result fsResult;
+  std::array<nfdu8filteritem_t, 1> filters = {{"TGUI Theme File", "txt"}};
+  return openFile(filters.data());
 }
 
 FS_Result FileSystemService::openMusic() {
   FS_Result fsResult;
 
-  nfdu8filteritem_t filters[1] = {{"Music file", "ogg,wav"}};
-  return openFile(filters);
+  std::array<nfdu8filteritem_t, 1> filters = {{"Music file", "ogg,wav"}};
+  return openFile(filters.data());
 }
 
 ProjectFile *FileSystemService::getCurrentFile() {

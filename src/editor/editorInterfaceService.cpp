@@ -5,14 +5,19 @@
 #include <TGUI/Core.hpp>
 #include <TGUI/Widgets/Button.hpp>
 #include <TGUI/Widgets/MenuBar.hpp>
+#include <cstdio>
 #include <cstring>
+#include <exception>
 #include <filesystem>
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <iostream>
 #include <raylib.h>
 
+#include "TGUI/Cursor.hpp"
+#include "TGUI/Exception.hpp"
 #include "TGUI/Loading/Theme.hpp"
+#include "TGUI/Widgets/MessageBox.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "gamedata.hpp"
@@ -23,7 +28,20 @@
 
 EditorInterfaceService::EditorInterfaceService() {
   gui = std::make_unique<tgui::Gui>();
-  tgui::Theme::setDefault("themes/RPG2007.txt");
+
+  // Load the theme file from the config.
+  ConfigurationFileService &confService = Editor::getConfigService();
+  auto map_ref = confService.ini_structure["window"]["theme_file"];
+  try {
+    // Try to set the theme.
+    tgui::Theme::setDefault(map_ref);
+  } catch (tgui::Exception &) {
+    /*
+      TODO:
+      Add messageBoxes that actually show the user what's wrong.
+    */
+  }
+  // Menu
   auto menu = tgui::MenuBar::create();
   menu->addMenu("File");
   menu->addMenuItem("New Project"); // TODO: to be implemted
@@ -31,11 +49,15 @@ EditorInterfaceService::EditorInterfaceService() {
   menu->addMenu("Project");
   menu->addMenuItem("Open Project");
   menu->addMenuItem("Open Binary");
+  menu->addMenu("Themes");
+  menu->addMenuItem("Select from file");
   menu->addMenu("Developer");
   menu->addMenuItem("Open TGUI Website");
   menu->addMenu("Help");
   menu->addMenuItem("About RPG++");
-
+  menu->connectMenuItem({"Themes", "Select from file"}, [this] {
+    getWindowContainer().open("OpenThemeFileWindow");
+  });
   menu->connectMenuItem({"File", "Open Project"}, [] {
     FileSystemService &fs = Editor::getFileSystem();
     fs.promptOpenProject();
@@ -56,10 +78,8 @@ EditorInterfaceService::EditorInterfaceService() {
   });
   menu->connectMenuItem({"Developer", "Open TGUI Website"},
                         [] { OpenURL("https://tgui.eu"); });
-  menu->connectMenuItem({"Help", "About RPG++"}, [this] {
-    // gui->add(aboutWindow);
-    getWindowContainer().open("About");
-  });
+  menu->connectMenuItem({"Help", "About RPG++"},
+                        [this] { getWindowContainer().open("About"); });
 
   auto btn = tgui::Button::create("Title.");
   btn->setPosition({40, 40});

@@ -13,6 +13,7 @@
 #include "windows/dialogueInitWindow.hpp"
 #include "windows/errorWindow.hpp"
 #include "windows/mapInitWindow.hpp"
+#include "windows/openThemeFileWindow.hpp"
 #include "windows/projectBinaryViewWindow.hpp"
 #include "windows/projectInitWindow.hpp"
 #include "windows/tileSetDialogWindow.hpp"
@@ -54,6 +55,8 @@ WindowContainer::WindowContainer() {
   mapW.try_emplace("DeleteConfirm", new DeleteConfirmWindow(tileSetWindowSize));
   mapW.try_emplace("DialogueInit", new DialogueInitWindow(tileSetWindowSize));
   mapW.try_emplace("PropInit", new PropInitWindow(tileSetWindowSize));
+  mapW.try_emplace("OpenThemeFileWindow",
+                   new OpenThemeFileWindow(tileSetDialogSize));
 }
 
 void WindowContainer::update() { tileSetDialog.update(); }
@@ -82,6 +85,7 @@ void WindowContainer::draw() {
   drawWindow("ActorInit");
   drawWindow("DialogueInit");
   drawWindow("PropInit");
+  drawWindow("OpenThemeFileWindow");
 
   if (!windowOpen) {
     EditorInterfaceService &ui = Editor::getUi();
