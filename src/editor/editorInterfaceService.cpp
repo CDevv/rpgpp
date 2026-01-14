@@ -1,6 +1,5 @@
 #include "editorInterfaceService.hpp"
 
-#include "imgui_stdlib.h"
 #include <filesystem>
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -28,22 +27,39 @@ EditorInterfaceService::EditorInterfaceService() {
   gui = std::make_unique<tgui::Gui>();
 
   auto menu = tgui::MenuBar::create();
-  menu->addMenuItem({"File", "Open Project.."});
-  menu->addMenuItem({"Project", "Open Project.."});
-  menu->addMenuItem({"Dev", "Open TGUI Website.."});
-  menu->addMenuItem({"Help", "About RPG++"});
+  menu->addMenu("File");
+  menu->addMenuItem("New Project"); // TODO: to be implemted
+  menu->addMenuItem("Open Project");
+  menu->addMenu("Project");
+  menu->addMenuItem("Open Project");
+  menu->addMenuItem("Open Binary");
+  menu->addMenu("Developer");
+  menu->addMenuItem("Open TGUI Website");
+  menu->addMenu("Help");
+  menu->addMenuItem("About RPG++");
 
-  menu->connectMenuItem({"File", "Open Project.."}, []
+  menu->connectMenuItem({"File", "Open Project"}, []
   {
     FileSystemService &fs = Editor::getFileSystem();
     fs.promptOpenProject();
   });
-  menu->connectMenuItem({"Project", "Open Project.."}, []
+  menu->connectMenuItem({"Project", "Open Project"}, []
   {
     FileSystemService &fs = Editor::getFileSystem();
     fs.promptOpenProject();
   });
-  menu->connectMenuItem({"Dev", "Open TGUI Website.."}, []
+  menu->connectMenuItem({"Project", "Open Binary"}, [this]
+  {
+    FileSystemService &fs = Editor::getFileSystem();
+    ProjectBinaryViewWindow &projectBinary =
+      getWindowContainer().openProjectBinaryView();
+    FS_Result fsResult = fs.openGameData();
+    if (fsResult.result == NFD_OKAY) {
+      GameData gameData = deserializeFile(fsResult.path);
+      projectBinary.setData(gameData);
+    }
+  });
+  menu->connectMenuItem({"Developer", "Open TGUI Website"}, []
   {
     OpenURL("tgui.eu");
   });
@@ -151,67 +167,7 @@ void EditorInterfaceService::update() {
 void EditorInterfaceService::draw() {
   FileSystemService &fs = Editor::getFileSystem();
 
-  /*
-  bool openedAboutWIndow = false;
 
-  if (ImGui::BeginMainMenuBar()) {
-    if (ImGui::BeginMenu("File")) {
-      if (ImGui::MenuItem("Open Project..")) {
-        fs.promptOpenProject();
-      }
-      ImGui::EndMenu();
-    }
-    if (ImGui::BeginMenu("Project")) {
-      if (ImGui::MenuItem("Open Project..")) {
-        fs.promptOpenProject();
-      }
-      if (ImGui::MenuItem("Open Binary..")) {
-        ProjectBinaryViewWindow &projectBinary =
-            windowContainer.openProjectBinaryView();
-        FS_Result fsResult = fs.openGameData();
-        if (fsResult.result == NFD_OKAY) {
-          GameData gameData = deserializeFile(fsResult.path);
-          projectBinary.setData(gameData);
-        }
-      }
-
-      ImGui::EndMenu();
-    }
-    if (ImGui::BeginMenu("Dev")) {
-      ImGui::MenuItem("ImGui Demo", nullptr, &demoGuiActive);
-      ImGui::EndMenu();
-    }
-    if (ImGui::BeginMenu("Help")) {
-      if (ImGui::MenuItem("About RPG++")) {
-        openedAboutWIndow = true;
-      }
-      ImGui::EndMenu();
-    }
-    ImGui::EndMainMenuBar();
-  }
-
-  ImGuiErrorRecoveryState state;
-  ImGui::ErrorRecoveryStoreState(&state);
-
-  if (!fs.projectIsOpen()) {
-    drawMainView();
-  } else {
-    drawProjectView();
-  }
-
-  windowContainer.drawProjectBinaryView();
-
-  if (demoGuiActive) {
-    ImGui::ShowDemoWindow();
-  }
-
-  if (openedAboutWIndow) {
-    windowContainer.open("About");
-    openedAboutWIndow = false;
-  }
-
-  windowContainer.drawWindow("About");
-  */
 
   gui->draw();
 }
