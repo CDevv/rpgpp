@@ -1,16 +1,18 @@
 #include "editorInterfaceService.hpp"
 
+#include <TGUI/AllWidgets.hpp>
+#include <TGUI/Backend/raylib.hpp>
+#include <TGUI/Core.hpp>
+#include <TGUI/Widgets/Button.hpp>
+#include <TGUI/Widgets/MenuBar.hpp>
+#include <cstring>
 #include <filesystem>
 #include <imgui.h>
 #include <imgui_internal.h>
+#include <iostream>
 #include <raylib.h>
-#include <TGUI/Core.hpp>
-#include <TGUI/Backend/raylib.hpp>
-#include <TGUI/Widgets/Button.hpp>
-#include <TGUI/Widgets/MenuBar.hpp>
-#include <TGUI/AllWidgets.hpp>
 
-#include "editor.hpp"
+#include "TGUI/Loading/Theme.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "gamedata.hpp"
@@ -19,13 +21,9 @@
 #include "windowContainer.hpp"
 #include "windows/projectBinaryViewWindow.hpp"
 
-#ifdef _WIN32
-#include "winapi.hpp"
-#endif
-
 EditorInterfaceService::EditorInterfaceService() {
   gui = std::make_unique<tgui::Gui>();
-
+  tgui::Theme::setDefault("themes/RPG2007.txt");
   auto menu = tgui::MenuBar::create();
   menu->addMenu("File");
   menu->addMenuItem("New Project"); // TODO: to be implemted
@@ -38,39 +36,33 @@ EditorInterfaceService::EditorInterfaceService() {
   menu->addMenu("Help");
   menu->addMenuItem("About RPG++");
 
-  menu->connectMenuItem({"File", "Open Project"}, []
-  {
+  menu->connectMenuItem({"File", "Open Project"}, [] {
     FileSystemService &fs = Editor::getFileSystem();
     fs.promptOpenProject();
   });
-  menu->connectMenuItem({"Project", "Open Project"}, []
-  {
+  menu->connectMenuItem({"Project", "Open Project"}, [] {
     FileSystemService &fs = Editor::getFileSystem();
     fs.promptOpenProject();
   });
-  menu->connectMenuItem({"Project", "Open Binary"}, [this]
-  {
+  menu->connectMenuItem({"Project", "Open Binary"}, [this] {
     FileSystemService &fs = Editor::getFileSystem();
     ProjectBinaryViewWindow &projectBinary =
-      getWindowContainer().openProjectBinaryView();
+        getWindowContainer().openProjectBinaryView();
     FS_Result fsResult = fs.openGameData();
     if (fsResult.result == NFD_OKAY) {
       GameData gameData = deserializeFile(fsResult.path);
       projectBinary.setData(gameData);
     }
   });
-  menu->connectMenuItem({"Developer", "Open TGUI Website"}, []
-  {
-    OpenURL("tgui.eu");
-  });
-  menu->connectMenuItem({"Help", "About RPG++"}, [this]
-  {
-    //gui->add(aboutWindow);
+  menu->connectMenuItem({"Developer", "Open TGUI Website"},
+                        [] { OpenURL("https://tgui.eu"); });
+  menu->connectMenuItem({"Help", "About RPG++"}, [this] {
+    // gui->add(aboutWindow);
     getWindowContainer().open("About");
   });
 
   auto btn = tgui::Button::create("Title.");
-  btn->setPosition({ 40, 40 });
+  btn->setPosition({40, 40});
   gui->add(btn, "button");
   gui->add(menu);
 
@@ -115,16 +107,12 @@ EditorInterfaceService::EditorInterfaceService() {
       GetScreenWidth() - (propRect.width + 16) + 4,
       GetScreenHeight() - (elementBaseY + 8) - (tabListRect.height + 4)};
   panelView = std::make_unique<PanelView>(windowRect);
-
   windowContainer = std::make_unique<WindowContainer>();
 }
 
 EditorInterfaceService::~EditorInterfaceService() = default;
 
-tgui::Gui* EditorInterfaceService::getGui()
-{
-  return gui.get();
-}
+tgui::Gui *EditorInterfaceService::getGui() { return gui.get(); }
 
 void EditorInterfaceService::setInitial() { panelView->setInitial(); }
 
@@ -166,8 +154,6 @@ void EditorInterfaceService::update() {
 
 void EditorInterfaceService::draw() {
   FileSystemService &fs = Editor::getFileSystem();
-
-
 
   gui->draw();
 }
