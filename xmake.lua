@@ -29,6 +29,7 @@ on_install("linux", "macosx", "mingw", "windows", function(package)
 end)
 package_end()
 
+
 add_requires("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
 add_rules("mode.debug")
 set_defaultmode("debug")
@@ -52,7 +53,8 @@ end)
 target("rpgpp")
 set_kind("static")
 set_languages("cxx17")
-add_includedirs("include/", "libs/luajit/src", "libs/luajit/src/host")
+-- add_includedirs("include/", "libs/luajit/src", "libs/luajit/src/host")
+add_includedirs("libs/luajit/src", "libs/luajit/src/host")
 add_linkdirs("libs/")
 add_links("luajit")
 add_files("src/*.cpp")
@@ -61,26 +63,33 @@ if is_plat("linux") then
     add_cxxflags("-fPIC")
 end
 
-target("rpgpplua")
-set_kind("shared")
-set_languages("cxx17")
-add_files("src/rpgpplua/*.cpp")
-add_packages("nlohmann_json", "raylib", "luajit", { public = true })
-add_linkdirs("libs/")
-add_deps("rpgpp")
---  add_links("luajit")
---  there were some linking issues with MSVC, removed for testing. fuck msvc.
+
+-- !!!!!!! FIX MSVC ISSUE !!!!!!!
+--
+-- ATTENTION! The RPG++ LUA SOURCES ARE NOT INCLUDED YET. THIS IS CAUSING LINKER ISSUES!
+-- ADD THEM TO THE PROJECT, THEN UNCOMMENT THIS PART!
+--
+-- target("rpgpplua")
+-- set_kind("shared")
+-- set_languages("cxx17")
+-- add_packages("nlohmann_json", "raylib", "luajit", { public = true })
+-- add_linkdirs("libs/")
+-- add_deps("rpgpp")
 
 target("editor")
--- DO NOT REMOVE: /s
+-- add_includedirs("include/", "include/editor/", "libs/raylib/src/", "libs/tgui/include/")
+add_includedirs("libs/raylib/src/", "libs/tgui/include/")
 if is_plat("windows") then
     add_defines("TGUI_STATIC")
-    add_links("tgui-s-d")
+    -- Add the actual reference to this file, if necessary.
+    -- Since it doesn't work on my environment, it was removed.
+    -- If you need to add it, uncomment this part!
+    -- 
+    -- add_links("tgui-s-d")
 end
 set_kind("binary")
 set_languages("cxx17")
-add_includedirs("include/", "include/editor/", "libs/raylib/src/", "libs/tgui/include/")
-add_files("src/editor/*.cpp", "src/editor/**/*.cpp")
+add_files("src/editor/*.cpp")
 add_deps("rpgpp")
 add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
 add_linkdirs("libs/")
@@ -88,14 +97,3 @@ after_build(function()
     import("core.project.task")
     task.run("resources")
 end)
-
--- UNTIL MSVC FIGURES ITSELF OUT
--- THIS SHALL STAY
---target("game")
---set_kind("binary")
---set_languages("cxx17")
---add_includedirs("include/", "libs/raylib/src/")
----add_files("src/game/*.cpp")
---add_packages("raylib", "nlohmann_json", "luajit")
---add_linkdirs("libs/")
---add_deps("rpgpp")

@@ -1,39 +1,35 @@
-#include "raylib.h"
 
-#include <TGUI/Core.hpp>
 #include <TGUI/Backend/raylib.hpp>
+#include <TGUI/Core.hpp>
 #include <TGUI/Widgets/Button.hpp>
 #include <TGUI/Widgets/CheckBox.hpp>
 
-void run_app()
-{
-    SetTargetFPS(60);
+void run_app() {
+  SetTargetFPS(60);
 
-    while (!WindowShouldClose()) {
-        BeginDrawing();
+  while (!WindowShouldClose()) {
+    BeginDrawing();
 
-        ClearBackground(RAYWHITE);
+    ClearBackground(RAYWHITE);
 
-        EndDrawing();
-    }
-
+    EndDrawing();
+  }
 }
 
-int main()
-{
-    const int width = 1280;
-    const int height = 720;
+int main() {
+  const int width = 1280;
+  const int height = 720;
 
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    SetTraceLogLevel(LOG_WARNING);
-    InitWindow(width, height, "Editor [TGUI]");
+  SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+  SetTraceLogLevel(LOG_WARNING);
+  InitWindow(width, height, "Editor [TGUI]");
 
-    Image iconImage = LoadImage("resources/app-icon.png");
-    SetWindowIcon(iconImage);
+  Image iconImage = LoadImage("resources/app-icon.png");
+  SetWindowIcon(iconImage);
 
-    run_app();
+  run_app();
 
-    CloseWindow();
+  CloseWindow();
 
-    return 0;
+  return 0;
 }
