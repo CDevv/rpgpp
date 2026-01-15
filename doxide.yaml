@@ -1,5 +1,0 @@
-title: RPG++ Library
-description: A C++ Library for building RPG games with the power of raylib.
-files:
-  - "include/*.hpp"
-output: 'docs/C++ API'
