@@ -1,0 +1,9 @@
+[submodule "libs/luajit"]
+	path = libs/luajit
+	url = https://luajit.org/git/luajit.git
+[submodule "libs/raylib"]
+	path = libs/raylib
+	url = https://github.com/raysan5/raylib.git
+[submodule "libs/tgui"]
+	path = libs/tgui
+	url = https://github.com/texus/TGUI.git

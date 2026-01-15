@@ -1,0 +1,59 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# windows debug files
+*.pdb
+*.ilk
+
+game-src/*/lib/
+/editor
+/game
+build/
+bin/
+execs/**
+*.bin
+.cache/
+.xmake/
+*.kdev4
+.kdev4/
+*.sublime-project
+*.sublime-workspace
+.vs/
+.vscode/
+.idea/
+docs/C++ API
+site/
+imgui.ini
+clangd/
+game-src/
+compile_commands.json
