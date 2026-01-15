@@ -32,15 +32,18 @@ EditorInterfaceService::EditorInterfaceService() {
   // Load the theme file from the config.
   ConfigurationFileService &confService = Editor::getConfigService();
   auto map_ref = confService.ini_structure["window"]["theme_file"];
+
   try {
     // Try to set the theme.
     tgui::Theme::setDefault(map_ref);
-  } catch (tgui::Exception &) {
+  } catch (tgui::Exception &e) {
+    printf("tgui::Exception: %s \n", e.what());
     /*
       TODO:
       Add messageBoxes that actually show the user what's wrong.
     */
   }
+
   // Menu
   auto menu = tgui::MenuBar::create();
   menu->addMenu("File");
@@ -173,8 +176,6 @@ void EditorInterfaceService::update() {
 }
 
 void EditorInterfaceService::draw() {
-  FileSystemService &fs = Editor::getFileSystem();
-
   gui->draw();
 }
 

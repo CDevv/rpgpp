@@ -83,6 +83,7 @@ target("editor")
     -- DO NOT REMOVE: /s
     if is_plat("windows") then
         add_defines("TGUI_STATIC")
+        add_links("tgui-s-d")
     end
     set_kind("binary")
     set_languages("cxx17")

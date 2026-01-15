@@ -34,6 +34,9 @@ Here are the xmake directories on different platforms:
 
 (Do not copy it blindly, the commit number might be different)
 
+Another dependency of this project is TGUI (stable release). 
+The TGUI library that xmake built may not work when linking. In this case, you can attempt to build it using CMake. The output should be tgui-s-d.lib on Windows.
+
 Finally, to build all targets, run
 ```
 xmake build --all
