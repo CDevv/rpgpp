@@ -4,7 +4,10 @@
 #include <functional>
 #include <map>
 #include <string>
+using namespace std;
+
 constexpr const char *TRANSLATION_FILE_LOCATION = "resources/translations";
+constexpr const char *DEFAULT_LANGUAGE = "en_us";
 
 /*
     How this system works:

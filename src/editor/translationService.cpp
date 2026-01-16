@@ -1,6 +1,5 @@
 #include "translationService.hpp"
 #include "nlohmann/json.hpp" // YES IT USED!! DO NOT REMOVE
-#include <algorithm>
 #include <filesystem>
 #include <fstream>
 #include <functional>
@@ -10,18 +9,18 @@
 
 TranslationService::TranslationService() {
   for (auto const &directory_entry :
-       std::filesystem::directory_iterator(TRANSLATION_FILE_LOCATION)) {
+       filesystem::directory_iterator(TRANSLATION_FILE_LOCATION)) {
     // add the translation to the translations map.
     this->translations.try_emplace(
         directory_entry.path().stem().string(),
-        nlohmann::json::parse(std::ifstream(directory_entry.path())));
+        nlohmann::json::parse(ifstream(directory_entry.path())));
   }
 }
 
 std::string getKeyWrapper(TranslationService *tr, const std::string &c_language,
                           const std::string &key) {
   if (tr->translations.find(tr->current_language) != tr->translations.end()) {
-    std::map<std::string, std::string, std::less<>> gotten_translations =
+    map<string, string, less<>> gotten_translations =
         tr->translations[c_language];
     if (gotten_translations.find(key) != gotten_translations.end()) {
       return gotten_translations[key];
