@@ -1,13 +1,13 @@
 #ifndef _RGPP_WELCOME_SCREEN_H
 #define _RGPP_WELCOME_SCREEN_H
 #include "editor.hpp"
-#include "gui_screen.hpp"
+#include "guiScreen.hpp"
 
 namespace screens {
-class welcome_screen : public gui_screen {
+class WelcomeScreen : public UIScreen {
 
 public:
-  void add_elements(tgui::Gui *layout) override;
+  void addElement(tgui::Gui *layout) override;
 };
 } // namespace screens
 #endif

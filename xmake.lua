@@ -83,7 +83,7 @@ if is_plat("windows") then
     -- Since it doesn't work on my environment, it was removed.
     -- If you need to add it, uncomment this part!
     -- 
-    -- add_links("tgui-s-d")
+    add_links("tgui-s-d")
 end
 set_kind("binary")
 set_languages("cxx17")

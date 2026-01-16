@@ -1,0 +1,11 @@
+{
+  "language": "български",
+  "file.options": "Файл",
+  "about.options": "Относно",
+  "translations.options": "Езици...",
+  "file.new_project": "Нов проект",
+  "file.open_project": "Отвори проект",
+  "about.options.rgpp": "Относно RPG++...",
+  "screen.starting.get_started": "Започни!",
+  "screen.starting.description": "Натисни 'Нов Проект' за да създадете нов проект или 'Отвори проект' за да отворите вече съществуващ проект!"
+}

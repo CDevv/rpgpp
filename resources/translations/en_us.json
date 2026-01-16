@@ -5,7 +5,7 @@
   "translations.options": "Languages...",
   "file.new_project": "New Project",
   "file.open_project": "Open Project",
-  "about.options.rgpp": "About RPGPP...",
+  "about.options.rgpp": "About RPG++...",
   "screen.starting.get_started": "Get Started!",
   "screen.starting.description": "Press on 'New Project' to create a new project, or 'Open Project' to open one!"
 }

@@ -2,7 +2,7 @@
 #define _RGPP_EDITOR_GUI_CONTAINER_H
 
 #include "TGUI/Backend/raylib.hpp"
-#include "screens/gui_screen.hpp"
+#include "screens/guiScreen.hpp"
 #include <memory>
 // the RPG++ executable logo.
 constexpr const char *RPGPP_EXECUTABLE_LOGO = "resources/app-icon.png";
@@ -12,26 +12,26 @@ constexpr const char *CURRENT_TESTING_THEME = "resources/themes/RPG2007.txt";
 // The top margin for the menu.
 constexpr int TOP_MARGIN = 35;
 
-class editor_gui_service {
+class EditorGuiService {
 public:
   // gui service constructor.
   bool reset_gui_r = false;
-  editor_gui_service();
-  std::unique_ptr<tgui::Gui> current_gui;
-  std::unique_ptr<gui_screen> current_screen;
+  EditorGuiService();
+  std::unique_ptr<tgui::Gui> gui;
+  std::unique_ptr<UIScreen> currentScreen;
   // this stores all the current languages in a map, so when we click on the
   // menu.. we can set the language.
-  std::map<std::string, std::string, std::less<>> translation_name_and_source =
+  std::map<std::string, std::string, std::less<>> translations =
       {};
   // initialize the gui and register all the components.
-  void initialize_gui();
+  void init();
   // the gui loop starter.
-  void start_gui_loop();
+  void uiLoop();
   // this function creates the top menu for RPGPP.
-  void create_top_menu_bar();
-  void set_screen_to(std::unique_ptr<gui_screen> set_to_screen);
+  void initMenuBar();
+  void setScreen(std::unique_ptr<UIScreen> newScreen);
   // Reset the current gui session. This allows TGUI to reload assets...
-  void reset_gui();
-  void reset_after_render() { this->reset_gui_r = true; }
+  void resetUi();
+  void setResetUi() { this->reset_gui_r = true; }
 };
 #endif

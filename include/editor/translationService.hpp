@@ -14,9 +14,9 @@ constexpr const char *TRANSLATION_FILE_LOCATION = "resources/translations";
         3. and that's all!
 */
 
-class translation_service {
+class TranslationService {
 public:
-  translation_service();
+  TranslationService();
   /*
     Current Language
     This allows the user to change the current language.
@@ -25,8 +25,8 @@ public:
   std::map<std::string, std::map<std::string, std::string, std::less<>>,
            std::less<>>
       translations = {};
-  std::string get_translation_by_key(const char *key);
-  std::string get_translation_by_key(const char *key, const char *c_language);
-  std::string get_bare_key_by_language_reference(std::string language_key);
+  std::string getKey(const std::string &key);
+  std::string getKey(const std::string &key, const std::string &c_language);
+  std::string getKeyByLang(std::string language_key);
 };
 #endif

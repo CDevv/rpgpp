@@ -6,10 +6,10 @@
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/MenuBar.hpp"
 #include "editor.hpp"
-#include "gui_screen.hpp"
+#include "guiScreen.hpp"
 #include "raylib.h"
 #include "translationService.hpp"
-#include "welcome_screen.hpp"
+#include "welcomeScreen.hpp"
 #include <cmath>
 #include <cstring>
 #include <exception>
@@ -27,30 +27,32 @@ constexpr int BASE_WINDOW_HEIGHT = 600;
 constexpr float GRADIENT_SPEED_MUTLIPLIER = 0.3f;
 constexpr float GRADIENT_COLOR_MULTIPLIER = 40.0f;
 
-editor_gui_service::editor_gui_service() = default;
-void editor_gui_service::initialize_gui() {
+EditorGuiService::EditorGuiService() = default;
+void EditorGuiService::init() {
   SetConfigFlags(FLAG_WINDOW_RESIZABLE);
   InitWindow(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT, "RPG++ Editor");
-  this->reset_gui();
+
+  this->resetUi();
 }
 
-void editor_gui_service::reset_gui() {
+void EditorGuiService::resetUi() {
   this->reset_gui_r = false;
   // Check if we already have a gui already setup, if we do.. don't load the
   // same assets again.
-  if (this->current_gui == nullptr) {
-    this->current_gui = std::make_unique<tgui::Gui>();
-    editor::current_editor->set_editor_icon(RPGPP_EXECUTABLE_LOGO);
+  if (this->gui == nullptr) {
+    this->gui = std::make_unique<tgui::Gui>();
+    Editor::instance->setAppIcon(RPGPP_EXECUTABLE_LOGO);
   }
   tgui::Theme::setDefault(CURRENT_TESTING_THEME);
+
   // Remove all the current widgets, and move onto the next process.
-  this->current_gui->removeAllWidgets();
-  this->create_top_menu_bar();
-  this->set_screen_to(std::make_unique<screens::welcome_screen>());
+  this->gui->removeAllWidgets();
+  this->initMenuBar();
+  this->setScreen(std::make_unique<screens::WelcomeScreen>());
 }
 
-void editor_gui_service::start_gui_loop() {
-  auto const &cg = this->current_gui;
+void EditorGuiService::uiLoop() {
+  auto const &cg = this->gui;
   SetTraceLogLevel(LOG_WARNING);
   // main loop.
   while (!WindowShouldClose()) {
@@ -59,6 +61,7 @@ void editor_gui_service::start_gui_loop() {
       cg->handleCharPressed(pressed_char);
     while (int pressedKey = GetKeyPressed())
       cg->handleKeyPressed(pressedKey);
+
     BeginDrawing();
     ClearBackground(DARKGRAY);
     // Achieve that effect of the gradient.
@@ -78,55 +81,50 @@ void editor_gui_service::start_gui_loop() {
     // to tell the loop to reset it with a if statement.
     // NOTE: If you think of a better solution. Too Bad!
     if (reset_gui_r)
-      this->reset_gui();
+      this->resetUi();
     EndDrawing();
   }
 }
 
-void editor_gui_service::set_screen_to(
-    std::unique_ptr<gui_screen> set_to_screen) {
+void EditorGuiService::setScreen(std::unique_ptr<UIScreen> set_to_screen) {
   // swap the screen pointer to the new screen.
-  this->current_screen.swap(set_to_screen);
-  this->current_screen->add_elements(this->current_gui.get());
+  this->currentScreen.swap(set_to_screen);
+  this->currentScreen->addElement(this->gui.get());
 }
 
-void editor_gui_service::create_top_menu_bar() {
+void EditorGuiService::initMenuBar() {
   // Clear if there's data left over.
-  this->translation_name_and_source.clear();
+  this->translations.clear();
   auto current_menu_bar = tgui::MenuBar::create();
-  auto const &ts = editor::current_editor->ed_translation_service;
+  auto const &ts = Editor::instance->translationService;
   // TODO: File/Project Options.
-  current_menu_bar->addMenu(ts->get_translation_by_key("file.options"));
-  current_menu_bar->addMenuItem(ts->get_translation_by_key("file.new_project"));
-  current_menu_bar->addMenuItem(
-      ts->get_translation_by_key("file.open_project"));
+  current_menu_bar->addMenu(ts->getKey("file.options"));
+  current_menu_bar->addMenuItem(ts->getKey("file.new_project"));
+  current_menu_bar->addMenuItem(ts->getKey("file.open_project"));
   // Translation Options.
-  const auto current_menu_text =
-      ts->get_translation_by_key("translations.options");
+  const auto current_menu_text = ts->getKey("translations.options");
   current_menu_bar->addMenu(current_menu_text);
   for (auto const &[language_file_name, data] : ts->translations) {
     const auto menu_item_text =
-        ts->get_translation_by_key("language", language_file_name.c_str());
+        ts->getKey("language", language_file_name.c_str());
     current_menu_bar->addMenuItem(menu_item_text);
     // Add data to there if needed.
-    this->translation_name_and_source.try_emplace(menu_item_text,
-                                                  language_file_name);
+    this->translations.try_emplace(menu_item_text, language_file_name);
   }
   // This allows the user to change the language.
   // FIXME: please make this NOT use a std::map.
   current_menu_bar->onMenuItemClick.connect(
       [this, &ts](const tgui::String &button_text) {
-        const auto it = this->translation_name_and_source.find(button_text);
-        if (it != this->translation_name_and_source.end()) {
+        const auto it = this->translations.find(button_text);
+        if (it != this->translations.end()) {
           ts->current_language = it->second;
-          this->reset_after_render();
+          this->setResetUi();
         }
       });
   // TODO: About Options.
-  current_menu_bar->addMenu(ts->get_translation_by_key("about.options"));
-  current_menu_bar->addMenuItem(
-      ts->get_translation_by_key("about.options.rgpp"));
+  current_menu_bar->addMenu(ts->getKey("about.options"));
+  current_menu_bar->addMenuItem(ts->getKey("about.options.rgpp"));
   current_menu_bar->setSize({"100%", "30"});
   current_menu_bar->setMouseCursor(tgui::Cursor::Type::Hand);
-  this->current_gui->add(current_menu_bar);
+  this->gui->add(current_menu_bar);
 }
