@@ -2,20 +2,21 @@
 #define _RPGPP_INTERFACEVIEW_H
 
 #include "uiElement.hpp"
-#include <raylib.h>
 #include <memory>
+#include <raylib.h>
 #include <vector>
 
 class InterfaceView {
 private:
-    Rectangle rect;
-    std::vector<std::unique_ptr<UIElement>> elements;
+  Rectangle rect;
+  std::vector<std::unique_ptr<UIElement>> elements;
+
 public:
-    InterfaceView();
-    InterfaceView(Rectangle rect);
-    void addElement(UIElement* element);
-    void update() const;
-    void draw();
+  InterfaceView();
+  explicit InterfaceView(Rectangle rect);
+  void addElement(UIElement *element);
+  void update() const;
+  void draw() const;
 };
 
 #endif

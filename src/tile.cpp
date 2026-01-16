@@ -2,35 +2,21 @@
 #include "atlasTile.hpp"
 #include <raylib.h>
 
-Tile::Tile()
-{
-    this->worldCoords = Vector2 { 0, 0 };
-    this->placed = false;
+Tile::Tile() {
+  this->worldCoords = Vector2{0, 0};
+  this->placed = false;
 }
 
-void Tile::place(AtlasTile atlasTile, Vector2 worldCoords)
-{
-    this->atlasTile = atlasTile;
-    this->worldCoords = worldCoords;
-    this->placed = true;
+void Tile::place(AtlasTile atlas_to_set, Vector2 world_coords_to_set) {
+  this->atlasTile = atlas_to_set;
+  this->worldCoords = world_coords_to_set;
+  this->placed = true;
 }
 
-void Tile::erase()
-{
-    this->placed = false;
-}
+void Tile::erase() { this->placed = false; }
 
-bool Tile::isPlaced() const
-{
-    return this->placed;
-}
+bool Tile::isPlaced() const { return this->placed; }
 
-AtlasTile Tile::getAtlasTile() const
-{
-    return this->atlasTile;
-}
+AtlasTile Tile::getAtlasTile() const { return this->atlasTile; }
 
-Vector2 Tile::getWorldCoords() const
-{
-    return this->worldCoords;
-}
+Vector2 Tile::getWorldCoords() const { return this->worldCoords; }

@@ -1,33 +1,32 @@
 #include "game.hpp"
 #include <raylib.h>
 
-int main()
-{
-    const int width = 640;
-    const int height = 480;
+int main() {
+  const int width = 640;
+  const int height = 480;
 
-    InitWindow(width, height, "Window");
+  InitWindow(width, height, "Window");
 
-    Game game;
-    game.init();
+  Game game;
+  game.init();
 
-    SetTargetFPS(60);
+  SetTargetFPS(60);
 
-    while (!WindowShouldClose()) {
-        game.update();
+  while (!WindowShouldClose()) {
+    game.update();
 
-        BeginDrawing();
+    BeginDrawing();
 
-        ClearBackground(RAYWHITE);
+    ClearBackground(RAYWHITE);
 
-        game.draw();
+    game.draw();
 
-        EndDrawing();
-    }
+    EndDrawing();
+  }
 
-    game.unload();
+  game.unload();
 
-    CloseWindow();
+  CloseWindow();
 
-    return 0;
+  return 0;
 }
