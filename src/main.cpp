@@ -1,3 +1,4 @@
+#include "game.hpp"
 #include <raylib.h>
 
 int main()
@@ -7,15 +8,24 @@ int main()
 
     InitWindow(width, height, "Window");
 
+    Game game;
+    game.init();
+
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
+        game.update();
+
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
+        game.draw();
+
         EndDrawing();
     }
+
+    game.unload();
 
     CloseWindow();
 

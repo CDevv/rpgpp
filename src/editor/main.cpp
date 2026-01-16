@@ -1,16 +1,39 @@
-
+#include "TGUI/Widgets/MenuBar.hpp"
 #include <TGUI/Backend/raylib.hpp>
 #include <TGUI/Core.hpp>
 #include <TGUI/Widgets/Button.hpp>
 #include <TGUI/Widgets/CheckBox.hpp>
+#include <cstdio>
 
 void run_app() {
   SetTargetFPS(60);
 
+  tgui::Gui gui;
+
+  auto menu = tgui::MenuBar::create();
+  menu->addMenu("File");
+  menu->addMenuItem("New Project..");
+
+  menu->connectMenuItem({"File", "New Project.."}, [] {
+    printf("File:New Project \n");
+  });
+
+  gui.add(menu);
+
   while (!WindowShouldClose()) {
+    gui.handleEvents(); // Handles all non-keyboard events
+
+    while (int pressedChar = GetCharPressed())
+        gui.handleCharPressed(pressedChar);
+
+    while (int pressedKey = GetKeyPressed())
+        gui.handleKeyPressed(pressedKey);
+
     BeginDrawing();
 
     ClearBackground(RAYWHITE);
+
+    gui.draw();
 
     EndDrawing();
   }

@@ -53,7 +53,7 @@ end)
 target("rpgpp")
 set_kind("static")
 set_languages("cxx17")
--- add_includedirs("include/", "libs/luajit/src", "libs/luajit/src/host")
+add_includedirs("include/", "libs/luajit/src", "libs/luajit/src/host", "libs/raylib/src")
 add_includedirs("libs/luajit/src", "libs/luajit/src/host")
 add_linkdirs("libs/")
 add_links("luajit")
@@ -85,7 +85,7 @@ if is_plat("windows") then
     -- Since it doesn't work on my environment, it was removed.
     -- If you need to add it, uncomment this part!
     -- 
-    -- add_links("tgui-s-d")
+    add_links("tgui-s-d")
 end
 set_kind("binary")
 set_languages("cxx17")
