@@ -9,7 +9,7 @@
 #include "translationService.hpp"
 
 void screens::welcome_screen::add_elements(tgui::Gui *layout) {
-  auto &ts = editor::current_editor->translation_service;
+  auto &ts = editor::current_editor->ed_translation_service;
   // Create the logo in the center of the screen.
   auto welcome_picture = tgui::Picture::create("resources/logo-ups.png");
   welcome_picture->setOrigin({0.5, 0.5});

@@ -14,9 +14,9 @@ public:
   // the current editor instance.
   static editor *current_editor;
   // the current editor gui service, responsible for managing the gui.
-  std::unique_ptr<editor_gui_service> editor_gui_service;
+  std::unique_ptr<editor_gui_service> gui_service;
   // the translation service responsible for all the i18n.
-  std::unique_ptr<translation_service> translation_service;
+  std::unique_ptr<translation_service> ed_translation_service;
   // this sets the icon of the editor.
   void set_editor_icon(const char *icon_path) const;
   // unload editor stuff.

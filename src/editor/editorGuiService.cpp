@@ -94,7 +94,7 @@ void editor_gui_service::create_top_menu_bar() {
   // Clear if there's data left over.
   this->translation_name_and_source.clear();
   auto current_menu_bar = tgui::MenuBar::create();
-  auto const &ts = editor::current_editor->translation_service;
+  auto const &ts = editor::current_editor->ed_translation_service;
   // TODO: File/Project Options.
   current_menu_bar->addMenu(ts->get_translation_by_key("file.options"));
   current_menu_bar->addMenuItem(ts->get_translation_by_key("file.new_project"));

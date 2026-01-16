@@ -7,8 +7,8 @@
 editor *editor::current_editor;
 editor::editor() {
   editor::current_editor = this;
-  this->editor_gui_service = std::make_unique<class editor_gui_service>();
-  this->translation_service = std::make_unique<class translation_service>();
+  this->gui_service = std::make_unique<class editor_gui_service>();
+  this->ed_translation_service = std::make_unique<class translation_service>();
 }
 
 void editor::set_editor_icon(const char *icon_path) const {
