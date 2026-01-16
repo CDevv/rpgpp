@@ -4,7 +4,10 @@
 #include <functional>
 #include <map>
 #include <string>
+using namespace std;
+
 constexpr const char *TRANSLATION_FILE_LOCATION = "resources/translations";
+constexpr const char *DEFAULT_LANGUAGE = "en_us";
 
 /*
     How this system works:
@@ -21,12 +24,10 @@ public:
     Current Language
     This allows the user to change the current language.
   */
-  std::string current_language = "en_us";
-  std::map<std::string, std::map<std::string, std::string, std::less<>>,
-           std::less<>>
-      translations = {};
-  std::string get_translation_by_key(const char *key);
-  std::string get_translation_by_key(const char *key, const char *c_language);
-  std::string get_bare_key_by_language_reference(std::string language_key);
+  string current_language = DEFAULT_LANGUAGE;
+  map<string, map<string, string, less<>>, less<>> translations = {};
+  string get_translation_by_key(const char *key);
+  string get_translation_by_key(const char *key, const char *c_language);
+  string get_bare_key_by_language_reference(string language_key);
 };
 #endif
