@@ -3,14 +3,13 @@
 #include "TGUI/Cursor.hpp"
 #include "TGUI/Loading/Theme.hpp"
 #include "TGUI/String.hpp"
-#include "TGUI/Widgets/Button.hpp"
-#include "TGUI/Widgets/MenuBar.hpp"
-#include "TGUI/Widgets/Group.hpp"
+#include <TGUI/AllWidgets.hpp>
 #include "editor.hpp"
 #include "guiScreen.hpp"
 #include "raylib.h"
 #include "translationService.hpp"
 #include "welcomeScreen.hpp"
+#include "projectScreen.hpp"
 #include <cmath>
 #include <cstring>
 #include <exception>
@@ -71,14 +70,14 @@ void EditorGuiService::uiLoop() {
 		BeginDrawing();
 		ClearBackground(DARKGRAY);
 		// Achieve that effect of the gradient.
-		auto top_gradient_color = static_cast<unsigned char>(
+		auto topGradientColor = static_cast<unsigned char>(
 		    abs(sin(GetTime() * GRADIENT_SPEED_MUTLIPLIER)) *
 		    GRADIENT_COLOR_MULTIPLIER);
 		// Draw the gradient.
 		DrawRectangleGradientV(0, 0, GetRenderWidth(),
 				       GetRenderHeight(),
-				       {top_gradient_color, top_gradient_color,
-					top_gradient_color, 255},
+				       {topGradientColor, topGradientColor,
+					topGradientColor, 255},
 				       {40, 40, 40, 255});
 		cg->draw();
 		// Due to many reasons, one time... Thefirey33 decided to talk
@@ -112,37 +111,48 @@ void EditorGuiService::setScreen(std::unique_ptr<UIScreen> set_to_screen) {
 void EditorGuiService::initMenuBar() {
 	// Clear if there's data left over.
 	this->translations.clear();
-	auto current_menu_bar = tgui::MenuBar::create();
-	auto const &ts = Editor::instance->translationService;
+	auto menuBar = tgui::MenuBar::create();
+	auto &ts = Editor::instance->getTranslations();
 	// TODO: File/Project Options.
-	current_menu_bar->addMenu(ts->getKey("file.options"));
-	current_menu_bar->addMenuItem(ts->getKey("file.new_project"));
-	current_menu_bar->addMenuItem(ts->getKey("file.open_project"));
+	menuBar->addMenu(ts.getKey("file.options"));
+	menuBar->addMenuItem(ts.getKey("file.new_project"));
+	menuBar->addMenuItem(ts.getKey("file.open_project"));
 	// Translation Options.
-	const auto current_menu_text = ts->getKey("translations.options");
-	current_menu_bar->addMenu(current_menu_text);
-	for (auto const &[language_file_name, data] : ts->translations) {
-		const auto menu_item_text =
-		    ts->getKey("language", language_file_name.c_str());
-		current_menu_bar->addMenuItem(menu_item_text);
+	const auto currentMenuText = ts.getKey("translations.options");
+	menuBar->addMenu(currentMenuText);
+	for (auto const &[language_file_name, data] : ts.translations) {
+		const auto menuItemText =
+		    ts.getKey("language", language_file_name.c_str());
+		menuBar->addMenuItem(menuItemText);
 		// Add data to there if needed.
-		this->translations.try_emplace(menu_item_text,
+		this->translations.try_emplace(menuItemText,
 					       language_file_name);
 	}
 	// This allows the user to change the language.
 	// FIXME: please make this NOT use a std::map.
-	current_menu_bar->onMenuItemClick.connect(
+	menuBar->onMenuItemClick.connect(
 	    [this, &ts](const tgui::String &button_text) {
 		    const auto it = this->translations.find(button_text);
 		    if (it != this->translations.end()) {
-			    ts->current_language = it->second;
+			    ts.current_language = it->second;
 			    this->setResetUi();
 		    }
 	    });
+
+	menuBar->connectMenuItem({ts.getKey("file.options"), ts.getKey("file.open_project")}, [] {
+		auto files = tgui::FileDialog::create();
+
+		files->onFileSelect([](const tgui::String& filePath) {
+			Editor::instance->setProject(filePath.toStdString());
+			Editor::instance->getGui().setScreen(std::make_unique<screens::ProjectScreen>());
+		});
+
+		Editor::instance->getGui().gui->add(files);
+	});
 	// TODO: About Options.
-	current_menu_bar->addMenu(ts->getKey("about.options"));
-	current_menu_bar->addMenuItem(ts->getKey("about.options.rgpp"));
-	current_menu_bar->setSize({"100%", "30"});
-	current_menu_bar->setMouseCursor(tgui::Cursor::Type::Hand);
-	this->gui->add(current_menu_bar);
+	menuBar->addMenu(ts.getKey("about.options"));
+	menuBar->addMenuItem(ts.getKey("about.options.rgpp"));
+	menuBar->setSize({"100%", "30"});
+	menuBar->setMouseCursor(tgui::Cursor::Type::Hand);
+	this->gui->add(menuBar);
 }

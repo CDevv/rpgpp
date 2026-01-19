@@ -30,7 +30,6 @@ std::string getKeyWrapper(TranslationService *tr, const std::string &c_language,
 			gotten_translations.end()) {
 			return gotten_translations[key];
 		} else {
-			// pls shut up linter waaaaaaaaaaahhhhh *crying* :<
 			throw std::out_of_range(
 				"key not found in translations.");
 		}
