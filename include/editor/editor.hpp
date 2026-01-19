@@ -8,14 +8,16 @@
 #include <memory>
 #include <string>
 
+#define RPGPP_VERSION 0.1
+
 class Editor {
-private:
+  private:
 	// the current editor gui service, responsible for managing the gui.
 	std::unique_ptr<EditorGuiService> guiService;
 	// the translation service responsible for all the i18n.
 	std::unique_ptr<TranslationService> translationService;
 
-public:
+  public:
 	Editor();
 	~Editor() = default;
 	// The opened project
@@ -24,9 +26,9 @@ public:
 	Image appIcon{};
 	// the current editor instance.
 	static Editor *instance;
-	EditorGuiService& getGui();
-	TranslationService& getTranslations();
-	Project* getProject();
+	EditorGuiService &getGui();
+	TranslationService &getTranslations();
+	Project *getProject();
 	void setProject(const std::string &path);
 	// this sets the icon of the editor.
 	static void setAppIcon(const std::string &icon_path);

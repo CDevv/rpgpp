@@ -7,8 +7,9 @@
 namespace screens {
 class ProjectScreen : public UIScreen {
 
-public:
+  public:
 	void initItems(tgui::Group::Ptr layout) override;
+	const std::string getNameOfScreen() override { return "Project"; }
 };
 } // namespace screens
 #endif

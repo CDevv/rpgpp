@@ -3,26 +3,30 @@
 #include "TGUI/Cursor.hpp"
 #include "TGUI/Loading/Theme.hpp"
 #include "TGUI/String.hpp"
-#include <TGUI/AllWidgets.hpp>
+#include "TGUI/Widgets/Group.hpp"
+#include "TGUI/Widgets/Label.hpp"
+#include "aboutScreen.h"
 #include "editor.hpp"
 #include "guiScreen.hpp"
+#include "projectScreen.hpp"
 #include "raylib.h"
 #include "translationService.hpp"
 #include "welcomeScreen.hpp"
-#include "projectScreen.hpp"
+#include <TGUI/AllWidgets.hpp>
 #include <cmath>
 #include <cstring>
 #include <exception>
 #include <iostream>
 #include <memory>
+#include <string>
 
 /*
-    Properties of the actual window.
+	Properties of the actual window.
 */
 constexpr int BASE_WINDOW_WIDTH = 800;
 constexpr int BASE_WINDOW_HEIGHT = 600;
 /*
-    Properties of the gradient.
+	Properties of the gradient.
 */
 constexpr float GRADIENT_SPEED_MUTLIPLIER = 0.3f;
 constexpr float GRADIENT_COLOR_MULTIPLIER = 40.0f;
@@ -50,10 +54,7 @@ void EditorGuiService::resetUi() {
 	}
 	tgui::Theme::setDefault(CURRENT_TESTING_THEME);
 
-	// Remove all the current widgets, and move onto the next process.
-	this->gui->removeAllWidgets();
-	this->initMenuBar();
-	this->setScreen(std::make_unique<screens::WelcomeScreen>());
+	this->setScreen(std::make_unique<screens::WelcomeScreen>(), true);
 }
 
 void EditorGuiService::uiLoop() {
@@ -71,21 +72,20 @@ void EditorGuiService::uiLoop() {
 		ClearBackground(DARKGRAY);
 		// Achieve that effect of the gradient.
 		auto topGradientColor = static_cast<unsigned char>(
-		    abs(sin(GetTime() * GRADIENT_SPEED_MUTLIPLIER)) *
-		    GRADIENT_COLOR_MULTIPLIER);
+			abs(sin(GetTime() * GRADIENT_SPEED_MUTLIPLIER)) *
+			GRADIENT_COLOR_MULTIPLIER);
 		// Draw the gradient.
-		DrawRectangleGradientV(0, 0, GetRenderWidth(),
-				       GetRenderHeight(),
-				       {topGradientColor, topGradientColor,
-					topGradientColor, 255},
-				       {40, 40, 40, 255});
+		DrawRectangleGradientV(
+			0, 0, GetRenderWidth(), GetRenderHeight(),
+			{topGradientColor, topGradientColor, topGradientColor, 255},
+			{40, 40, 40, 255});
 		cg->draw();
 		// Due to many reasons, one time... Thefirey33 decided to talk
 		// to the C++ MSVC Compiler if he can reset the current state of
 		// his world at any time. MSVC replied, "MEMORY EXCEPTION".
 		// Thefirey33 cried, pleaded... his niko-like eyes looking at
 		// MSVC. But the solution was... to put a boolean to tell the
-		// loop to reset it with a if statement. NOTE: If you think of a
+		// loop to reset it with an if statement. NOTE: If you think of a
 		// better solution. Too Bad!
 		if (reset_gui_r)
 			this->resetUi();
@@ -95,16 +95,65 @@ void EditorGuiService::uiLoop() {
 	gui.reset();
 }
 
-void EditorGuiService::setScreen(std::unique_ptr<UIScreen> set_to_screen) {
+void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
+								 bool forceSwitch) {
+	if (this->currentScreen != nullptr &&
+		setToScreen->getNameOfScreen() ==
+			this->currentScreen->getNameOfScreen() &&
+		!forceSwitch) {
+		return;
+	}
+	auto group = this->uiChangePreInit(setToScreen.get());
+	this->prevScreen = this->currentScreen.release();
+	this->currentScreen.swap(setToScreen);
+	this->currentScreen->initItems(group);
+	gui->add(group);
+}
+
+tgui::Group::Ptr EditorGuiService::uiChangePreInit(UIScreen *setToScreen) {
 	gui->removeAllWidgets();
 	initMenuBar();
 
 	auto group = tgui::Group::create({"100%"});
-    group->setPosition(0, "30");
+	group->setPosition(0, "30");
 
-	this->currentScreen.swap(set_to_screen);
+	if (this->currentScreen != nullptr)
+		this->currentScreen->unloadScreen();
+	std::string title = "RPG++ Editor - ";
+	title.append(setToScreen->getNameOfScreen());
+	SetWindowTitle(title.c_str());
+	return group;
+}
+
+void EditorGuiService::setScreen(UIScreen *setToScreen, bool forceSwitch) {
+	if (this->currentScreen != nullptr &&
+		setToScreen->getNameOfScreen() ==
+			this->currentScreen->getNameOfScreen() &&
+		!forceSwitch) {
+		return;
+	}
+	auto group = this->uiChangePreInit(setToScreen);
+	this->prevScreen = this->currentScreen.release();
+	this->currentScreen = std::unique_ptr<UIScreen>(setToScreen);
 	this->currentScreen->initItems(group);
+	gui->add(group);
+}
 
+void EditorGuiService::createLogoCenter(
+	tgui::GrowVerticalLayout::Ptr verticalLayout) {
+
+	auto boxLayout = tgui::BoxLayout::create({"100%", 96});
+	auto welcomePic = tgui::Picture::create("resources/logo-ups.png");
+	welcomePic->setOrigin({0.5, 0.5});
+	welcomePic->setPosition({"50%", "50%"});
+	boxLayout->add(welcomePic);
+
+	verticalLayout->add(boxLayout);
+}
+
+void EditorGuiService::reloadUi() {
+	auto group = this->uiChangePreInit(this->currentScreen.get());
+	this->currentScreen->initItems(group);
 	gui->add(group);
 }
 
@@ -113,46 +162,50 @@ void EditorGuiService::initMenuBar() {
 	this->translations.clear();
 	auto menuBar = tgui::MenuBar::create();
 	auto &ts = Editor::instance->getTranslations();
+	const auto &fileOptionsTranslation = ts.getKey("file.options");
+	const auto &fileOpenProjectTranslation = ts.getKey("file.open_project");
 	// TODO: File/Project Options.
-	menuBar->addMenu(ts.getKey("file.options"));
+	menuBar->addMenu(fileOptionsTranslation);
 	menuBar->addMenuItem(ts.getKey("file.new_project"));
-	menuBar->addMenuItem(ts.getKey("file.open_project"));
+	menuBar->addMenuItem(fileOpenProjectTranslation);
 	// Translation Options.
 	const auto currentMenuText = ts.getKey("translations.options");
 	menuBar->addMenu(currentMenuText);
 	for (auto const &[language_file_name, data] : ts.translations) {
-		const auto menuItemText =
-		    ts.getKey("language", language_file_name.c_str());
+		const auto menuItemText = ts.getKey("language", language_file_name);
 		menuBar->addMenuItem(menuItemText);
-		// Add data to there if needed.
-		this->translations.try_emplace(menuItemText,
-					       language_file_name);
+		this->translations.try_emplace(menuItemText, language_file_name);
 	}
-	// This allows the user to change the language.
-	// FIXME: please make this NOT use a std::map.
 	menuBar->onMenuItemClick.connect(
-	    [this, &ts](const tgui::String &button_text) {
-		    const auto it = this->translations.find(button_text);
-		    if (it != this->translations.end()) {
-			    ts.current_language = it->second;
-			    this->setResetUi();
-		    }
-	    });
-
-	menuBar->connectMenuItem({ts.getKey("file.options"), ts.getKey("file.open_project")}, [] {
-		auto files = tgui::FileDialog::create();
-
-		files->onFileSelect([](const tgui::String& filePath) {
-			Editor::instance->setProject(filePath.toStdString());
-			Editor::instance->getGui().setScreen(std::make_unique<screens::ProjectScreen>());
+		[this, &ts](const tgui::String &button_text) {
+			if (const auto it = this->translations.find(button_text);
+				it != this->translations.end()) {
+				ts.current_language = it->second;
+				this->reloadUi();
+			}
 		});
 
-		Editor::instance->getGui().gui->add(files);
+	menuBar->connectMenuItem(
+		{fileOptionsTranslation, fileOpenProjectTranslation}, [] {
+			auto files = tgui::FileDialog::create();
+
+			files->onFileSelect([](const tgui::String &filePath) {
+				Editor::instance->setProject(filePath.toStdString());
+				Editor::instance->getGui().setScreen(
+					std::make_unique<screens::ProjectScreen>(), false);
+			});
+
+			Editor::instance->getGui().gui->add(files);
+		});
+	const auto &aboutOptions = ts.getKey("about.options");
+	const auto &aboutRpgpp = ts.getKey("about.options.rpgpp");
+	menuBar->addMenu(aboutOptions);
+	menuBar->addMenuItem(aboutRpgpp);
+
+	menuBar->connectMenuItem({aboutOptions, aboutRpgpp}, [] {
+		Editor::instance->getGui().setScreen(
+			std::make_unique<screens::AboutScreen>(), false);
 	});
-	// TODO: About Options.
-	menuBar->addMenu(ts.getKey("about.options"));
-	menuBar->addMenuItem(ts.getKey("about.options.rgpp"));
 	menuBar->setSize({"100%", "30"});
-	menuBar->setMouseCursor(tgui::Cursor::Type::Hand);
 	this->gui->add(menuBar);
 }

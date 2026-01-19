@@ -29,10 +29,8 @@ std::string getKeyWrapper(TranslationService *tr, const std::string &c_language,
 		if (gotten_translations.find(key) !=
 			gotten_translations.end()) {
 			return gotten_translations[key];
-		} else {
-			throw std::out_of_range(
-				"key not found in translations.");
 		}
+		return tr->translations[DEFAULT_LANGUAGE][key];
 	} else {
 		throw std::out_of_range(
 			"translation doesn't exist in translations.");

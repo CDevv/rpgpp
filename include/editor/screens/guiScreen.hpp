@@ -2,9 +2,10 @@
 #define _RPGPP_BASE_GUI_WIDGET_H
 
 #include <TGUI/Widgets/Group.hpp>
+#include <string>
 
 class UIScreen {
-public:
+  public:
 	virtual ~UIScreen() = default;
 	UIScreen() = default;
 
@@ -14,5 +15,11 @@ public:
 		// this is a base method, meaning other objects should extend it
 		// to create widgets.
 	}
+
+	virtual void unloadScreen() {
+		// this is a base method when you need to unload textures and such.
+	}
+
+	virtual const std::string getNameOfScreen() { return "base"; }
 };
 #endif

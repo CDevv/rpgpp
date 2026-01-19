@@ -1,4 +1,5 @@
 #include "welcomeScreen.hpp"
+#include "TGUI/AllWidgets.hpp"
 #include "TGUI/Filesystem.hpp"
 #include "TGUI/Widgets/BoxLayout.hpp"
 #include "TGUI/Widgets/Button.hpp"
@@ -8,7 +9,6 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/Picture.hpp"
 #include "TGUI/Widgets/VerticalLayout.hpp"
-#include "TGUI/AllWidgets.hpp"
 #include "editor.hpp"
 #include "editorGuiService.hpp"
 #include "projectScreen.hpp"
@@ -24,47 +24,40 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	verticalLayout->setOrigin(0.5, 0.5);
 	verticalLayout->getRenderer()->setSpaceBetweenWidgets(10.0f);
 
-	auto boxLayout = tgui::BoxLayout::create({"100%", 96});
-	auto welcomePic = tgui::Picture::create("resources/logo-ups.png");
-	welcomePic->setOrigin({0.5, 0.5});
-	welcomePic->setPosition({"50%", "50%"});
-	boxLayout->add(welcomePic);
-	verticalLayout->add(boxLayout);
-
+	Editor::instance->getGui().createLogoCenter(verticalLayout);
 	// TODO: Make the menu, actually get you started.
 	// The "Get Started!" text.
 
 	auto headerLabel =
-	    tgui::Label::create(ts.getKey("screen.starting.get_started"));
+		tgui::Label::create(ts.getKey("screen.starting.get_started"));
 	headerLabel->getRenderer()->setTextSize(32);
 	headerLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	verticalLayout->add(headerLabel);
 
 	auto introLabel =
-	    tgui::Label::create(ts.getKey("screen.starting.description"));
+		tgui::Label::create(ts.getKey("screen.starting.description"));
 	introLabel->getRenderer()->setTextSize(16);
 	introLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	introLabel->setSize({0, 81});
 	verticalLayout->add(introLabel);
 
-	auto newProjButton =
-	    tgui::Button::create(ts.getKey("file.new_project"));
+	auto newProjButton = tgui::Button::create(ts.getKey("file.new_project"));
 	newProjButton->getRenderer()->setTextSize(16);
-	auto openProjButton =
-	    tgui::Button::create(ts.getKey("file.open_project"));
+	auto openProjButton = tgui::Button::create(ts.getKey("file.open_project"));
 	openProjButton->getRenderer()->setTextSize(16);
 
 	openProjButton->onPress([] {
 		auto files = tgui::FileDialog::create();
 
-		files->onFileSelect([](const tgui::String& filePath) {
+		files->onFileSelect([](const tgui::String &filePath) {
 			Editor::instance->setProject(filePath.toStdString());
-			Editor::instance->getGui().setScreen(std::make_unique<ProjectScreen>());
+			Editor::instance->getGui().setScreen(
+				std::make_unique<ProjectScreen>(), false);
 		});
 
 		Editor::instance->getGui().gui->add(files);
 
-		//Editor::instance->getGui().setScreen(std::make_unique<ProjectScreen>());
+		// Editor::instance->getGui().setScreen(std::make_unique<ProjectScreen>());
 	});
 
 	verticalLayout->add(newProjButton);

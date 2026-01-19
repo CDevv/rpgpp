@@ -5,7 +5,8 @@
   "translations.options": "Езици...",
   "file.new_project": "Нов проект",
   "file.open_project": "Отвори проект",
-  "about.options.rgpp": "Относно RPG++...",
+  "about.options.rpgpp": "Относно RPG++...",
   "screen.starting.get_started": "Започни!",
-  "screen.starting.description": "Натисни 'Нов Проект' за да създадете нов проект или 'Отвори проект' за да отворите вече съществуващ проект!"
+  "screen.starting.description": "Натисни 'Нов Проект' за да създадете нов проект или 'Отвори проект' за да отворите вече съществуващ проект!",
+  "button.go_back": "FIXME: ADD GO BACK BULGARIAN TRANSLATION"
 }
