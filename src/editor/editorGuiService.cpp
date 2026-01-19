@@ -1,22 +1,17 @@
 #include "editorGuiService.hpp"
 #include "TGUI/Backend/raylib.hpp"
-#include "TGUI/Cursor.hpp"
 #include "TGUI/Loading/Theme.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/Group.hpp"
-#include "TGUI/Widgets/Label.hpp"
 #include "aboutScreen.h"
 #include "editor.hpp"
+#include "guiActions.hpp"
 #include "guiScreen.hpp"
-#include "projectScreen.hpp"
 #include "raylib.h"
 #include "translationService.hpp"
 #include "welcomeScreen.hpp"
 #include <TGUI/AllWidgets.hpp>
 #include <cmath>
-#include <cstring>
-#include <exception>
-#include <iostream>
 #include <memory>
 #include <string>
 
@@ -186,17 +181,8 @@ void EditorGuiService::initMenuBar() {
 		});
 
 	menuBar->connectMenuItem(
-		{fileOptionsTranslation, fileOpenProjectTranslation}, [] {
-			auto files = tgui::FileDialog::create();
-
-			files->onFileSelect([](const tgui::String &filePath) {
-				Editor::instance->setProject(filePath.toStdString());
-				Editor::instance->getGui().setScreen(
-					std::make_unique<screens::ProjectScreen>(), false);
-			});
-
-			Editor::instance->getGui().gui->add(files);
-		});
+		{fileOptionsTranslation, fileOpenProjectTranslation},
+		[] { GUIActions::openProject(); });
 	const auto &aboutOptions = ts.getKey("about.options");
 	const auto &aboutRpgpp = ts.getKey("about.options.rpgpp");
 	menuBar->addMenu(aboutOptions);

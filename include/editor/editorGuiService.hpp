@@ -27,11 +27,14 @@ class EditorGuiService {
 	void init();
 	void uiLoop();
 	void initMenuBar();
+
 	void setScreen(std::unique_ptr<UIScreen> newScreen, bool forceSwitch);
 	void setScreen(UIScreen *newScreen, bool forceSwitch);
+
 	void resetUi();
 	tgui::Group::Ptr uiChangePreInit(UIScreen *setToScreen);
 	void setResetUi() { this->reset_gui_r = true; }
+
 	void reloadUi();
 	void createLogoCenter(tgui::GrowVerticalLayout::Ptr layout);
 };

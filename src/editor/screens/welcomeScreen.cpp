@@ -1,19 +1,11 @@
 #include "welcomeScreen.hpp"
-#include "TGUI/AllWidgets.hpp"
-#include "TGUI/Filesystem.hpp"
-#include "TGUI/Widgets/BoxLayout.hpp"
 #include "TGUI/Widgets/Button.hpp"
-#include "TGUI/Widgets/FileDialog.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
-#include "TGUI/Widgets/HorizontalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
-#include "TGUI/Widgets/Picture.hpp"
-#include "TGUI/Widgets/VerticalLayout.hpp"
 #include "editor.hpp"
 #include "editorGuiService.hpp"
-#include "projectScreen.hpp"
+#include "guiActions.hpp"
 #include "translationService.hpp"
-#include <memory>
 
 void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	auto &ts = Editor::instance->getTranslations();
@@ -47,17 +39,8 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	openProjButton->getRenderer()->setTextSize(16);
 
 	openProjButton->onPress([] {
-		auto files = tgui::FileDialog::create();
-
-		files->onFileSelect([](const tgui::String &filePath) {
-			Editor::instance->setProject(filePath.toStdString());
-			Editor::instance->getGui().setScreen(
-				std::make_unique<ProjectScreen>(), false);
-		});
-
-		Editor::instance->getGui().gui->add(files);
-
 		// Editor::instance->getGui().setScreen(std::make_unique<ProjectScreen>());
+		GUIActions::openProject();
 	});
 
 	verticalLayout->add(newProjButton);

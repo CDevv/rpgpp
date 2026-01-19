@@ -2,7 +2,6 @@
 #define _RPGPP_WELCOME_SCREEN_H
 
 #include "TGUI/Widgets/Group.hpp"
-#include "editor.hpp"
 #include "guiScreen.hpp"
 
 namespace screens {
