@@ -1,15 +1,18 @@
 #ifndef _RPGPP_BASE_GUI_WIDGET_H
 #define _RPGPP_BASE_GUI_WIDGET_H
-#include "TGUI/Backend/raylib.hpp"
+
+#include <TGUI/Widgets/Group.hpp>
+
 class UIScreen {
-
 public:
-  virtual ~UIScreen() = default;
-  UIScreen() = default;
+	virtual ~UIScreen() = default;
+	UIScreen() = default;
 
-  virtual void addElement(tgui::Gui *layout) {
-    // this is a base method, meaning other objects should extend it to create
-    // widgets.
-  }
+	void addElement();
+
+	virtual void initItems(tgui::Group::Ptr layout) {
+		// this is a base method, meaning other objects should extend it
+		// to create widgets.
+	}
 };
 #endif

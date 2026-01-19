@@ -1,11 +1,11 @@
-#ifndef _RPGPP_WELCOME_SCREEN_H
-#define _RPGPP_WELCOME_SCREEN_H
+#ifndef _RPGPP_SCREENS_PROJECT_SCREEN_H
+#define _RPGPP_SCREENS_PROJECT_SCREEN_H
 
 #include "editor.hpp"
 #include "guiScreen.hpp"
 
 namespace screens {
-class WelcomeScreen : public UIScreen {
+class ProjectScreen : public UIScreen {
 
 public:
 	void initItems(tgui::Group::Ptr layout) override;
