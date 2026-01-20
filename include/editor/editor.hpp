@@ -2,6 +2,7 @@
 #define _RGPP_EDITOR_H
 
 #include "editorGuiService.hpp"
+#include "fileSystemService.hpp"
 #include "project.hpp"
 #include "raylib.h"
 #include "translationService.hpp"
@@ -16,6 +17,7 @@ class Editor {
 	std::unique_ptr<EditorGuiService> guiService;
 	// the translation service responsible for all the i18n.
 	std::unique_ptr<TranslationService> translationService;
+	std::unique_ptr<FileSystemService> fileSystem;
 
   public:
 	Editor();
@@ -28,6 +30,7 @@ class Editor {
 	static Editor *instance;
 	EditorGuiService &getGui();
 	TranslationService &getTranslations();
+	FileSystemService &getFs();
 	Project *getProject();
 	void setProject(const std::string &path);
 	// this sets the icon of the editor.

@@ -5,6 +5,7 @@ class FileSystemService {
 public:
     FileSystemService();
     void unload();
+    void promptOpenProject();
 };
 
 #endif

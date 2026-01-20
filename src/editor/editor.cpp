@@ -1,5 +1,6 @@
 #include "editor.hpp"
 #include "editorGuiService.hpp"
+#include "fileSystemService.hpp"
 #include "project.hpp"
 #include "raylib.h"
 #include "translationService.hpp"
@@ -11,6 +12,7 @@ Editor::Editor() {
 	this->project = std::unique_ptr<Project>{nullptr};
 	this->guiService = std::make_unique<EditorGuiService>();
 	this->translationService = std::make_unique<TranslationService>();
+	this->fileSystem = std::make_unique<FileSystemService>();
 }
 
 void Editor::setAppIcon(const std::string &icon_path) {
@@ -25,6 +27,10 @@ EditorGuiService& Editor::getGui() {
 
 TranslationService& Editor::getTranslations() {
 	return *translationService;
+}
+
+FileSystemService& Editor::getFs() {
+	return *fileSystem;
 }
 
 Project* Editor::getProject() {

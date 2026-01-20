@@ -2,6 +2,7 @@
 #define _RPGPP_PROJECT_H
 
 #include <string>
+#include <vector>
 
 class Project {
 private:
@@ -10,6 +11,7 @@ private:
 public:
     Project(const std::string &path);
     std::string& getTitle();
+    std::vector<std::string> getPaths();
 };
 
 #endif

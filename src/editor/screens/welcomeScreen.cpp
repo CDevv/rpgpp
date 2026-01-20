@@ -39,8 +39,7 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	openProjButton->getRenderer()->setTextSize(16);
 
 	openProjButton->onPress([] {
-		// Editor::instance->getGui().setScreen(std::make_unique<ProjectScreen>());
-		GUIActions::openProject();
+		Editor::instance->getFs().promptOpenProject();
 	});
 
 	verticalLayout->add(newProjButton);

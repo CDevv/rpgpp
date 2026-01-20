@@ -182,7 +182,7 @@ void EditorGuiService::initMenuBar() {
 
 	menuBar->connectMenuItem(
 		{fileOptionsTranslation, fileOpenProjectTranslation},
-		[] { GUIActions::openProject(); });
+		[] { Editor::instance->getFs().promptOpenProject(); });
 	const auto &aboutOptions = ts.getKey("about.options");
 	const auto &aboutRpgpp = ts.getKey("about.options.rpgpp");
 	menuBar->addMenu(aboutOptions);
