@@ -1,4 +1,6 @@
 #include "project.hpp"
+#include "editor.hpp"
+#include "fileSystemService.hpp"
 #include <filesystem>
 #include <raylib.h>
 #include <nlohmann/json.hpp>
@@ -22,9 +24,9 @@ std::string& Project::getTitle() {
     return projectTitle;
 }
 
-std::vector<std::string> Project::getPaths() {
+std::vector<std::string> Project::getPaths(EngineFileType fileType) {
     std::filesystem::path subdir = projectPath;
-    subdir /= "maps";
+    subdir /= TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
     auto pathList = LoadDirectoryFiles(subdir.c_str());
     std::vector<std::string> vec = {};
     

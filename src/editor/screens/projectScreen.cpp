@@ -3,17 +3,18 @@
 #include "TGUI/Texture.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Button.hpp"
+#include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/HorizontalWrap.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "editor.hpp"
+#include "fileSystemService.hpp"
 #include "raylib.h"
 
 void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
     auto toolBar = createToolBar();
-
     auto panel = createResourcesList();
 
     layout->add(panel);
@@ -28,7 +29,6 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
     toolBar->setPosition(0, 0);
     toolBar->getRenderer()->setSpaceBetweenWidgets(8.0f);
     toolBar->getRenderer()->setPadding(8);
-    toolBar->getRenderer()->setOpacity(0.5f);
 
     auto barSize = toolBar->getSize().y;
 
@@ -63,27 +63,50 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
     return toolBar;
 }
 
-tgui::ScrollablePanel::Ptr screens::ProjectScreen::createResourcesList() {
+tgui::Group::Ptr screens::ProjectScreen::createResourcesList() {
     auto project = Editor::instance->getProject();
 
-    auto panel = tgui::ScrollablePanel::create({"264", "100% - 54"});
+    auto group = tgui::Group::create({"264", "100% - 54"});
+    group->setPosition(0, 54);
+
+    auto resourceChoose = tgui::ComboBox::create();
+    resourceChoose->setPosition(0, 0);
+    resourceChoose->setSize("100%", 54);
+    resourceChoose->addMultipleItems({"TileSets", "Maps"});
+    resourceChoose->setSelectedItem("Maps");
+
+    group->add(resourceChoose);
+
+    auto panel = tgui::ScrollablePanel::create({"100%", "100% - 54"});
     panel->setPosition(0, 54);
     panel->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Automatic);
     panel->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
     panel->getRenderer()->setBackgroundColor(tgui::Color::applyOpacity(tgui::Color::Black, 0.2));
 
+    group->add(panel);
+
     auto vertLayout = tgui::GrowVerticalLayout::create();
     panel->add(vertLayout);
 
-    auto btn3 = tgui::Button::create("test");
-    vertLayout->add(btn3);
+    resourceChoose->onItemSelect([project, vertLayout] (int index) {
+        vertLayout->removeAllWidgets();
+
+        EngineFileType currentFileType = static_cast<EngineFileType>(index);
+        for (auto filePath : project->getPaths(currentFileType)) {
+            auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
+            fileBtn->setSize("100%", 36);
+            vertLayout->add(fileBtn);
+        }
+    });
 
     if (project != nullptr) {
-        for (auto filePath : project->getPaths()) {
+        EngineFileType currentFileType = static_cast<EngineFileType>(resourceChoose->getSelectedItemIndex());
+        for (auto filePath : project->getPaths(currentFileType)) {
             auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
+            fileBtn->setSize("100%", 36);
             vertLayout->add(fileBtn);
         }
     }
 
-    return panel;
+    return group;
 }

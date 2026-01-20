@@ -1,12 +1,17 @@
 #include "fileSystemService.hpp"
+#include <array>
 #include <nfd.h>
 #include <nfd.hpp>
+#include <string>
 #include "TGUI/Widgets/FileDialog.hpp"
 
 #include "editor.hpp"
 #include "projectScreen.hpp"
 
 FileSystemService::FileSystemService() {
+	typeNames[static_cast<int>(EngineFileType::FILE_TILESET)] = "Tilesets";
+	typeNames[static_cast<int>(EngineFileType::FILE_MAP)] = "Maps";
+
     NFD_Init();
 }
 
@@ -25,4 +30,8 @@ void FileSystemService::promptOpenProject() {
 	});
 
 	Editor::instance->getGui().gui->add(files);
+}
+
+std::string &FileSystemService::getTypeName(EngineFileType fileType) {
+	return typeNames[static_cast<int>(fileType)];
 }

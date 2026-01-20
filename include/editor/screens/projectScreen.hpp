@@ -10,7 +10,7 @@ namespace screens {
 class ProjectScreen : public UIScreen {
   private:
 	tgui::HorizontalWrap::Ptr createToolBar();
-	tgui::ScrollablePanel::Ptr createResourcesList();
+	tgui::Group::Ptr createResourcesList();
   public:
 	void initItems(tgui::Group::Ptr layout) override;
 	const std::string getNameOfScreen() override { return "Project"; }

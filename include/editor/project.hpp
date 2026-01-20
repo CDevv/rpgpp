@@ -1,6 +1,7 @@
 #ifndef _RPGPP_PROJECT_H
 #define _RPGPP_PROJECT_H
 
+#include "fileSystemService.hpp"
 #include <string>
 #include <vector>
 
@@ -11,7 +12,7 @@ private:
 public:
     Project(const std::string &path);
     std::string& getTitle();
-    std::vector<std::string> getPaths();
+    std::vector<std::string> getPaths(EngineFileType fileType);
 };
 
 #endif
