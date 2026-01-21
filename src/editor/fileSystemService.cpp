@@ -1,27 +1,27 @@
 #include "fileSystemService.hpp"
+#include "TGUI/Widgets/FileDialog.hpp"
 #include <array>
 #include <nfd.h>
 #include <nfd.hpp>
 #include <string>
-#include "TGUI/Widgets/FileDialog.hpp"
+#include <typeindex>
 
 #include "editor.hpp"
+#include "fileViews/tilesetFileView.hpp"
 #include "projectScreen.hpp"
 
 FileSystemService::FileSystemService() {
 	typeNames[static_cast<int>(EngineFileType::FILE_TILESET)] = "Tilesets";
 	typeNames[static_cast<int>(EngineFileType::FILE_MAP)] = "Maps";
 
-    NFD_Init();
+	NFD_Init();
 }
 
-void FileSystemService::unload() {
-    NFD_Quit();
-}
+void FileSystemService::unload() { NFD_Quit(); }
 
 void FileSystemService::promptOpenProject() {
-    auto files = tgui::FileDialog::create();
-    files->setFileTypeFilters({ { "RPG++ Project", {"*.rpgpp"} }});
+	auto files = tgui::FileDialog::create();
+	files->setFileTypeFilters({{"RPG++ Project", {"*.rpgpp"}}});
 
 	files->onFileSelect([](const tgui::String &filePath) {
 		Editor::instance->setProject(filePath.toStdString());

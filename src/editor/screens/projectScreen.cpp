@@ -11,102 +11,136 @@
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "fileViewVisitor.hpp"
+#include "fileViews/fileView.hpp"
+#include "fileViews/tilesetFileView.hpp"
 #include "raylib.h"
+#include <cstdio>
+#include <memory>
 
 void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
-    auto toolBar = createToolBar();
-    auto panel = createResourcesList();
+	fileViews = std::vector<std::unique_ptr<FileView>>{};
+	fileViewVisitor = std::make_unique<FileViewVisitor>();
 
-    layout->add(panel);
-    layout->add(toolBar);
+	auto toolBar = createToolBar();
 
-    // Maximize when a project is opened
-    SetWindowState(FLAG_WINDOW_MAXIMIZED);
+	auto fileView = tgui::Group::create({"100% - 264", "100% - 54"});
+	fileView->setPosition(264, 54);
+	layout->add(fileView);
+	this->fileViewGroup = fileView;
+
+	auto label = tgui::Label::create("Test");
+	fileView->add(label);
+
+	auto panel = createResourcesList(fileView);
+
+	layout->add(panel);
+	layout->add(toolBar);
+
+	// Maximize when a project is opened
+	SetWindowState(FLAG_WINDOW_MAXIMIZED);
+}
+
+void screens::ProjectScreen::addFileView(EngineFileType fileType) {
+	fileViewGroup->removeAllWidgets();
+	std::unique_ptr<FileView> viewPtr = fileViewVisitor->visit(fileType);
+	viewPtr->init(fileViewGroup);
+	fileViews.push_back(std::move(viewPtr));
 }
 
 tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
-    auto toolBar = tgui::HorizontalWrap::create({ "100%", 54 });
-    toolBar->setPosition(0, 0);
-    toolBar->getRenderer()->setSpaceBetweenWidgets(8.0f);
-    toolBar->getRenderer()->setPadding(8);
+	auto toolBar = tgui::HorizontalWrap::create({"100%", 54});
+	toolBar->setPosition(0, 0);
+	toolBar->getRenderer()->setSpaceBetweenWidgets(8.0f);
+	toolBar->getRenderer()->setPadding(8);
 
-    auto barSize = toolBar->getSize().y;
+	auto barSize = toolBar->getSize().y;
 
-    auto project = Editor::instance->getProject();
+	auto project = Editor::instance->getProject();
 
-    auto label = tgui::Label::create("text.");
-    label->setVerticalAlignment(tgui::VerticalAlignment::Center);
-    label->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
-    label->setTextSize(16);
-    label->setSize(256, "100%");
+	auto label = tgui::Label::create("text.");
+	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
+	label->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
+	label->setTextSize(16);
+	label->setSize(256, "100%");
 
-    if (project == nullptr) {
-        label->setText("uhh, nullptr");
-    } else {
-        label->setText(project->getTitle());
-    }
+	if (project == nullptr) {
+		label->setText("uhh, nullptr");
+	} else {
+		label->setText(project->getTitle());
+	}
 
-    toolBar->add(label);
+	toolBar->add(label);
 
-    auto playBtn = tgui::BitmapButton::create();
-    auto playtestImg = tgui::Texture("resources/playtest.png");
-    playBtn->setImage(playtestImg);
-    playBtn->setSize({ barSize, "100%" });
-    toolBar->add(playBtn);
+	auto playBtn = tgui::BitmapButton::create();
+	auto playtestImg = tgui::Texture("resources/playtest.png");
+	playBtn->setImage(playtestImg);
+	playBtn->setSize({barSize, "100%"});
+	toolBar->add(playBtn);
 
-    auto buildBtn = tgui::BitmapButton::create();
-    auto buildImg = tgui::Texture("resources/build.png");
-    buildBtn->setImage(buildImg);
-    buildBtn->setSize({ barSize, "100%" });
-    toolBar->add(buildBtn);
+	auto buildBtn = tgui::BitmapButton::create();
+	auto buildImg = tgui::Texture("resources/build.png");
+	buildBtn->setImage(buildImg);
+	buildBtn->setSize({barSize, "100%"});
+	toolBar->add(buildBtn);
 
-    return toolBar;
+	return toolBar;
 }
 
-tgui::Group::Ptr screens::ProjectScreen::createResourcesList() {
-    auto project = Editor::instance->getProject();
+void screens::ProjectScreen::addResourceButtons(
+	EngineFileType fileType, tgui::GrowVerticalLayout::Ptr vertLayout) {
+	auto project = Editor::instance->getProject();
 
-    auto group = tgui::Group::create({"264", "100% - 54"});
-    group->setPosition(0, 54);
+	vertLayout->removeAllWidgets();
 
-    auto resourceChoose = tgui::ComboBox::create();
-    resourceChoose->setPosition(0, 0);
-    resourceChoose->setSize("100%", 54);
-    resourceChoose->addMultipleItems({"TileSets", "Maps"});
-    resourceChoose->setSelectedItem("Maps");
+	for (auto filePath : project->getPaths(fileType)) {
+		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
+		fileBtn->setSize("100%", 36);
 
-    group->add(resourceChoose);
+		fileBtn->onPress([this, fileType] { addFileView(fileType); });
 
-    auto panel = tgui::ScrollablePanel::create({"100%", "100% - 54"});
-    panel->setPosition(0, 54);
-    panel->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Automatic);
-    panel->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
-    panel->getRenderer()->setBackgroundColor(tgui::Color::applyOpacity(tgui::Color::Black, 0.2));
+		vertLayout->add(fileBtn);
+	}
+}
 
-    group->add(panel);
+tgui::Group::Ptr
+screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
+	auto project = Editor::instance->getProject();
 
-    auto vertLayout = tgui::GrowVerticalLayout::create();
-    panel->add(vertLayout);
+	auto group = tgui::Group::create({"264", "100% - 54"});
+	group->setPosition(0, 54);
 
-    resourceChoose->onItemSelect([project, vertLayout] (int index) {
-        vertLayout->removeAllWidgets();
+	auto resourceChoose = tgui::ComboBox::create();
+	resourceChoose->setPosition(0, 0);
+	resourceChoose->setSize("100%", 54);
+	resourceChoose->addMultipleItems({"TileSets", "Maps"});
+	resourceChoose->setSelectedItem("Maps");
 
-        EngineFileType currentFileType = static_cast<EngineFileType>(index);
-        for (auto filePath : project->getPaths(currentFileType)) {
-            auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
-            fileBtn->setSize("100%", 36);
-            vertLayout->add(fileBtn);
-        }
-    });
+	group->add(resourceChoose);
 
-    if (project != nullptr) {
-        EngineFileType currentFileType = static_cast<EngineFileType>(resourceChoose->getSelectedItemIndex());
-        for (auto filePath : project->getPaths(currentFileType)) {
-            auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
-            fileBtn->setSize("100%", 36);
-            vertLayout->add(fileBtn);
-        }
-    }
+	auto panel = tgui::ScrollablePanel::create({"100%", "100% - 54"});
+	panel->setPosition(0, 54);
+	panel->getVerticalScrollbar()->setPolicy(
+		tgui::Scrollbar::Policy::Automatic);
+	panel->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
+	panel->getRenderer()->setBackgroundColor(
+		tgui::Color::applyOpacity(tgui::Color::Black, 0.2));
 
-    return group;
+	group->add(panel);
+
+	auto vertLayout = tgui::GrowVerticalLayout::create();
+	panel->add(vertLayout);
+
+	resourceChoose->onItemSelect([this, vertLayout, &fileViewGroup](int index) {
+		EngineFileType currentFileType = static_cast<EngineFileType>(index);
+		addResourceButtons(currentFileType, vertLayout);
+	});
+
+	if (project != nullptr) {
+		EngineFileType currentFileType =
+			static_cast<EngineFileType>(resourceChoose->getSelectedItemIndex());
+		addResourceButtons(currentFileType, vertLayout);
+	}
+
+	return group;
 }
