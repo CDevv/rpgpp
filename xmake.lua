@@ -82,12 +82,12 @@ if is_plat("windows") then
     -- Add the actual reference to this file, if necessary.
     -- Since it doesn't work on my environment, it was removed.
     -- If you need to add it, uncomment this part!
-    -- 
+    --
     add_links("tgui-s-d")
 end
 set_kind("binary")
 set_languages("cxx17")
-add_includedirs("include/editor/", "include/editor/screens", "include/editor/fileViews")
+add_includedirs("include/", "include/editor/", "include/editor/screens", "include/editor/fileViews")
 add_files("src/editor/*.cpp", "src/editor/screens/*.cpp", "src/editor/fileViews/*.cpp")
 add_deps("rpgpp")
 add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
