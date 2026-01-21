@@ -13,6 +13,7 @@ constexpr const char *RPGPP_EXECUTABLE_LOGO = "resources/app-icon.png";
 constexpr const char *CURRENT_TESTING_THEME = "resources/themes/RPG2007.txt";
 // The top margin for the menu.
 constexpr int TOP_MARGIN = 35;
+constexpr int ACTION_BUTTON_SIZE = 16;
 
 class EditorGuiService {
   public:
@@ -20,10 +21,13 @@ class EditorGuiService {
 	bool reset_gui_r = false;
 	EditorGuiService();
 	~EditorGuiService() = default;
+
+	int setScreen(int _cpp_par_);
+
 	std::unique_ptr<tgui::Gui> gui;
 	UIScreen *prevScreen;
 	std::unique_ptr<UIScreen> currentScreen;
-	std::map<std::string, std::string, std::less<>> translations = {};
+	std::map<std::string, std::string> translations = {};
 	void init();
 	void uiLoop();
 	void initMenuBar();
@@ -35,7 +39,8 @@ class EditorGuiService {
 	tgui::Group::Ptr uiChangePreInit(UIScreen *setToScreen);
 	void setResetUi() { this->reset_gui_r = true; }
 
+	void naviGoBack();
 	void reloadUi();
-	void createLogoCenter(tgui::GrowVerticalLayout::Ptr layout);
+	void createLogoCenter(const tgui::GrowVerticalLayout::Ptr& layout);
 };
 #endif

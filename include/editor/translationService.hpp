@@ -30,6 +30,6 @@ public:
       translations = {};
   std::string getKey(const std::string &key);
   std::string getKey(const std::string &key, const std::string &c_language);
-  std::string getKeyByLang(std::string language_key);
+  std::string getLanguageIdentifierByKey(const std::string& language_key);
 };
 #endif

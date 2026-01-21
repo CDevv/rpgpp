@@ -34,9 +34,9 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	verticalLayout->add(introLabel);
 
 	auto newProjButton = tgui::Button::create(ts.getKey("file.new_project"));
-	newProjButton->getRenderer()->setTextSize(16);
+	newProjButton->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
 	auto openProjButton = tgui::Button::create(ts.getKey("file.open_project"));
-	openProjButton->getRenderer()->setTextSize(16);
+	openProjButton->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
 
 	openProjButton->onPress([] {
 		Editor::instance->getFs().promptOpenProject();

@@ -33,7 +33,7 @@ void AboutScreen::initItems(tgui::Group::Ptr layout) {
 		Editor::instance->getGui().setScreen(
 			Editor::instance->getGui().prevScreen, false);
 	});
-	goBack->getRenderer()->setTextSize(16);
+	goBack->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
 	std::stringstream informationText;
 	informationText << "raylib: " << RAYLIB_VERSION << "\n";
 	informationText << "rpgpp: " << RPGPP_VERSION << "\n";

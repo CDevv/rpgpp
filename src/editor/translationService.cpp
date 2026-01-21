@@ -45,3 +45,11 @@ std::string TranslationService::getKey(const std::string &key,
 					   const std::string &c_language) {
 	return getKeyWrapper(this, c_language, key);
 }
+
+// NOTE: the whole point of this function, is to retrieve the raw key of a language file like "en_us", from the "language" key in the JSON.
+std::string TranslationService::getLanguageIdentifierByKey(const std::string& language_key) {
+	return std::find_if(this->translations.begin(), this->translations.end(),
+	                    [&](std::pair<std::string, std::map<std::string, std::string, std::less<>>> entry) {
+		                    return entry.second["language"] == language_key;
+	                    })->first;
+}

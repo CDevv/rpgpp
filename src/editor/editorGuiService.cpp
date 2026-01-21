@@ -15,6 +15,8 @@
 #include <memory>
 #include <string>
 
+#include "editorOptionsScreen.h"
+
 /*
 	Properties of the actual window.
 */
@@ -45,7 +47,7 @@ void EditorGuiService::resetUi() {
 	// the same assets again.
 	if (this->gui == nullptr) {
 		this->gui = std::make_unique<tgui::Gui>();
-		Editor::instance->setAppIcon(RPGPP_EXECUTABLE_LOGO);
+		Editor::setAppIcon(RPGPP_EXECUTABLE_LOGO);
 	}
 	tgui::Theme::setDefault(CURRENT_TESTING_THEME);
 
@@ -135,7 +137,7 @@ void EditorGuiService::setScreen(UIScreen *setToScreen, bool forceSwitch) {
 }
 
 void EditorGuiService::createLogoCenter(
-	tgui::GrowVerticalLayout::Ptr verticalLayout) {
+	const tgui::GrowVerticalLayout::Ptr& layout) {
 
 	auto boxLayout = tgui::BoxLayout::create({"100%", 96});
 	auto welcomePic = tgui::Picture::create("resources/logo-ups.png");
@@ -143,7 +145,7 @@ void EditorGuiService::createLogoCenter(
 	welcomePic->setPosition({"50%", "50%"});
 	boxLayout->add(welcomePic);
 
-	verticalLayout->add(boxLayout);
+	layout->add(boxLayout);
 }
 
 void EditorGuiService::reloadUi() {
@@ -164,21 +166,13 @@ void EditorGuiService::initMenuBar() {
 	menuBar->addMenuItem(ts.getKey("file.new_project"));
 	menuBar->addMenuItem(fileOpenProjectTranslation);
 	// Translation Options.
-	const auto currentMenuText = ts.getKey("translations.options");
-	menuBar->addMenu(currentMenuText);
-	for (auto const &[language_file_name, data] : ts.translations) {
-		const auto menuItemText = ts.getKey("language", language_file_name);
-		menuBar->addMenuItem(menuItemText);
-		this->translations.try_emplace(menuItemText, language_file_name);
-	}
-	menuBar->onMenuItemClick.connect(
-		[this, &ts](const tgui::String &button_text) {
-			if (const auto it = this->translations.find(button_text);
-				it != this->translations.end()) {
-				ts.current_language = it->second;
-				this->reloadUi();
-			}
-		});
+	const auto optionsTranslation = ts.getKey("options");
+	const auto editorOptionsTranslation = ts.getKey("options.editor");
+	menuBar->addMenu(optionsTranslation);
+	menuBar->addMenuItem(editorOptionsTranslation);
+	menuBar->connectMenuItem({optionsTranslation, editorOptionsTranslation}, [] {
+		Editor::instance->getGui().setScreen(std::make_unique<screens::EditorOptionsScreen>(), false);
+	});
 
 	menuBar->connectMenuItem(
 		{fileOptionsTranslation, fileOpenProjectTranslation},
@@ -194,4 +188,8 @@ void EditorGuiService::initMenuBar() {
 	});
 	menuBar->setSize({"100%", "30"});
 	this->gui->add(menuBar);
+}
+
+void EditorGuiService::naviGoBack() {
+	this->setScreen(this->prevScreen, false);
 }
