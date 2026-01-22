@@ -34,6 +34,7 @@ add_requires("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "re
 add_rules("mode.debug")
 set_defaultmode("debug")
 
+
 task("resources")
 on_run(function()
     os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
@@ -48,6 +49,8 @@ on_run(function()
         os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/rpgpplua.dll", "$(curdir)/game-src/lib/rpgpplua.dll", { async = true })
     end
     os.cp("$(curdir)/game-src", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
+    -- remove this line to test if the configuration file changes
+    os.cp("$(curdir)/resourcesDiff/*.*", "$(builddir)/$(plat)/$(arch)/$(mode)/", {copy_if_different = true})
 end)
 
 target("rpgpp")

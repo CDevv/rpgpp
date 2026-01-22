@@ -9,7 +9,7 @@
 void TileSetFileView::init(tgui::Group::Ptr layout) {
 	layout->add(tgui::Label::create("meow."));
 
-	auto worldView = WorldView::create();
+	const auto worldView = WorldView::create();
 	worldView->setSize({300, 300});
 	layout->add(worldView);
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(worldView));

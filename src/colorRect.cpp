@@ -3,12 +3,12 @@
 
 ColorRect::ColorRect() : rect(Rectangle{1, 1, 1, 1}), color() {}
 
-ColorRect::ColorRect(Rectangle rect) {
+ColorRect::ColorRect(const Rectangle rect) {
   this->rect = rect;
   this->color = RAYWHITE;
 }
 
-void ColorRect::setColor(Color newColor) { this->color = newColor; }
+void ColorRect::setColor(const Color newColor) { this->color = newColor; }
 
 void ColorRect::update() {
   // TODO

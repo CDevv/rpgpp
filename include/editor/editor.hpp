@@ -9,6 +9,8 @@
 #include <memory>
 #include <string>
 
+#include "configurationService.h"
+
 #define RPGPP_VERSION 0.1
 
 class Editor {
@@ -18,6 +20,7 @@ class Editor {
 	// the translation service responsible for all the i18n.
 	std::unique_ptr<TranslationService> translationService;
 	std::unique_ptr<FileSystemService> fileSystem;
+	std::unique_ptr<ConfigurationService> configurationService;
 
   public:
 	Editor();
@@ -28,10 +31,11 @@ class Editor {
 	Image appIcon{};
 	// the current editor instance.
 	static Editor *instance;
-	EditorGuiService &getGui();
-	TranslationService &getTranslations();
-	FileSystemService &getFs();
-	Project *getProject();
+	EditorGuiService &getGui() const;
+	TranslationService &getTranslations() const;
+	FileSystemService &getFs() const;
+	ConfigurationService& getConfiguration() const;
+	Project *getProject() const;
 	void setProject(const std::string &path);
 	// this sets the icon of the editor.
 	static void setAppIcon(const std::string &icon_path);

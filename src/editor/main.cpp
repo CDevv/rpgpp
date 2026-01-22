@@ -2,7 +2,7 @@
 #include "editorGuiService.hpp"
 
 int main() {
-	auto editor = std::make_unique<Editor>();
+	const auto editor = std::make_unique<Editor>();
 	auto &gui = editor->getGui();
 
 	gui.init();

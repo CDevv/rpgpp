@@ -8,6 +8,8 @@
 #include <stdexcept>
 #include <string>
 
+#include "editor.hpp"
+
 using json = nlohmann::json;
 
 TranslationService::TranslationService() {
@@ -18,6 +20,7 @@ TranslationService::TranslationService() {
 			directory_entry.path().stem().string(),
 			json::parse(ifstream(directory_entry.path())));
 	}
+	this->current_language = Editor::instance->getConfiguration().getStringValue("language");
 }
 
 std::string getKeyWrapper(TranslationService *tr, const std::string &c_language,

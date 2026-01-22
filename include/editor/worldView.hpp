@@ -20,7 +20,7 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	//~WorldView();
 
 	static WorldView::Ptr create();
-	static WorldView::Ptr copy(WorldView::ConstPtr widget);
+	static WorldView::Ptr copy(const WorldView::ConstPtr& widget);
 
 	void setSize(const tgui::Layout2d &size) override;
 	bool isMouseOnWidget(tgui::Vector2f pos) const override;
@@ -29,7 +29,7 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 
 	void update() override;
 	static std::shared_ptr<IUpdatable>
-	asUpdatable(std::shared_ptr<WorldView> ptr);
+	asUpdatable(const std::shared_ptr<WorldView>& ptr);
 
   protected:
 	tgui::Widget::Ptr clone() const override;

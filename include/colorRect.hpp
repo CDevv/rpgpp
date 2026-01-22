@@ -10,7 +10,8 @@ private:
     Color color;
 public:
     ColorRect();
-    ColorRect(Rectangle rect);
+
+    explicit ColorRect(Rectangle rect);
     void setColor(Color newColor);
     void update() override;
     void draw() override;

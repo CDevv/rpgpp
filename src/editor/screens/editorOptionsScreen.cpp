@@ -44,6 +44,9 @@ namespace screens {
 
         languageSelector->onItemSelect.connect([&](const tgui::String& item) {
             ts.current_language = ts.getLanguageIdentifierByKey(item.toStdString());
+            ConfigurationService &configService = Editor::instance->getConfiguration();
+            configService.setStringValue("language", ts.current_language);
+            configService.saveConfiguration();
             Editor::instance->getGui().reloadUi();
         });
 
@@ -55,7 +58,6 @@ namespace screens {
         languageLayout->add(languageSelector);
 
         verticGrowLayout->add(languageLayout);
-        // TODO: Add a "SAVE" functionality, with the configurationService.
         verticGrowLayout->add(backButton);
 
         layout->add(verticGrowLayout);

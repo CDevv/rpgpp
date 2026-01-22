@@ -8,13 +8,9 @@
 #include "updatable.hpp"
 #include <memory>
 #include <vector>
-// the RPG++ executable logo.
-constexpr const char *RPGPP_EXECUTABLE_LOGO = "resources/app-icon.png";
-// the current theme file to use.
+constexpr auto RPGPP_EXECUTABLE_LOGO = "resources/app-icon.png";
 // TODO: Add theme switching.
-constexpr const char *CURRENT_TESTING_THEME = "resources/themes/RPG2007.txt";
-// The top margin for the menu.
-constexpr int TOP_MARGIN = 35;
+constexpr auto CURRENT_TESTING_THEME = "resources/themes/RPG2007.txt";
 constexpr int ACTION_BUTTON_SIZE = 16;
 
 class EditorGuiService {
@@ -27,7 +23,8 @@ class EditorGuiService {
 	EditorGuiService();
 	~EditorGuiService() = default;
 
-	int setScreen(int _cpp_par_);
+	// I have no fucking clue what this is.
+	// int setScreen(int _cpp_par_);
 
 	std::unique_ptr<tgui::Gui> gui;
 	UIScreen *prevScreen;
@@ -47,6 +44,6 @@ class EditorGuiService {
 
 	void naviGoBack();
 	void reloadUi();
-	void createLogoCenter(const tgui::GrowVerticalLayout::Ptr &layout);
+	static void createLogoCenter(const tgui::GrowVerticalLayout::Ptr &layout);
 };
 #endif

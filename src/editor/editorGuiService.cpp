@@ -5,7 +5,6 @@
 #include "TGUI/Widgets/Group.hpp"
 #include "aboutScreen.h"
 #include "editor.hpp"
-#include "guiActions.hpp"
 #include "guiScreen.hpp"
 #include "raylib.h"
 #include "translationService.hpp"
@@ -18,14 +17,8 @@
 
 #include "editorOptionsScreen.h"
 
-/*
-	Properties of the actual window.
-*/
 constexpr int BASE_WINDOW_WIDTH = 800;
 constexpr int BASE_WINDOW_HEIGHT = 600;
-/*
-	Properties of the gradient.
-*/
 constexpr float GRADIENT_SPEED_MUTLIPLIER = 0.3f;
 constexpr float GRADIENT_COLOR_MULTIPLIER = 40.0f;
 
@@ -61,14 +54,14 @@ void EditorGuiService::uiLoop() {
 	// main loop.
 	while (!WindowShouldClose()) {
 		cg->handleEvents();
-		while (int pressed_char = GetCharPressed())
+		while (const int pressed_char = GetCharPressed())
 			cg->handleCharPressed(pressed_char);
-		while (int pressedKey = GetKeyPressed())
+		while (const int pressedKey = GetKeyPressed())
 			cg->handleKeyPressed(pressedKey);
 
-		for (auto widget : updatableWidgets) {
+		for (const auto& widget : updatableWidgets) {
 			if (!widget.expired()) {
-				std::shared_ptr<IUpdatable> spt = widget.lock();
+				const std::shared_ptr<IUpdatable> spt = widget.lock();
 				spt->update();
 			}
 		}
@@ -115,6 +108,11 @@ void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
 	gui->add(group);
 }
 
+/**
+ * this function basically handles the pre-phase before the screen changes and gets everything ready for the new screen.
+ * @param setToScreen the screen we are currently changing to.
+ * @return the group that the screen must use to position and add it's widgets.
+ */
 tgui::Group::Ptr EditorGuiService::uiChangePreInit(UIScreen *setToScreen) {
 	gui->removeAllWidgets();
 	initMenuBar();
@@ -151,8 +149,8 @@ void EditorGuiService::setScreen(UIScreen *setToScreen, bool forceSwitch) {
 void EditorGuiService::createLogoCenter(
 	const tgui::GrowVerticalLayout::Ptr &layout) {
 
-	auto boxLayout = tgui::BoxLayout::create({"100%", 96});
-	auto welcomePic = tgui::Picture::create("resources/logo-ups.png");
+	const auto boxLayout = tgui::BoxLayout::create({"100%", 96});
+	const auto welcomePic = tgui::Picture::create("resources/logo-ups.png");
 	welcomePic->setOrigin({0.5, 0.5});
 	welcomePic->setPosition({"50%", "50%"});
 	boxLayout->add(welcomePic);
@@ -169,15 +167,15 @@ void EditorGuiService::reloadUi() {
 void EditorGuiService::initMenuBar() {
 	// Clear if there's data left over.
 	this->translations.clear();
-	auto menuBar = tgui::MenuBar::create();
+	const auto menuBar = tgui::MenuBar::create();
 	auto &ts = Editor::instance->getTranslations();
 	const auto &fileOptionsTranslation = ts.getKey("file.options");
 	const auto &fileOpenProjectTranslation = ts.getKey("file.open_project");
-	// TODO: File/Project Options.
+
 	menuBar->addMenu(fileOptionsTranslation);
 	menuBar->addMenuItem(ts.getKey("file.new_project"));
 	menuBar->addMenuItem(fileOpenProjectTranslation);
-	// Translation Options.
+
 	const auto optionsTranslation = ts.getKey("options");
 	const auto editorOptionsTranslation = ts.getKey("options.editor");
 	menuBar->addMenu(optionsTranslation);
@@ -191,8 +189,7 @@ void EditorGuiService::initMenuBar() {
 	menuBar->connectMenuItem(
 		{fileOptionsTranslation, fileOpenProjectTranslation},
 		[] { Editor::instance->getFs().promptOpenProject(); });
-	const auto &aboutOptions = ts.getKey("about.options");
-	const auto &aboutRpgpp = ts.getKey("about.options.rpgpp");
+	const auto &aboutOptions = ts.getKey("about.options"), &aboutRpgpp = ts.getKey("about.options.rpgpp");
 	menuBar->addMenu(aboutOptions);
 	menuBar->addMenuItem(aboutRpgpp);
 

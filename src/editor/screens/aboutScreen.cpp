@@ -27,7 +27,7 @@ void AboutScreen::initItems(tgui::Group::Ptr layout) {
 	verticalLayout->setWidth("50%");
 	verticalLayout->setWidth(640);
 	verticalLayout->getRenderer()->setSpaceBetweenWidgets(5.0f);
-	Editor::instance->getGui().createLogoCenter(verticalLayout);
+	EditorGuiService::createLogoCenter(verticalLayout);
 	auto goBack = tgui::Button::create(tService.getKey("button.go_back"));
 	goBack->onPress.connect([] {
 		Editor::instance->getGui().setScreen(

@@ -1,7 +1,7 @@
 #ifndef _RPGPP_FILEVIEWS_TILESETFILEVIEW_H
 #define _RPGPP_FILEVIEWS_TILESETFILEVIEW_H
 
-#include "fileViews/fileView.hpp"
+#include "fileView.hpp"
 
 class TileSetFileView : public FileView {
   public:

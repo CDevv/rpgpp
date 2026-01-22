@@ -10,7 +10,7 @@ Requirements
 
 To build RPG++, you'll need to install the following tools/packages:
 
-- [XMake](https://xmake.io/) (follow the instructions on the website to install XMake on your system)
+- [xmake](https://xmake.io/) (follow the instructions on the website to install XMake on your system)
 - gcc, g++, make, ninja (on Debian-based distros, you can install this via `sudo apt install build-essential`)
 - [git](https://git-scm.com/)
 
@@ -56,6 +56,8 @@ Finally, to build all targets, run
 ```bash
 xmake build --all
 ```
+
+After building, the `resourcesDiff` and the `resources` folder will be copied to the build directory (the `resourcesDiff` folder's contents will be directly copied to the root of your build directory). The contents inside the `resourcesDiff` folder will only be copied if you make changes.
 
 Running
 ---

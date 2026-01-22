@@ -25,7 +25,7 @@ WorldView::WorldView(const char *typeName, bool initRenderer)
 
 WorldView::Ptr WorldView::create() { return std::make_shared<WorldView>(); }
 
-WorldView::Ptr WorldView::copy(WorldView::ConstPtr widget) {
+WorldView::Ptr WorldView::copy(const ConstPtr& widget) {
 	if (widget) {
 		return std::static_pointer_cast<WorldView>(widget->clone());
 	} else {
@@ -58,16 +58,16 @@ void WorldView::update() {
 }
 
 void WorldView::draw(tgui::BackendRenderTarget &target,
-					 tgui::RenderStates states) const {
-	const tgui::Borders borders{2}; // Borders are 2 pixels thick on any side
+					 const tgui::RenderStates states) const {
+	constexpr tgui::Borders borders{2}; // Borders are 2 pixels thick on any side
 
-	tgui::CanvasRaylib::draw(target, states);
+	CanvasRaylib::draw(target, states);
 	target.drawBorders(
 		states, borders, getSize(),
 		tgui::Color::applyOpacity(tgui::Color::White, m_opacityCached));
 }
 
 std::shared_ptr<IUpdatable>
-WorldView::asUpdatable(std::shared_ptr<WorldView> ptr) {
+WorldView::asUpdatable(const std::shared_ptr<WorldView>& ptr) {
 	return std::dynamic_pointer_cast<IUpdatable>(ptr);
 }
