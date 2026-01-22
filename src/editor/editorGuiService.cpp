@@ -9,6 +9,7 @@
 #include "guiScreen.hpp"
 #include "raylib.h"
 #include "translationService.hpp"
+#include "updatable.hpp"
 #include "welcomeScreen.hpp"
 #include <TGUI/AllWidgets.hpp>
 #include <cmath>
@@ -64,6 +65,13 @@ void EditorGuiService::uiLoop() {
 			cg->handleCharPressed(pressed_char);
 		while (int pressedKey = GetKeyPressed())
 			cg->handleKeyPressed(pressedKey);
+
+		for (auto widget : updatableWidgets) {
+			if (!widget.expired()) {
+				std::shared_ptr<IUpdatable> spt = widget.lock();
+				spt->update();
+			}
+		}
 
 		BeginDrawing();
 		ClearBackground(DARKGRAY);
@@ -122,6 +130,10 @@ tgui::Group::Ptr EditorGuiService::uiChangePreInit(UIScreen *setToScreen) {
 	return group;
 }
 
+void EditorGuiService::addUpdate(std::shared_ptr<IUpdatable> widget) {
+	updatableWidgets.push_back(widget);
+}
+
 void EditorGuiService::setScreen(UIScreen *setToScreen, bool forceSwitch) {
 	if (this->currentScreen != nullptr &&
 		setToScreen->getNameOfScreen() ==
@@ -137,7 +149,7 @@ void EditorGuiService::setScreen(UIScreen *setToScreen, bool forceSwitch) {
 }
 
 void EditorGuiService::createLogoCenter(
-	const tgui::GrowVerticalLayout::Ptr& layout) {
+	const tgui::GrowVerticalLayout::Ptr &layout) {
 
 	auto boxLayout = tgui::BoxLayout::create({"100%", 96});
 	auto welcomePic = tgui::Picture::create("resources/logo-ups.png");
@@ -170,9 +182,11 @@ void EditorGuiService::initMenuBar() {
 	const auto editorOptionsTranslation = ts.getKey("options.editor");
 	menuBar->addMenu(optionsTranslation);
 	menuBar->addMenuItem(editorOptionsTranslation);
-	menuBar->connectMenuItem({optionsTranslation, editorOptionsTranslation}, [] {
-		Editor::instance->getGui().setScreen(std::make_unique<screens::EditorOptionsScreen>(), false);
-	});
+	menuBar->connectMenuItem(
+		{optionsTranslation, editorOptionsTranslation}, [] {
+			Editor::instance->getGui().setScreen(
+				std::make_unique<screens::EditorOptionsScreen>(), false);
+		});
 
 	menuBar->connectMenuItem(
 		{fileOptionsTranslation, fileOpenProjectTranslation},

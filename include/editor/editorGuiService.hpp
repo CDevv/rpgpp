@@ -5,7 +5,9 @@
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "screens/guiScreen.hpp"
+#include "updatable.hpp"
 #include <memory>
+#include <vector>
 // the RPG++ executable logo.
 constexpr const char *RPGPP_EXECUTABLE_LOGO = "resources/app-icon.png";
 // the current theme file to use.
@@ -16,6 +18,9 @@ constexpr int TOP_MARGIN = 35;
 constexpr int ACTION_BUTTON_SIZE = 16;
 
 class EditorGuiService {
+  private:
+	std::vector<std::weak_ptr<IUpdatable>> updatableWidgets;
+
   public:
 	// gui service constructor.
 	bool reset_gui_r = false;
@@ -31,6 +36,7 @@ class EditorGuiService {
 	void init();
 	void uiLoop();
 	void initMenuBar();
+	void addUpdate(std::shared_ptr<IUpdatable> widget);
 
 	void setScreen(std::unique_ptr<UIScreen> newScreen, bool forceSwitch);
 	void setScreen(UIScreen *newScreen, bool forceSwitch);
@@ -41,6 +47,6 @@ class EditorGuiService {
 
 	void naviGoBack();
 	void reloadUi();
-	void createLogoCenter(const tgui::GrowVerticalLayout::Ptr& layout);
+	void createLogoCenter(const tgui::GrowVerticalLayout::Ptr &layout);
 };
 #endif
