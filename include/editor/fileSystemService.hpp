@@ -1,7 +1,9 @@
 #ifndef _RPGPP_FILESYSTEMSERVICE_H
 #define _RPGPP_FILESYSTEMSERVICE_H
 
+#include "variant.hpp"
 #include <array>
+#include <memory>
 #include <string>
 #include <typeindex>
 #include <unordered_map>

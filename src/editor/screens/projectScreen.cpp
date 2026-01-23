@@ -11,16 +11,19 @@
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
-#include "fileViewVisitor.hpp"
 #include "fileViews/fileView.hpp"
 #include "fileViews/tilesetFileView.hpp"
+#include "projectFile.hpp"
+#include "projectFileVisitor.hpp"
 #include "raylib.h"
 #include <cstdio>
 #include <memory>
+#include <utility>
+#include <vector>
 
 void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
-	fileViews = std::vector<std::unique_ptr<FileView>>{};
-	fileViewVisitor = std::make_unique<FileViewVisitor>();
+	openedFiles = std::vector<std::unique_ptr<ProjectFile>>{};
+	fileVisitor = std::make_unique<ProjectFileVisitor>();
 
 	auto toolBar = createToolBar();
 
@@ -41,11 +44,19 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	SetWindowState(FLAG_WINDOW_MAXIMIZED);
 }
 
-void screens::ProjectScreen::addFileView(EngineFileType fileType) {
+void screens::ProjectScreen::addFileView(EngineFileType fileType,
+										 const std::string &path) {
+	/*
 	fileViewGroup->removeAllWidgets();
 	std::unique_ptr<FileView> viewPtr = fileViewVisitor->visit(fileType);
 	viewPtr->init(fileViewGroup);
 	fileViews.push_back(std::move(viewPtr));
+	*/
+	fileViewGroup->removeAllWidgets();
+	std::unique_ptr<ProjectFile> projectFile =
+		fileVisitor->visit(fileType, path);
+	projectFile->initUi(fileViewGroup);
+	openedFiles.push_back(std::move(projectFile));
 }
 
 tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
@@ -97,7 +108,8 @@ void screens::ProjectScreen::addResourceButtons(
 		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
 		fileBtn->setSize("100%", 36);
 
-		fileBtn->onPress([this, fileType] { addFileView(fileType); });
+		fileBtn->onPress(
+			[this, fileType, filePath] { addFileView(fileType, filePath); });
 
 		vertLayout->add(fileBtn);
 	}

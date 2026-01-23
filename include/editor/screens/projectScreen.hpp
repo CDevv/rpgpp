@@ -7,19 +7,20 @@
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
-#include "fileViewVisitor.hpp"
 #include "fileViews/fileView.hpp"
 #include "guiScreen.hpp"
+#include "projectFile.hpp"
+#include "projectFileVisitor.hpp"
 #include <memory>
 #include <vector>
 
 namespace screens {
 class ProjectScreen : public UIScreen {
   private:
-	std::unique_ptr<FileViewVisitor> fileViewVisitor;
-	std::vector<std::unique_ptr<FileView>> fileViews;
+	std::unique_ptr<ProjectFileVisitor> fileVisitor;
+	std::vector<std::unique_ptr<ProjectFile>> openedFiles;
 	tgui::Group::Ptr fileViewGroup;
-	void addFileView(EngineFileType fileType);
+	void addFileView(EngineFileType fileType, const std::string &path);
 	tgui::HorizontalWrap::Ptr createToolBar();
 	tgui::Group::Ptr createResourcesList(tgui::Group::Ptr fileViewGroup);
 	void addResourceButtons(EngineFileType fileType,
