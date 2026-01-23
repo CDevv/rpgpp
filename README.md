@@ -57,8 +57,6 @@ Finally, to build all targets, run
 xmake build --all
 ```
 
-After building, the `resourcesDiff` and the `resources` folder will be copied to the build directory (the `resourcesDiff` folder's contents will be directly copied to the root of your build directory). The contents inside the `resourcesDiff` folder will only be copied if you make changes.
-
 Running
 ---
 

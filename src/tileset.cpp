@@ -1,4 +1,7 @@
 #include "tileset.hpp"
+
+#include <iostream>
+
 #include "atlasTile.hpp"
 #include <raylib.h>
 #include <nlohmann/json.hpp>

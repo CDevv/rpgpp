@@ -1,5 +1,8 @@
 #include "configurationService.h"
 
+#include <iostream>
+
+#include "raylib.h"
 
 
 ConfigurationService::ConfigurationService() {
@@ -7,7 +10,7 @@ ConfigurationService::ConfigurationService() {
 		this->iniFile = std::make_unique<mINI::INIFile>(RPGPP_CONFIG_FILE);
 		this->iniFile->read(this->iniStructure);
 	} else {
-		throw std::runtime_error("configuration file doesn't exist.");
+		throw std::runtime_error(GetWorkingDirectory());
 	}
 };
 

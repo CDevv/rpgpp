@@ -50,7 +50,7 @@ on_run(function()
     end
     os.cp("$(curdir)/game-src", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
     -- remove this line to test if the configuration file changes
-    os.cp("$(curdir)/resourcesDiff/*.*", "$(builddir)/$(plat)/$(arch)/$(mode)/", {copy_if_different = true})
+    os.cp("$(curdir)/rpgpp.ini", "$(builddir)/$(plat)/$(arch)/$(mode)/", {copy_if_different = true})
 end)
 
 target("rpgpp")
