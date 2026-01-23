@@ -10,7 +10,7 @@ ConfigurationService::ConfigurationService() {
 		this->iniFile = std::make_unique<mINI::INIFile>(RPGPP_CONFIG_FILE);
 		this->iniFile->read(this->iniStructure);
 	} else {
-		throw std::runtime_error(GetWorkingDirectory());
+		throw std::runtime_error("configuration file doesn't exist.");
 	}
 };
 
