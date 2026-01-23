@@ -90,8 +90,10 @@ if is_plat("windows") then
 end
 set_kind("binary")
 set_languages("cxx17")
-add_includedirs("include/", "include/editor/", "include/editor/screens", "include/editor/fileViews")
-add_files("src/editor/*.cpp", "src/editor/screens/*.cpp", "src/editor/fileViews/*.cpp")
+--add_includedirs("include/", "include/editor/", "include/editor/screens", "include/editor/fileViews")
+add_includedirs("include/", "include/editor/", os.dirs(path.join(os.scriptdir(), "include/editor/**")))
+--add_files("src/editor/*.cpp", "src/editor/screens/*.cpp", "src/editor/fileViews/*.cpp")
+add_files("src/editor/**.cpp")
 add_deps("rpgpp")
 add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
 add_linkdirs("libs/")
