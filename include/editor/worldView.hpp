@@ -8,7 +8,7 @@
 #include <memory>
 
 class WorldView : public tgui::CanvasRaylib, public IUpdatable {
-  private:
+  protected:
 	Camera2D camera;
 	RenderTexture texture;
 	bool mouseMiddleButton;

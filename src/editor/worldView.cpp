@@ -90,8 +90,8 @@ void WorldView::update() {
 	}
 
 	BeginTextureMode(m_textureTarget);
-	BeginMode2D(camera);
 
+	BeginMode2D(camera);
 	drawCanvas();
 
 	EndMode2D();
@@ -100,8 +100,6 @@ void WorldView::update() {
 
 void WorldView::drawCanvas() {
 	ClearBackground(RAYWHITE);
-
-	DrawRectangle(0, 0, 200, 100, YELLOW);
 }
 
 void WorldView::draw(tgui::BackendRenderTarget &target,
