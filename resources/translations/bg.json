@@ -2,13 +2,13 @@
   "language": "български",
   "file.options": "Файл",
   "about.options": "Относно",
-  "options": "Опции... (FIXME: DO Proper translation!)",
-  "options.editor": "Editor Options... (FIXME: Translation needed)",
+  "options": "Опции...",
+  "options.editor": "Опции на редактора...",
   "file.new_project": "Нов проект",
   "file.open_project": "Отвори проект",
   "about.options.rpgpp": "Относно RPG++...",
   "screen.starting.get_started": "Започни!",
   "screen.starting.description": "Натисни 'Нов Проект' за да създадете нов проект или 'Отвори проект' за да отворите вече съществуващ проект!",
   "button.go_back": "Върни се назад",
-  "options.language": "език: (FIXME: DO Proper translation!)"
+  "options.language": "език: "
 }

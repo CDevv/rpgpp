@@ -15,12 +15,14 @@ enum class EngineFileType { FILE_TILESET, FILE_MAP };
 class FileSystemService {
   private:
 	std::array<std::string, FILETYPE_MAX> typeNames;
+	std::string editorBaseDir;
 
   public:
 	FileSystemService();
 	void unload();
 	void promptOpenProject();
 	std::string &getTypeName(EngineFileType fileType);
+	std::string getResourcePath(const std::string &path);
 };
 
 #endif

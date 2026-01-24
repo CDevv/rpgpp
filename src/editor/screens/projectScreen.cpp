@@ -11,12 +11,9 @@
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
-#include "fileViews/fileView.hpp"
-#include "fileViews/tilesetFileView.hpp"
 #include "projectFile.hpp"
 #include "projectFileVisitor.hpp"
 #include "raylib.h"
-#include <cstdio>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -46,12 +43,6 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 
 void screens::ProjectScreen::addFileView(EngineFileType fileType,
 										 const std::string &path) {
-	/*
-	fileViewGroup->removeAllWidgets();
-	std::unique_ptr<FileView> viewPtr = fileViewVisitor->visit(fileType);
-	viewPtr->init(fileViewGroup);
-	fileViews.push_back(std::move(viewPtr));
-	*/
 	fileViewGroup->removeAllWidgets();
 	std::unique_ptr<ProjectFile> projectFile =
 		fileVisitor->visit(fileType, path);
@@ -83,14 +74,16 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
 
 	toolBar->add(label);
 
+	auto &fs = Editor::instance->getFs();
+
 	auto playBtn = tgui::BitmapButton::create();
-	auto playtestImg = tgui::Texture("resources/playtest.png");
+	auto playtestImg = tgui::Texture(fs.getResourcePath("playtest.png"));
 	playBtn->setImage(playtestImg);
 	playBtn->setSize({barSize, "100%"});
 	toolBar->add(playBtn);
 
 	auto buildBtn = tgui::BitmapButton::create();
-	auto buildImg = tgui::Texture("resources/build.png");
+	auto buildImg = tgui::Texture(fs.getResourcePath("build.png"));
 	buildBtn->setImage(buildImg);
 	buildBtn->setSize({barSize, "100%"});
 	toolBar->add(buildBtn);

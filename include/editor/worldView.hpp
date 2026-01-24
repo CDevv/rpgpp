@@ -12,6 +12,8 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	Camera2D camera;
 	RenderTexture texture;
 	bool mouseMiddleButton;
+	Vector2 mouseWorldPos;
+	Vector2 getMouseWorldPos();
 
   public:
 	typedef std::shared_ptr<WorldView> Ptr;

@@ -9,8 +9,11 @@
 #include "editor.hpp"
 #include "fileViews/tilesetFileView.hpp"
 #include "projectScreen.hpp"
+#include "raylib.h"
 
 FileSystemService::FileSystemService() {
+	editorBaseDir = GetWorkingDirectory();
+
 	typeNames[static_cast<int>(EngineFileType::FILE_TILESET)] = "Tilesets";
 	typeNames[static_cast<int>(EngineFileType::FILE_MAP)] = "Maps";
 
@@ -34,4 +37,12 @@ void FileSystemService::promptOpenProject() {
 
 std::string &FileSystemService::getTypeName(EngineFileType fileType) {
 	return typeNames[static_cast<int>(fileType)];
+}
+
+std::string FileSystemService::getResourcePath(const std::string &path) {
+	std::filesystem::path result = editorBaseDir;
+	result /= "resources";
+	result /= path;
+
+	return result.string();
 }

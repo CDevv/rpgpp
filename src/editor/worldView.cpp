@@ -16,6 +16,7 @@
 WorldView::WorldView(const char *typeName, bool initRenderer)
 	: tgui::CanvasRaylib(typeName, initRenderer) {
 	mouseMiddleButton = false;
+	mouseWorldPos = {0, 0};
 
 	tgui::Vector2f size = getSize();
 	texture =
@@ -59,9 +60,14 @@ bool WorldView::isMouseOnWidget(tgui::Vector2f pos) const {
 
 void WorldView::mouseMoved(tgui::Vector2f pos) {
 	Vector2 mouseDelta = GetMouseDelta();
+	Vector2 cameraMoveScale = Vector2Scale(mouseDelta, -1 / camera.zoom);
+
+	Vector2 mousePos = {pos.x, pos.y};
+	mouseWorldPos = GetScreenToWorld2D(mousePos, camera);
+
+	printf("[%f, %f] \n", mouseWorldPos.x, mouseWorldPos.y);
 
 	if (mouseMiddleButton) {
-		Vector2 cameraMoveScale = Vector2Scale(mouseDelta, -1 / camera.zoom);
 		camera.target = Vector2Add(camera.target, cameraMoveScale);
 	}
 
@@ -98,9 +104,7 @@ void WorldView::update() {
 	EndTextureMode();
 }
 
-void WorldView::drawCanvas() {
-	ClearBackground(RAYWHITE);
-}
+void WorldView::drawCanvas() { ClearBackground(RAYWHITE); }
 
 void WorldView::draw(tgui::BackendRenderTarget &target,
 					 const tgui::RenderStates states) const {
@@ -112,6 +116,8 @@ void WorldView::draw(tgui::BackendRenderTarget &target,
 		states, borders, getSize(),
 		tgui::Color::applyOpacity(tgui::Color::White, m_opacityCached));
 }
+
+Vector2 WorldView::getMouseWorldPos() { return mouseWorldPos; }
 
 std::shared_ptr<IUpdatable>
 WorldView::asUpdatable(const std::shared_ptr<WorldView> &ptr) {
