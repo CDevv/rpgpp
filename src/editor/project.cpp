@@ -28,7 +28,7 @@ std::vector<std::string> Project::getPaths(EngineFileType fileType) {
 	std::filesystem::path subdir = projectPath;
 	subdir /=
 		TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
-	auto pathList = LoadDirectoryFiles(subdir.c_str());
+	auto pathList = LoadDirectoryFiles(reinterpret_cast<const char*>(subdir.c_str()));
 	std::vector<std::string> vec = {};
 
 	for (int i = 0; i < pathList.count; i++) {
