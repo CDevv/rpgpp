@@ -22,6 +22,8 @@ Project::Project(const std::string &path) {
 
 std::string &Project::getTitle() { return projectTitle; }
 
+std::string &Project::getBasePath() { return projectPath; }
+
 std::vector<std::string> Project::getPaths(EngineFileType fileType) {
 	std::filesystem::path subdir = projectPath;
 	subdir /=

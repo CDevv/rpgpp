@@ -13,6 +13,7 @@ class Project {
   public:
 	Project(const std::string &path);
 	std::string &getTitle();
+	std::string &getBasePath();
 	std::vector<std::string> getPaths(EngineFileType fileType);
 };
 

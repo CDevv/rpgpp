@@ -7,6 +7,8 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"
 #include "TGUI/Widgets/ToggleButton.hpp"
+#include "fileField.hpp"
+#include "intField.hpp"
 #include <memory>
 
 PropertiesBox::PropertiesBox(const char *typeName, bool initRenderer)
@@ -83,4 +85,14 @@ void PropertiesBox::addIntField(const tgui::String &title, int initialValue,
 	group->add(value);
 
 	layout->add(group);
+}
+
+void PropertiesBox::addIntField(IntField::Ptr field) {
+	field->setSize({"100%", 24});
+	layout->add(field);
+}
+
+void PropertiesBox::addFileField(FileField::Ptr field) {
+	field->setSize({"100%", 24});
+	layout->add(field);
 }

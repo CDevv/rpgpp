@@ -33,6 +33,7 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	bool scrolled(float delta, tgui::Vector2f pos, bool touch) override;
 
 	virtual void drawCanvas();
+	virtual void drawOverlay();
 
 	void update() override;
 	static std::shared_ptr<IUpdatable>

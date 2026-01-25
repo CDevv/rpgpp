@@ -65,8 +65,6 @@ void WorldView::mouseMoved(tgui::Vector2f pos) {
 	Vector2 mousePos = {pos.x, pos.y};
 	mouseWorldPos = GetScreenToWorld2D(mousePos, camera);
 
-	printf("[%f, %f] \n", mouseWorldPos.x, mouseWorldPos.y);
-
 	if (mouseMiddleButton) {
 		camera.target = Vector2Add(camera.target, cameraMoveScale);
 	}
@@ -101,10 +99,14 @@ void WorldView::update() {
 	drawCanvas();
 
 	EndMode2D();
+	drawOverlay();
+
 	EndTextureMode();
 }
 
 void WorldView::drawCanvas() { ClearBackground(RAYWHITE); }
+
+void WorldView::drawOverlay() {}
 
 void WorldView::draw(tgui::BackendRenderTarget &target,
 					 const tgui::RenderStates states) const {
@@ -112,9 +114,8 @@ void WorldView::draw(tgui::BackendRenderTarget &target,
 		2}; // Borders are 2 pixels thick on any side
 
 	CanvasRaylib::draw(target, states);
-	target.drawBorders(
-		states, borders, getSize(),
-		tgui::Color::applyOpacity(tgui::Color::White, m_opacityCached));
+	target.drawBorders(states, borders, getSize(),
+					   tgui::Color::applyOpacity(tgui::Color::Black, 0.5f));
 }
 
 Vector2 WorldView::getMouseWorldPos() { return mouseWorldPos; }

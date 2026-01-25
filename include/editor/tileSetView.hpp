@@ -8,8 +8,10 @@ class TileSetView : public WorldView {
   public:
 	TileSet *tileSet{};
 	void drawCanvas() override;
+	void drawOverlay() override;
 
 	static TileSetView::Ptr create(TileSet *tileSet);
+	void setTileSet(TileSet *newTileSet);
 };
 
 #endif // RPGPP_TILESETTEXTUREVIEWER

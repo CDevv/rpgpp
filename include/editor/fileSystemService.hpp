@@ -22,6 +22,7 @@ class FileSystemService {
 	void unload();
 	void promptOpenProject();
 	std::string &getTypeName(EngineFileType fileType);
+	std::string &getEditorBaseDir();
 	std::string getResourcePath(const std::string &path);
 };
 

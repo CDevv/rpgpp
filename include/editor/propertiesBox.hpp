@@ -5,6 +5,8 @@
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
+#include "fileField.hpp"
+#include "intField.hpp"
 #include <functional>
 
 class PropertiesBox : public tgui::ChildWindow {
@@ -28,6 +30,8 @@ class PropertiesBox : public tgui::ChildWindow {
 	void addToggleField(const tgui::String &title);
 	void addIntField(const tgui::String &title, int initialValue,
 					 std::function<void(float)> callback);
+	void addIntField(IntField::Ptr field);
+	void addFileField(FileField::Ptr field);
 	void addButton(const tgui::String &title, std::function<void()> callback);
 };
 

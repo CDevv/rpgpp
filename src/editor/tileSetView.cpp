@@ -9,6 +9,28 @@ TileSetView::Ptr TileSetView::create(TileSet *tileSet) {
 	return tileSetTextureViewer;
 }
 
+void TileSetView::setTileSet(TileSet *newTileSet) {
+	this->tileSet = newTileSet;
+}
+
+void TileSetView::drawOverlay() {
+	const Texture2D &texture = this->tileSet->getTexture();
+
+	Rectangle textureRect = {
+		0, 0, static_cast<float>(texture.width * RPGPP_DRAW_MULTIPLIER),
+		static_cast<float>(texture.height * RPGPP_DRAW_MULTIPLIER)};
+
+	if (CheckCollisionPointRec(mouseWorldPos, textureRect)) {
+		int atlasPosX = (mouseWorldPos.x /
+						 (RPGPP_DRAW_MULTIPLIER * tileSet->getTileWidth()));
+		int atlasPosY = (mouseWorldPos.y /
+						 (RPGPP_DRAW_MULTIPLIER * tileSet->getTileHeight()));
+
+		DrawText(TextFormat("Tile [%i, %i]", atlasPosX, atlasPosY), 8, 8, 32,
+				 BLACK);
+	}
+}
+
 void TileSetView::drawCanvas() {
 	const Texture2D &texture = this->tileSet->getTexture();
 
@@ -21,18 +43,24 @@ void TileSetView::drawCanvas() {
 			static_cast<float>(tileSet->getTexture().height) / tileSize.y,
 		};
 
+		// Draw texture itself
+		DrawTextureEx(this->tileSet->getTexture(), origin, 0.0f,
+					  RPGPP_DRAW_MULTIPLIER, WHITE);
+
+		// Draw a grid
 		for (int x = 0; x < atlasSizeInTiles.x; x++) {
 			for (int y = 0; y < atlasSizeInTiles.y; y++) {
 				Rectangle tileRect = {tileSize.x * x * RPGPP_DRAW_MULTIPLIER,
 									  tileSize.y * y * RPGPP_DRAW_MULTIPLIER,
 									  tileSize.x * RPGPP_DRAW_MULTIPLIER,
 									  tileSize.y * RPGPP_DRAW_MULTIPLIER};
-				DrawRectangleLinesEx(tileRect, 1.0f, RED);
+				DrawRectangleLinesEx(tileRect, 1.0f, Fade(GRAY, 0.5f));
+
+				if (CheckCollisionPointRec(mouseWorldPos, tileRect)) {
+					DrawRectangleLinesEx(tileRect, 1.0f, Fade(GRAY, 0.5));
+				}
 			}
 		}
-
-		DrawTextureEx(this->tileSet->getTexture(), origin, 0.0f,
-					  RPGPP_DRAW_MULTIPLIER, WHITE);
 	} else
 		DrawText("Texture Load Failure...", 0, 0, 20, RED);
 
