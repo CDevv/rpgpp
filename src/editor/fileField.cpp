@@ -21,7 +21,10 @@ FileField::FileField(const char *typeName, bool initRenderer)
 		fileDialog->onFileSelect([this](const tgui::String &path) {
 			value->setText(
 				std::string(GetFileName(path.toStdString().c_str())));
-			callback(path);
+			chosenPath = path;
+			if (callback != nullptr) {
+				callback(path);
+			}
 		});
 
 		Editor::instance->getGui().gui->add(fileDialog);
@@ -66,3 +69,5 @@ void FileField::updateSize() {
 
 	value->setPosition({getSize().x * 0.5, 0});
 }
+
+tgui::String &FileField::getChosenPath() { return chosenPath; }

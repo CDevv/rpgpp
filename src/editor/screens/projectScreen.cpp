@@ -1,9 +1,12 @@
 #include "screens/projectScreen.hpp"
 #include "TGUI/Color.hpp"
+#include "TGUI/String.hpp"
 #include "TGUI/Texture.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Button.hpp"
+#include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
+#include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/HorizontalWrap.hpp"
@@ -11,9 +14,11 @@
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "newFileDialog.hpp"
 #include "projectFile.hpp"
 #include "projectFileVisitor.hpp"
 #include "raylib.h"
+#include <cstdio>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -100,7 +105,7 @@ void screens::ProjectScreen::addResourceButtons(
 	for (auto filePath : project->getPaths(fileType)) {
 		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
 		fileBtn->setSize("100%", 36);
-
+		fileBtn->getRenderer()->setBackgroundColor(tgui::Color(0, 0, 0));
 		fileBtn->onPress(
 			[this, fileType, filePath] { addFileView(fileType, filePath); });
 
@@ -120,11 +125,43 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	resourceChoose->setSize("100%", 54);
 	resourceChoose->addMultipleItems({"TileSets", "Maps"});
 	resourceChoose->setSelectedItem("Maps");
-
 	group->add(resourceChoose);
 
+	auto createResourceBtn = tgui::Button::create("New..");
+	createResourceBtn->setPosition(0, 54);
+	createResourceBtn->setSize("100%", 24);
+	createResourceBtn->onPress([] {
+		/*
+		auto childDialog = tgui::ChildWindow::create("TestDialog");
+
+		auto vertLayout = tgui::GrowVerticalLayout::create();
+
+		auto textEdit1 = tgui::EditBox::create();
+		textEdit1->setSize("100%", 24);
+		textEdit1->setDefaultText("Title.");
+
+		vertLayout->add(textEdit1);
+
+		auto textEdit2 = tgui::EditBox::create();
+		textEdit2->setSize("100%", 24);
+		textEdit2->setDefaultText("Location");
+
+		vertLayout->add(textEdit2);
+
+		childDialog->add(vertLayout);
+		*/
+
+		auto childDialog = NewFileDialog::create();
+		childDialog->callback = [](std::string title, std::string path) {
+			printf("%s \n", path.c_str());
+		};
+
+		childDialog->init(Editor::instance->getGui().gui.get());
+	});
+	group->add(createResourceBtn);
+
 	auto panel = tgui::ScrollablePanel::create({"100%", "100% - 54"});
-	panel->setPosition(0, 54);
+	panel->setPosition(0, 54 + 24);
 	panel->getVerticalScrollbar()->setPolicy(
 		tgui::Scrollbar::Policy::Automatic);
 	panel->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);

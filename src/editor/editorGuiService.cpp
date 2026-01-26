@@ -59,7 +59,7 @@ void EditorGuiService::uiLoop() {
 		while (const int pressedKey = GetKeyPressed())
 			cg->handleKeyPressed(pressedKey);
 
-		for (const auto& widget : updatableWidgets) {
+		for (const auto &widget : updatableWidgets) {
 			if (!widget.expired()) {
 				const std::shared_ptr<IUpdatable> spt = widget.lock();
 				spt->update();
@@ -109,7 +109,8 @@ void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
 }
 
 /**
- * this function basically handles the pre-phase before the screen changes and gets everything ready for the new screen.
+ * this function basically handles the pre-phase before the screen changes and
+ * gets everything ready for the new screen.
  * @param setToScreen the screen we are currently changing to.
  * @return the group that the screen must use to position and add it's widgets.
  */
@@ -189,7 +190,8 @@ void EditorGuiService::initMenuBar() {
 	menuBar->connectMenuItem(
 		{fileOptionsTranslation, fileOpenProjectTranslation},
 		[] { Editor::instance->getFs().promptOpenProject(); });
-	const auto &aboutOptions = ts.getKey("about.options"), &aboutRpgpp = ts.getKey("about.options.rpgpp");
+	const auto &aboutOptions = ts.getKey("about.options"),
+			   &aboutRpgpp = ts.getKey("about.options.rpgpp");
 	menuBar->addMenu(aboutOptions);
 	menuBar->addMenuItem(aboutRpgpp);
 
