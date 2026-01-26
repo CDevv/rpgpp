@@ -68,6 +68,7 @@ void NewFileDialog::init(tgui::Gui *gui) {
 		auto chosenPath = std::string(pathPtr->getChosenPath());
 		if (chosenTitle.length() > 0 && chosenPath.length() > 0) {
 			if (callback != nullptr) {
+				// FIXME: This throws a Segmentation Fault!
 				callback(chosenTitle, chosenPath);
 			}
 			windowPtr->close();
@@ -79,6 +80,7 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	cancelButton->setSize(108, 24);
 	cancelButton->setPosition("100% - 108 - 8 - 108 - 8", "100% - 24 - 8");
 
+	// FIXME: This throws a Segmentation Fault!
 	cancelButton->onPress([this] { window->close(); });
 	window->add(cancelButton);
 

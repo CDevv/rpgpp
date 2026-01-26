@@ -152,6 +152,8 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 		*/
 
 		auto childDialog = NewFileDialog::create();
+		// FIXME: Even though the callback is set in the variables, a
+		// segmentation fault still occurs!
 		childDialog->callback = [](std::string title, std::string path) {
 			printf("%s \n", path.c_str());
 		};
