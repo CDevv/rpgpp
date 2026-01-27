@@ -52,13 +52,15 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	fileField->setSize({"100%", 24});
 	vertLayout->add(fileField);
 
-	auto confirmButton = tgui::Button::create("Confirm");
+	confirmButton = tgui::Button::create("Confirm");
 	confirmButton->setSize(108, 24);
 	confirmButton->setPosition("100% - 108 - 8", "100% - 24 - 8");
 
 	auto weakTitle = std::weak_ptr<tgui::EditBox>(titleField);
 	auto weakPath = std::weak_ptr<FileField>(fileField);
 	auto weakWindow = std::weak_ptr<tgui::ChildWindow>(window);
+
+	/*
 	confirmButton->onPress([this, weakTitle, weakPath, weakWindow] {
 		auto titlePtr = weakTitle.lock();
 		auto pathPtr = weakPath.lock();
@@ -68,15 +70,19 @@ void NewFileDialog::init(tgui::Gui *gui) {
 		auto chosenPath = std::string(pathPtr->getChosenPath());
 		if (chosenTitle.length() > 0 && chosenPath.length() > 0) {
 			if (callback != nullptr) {
+				printf("%s \n", chosenTitle.c_str());
 				// FIXME: This throws a Segmentation Fault!
-				callback(chosenTitle, chosenPath);
+				// callback(chosenTitle, chosenPath);
+				try2();
 			}
 			windowPtr->close();
 		}
 	});
+	*/
+
 	window->add(confirmButton);
 
-	auto cancelButton = tgui::Button::create("Cancel");
+	cancelButton = tgui::Button::create("Cancel");
 	cancelButton->setSize(108, 24);
 	cancelButton->setPosition("100% - 108 - 8 - 108 - 8", "100% - 24 - 8");
 

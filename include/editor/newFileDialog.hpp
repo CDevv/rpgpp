@@ -4,6 +4,7 @@
 #include "TGUI/Backend/raylib.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/SubwidgetContainer.hpp"
+#include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
 #include "fileField.hpp"
@@ -17,7 +18,11 @@ class NewFileDialog {
 	tgui::ChildWindow::Ptr window;
 	tgui::EditBox::Ptr titleField;
 	FileField::Ptr fileField;
-	std::function<void(std::string title, std::string path)> callback;
+	tgui::Button::Ptr confirmButton;
+	tgui::Button::Ptr cancelButton;
+	std::function<void(const std::string &title, const std::string &path)>
+		callback{};
+	std::function<void()> try2;
 
 	typedef std::shared_ptr<NewFileDialog> Ptr;
 	typedef std::shared_ptr<const NewFileDialog> ConstPtr;

@@ -113,6 +113,11 @@ void screens::ProjectScreen::addResourceButtons(
 	}
 }
 
+void functest(const std::string &title, const std::string &path) {
+	// printf("functest: %s %s \n", title.c_str(), path.c_str());
+	printf("functest: %s \n", title.c_str());
+}
+
 tgui::Group::Ptr
 screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	auto project = Editor::instance->getProject();
@@ -154,11 +159,24 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 		auto childDialog = NewFileDialog::create();
 		// FIXME: Even though the callback is set in the variables, a
 		// segmentation fault still occurs!
-		childDialog->callback = [](std::string title, std::string path) {
-			printf("%s \n", path.c_str());
-		};
+		// childDialog->callback = functest;
 
 		childDialog->init(Editor::instance->getGui().gui.get());
+
+		childDialog->try2 = [childDialog] {
+			printf(
+				"try2: %s \n",
+				childDialog->fileField->getChosenPath().toStdString().c_str());
+		};
+
+		childDialog->confirmButton->onPress([childDialog] {
+			printf("%s \n",
+				   childDialog->titleField->getText().toStdString().c_str());
+			printf(
+				"%s \n",
+				childDialog->fileField->getChosenPath().toStdString().c_str());
+			childDialog->window->close();
+		});
 	});
 	group->add(createResourceBtn);
 
