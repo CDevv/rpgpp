@@ -13,6 +13,7 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "editor.hpp"
+#include "fileInitVisitor.hpp"
 #include "fileSystemService.hpp"
 #include "newFileDialog.hpp"
 #include "projectFile.hpp"
@@ -26,6 +27,8 @@
 void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	openedFiles = std::vector<std::unique_ptr<ProjectFile>>{};
 	fileVisitor = std::make_unique<ProjectFileVisitor>();
+	fileInitVisitor = std::make_unique<FileInitVisitor>();
+	listedResourcesType = EngineFileType::FILE_MAP;
 
 	auto toolBar = createToolBar();
 
@@ -100,6 +103,8 @@ void screens::ProjectScreen::addResourceButtons(
 	EngineFileType fileType, tgui::GrowVerticalLayout::Ptr vertLayout) {
 	auto project = Editor::instance->getProject();
 
+	this->listedResourcesType = fileType;
+
 	vertLayout->removeAllWidgets();
 
 	for (auto filePath : project->getPaths(fileType)) {
@@ -135,48 +140,12 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	auto createResourceBtn = tgui::Button::create("New..");
 	createResourceBtn->setPosition(0, 54);
 	createResourceBtn->setSize("100%", 24);
-	createResourceBtn->onPress([] {
-		/*
-		auto childDialog = tgui::ChildWindow::create("TestDialog");
-
-		auto vertLayout = tgui::GrowVerticalLayout::create();
-
-		auto textEdit1 = tgui::EditBox::create();
-		textEdit1->setSize("100%", 24);
-		textEdit1->setDefaultText("Title.");
-
-		vertLayout->add(textEdit1);
-
-		auto textEdit2 = tgui::EditBox::create();
-		textEdit2->setSize("100%", 24);
-		textEdit2->setDefaultText("Location");
-
-		vertLayout->add(textEdit2);
-
-		childDialog->add(vertLayout);
-		*/
-
-		auto childDialog = NewFileDialog::create();
-		// FIXME: Even though the callback is set in the variables, a
-		// segmentation fault still occurs!
-		// childDialog->callback = functest;
-
-		childDialog->init(Editor::instance->getGui().gui.get());
-
-		childDialog->try2 = [childDialog] {
-			printf(
-				"try2: %s \n",
-				childDialog->fileField->getChosenPath().toStdString().c_str());
-		};
-
-		childDialog->confirmButton->onPress([childDialog] {
-			printf("%s \n",
-				   childDialog->titleField->getText().toStdString().c_str());
-			printf(
-				"%s \n",
-				childDialog->fileField->getChosenPath().toStdString().c_str());
-			childDialog->window->close();
-		});
+	createResourceBtn->onPress([this] {
+		if (!fileInitVisitor->funcIsEmpty(listedResourcesType)) {
+			auto childDialog = NewFileDialog::create();
+			childDialog->init(Editor::instance->getGui().gui.get());
+			fileInitVisitor->visit(listedResourcesType, childDialog);
+		}
 	});
 	group->add(createResourceBtn);
 

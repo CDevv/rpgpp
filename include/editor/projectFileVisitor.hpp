@@ -2,7 +2,6 @@
 #define _RPGPP_PROJECTFILEVISITOR_H
 
 #include "fileSystemService.hpp"
-#include "fileViews/fileView.hpp"
 #include "projectFile.hpp"
 #include <array>
 #include <functional>

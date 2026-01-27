@@ -6,6 +6,7 @@
 #include "TGUI/Widgets/HorizontalWrap.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "editor.hpp"
+#include "fileInitVisitor.hpp"
 #include "fileSystemService.hpp"
 #include "fileViews/fileView.hpp"
 #include "guiScreen.hpp"
@@ -20,6 +21,8 @@ class ProjectScreen : public UIScreen {
 	std::unique_ptr<ProjectFileVisitor> fileVisitor;
 	std::vector<std::unique_ptr<ProjectFile>> openedFiles;
 	tgui::Group::Ptr fileViewGroup;
+	std::unique_ptr<FileInitVisitor> fileInitVisitor;
+	EngineFileType listedResourcesType;
 	void addFileView(EngineFileType fileType, const std::string &path);
 	tgui::HorizontalWrap::Ptr createToolBar();
 	tgui::Group::Ptr createResourcesList(tgui::Group::Ptr fileViewGroup);
