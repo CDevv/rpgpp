@@ -6,6 +6,7 @@
 
 class EmptyFileView : public FileView {
   public:
+	EmptyFileView();
 	void init(tgui::Group::Ptr layout, VariantWrapper *variant) override;
 };
 

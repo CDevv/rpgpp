@@ -12,9 +12,12 @@
 #include "TGUI/Widgets/HorizontalWrap.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
+#include "TGUI/Widgets/TabContainer.hpp"
+#include "TGUI/Widgets/Tabs.hpp"
 #include "editor.hpp"
 #include "fileInitVisitor.hpp"
 #include "fileSystemService.hpp"
+#include "fileTab.hpp"
 #include "newFileDialog.hpp"
 #include "projectFile.hpp"
 #include "projectFileVisitor.hpp"
@@ -32,8 +35,8 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 
 	auto toolBar = createToolBar();
 
-	auto fileView = tgui::Group::create({"100% - 264", "100% - 54"});
-	fileView->setPosition(264, 54);
+	auto fileView = tgui::Group::create({"100% - 264", "100% - 54 - 24"});
+	fileView->setPosition(264, 54 + 24);
 	layout->add(fileView);
 	this->fileViewGroup = fileView;
 
@@ -44,6 +47,17 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 
 	layout->add(panel);
 	layout->add(toolBar);
+
+	auto tabs2 = tgui::Tabs::create();
+
+	fileTabs = FileTab::create();
+	fileTabs->setSize("100% - 264", 24);
+	fileTabs->setPosition(264, 54);
+
+	fileTabs->onTabClose([](int i) { printf("tab close %i \n", i); });
+	fileTabs->onTabSelect([this](int i) { switchView(i); });
+
+	layout->add(fileTabs);
 
 	// Maximize when a project is opened
 	SetWindowState(FLAG_WINDOW_MAXIMIZED);
@@ -56,6 +70,13 @@ void screens::ProjectScreen::addFileView(EngineFileType fileType,
 		fileVisitor->visit(fileType, path);
 	projectFile->initUi(fileViewGroup);
 	openedFiles.push_back(std::move(projectFile));
+
+	fileTabs->add(GetFileName(path.c_str()));
+}
+
+void screens::ProjectScreen::switchView(int index) {
+	fileViewGroup->removeAllWidgets();
+	openedFiles.at(index)->addWidgets(fileViewGroup);
 }
 
 tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {

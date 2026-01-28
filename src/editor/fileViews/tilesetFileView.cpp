@@ -19,6 +19,57 @@
 #include <algorithm>
 #include <cstdio>
 
+TileSetFileView::TileSetFileView() {
+	const auto worldView = TileSetView::create();
+	worldView->setSize({"100% - 300", "100%"});
+	widgetContainer.push_back(worldView);
+	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(worldView));
+
+	this->worldView = worldView;
+
+	auto props = PropertiesBox::create();
+	props->setSize({"300", "100%"});
+	props->setPosition({"100% - 300", 0});
+
+	widthField = IntField::create();
+	widthField->label->setText("Tile Height");
+	widthField->value->onValueChange([this](int value) {
+		this->worldView->getTileSet()->setTileWidth(value);
+	});
+	props->addIntField(widthField);
+
+	heightField = IntField::create();
+	heightField->label->setText("Tile Height");
+	heightField->value->onValueChange([this](int value) {
+		this->worldView->getTileSet()->setTileHeight(value);
+	});
+
+	props->addButton("Square Tiles", [this] {
+		auto tileset = this->worldView->getTileSet();
+		Vector2 tileSize = tileset->getTileSize();
+		float min = std::min(tileSize.x, tileSize.y);
+		tileset->setTileSizeVector({min, min});
+
+		widthField->value->setValue(min);
+		heightField->value->setValue(min);
+	});
+
+	props->addIntField(widthField);
+	props->addIntField(heightField);
+
+	textureFile = FileField::create("Texture", "...");
+	textureFile->pathFilters = {{
+		{"Images", {"*.png", "*.jpg"}},
+	}};
+	textureFile->callback = [this](const tgui::String &path) {
+		auto tileset = this->worldView->getTileSet();
+		tileset->setTextureSource(path.toStdString());
+	};
+	props->addFileField(textureFile);
+
+	widgetContainer.push_back(props);
+}
+
 void TileSetFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 	this->variant = variant;
 
@@ -26,53 +77,12 @@ void TileSetFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 		const auto ptr = dynamic_cast<Variant<TileSet> *>(variant);
 		const auto tileset = ptr->get();
 
-		const auto worldView = TileSetView::create(tileset);
-		worldView->setSize({"100% - 300", "100%"});
-		layout->add(worldView);
-		Editor::instance->getGui().addUpdate(WorldView::asUpdatable(worldView));
+		worldView->setTileSet(tileset);
 
-		auto props = PropertiesBox::create();
-		props->setSize({"300", "100%"});
-		props->setPosition({"100% - 300", 0});
-
-		auto widthField = IntField::create();
-		widthField->label->setText("Tile Height");
 		widthField->value->setValue(tileset->getTileWidth());
-		widthField->value->onValueChange(
-			[tileset](int value) { tileset->setTileWidth(value); });
-		props->addIntField(widthField);
-
-		auto heightField = IntField::create();
-		heightField->label->setText("Tile Height");
 		heightField->value->setValue(tileset->getTileHeight());
-		heightField->value->onValueChange(
-			[tileset](int value) { tileset->setTileHeight(value); });
+		textureFile->setValue(GetFileName(tileset->getTextureSource().c_str()));
 
-		props->addButton("Square Tiles", [tileset, widthField, heightField] {
-			Vector2 tileSize = tileset->getTileSize();
-			float min = std::min(tileSize.x, tileSize.y);
-			tileset->setTileSizeVector({min, min});
-
-			widthField->value->setValue(min);
-			heightField->value->setValue(min);
-		});
-
-		props->addIntField(widthField);
-		props->addIntField(heightField);
-
-		auto textureFile = FileField::create(
-			"Texture",
-			std::string(GetFileName(tileset->getTextureSource().c_str())));
-		textureFile->pathFilters = {{
-			{"Images", {"*.png", "*.jpg"}},
-		}};
-		textureFile->callback = [tileset](const tgui::String &path) {
-			tileset->setTextureSource(path.toStdString());
-		};
-		props->addFileField(textureFile);
-
-		layout->add(props);
-
-		layout->add(props);
+		addWidgets(layout);
 	}
 }

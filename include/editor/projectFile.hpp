@@ -16,6 +16,7 @@ class ProjectFile {
 	ProjectFile(std::unique_ptr<FileView> view,
 				std::unique_ptr<VariantWrapper> variant);
 	void initUi(tgui::Group::Ptr group);
+	void addWidgets(tgui::Group::Ptr layout);
 };
 
 #endif

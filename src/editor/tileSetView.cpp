@@ -3,17 +3,31 @@
 #include "raylib.h"
 #include "tileset.hpp"
 
+TileSetView::Ptr TileSetView::create() {
+	auto tileSetView = std::make_shared<TileSetView>();
+	tileSetView->tileSet = nullptr;
+
+	return tileSetView;
+}
+
 TileSetView::Ptr TileSetView::create(TileSet *tileSet) {
-	auto tileSetTextureViewer = std::make_shared<TileSetView>();
-	tileSetTextureViewer->tileSet = tileSet;
-	return tileSetTextureViewer;
+	auto tileSetView = std::make_shared<TileSetView>();
+	tileSetView->tileSet = tileSet;
+
+	return tileSetView;
 }
 
 void TileSetView::setTileSet(TileSet *newTileSet) {
 	this->tileSet = newTileSet;
 }
 
+TileSet *TileSetView::getTileSet() { return tileSet; }
+
 void TileSetView::drawOverlay() {
+	if (this->tileSet == nullptr) {
+		return;
+	}
+
 	const Texture2D &texture = this->tileSet->getTexture();
 
 	Rectangle textureRect = {
@@ -32,6 +46,10 @@ void TileSetView::drawOverlay() {
 }
 
 void TileSetView::drawCanvas() {
+	if (this->tileSet == nullptr) {
+		return;
+	}
+
 	const Texture2D &texture = this->tileSet->getTexture();
 
 	ClearBackground(RAYWHITE);

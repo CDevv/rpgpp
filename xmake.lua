@@ -31,7 +31,7 @@ package_end()
 
 
 add_requires("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
-add_rules("mode.debug")
+add_rules("mode.debug", "mode.release")
 set_defaultmode("debug")
 
 

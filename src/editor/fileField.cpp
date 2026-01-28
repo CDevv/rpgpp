@@ -58,6 +58,11 @@ tgui::Widget::Ptr FileField::clone() const {
 	return std::make_shared<FileField>(*this);
 }
 
+void FileField::setValue(const tgui::String &value) {
+	this->value->setText(value);
+	chosenPath = value;
+}
+
 void FileField::setSize(const tgui::Layout2d &size) {
 	tgui::SubwidgetContainer::setSize(size);
 	updateSize();

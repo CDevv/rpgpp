@@ -8,6 +8,7 @@
 #include "editor.hpp"
 #include "fileInitVisitor.hpp"
 #include "fileSystemService.hpp"
+#include "fileTab.hpp"
 #include "fileViews/fileView.hpp"
 #include "guiScreen.hpp"
 #include "projectFile.hpp"
@@ -23,7 +24,9 @@ class ProjectScreen : public UIScreen {
 	tgui::Group::Ptr fileViewGroup;
 	std::unique_ptr<FileInitVisitor> fileInitVisitor;
 	EngineFileType listedResourcesType;
+	FileTab::Ptr fileTabs;
 	void addFileView(EngineFileType fileType, const std::string &path);
+	void switchView(int index);
 	tgui::HorizontalWrap::Ptr createToolBar();
 	tgui::Group::Ptr createResourcesList(tgui::Group::Ptr fileViewGroup);
 	void addResourceButtons(EngineFileType fileType,

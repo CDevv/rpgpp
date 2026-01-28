@@ -11,18 +11,12 @@
 #include <functional>
 
 class NewFileDialog {
-  private:
-	void onConfirm();
-
   public:
 	tgui::ChildWindow::Ptr window;
 	tgui::EditBox::Ptr titleField;
 	FileField::Ptr fileField;
 	tgui::Button::Ptr confirmButton;
 	tgui::Button::Ptr cancelButton;
-	std::function<void(const std::string &title, const std::string &path)>
-		callback{};
-	std::function<void()> try2;
 
 	typedef std::shared_ptr<NewFileDialog> Ptr;
 	typedef std::shared_ptr<const NewFileDialog> ConstPtr;

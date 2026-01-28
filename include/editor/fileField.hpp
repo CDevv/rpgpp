@@ -32,6 +32,7 @@ class FileField : public tgui::SubwidgetContainer {
 								 const tgui::String &value);
 	static FileField::Ptr copy(FileField::ConstPtr widget);
 
+	void setValue(const tgui::String &value);
 	void setSize(const tgui::Layout2d &size) override;
 	tgui::String &getChosenPath();
 };

@@ -19,3 +19,7 @@ void ProjectFile::initUi(tgui::Group::Ptr group) {
 		view->init(group, variant.get());
 	}
 }
+
+void ProjectFile::addWidgets(tgui::Group::Ptr layout) {
+	view->addWidgets(layout);
+}
