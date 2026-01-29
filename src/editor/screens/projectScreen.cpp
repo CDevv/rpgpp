@@ -54,7 +54,21 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	fileTabs->setSize("100% - 264", 24);
 	fileTabs->setPosition(264, 54);
 
-	fileTabs->onTabClose([](int i) { printf("tab close %i \n", i); });
+	fileTabs->onTabClose([this](int i) {
+		printf("tab close %i \n", i);
+		openedFiles.erase(openedFiles.begin() + i);
+
+		if (fileTabs->getTabsCount() == 0) {
+			fileViewGroup->removeAllWidgets();
+		} else {
+			int selected = fileTabs->getSelectedIndex();
+			if (selected >= 0) {
+				switchView(selected);
+			} else {
+				fileViewGroup->removeAllWidgets();
+			}
+		}
+	});
 	fileTabs->onTabSelect([this](int i) { switchView(i); });
 
 	layout->add(fileTabs);
