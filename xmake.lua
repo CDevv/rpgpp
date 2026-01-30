@@ -70,12 +70,14 @@ end
 -- ATTENTION! The RPG++ LUA SOURCES ARE NOT INCLUDED YET. THIS IS CAUSING LINKER ISSUES!
 -- ADD THEM TO THE PROJECT, THEN UNCOMMENT THIS PART!
 --
--- target("rpgpplua")
--- set_kind("shared")
--- set_languages("cxx17")
--- add_packages("nlohmann_json", "raylib", "luajit", { public = true })
--- add_linkdirs("libs/")
--- add_deps("rpgpp")
+target("rpgpplua")
+set_kind("shared")
+set_languages("cxx17")
+add_includedirs("include/")
+add_files("src/rpgpplua/*.cpp")
+add_packages("nlohmann_json", "raylib", "luajit", { public = true })
+add_linkdirs("libs/")
+add_deps("rpgpp")
 
 target("editor")
 -- add_includedirs("include/", "include/editor/", "libs/raylib/src/", "libs/tgui/include/")
@@ -90,9 +92,7 @@ if is_plat("windows") then
 end
 set_kind("binary")
 set_languages("cxx17")
---add_includedirs("include/", "include/editor/", "include/editor/screens", "include/editor/fileViews")
 add_includedirs("include/", "include/editor/", os.dirs(path.join(os.scriptdir(), "include/editor/**")))
---add_files("src/editor/*.cpp", "src/editor/screens/*.cpp", "src/editor/fileViews/*.cpp")
 add_files("src/editor/**.cpp")
 add_deps("rpgpp")
 add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")

@@ -123,6 +123,7 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
 	auto playtestImg = tgui::Texture(fs.getResourcePath("playtest.png"));
 	playBtn->setImage(playtestImg);
 	playBtn->setSize({barSize, "100%"});
+	playBtn->onPress([] { Editor::instance->getProject()->runProject(); });
 	toolBar->add(playBtn);
 
 	auto buildBtn = tgui::BitmapButton::create();

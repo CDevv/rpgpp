@@ -15,6 +15,7 @@ class Project {
 	std::string &getTitle();
 	std::string &getBasePath();
 	std::vector<std::string> getPaths(EngineFileType fileType);
+	void runProject();
 };
 
 #endif

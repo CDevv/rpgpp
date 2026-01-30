@@ -28,7 +28,8 @@ std::vector<std::string> Project::getPaths(EngineFileType fileType) {
 	std::filesystem::path subdir = projectPath;
 	subdir /=
 		TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
-	auto pathList = LoadDirectoryFiles(reinterpret_cast<const char*>(subdir.c_str()));
+	auto pathList =
+		LoadDirectoryFiles(reinterpret_cast<const char *>(subdir.c_str()));
 	std::vector<std::string> vec = {};
 
 	for (int i = 0; i < pathList.count; i++) {
@@ -38,4 +39,51 @@ std::vector<std::string> Project::getPaths(EngineFileType fileType) {
 	UnloadDirectoryFiles(pathList);
 
 	return vec;
+}
+
+void Project::runProject() {
+	std::string editorBasePath = Editor::instance->getFs().getEditorBaseDir();
+
+	std::filesystem::path libPath = editorBasePath;
+	libPath /= "game-src";
+	libPath /= "lib";
+	std::filesystem::path libDest = projectPath;
+	std::filesystem::path scriptPath = editorBasePath;
+	scriptPath /= "game-src/script.lua";
+
+	std::filesystem::path intepreterPath = editorBasePath;
+	intepreterPath /= "execs";
+#ifdef __linux
+	libPath /= "librpgpplua.so";
+	intepreterPath /= "luajit";
+	libDest /= "rpgpplua.so";
+
+	std::filesystem::copy_file(
+		libPath, libDest, std::filesystem::copy_options::overwrite_existing);
+
+	ChangeDirectory(projectPath.c_str());
+
+	std::string outData;
+	char buffer[256];
+	FILE *stream;
+	stream = popen(TextFormat("%s -l rpgpplua %s", intepreterPath.c_str(),
+							  scriptPath.c_str()),
+				   "r");
+	if (stream) {
+		while (!feof(stream)) {
+			if (fgets(buffer, 256, stream) != NULL) {
+				outData.append(buffer);
+			}
+		}
+		pclose(stream);
+	}
+
+	printf("Stream data: \n");
+	printf("%s", outData.c_str());
+#endif
+#ifdef __WIN64
+	intepreterPath /= "luajit.exe";
+#endif
+
+	ChangeDirectory(editorBasePath.c_str());
 }
