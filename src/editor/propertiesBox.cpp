@@ -7,8 +7,8 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"
 #include "TGUI/Widgets/ToggleButton.hpp"
-#include "fileField.hpp"
-#include "intField.hpp"
+#include "widgets/fileField.hpp"
+#include "widgets/intField.hpp"
 #include <memory>
 
 PropertiesBox::PropertiesBox(const char *typeName, bool initRenderer)

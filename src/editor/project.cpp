@@ -1,10 +1,13 @@
 #include "project.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "projectScreen.hpp"
 #include <filesystem>
+#include <memory>
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <raylib.h>
+#include <string>
 #include <vector>
 
 using json = nlohmann::json;
@@ -18,6 +21,30 @@ Project::Project(const std::string &path) {
 	this->projectTitle = j.at("title");
 
 	ChangeDirectory(projectPath.c_str());
+}
+
+void Project::create(const std::string &dirPath, const std::string &title) {
+	json j;
+	j["title"] = title;
+	std::string fileContent = j.dump(4);
+
+	std::filesystem::path filePath = dirPath;
+	filePath /= "proj.rpgpp";
+	SaveFileText(filePath.c_str(), fileContent.c_str());
+
+	MakeDirectory(std::filesystem::path(dirPath).append("tilesets").c_str());
+	MakeDirectory(std::filesystem::path(dirPath).append("maps").c_str());
+
+	Editor::instance->setProject(filePath);
+	Editor::instance->getGui().setScreen(
+		std::make_unique<screens::ProjectScreen>(), false);
+}
+
+json Project::toJson() {
+	json j;
+	j["title"] = projectTitle;
+
+	return j;
 }
 
 std::string &Project::getTitle() { return projectTitle; }

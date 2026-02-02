@@ -10,6 +10,7 @@
 #include "fileViews/tilesetFileView.hpp"
 #include "projectScreen.hpp"
 #include "raylib.h"
+#include "screens/guiScreen.hpp"
 
 FileSystemService::FileSystemService() {
 	editorBaseDir = GetWorkingDirectory();

@@ -51,6 +51,9 @@ void EditorGuiService::resetUi() {
 void EditorGuiService::uiLoop() {
 	auto const &cg = this->gui;
 	SetTraceLogLevel(LOG_WARNING);
+
+	tgui::Theme::addRendererInheritanceParent("NewProjectWindow",
+											  "ChildWindow");
 	// main loop.
 	while (!WindowShouldClose()) {
 		cg->handleEvents();

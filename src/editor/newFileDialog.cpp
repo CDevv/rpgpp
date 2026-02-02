@@ -9,11 +9,33 @@
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
+#include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/Panel.hpp"
-#include "fileField.hpp"
 #include "raylib.h"
+#include "widgets/fileChooser.hpp"
+#include "widgets/fileField.hpp"
 #include <cstdio>
 #include <memory>
+
+NewFileDialog::NewFileDialog(const char *typeName, bool initRenderer) {
+	/*
+		: tgui::ChildWindow(typeName, false) {
+		if (initRenderer) {
+			m_renderer = aurora::makeCopied<NewFileDialogRenderer>();
+			setRenderer(tgui::Theme::getDefault()->getRendererNoThrow(m_type));
+		}*/
+}
+/*
+NewFileDialog::Ptr NewFileDialog::copy(NewFileDialog::ConstPtr widget) {
+	if (widget)
+		return std::static_pointer_cast<NewFileDialog>(widget->clone());
+	else
+		return nullptr;
+}
+
+tgui::Widget::Ptr NewFileDialog::clone() const {
+	return std::make_shared<NewFileDialog>(*this);
+}*/
 
 void NewFileDialog::init(tgui::Gui *gui) {
 	window = tgui::ChildWindow::create("New..");
@@ -26,12 +48,22 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	auto vertLayout = tgui::GrowVerticalLayout::create();
 	panel->add(vertLayout);
 
+	auto titleLabel = tgui::Label::create("Title");
+	vertLayout->add(titleLabel);
+
 	titleField = tgui::EditBox::create();
 	titleField->setSize("100%", 24);
 	titleField->setDefaultText("Title..");
 	vertLayout->add(titleField);
 
-	fileField = FileField::create();
+	auto gap = tgui::Label::create();
+	gap->setSize("100%", 24);
+	vertLayout->add(gap);
+
+	fileLabel = tgui::Label::create("File..");
+	vertLayout->add(fileLabel);
+
+	fileField = FileChooser::create();
 	fileField->setSize({"100%", 24});
 	vertLayout->add(fileField);
 
@@ -40,7 +72,7 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	confirmButton->setPosition("100% - 108 - 8", "100% - 24 - 8");
 
 	auto weakTitle = std::weak_ptr<tgui::EditBox>(titleField);
-	auto weakPath = std::weak_ptr<FileField>(fileField);
+	auto weakPath = std::weak_ptr<FileChooser>(fileField);
 	auto weakWindow = std::weak_ptr<tgui::ChildWindow>(window);
 
 	window->add(confirmButton);
@@ -70,7 +102,7 @@ void NewFileDialog::setFieldTitle(const tgui::String &title) {
 }
 
 void NewFileDialog::setFileFieldTitle(const tgui::String &title) {
-	fileField->label->setText(title);
+	fileField->chosenPathLabel->setText(title);
 }
 
 void NewFileDialog::setPathFilters(

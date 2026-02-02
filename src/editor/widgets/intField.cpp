@@ -1,4 +1,4 @@
-#include "intField.hpp"
+#include "widgets/intField.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"

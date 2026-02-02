@@ -8,13 +8,13 @@
 #include "TGUI/Widgets/SpinControl.hpp"
 #include "TGUI/Widgets/ToggleButton.hpp"
 #include "editor.hpp"
-#include "fileField.hpp"
-#include "intField.hpp"
 #include "propertiesBox.hpp"
 #include "raylib.h"
 #include "tileSetView.hpp"
 #include "tileset.hpp"
 #include "variant.hpp"
+#include "widgets/fileField.hpp"
+#include "widgets/intField.hpp"
 #include "worldView.hpp"
 #include <algorithm>
 #include <cstdio>

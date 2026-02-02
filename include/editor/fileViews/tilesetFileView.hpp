@@ -1,11 +1,11 @@
 #ifndef _RPGPP_FILEVIEWS_TILESETFILEVIEW_H
 #define _RPGPP_FILEVIEWS_TILESETFILEVIEW_H
 
-#include "fileField.hpp"
 #include "fileView.hpp"
-#include "intField.hpp"
 #include "tileSetView.hpp"
 #include "variant.hpp"
+#include "widgets/fileField.hpp"
+#include "widgets/intField.hpp"
 #include "worldView.hpp"
 
 class TileSetFileView : public FileView {

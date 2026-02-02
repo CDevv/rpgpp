@@ -5,8 +5,8 @@
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
-#include "fileField.hpp"
-#include "intField.hpp"
+#include "widgets/fileField.hpp"
+#include "widgets/intField.hpp"
 #include <functional>
 
 class PropertiesBox : public tgui::ChildWindow {
