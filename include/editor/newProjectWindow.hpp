@@ -1,18 +1,23 @@
 #ifndef _RPGPP_NEWPROJECTWINDOW_H
 #define _RPGPP_NEWPROJECTWINDOW_H
 
-#include "TGUI/Renderers/ChildWindowRenderer.hpp"
+#include "TGUI/Backend/raylib.hpp"
+#include "TGUI/String.hpp"
+#include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
-#include <TGUI/AllWidgets.hpp>
+#include "TGUI/Widgets/EditBox.hpp"
+#include "TGUI/Widgets/Label.hpp"
+#include "widgets/fileChooser.hpp"
 
-/*
-class NewProjectWindowRenderer : public tgui::ChildWindowRenderer {
+class NewProjectWindow {
   public:
-	using tgui::ChildWindowRenderer::ChildWindowRenderer;
-};
+	tgui::ChildWindow::Ptr window;
+	tgui::EditBox::Ptr titleField;
+	FileChooser::Ptr fileField;
+	tgui::Button::Ptr confirmButton;
+	tgui::Button::Ptr cancelButton;
+	tgui::Label::Ptr fileLabel;
 
-class NewProjectWindow : public tgui::ChildWindow {
-  public:
 	typedef std::shared_ptr<NewProjectWindow> Ptr;
 	typedef std::shared_ptr<const NewProjectWindow> ConstPtr;
 
@@ -20,68 +25,17 @@ class NewProjectWindow : public tgui::ChildWindow {
 					 bool initRenderer = true);
 
 	static NewProjectWindow::Ptr create();
+	static NewProjectWindow::Ptr create(const tgui::String &title);
 
-	static NewProjectWindow::Ptr copy(NewProjectWindow::ConstPtr widget);
+	void init(tgui::Gui *gui);
+	void setSize(const tgui::Layout2d &size);
 
-	NewProjectWindowRenderer *getSharedRenderer() override;
-
-	const NewProjectWindowRenderer *getSharedRenderer() const override;
-
-	NewProjectWindowRenderer *getRenderer() override;
-
-	void rendererChanged(const tgui::String &property) override;
-
-	void draw(tgui::BackendRenderTarget &target,
-			  tgui::RenderStates states) const override;
-
-  protected:
-	Widget::Ptr clone() const override;
-};
-*/
-
-class NewProjectWindow
-	: public tgui::ChildWindow /* base type depends on approach */
-{
-  public:
-	// Add a Ptr typedef so that "NewProjectWindow::Ptr" has the correct type
-	typedef std::shared_ptr<NewProjectWindow> Ptr;
-	typedef std::shared_ptr<const NewProjectWindow> ConstPtr;
-
-	// Add a constructor that sets the type name. This is the string that would
-	// be returned when calling getWidgetType(). We assume that we can keep the
-	// renderer of the base class in this code. See the "Changing renderer"
-	// section later for an explanation on how to make changes to the renderer
-	// as well.
-	NewProjectWindow(const char *typeName = "NewProjectWindow",
-					 bool initRenderer = true)
-		: tgui::ChildWindow(typeName,
-							initRenderer) /* base type depends on approach */
-	{}
-
-	// Copy constructors, assignment operators and destructor can be added if
-	// required for the members that you add to the custom widget. These
-	// functions are not required by default.
-
-	// Every widget needs a static create function which creates the widget and
-	// returns a smart pointer to it. This function can have any parameters you
-	// want.
-	static NewProjectWindow::Ptr create() {
-		return std::make_shared<NewProjectWindow>();
-	}
-
-	// Every widget has a static method to copy it
-	static NewProjectWindow::Ptr copy(NewProjectWindow::ConstPtr widget) {
-		if (widget)
-			return std::static_pointer_cast<NewProjectWindow>(widget->clone());
-		else
-			return nullptr;
-	}
-
-  protected:
-	// Every widget needs a method to copy it
-	Widget::Ptr clone() const override {
-		return std::make_shared<NewProjectWindow>(*this);
-	}
+	void updateSize(const tgui::Layout2d &size);
+	void setFieldTitle(const tgui::String &title);
+	void setFileFieldTitle(const tgui::String &title);
+	void setPathFilters(
+		std::vector<std::pair<tgui::String, std::vector<tgui::String>>>
+			pathFilters);
 };
 
 #endif

@@ -25,14 +25,14 @@ class ProjectScreen : public UIScreen {
 	std::unique_ptr<FileInitVisitor> fileInitVisitor;
 	EngineFileType listedResourcesType;
 	FileTab::Ptr fileTabs;
-	void addFileView(EngineFileType fileType, const std::string &path);
+	tgui::GrowVerticalLayout::Ptr resourcesLayout;
 	void switchView(int index);
 	tgui::HorizontalWrap::Ptr createToolBar();
 	tgui::Group::Ptr createResourcesList(tgui::Group::Ptr fileViewGroup);
-	void addResourceButtons(EngineFileType fileType,
-							tgui::GrowVerticalLayout::Ptr vertLayout);
 
   public:
+	void addFileView(EngineFileType fileType, const std::string &path);
+	void addResourceButtons(EngineFileType fileType);
 	void initItems(tgui::Group::Ptr layout) override;
 	const std::string getNameOfScreen() override { return "Project"; }
 };

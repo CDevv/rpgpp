@@ -4,11 +4,12 @@
 #include "TGUI/Widgets/Group.hpp"
 #include "guiScreen.hpp"
 #include "newFileDialog.hpp"
+#include "newProjectWindow.hpp"
 
 namespace screens {
 class WelcomeScreen : public UIScreen {
   private:
-	NewFileDialog::Ptr newProjectDialog;
+	NewProjectWindow::Ptr newProjectDialog;
 
   public:
 	void initItems(tgui::Group::Ptr layout) override;

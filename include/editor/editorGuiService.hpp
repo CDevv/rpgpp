@@ -4,6 +4,7 @@
 #include "TGUI/Backend/raylib.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
+#include "TGUI/Widgets/MenuBar.hpp"
 #include "screens/guiScreen.hpp"
 #include "updatable.hpp"
 #include <memory>
@@ -29,6 +30,7 @@ class EditorGuiService {
 	std::unique_ptr<tgui::Gui> gui;
 	UIScreen *prevScreen;
 	std::unique_ptr<UIScreen> currentScreen;
+	std::weak_ptr<tgui::MenuBar> menuBar{};
 	std::map<std::string, std::string> translations = {};
 	void init();
 	void uiLoop();

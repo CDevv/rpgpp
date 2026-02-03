@@ -112,5 +112,5 @@ void Project::runProject() {
 	intepreterPath /= "luajit.exe";
 #endif
 
-	ChangeDirectory(editorBasePath.c_str());
+	// ChangeDirectory(editorBasePath.c_str());
 }

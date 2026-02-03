@@ -1,9 +1,5 @@
 #include "newFileDialog.hpp"
-#include "TGUI/Loading/Theme.hpp"
-#include "TGUI/Renderers/ChildWindowRenderer.hpp"
 #include "TGUI/String.hpp"
-#include "TGUI/SubwidgetContainer.hpp"
-#include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
@@ -11,31 +7,10 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/Panel.hpp"
-#include "raylib.h"
 #include "widgets/fileChooser.hpp"
-#include "widgets/fileField.hpp"
-#include <cstdio>
 #include <memory>
 
-NewFileDialog::NewFileDialog(const char *typeName, bool initRenderer) {
-	/*
-		: tgui::ChildWindow(typeName, false) {
-		if (initRenderer) {
-			m_renderer = aurora::makeCopied<NewFileDialogRenderer>();
-			setRenderer(tgui::Theme::getDefault()->getRendererNoThrow(m_type));
-		}*/
-}
-/*
-NewFileDialog::Ptr NewFileDialog::copy(NewFileDialog::ConstPtr widget) {
-	if (widget)
-		return std::static_pointer_cast<NewFileDialog>(widget->clone());
-	else
-		return nullptr;
-}
-
-tgui::Widget::Ptr NewFileDialog::clone() const {
-	return std::make_shared<NewFileDialog>(*this);
-}*/
+NewFileDialog::NewFileDialog(const char *typeName, bool initRenderer) {}
 
 void NewFileDialog::init(tgui::Gui *gui) {
 	window = tgui::ChildWindow::create("New..");

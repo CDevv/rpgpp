@@ -171,7 +171,8 @@ void EditorGuiService::reloadUi() {
 void EditorGuiService::initMenuBar() {
 	// Clear if there's data left over.
 	this->translations.clear();
-	const auto menuBar = tgui::MenuBar::create();
+	auto menuBar = tgui::MenuBar::create();
+	this->menuBar = menuBar;
 	auto &ts = Editor::instance->getTranslations();
 	const auto &fileOptionsTranslation = ts.getKey("file.options");
 	const auto &fileOpenProjectTranslation = ts.getKey("file.open_project");
@@ -179,6 +180,7 @@ void EditorGuiService::initMenuBar() {
 	menuBar->addMenu(fileOptionsTranslation);
 	menuBar->addMenuItem(ts.getKey("file.new_project"));
 	menuBar->addMenuItem(fileOpenProjectTranslation);
+	menuBar->addMenuItem(ts.getKey("file.save_file"));
 
 	const auto optionsTranslation = ts.getKey("options");
 	const auto editorOptionsTranslation = ts.getKey("options.editor");

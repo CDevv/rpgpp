@@ -28,6 +28,23 @@
 #include <vector>
 
 void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
+	auto &ts = Editor::instance->getTranslations();
+
+	if (!Editor::instance->getGui().menuBar.expired()) {
+		auto menuBarPtr = Editor::instance->getGui().menuBar.lock();
+		std::vector<tgui::String> hierarchy = {ts.getKey("file.options"),
+											   ts.getKey("file.save_file")};
+		menuBarPtr->setMenuItemEnabled(hierarchy, true);
+		menuBarPtr->connectMenuItem(hierarchy, [this] {
+			if (!openedFiles.empty()) {
+				int currentFile = fileTabs->getSelectedIndex();
+				printf("%i \n", currentFile);
+				auto &projectFile = openedFiles.at(currentFile);
+				projectFile->saveFile(projectFile->getFilePath());
+			}
+		});
+	}
+
 	openedFiles = std::vector<std::unique_ptr<ProjectFile>>{};
 	fileVisitor = std::make_unique<ProjectFileVisitor>();
 	fileInitVisitor = std::make_unique<FileInitVisitor>();
@@ -83,6 +100,7 @@ void screens::ProjectScreen::addFileView(EngineFileType fileType,
 	std::unique_ptr<ProjectFile> projectFile =
 		fileVisitor->visit(fileType, path);
 	projectFile->initUi(fileViewGroup);
+	projectFile->setFilePath(path);
 	openedFiles.push_back(std::move(projectFile));
 
 	fileTabs->add(GetFileName(path.c_str()));
@@ -135,13 +153,12 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
 	return toolBar;
 }
 
-void screens::ProjectScreen::addResourceButtons(
-	EngineFileType fileType, tgui::GrowVerticalLayout::Ptr vertLayout) {
+void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 	auto project = Editor::instance->getProject();
 
 	this->listedResourcesType = fileType;
 
-	vertLayout->removeAllWidgets();
+	resourcesLayout->removeAllWidgets();
 
 	for (auto filePath : project->getPaths(fileType)) {
 		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
@@ -150,13 +167,8 @@ void screens::ProjectScreen::addResourceButtons(
 		fileBtn->onPress(
 			[this, fileType, filePath] { addFileView(fileType, filePath); });
 
-		vertLayout->add(fileBtn);
+		resourcesLayout->add(fileBtn);
 	}
-}
-
-void functest(const std::string &title, const std::string &path) {
-	// printf("functest: %s %s \n", title.c_str(), path.c_str());
-	printf("functest: %s \n", title.c_str());
 }
 
 tgui::Group::Ptr
@@ -195,18 +207,18 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 
 	group->add(panel);
 
-	auto vertLayout = tgui::GrowVerticalLayout::create();
-	panel->add(vertLayout);
+	resourcesLayout = tgui::GrowVerticalLayout::create();
+	panel->add(resourcesLayout);
 
-	resourceChoose->onItemSelect([this, vertLayout, &fileViewGroup](int index) {
+	resourceChoose->onItemSelect([this, &fileViewGroup](int index) {
 		EngineFileType currentFileType = static_cast<EngineFileType>(index);
-		addResourceButtons(currentFileType, vertLayout);
+		addResourceButtons(currentFileType);
 	});
 
 	if (project != nullptr) {
 		EngineFileType currentFileType =
 			static_cast<EngineFileType>(resourceChoose->getSelectedItemIndex());
-		addResourceButtons(currentFileType, vertLayout);
+		addResourceButtons(currentFileType);
 	}
 
 	return group;

@@ -30,5 +30,6 @@ ProjectFileVisitor::tilesetView(const std::string &path) {
 	std::unique_ptr<FileView> view = std::make_unique<TileSetFileView>();
 	std::unique_ptr<VariantWrapper> variant =
 		std::make_unique<Variant<TileSet>>(new TileSet(path));
-	return std::make_unique<ProjectFile>(std::move(view), std::move(variant));
+	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
+										 EngineFileType::FILE_TILESET);
 }

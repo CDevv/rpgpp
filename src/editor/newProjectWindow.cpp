@@ -1,149 +1,91 @@
 #include "newProjectWindow.hpp"
-#include "TGUI/Loading/Theme.hpp"
-#include "TGUI/Renderers/ChildWindowRenderer.hpp"
+#include "TGUI/String.hpp"
 #include "TGUI/Widget.hpp"
+#include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
+#include "TGUI/Widgets/EditBox.hpp"
+#include "TGUI/Widgets/GrowVerticalLayout.hpp"
+#include "TGUI/Widgets/Label.hpp"
+#include "TGUI/Widgets/Panel.hpp"
+#include "widgets/fileChooser.hpp"
+#include <memory>
 
-/*
-NewProjectWindow::NewProjectWindow(const char *typeName, bool initRenderer)
-	: tgui::ChildWindow(typeName, false) {
+NewProjectWindow::NewProjectWindow(const char *typeName, bool initRenderer) {}
 
-	if (initRenderer) {
-		m_renderer = aurora::makeCopied<NewProjectWindowRenderer>();
-		setRenderer(
-			tgui::Theme::getDefault()->getRendererNoThrow("ChildWindow"));
-	}
+void NewProjectWindow::init(tgui::Gui *gui) {
+	window = tgui::ChildWindow::create("New..");
+	window->setSize(320, 220);
+
+	auto panel = tgui::Panel::create();
+	panel->getRenderer()->setPadding({8});
+	window->add(panel);
+
+	auto vertLayout = tgui::GrowVerticalLayout::create();
+	panel->add(vertLayout);
+
+	auto titleLabel = tgui::Label::create("Title");
+	vertLayout->add(titleLabel);
+
+	titleField = tgui::EditBox::create();
+	titleField->setSize("100%", 24);
+	titleField->setDefaultText("Title..");
+	vertLayout->add(titleField);
+
+	auto gap = tgui::Label::create();
+	gap->setSize("100%", 24);
+	vertLayout->add(gap);
+
+	fileLabel = tgui::Label::create("File..");
+	vertLayout->add(fileLabel);
+
+	fileField = FileChooser::create();
+	fileField->setSize({"100%", 24});
+	vertLayout->add(fileField);
+
+	confirmButton = tgui::Button::create("Confirm");
+	confirmButton->setSize(108, 24);
+	confirmButton->setPosition("100% - 108 - 8", "100% - 24 - 8");
+
+	auto weakTitle = std::weak_ptr<tgui::EditBox>(titleField);
+	auto weakPath = std::weak_ptr<FileChooser>(fileField);
+	auto weakWindow = std::weak_ptr<tgui::ChildWindow>(window);
+
+	window->add(confirmButton);
+
+	cancelButton = tgui::Button::create("Cancel");
+	cancelButton->setSize(108, 24);
+	cancelButton->setPosition("100% - 108 - 8 - 108 - 8", "100% - 24 - 8");
+
+	cancelButton->onPress([this] { window->close(); });
+	window->add(cancelButton);
+
+	gui->add(window);
 }
 
 NewProjectWindow::Ptr NewProjectWindow::create() {
 	return std::make_shared<NewProjectWindow>();
 }
 
-NewProjectWindow::Ptr
-NewProjectWindow::copy(NewProjectWindow::ConstPtr widget) {
-	if (widget)
-		return std::static_pointer_cast<NewProjectWindow>(widget->clone());
-	else
-		return nullptr;
+NewProjectWindow::Ptr NewProjectWindow::create(const tgui::String &title) {
+	auto ptr = std::make_shared<NewProjectWindow>();
+	ptr->window->setTitle(title);
+	return ptr;
 }
 
-tgui::Widget::Ptr NewProjectWindow::clone() const {
-	return std::make_shared<NewProjectWindow>(*this);
+void NewProjectWindow::setFieldTitle(const tgui::String &title) {
+	titleField->setDefaultText(title);
 }
 
-NewProjectWindowRenderer *NewProjectWindow::getSharedRenderer() {
-	return aurora::downcast<NewProjectWindowRenderer *>(
-		Widget::getSharedRenderer());
+void NewProjectWindow::setFileFieldTitle(const tgui::String &title) {
+	fileField->chosenPathLabel->setText(title);
 }
 
-const NewProjectWindowRenderer *NewProjectWindow::getSharedRenderer() const {
-	return aurora::downcast<const NewProjectWindowRenderer *>(
-		Widget::getSharedRenderer());
+void NewProjectWindow::setPathFilters(
+	std::vector<std::pair<tgui::String, std::vector<tgui::String>>>
+		pathFilters) {
+	fileField->pathFilters = pathFilters;
 }
 
-NewProjectWindowRenderer *NewProjectWindow::getRenderer() {
-	return aurora::downcast<NewProjectWindowRenderer *>(
-		tgui::Widget::getRenderer());
+void NewProjectWindow::updateSize(const tgui::Layout2d &size) {
+	window->setSize(size.x, size.y);
 }
-
-void NewProjectWindow::rendererChanged(const tgui::String &property) {
-	tgui::ChildWindow::rendererChanged(property);
-}
-
-void NewProjectWindow::draw(tgui::BackendRenderTarget &target,
-							tgui::RenderStates states) const {
-	// Draw the borders
-	if (m_bordersCached != tgui::Borders{0}) {
-		if (m_focused && m_borderColorFocusedCached.isSet())
-			target.drawBorders(
-				states, m_bordersCached, getSize(),
-				tgui::Color::applyOpacity(m_borderColorFocusedCached,
-										  m_opacityCached));
-		else
-			target.drawBorders(states, m_bordersCached, getSize(),
-							   tgui::Color::applyOpacity(m_borderColorCached,
-														 m_opacityCached));
-
-		states.transform.translate(m_bordersCached.getOffset());
-	}
-
-	// Draw the title bar
-	if (m_spriteTitleBar.isSet())
-		target.drawSprite(states, m_spriteTitleBar);
-	else
-		target.drawFilledRect(
-			states, {getInnerTitleBarSize().x, m_titleBarHeightCached},
-			tgui::Color::applyOpacity(m_titleBarColorCached, m_opacityCached));
-
-	// Draw the text in the title bar (after setting the clipping area)
-	{
-		float buttonOffsetX = 0;
-		for (const auto &button : {m_closeButton.get(), m_maximizeButton.get(),
-								   m_minimizeButton.get()}) {
-			if (button->isVisible())
-				buttonOffsetX +=
-					(buttonOffsetX > 0 ? m_paddingBetweenButtonsCached : 0) +
-					button->getSize().x;
-		}
-
-		if (buttonOffsetX > 0)
-			buttonOffsetX += m_distanceToSideCached;
-
-		const float clippingLeft = m_distanceToSideCached;
-		const float clippingRight =
-			getInnerTitleBarSize().x - m_distanceToSideCached - buttonOffsetX;
-		target.addClippingLayer(
-			states, {{clippingLeft, 0},
-					 {clippingRight - clippingLeft, m_titleBarHeightCached}});
-		target.drawText(states, m_titleText);
-		target.removeClippingLayer();
-	}
-
-	// Draw the buttons
-	states.transform.translate(
-		{-m_bordersCached.getLeft(), -m_bordersCached.getTop()});
-	for (auto &button : {m_closeButton.get(), m_maximizeButton.get(),
-						 m_minimizeButton.get()}) {
-		if (!button->isVisible())
-			continue;
-
-		tgui::RenderStates buttonStates = states;
-		buttonStates.transform.translate(button->getPosition());
-		button->draw(target, buttonStates);
-	}
-	states.transform.translate(
-		{m_bordersCached.getLeft(),
-		 m_bordersCached.getTop() + m_titleBarHeightCached});
-
-	// Draw the border below the title bar
-	if (m_borderBelowTitleBarCached > 0) {
-		if (m_focused && m_borderColorFocusedCached.isSet())
-			target.drawFilledRect(
-				states, {getInnerTitleBarSize().x, m_borderBelowTitleBarCached},
-				tgui::Color::applyOpacity(m_borderColorFocusedCached,
-										  m_opacityCached));
-		else
-			target.drawFilledRect(
-				states, {getInnerTitleBarSize().x, m_borderBelowTitleBarCached},
-				tgui::Color::applyOpacity(m_borderColorCached,
-										  m_opacityCached));
-
-		states.transform.translate({0, m_borderBelowTitleBarCached});
-	}
-
-	// Draw the background
-	if (m_spriteBackground.isSet())
-		target.drawSprite(states, m_spriteBackground);
-	else if (m_backgroundColorCached != tgui::Color::Transparent)
-		target.drawFilledRect(states, getInnerSizeWithPadding(),
-							  tgui::Color::applyOpacity(m_backgroundColorCached,
-														m_opacityCached));
-
-	// Draw the widgets in the child window
-	states.transform.translate(
-		{m_clientPaddingCached.getLeft(), m_clientPaddingCached.getTop()});
-	target.addClippingLayer(states, {{}, {getClientSize()}});
-	Container::draw(target, states);
-	target.removeClippingLayer();
-}
-*/

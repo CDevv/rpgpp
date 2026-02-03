@@ -2,6 +2,7 @@
 #define _RPGPP_TILESET_H
 
 #include "gamedata.hpp"
+#include "saveable.hpp"
 #include <nlohmann/json.hpp>
 #include <raylib.h>
 #include <string>
@@ -12,7 +13,7 @@ using json = nlohmann::json;
  * TileMap or another object
  * @see [TileMap](TileMap.md)
  */
-class TileSet {
+class TileSet : public ISaveable {
   private:
 	/** The used Texture for this TileSet. A raylib Texture is used. */
 	Texture texture;
@@ -39,7 +40,7 @@ class TileSet {
 	TileSet(TileSetBin bin);
 	~TileSet();
 	/** Dump the TileSet's data into a nlohmann::json object */
-	json dumpJson();
+	json dumpJson() override;
 	/** Unload routine */
 	void unload() const;
 	/** Get the size of a tile. Since a tile may have different width and

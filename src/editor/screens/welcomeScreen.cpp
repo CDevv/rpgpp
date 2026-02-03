@@ -15,6 +15,12 @@
 void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	auto &ts = Editor::instance->getTranslations();
 
+	if (!Editor::instance->getGui().menuBar.expired()) {
+		auto menuBarPtr = Editor::instance->getGui().menuBar.lock();
+		menuBarPtr->setMenuItemEnabled(
+			{ts.getKey("file.options"), ts.getKey("file.save_file")}, false);
+	}
+
 	const auto verticalLayout = tgui::GrowVerticalLayout::create();
 	verticalLayout->setPosition({"50%", "50%"});
 	verticalLayout->setWidth(640);
@@ -43,25 +49,14 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 		tgui::Button::create(ts.getKey("file.open_project"));
 	openProjButton->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
 
-	newProjectDialog = NewFileDialog::create();
-
-	std::weak_ptr<NewFileDialog> weak_dialog = newProjectDialog;
-	/*
-	newProjectDialog->confirmButton->onPress([weak_dialog] {
-		std::shared_ptr<NewFileDialog> dialogPtr = weak_dialog.lock();
-		Project::create(
-
-			dialogPtr->fileField->chosenPath.toStdString(),
-			dialogPtr->titleField->getText().toStdString());
-	});
-	*/
+	newProjectDialog = NewProjectWindow::create();
 
 	newProjButton->onPress([this] {
 		auto childDialog = tgui::ChildWindow::create();
 
 		newProjectDialog->init(Editor::instance->getGui().gui.get());
 		newProjectDialog->fileField->setSelectingDirectory(true);
-		newProjectDialog->fileLabel->setText("DIrectory..");
+		newProjectDialog->fileLabel->setText("Directory..");
 		newProjectDialog->confirmButton->onPress([this] {
 			std::string title =
 				newProjectDialog->titleField->getText().toStdString();

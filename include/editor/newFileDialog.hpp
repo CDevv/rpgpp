@@ -2,21 +2,12 @@
 #define _RPGPP_NEWFILEDIALOG_H
 
 #include "TGUI/Backend/raylib.hpp"
-#include "TGUI/Renderers/ChildWindowRenderer.hpp"
 #include "TGUI/String.hpp"
-#include "TGUI/SubwidgetContainer.hpp"
-#include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "widgets/fileChooser.hpp"
-#include "widgets/fileField.hpp"
-
-class NewFileDialogRenderer : public tgui::ChildWindowRenderer {
-  public:
-	using tgui::ChildWindowRenderer::ChildWindowRenderer;
-};
 
 class NewFileDialog {
   public:
