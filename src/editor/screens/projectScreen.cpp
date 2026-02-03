@@ -1,29 +1,36 @@
 #include "screens/projectScreen.hpp"
 #include "TGUI/Color.hpp"
+#include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Texture.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
+#include "TGUI/Widgets/ContextMenu.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/HorizontalWrap.hpp"
 #include "TGUI/Widgets/Label.hpp"
+#include "TGUI/Widgets/MessageBox.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "TGUI/Widgets/TabContainer.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
 #include "editor.hpp"
+#include "editorGuiService.hpp"
 #include "fileInitVisitor.hpp"
 #include "fileSystemService.hpp"
 #include "fileTab.hpp"
+#include "gamedata.hpp"
 #include "newFileDialog.hpp"
 #include "projectFile.hpp"
 #include "projectFileVisitor.hpp"
 #include "raylib.h"
 #include <cstdio>
+#include <filesystem>
 #include <memory>
+#include <system_error>
 #include <utility>
 #include <vector>
 
@@ -44,6 +51,11 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 			}
 		});
 	}
+
+	fileContextMenu = tgui::ContextMenu::create();
+	fileContextMenu->addMenuItem("Copy full path");
+	fileContextMenu->addMenuItem("Delete.");
+	Editor::instance->getGui().gui->add(fileContextMenu);
 
 	openedFiles = std::vector<std::unique_ptr<ProjectFile>>{};
 	fileVisitor = std::make_unique<ProjectFileVisitor>();
@@ -148,6 +160,13 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
 	auto buildImg = tgui::Texture(fs.getResourcePath("build.png"));
 	buildBtn->setImage(buildImg);
 	buildBtn->setSize({barSize, "100%"});
+	buildBtn->onPress([project] {
+		std::filesystem::path path = project->getBasePath();
+		path /= "game2.bin";
+
+		auto data = project->generateStruct();
+		serializeDataToFile(path, data);
+	});
 	toolBar->add(buildBtn);
 
 	return toolBar;
@@ -166,6 +185,46 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 		fileBtn->getRenderer()->setBackgroundColor(tgui::Color(0, 0, 0));
 		fileBtn->onPress(
 			[this, fileType, filePath] { addFileView(fileType, filePath); });
+		fileBtn->onRightMousePress([this, filePath] {
+			fileContextMenu->getMenuItems().at(0).text = filePath;
+			fileContextMenu->setPosition(GetMousePosition().x,
+										 GetMousePosition().y);
+			fileContextMenu->onMenuItemClick.disconnectAll();
+			fileContextMenu->onMenuItemClick(
+				[this, filePath](const std::vector<tgui::String> &hierarchy) {
+					if (hierarchy[0] == "Copy full path") {
+						SetClipboardText(filePath.c_str());
+					}
+					if (hierarchy[0] == "Delete.") {
+						auto messageBox = tgui::MessageBox::create();
+						messageBox->setText("Are you sure?");
+						messageBox->addButton("Yes");
+						messageBox->addButton("No");
+						messageBox->setButtonAlignment(
+							tgui::HorizontalAlignment::Right);
+						EditorGuiService::centerWidget(messageBox);
+
+						messageBox->onButtonPress(
+							[this, msgBox = messageBox.get(),
+							 filePath](const tgui::String &button) {
+								assert(button == "Yes" || button == "No");
+								if (button == "Yes") {
+									std::error_code ec;
+									std::filesystem::remove(filePath, ec);
+									addResourceButtons(listedResourcesType);
+									if (ec) {
+										printf("%s \n", ec.message().c_str());
+									}
+								}
+								msgBox->getParent()->remove(
+									msgBox->shared_from_this());
+							});
+
+						Editor::instance->getGui().gui->add(messageBox);
+					}
+				});
+			fileContextMenu->openMenu();
+		});
 
 		resourcesLayout->add(fileBtn);
 	}
@@ -192,6 +251,7 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 		if (!fileInitVisitor->funcIsEmpty(listedResourcesType)) {
 			auto childDialog = NewFileDialog::create();
 			childDialog->init(Editor::instance->getGui().gui.get());
+			EditorGuiService::centerWidget(childDialog->window);
 			fileInitVisitor->visit(listedResourcesType, childDialog);
 		}
 	});

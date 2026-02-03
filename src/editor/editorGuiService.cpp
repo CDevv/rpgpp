@@ -211,3 +211,9 @@ void EditorGuiService::initMenuBar() {
 void EditorGuiService::naviGoBack() {
 	this->setScreen(this->prevScreen, false);
 }
+
+void EditorGuiService::centerWidget(tgui::Widget::Ptr widget) {
+	widget->setPosition(
+		(GetScreenWidth() / 2.0f) - (widget->getSize().x / 2.0f),
+		(GetScreenHeight() / 2.0f) - (widget->getSize().y / 2.0f));
+}

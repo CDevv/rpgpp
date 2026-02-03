@@ -2,6 +2,7 @@
 #define _RGPP_EDITOR_GUI_CONTAINER_H
 
 #include "TGUI/Backend/raylib.hpp"
+#include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/MenuBar.hpp"
@@ -47,5 +48,6 @@ class EditorGuiService {
 	void naviGoBack();
 	void reloadUi();
 	static void createLogoCenter(const tgui::GrowVerticalLayout::Ptr &layout);
+	static void centerWidget(tgui::Widget::Ptr widget);
 };
 #endif

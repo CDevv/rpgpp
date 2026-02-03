@@ -1,6 +1,7 @@
 #ifndef _RPGPP_SCREENS_PROJECT_SCREEN_H
 #define _RPGPP_SCREENS_PROJECT_SCREEN_H
 
+#include "TGUI/Widgets/ContextMenu.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/HorizontalWrap.hpp"
@@ -26,6 +27,7 @@ class ProjectScreen : public UIScreen {
 	EngineFileType listedResourcesType;
 	FileTab::Ptr fileTabs;
 	tgui::GrowVerticalLayout::Ptr resourcesLayout;
+	tgui::ContextMenu::Ptr fileContextMenu;
 	void switchView(int index);
 	tgui::HorizontalWrap::Ptr createToolBar();
 	tgui::Group::Ptr createResourcesList(tgui::Group::Ptr fileViewGroup);
