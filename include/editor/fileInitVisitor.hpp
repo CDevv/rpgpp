@@ -18,6 +18,7 @@ class FileInitVisitor {
 	bool funcIsEmpty(EngineFileType fileType);
 	static void empty(NewFileDialog::Ptr dialog);
 	static void tileset(NewFileDialog::Ptr dialog);
+	static void room(NewFileDialog::Ptr dialog);
 };
 
 #endif

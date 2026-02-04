@@ -2,6 +2,8 @@
 #include "fileSystemService.hpp"
 #include "fileView.hpp"
 #include "projectFile.hpp"
+#include "room.hpp"
+#include "roomFileView.hpp"
 #include "tileset.hpp"
 #include "tilesetFileView.hpp"
 #include "variant.hpp"
@@ -10,6 +12,7 @@
 
 ProjectFileVisitor::ProjectFileVisitor() {
 	funcs[static_cast<int>(EngineFileType::FILE_TILESET)] = tilesetView;
+	funcs[static_cast<int>(EngineFileType::FILE_MAP)] = roomView;
 }
 
 std::unique_ptr<ProjectFile>
@@ -32,4 +35,13 @@ ProjectFileVisitor::tilesetView(const std::string &path) {
 		std::make_unique<Variant<TileSet>>(new TileSet(path));
 	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
 										 EngineFileType::FILE_TILESET);
+}
+
+std::unique_ptr<ProjectFile>
+ProjectFileVisitor::roomView(const std::string &path) {
+	std::unique_ptr<FileView> view = std::make_unique<RoomFileView>();
+	std::unique_ptr<VariantWrapper> variant =
+		std::make_unique<Variant<Room>>(new Room(path));
+	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
+										 EngineFileType::FILE_MAP);
 }

@@ -59,10 +59,12 @@ bool WorldView::isMouseOnWidget(tgui::Vector2f pos) const {
 }
 
 void WorldView::mouseMoved(tgui::Vector2f pos) {
+	auto widgetPos = getPosition();
 	Vector2 mouseDelta = GetMouseDelta();
 	Vector2 cameraMoveScale = Vector2Scale(mouseDelta, -1 / camera.zoom);
 
 	Vector2 mousePos = {pos.x, pos.y};
+	mousePos = Vector2Subtract(mousePos, Vector2{widgetPos.x, widgetPos.y});
 	mouseWorldPos = GetScreenToWorld2D(mousePos, camera);
 
 	if (mouseMiddleButton) {
@@ -74,9 +76,11 @@ void WorldView::mouseMoved(tgui::Vector2f pos) {
 
 bool WorldView::scrolled(float delta, tgui::Vector2f pos, bool touch) {
 	if (!touch) {
-		Vector2 mouseWorldPos =
-			GetScreenToWorld2D(Vector2{pos.x, pos.y}, camera);
-		camera.offset = Vector2{pos.x, pos.y};
+		auto widgetPos = getPosition();
+		Vector2 mousePos = {pos.x, pos.y};
+		mousePos = Vector2Subtract(mousePos, Vector2{widgetPos.x, widgetPos.y});
+		Vector2 mouseWorldPos = GetScreenToWorld2D(mousePos, camera);
+		camera.offset = mousePos;
 		camera.target = mouseWorldPos;
 
 		float scale = delta * 0.2f;

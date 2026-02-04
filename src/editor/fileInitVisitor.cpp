@@ -2,15 +2,20 @@
 #include "TGUI/Widget.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
+#include "gamedata.hpp"
 #include "newFileDialog.hpp"
 #include "projectScreen.hpp"
 #include "raylib.h"
+#include "room.hpp"
+#include "tilemap.hpp"
 #include "tileset.hpp"
 #include <memory>
 #include <nlohmann/json_fwd.hpp>
+#include <utility>
 
 FileInitVisitor::FileInitVisitor() {
 	funcs[static_cast<int>(EngineFileType::FILE_TILESET)] = tileset;
+	funcs[static_cast<int>(EngineFileType::FILE_MAP)] = room;
 }
 
 bool FileInitVisitor::funcIsEmpty(EngineFileType fileType) {
@@ -42,8 +47,6 @@ void FileInitVisitor::tileset(NewFileDialog::Ptr dialog) {
 		std::string title = dialog->titleField->getText().toStdString();
 		std::string filePath = dialog->fileField->getChosenPath().toStdString();
 		if (!title.empty() && !filePath.empty()) {
-			printf("%s \n", title.c_str());
-			printf("%s \n", filePath.c_str());
 			dialog->window->close();
 
 			std::unique_ptr<TileSet> tileSet =
@@ -57,6 +60,36 @@ void FileInitVisitor::tileset(NewFileDialog::Ptr dialog) {
 				Editor::instance->getGui().currentScreen.get());
 			ptr->addFileView(EngineFileType::FILE_TILESET, newFilePath);
 			ptr->addResourceButtons(EngineFileType::FILE_TILESET);
+		}
+	});
+}
+
+void FileInitVisitor::room(NewFileDialog::Ptr dialog) {
+	dialog->fileLabel->setText("TileSet");
+	dialog->setPathFilters({{"RPG++ TileSet", {"*.rtiles"}}});
+	dialog->confirmButton->onPress([dialog] {
+		std::string title = dialog->titleField->getText().toStdString();
+		std::string filePath = dialog->fileField->getChosenPath().toStdString();
+		if (!title.empty() && !filePath.empty()) {
+			std::unique_ptr<TileSet> tileSet =
+				std::make_unique<TileSet>(filePath);
+			std::unique_ptr<TileMap> tileMap = std::make_unique<TileMap>(
+				std::move(tileSet), 20, 20, _RPGPP_TILESIZE,
+				_RPGPP_TILESIZE * RPGPP_DRAW_MULTIPLIER);
+			std::unique_ptr<Room> room =
+				std::make_unique<Room>(std::move(tileMap));
+
+			std::string newFilePath =
+				TextFormat("maps/%s.tiles", title.c_str());
+			nlohmann::json fileJson = room->dumpJson();
+			SaveFileText(newFilePath.c_str(), fileJson.dump(4).c_str());
+
+			auto ptr = aurora::downcast<screens::ProjectScreen *>(
+				Editor::instance->getGui().currentScreen.get());
+			ptr->addFileView(EngineFileType::FILE_TILESET, newFilePath);
+			ptr->addResourceButtons(EngineFileType::FILE_TILESET);
+
+			dialog->window->close();
 		}
 	});
 }

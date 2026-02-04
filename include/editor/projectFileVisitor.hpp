@@ -6,6 +6,7 @@
 #include <array>
 #include <functional>
 #include <memory>
+#include <string>
 
 class ProjectFileVisitor {
   private:
@@ -19,6 +20,7 @@ class ProjectFileVisitor {
 									   const std::string &path);
 	static std::unique_ptr<ProjectFile> emptyView(const std::string &path);
 	static std::unique_ptr<ProjectFile> tilesetView(const std::string &path);
+	static std::unique_ptr<ProjectFile> roomView(const std::string &path);
 };
 
 #endif
