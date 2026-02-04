@@ -7,6 +7,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "updatable.hpp"
+#include "widgets/roomToolbox.hpp"
 #include <TGUI/Backend/Renderer/Raylib/BackendRendererRaylib.hpp>
 #include <TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp>
 #include <TGUI/Backend/Window/Backend.hpp>
@@ -27,6 +28,8 @@ WorldView::WorldView(const char *typeName, bool initRenderer)
 	camera.rotation = 0.0f;
 	camera.target = Vector2{0, 0};
 	camera.zoom = 1.0f;
+
+	tool = RoomTool::TOOL_NONE;
 }
 
 WorldView::Ptr WorldView::create() { return std::make_shared<WorldView>(); }
@@ -127,4 +130,13 @@ Vector2 WorldView::getMouseWorldPos() { return mouseWorldPos; }
 std::shared_ptr<IUpdatable>
 WorldView::asUpdatable(const std::shared_ptr<WorldView> &ptr) {
 	return std::dynamic_pointer_cast<IUpdatable>(ptr);
+}
+
+void WorldView::setTool(RoomTool newTool) { this->tool = newTool; }
+
+bool WorldView::isInView() {
+	// return isMouseOnWidget({GetMousePosition().x, GetMousePosition().y});
+	return CheckCollisionPointRec(
+		GetMousePosition(),
+		{getPosition().x, getPosition().y, getSize().x, getSize().y});
 }

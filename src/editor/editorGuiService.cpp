@@ -54,6 +54,7 @@ void EditorGuiService::uiLoop() {
 
 	tgui::Theme::addRendererInheritanceParent("NewProjectWindow",
 											  "ChildWindow");
+	tgui::Theme::addRendererInheritanceParent("RoomToolbox", "Tabs");
 	// main loop.
 	while (!WindowShouldClose()) {
 		cg->handleEvents();

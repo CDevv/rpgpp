@@ -1,9 +1,13 @@
 #include "widgets/roomView.hpp"
+#include "TGUI/Vector2.hpp"
+#include "gamedata.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "tile.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
+#include "widgets/roomToolbox.hpp"
+#include "worldView.hpp"
 #include <cmath>
 #include <cstdio>
 #include <memory>
@@ -19,6 +23,14 @@ RoomView::Ptr RoomView::create(Room *room) {
 void RoomView::setRoom(Room *room) { this->room = room; }
 
 Room *RoomView::getRoom() { return room; }
+
+IVector RoomView::getTileAtMouse() {
+	TileMap *tileMap = room->getTileMap();
+	return {static_cast<int>(
+				std::floor(mouseWorldPos.x / tileMap->getWorldTileSize())),
+			static_cast<int>(
+				std::floor(mouseWorldPos.y / tileMap->getWorldTileSize()))};
+}
 
 Rectangle RoomView::getSourceRect(TileMap *tileMap, int x, int y) {
 	Rectangle sourceRect = {static_cast<float>(x * tileMap->getAtlasTileSize()),
@@ -96,17 +108,57 @@ void RoomView::drawCanvas() {
 							   0.0f, WHITE);
 			}
 
+			if (tileSetView != nullptr) {
+				if (tool == RoomTool::TOOL_PLACE) {
+					handlePlaceMode(tileX, tileY);
+				}
+			}
+
 			// Draw tile border
 			DrawRectangleLinesEx(destRect, 1.0f, Fade(GRAY, 0.5f));
-
-			Vector2 toCheck = mouseWorldPos;
-			// toCheck.y += getPosition().y;
-			// toCheck.y += 32;
-			if (CheckCollisionPointRec(toCheck, destRect)) {
+			if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
 				DrawRectangleLinesEx(destRect, 2.0f, Fade(GRAY, 0.5f));
 			}
 		}
 	}
 
 	DrawCircleV(getMouseWorldPos(), 1.0f, MAROON);
+}
+
+void RoomView::handlePlaceMode(int x, int y) {
+	TileMap *tileMap = room->getTileMap();
+	TileSet *tileSet = tileMap->getTileSet();
+	const Texture2D &texture = tileSet->getTexture();
+
+	Rectangle destRect = getDestRect(tileMap, x, y);
+
+	if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
+		auto atlasTilePos = tileSetView->getSelectedTile();
+
+		Rectangle atlasSourceRect =
+			getSourceRect(tileMap, atlasTilePos.x, atlasTilePos.y);
+
+		IVector tileMouse = getTileAtMouse();
+		Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
+
+		DrawTexturePro(texture, atlasSourceRect, destRect, {0.0f, 0.0f}, 0.0f,
+					   Fade(WHITE, 0.7f));
+	}
+}
+
+bool RoomView::leftMousePressed(tgui::Vector2f pos) {
+	if (tool == RoomTool::TOOL_PLACE) {
+		TileMap *tileMap = room->getTileMap();
+		IVector atlasTilePos = tileSetView->getSelectedTile();
+		IVector tileMouse = getTileAtMouse();
+
+		Vector2 worldPos = {static_cast<float>(tileMouse.x),
+							static_cast<float>(tileMouse.y)};
+		Vector2 atlasPos = {static_cast<float>(atlasTilePos.x),
+							static_cast<float>(atlasTilePos.y)};
+
+		tileMap->setTile(worldPos, atlasPos);
+	}
+
+	return WorldView::leftMousePressed(pos);
 }

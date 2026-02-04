@@ -244,10 +244,12 @@ int TileMap::getWorldTileSize() const { return worldTileSize; }
 Tile TileMap::getTile(int x, int y) const { return this->tiles[x][y]; }
 
 void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos) {
+	/*
 	Vector2 resultAtlasCoords = {atlasPos.x * atlasTileSize,
 								 atlasPos.y * atlasTileSize};
 
-	AtlasTile atlasTile = tileSet->getTile(resultAtlasCoords);
+	AtlasTile atlasTile = tileSet->getTile(resultAtlasCoords);*/
+	AtlasTile atlasTile = tileSet->getTile(atlasPos);
 
 	this->tiles[static_cast<int>(worldPos.x)][static_cast<int>(worldPos.y)]
 		.place(atlasTile, worldPos);

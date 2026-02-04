@@ -5,6 +5,7 @@
 #include "room.hpp"
 #include "tileSetView.hpp"
 #include "widgets/fileField.hpp"
+#include "widgets/roomToolbox.hpp"
 #include "widgets/roomView.hpp"
 
 RoomFileView::RoomFileView() {
@@ -19,6 +20,8 @@ RoomFileView::RoomFileView() {
 	tileSetView->setSize({"300", "300"});
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(tileSetView));
 	widgetContainer.push_back(tileSetView);
+
+	roomView->tileSetView = tileSetView.get();
 
 	auto props = PropertiesBox::create();
 	props->setSize({"300", "100%"});
@@ -53,6 +56,16 @@ RoomFileView::RoomFileView() {
 	props->addFileField(tileSetField);
 
 	widgetContainer.push_back(props);
+
+	auto toolbox = RoomToolbox::create();
+	toolbox->setSize(100, 32);
+	toolbox->addTool("build.png", RoomTool::TOOL_NONE);
+	toolbox->addTool("build.png", RoomTool::TOOL_PLACE);
+	toolbox->onToolPressed([this](RoomTool tool) {
+		tileSetView->setTool(tool);
+		roomView->setTool(tool);
+	});
+	widgetContainer.push_back(toolbox);
 }
 
 void RoomFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {

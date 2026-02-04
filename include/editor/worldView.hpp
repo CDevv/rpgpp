@@ -5,6 +5,7 @@
 #include "TGUI/Widget.hpp"
 #include "raylib.h"
 #include "updatable.hpp"
+#include "widgets/roomToolbox.hpp"
 #include <memory>
 
 class WorldView : public tgui::CanvasRaylib, public IUpdatable {
@@ -14,6 +15,7 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	bool mouseMiddleButton;
 	Vector2 mouseWorldPos;
 	Vector2 getMouseWorldPos();
+	RoomTool tool;
 
   public:
 	typedef std::shared_ptr<WorldView> Ptr;
@@ -38,6 +40,9 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	void update() override;
 	static std::shared_ptr<IUpdatable>
 	asUpdatable(const std::shared_ptr<WorldView> &ptr);
+
+	void setTool(RoomTool newTool);
+	bool isInView();
 
   protected:
 	tgui::Widget::Ptr clone() const override;
