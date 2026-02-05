@@ -177,7 +177,6 @@ TileMap::TileMap(const RoomBin &bin) {
 json TileMap::dumpJson() {
 	// Make a vector for the tiles
 	auto tilesVector = std::vector<std::vector<std::vector<int>>>();
-	auto atlas_tile_size_f = static_cast<float>(atlasTileSize);
 	for (int i = 0; i < height; i++) {
 		tilesVector.emplace_back();
 		for (int j = 0; j < width; j++) {
@@ -186,10 +185,8 @@ json TileMap::dumpJson() {
 			if (tile.isPlaced()) {
 				AtlasTile atlasTile = tile.getAtlasTile();
 				Vector2 atlasCoords = atlasTile.getAtlasCoords();
-				atlasPosVector.push_back(
-					static_cast<int>(atlasCoords.x / atlas_tile_size_f));
-				atlasPosVector.push_back(
-					static_cast<int>(atlasCoords.y / atlas_tile_size_f));
+				atlasPosVector.push_back(static_cast<int>(atlasCoords.x));
+				atlasPosVector.push_back(static_cast<int>(atlasCoords.y));
 			} else {
 				atlasPosVector.push_back(-1);
 				atlasPosVector.push_back(-1);
@@ -244,11 +241,6 @@ int TileMap::getWorldTileSize() const { return worldTileSize; }
 Tile TileMap::getTile(int x, int y) const { return this->tiles[x][y]; }
 
 void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos) {
-	/*
-	Vector2 resultAtlasCoords = {atlasPos.x * atlasTileSize,
-								 atlasPos.y * atlasTileSize};
-
-	AtlasTile atlasTile = tileSet->getTile(resultAtlasCoords);*/
 	AtlasTile atlasTile = tileSet->getTile(atlasPos);
 
 	this->tiles[static_cast<int>(worldPos.x)][static_cast<int>(worldPos.y)]

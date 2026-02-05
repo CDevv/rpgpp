@@ -4,16 +4,24 @@
 #include "TGUI/Texture.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
+#include "TGUI/Widgets/CheckBox.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
 #include "editor.hpp"
+#include "raylib.h"
+#include <cstdio>
 
 RoomToolbox::RoomToolbox(const char *typeName, bool initRenderer)
 	: tgui::Tabs(typeName, false) {
+
+	brushToggle = tgui::CheckBox::create("Brush?");
+	brushToggle->setTextClickable(true);
 
 	if (initRenderer) {
 		m_renderer = aurora::makeCopied<RoomToolboxRenderer>();
 		setRenderer(tgui::Theme::getDefault()->getRendererNoThrow("Tabs"));
 	}
+
+	// getParent()->add(brushToggle);
 }
 
 RoomToolbox::Ptr RoomToolbox::create() {
@@ -89,6 +97,15 @@ void RoomToolbox::draw(tgui::BackendRenderTarget &target,
 		states.transform.translate({buttonSize.x + 4, 0.0f});
 		idx++;
 	}
+
+	states.transform.translate({4.0f, 0.0f});
+
+	target.drawWidget(states, brushToggle);
+}
+
+void RoomToolbox::setSize(const tgui::Layout2d &size) {
+	tgui::Tabs::setSize(size);
+	brushToggle->setSize(size.y - 4, size.y - 4);
 }
 
 bool RoomToolbox::leftMousePressed(tgui::Vector2f pos) {
@@ -104,6 +121,19 @@ bool RoomToolbox::leftMousePressed(tgui::Vector2f pos) {
 		idx++;
 	}
 
+	brushToggle->setParent(this->getParent());
+	pos += {getPosition().x, getPosition().y};
+	brushToggle->leftMousePressed(pos);
+
+	if (CheckCollisionPointRec(
+			{pos.x, pos.y},
+			{getPosition().x + brushToggle->getPosition().x + 4,
+			 getPosition().y + brushToggle->getPosition().y,
+			 brushToggle->getSize().x, brushToggle->getSize().y})) {
+		brushToggle->setChecked(!brushToggle->isChecked());
+		onBrushPressed.emit(this, brushToggle->isChecked());
+	}
+
 	return true;
 }
 
@@ -111,4 +141,5 @@ void RoomToolbox::addTool(const std::string &resourcePath, RoomTool tool) {
 	tgui::Texture texture(
 		Editor::instance->getFs().getResourcePath(resourcePath));
 	tools.push_back({tool, texture});
+	brushToggle->setPosition(tools.size() * (getSize().y + 4), 0);
 }

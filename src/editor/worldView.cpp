@@ -93,6 +93,15 @@ bool WorldView::scrolled(float delta, tgui::Vector2f pos, bool touch) {
 	return Widget::scrolled(delta, pos, touch);
 }
 
+bool WorldView::leftMousePressed(tgui::Vector2f pos) {
+	mouseLeftButton = true;
+	return tgui::CanvasRaylib::leftMousePressed(pos);
+}
+
+void WorldView::leftMouseReleased(tgui::Vector2f pos) {
+	mouseLeftButton = false;
+}
+
 void WorldView::update() {
 	if (IsMouseButtonDown(MOUSE_MIDDLE_BUTTON)) {
 		mouseMiddleButton = true;

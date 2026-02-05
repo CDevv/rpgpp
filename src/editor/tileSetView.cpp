@@ -37,6 +37,8 @@ IVector TileSetView::getTileAtMouse() {
 
 IVector TileSetView::getSelectedTile() { return selectedTile; }
 
+void TileSetView::setSelectedTile(IVector newTile) { selectedTile = newTile; }
+
 void TileSetView::drawOverlay() {
 	if (this->tileSet == nullptr) {
 		return;
@@ -87,7 +89,7 @@ void TileSetView::drawCanvas() {
 									  tileSize.y * RPGPP_DRAW_MULTIPLIER};
 				DrawRectangleLinesEx(tileRect, 1.0f, Fade(GRAY, 0.5f));
 
-				if (tool == RoomTool::TOOL_PLACE) {
+				if (tool != RoomTool::TOOL_NONE) {
 					if (selectedTile.x == x && selectedTile.y == y) {
 						DrawRectangleRec(tileRect, Fade(BLUE, 0.3f));
 					}
@@ -95,17 +97,6 @@ void TileSetView::drawCanvas() {
 
 				if (CheckCollisionPointRec(mouseWorldPos, tileRect)) {
 					DrawRectangleLinesEx(tileRect, 1.0f, Fade(GRAY, 0.5));
-
-					/*
-					if (tool == RoomTool::TOOL_PLACE) {
-						if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-							if (isInView()) {
-								printf("true. \n");
-								selectedTile = getTileAtMouse();
-							}
-						}
-					}
-						*/
 				}
 			}
 		}
@@ -116,8 +107,9 @@ void TileSetView::drawCanvas() {
 }
 
 bool TileSetView::leftMousePressed(tgui::Vector2f pos) {
-	if (tool == RoomTool::TOOL_PLACE) {
+	if (tool != RoomTool::TOOL_NONE) {
 		selectedTile = getTileAtMouse();
+		onTileSelected.emit(this, selectedTile);
 	}
 	return WorldView::leftMousePressed(pos);
 }

@@ -5,11 +5,12 @@
 #include "TGUI/Signal.hpp"
 #include "TGUI/Texture.hpp"
 #include "TGUI/Widget.hpp"
+#include "TGUI/Widgets/CheckBox.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
 #include "fileSystemService.hpp"
 #include <vector>
 
-enum class RoomTool { TOOL_NONE, TOOL_PLACE };
+enum class RoomTool { TOOL_NONE, TOOL_PLACE, TOOL_ERASE, TOOL_EDIT };
 
 struct RoomToolboxItem {
 	RoomTool type;
@@ -24,12 +25,14 @@ class RoomToolbox : public tgui::Tabs {
   private:
 	int selectedTool = 0;
 	std::vector<RoomToolboxItem> tools;
+	tgui::CheckBox::Ptr brushToggle;
 
   public:
 	typedef std::shared_ptr<RoomToolbox> Ptr;
 	typedef std::shared_ptr<const RoomToolbox> ConstPtr;
 
 	tgui::SignalTyped<RoomTool> onToolPressed = {"ToolPressed"};
+	tgui::SignalTyped<bool> onBrushPressed = {"BrushPressed"};
 
 	RoomToolbox(const char *typeName = "RoomToolbox", bool initRenderer = true);
 
@@ -51,6 +54,8 @@ class RoomToolbox : public tgui::Tabs {
 
 	void draw(tgui::BackendRenderTarget &target,
 			  tgui::RenderStates states) const override;
+
+	void setSize(const tgui::Layout2d &size) override;
 
 	bool leftMousePressed(tgui::Vector2f pos) override;
 

@@ -109,9 +109,7 @@ void RoomView::drawCanvas() {
 			}
 
 			if (tileSetView != nullptr) {
-				if (tool == RoomTool::TOOL_PLACE) {
-					handlePlaceMode(tileX, tileY);
-				}
+				handleMode(tileX, tileY);
 			}
 
 			// Draw tile border
@@ -125,6 +123,37 @@ void RoomView::drawCanvas() {
 	DrawCircleV(getMouseWorldPos(), 1.0f, MAROON);
 }
 
+void RoomView::mouseMoved(tgui::Vector2f pos) {
+	if (brushMode && mouseLeftButton) {
+		handleModePress(pos);
+	}
+	WorldView::mouseMoved(pos);
+}
+
+bool RoomView::leftMousePressed(tgui::Vector2f pos) {
+	TileMap *tileMap = room->getTileMap();
+
+	handleModePress(pos);
+
+	return WorldView::leftMousePressed(pos);
+}
+
+void RoomView::handleMode(int x, int y) {
+	switch (tool) {
+	case RoomTool::TOOL_PLACE:
+		handlePlaceMode(x, y);
+		break;
+	case RoomTool::TOOL_ERASE:
+		handleEraseMode(x, y);
+		break;
+	case RoomTool::TOOL_EDIT:
+		handleEditMode(x, y);
+		break;
+	default:
+		break;
+	}
+}
+
 void RoomView::handlePlaceMode(int x, int y) {
 	TileMap *tileMap = room->getTileMap();
 	TileSet *tileSet = tileMap->getTileSet();
@@ -135,21 +164,67 @@ void RoomView::handlePlaceMode(int x, int y) {
 	if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
 		auto atlasTilePos = tileSetView->getSelectedTile();
 
-		Rectangle atlasSourceRect =
-			getSourceRect(tileMap, atlasTilePos.x, atlasTilePos.y);
+		if (tileSet->areAtlasCoordsValid(
+				{static_cast<float>(atlasTilePos.x),
+				 static_cast<float>(atlasTilePos.y)})) {
+			Rectangle atlasSourceRect =
+				getSourceRect(tileMap, atlasTilePos.x, atlasTilePos.y);
 
-		IVector tileMouse = getTileAtMouse();
-		Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
+			IVector tileMouse = getTileAtMouse();
+			Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
 
-		DrawTexturePro(texture, atlasSourceRect, destRect, {0.0f, 0.0f}, 0.0f,
-					   Fade(WHITE, 0.7f));
+			DrawTexturePro(texture, atlasSourceRect, destRect, {0.0f, 0.0f},
+						   0.0f, Fade(WHITE, 0.7f));
+		}
 	}
 }
 
-bool RoomView::leftMousePressed(tgui::Vector2f pos) {
-	if (tool == RoomTool::TOOL_PLACE) {
-		TileMap *tileMap = room->getTileMap();
-		IVector atlasTilePos = tileSetView->getSelectedTile();
+void RoomView::handleEditMode(int x, int y) {
+	TileMap *tileMap = room->getTileMap();
+	Rectangle destRect = getDestRect(tileMap, x, y);
+
+	if (selectedTile.x == x && selectedTile.y == y) {
+		Rectangle selectedTileRect = getDestRect(tileMap, x, y);
+		DrawRectangleRec(selectedTileRect, Fade(BLUE, 0.3f));
+	}
+
+	if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
+		DrawRectangleLinesEx(destRect, 2.0f, ORANGE);
+	}
+}
+
+void RoomView::handleEraseMode(int x, int y) {
+	TileMap *tileMap = room->getTileMap();
+	Rectangle destRect = getDestRect(tileMap, x, y);
+
+	if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
+		DrawRectangleRec(destRect, Fade(RED, 0.3f));
+	}
+}
+
+void RoomView::handleModePress(tgui::Vector2f pos) {
+	switch (tool) {
+	case RoomTool::TOOL_PLACE:
+		handlePlacePress(pos);
+		break;
+	case RoomTool::TOOL_ERASE:
+		handleErasePress(pos);
+		break;
+	case RoomTool::TOOL_EDIT:
+		handleEditPress(pos);
+		break;
+	default:
+		break;
+	}
+}
+
+void RoomView::handlePlacePress(tgui::Vector2f pos) {
+	TileMap *tileMap = room->getTileMap();
+
+	IVector atlasTilePos = tileSetView->getSelectedTile();
+	if (tileMap->getTileSet()->areAtlasCoordsValid(
+			{static_cast<float>(atlasTilePos.x),
+			 static_cast<float>(atlasTilePos.y)})) {
 		IVector tileMouse = getTileAtMouse();
 
 		Vector2 worldPos = {static_cast<float>(tileMouse.x),
@@ -159,6 +234,42 @@ bool RoomView::leftMousePressed(tgui::Vector2f pos) {
 
 		tileMap->setTile(worldPos, atlasPos);
 	}
-
-	return WorldView::leftMousePressed(pos);
 }
+
+void RoomView::handleErasePress(tgui::Vector2f pos) {
+	TileMap *tileMap = room->getTileMap();
+
+	IVector tileMouse = getTileAtMouse();
+
+	Vector2 worldPos = {static_cast<float>(tileMouse.x),
+						static_cast<float>(tileMouse.y)};
+
+	tileMap->setEmptyTile(worldPos);
+}
+
+void RoomView::handleEditPress(tgui::Vector2f pos) {
+	TileMap *tileMap = room->getTileMap();
+
+	selectedTile = getTileAtMouse();
+	Vector2 atlasCoords = tileMap->getTile(selectedTile.x, selectedTile.y)
+							  .getAtlasTile()
+							  .getAtlasCoords();
+	IVector atlasCoordsInt = {static_cast<int>(atlasCoords.x),
+							  static_cast<int>(atlasCoords.y)};
+	tileSetView->setSelectedTile(atlasCoordsInt);
+	tileSetView->onTileSelected.disconnectAll();
+	tileSetView->onTileSelected([this, tileMap](IVector newTile) {
+		IVector tileMouse = selectedTile;
+
+		if (tileMouse.x >= 0) {
+			Vector2 worldPos = {static_cast<float>(tileMouse.x),
+								static_cast<float>(tileMouse.y)};
+			Vector2 atlasPos = {static_cast<float>(newTile.x),
+								static_cast<float>(newTile.y)};
+
+			tileMap->setTile(worldPos, atlasPos);
+		}
+	});
+}
+
+void RoomView::setBrush(bool value) { this->brushMode = value; }

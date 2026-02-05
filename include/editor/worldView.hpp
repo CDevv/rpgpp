@@ -13,6 +13,7 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	Camera2D camera;
 	RenderTexture texture;
 	bool mouseMiddleButton;
+	bool mouseLeftButton;
 	Vector2 mouseWorldPos;
 	Vector2 getMouseWorldPos();
 	RoomTool tool;
@@ -33,6 +34,9 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 
 	void mouseMoved(tgui::Vector2f pos) override;
 	bool scrolled(float delta, tgui::Vector2f pos, bool touch) override;
+
+	bool leftMousePressed(tgui::Vector2f pos) override;
+	void leftMouseReleased(tgui::Vector2f pos) override;
 
 	virtual void drawCanvas();
 	virtual void drawOverlay();

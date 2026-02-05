@@ -1,6 +1,7 @@
 #ifndef RPGPP_TILESETTEXTUREVIEWER
 #define RPGPP_TILESETTEXTUREVIEWER
 
+#include "TGUI/Signal.hpp"
 #include "gamedata.hpp"
 #include "tileset.hpp"
 #include "worldView.hpp"
@@ -14,6 +15,8 @@ class TileSetView : public WorldView {
   public:
 	typedef std::shared_ptr<TileSetView> Ptr;
 
+	tgui::SignalTyped<IVector> onTileSelected = {"TileSelected"};
+
 	TileSet *tileSet{nullptr};
 	void drawCanvas() override;
 	void drawOverlay() override;
@@ -24,6 +27,7 @@ class TileSetView : public WorldView {
 	TileSet *getTileSet();
 
 	IVector getSelectedTile();
+	void setSelectedTile(IVector newTile);
 
 	bool leftMousePressed(tgui::Vector2f pos) override;
 };

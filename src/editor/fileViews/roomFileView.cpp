@@ -58,13 +58,17 @@ RoomFileView::RoomFileView() {
 	widgetContainer.push_back(props);
 
 	auto toolbox = RoomToolbox::create();
-	toolbox->setSize(100, 32);
-	toolbox->addTool("build.png", RoomTool::TOOL_NONE);
-	toolbox->addTool("build.png", RoomTool::TOOL_PLACE);
+	toolbox->setSize({164, 32});
+	toolbox->addTool("tool_none.png", RoomTool::TOOL_NONE);
+	toolbox->addTool("tool_place.png", RoomTool::TOOL_PLACE);
+	toolbox->addTool("tool_erase.png", RoomTool::TOOL_ERASE);
+	toolbox->addTool("tool_edit.png", RoomTool::TOOL_EDIT);
 	toolbox->onToolPressed([this](RoomTool tool) {
 		tileSetView->setTool(tool);
 		roomView->setTool(tool);
 	});
+	toolbox->onBrushPressed(
+		[this](bool brushMode) { roomView->setBrush(brushMode); });
 	widgetContainer.push_back(toolbox);
 }
 
