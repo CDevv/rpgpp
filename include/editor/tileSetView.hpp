@@ -17,6 +17,8 @@ class TileSetView : public WorldView {
 
 	tgui::SignalTyped<IVector> onTileSelected = {"TileSelected"};
 
+	TileSetView();
+
 	TileSet *tileSet{nullptr};
 	void drawCanvas() override;
 	void drawOverlay() override;

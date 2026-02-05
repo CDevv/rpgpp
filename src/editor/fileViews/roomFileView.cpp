@@ -1,12 +1,16 @@
 #include "fileViews/roomFileView.hpp"
 #include "TGUI/String.hpp"
+#include "TGUI/Widgets/ComboBox.hpp"
 #include "editor.hpp"
+#include "fileView.hpp"
 #include "propertiesBox.hpp"
 #include "room.hpp"
+#include "roomViewModesHandler.hpp"
 #include "tileSetView.hpp"
 #include "widgets/fileField.hpp"
 #include "widgets/roomToolbox.hpp"
 #include "widgets/roomView.hpp"
+#include <memory>
 
 RoomFileView::RoomFileView() {
 	roomView = RoomView::create();
@@ -16,16 +20,32 @@ RoomFileView::RoomFileView() {
 	widgetContainer.push_back(roomView);
 
 	tileSetView = TileSetView::create();
-	tileSetView->setPosition("100% - 300", 0);
+	tileSetView->setPosition("100% - 300", 32);
 	tileSetView->setSize({"300", "300"});
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(tileSetView));
 	widgetContainer.push_back(tileSetView);
 
 	roomView->tileSetView = tileSetView.get();
 
+	modesHandler = std::make_unique<RoomViewModesHandler>();
+	modesHandler->view = roomView;
+	roomView->fileView = dynamic_cast<FileView *>(this);
+
+	auto layerChoose = tgui::ComboBox::create();
+	layerChoose->setPosition("100% - 300", 0);
+	layerChoose->setSize(300, 32);
+	layerChoose->addItem("Tiles");
+	layerChoose->addItem("Collisions");
+	widgetContainer.push_back(layerChoose);
+
+	layerChoose->onItemSelect([this](int index) {
+		auto layerEnum = static_cast<RoomLayer>(index);
+		roomView->setLayer(layerEnum);
+	});
+
 	auto props = PropertiesBox::create();
 	props->setSize({"300", "100%"});
-	props->setPosition({"100% - 300", 300});
+	props->setPosition({"100% - 300", 300 + 32});
 
 	widthField = IntField::create();
 	widthField->label->setText("Map Height");

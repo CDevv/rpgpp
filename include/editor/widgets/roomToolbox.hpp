@@ -12,6 +12,8 @@
 
 enum class RoomTool { TOOL_NONE, TOOL_PLACE, TOOL_ERASE, TOOL_EDIT };
 
+enum class RoomLayer { LAYER_TILES, LAYER_COLLISION };
+
 struct RoomToolboxItem {
 	RoomTool type;
 	tgui::Texture texture;

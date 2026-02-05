@@ -66,6 +66,7 @@ class TileMap {
 	int getAtlasTileSize() const;
 	int getWorldTileSize() const;
 	bool atlasPosIsValid(Vector2 atlasPos) const;
+	bool worldPosIsValid(Vector2 atlasPos) const;
 	/** Get the Tile at the specified x and y position */
 	Tile getTile(int x, int y) const;
 	/** Set the tile at the specified world position to be a tile at the

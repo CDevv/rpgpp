@@ -241,6 +241,11 @@ int TileMap::getWorldTileSize() const { return worldTileSize; }
 Tile TileMap::getTile(int x, int y) const { return this->tiles[x][y]; }
 
 void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos) {
+	if (!atlasPosIsValid(atlasPos))
+		return;
+	if (!worldPosIsValid(worldPos))
+		return;
+
 	AtlasTile atlasTile = tileSet->getTile(atlasPos);
 
 	this->tiles[static_cast<int>(worldPos.x)][static_cast<int>(worldPos.y)]
@@ -248,6 +253,9 @@ void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos) {
 }
 
 void TileMap::setEmptyTile(Vector2 worldPos) {
+	if (!worldPosIsValid(worldPos))
+		return;
+
 	this->tiles[static_cast<int>(worldPos.x)][static_cast<int>(worldPos.y)]
 		.erase();
 }
@@ -272,6 +280,22 @@ bool TileMap::atlasPosIsValid(Vector2 atlasPos) const {
 	}
 
 	return (atlasXFits && atlasYFits);
+}
+
+bool TileMap::worldPosIsValid(Vector2 worldPos) const {
+	bool worldXFits = false;
+	bool worldYFits = false;
+
+	if (worldPos.x >= 0 &&
+		worldPos.x <= static_cast<float>(getMaxWorldSize().x)) {
+		worldXFits = true;
+	}
+	if (worldPos.y >= 0 &&
+		worldPos.y <= static_cast<float>(getMaxWorldSize().y)) {
+		worldYFits = true;
+	}
+
+	return (worldXFits && worldYFits);
 }
 
 void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos) const {

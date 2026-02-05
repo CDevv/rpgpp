@@ -7,6 +7,8 @@
 #include "worldView.hpp"
 #include <cstdio>
 
+TileSetView::TileSetView() {}
+
 TileSetView::Ptr TileSetView::create() {
 	auto tileSetView = std::make_shared<TileSetView>();
 	tileSetView->tileSet = nullptr;

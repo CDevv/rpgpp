@@ -2,20 +2,27 @@
 #define _RPGPP_ROOMVIEW_H
 
 #include "TGUI/Vector2.hpp"
+#include "fileView.hpp"
 #include "gamedata.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "tileSetView.hpp"
 #include "tilemap.hpp"
-#include "tileset.hpp"
+#include "widgets/roomToolbox.hpp"
 #include "worldView.hpp"
 #include <memory>
 
+class RoomViewModesHandler;
+
 class RoomView : public WorldView {
+	friend class RoomViewModesHandler;
+
   private:
+	RoomLayer layer;
 	IVector selectedTile{-1, -1};
 	bool brushMode = false;
 	IVector getTileAtMouse();
+	bool isTileValid(IVector tile);
 	Rectangle getSourceRect(TileMap *tileMap, int x, int y);
 	Rectangle getDestRect(TileMap *tileMap, int x, int y);
 	void handleMode(int x, int y);
@@ -32,6 +39,9 @@ class RoomView : public WorldView {
 
 	Room *room{nullptr};
 	TileSetView *tileSetView{nullptr};
+	FileView *fileView;
+
+	RoomView();
 
 	void drawCanvas() override;
 	void drawOverlay() override;
@@ -44,6 +54,7 @@ class RoomView : public WorldView {
 	void mouseMoved(tgui::Vector2f pos) override;
 
 	void setBrush(bool value);
+	void setLayer(RoomLayer layer);
 };
 
 #endif
