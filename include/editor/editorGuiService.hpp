@@ -50,4 +50,5 @@ class EditorGuiService {
 	static void createLogoCenter(const tgui::GrowVerticalLayout::Ptr &layout);
 	static void centerWidget(tgui::Widget::Ptr widget);
 };
+
 #endif

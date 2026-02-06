@@ -182,6 +182,7 @@ void EditorGuiService::initMenuBar() {
 	menuBar->addMenuItem(ts.getKey("file.new_project"));
 	menuBar->addMenuItem(fileOpenProjectTranslation);
 	menuBar->addMenuItem(ts.getKey("file.save_file"));
+	menuBar->addMenuItem(ts.getKey("file.undo"));
 
 	const auto optionsTranslation = ts.getKey("options");
 	const auto editorOptionsTranslation = ts.getKey("options.editor");

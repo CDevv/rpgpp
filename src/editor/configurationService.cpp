@@ -1,9 +1,4 @@
-#include "configurationService.h"
-
-#include <iostream>
-
-#include "raylib.h"
-
+#include "configurationService.hpp"
 
 ConfigurationService::ConfigurationService() {
 	if (std::filesystem::exists(RPGPP_CONFIG_FILE)) {
@@ -22,7 +17,8 @@ std::string ConfigurationService::getStringValue(const std::string &key) {
 	throw std::runtime_error(ss.str());
 }
 
-void ConfigurationService::setStringValue(const std::string &key, const std::string &value) {
+void ConfigurationService::setStringValue(const std::string &key,
+										  const std::string &value) {
 	this->iniStructure[GENERAL_CONF_FIELD].set(key, value);
 }
 

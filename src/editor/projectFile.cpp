@@ -2,6 +2,7 @@
 #include "TGUI/Widgets/Group.hpp"
 #include "emptyView.hpp"
 #include "fileSystemService.hpp"
+#include "fileView.hpp"
 #include "raylib.h"
 #include "tileset.hpp"
 #include <memory>
@@ -41,3 +42,5 @@ void ProjectFile::saveFile(const std::string &path) {
 	json j = saveable->dumpJson();
 	SaveFileText(path.c_str(), j.dump(4).c_str());
 }
+
+FileView &ProjectFile::getView() { return *view; }

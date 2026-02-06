@@ -1,4 +1,4 @@
-#include "worldView.hpp"
+#include "widgets/worldView.hpp"
 #include "TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp"
 #include "TGUI/Backend/Window/BackendGui.hpp"
 #include "TGUI/Vector2.hpp"

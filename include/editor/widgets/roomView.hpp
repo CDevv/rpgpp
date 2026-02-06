@@ -9,7 +9,7 @@
 #include "tileSetView.hpp"
 #include "tilemap.hpp"
 #include "widgets/roomToolbox.hpp"
-#include "worldView.hpp"
+#include "widgets/worldView.hpp"
 #include <memory>
 
 class RoomViewModesHandler;
@@ -30,8 +30,6 @@ class RoomView : public WorldView {
 	void handleEraseMode(int x, int y);
 	void handleEditMode(int x, int y);
 	void handleModePress(tgui::Vector2f pos);
-	void handlePlacePress(tgui::Vector2f pos);
-	void handleErasePress(tgui::Vector2f pos);
 	void handleEditPress(tgui::Vector2f pos);
 
   public:

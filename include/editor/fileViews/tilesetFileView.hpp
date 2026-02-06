@@ -6,7 +6,7 @@
 #include "variant.hpp"
 #include "widgets/fileField.hpp"
 #include "widgets/intField.hpp"
-#include "worldView.hpp"
+#include "widgets/worldView.hpp"
 
 class TileSetFileView : public FileView {
   private:

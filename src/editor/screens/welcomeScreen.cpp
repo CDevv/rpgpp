@@ -19,6 +19,8 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 		auto menuBarPtr = Editor::instance->getGui().menuBar.lock();
 		menuBarPtr->setMenuItemEnabled(
 			{ts.getKey("file.options"), ts.getKey("file.save_file")}, false);
+		menuBarPtr->setMenuItemEnabled(
+			{ts.getKey("file.options"), ts.getKey("file.undo")}, false);
 	}
 
 	const auto verticalLayout = tgui::GrowVerticalLayout::create();

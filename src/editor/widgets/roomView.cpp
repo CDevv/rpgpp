@@ -1,15 +1,23 @@
 #include "widgets/roomView.hpp"
 #include "TGUI/Vector2.hpp"
+#include "TGUI/Widget.hpp"
+#include "actions/action.hpp"
+#include "actions/editTileAction.hpp"
+#include "actions/eraseTileAction.hpp"
+#include "actions/placeTileAction.hpp"
+#include "editor.hpp"
 #include "gamedata.hpp"
+#include "projectScreen.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "tile.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
 #include "widgets/roomToolbox.hpp"
-#include "worldView.hpp"
+#include "widgets/worldView.hpp"
 #include <cmath>
 #include <memory>
+#include <utility>
 
 RoomView::RoomView() { layer = RoomLayer::LAYER_TILES; }
 
@@ -236,13 +244,27 @@ void RoomView::handleEraseMode(int x, int y) {
 }
 
 void RoomView::handleModePress(tgui::Vector2f pos) {
+	auto screen = aurora::downcast<screens::ProjectScreen *>(
+		Editor::instance->getGui().currentScreen.get());
+
+	IVector tileMouse = getTileAtMouse();
+	IVector atlasTilePos = tileSetView->getSelectedTile();
+
 	switch (tool) {
-	case RoomTool::TOOL_PLACE:
-		handlePlacePress(pos);
-		break;
-	case RoomTool::TOOL_ERASE:
-		handleErasePress(pos);
-		break;
+	case RoomTool::TOOL_PLACE: {
+		TileMap *tileMap = room->getTileMap();
+
+		std::unique_ptr<Action> act = std::make_unique<PlaceTileAction>(
+			room, tileMap, layer, tileMouse, atlasTilePos);
+
+		screen->getCurrentFile().getView().pushAction(std::move(act));
+	} break;
+	case RoomTool::TOOL_ERASE: {
+		std::unique_ptr<Action> act = std::make_unique<EraseTileAction>(
+			room, layer, tileMouse, atlasTilePos);
+
+		screen->getCurrentFile().getView().pushAction(std::move(act));
+	} break;
 	case RoomTool::TOOL_EDIT:
 		handleEditPress(pos);
 		break;
@@ -251,55 +273,10 @@ void RoomView::handleModePress(tgui::Vector2f pos) {
 	}
 }
 
-void RoomView::handlePlacePress(tgui::Vector2f pos) {
-	TileMap *tileMap = room->getTileMap();
-
-	switch (layer) {
-	case RoomLayer::LAYER_TILES: {
-		IVector atlasTilePos = tileSetView->getSelectedTile();
-		if (tileMap->getTileSet()->areAtlasCoordsValid(
-				{static_cast<float>(atlasTilePos.x),
-				 static_cast<float>(atlasTilePos.y)})) {
-			IVector tileMouse = getTileAtMouse();
-
-			Vector2 worldPos = {static_cast<float>(tileMouse.x),
-								static_cast<float>(tileMouse.y)};
-			Vector2 atlasPos = {static_cast<float>(atlasTilePos.x),
-								static_cast<float>(atlasTilePos.y)};
-
-			tileMap->setTile(worldPos, atlasPos);
-		}
-	} break;
-	case RoomLayer::LAYER_COLLISION: {
-		IVector tileMouse = getTileAtMouse();
-		room->getCollisions().addCollisionTile(tileMouse.x, tileMouse.y);
-	} break;
-	default:
-		break;
-	}
-}
-
-void RoomView::handleErasePress(tgui::Vector2f pos) {
-	TileMap *tileMap = room->getTileMap();
-
-	IVector tileMouse = getTileAtMouse();
-
-	Vector2 worldPos = {static_cast<float>(tileMouse.x),
-						static_cast<float>(tileMouse.y)};
-
-	switch (layer) {
-	case RoomLayer::LAYER_TILES:
-		tileMap->setEmptyTile(worldPos);
-		break;
-	case RoomLayer::LAYER_COLLISION: {
-		room->getCollisions().removeCollisionTile(tileMouse.x, tileMouse.y);
-	} break;
-	default:
-		break;
-	}
-}
-
 void RoomView::handleEditPress(tgui::Vector2f pos) {
+	auto screen = aurora::downcast<screens::ProjectScreen *>(
+		Editor::instance->getGui().currentScreen.get());
+
 	TileMap *tileMap = room->getTileMap();
 
 	selectedTile = getTileAtMouse();
@@ -313,17 +290,12 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 	case RoomLayer::LAYER_TILES: {
 		tileSetView->setSelectedTile(atlasCoordsInt);
 		tileSetView->onTileSelected.disconnectAll();
-		tileSetView->onTileSelected([this, tileMap](IVector newTile) {
+		tileSetView->onTileSelected([this, tileMap, screen](IVector newTile) {
 			IVector tileMouse = selectedTile;
 
-			if (tileMouse.x >= 0) {
-				Vector2 worldPos = {static_cast<float>(tileMouse.x),
-									static_cast<float>(tileMouse.y)};
-				Vector2 atlasPos = {static_cast<float>(newTile.x),
-									static_cast<float>(newTile.y)};
-
-				tileMap->setTile(worldPos, atlasPos);
-			}
+			std::unique_ptr<Action> act = std::make_unique<EditTileAction>(
+				room, layer, tileMouse, newTile);
+			screen->getCurrentFile().getView().pushAction(std::move(act));
 		});
 	} break;
 	default:

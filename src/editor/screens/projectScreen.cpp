@@ -21,12 +21,12 @@
 #include "editorGuiService.hpp"
 #include "fileInitVisitor.hpp"
 #include "fileSystemService.hpp"
-#include "fileTab.hpp"
 #include "gamedata.hpp"
 #include "newFileDialog.hpp"
 #include "projectFile.hpp"
 #include "projectFileVisitor.hpp"
 #include "raylib.h"
+#include "widgets/fileTab.hpp"
 #include <cstdio>
 #include <filesystem>
 #include <memory>
@@ -39,10 +39,12 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 
 	if (!Editor::instance->getGui().menuBar.expired()) {
 		auto menuBarPtr = Editor::instance->getGui().menuBar.lock();
-		std::vector<tgui::String> hierarchy = {ts.getKey("file.options"),
-											   ts.getKey("file.save_file")};
-		menuBarPtr->setMenuItemEnabled(hierarchy, true);
-		menuBarPtr->connectMenuItem(hierarchy, [this] {
+		std::vector<tgui::String> saveFileHierarchy = {
+			ts.getKey("file.options"), ts.getKey("file.save_file")};
+		std::vector<tgui::String> undoHierarchy = {ts.getKey("file.options"),
+												   ts.getKey("file.undo")};
+		menuBarPtr->setMenuItemEnabled(saveFileHierarchy, true);
+		menuBarPtr->connectMenuItem(saveFileHierarchy, [this] {
 			if (!openedFiles.empty()) {
 				int currentFile = fileTabs->getSelectedIndex();
 				printf("%i \n", currentFile);
@@ -50,6 +52,10 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 				projectFile->saveFile(projectFile->getFilePath());
 			}
 		});
+
+		menuBarPtr->setMenuItemEnabled(undoHierarchy, true);
+		menuBarPtr->connectMenuItem(
+			undoHierarchy, [this] { getCurrentFile().getView().undoAction(); });
 	}
 
 	fileContextMenu = tgui::ContextMenu::create();
@@ -282,4 +288,9 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	}
 
 	return group;
+}
+
+ProjectFile &screens::ProjectScreen::getCurrentFile() {
+	int currentFile = fileTabs->getSelectedIndex();
+	return *openedFiles.at(currentFile);
 }

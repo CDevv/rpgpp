@@ -3,12 +3,16 @@
 
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Group.hpp"
+#include "actions/action.hpp"
 #include "variant.hpp"
+#include <memory>
+#include <stack>
 #include <vector>
 class FileView {
   protected:
 	VariantWrapper *variant;
 	std::vector<tgui::Widget::Ptr> widgetContainer;
+	std::stack<std::unique_ptr<Action>> actions;
 
   public:
 	FileView();
@@ -16,6 +20,8 @@ class FileView {
 
 	virtual void init(tgui::Group::Ptr layout, VariantWrapper *variant) {}
 	void addWidgets(tgui::Group::Ptr layout);
+	void pushAction(std::unique_ptr<Action> action);
+	void undoAction();
 };
 
 #endif

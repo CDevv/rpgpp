@@ -24,6 +24,7 @@ class ProjectFile {
 	void initUi(tgui::Group::Ptr group);
 	void addWidgets(tgui::Group::Ptr layout);
 	void saveFile(const std::string &path);
+	FileView &getView();
 };
 
 #endif

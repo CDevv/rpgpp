@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "configurationService.h"
+#include "configurationService.hpp"
 
 #define RPGPP_VERSION 0.1
 
@@ -34,7 +34,7 @@ class Editor {
 	EditorGuiService &getGui() const;
 	TranslationService &getTranslations() const;
 	FileSystemService &getFs() const;
-	ConfigurationService& getConfiguration() const;
+	ConfigurationService &getConfiguration() const;
 	Project *getProject() const;
 	void setProject(const std::string &path);
 	// this sets the icon of the editor.

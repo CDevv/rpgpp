@@ -9,11 +9,11 @@
 #include "editor.hpp"
 #include "fileInitVisitor.hpp"
 #include "fileSystemService.hpp"
-#include "fileTab.hpp"
 #include "fileViews/fileView.hpp"
 #include "guiScreen.hpp"
 #include "projectFile.hpp"
 #include "projectFileVisitor.hpp"
+#include "widgets/fileTab.hpp"
 #include <memory>
 #include <vector>
 
@@ -35,6 +35,7 @@ class ProjectScreen : public UIScreen {
   public:
 	void addFileView(EngineFileType fileType, const std::string &path);
 	void addResourceButtons(EngineFileType fileType);
+	ProjectFile &getCurrentFile();
 	void initItems(tgui::Group::Ptr layout) override;
 	const std::string getNameOfScreen() override { return "Project"; }
 };

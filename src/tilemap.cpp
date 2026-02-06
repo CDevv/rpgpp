@@ -241,10 +241,13 @@ int TileMap::getWorldTileSize() const { return worldTileSize; }
 Tile TileMap::getTile(int x, int y) const { return this->tiles[x][y]; }
 
 void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos) {
-	if (!atlasPosIsValid(atlasPos))
-		return;
 	if (!worldPosIsValid(worldPos))
 		return;
+
+	if (!atlasPosIsValid(atlasPos)) {
+		setEmptyTile(worldPos);
+		return;
+	}
 
 	AtlasTile atlasTile = tileSet->getTile(atlasPos);
 

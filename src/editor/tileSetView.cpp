@@ -4,7 +4,7 @@
 #include "raylib.h"
 #include "tileset.hpp"
 #include "widgets/roomToolbox.hpp"
-#include "worldView.hpp"
+#include "widgets/worldView.hpp"
 #include <cstdio>
 
 TileSetView::TileSetView() {}
