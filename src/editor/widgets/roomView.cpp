@@ -1,4 +1,5 @@
 #include "widgets/roomView.hpp"
+#include "TGUI/Event.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
 #include "actions/action.hpp"
@@ -160,14 +161,20 @@ bool RoomView::leftMousePressed(tgui::Vector2f pos) {
 	return WorldView::leftMousePressed(pos);
 }
 
-void RoomView::handleMode(int x, int y) {
-	/*
-	if (fileView != nullptr) {
-		(dynamic_cast<RoomFileView *>(fileView))
-			->modesHandler->handleMode(x, y);
+void RoomView::keyPressed(const tgui::Event::KeyEvent &event) {
+	if (event.control) {
+		auto screen = aurora::downcast<screens::ProjectScreen *>(
+			Editor::instance->getGui().currentScreen.get());
+		if (event.code == tgui::Event::KeyboardKey::Z) {
+			screen->getCurrentFile().getView().undoAction();
+		}
+		if (event.code == tgui::Event::KeyboardKey::C) {
+			screen->getCurrentFile().getView().redoAction();
+		}
 	}
-	*/
+}
 
+void RoomView::handleMode(int x, int y) {
 	switch (tool) {
 	case RoomTool::TOOL_PLACE:
 		handlePlaceMode(x, y);

@@ -43,6 +43,8 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 			ts.getKey("file.options"), ts.getKey("file.save_file")};
 		std::vector<tgui::String> undoHierarchy = {ts.getKey("file.options"),
 												   ts.getKey("file.undo")};
+		std::vector<tgui::String> redoHierarchy = {ts.getKey("file.options"),
+												   ts.getKey("file.redo")};
 		menuBarPtr->setMenuItemEnabled(saveFileHierarchy, true);
 		menuBarPtr->connectMenuItem(saveFileHierarchy, [this] {
 			if (!openedFiles.empty()) {
@@ -56,6 +58,10 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 		menuBarPtr->setMenuItemEnabled(undoHierarchy, true);
 		menuBarPtr->connectMenuItem(
 			undoHierarchy, [this] { getCurrentFile().getView().undoAction(); });
+
+		menuBarPtr->setMenuItemEnabled(redoHierarchy, true);
+		menuBarPtr->connectMenuItem(
+			redoHierarchy, [this] { getCurrentFile().getView().redoAction(); });
 	}
 
 	fileContextMenu = tgui::ContextMenu::create();

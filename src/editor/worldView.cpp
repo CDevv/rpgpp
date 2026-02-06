@@ -1,6 +1,7 @@
 #include "widgets/worldView.hpp"
 #include "TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp"
 #include "TGUI/Backend/Window/BackendGui.hpp"
+#include "TGUI/Event.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
 
@@ -102,12 +103,24 @@ void WorldView::leftMouseReleased(tgui::Vector2f pos) {
 	mouseLeftButton = false;
 }
 
+void WorldView::keyPressed(const tgui::Event::KeyEvent &event) {
+	if (event.control && event.code == tgui::Event::KeyboardKey::Z) {
+		printf("let me undo.. \n");
+	}
+}
+
+bool WorldView::canGainFocus() const { return true; }
+
 void WorldView::update() {
 	if (IsMouseButtonDown(MOUSE_MIDDLE_BUTTON)) {
 		mouseMiddleButton = true;
 	} else {
 		mouseMiddleButton = false;
 	}
+
+	// if (IsKeyPressed(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_Z)) {
+	// 	printf("left ctrl + z \n");
+	// }
 
 	BeginTextureMode(m_textureTarget);
 

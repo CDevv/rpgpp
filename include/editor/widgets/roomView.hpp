@@ -50,6 +50,7 @@ class RoomView : public WorldView {
 
 	bool leftMousePressed(tgui::Vector2f pos) override;
 	void mouseMoved(tgui::Vector2f pos) override;
+	void keyPressed(const tgui::Event::KeyEvent &event) override;
 
 	void setBrush(bool value);
 	void setLayer(RoomLayer layer);

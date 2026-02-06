@@ -38,6 +38,10 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	bool leftMousePressed(tgui::Vector2f pos) override;
 	void leftMouseReleased(tgui::Vector2f pos) override;
 
+	void keyPressed(const tgui::Event::KeyEvent &event) override;
+
+	bool canGainFocus() const override;
+
 	virtual void drawCanvas();
 	virtual void drawOverlay();
 
