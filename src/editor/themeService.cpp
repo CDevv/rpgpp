@@ -1,6 +1,8 @@
+#include "TGUI/Loading/Theme.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include <filesystem>
+#include <memory>
 using namespace std;
 namespace fs = std::filesystem;
 
@@ -16,19 +18,16 @@ ThemeService::ThemeService() {
             }
         }
     }
+    this->current_theme = std::make_shared<tgui::Theme>(this->themes[this->current_theme_name]);
+    tgui::Theme::setDefault(this->current_theme);
 }
 
 void ThemeService::setTheme(const string& themeName) {
     if (this->themes.find(themeName) != this->themes.end()) {
-        this->current_theme = themeName;
+        this->current_theme_name = themeName;
+        this->current_theme = std::make_shared<tgui::Theme>(this->themes[this->current_theme_name]);
+        tgui::Theme::setDefault(this->current_theme);
     }
-}
-
-std::string ThemeService::getCurrentThemePath() {
-    if (this->themes.find(this->current_theme) != this->themes.end()) {
-        return this->themes[this->current_theme];
-    }
-    return "";
 }
 
 std::vector<std::string> ThemeService::getThemes() {

@@ -35,7 +35,7 @@ class Editor {
 	static Editor *instance;
 	EditorGuiService &getGui() const;
 	TranslationService &getTranslations() const;
-	ThemeService &getTheme() const;
+	ThemeService &getThemeService() const;
 	FileSystemService &getFs() const;
 	ConfigurationService &getConfiguration() const;
 	Project *getProject() const;

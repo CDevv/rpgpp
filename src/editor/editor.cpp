@@ -14,10 +14,10 @@ Editor::Editor() {
 	this->configurationService = std::make_unique<ConfigurationService>();
 	// filesystem must be initialized second, as many services depend on it.
 	this->fileSystem = std::make_unique<FileSystemService>();
-	this->project = std::unique_ptr<Project>{nullptr};
-	this->guiService = std::make_unique<EditorGuiService>();
 	this->translationService = std::make_unique<TranslationService>();
 	this->themeService = std::make_unique<ThemeService>();
+	this->project = std::unique_ptr<Project>{nullptr};
+	this->guiService = std::make_unique<EditorGuiService>();
 }
 
 void Editor::setAppIcon(const std::string &icon_path) {
@@ -34,7 +34,7 @@ TranslationService& Editor::getTranslations() const {
 	return *translationService;
 }
 
-ThemeService& Editor::getTheme() const {
+ThemeService& Editor::getThemeService() const {
 	return *themeService;
 }
 

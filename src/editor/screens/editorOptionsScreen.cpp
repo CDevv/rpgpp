@@ -18,7 +18,7 @@
 namespace screens {
     void EditorOptionsScreen::initItems(const tgui::Group::Ptr layout) {
         TranslationService &ts = Editor::instance->getTranslations();
-        ThemeService &theme = Editor::instance->getTheme();
+        ThemeService &theme = Editor::instance->getThemeService();
 
         const auto verticGrowLayout = tgui::GrowVerticalLayout::create();
         verticGrowLayout->setSize(640, "100%");
@@ -74,13 +74,13 @@ namespace screens {
         for (const auto& theme : theme.getThemes())
             themeSelector->addItem(theme);
 
-        themeSelector->setSelectedItem(theme.current_theme);
+        themeSelector->setSelectedItem(theme.current_theme_name);
 
         themeSelector->onItemSelect.connect([&](const tgui::String& item) {
-            theme.setTheme(item.toStdString());
             ConfigurationService &configService = Editor::instance->getConfiguration();
             configService.setStringValue("theme", item.toStdString());
             configService.saveConfiguration();
+            theme.setTheme(item.toStdString());
             Editor::instance->getGui().reloadUi();
         });
 

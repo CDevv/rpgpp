@@ -44,8 +44,6 @@ void EditorGuiService::resetUi() {
 		Editor::setAppIcon(RPGPP_EXECUTABLE_LOGO);
 	}
 	// tgui::Theme::setDefault(CURRENT_TESTING_THEME);
-	auto &theme = Editor::instance->getTheme();
-	tgui::Theme::setDefault(theme.getCurrentThemePath());
 
 	this->setScreen(std::make_unique<screens::WelcomeScreen>(), true);
 }
@@ -122,9 +120,6 @@ void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
  * @return the group that the screen must use to position and add it's widgets.
  */
 tgui::Group::Ptr EditorGuiService::uiChangePreInit(UIScreen *setToScreen) {
-	auto &theme = Editor::instance->getTheme();
-	tgui::Theme::setDefault(theme.getCurrentThemePath());
-
 	gui->removeAllWidgets();
 	initMenuBar();
 
@@ -171,6 +166,7 @@ void EditorGuiService::createLogoCenter(
 }
 
 void EditorGuiService::reloadUi() {
+
 	auto group = this->uiChangePreInit(this->currentScreen.get());
 	this->currentScreen->initItems(group);
 	gui->add(group);
