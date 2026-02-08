@@ -29,8 +29,9 @@ class EditorGuiService {
 	// int setScreen(int _cpp_par_);
 
 	std::unique_ptr<tgui::Gui> gui;
-	UIScreen *prevScreen;
 	std::unique_ptr<UIScreen> currentScreen;
+	std::deque<std::unique_ptr<UIScreen>> screenHistory;
+
 	std::weak_ptr<tgui::MenuBar> menuBar{};
 	std::map<std::string, std::string> translations = {};
 	void init();
@@ -45,7 +46,7 @@ class EditorGuiService {
 	tgui::Group::Ptr uiChangePreInit(UIScreen *setToScreen);
 	void setResetUi() { this->reset_gui_r = true; }
 
-	void naviGoBack();
+	void gotoPreviousScreen();
 	void reloadUi();
 	static void createLogoCenter(const tgui::GrowVerticalLayout::Ptr &layout);
 	static void centerWidget(tgui::Widget::Ptr widget);

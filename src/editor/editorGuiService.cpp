@@ -106,7 +106,8 @@ void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
 		return;
 	}
 	auto group = this->uiChangePreInit(setToScreen.get());
-	this->prevScreen = this->currentScreen.release();
+	// this->prevScreen = this->currentScreen.release();
+	this->screenHistory.push_back(std::move(this->currentScreen));
 	this->currentScreen.swap(setToScreen);
 	this->currentScreen->initItems(group);
 	gui->add(group);
@@ -145,7 +146,7 @@ void EditorGuiService::setScreen(UIScreen *setToScreen, bool forceSwitch) {
 		return;
 	}
 	auto group = this->uiChangePreInit(setToScreen);
-	this->prevScreen = this->currentScreen.release();
+	this->screenHistory.push_back(std::move(this->currentScreen));
 	this->currentScreen = std::unique_ptr<UIScreen>(setToScreen);
 	this->currentScreen->initItems(group);
 	gui->add(group);
@@ -175,18 +176,24 @@ void EditorGuiService::initMenuBar() {
 	auto menuBar = tgui::MenuBar::create();
 	this->menuBar = menuBar;
 	auto &ts = Editor::instance->getTranslations();
-	const auto &fileOptionsTranslation = ts.getKey("file.options");
-	const auto &fileOpenProjectTranslation = ts.getKey("file.open_project");
+
+	const auto &fileOptionsTranslation = ts.getKey("menu.file");
+	const auto &fileOpenProjectTranslation = ts.getKey("menu.file.open_project");
 
 	menuBar->addMenu(fileOptionsTranslation);
-	menuBar->addMenuItem(ts.getKey("file.new_project"));
+	menuBar->addMenuItem(ts.getKey("menu.file.new_project"));
 	menuBar->addMenuItem(fileOpenProjectTranslation);
-	menuBar->addMenuItem(ts.getKey("file.save_file"));
-	menuBar->addMenuItem(ts.getKey("file.undo"));
-	menuBar->addMenuItem(ts.getKey("file.redo"));
+	menuBar->addMenuItem(ts.getKey("menu.file.save_file"));
+	menuBar->connectMenuItem(
+		{fileOptionsTranslation, fileOpenProjectTranslation},
+		[] { Editor::instance->getFs().promptOpenProject(); });
 
-	const auto optionsTranslation = ts.getKey("options");
-	const auto editorOptionsTranslation = ts.getKey("options.editor");
+	menuBar->addMenu(ts.getKey("menu.edit"));
+	menuBar->addMenuItem(ts.getKey("menu.edit.undo"));
+	menuBar->addMenuItem(ts.getKey("menu.edit.redo"));
+
+	const auto optionsTranslation = ts.getKey("menu.options");
+	const auto editorOptionsTranslation = ts.getKey("menu.options.editor");
 	menuBar->addMenu(optionsTranslation);
 	menuBar->addMenuItem(editorOptionsTranslation);
 	menuBar->connectMenuItem(
@@ -195,11 +202,8 @@ void EditorGuiService::initMenuBar() {
 				std::make_unique<screens::EditorOptionsScreen>(), false);
 		});
 
-	menuBar->connectMenuItem(
-		{fileOptionsTranslation, fileOpenProjectTranslation},
-		[] { Editor::instance->getFs().promptOpenProject(); });
-	const auto &aboutOptions = ts.getKey("about.options"),
-			   &aboutRpgpp = ts.getKey("about.options.rpgpp");
+	const auto &aboutOptions = ts.getKey("menu.about"),
+			   &aboutRpgpp = ts.getKey("menu.about.rpgpp");
 	menuBar->addMenu(aboutOptions);
 	menuBar->addMenuItem(aboutRpgpp);
 
@@ -211,8 +215,16 @@ void EditorGuiService::initMenuBar() {
 	this->gui->add(menuBar);
 }
 
-void EditorGuiService::naviGoBack() {
-	this->setScreen(this->prevScreen, false);
+void EditorGuiService::gotoPreviousScreen() {
+	if (!this->screenHistory.empty()) {
+		std::unique_ptr<UIScreen> lastScreen = std::move(this->screenHistory.back());
+		this->screenHistory.pop_back();
+
+		auto group = this->uiChangePreInit(lastScreen.get());
+		this->currentScreen = std::move(lastScreen);
+		this->currentScreen->initItems(group);
+		gui->add(group);
+	}
 }
 
 void EditorGuiService::centerWidget(tgui::Widget::Ptr widget) {

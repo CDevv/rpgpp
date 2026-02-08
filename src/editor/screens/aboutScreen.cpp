@@ -30,9 +30,9 @@ void AboutScreen::initItems(tgui::Group::Ptr layout) {
 	EditorGuiService::createLogoCenter(verticalLayout);
 	auto goBack = tgui::Button::create(tService.getKey("button.go_back"));
 	goBack->onPress.connect([] {
-		Editor::instance->getGui().setScreen(
-			Editor::instance->getGui().prevScreen, false);
+		Editor::instance->getGui().gotoPreviousScreen();
 	});
+
 	goBack->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
 	std::stringstream informationText;
 	informationText << "raylib: " << RAYLIB_VERSION << "\n";
