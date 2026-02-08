@@ -12,5 +12,5 @@
   "screen.starting.get_started": "Започни!",
   "screen.starting.description": "Натисни 'Нов Проект' за да създадете нов проект или 'Отвори проект' за да отворите вече съществуващ проект!",
   "button.go_back": "Върни се назад",
-  "options.language": "език "
+  "screen.options.language": "език "
 }

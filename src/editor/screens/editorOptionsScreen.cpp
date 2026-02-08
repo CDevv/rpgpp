@@ -3,6 +3,8 @@
 //
 
 #include "editorOptionsScreen.h"
+#include <filesystem>
+#include <fstream>
 
 #include "editor.hpp"
 #include "translationService.hpp"
@@ -12,9 +14,12 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 
+
 namespace screens {
     void EditorOptionsScreen::initItems(const tgui::Group::Ptr layout) {
         TranslationService &ts = Editor::instance->getTranslations();
+        ThemeService &theme = Editor::instance->getTheme();
+
         const auto verticGrowLayout = tgui::GrowVerticalLayout::create();
         verticGrowLayout->setSize(640, "100%");
         verticGrowLayout->setPosition({"50%", "50%"});
@@ -31,6 +36,7 @@ namespace screens {
         });
         backButton->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
 
+        // Language
         const auto languageLayout = tgui::HorizontalLayout::create();
         const auto languageSelector = tgui::ComboBox::create();
         for (auto [name, key] : ts.translations) {
@@ -51,15 +57,41 @@ namespace screens {
         });
 
         languageLayout->setSize({"100%", 30});
-        const auto languageLabel = tgui::Label::create(ts.getKey("options.language"));
+        const auto languageLabel = tgui::Label::create(ts.getKey("screen.options.language"));
         languageLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
 
         languageLayout->add(languageLabel);
         languageLayout->add(languageSelector);
 
+        // Theme
+        const auto themeLayout = tgui::HorizontalLayout::create();
+        const auto themeSelector = tgui::ComboBox::create();
+
+        themeLayout->setSize({"100%", 30});
+        const auto themeLabel = tgui::Label::create(ts.getKey("screen.options.theme"));
+        themeLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
+
+        for (const auto& theme : theme.getThemes())
+            themeSelector->addItem(theme);
+
+        themeSelector->setSelectedItem(theme.current_theme);
+
+        themeSelector->onItemSelect.connect([&](const tgui::String& item) {
+            theme.setTheme(item.toStdString());
+            ConfigurationService &configService = Editor::instance->getConfiguration();
+            configService.setStringValue("theme", item.toStdString());
+            configService.saveConfiguration();
+            Editor::instance->getGui().reloadUi();
+        });
+
+        themeLayout->add(themeLabel);
+        themeLayout->add(themeSelector);
+
         verticGrowLayout->add(languageLayout);
+        verticGrowLayout->add(themeLayout);
         verticGrowLayout->add(backButton);
 
         layout->add(verticGrowLayout);
+
     }
 }

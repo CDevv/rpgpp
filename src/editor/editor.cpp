@@ -15,6 +15,7 @@ Editor::Editor() {
 	this->project = std::unique_ptr<Project>{nullptr};
 	this->guiService = std::make_unique<EditorGuiService>();
 	this->translationService = std::make_unique<TranslationService>();
+	this->themeService = std::make_unique<ThemeService>();
 	this->fileSystem = std::make_unique<FileSystemService>();
 }
 
@@ -30,6 +31,10 @@ EditorGuiService& Editor::getGui() const {
 
 TranslationService& Editor::getTranslations() const {
 	return *translationService;
+}
+
+ThemeService& Editor::getTheme() const {
+	return *themeService;
 }
 
 FileSystemService& Editor::getFs() const {

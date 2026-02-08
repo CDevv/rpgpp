@@ -17,5 +17,6 @@
   "screen.starting.description": "Nhấn vào 'Tạo dự án' để tạo dự án mới, hoặc 'Mở dự án' để mở một dự án!",
 
   "button.go_back": "Quay lại",
-  "options.language": "Ngôn ngữ"
+  "screen.options.language": "Ngôn ngữ",
+  "screen.options.theme": "Chủ đề"
 }

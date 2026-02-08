@@ -6,6 +6,7 @@
 #include "project.hpp"
 #include "raylib.h"
 #include "translationService.hpp"
+#include "themeService.hpp"
 #include <memory>
 #include <string>
 
@@ -19,6 +20,7 @@ class Editor {
 	std::unique_ptr<EditorGuiService> guiService;
 	// the translation service responsible for all the i18n.
 	std::unique_ptr<TranslationService> translationService;
+	std::unique_ptr<ThemeService> themeService;
 	std::unique_ptr<FileSystemService> fileSystem;
 	std::unique_ptr<ConfigurationService> configurationService;
 
@@ -33,6 +35,7 @@ class Editor {
 	static Editor *instance;
 	EditorGuiService &getGui() const;
 	TranslationService &getTranslations() const;
+	ThemeService &getTheme() const;
 	FileSystemService &getFs() const;
 	ConfigurationService &getConfiguration() const;
 	Project *getProject() const;
