@@ -20,14 +20,14 @@ namespace screens {
         verticGrowLayout->setPosition({"50%", "50%"});
         verticGrowLayout->setOrigin({0.5, 0.5});
         verticGrowLayout->getRenderer()->setSpaceBetweenWidgets(10.0f);
-        const auto topOptionsHeader = tgui::Label::create(ts.getKey("options.editor"));
+        const auto topOptionsHeader = tgui::Label::create(ts.getKey("menu.options.editor"));
         topOptionsHeader->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
         topOptionsHeader->getRenderer()->setTextSize(20);
         verticGrowLayout->add(topOptionsHeader);
 
         const auto backButton = tgui::Button::create(ts.getKey("button.go_back"));
         backButton->onPress.connect([] {
-            Editor::instance->getGui().naviGoBack();
+            Editor::instance->getGui().gotoPreviousScreen();
         });
         backButton->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
 

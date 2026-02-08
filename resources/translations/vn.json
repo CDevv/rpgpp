@@ -1,16 +1,21 @@
 {
   "language": "Tiếng Việt",
-  "file.options": "Tệp tin",
-  "about.options": "Thông tin",
-  "options": "Tùy chọn...",
-  "options.editor": "Tùy chọn chương trình...",
-  "file.new_project": "Tạo dự án",
-  "file.open_project": "Mở dự án",
-  "file.save_file": "Lưu tệp",
-  "file.undo": "Hoàn tác",
-  "about.options.rpgpp": "Thông tin về RPG++...",
+
+  "menu.file": "Tệp tin",
+  "menu.file.new_project": "Tạo dự án",
+  "menu.file.open_project": "Mở dự án",
+  "menu.file.save_file": "Lưu tệp",
+  "menu.edit": "Chỉnh sửa",
+  "menu.edit.undo": "Hoàn tác",
+  "menu.edit.redo": "Làm lại",
+  "menu.options": "Tùy chọn",
+  "menu.options.editor": "Tùy chọn chương trình...",
+  "menu.about": "Thông tin",
+  "menu.about.rpgpp": "Thông tin về RPG++...",
+
   "screen.starting.get_started": "Bắt đầu!",
   "screen.starting.description": "Nhấn vào 'Tạo dự án' để tạo dự án mới, hoặc 'Mở dự án' để mở một dự án!",
+
   "button.go_back": "Quay lại",
   "options.language": "Ngôn ngữ"
 }

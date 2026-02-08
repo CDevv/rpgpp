@@ -1,12 +1,14 @@
 {
   "language": "Türkçe",
-  "file.options": "Dosya",
-  "about.options": "Bilgi",
-  "options": "Seçenekler...",
-  "options.editor": "Düzenleyici Seçenekleri...",
-  "file.new_project": "Yeni Proje",
-  "file.open_project": "Proje Aç",
-  "about.options.rpgpp": "RPG++ Hakkında...",
+
+  "menu.file": "Dosya",
+  "menu.file.new_project": "Yeni Proje",
+  "menu.file.open_project": "Proje Aç",
+  "menu.options": "Seçenekler...",
+  "menu.options.editor": "Düzenleyici Seçenekleri...",
+  "menu.about": "Bilgi",
+  "menu.about.rpgpp": "RPG++ Hakkında...",
+
   "screen.starting.get_started": "Başlayın!",
   "screen.starting.description": "'Yeni Proje'ye tıklayarak yeni proje oluşturun, ya da 'Proje Aç'a basarak proje açın!",
   "button.go_back": "Geri",

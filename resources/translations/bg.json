@@ -1,12 +1,14 @@
 {
   "language": "български",
-  "file.options": "Файл",
-  "about.options": "Относно",
-  "options": "Опции...",
-  "options.editor": "Опции на редактора...",
-  "file.new_project": "Нов проект",
-  "file.open_project": "Отвори проект",
-  "about.options.rpgpp": "Относно RPG++...",
+
+  "menu.file": "Файл",
+  "menu.file.new_project": "Нов проект",
+  "menu.file.open_project": "Отвори проект",
+  "menu.options": "Опции...",
+  "menu.options.editor": "Опции на редактора...",
+  "menu.about": "Относно",
+  "menu.about.rpgpp": "Относно RPG++...",
+
   "screen.starting.get_started": "Започни!",
   "screen.starting.description": "Натисни 'Нов Проект' за да създадете нов проект или 'Отвори проект' за да отворите вече съществуващ проект!",
   "button.go_back": "Върни се назад",

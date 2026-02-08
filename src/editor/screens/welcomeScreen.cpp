@@ -18,11 +18,11 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	if (!Editor::instance->getGui().menuBar.expired()) {
 		auto menuBarPtr = Editor::instance->getGui().menuBar.lock();
 		menuBarPtr->setMenuItemEnabled(
-			{ts.getKey("file.options"), ts.getKey("file.save_file")}, false);
+			{ts.getKey("menu.file"), ts.getKey("menu.file.save_file")}, false);
 		menuBarPtr->setMenuItemEnabled(
-			{ts.getKey("file.options"), ts.getKey("file.undo")}, false);
+			{ts.getKey("menu.edit"), ts.getKey("menu.edit.undo")}, false);
 		menuBarPtr->setMenuItemEnabled(
-			{ts.getKey("file.options"), ts.getKey("file.redo")}, false);
+			{ts.getKey("menu.edit"), ts.getKey("menu.edit.redo")}, false);
 	}
 
 	const auto verticalLayout = tgui::GrowVerticalLayout::create();
@@ -47,10 +47,10 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	verticalLayout->add(introLabel);
 
 	const auto newProjButton =
-		tgui::Button::create(ts.getKey("file.new_project"));
+		tgui::Button::create(ts.getKey("menu.file.new_project"));
 	newProjButton->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
 	const auto openProjButton =
-		tgui::Button::create(ts.getKey("file.open_project"));
+		tgui::Button::create(ts.getKey("menu.file.open_project"));
 	openProjButton->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
 
 	newProjectDialog = NewProjectWindow::create();

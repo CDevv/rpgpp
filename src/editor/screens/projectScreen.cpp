@@ -40,11 +40,11 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	if (!Editor::instance->getGui().menuBar.expired()) {
 		auto menuBarPtr = Editor::instance->getGui().menuBar.lock();
 		std::vector<tgui::String> saveFileHierarchy = {
-			ts.getKey("file.options"), ts.getKey("file.save_file")};
-		std::vector<tgui::String> undoHierarchy = {ts.getKey("file.options"),
-												   ts.getKey("file.undo")};
-		std::vector<tgui::String> redoHierarchy = {ts.getKey("file.options"),
-												   ts.getKey("file.redo")};
+			ts.getKey("menu.file"), ts.getKey("menu.file.save_file")};
+		std::vector<tgui::String> undoHierarchy = {ts.getKey("menu.edit"),
+												   ts.getKey("menu.edit.undo")};
+		std::vector<tgui::String> redoHierarchy = {ts.getKey("menu.edit"),
+												   ts.getKey("menu.edit.redo")};
 		menuBarPtr->setMenuItemEnabled(saveFileHierarchy, true);
 		menuBarPtr->connectMenuItem(saveFileHierarchy, [this] {
 			if (!openedFiles.empty()) {
