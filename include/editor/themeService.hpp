@@ -3,7 +3,7 @@
 
 using namespace std;
 
-constexpr const char* THEME_DIR = "resources/themes";
+constexpr const char* THEME_DIR = "themes";
 constexpr const char* DEFAULT_THEME = "Dark";
 
 class ThemeService {

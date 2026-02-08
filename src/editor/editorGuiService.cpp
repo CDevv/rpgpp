@@ -161,7 +161,8 @@ void EditorGuiService::createLogoCenter(
 	const tgui::GrowVerticalLayout::Ptr &layout) {
 
 	const auto boxLayout = tgui::BoxLayout::create({"100%", 96});
-	const auto welcomePic = tgui::Picture::create("resources/logo-ups.png");
+	std::string logoPath = Editor::instance->getFs().getResourcePath("logo-ups.png");
+	const auto welcomePic = tgui::Picture::create(logoPath.c_str());
 	welcomePic->setOrigin({0.5, 0.5});
 	welcomePic->setPosition({"50%", "50%"});
 	boxLayout->add(welcomePic);

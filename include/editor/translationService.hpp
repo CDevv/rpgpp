@@ -6,7 +6,7 @@
 #include <string>
 using namespace std;
 
-constexpr auto TRANSLATION_FILE_LOCATION = "resources/translations";
+constexpr auto TRANSLATION_FILE_LOCATION = "translations";
 constexpr auto DEFAULT_LANGUAGE = "en_us";
 
 class TranslationService {

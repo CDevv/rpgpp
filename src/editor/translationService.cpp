@@ -14,7 +14,7 @@ using json = nlohmann::json;
 
 TranslationService::TranslationService() {
 	for (auto const &directory_entry :
-		 filesystem::directory_iterator(TRANSLATION_FILE_LOCATION)) {
+		 filesystem::directory_iterator(Editor::instance->getFs().getResourcePath(TRANSLATION_FILE_LOCATION))) {
 		// add the translation to the translations map.
 		this->translations.try_emplace(
 			directory_entry.path().stem().string(),

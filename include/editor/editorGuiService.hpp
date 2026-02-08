@@ -12,7 +12,6 @@
 #include <vector>
 constexpr auto RPGPP_EXECUTABLE_LOGO = "resources/app-icon.png";
 // TODO: Add theme switching.
-constexpr auto CURRENT_TESTING_THEME = "resources/themes/Dark/theme.txt";
 constexpr int ACTION_BUTTON_SIZE = 16;
 
 class EditorGuiService {
