@@ -29,6 +29,9 @@ void PlaceTileAction::execute() {
 	case RoomLayer::LAYER_COLLISION: {
 		room->getCollisions().addCollisionTile(worldTile.x, worldTile.y);
 	} break;
+	case RoomLayer::LAYER_INTERACTABLES: {
+		room->getInteractables().add(worldTile.x, worldTile.y, interactable);
+	} break;
 	default:
 		break;
 	}
@@ -41,6 +44,9 @@ void PlaceTileAction::undo() {
 	} break;
 	case RoomLayer::LAYER_COLLISION: {
 		room->getCollisions().removeCollisionTile(worldTile.x, worldTile.y);
+	} break;
+	case RoomLayer::LAYER_INTERACTABLES: {
+		room->getInteractables().removeInteractable(worldTile.x, worldTile.y);
 	} break;
 	default:
 		break;

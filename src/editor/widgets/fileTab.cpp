@@ -176,17 +176,17 @@ void FileTab::draw(tgui::BackendRenderTarget &target,
 				spriteTabCopy.setSize({m_tabs[i].width, usableHeight});
 				target.drawSprite(states, spriteTabCopy);
 
-				// draw close button
-				auto tabState = states;
-				tabState.transform.translate(
-					{(m_tabs[i].width - usableHeight - 6), 2});
-
-				close.setSize({usableHeight - 4, usableHeight - 4});
-				target.drawSprite(tabState, close);
 			} else // No texture was loaded
 				target.drawFilledRect(states, {m_tabs[i].width, usableHeight},
 									  tgui::Color::applyOpacity(
 										  backgroundColor, m_opacityCached));
+
+			// draw close button
+			auto tabState = states;
+			tabState.transform.translate(
+				{(m_tabs[i].width - usableHeight - 6), 2});
+			close.setSize({usableHeight - 4, usableHeight - 4});
+			target.drawSprite(tabState, close);
 
 			// Draw the borders between the tabs
 			states.transform.translate({m_tabs[i].width, 0});

@@ -2,6 +2,7 @@
 #define _RPGPP_ROOMVIEW_H
 
 #include "TGUI/Vector2.hpp"
+#include "TGUI/Widgets/ComboBox.hpp"
 #include "fileView.hpp"
 #include "gamedata.hpp"
 #include "raylib.h"
@@ -38,6 +39,7 @@ class RoomView : public WorldView {
 	Room *room{nullptr};
 	TileSetView *tileSetView{nullptr};
 	FileView *fileView;
+	tgui::ComboBox *interactableChoose;
 
 	RoomView();
 

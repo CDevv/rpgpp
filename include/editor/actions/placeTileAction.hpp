@@ -3,6 +3,7 @@
 
 #include "action.hpp"
 #include "gamedata.hpp"
+#include "interactable.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "tilemap.hpp"
@@ -13,6 +14,7 @@ class PlaceTileAction : public Action {
 	Room *room;
 	TileMap *tileMap;
 	RoomLayer layer;
+	InteractableType interactable;
 	Vector2 worldTile;
 	Vector2 tile;
 	Vector2 prevTile;

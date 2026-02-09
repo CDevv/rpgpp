@@ -1,7 +1,9 @@
 #include "fileViews/roomFileView.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
+#include "TGUI/Widgets/Group.hpp"
 #include "editor.hpp"
+#include "enum_visitor/enum_visitor.hpp"
 #include "fileView.hpp"
 #include "propertiesBox.hpp"
 #include "room.hpp"
@@ -19,13 +21,19 @@ RoomFileView::RoomFileView() {
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(roomView));
 	widgetContainer.push_back(roomView);
 
-	tileSetView = TileSetView::create();
-	tileSetView->setPosition("100% - 300", 32);
-	tileSetView->setSize({"300", "300"});
+	auto roomLayerGroup = tgui::Group::create();
+	roomLayerGroup->setPosition("100% - 300", 32);
+	roomLayerGroup->setSize({"300", "300"});
+
+	layerVisitor.group = roomLayerGroup;
+
+	tileSetView = layerVisitor.tileSetView;
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(tileSetView));
-	widgetContainer.push_back(tileSetView);
+	roomLayerGroup->add(tileSetView);
+	widgetContainer.push_back(roomLayerGroup);
 
 	roomView->tileSetView = tileSetView.get();
+	roomView->interactableChoose = layerVisitor.interactableChoose.get();
 
 	modesHandler = std::make_unique<RoomViewModesHandler>();
 	modesHandler->view = roomView;
@@ -36,11 +44,15 @@ RoomFileView::RoomFileView() {
 	layerChoose->setSize(300, 32);
 	layerChoose->addItem("Tiles");
 	layerChoose->addItem("Collisions");
+	layerChoose->addItem("Interactables");
 	widgetContainer.push_back(layerChoose);
 
-	layerChoose->onItemSelect([this](int index) {
+	layerChoose->onItemSelect([this, roomLayerGroup](int index) {
 		auto layerEnum = static_cast<RoomLayer>(index);
 		roomView->setLayer(layerEnum);
+
+		roomLayerGroup->removeAllWidgets();
+		mj::visit(layerVisitor, layerEnum);
 	});
 
 	auto props = PropertiesBox::create();

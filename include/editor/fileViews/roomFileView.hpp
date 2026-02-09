@@ -2,6 +2,7 @@
 #define _RPGPP_ROOMFILEVIEW_H
 
 #include "fileView.hpp"
+#include "roomLayerViewVisitor.hpp"
 #include "roomViewModesHandler.hpp"
 #include "tileSetView.hpp"
 #include "widgets/fileField.hpp"
@@ -11,6 +12,7 @@
 
 class RoomFileView : public FileView {
   private:
+	RoomLayerViewVisitor layerVisitor;
 	RoomView::Ptr roomView;
 	TileSetView::Ptr tileSetView;
 	IntField::Ptr widthField;

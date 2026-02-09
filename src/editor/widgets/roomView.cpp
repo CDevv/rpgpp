@@ -8,6 +8,7 @@
 #include "actions/placeTileAction.hpp"
 #include "editor.hpp"
 #include "gamedata.hpp"
+#include "interactable.hpp"
 #include "projectScreen.hpp"
 #include "raylib.h"
 #include "room.hpp"
@@ -134,6 +135,7 @@ void RoomView::drawCanvas() {
 		}
 	}
 
+	// collisions
 	for (auto collision : room->getCollisions().getVector()) {
 		int tileX = static_cast<int>(collision.x);
 		int tileY = static_cast<int>(collision.y);
@@ -141,6 +143,18 @@ void RoomView::drawCanvas() {
 		Rectangle destRect = getDestRect(tileMap, tileX, tileY);
 
 		DrawRectangleRec(destRect, Fade(RED, 0.2f));
+	}
+
+	for (auto interactable : room->getInteractables().getList()) {
+		int tileX = static_cast<int>(interactable->pos.x);
+		int tileY = static_cast<int>(interactable->pos.y);
+
+		Rectangle destRect = getDestRect(tileMap, tileX, tileY);
+
+		DrawRectangleRec(destRect, Fade(YELLOW, 0.2f));
+		DrawText(TextFormat("%i", interactable->type),
+				 static_cast<int>(destRect.x), static_cast<int>(destRect.y), 16,
+				 ORANGE);
 	}
 
 	DrawCircleV(getMouseWorldPos(), 1.0f, MAROON);
@@ -221,6 +235,11 @@ void RoomView::handlePlaceMode(int x, int y) {
 			Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
 			DrawRectangleRec(destRect, Fade(RED, 0.7f));
 		} break;
+		case RoomLayer::LAYER_INTERACTABLES: {
+			IVector tileMouse = getTileAtMouse();
+			Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
+			DrawRectangleRec(destRect, Fade(YELLOW, 0.7f));
+		}
 		default:
 			break;
 		}
@@ -263,6 +282,10 @@ void RoomView::handleModePress(tgui::Vector2f pos) {
 
 		std::unique_ptr<Action> act = std::make_unique<PlaceTileAction>(
 			room, tileMap, layer, tileMouse, atlasTilePos);
+
+		(dynamic_cast<PlaceTileAction *>(act.get()))->interactable =
+			static_cast<InteractableType>(
+				interactableChoose->getSelectedItemIndex());
 
 		screen->getCurrentFile().getView().pushAction(std::move(act));
 	} break;

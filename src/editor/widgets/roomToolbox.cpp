@@ -74,9 +74,11 @@ void RoomToolbox::draw(tgui::BackendRenderTarget &target,
 					   tgui::RenderStates states) const {
 	auto &selectedTexture = getSharedRenderer()->getTextureSelectedTab();
 	tgui::Sprite selectedSprite(selectedTexture);
+	auto selectedColor = getSharedRenderer()->getSelectedBackgroundColor();
 
 	auto &normalTexture = getSharedRenderer()->getTextureTab();
 	tgui::Sprite normalSprite(normalTexture);
+	auto normalColor = getSharedRenderer()->getBackgroundColor();
 
 	tgui::Vector2f buttonSize = {getSize().y, getSize().y};
 	selectedSprite.setSize(buttonSize);
@@ -85,8 +87,10 @@ void RoomToolbox::draw(tgui::BackendRenderTarget &target,
 	int idx = 0;
 	for (auto tool : tools) {
 		if (idx == selectedTool) {
+			target.drawFilledRect(states, buttonSize, selectedColor);
 			target.drawSprite(states, selectedSprite);
 		} else {
+			target.drawFilledRect(states, buttonSize, normalColor);
 			target.drawSprite(states, normalSprite);
 		}
 

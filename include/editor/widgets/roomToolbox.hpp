@@ -11,7 +11,7 @@
 
 enum class RoomTool { TOOL_NONE, TOOL_PLACE, TOOL_ERASE, TOOL_EDIT };
 
-enum class RoomLayer { LAYER_TILES, LAYER_COLLISION };
+enum class RoomLayer { LAYER_TILES, LAYER_COLLISION, LAYER_INTERACTABLES };
 
 struct RoomToolboxItem {
 	RoomTool type;
