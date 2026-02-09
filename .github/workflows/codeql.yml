@@ -97,6 +97,8 @@ jobs:
             libxinerama-dev \
             libxcursor-dev \
             libxi-dev \
+            libgl1-mesa-dev \
+            mesa-common-dev \
             xmake
           xmake build --all -y
 
