@@ -1,36 +1,29 @@
 #include "actions/placeTileAction.hpp"
 #include "gamedata.hpp"
+#include "mapAction.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "widgets/roomToolbox.hpp"
+#include <utility>
 
-PlaceTileAction::PlaceTileAction(Room *room, TileMap *tileMap, RoomLayer layer,
-								 IVector worldTile, IVector tile) {
-	this->room = room;
-	this->tileMap = tileMap;
-	this->layer = layer;
-	this->worldTile = {static_cast<float>(worldTile.x),
-					   static_cast<float>(worldTile.y)};
-	this->tile = {static_cast<float>(tile.x), static_cast<float>(tile.y)};
-
-	this->prevTile = tileMap->getTile(worldTile.x, worldTile.y)
-						 .getAtlasTile()
-						 .getAtlasCoords();
-}
+PlaceTileAction::PlaceTileAction(MapActionData a) : MapAction(a) {}
 
 void PlaceTileAction::execute() {
-	switch (layer) {
+	switch (data.layer) {
 	case RoomLayer::LAYER_TILES: {
-		if (tileMap->getTileSet()->areAtlasCoordsValid(
-				{static_cast<float>(tile.x), static_cast<float>(tile.y)})) {
-			tileMap->setTile(worldTile, tile);
+		if (data.room->getTileMap()->getTileSet()->areAtlasCoordsValid(
+				{static_cast<float>(data.tile.x),
+				 static_cast<float>(data.tile.y)})) {
+			data.room->getTileMap()->setTile(data.worldTile, data.tile);
 		}
 	} break;
 	case RoomLayer::LAYER_COLLISION: {
-		room->getCollisions().addCollisionTile(worldTile.x, worldTile.y);
+		data.room->getCollisions().addCollisionTile(data.worldTile.x,
+													data.worldTile.y);
 	} break;
 	case RoomLayer::LAYER_INTERACTABLES: {
-		room->getInteractables().add(worldTile.x, worldTile.y, interactable);
+		data.room->getInteractables().add(data.worldTile.x, data.worldTile.y,
+										  data.interactable);
 	} break;
 	default:
 		break;
@@ -38,15 +31,17 @@ void PlaceTileAction::execute() {
 }
 
 void PlaceTileAction::undo() {
-	switch (layer) {
+	switch (data.layer) {
 	case RoomLayer::LAYER_TILES: {
-		tileMap->setTile(worldTile, prevTile);
+		data.room->getTileMap()->setTile(data.worldTile, data.prevTile);
 	} break;
 	case RoomLayer::LAYER_COLLISION: {
-		room->getCollisions().removeCollisionTile(worldTile.x, worldTile.y);
+		data.room->getCollisions().removeCollisionTile(data.worldTile.x,
+													   data.worldTile.y);
 	} break;
 	case RoomLayer::LAYER_INTERACTABLES: {
-		room->getInteractables().removeInteractable(worldTile.x, worldTile.y);
+		data.room->getInteractables().removeInteractable(data.worldTile.x,
+														 data.worldTile.y);
 	} break;
 	default:
 		break;

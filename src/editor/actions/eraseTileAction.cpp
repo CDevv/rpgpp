@@ -1,29 +1,24 @@
 
 #include "actions/eraseTileAction.hpp"
+#include "mapAction.hpp"
 #include "widgets/roomToolbox.hpp"
-EraseTileAction::EraseTileAction(Room *room, RoomLayer layer, IVector worldPos,
-								 IVector tilePos) {
-	this->room = room;
-	this->layer = layer;
-	this->worldPos = {static_cast<float>(worldPos.x),
-					  static_cast<float>(worldPos.y)};
-	this->tilePos = {static_cast<float>(tilePos.x),
-					 static_cast<float>(tilePos.y)};
 
-	this->prevTile = room->getTileMap()
-						 ->getTile(worldPos.x, worldPos.y)
-						 .getAtlasTile()
-						 .getAtlasCoords();
-}
+EraseTileAction::EraseTileAction(MapActionData a) : MapAction(a) {}
 
 void EraseTileAction::execute() {
-	switch (layer) {
+	switch (data.layer) {
 	case RoomLayer::LAYER_TILES: {
-		room->getTileMap()->setEmptyTile(worldPos);
+		data.room->getTileMap()->setEmptyTile(data.worldTile);
 	} break;
 	case RoomLayer::LAYER_COLLISION: {
-		room->getCollisions().removeCollisionTile(static_cast<int>(worldPos.x),
-												  static_cast<int>(worldPos.y));
+		data.room->getCollisions().removeCollisionTile(
+			static_cast<int>(data.worldTile.x),
+			static_cast<int>(data.worldTile.y));
+	} break;
+	case RoomLayer::LAYER_INTERACTABLES: {
+		data.room->getInteractables().removeInteractable(
+			static_cast<int>(data.worldTile.x),
+			static_cast<int>(data.worldTile.y));
 	} break;
 	default:
 		break;
@@ -31,13 +26,17 @@ void EraseTileAction::execute() {
 }
 
 void EraseTileAction::undo() {
-	switch (layer) {
+	switch (data.layer) {
 	case RoomLayer::LAYER_TILES: {
-		room->getTileMap()->setTile(worldPos, prevTile);
+		data.room->getTileMap()->setTile(data.worldTile, data.prevTile);
 	} break;
 	case RoomLayer::LAYER_COLLISION: {
-		room->getCollisions().addCollisionTile(static_cast<int>(worldPos.x),
-											   static_cast<int>(worldPos.y));
+		data.room->getCollisions().addCollisionTile(
+			static_cast<int>(data.worldTile.x),
+			static_cast<int>(data.worldTile.y));
+	} break;
+	case RoomLayer::LAYER_INTERACTABLES: {
+
 	} break;
 	default:
 		break;

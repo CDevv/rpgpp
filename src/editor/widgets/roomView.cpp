@@ -2,13 +2,16 @@
 #include "TGUI/Event.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
+#include "TGUI/Widgets/Label.hpp"
 #include "actions/action.hpp"
 #include "actions/editTileAction.hpp"
 #include "actions/eraseTileAction.hpp"
 #include "actions/placeTileAction.hpp"
+#include "actor.hpp"
 #include "editor.hpp"
 #include "gamedata.hpp"
 #include "interactable.hpp"
+#include "mapAction.hpp"
 #include "projectScreen.hpp"
 #include "raylib.h"
 #include "room.hpp"
@@ -155,6 +158,10 @@ void RoomView::drawCanvas() {
 		DrawText(TextFormat("%i", interactable->type),
 				 static_cast<int>(destRect.x), static_cast<int>(destRect.y), 16,
 				 ORANGE);
+
+		if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
+			// auto tooltip = tgui::Label::create("Interactable");
+		}
 	}
 
 	DrawCircleV(getMouseWorldPos(), 1.0f, MAROON);
@@ -276,22 +283,25 @@ void RoomView::handleModePress(tgui::Vector2f pos) {
 	IVector tileMouse = getTileAtMouse();
 	IVector atlasTilePos = tileSetView->getSelectedTile();
 
+	MapActionData data;
+	data.view = this;
+	data.room = room;
+	data.layer = layer;
+	data.tile = {static_cast<float>(atlasTilePos.x),
+				 static_cast<float>(atlasTilePos.y)};
+	data.worldTile = {static_cast<float>(tileMouse.x),
+					  static_cast<float>(tileMouse.y)};
+	data.interactable = static_cast<InteractableType>(
+		interactableChoose->getSelectedItemIndex() + 1);
+
 	switch (tool) {
 	case RoomTool::TOOL_PLACE: {
-		TileMap *tileMap = room->getTileMap();
-
-		std::unique_ptr<Action> act = std::make_unique<PlaceTileAction>(
-			room, tileMap, layer, tileMouse, atlasTilePos);
-
-		(dynamic_cast<PlaceTileAction *>(act.get()))->interactable =
-			static_cast<InteractableType>(
-				interactableChoose->getSelectedItemIndex());
+		std::unique_ptr<Action> act = std::make_unique<PlaceTileAction>(data);
 
 		screen->getCurrentFile().getView().pushAction(std::move(act));
 	} break;
 	case RoomTool::TOOL_ERASE: {
-		std::unique_ptr<Action> act = std::make_unique<EraseTileAction>(
-			room, layer, tileMouse, atlasTilePos);
+		std::unique_ptr<Action> act = std::make_unique<EraseTileAction>(data);
 
 		screen->getCurrentFile().getView().pushAction(std::move(act));
 	} break;
@@ -323,8 +333,18 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 		tileSetView->onTileSelected([this, tileMap, screen](IVector newTile) {
 			IVector tileMouse = selectedTile;
 
-			std::unique_ptr<Action> act = std::make_unique<EditTileAction>(
-				room, layer, tileMouse, newTile);
+			MapActionData data;
+			data.room = room;
+			data.layer = layer;
+			data.tile = {static_cast<float>(newTile.x),
+						 static_cast<float>(newTile.y)};
+			data.worldTile = {static_cast<float>(tileMouse.x),
+							  static_cast<float>(tileMouse.y)};
+			data.interactable = static_cast<InteractableType>(
+				interactableChoose->getSelectedItemIndex() + 1);
+
+			std::unique_ptr<Action> act =
+				std::make_unique<EditTileAction>(data);
 			screen->getCurrentFile().getView().pushAction(std::move(act));
 		});
 	} break;

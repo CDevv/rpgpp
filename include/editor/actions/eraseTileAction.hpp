@@ -3,19 +3,14 @@
 
 #include "actions/action.hpp"
 #include "gamedata.hpp"
+#include "mapAction.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "widgets/roomToolbox.hpp"
 
-class EraseTileAction : public Action {
+class EraseTileAction : public MapAction {
   public:
-	Room *room;
-	RoomLayer layer;
-	Vector2 worldPos;
-	Vector2 tilePos;
-	Vector2 prevTile;
-	EraseTileAction(Room *room, RoomLayer layer, IVector worldPos,
-					IVector tilePos);
+	EraseTileAction(MapActionData data);
 	void execute() override;
 	void undo() override;
 };

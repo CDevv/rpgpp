@@ -87,6 +87,7 @@ class Room : public ISaveable {
 	 * @returns A pointer to the room's TileMap.
 	 */
 	TileMap *getTileMap() const;
+	void setTileMap(TileMap *newTileMap);
 
 	/** Get filename of the source music. */
 	std::string getMusicSource() const;

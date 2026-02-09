@@ -386,6 +386,8 @@ Player &Room::getPlayer() const { return *player; }
 
 TileMap *Room::getTileMap() const { return this->tileMap.get(); }
 
+void Room::setTileMap(TileMap *newTileMap) { tileMap.reset(newTileMap); }
+
 std::vector<Vector2> Room::getCollisionTiles() const {
 	return this->collisions->getVector();
 }

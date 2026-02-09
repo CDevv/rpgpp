@@ -45,6 +45,7 @@ RoomFileView::RoomFileView() {
 	layerChoose->addItem("Tiles");
 	layerChoose->addItem("Collisions");
 	layerChoose->addItem("Interactables");
+	layerChoose->setSelectedItemByIndex(0);
 	widgetContainer.push_back(layerChoose);
 
 	layerChoose->onItemSelect([this, roomLayerGroup](int index) {

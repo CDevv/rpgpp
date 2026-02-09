@@ -1,33 +1,22 @@
 
 #include "actions/editTileAction.hpp"
 #include "gamedata.hpp"
+#include "mapAction.hpp"
 #include "tilemap.hpp"
 #include "widgets/roomToolbox.hpp"
-EditTileAction::EditTileAction(Room *room, RoomLayer layer, IVector worldPos,
-							   IVector tilePos) {
-	this->room = room;
-	this->layer = layer;
-	this->worldPos = {static_cast<float>(worldPos.x),
-					  static_cast<float>(worldPos.y)};
-	this->tilePos = {static_cast<float>(tilePos.x),
-					 static_cast<float>(tilePos.y)};
 
-	this->prevTile = room->getTileMap()
-						 ->getTile(worldPos.x, worldPos.y)
-						 .getAtlasTile()
-						 .getAtlasCoords();
-}
+EditTileAction::EditTileAction(MapActionData a) : MapAction(a) {}
 
 void EditTileAction::init() {}
 
 void EditTileAction::execute() {
-	TileMap *tileMap = room->getTileMap();
+	TileMap *tileMap = data.room->getTileMap();
 
-	tileMap->setTile(worldPos, tilePos);
+	tileMap->setTile(data.worldTile, data.tile);
 }
 
 void EditTileAction::undo() {
-	TileMap *tileMap = room->getTileMap();
+	TileMap *tileMap = data.room->getTileMap();
 
-	tileMap->setTile(worldPos, prevTile);
+	tileMap->setTile(data.worldTile, data.prevTile);
 }

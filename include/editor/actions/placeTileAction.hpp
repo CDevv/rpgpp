@@ -4,22 +4,15 @@
 #include "action.hpp"
 #include "gamedata.hpp"
 #include "interactable.hpp"
+#include "mapAction.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "tilemap.hpp"
 #include "widgets/roomToolbox.hpp"
 
-class PlaceTileAction : public Action {
+class PlaceTileAction : public MapAction {
   public:
-	Room *room;
-	TileMap *tileMap;
-	RoomLayer layer;
-	InteractableType interactable;
-	Vector2 worldTile;
-	Vector2 tile;
-	Vector2 prevTile;
-	PlaceTileAction(Room *room, TileMap *tileMap, RoomLayer layer,
-					IVector worldTile, IVector tile);
+	PlaceTileAction(MapActionData a);
 	void execute() override;
 	void undo() override;
 };

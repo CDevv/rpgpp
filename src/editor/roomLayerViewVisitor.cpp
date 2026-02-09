@@ -2,7 +2,6 @@
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "roomToolbox.hpp"
-#include <cstdio>
 
 RoomLayerViewVisitor::RoomLayerViewVisitor() {
 	tileSetView = TileSetView::create();
@@ -12,6 +11,7 @@ RoomLayerViewVisitor::RoomLayerViewVisitor() {
 	interactableChoose->setDefaultText("Dialogue");
 	interactableChoose->addItem("Dialogue");
 	interactableChoose->addItem("Warper");
+	interactableChoose->setSelectedItemByIndex(0);
 }
 
 void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_TILES>) {
