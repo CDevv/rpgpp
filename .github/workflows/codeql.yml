@@ -86,6 +86,7 @@ jobs:
       if: matrix.build-mode == 'manual'
       shell: bash
       run: |
+        curl -fsSL https://xmake.io/shget.text | bash
         xmake build --all
 
     - name: Perform CodeQL Analysis
