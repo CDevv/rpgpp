@@ -87,7 +87,8 @@ jobs:
       shell: bash
       run: |
         curl -fsSL https://xmake.io/shget.text | bash
-        xmake build --all
+        source ~/.xmake/profile
+        xmake build --all -y
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
