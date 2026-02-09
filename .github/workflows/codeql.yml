@@ -89,7 +89,15 @@ jobs:
         if: matrix.build-mode == 'manual'
         shell: bash
         run: |
-          curl -fsSL https://xmake.io/shget.text | bash
+          sudo add-apt-repository ppa:xmake-io/xmake
+          sudo apt-get update
+          sudo apt-get install -y \
+            libx11-dev \
+            libxrandr-dev \
+            libxinerama-dev \
+            libxcursor-dev \
+            libxi-dev \
+            xmake
           source ~/.xmake/profile
           xmake build --all -y
 
