@@ -13,50 +13,51 @@ bool Game::usesBin = false;
 std::unique_ptr<StateService> Game::state = std::unique_ptr<StateService>{};
 std::unique_ptr<WorldService> Game::world = std::unique_ptr<WorldService>{};
 std::unique_ptr<InterfaceService> Game::ui =
-    std::unique_ptr<InterfaceService>{};
+	std::unique_ptr<InterfaceService>{};
 std::unique_ptr<ResourceService> Game::resources =
-    std::unique_ptr<ResourceService>{};
+	std::unique_ptr<ResourceService>{};
 std::unique_ptr<SoundService> Game::sounds = std::unique_ptr<SoundService>{};
 
 Game::Game() {
-  if (instance_ == nullptr) {
-    instance_ = this;
-  } else {
-    throw std::runtime_error("Instance of Game already exists.");
-  }
+	if (instance_ == nullptr) {
+		instance_ = this;
+	} else {
+		throw std::runtime_error("Instance of Game already exists.");
+	}
 }
 
 Game &Game::instance() {
-  if (instance_ == nullptr) {
-    throw std::runtime_error("There is no instance of Game.");
-  }
+	if (instance_ == nullptr) {
+		throw std::runtime_error("There is no instance of Game.");
+	}
 
-  return *instance_;
+	return *instance_;
 }
 
 void Game::init() {
-  gameData = std::make_unique<GameData>();
-  usesBin = false;
-  resources = std::make_unique<ResourceService>();
-  state = std::make_unique<StateService>();
-  world = std::make_unique<WorldService>();
-  ui = std::make_unique<InterfaceService>();
-  sounds = std::make_unique<SoundService>();
+	gameData = std::make_unique<GameData>();
+	usesBin = false;
+	resources = std::make_unique<ResourceService>();
+	state = std::make_unique<StateService>();
+	world = std::make_unique<WorldService>();
+	ui = std::make_unique<InterfaceService>();
+	sounds = std::make_unique<SoundService>();
 }
 
 void Game::useBin(const std::string &filePath) {
-  gameData = std::make_unique<GameData>(deserializeFile(filePath));
-  usesBin = true;
+	gameData = std::make_unique<GameData>(deserializeFile(filePath));
+	usesBin = true;
 
-  for (const auto &[name, data] : gameData->images) {
-    Image image = LoadImageFromMemory(".png", data.data.data(), data.dataSize);
-    Texture2D texture = LoadTextureFromImage(image);
-    resources->addTexture(name, texture);
-  }
+	for (const auto &[name, data] : gameData->images) {
+		Image image =
+			LoadImageFromMemory(".png", data.data.data(), data.dataSize);
+		Texture2D texture = LoadTextureFromImage(image);
+		resources->addTexture(name, texture);
+	}
 
-  SetWindowTitle(gameData->title.c_str());
+	SetWindowTitle(gameData->title.c_str());
 
-  world->setRoomBin(gameData->rooms.at(0));
+	world->setRoomBin(gameData->rooms.at(0));
 }
 
 GameData &Game::getBin() { return *gameData; }
@@ -72,18 +73,27 @@ InterfaceService &Game::getUi() { return *ui; }
 SoundService &Game::getSounds() { return *sounds; }
 
 void Game::update() {
-  sounds->update();
-  world->update();
-  ui->update();
+	sounds->update();
+	world->update();
+	ui->update();
 }
 
 void Game::draw() {
-  world->draw();
-  ui->draw();
+	world->draw();
+	ui->draw();
 }
 
 void Game::unload() {
-  sounds->unload();
-  world->unload();
-  ui->unload();
+	sounds->unload();
+	world->unload();
+	ui->unload();
+}
+
+void lua_opendiag(const std::string &id) {
+	auto diag = Game::getBin().dialogues[id];
+	Game::getUi().showDialogue(diag);
+}
+
+void Game::setLua(sol::state_view lua) {
+	lua.set_function("opendiag", &lua_opendiag);
 }

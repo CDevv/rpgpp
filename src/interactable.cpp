@@ -1,150 +1,127 @@
 #include "interactable.hpp"
-#include <stdio.h>
-#include <raylib.h>
+#include "actor.hpp"
 #include "game.hpp"
+#include "gamedata.hpp"
 #include "interfaceService.hpp"
+#include "sol/state.hpp"
+#include "sol/types.hpp"
+#include "tilemap.hpp"
+#include <memory>
+#include <nlohmann/json_fwd.hpp>
+#include <raylib.h>
+#include <stdio.h>
 
 std::array<std::string, INTTYPE_MAX> Interactable::interactableTypeNames = {
-    "Blank", "Dialogue", "Warper"
-};
+	"Blank", "Dialogue", "Warper"};
 
-Interactable::Interactable() : type(), tilePos(), tileSize(0), absolutePos(), rect() {
-    this->valid = false;
+Interactable::Interactable()
+	: type(), tilePos(), tileSize(0), absolutePos(), rect() {
+	this->valid = false;
 }
 
-Interactable::Interactable(InteractableType type, Vector2 tilePos, int tileSize)
-{
-    this->valid = true;
-    this->type = type;
-    this->tilePos = tilePos;
-    this->tileSize = tileSize;
-    this->absolutePos = Vector2 { 0, 0 };
+Interactable::Interactable(const std::string &path) {
+	char *jsonString = LoadFileText(path.c_str());
+	json intJson = json::parse(jsonString);
 
-    rect = Rectangle {
-        tilePos.x * tileSize, tilePos.y * tileSize,
-        static_cast<float>(tileSize), static_cast<float>(tileSize)
-    };
+	type = GetFileNameWithoutExt(path.c_str());
+	props = std::make_unique<nlohmann::json>(intJson.at("props"));
+	scriptPath = intJson.at("script");
+
+	UnloadFileText(jsonString);
 }
 
-Interactable::~Interactable()
-{
+Interactable::Interactable(const std::string &type, Vector2 tilePos,
+						   int tileSize) {
+	this->type = type;
+	this->props = std::make_unique<nlohmann::json>();
+
+	this->valid = true;
+	this->type = type;
+	this->tilePos = tilePos;
+	this->tileSize = tileSize;
+	this->absolutePos = Vector2{0, 0};
+
+	rect =
+		Rectangle{tilePos.x * tileSize, tilePos.y * tileSize,
+				  static_cast<float>(tileSize), static_cast<float>(tileSize)};
 }
 
-std::array<std::string, INTTYPE_MAX>& Interactable::getTypeNames()
-{
-    return interactableTypeNames;
+Interactable::Interactable(InteractableInRoomBin bin) {
+	this->type = bin.type;
+	this->props =
+		std::make_unique<nlohmann::json>(json::from_cbor(bin.propsCbor));
+	// json::from_cbor(bin.propsCbor);
+
+	Vector2 tilePos = {static_cast<float>(bin.x), static_cast<float>(bin.y)};
+
+	this->valid = true;
+	this->tilePos = tilePos;
+	this->tileSize = _RPGPP_TILESIZE;
+	this->absolutePos = Vector2{0, 0};
+
+	rect =
+		Rectangle{tilePos.x * tileSize, tilePos.y * tileSize,
+				  static_cast<float>(tileSize), static_cast<float>(tileSize)};
 }
 
-bool Interactable::isValid() const
-{
-    return this->valid;
+json Interactable::dumpJson() {
+	json j;
+	j.push_back({"name", type});
+	j.push_back({"props", *props});
+	j.push_back({"script", scriptPath});
+
+	return j;
 }
 
-Rectangle Interactable::getRect() const
-{
-    return this->rect;
+std::array<std::string, INTTYPE_MAX> &Interactable::getTypeNames() {
+	return interactableTypeNames;
 }
 
-Vector2 Interactable::getWorldPos() const
-{
-    return this->tilePos;
+bool Interactable::isValid() const { return this->valid; }
+
+Rectangle Interactable::getRect() const { return this->rect; }
+
+Vector2 Interactable::getWorldPos() const { return this->tilePos; }
+
+bool Interactable::isOnTouch() const { return onTouch; }
+
+const std::string &Interactable::getType() const { return this->type; }
+
+void Interactable::setType(const std::string &type) {
+	this->type = type;
+	this->props = std::make_unique<nlohmann::json>();
 }
 
-InteractableType Interactable::getType() const
-{
-    return this->type;
+void Interactable::setProps(nlohmann::json j) {
+	this->props = std::make_unique<nlohmann::json>(j);
 }
 
-void Interactable::interact()
-{
-    if (type == INT_BLANK) {
-        printf("interaction!\n");
-    } else {
-        printf("two.\n");
-    }
-}
+nlohmann::json &Interactable::getProps() { return *props; }
 
-IntBaseWrapper::IntBaseWrapper() : type(), pos() {
-} ;
+const std::string &Interactable::getScriptSourcePath() { return scriptPath; }
 
-IntBaseWrapper::~IntBaseWrapper() {};
+void Interactable::interact() {
+	if (type == "dialogue") {
+		printf("interaction!\n");
+	} else {
+		printf("two.\n");
+	}
 
-void IntBaseWrapper::interact() {};
+	sol::state lua;
+	lua.open_libraries(sol::lib::base);
+	Game::setLua(lua);
 
-template <typename T>
-void IntBase<T>::interact()
-{
-    printf("<T>\n");
-}
+	auto intBin = Game::getBin().interactables.at(type);
+	if (Game::getBin().scripts.count(intBin.scriptPath) != 0) {
+		auto bc = Game::getBin().scripts[intBin.scriptPath].bytecode;
+		auto result = lua.script(bc);
+		if (!result.valid()) {
+			printf("uh oh. \n");
+			return;
+		}
 
-template <>
-void IntBase<int>::interact()
-{
-    printf("Blank \n");
-}
-
-template <>
-void IntBase<DiagInt>::interact()
-{
-    printf("DiagInt.. %s\n", data.dialogueSource.c_str());
-    if (Game::getBin().dialogues.count(data.dialogueSource)) {
-        InterfaceService& ui = Game::getUi();
-        ui.showDialogue(Game::getBin().dialogues[data.dialogueSource]);
-    }
-}
-
-template <>
-void IntBase<WarperInt>::interact()
-{
-    WorldService& world = Game::getWorld();
-    world.doFadeTransition();
-    world.setRoom(data.targetRoom);
-}
-
-std::unique_ptr<IntBaseWrapper> make_inter_item(Vector2 pos, InteractableType type)
-{
-    switch (type) {
-        case INT_BLANK:
-            return std::unique_ptr<IntBaseWrapper>(new IntBase<int>(pos, type));
-        case INT_TWO:
-            return std::unique_ptr<IntBaseWrapper>(new IntBase<DiagInt>(pos, type));
-        case INT_WARPER:
-            return std::unique_ptr<IntBaseWrapper>(new IntBase<WarperInt>(pos, type));
-    }
-    return std::unique_ptr<IntBaseWrapper>(new IntBase<int>(pos, type));
-}
-
-void inter_apply_vec(IntBaseWrapper* inter, std::vector<std::string> props)
-{
-    if (inter->type != INT_BLANK && props.size() == 0) {
-        props.push_back("");
-    }
-
-    if (inter->type == INT_TWO) {
-        DiagInt diagInt;
-        diagInt.dialogueSource = props.at(0);
-
-        (static_cast<IntBase<DiagInt>*>(inter))->set(diagInt);
-    }
-    if (inter->type == INT_WARPER) {
-        (static_cast<IntBase<WarperInt>*>(inter))->set({props.at(0)});
-    }
-}
-
-void inter_apply_bin(IntBaseWrapper* inter, const InteractableBin &intBin)
-{
-    IntBase<DiagInt>* diag;
-    switch (intBin.type) {
-    case INT_TWO:
-        diag = static_cast<IntBase<DiagInt>*>(inter);
-        diag->set(DiagInt {intBin.dialogue});
-        break;
-    case INT_WARPER:
-        static_cast<IntBase<WarperInt>*>(inter)->set({
-            intBin.dialogue
-        });
-        break;
-    default:
-        break;
-    }
+		if (lua["interact"].valid()) {
+			lua["interact"].call<void>();
+		}
+	}
 }

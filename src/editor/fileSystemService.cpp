@@ -17,6 +17,13 @@ FileSystemService::FileSystemService() {
 
 	typeNames[static_cast<int>(EngineFileType::FILE_TILESET)] = "Tilesets";
 	typeNames[static_cast<int>(EngineFileType::FILE_MAP)] = "Maps";
+	typeNames[static_cast<int>(EngineFileType::FILE_ACTOR)] = "Actors";
+	typeNames[static_cast<int>(EngineFileType::FILE_DIALOGUE)] = "Dialogues";
+	typeNames[static_cast<int>(EngineFileType::FILE_IMAGE)] = "Images";
+	typeNames[static_cast<int>(EngineFileType::FILE_FONT)] = "Fonts";
+	typeNames[static_cast<int>(EngineFileType::FILE_SOUND)] = "Sounds";
+	typeNames[static_cast<int>(EngineFileType::FILE_MUSIC)] = "Music";
+	typeNames[static_cast<int>(EngineFileType::FILE_PROP)] = "Props";
 
 	NFD_Init();
 }

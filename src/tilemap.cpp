@@ -2,6 +2,7 @@
 #include "atlasTile.hpp"
 #include "game.hpp"
 #include "tileset.hpp"
+#include <cstdio>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
@@ -165,10 +166,14 @@ TileMap::TileMap(const RoomBin &bin) {
 
 	for (auto const &row : bin.tiles) {
 		for (auto col : row) {
+			/*
 			auto atlasPos = Vector2{col.atlasPos.x / tileSet->getTileSize().x,
 									col.atlasPos.y / tileSet->getTileSize().y};
+									*/
 			auto worldPos = Vector2{static_cast<float>(col.worldPos.x),
 									static_cast<float>(col.worldPos.y)};
+			auto atlasPos = Vector2{static_cast<float>(col.atlasPos.x),
+									static_cast<float>(col.atlasPos.y)};
 			this->setTile(worldPos, atlasPos);
 		}
 	}
@@ -306,10 +311,12 @@ void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos) const {
 		return;
 	}
 
+	/*
 	Vector2 resultVector = {atlasPos.x * atlasTileSize,
 							atlasPos.y * atlasTileSize};
+							*/
 
-	AtlasTile tile = tileSet->getTile(resultVector);
+	AtlasTile tile = tileSet->getTile(atlasPos);
 
 	this->drawTile(worldPos, tile);
 }
@@ -329,9 +336,10 @@ void TileMap::drawTile(Vector2 worldPos, AtlasTile tile) const {
 		this->basePos.y + (worldPos.y * static_cast<float>(worldTileSize))};
 
 	// Build rects
-	Rectangle atlasCoordsRect = {atlasCoords.x, atlasCoords.y,
-								 static_cast<float>(atlasTileSize),
-								 static_cast<float>(atlasTileSize)};
+	Rectangle atlasCoordsRect = {
+		static_cast<float>(atlasCoords.x * tileSet->getTileWidth()),
+		static_cast<float>(atlasCoords.y * tileSet->getTileHeight()),
+		static_cast<float>(atlasTileSize), static_cast<float>(atlasTileSize)};
 	Rectangle worldCoordsRect = {worldCoords.x, worldCoords.y,
 								 static_cast<float>(worldTileSize),
 								 static_cast<float>(worldTileSize)};

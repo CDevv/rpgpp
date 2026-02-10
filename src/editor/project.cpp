@@ -1,11 +1,17 @@
 #include "project.hpp"
+#include "dialogueParser.hpp"
 #include "editor.hpp"
 #include "fileSystemService.hpp"
 #include "gamedata.hpp"
 #include "interactable.hpp"
 #include "projectScreen.hpp"
 #include "room.hpp"
+#include "sol/assert.hpp"
+#include "sol/forward.hpp"
+#include "sol/state.hpp"
+#include "sol/types.hpp"
 #include "tileset.hpp"
+#include <cstdio>
 #include <filesystem>
 #include <memory>
 #include <nlohmann/json.hpp>
@@ -153,28 +159,15 @@ GameData Project::generateStruct() {
 			roomBin.collisions.push_back(intVec);
 		}
 		for (auto interactable : room->getInteractables().getList()) {
-			InteractableBin intBin;
-			intBin.x = static_cast<int>(interactable->pos.x);
-			intBin.y = static_cast<int>(interactable->pos.y);
-			intBin.type = static_cast<int>(interactable->type);
-			intBin.onTouch = interactable->onTouch;
+			InteractableInRoomBin intBin;
+			intBin.x = static_cast<int>(interactable->getWorldPos().x);
+			intBin.y = static_cast<int>(interactable->getWorldPos().y);
+			intBin.type = interactable->getType();
+			intBin.onTouch = interactable->isOnTouch();
 
-			switch (interactable->type) {
-			case INT_TWO:
-				intBin.dialogue =
-					(static_cast<IntBase<DiagInt> *>(interactable))
-						->get()
-						.dialogueSource;
-				break;
-			case INT_WARPER:
-				intBin.dialogue =
-					(static_cast<IntBase<WarperInt> *>(interactable))
-						->get()
-						.targetRoom;
-				break;
-			default:
-				break;
-			}
+			intBin.propsCbor =
+				nlohmann::json::to_cbor(interactable->getProps());
+
 			roomBin.interactables.push_back(intBin);
 		}
 		for (auto &&prop : room->getProps()) {
@@ -183,24 +176,8 @@ GameData Project::generateStruct() {
 			pBin.tilePos = IVector{static_cast<int>(prop.getWorldTilePos().x),
 								   static_cast<int>(prop.getWorldTilePos().y)};
 
-			if (prop.getHasInteractable()) {
-				switch (prop.getInteractable()->type) {
-				case INT_TWO:
-					pBin.dialogue = ((static_cast<IntBase<DiagInt> *>(
-										  prop.getInteractable()))
-										 ->get()
-										 .dialogueSource);
-					break;
-				case INT_WARPER:
-					pBin.dialogue = ((static_cast<IntBase<WarperInt> *>(
-										  prop.getInteractable()))
-										 ->get()
-										 .targetRoom);
-					break;
-				default:
-					break;
-				}
-			}
+			pBin.propsCbor =
+				nlohmann::json::to_cbor(prop.getInteractable()->getProps());
 			roomBin.props.push_back(pBin);
 		}
 		for (auto &&actor : room->getActors()) {
@@ -214,6 +191,140 @@ GameData Project::generateStruct() {
 
 		room.reset();
 		data.rooms.push_back(roomBin);
+	}
+
+	for (auto actorPath : getPaths(EngineFileType::FILE_ACTOR)) {
+		std::unique_ptr<Actor> actor = std::make_unique<Actor>(actorPath);
+
+		ActorBin actorBin;
+		actorBin.name = GetFileName(actorPath.c_str());
+		actorBin.tileSetName = GetFileName(actor->getTileSetSource().c_str());
+
+		Rectangle collisionRect = actor->getCollisionRect();
+		actorBin.collision = IRect{static_cast<int>(collisionRect.x),
+								   static_cast<int>(collisionRect.y),
+								   static_cast<int>(collisionRect.width),
+								   static_cast<int>(collisionRect.height)};
+		std::array<std::vector<Vector2>, 8> animations =
+			actor->getAnimationsRaw();
+		for (int i = 0; i < 8; i++) {
+			for (int frameIndex = 0; frameIndex < animations[i].size();
+				 frameIndex++) {
+				Vector2 vec = animations[i][frameIndex];
+				IVector intVec =
+					IVector{static_cast<int>(vec.x), static_cast<int>(vec.y)};
+
+				actorBin.animations[i].push_back(intVec);
+			}
+		}
+
+		data.actors.push_back(actorBin);
+	}
+
+	for (auto diagPath : getPaths(EngineFileType::FILE_DIALOGUE)) {
+		std::string diagText = LoadFileText(diagPath.c_str());
+		Dialogue diag = parseDialogueText(diagText);
+
+		diag.title = GetFileNameWithoutExt(diagPath.c_str());
+		data.dialogues[GetFileNameWithoutExt(diagPath.c_str())] = diag;
+	}
+
+	for (auto imagePath : getPaths(EngineFileType::FILE_IMAGE)) {
+		Image img = LoadImage(imagePath.c_str());
+		ImageBin bin;
+
+		int fileSize = 0;
+
+		unsigned char *imgData = ExportImageToMemory(
+			img, GetFileExtension(imagePath.c_str()), &fileSize);
+		for (int i = 0; i < fileSize; i++) {
+			bin.data.push_back(*imgData);
+			imgData++;
+		}
+		bin.dataSize = fileSize;
+
+		UnloadImage(img);
+
+		data.images[GetFileName(imagePath.c_str())] = bin;
+	}
+
+	for (auto fontPath : getPaths(EngineFileType::FILE_FONT)) {
+	}
+
+	for (auto soundPath : getPaths(EngineFileType::FILE_SOUND)) {
+	}
+
+	for (auto musicPath : getPaths(EngineFileType::FILE_MUSIC)) {
+	}
+
+	for (auto propPath : getPaths(EngineFileType::FILE_PROP)) {
+		Prop prop = Prop(propPath);
+
+		PropBin bin;
+		bin.name = propPath;
+		bin.atlasRect = IRect{static_cast<int>(prop.getAtlasRect().x),
+							  static_cast<int>(prop.getAtlasRect().y),
+							  static_cast<int>(prop.getAtlasRect().width),
+							  static_cast<int>(prop.getAtlasRect().height)};
+		bin.collisionRect =
+			IRect{static_cast<int>(prop.getCollisionRect().x),
+				  static_cast<int>(prop.getCollisionRect().y),
+				  static_cast<int>(prop.getCollisionRect().width),
+				  static_cast<int>(prop.getCollisionRect().height)};
+		bin.imagePath = std::string(prop.getImagePath());
+		bin.hasInteractable = prop.getHasInteractable();
+		bin.intType = prop.getInteractable()->getType();
+
+		data.props.push_back(bin);
+	}
+
+	// built in insteractables
+	std::filesystem::path interactablesDir =
+		Editor::instance->getFs().getEditorBaseDir();
+	interactablesDir /= "resources";
+	interactablesDir /= "interactables";
+
+	auto list = LoadDirectoryFiles(interactablesDir.c_str());
+	for (int i = 0; i < list.count; i++) {
+		std::string intPath = list.paths[i];
+		Interactable inter(intPath);
+
+		InteractableBin bin;
+		bin.typeName = inter.getType();
+		bin.scriptPath = inter.getScriptSourcePath();
+		bin.props = nlohmann::json::to_cbor(inter.getProps());
+
+		printf("%s \n", bin.typeName.c_str());
+
+		data.interactables[inter.getType()] = bin;
+	}
+
+	// scripts
+	std::filesystem::path scriptsDir =
+		Editor::instance->getFs().getEditorBaseDir();
+	scriptsDir /= "resources";
+	scriptsDir /= "scripts";
+	auto scriptsList = LoadDirectoryFiles(scriptsDir.c_str());
+	for (int i = 0; i < scriptsList.count; i++) {
+		std::string scriptPath = scriptsList.paths[i];
+		auto scriptText = LoadFileText(scriptPath.c_str());
+
+		/*
+		sol::state lua;
+		auto lr = lua.load(scriptText);
+
+		SOL_ASSERT(lr.valid());
+
+		sol::protected_function target = lr.get<sol::protected_function>();
+		auto bytecode = target.dump();
+		auto sv = bytecode.as_string_view();
+		*/
+
+		ScriptBin bin;
+		// bin.bytecode = std::string(sv.data());
+		bin.bytecode = scriptText;
+
+		data.scripts[GetFileName(scriptPath.c_str())] = bin;
 	}
 
 	return data;

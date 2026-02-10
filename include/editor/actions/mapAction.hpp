@@ -13,7 +13,7 @@ struct MapActionData {
 	RoomView *view;
 	Room *room;
 	RoomLayer layer;
-	InteractableType interactable;
+	std::string interactable;
 	Vector2 worldTile;
 	Vector2 tile;
 	Vector2 prevTile;

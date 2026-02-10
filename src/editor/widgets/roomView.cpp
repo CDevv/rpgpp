@@ -149,13 +149,13 @@ void RoomView::drawCanvas() {
 	}
 
 	for (auto interactable : room->getInteractables().getList()) {
-		int tileX = static_cast<int>(interactable->pos.x);
-		int tileY = static_cast<int>(interactable->pos.y);
+		int tileX = static_cast<int>(interactable->getWorldPos().x);
+		int tileY = static_cast<int>(interactable->getWorldPos().y);
 
 		Rectangle destRect = getDestRect(tileMap, tileX, tileY);
 
 		DrawRectangleRec(destRect, Fade(YELLOW, 0.2f));
-		DrawText(TextFormat("%i", interactable->type),
+		DrawText(TextFormat("%s", interactable->getType().c_str()),
 				 static_cast<int>(destRect.x), static_cast<int>(destRect.y), 16,
 				 ORANGE);
 

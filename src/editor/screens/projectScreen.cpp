@@ -174,7 +174,7 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
 	buildBtn->setSize({barSize, "100%"});
 	buildBtn->onPress([project] {
 		std::filesystem::path path = project->getBasePath();
-		path /= "game2.bin";
+		path /= "game.bin";
 
 		auto data = project->generateStruct();
 		serializeDataToFile(path, data);

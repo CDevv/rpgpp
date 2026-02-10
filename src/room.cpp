@@ -10,6 +10,7 @@
 #include <cstdio>
 #include <memory>
 #include <nlohmann/json.hpp>
+#include <nlohmann/json_fwd.hpp>
 #include <raylib.h>
 #include <vector>
 
@@ -87,13 +88,12 @@ Room::Room(const std::string &fileName, int tileSize) {
 		int x = std::stoi(std::string(textSplit[0]));
 		int y = std::stoi(std::string(textSplit[1]));
 
-		std::vector<std::string> propVec = value;
-		auto p = Prop(propVec.at(0));
+		auto propVec = value;
+		auto p = Prop(propVec.at("src"));
 		p.setWorldTilePos(Vector2{static_cast<float>(x), static_cast<float>(y)},
 						  worldTileSize);
 
-		propVec.erase(propVec.begin());
-		inter_apply_vec(p.getInteractable(), propVec);
+		p.getInteractable()->setProps(propVec.at("props"));
 
 		addProp(std::move(p));
 	}
@@ -114,7 +114,7 @@ Room::Room(const std::string &fileName, int tileSize) {
 		addActor(std::move(a));
 	}
 
-	interactables->addJsonData(roomJson);
+	interactables->addJsonData(roomJson.at("interactables"));
 
 	musicSource = roomJson.at("music_source");
 
@@ -158,15 +158,9 @@ Room::Room(const RoomBin &bin) : Room() {
 					Vector2{static_cast<float>(propSource.tilePos.x),
 							static_cast<float>(propSource.tilePos.y)},
 					worldTileSize);
+				p.getInteractable()->setProps(
+					nlohmann::json::from_cbor(propSource.propsCbor));
 
-				if (p.getHasInteractable()) {
-					p.getInteractable()->setOnTouch(propSource.onTouch);
-
-					InteractableBin intBin = {
-						0, 0, static_cast<int>(p.getInteractable()->type),
-						propSource.onTouch, propSource.dialogue};
-					inter_apply_bin(p.getInteractable(), intBin);
-				}
 				addProp(std::move(p));
 				break;
 			}
@@ -212,40 +206,10 @@ json Room::dumpJson() {
 	roomJson.push_back({"collision", collisionsVector});
 
 	// Vector for interactables
-	auto interactablesProps = std::map<std::string, std::vector<std::string>>();
-
-	auto interactablesVector = std::vector<std::vector<int>>();
-	for (auto &&interactable : interactables->getList()) {
-		std::vector<int> interactableVector;
-		interactableVector.push_back(static_cast<int>(interactable->pos.x));
-		interactableVector.push_back(static_cast<int>(interactable->pos.y));
-		interactableVector.push_back(interactable->type);
-		interactableVector.push_back(interactable->onTouch);
-
-		std::vector<std::string> propsVec;
-		if (interactable->type == INT_TWO) {
-			auto *dialogueInter =
-				dynamic_cast<IntBase<DiagInt> *>(interactable);
-			std::string key =
-				TextFormat("%i;%i", static_cast<int>(interactable->pos.x),
-						   static_cast<int>(interactable->pos.y));
-			propsVec.push_back(dialogueInter->get().dialogueSource);
-			interactablesProps[key] = propsVec;
-		}
-		if (interactable->type == INT_WARPER) {
-			auto *dialogueInter =
-				dynamic_cast<IntBase<WarperInt> *>(interactable);
-			std::string key =
-				TextFormat("%i;%i", static_cast<int>(interactable->pos.x),
-						   static_cast<int>(interactable->pos.y));
-			propsVec.push_back(dialogueInter->get().targetRoom);
-			interactablesProps[key] = propsVec;
-		}
-
-		interactablesVector.push_back(interactableVector);
-	}
+	auto interactableProps = interactables->dumpJson();
 
 	auto propsMap = std::map<std::string, std::vector<std::string>>{};
+	/*
 	for (auto &&p : *props) {
 		std::string key =
 			TextFormat("%i;%i", static_cast<int>(p.getWorldTilePos().x),
@@ -275,6 +239,7 @@ json Room::dumpJson() {
 
 		propsMap[key] = propVec;
 	}
+		*/
 
 	auto actorsMap = std::map<std::string, std::string>{};
 	for (auto &&a : *actors) {
@@ -285,8 +250,7 @@ json Room::dumpJson() {
 		actorsMap[key] = a.getSourcePath();
 	}
 
-	roomJson.push_back({"interactables", interactablesVector});
-	roomJson.push_back({"interactable_props", interactablesProps});
+	roomJson.push_back({"interactables", interactableProps});
 	roomJson.push_back({"props", propsMap});
 	roomJson.push_back({"actors", actorsMap});
 	roomJson.push_back({"music_source", musicSource});
@@ -338,10 +302,11 @@ void Room::draw() const {
 
 	this->tileMap->draw();
 	for (auto i : interactables->getList()) {
-		auto rect = Rectangle{i->pos.x * static_cast<float>(getWorldTileSize()),
-							  i->pos.y * static_cast<float>(getWorldTileSize()),
-							  static_cast<float>(getWorldTileSize()),
-							  static_cast<float>(getWorldTileSize())};
+		auto rect = Rectangle{
+			i->getWorldPos().x * static_cast<float>(getWorldTileSize()),
+			i->getWorldPos().y * static_cast<float>(getWorldTileSize()),
+			static_cast<float>(getWorldTileSize()),
+			static_cast<float>(getWorldTileSize())};
 		DrawRectangleRec(rect, Fade(YELLOW, 0.5f));
 	}
 	for (auto c : collisions->getVector()) {

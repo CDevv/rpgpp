@@ -1,0 +1,7 @@
+{
+    "name": "Diag",
+    "script": "test.lua",
+    "props": {
+        "dialogue": "string"
+    }
+}
