@@ -9,5 +9,6 @@
     "program": "${ZED_WORKTREE_ROOT}/build/linux/x86_64/debug/editor",
     "request": "launch",
     "adapter": "CodeLLDB",
+    "cwd": "${ZED_WORKTREE_ROOT}/build/linux/x86_64/debug",
   },
 ]
