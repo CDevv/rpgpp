@@ -338,7 +338,7 @@ void Project::runProject() {
 	libPath /= "lib";
 	std::filesystem::path libDest = projectPath;
 	std::filesystem::path scriptPath = editorBasePath;
-	scriptPath /= "game-src/script.lua";
+	scriptPath /= "resources/scripts/script.lua";
 
 	std::filesystem::path intepreterPath = editorBasePath;
 	intepreterPath /= "execs";
