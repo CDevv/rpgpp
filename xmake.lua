@@ -29,29 +29,9 @@ on_install("linux", "macosx", "mingw", "windows", function(package)
 end)
 package_end()
 
-
 add_requires("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
 add_rules("mode.debug", "mode.release")
 set_defaultmode("debug")
-
-
-task("resources")
-on_run(function()
-    os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
-    os.cp("$(curdir)/execs", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
-    if is_plat("linux", "macosx") then
-        os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpp.a", "$(curdir)/game-src/lib/librpgpp.a", { async = true })
-        os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpplua.so", "$(curdir)/game-src/lib/librpgpplua.so",
-            { async = true })
-    end
-    if is_plat("windows") then
-        os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/rpgpplua.lib", "$(curdir)/game-src/lib/rpgpplua.lib", { async = true })
-        os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/rpgpplua.dll", "$(curdir)/game-src/lib/rpgpplua.dll", { async = true })
-    end
-    os.cp("$(curdir)/game-src", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
-    -- remove this line to test if the configuration file changes
-    os.cp("$(curdir)/rpgpp.ini", "$(builddir)/$(plat)/$(arch)/$(mode)/", {copy_if_different = true})
-end)
 
 target("rpgpp")
 set_kind("static")
@@ -63,7 +43,6 @@ add_packages("raylib", "nlohmann_json", "luajit")
 if is_plat("linux") then
     add_cxxflags("-fPIC")
 end
-
 
 -- !!!!!!! FIX MSVC ISSUE !!!!!!!
 --
@@ -97,7 +76,25 @@ add_files("src/editor/**.cpp")
 add_deps("rpgpp")
 add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
 add_linkdirs("libs/")
-after_build(function()
-    import("core.project.task")
-    task.run("resources")
+after_build(function(target)
+    os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
+    if is_plat("linux", "macosx") then
+        os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpp.a", "$(curdir)/game-src/lib/librpgpp.a", { async = true })
+        os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpplua.so", "$(curdir)/game-src/lib/librpgpplua.so",
+            { async = true })
+        os.cp(path.join(target:pkg("luajit"):installdir(), "bin/luajit*"), "$(curdir)/execs/luajit", { async = true })
+    end
+    if is_plat("windows") then
+        os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/rpgpplua.lib", "$(curdir)/game-src/lib/rpgpplua.lib", { async = true })
+        os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/rpgpplua.dll", "$(curdir)/game-src/lib/rpgpplua.dll", { async = true })
+        os.cp(path.join(target:pkg("luajit"):installdir(), "bin/luajit.exe"), "$(curdir)/execs/luajit.exe",
+            { async = true })
+    end
+    os.cp("$(curdir)/game-src", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
+    os.cp("$(curdir)/execs", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
+
+    os.rm("$(curdir)/game-src", { async = true })
+    os.rm("$(curdir)/execs", { async = true })
+    -- remove this line to test if the configuration file changes
+    os.cp("$(curdir)/rpgpp.ini", "$(builddir)/$(plat)/$(arch)/$(mode)/", { copy_if_different = true })
 end)

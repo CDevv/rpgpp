@@ -35,19 +35,6 @@ After that, clone/update the submodules to the project using
 git submodule update
 ```
 
-(deprecated/should_remove) After cloning the submodules to the paths, check your `/rlImGui` directory.
-
-This project uses LuaJIT as one of it's dependecies.
-After getting the luajit xmake package, you will need to copy the luajit executable into the `execs/` directory.
-
-Here are the xmake directories on different platforms:
-
-- Linux: `/home/name/.xmake/packages/l/luajit/v2.1.0-beta3/aaeb029456e54f29b904a191c96508d2/bin/`
-- Windows: `AppData\Local\.xmake\packages\l\luajit\v2.1.0-beta3\7780bd1b1c8146cd984bf13d60e49407\bin`
-- Mac: `/Users/nikodev/.xmake/packages/l/luajit/v2.1.0-beta3/bin`
-
-(Do not copy it blindly, the commit number might be different)
-
 Another dependency of this project is TGUI (stable release).
 The TGUI library that xmake built may not work when linking. In this case, you can attempt to build it using CMake. The output should be tgui-s-d.lib on Windows.
 
