@@ -9,6 +9,9 @@
 
 class FileTab : public tgui::Tabs {
   public:
+    static const int MARGIN_LR = 8;
+    static const int CLOSE_BUTTON_SIZE = 12;
+
 	typedef std::shared_ptr<FileTab> Ptr;
 	typedef std::shared_ptr<const FileTab> ConstPtr;
 	tgui::SignalTyped<int> onTabClose = {"TabClose"};
@@ -34,6 +37,9 @@ class FileTab : public tgui::Tabs {
 	bool leftMousePressed(tgui::Vector2f pos) override;
 
 	bool select(std::size_t i);
+
+  private:
+    mutable bool isHovering = false;
 
   protected:
 	Widget::Ptr clone() const override;

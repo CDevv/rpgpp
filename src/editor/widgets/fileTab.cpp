@@ -47,28 +47,29 @@ bool FileTab::isMouseOnWidget(tgui::Vector2f pos) const {
 bool FileTab::leftMousePressed(Vector2f pos) {
 	pos -= getPosition();
 
-	float width = m_bordersCached.getLeft() / 2.f;
 	float tabStart = 0.0f;
+	float tabEnd = m_bordersCached.getLeft() / 2.f;
 	for (std::size_t i = 0; i < m_tabs.size(); ++i) {
 		if (!m_tabs[i].visible)
 			continue;
 
 		// Append the width of the tab
-		width += (m_bordersCached.getLeft() / 2.f) + m_tabs[i].width +
+		tabEnd += (m_bordersCached.getLeft() / 2.f) + m_tabs[i].width +
 				 (m_bordersCached.getRight() / 2.0f);
-		if (i > 0) {
-			tabStart += m_tabs[i].width;
-		}
 
 		// If the mouse went down on this tab then select it
-		if (pos.x < (width - getSize().y) && pos.x >= tabStart) {
+		if (pos.x >= tabStart &&
+		    pos.x < tabEnd - CLOSE_BUTTON_SIZE - MARGIN_LR) {
 			select(i);
 			break;
-		} else if (pos.x >= (tabStart + (width - getSize().x)) &&
-				   pos.x < width) {
+		} else if (pos.x >= tabStart + (m_tabs[i].width - MARGIN_LR - CLOSE_BUTTON_SIZE) &&
+				   pos.x < tabEnd - MARGIN_LR) {
 			remove(i);
 			onTabClose.emit(this, i);
+			break;
 		}
+
+		tabStart += m_tabs[i].width;
 	}
 
 	return false;
@@ -128,6 +129,15 @@ void FileTab::draw(tgui::BackendRenderTarget &target,
 		if (roundedCorners)
 			textStates.transform.translate({0, m_bordersCached.getTop()});
 
+		// change cursor when hovering
+		if (m_hoveringTab != -1 && !isHovering) {
+            m_parentGui->setOverrideMouseCursor(tgui::Cursor::Type::Hand);
+            isHovering = true;
+		} else if (m_hoveringTab == -1 && isHovering) {
+		    m_parentGui->restoreOverrideMouseCursor();
+            isHovering = false;
+		}
+
 		tgui::Color backgroundColor;
 		if ((!m_enabled || !m_tabs[i].enabled) &&
 			m_backgroundColorDisabledCached.isSet())
@@ -184,8 +194,8 @@ void FileTab::draw(tgui::BackendRenderTarget &target,
 			// draw close button
 			auto tabState = states;
 			tabState.transform.translate(
-				{(m_tabs[i].width - usableHeight - 6), 2});
-			close.setSize({usableHeight - 4, usableHeight - 4});
+				{m_tabs[i].width - CLOSE_BUTTON_SIZE - MARGIN_LR, (usableHeight - CLOSE_BUTTON_SIZE) / 2.f});
+			close.setSize({CLOSE_BUTTON_SIZE, CLOSE_BUTTON_SIZE});
 			target.drawSprite(tabState, close);
 
 			// Draw the borders between the tabs
