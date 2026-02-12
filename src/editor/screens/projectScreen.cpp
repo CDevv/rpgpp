@@ -24,7 +24,6 @@
 #include "projectFileVisitor.hpp"
 #include "raylib.h"
 #include "widgets/fileTab.hpp"
-#include "fmt/format.h"
 #include <cstdio>
 #include <filesystem>
 #include <memory>
@@ -75,8 +74,8 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	auto toolBar = createToolBar();
 
 	auto fileView = tgui::Group::create({
-	    fmt::format("100% - {}", RESLIST_W).c_str(),
-		fmt::format("100% - {}", TOOLBAR_H + FILETABS_H).c_str()
+	    TextFormat("100%% - %d", RESLIST_W),
+		TextFormat("100%% - %d", TOOLBAR_H + FILETABS_H)
 	});
 	fileView->setPosition(RESLIST_W, TOOLBAR_H + FILETABS_H);
 	layout->add(fileView);
@@ -93,7 +92,7 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	auto tabs2 = tgui::Tabs::create();
 
 	fileTabs = FileTab::create();
-	fileTabs->setSize(fmt::format("100% - {}", RESLIST_W).c_str(), FILETABS_H);
+	fileTabs->setSize(TextFormat("100%% - %d", RESLIST_W), FILETABS_H);
 	fileTabs->setPosition(RESLIST_W, TOOLBAR_H);
 
 	fileTabs->onTabClose([this](int i) {
@@ -247,7 +246,7 @@ tgui::Group::Ptr
 screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	auto project = Editor::instance->getProject();
 
-	auto group = tgui::Group::create({RESLIST_W, fmt::format("100% - {}", TOOLBAR_H).c_str()});
+	auto group = tgui::Group::create({RESLIST_W, TextFormat("100%% - %d", TOOLBAR_H)});
 	group->setPosition(0, TOOLBAR_H);
 
 	auto resourceChoose = tgui::ComboBox::create();
@@ -272,7 +271,7 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 
 	auto resourceListPanel = tgui::ScrollablePanel::create({
 	    "100%",
-		fmt::format("100% - {}", FILETABS_H + RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H).c_str()
+		TextFormat("100%% - %d", FILETABS_H + RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H)
 	});
 	resourceListPanel->setPosition(0, RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H);
 	resourceListPanel->getVerticalScrollbar()->setPolicy(

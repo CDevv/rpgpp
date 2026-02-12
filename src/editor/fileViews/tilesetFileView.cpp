@@ -21,15 +21,15 @@
 
 TileSetFileView::TileSetFileView() {
 	const auto worldView = TileSetView::create();
-	worldView->setSize({"100% - 300", "100%"});
+	worldView->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), "100%"});
 	widgetContainer.push_back(worldView);
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(worldView));
 
 	this->worldView = worldView;
 
 	auto props = PropertiesBox::create();
-	props->setSize({"300", "100%"});
-	props->setPosition({"100% - 300", 0});
+	props->setSize({RIGHT_PANEL_W, "100%"});
+	props->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W), 0});
 
 	widthField = IntField::create();
 	widthField->label->setText("Tile Height");

@@ -12,6 +12,12 @@
 
 class RoomFileView : public FileView {
   private:
+    static const int RIGHT_PANEL_W = 300;
+    static const int LAYER_CHOOSE_H = 32;
+    static const int TOOLBOX_H = LAYER_CHOOSE_H;
+    static const int ROOM_LAYER_W = RIGHT_PANEL_W;
+    static const int ROOM_LAYER_H = RIGHT_PANEL_W;
+
 	RoomLayerViewVisitor layerVisitor;
 	RoomView::Ptr roomView;
 	TileSetView::Ptr tileSetView;

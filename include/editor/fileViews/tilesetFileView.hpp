@@ -6,10 +6,10 @@
 #include "variant.hpp"
 #include "widgets/fileField.hpp"
 #include "widgets/intField.hpp"
-#include "widgets/worldView.hpp"
 
 class TileSetFileView : public FileView {
   private:
+    static const int RIGHT_PANEL_W = 300;
 	TileSetView::Ptr worldView;
 	IntField::Ptr widthField;
 	IntField::Ptr heightField;

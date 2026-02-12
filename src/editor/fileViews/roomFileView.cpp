@@ -6,6 +6,7 @@
 #include "enum_visitor/enum_visitor.hpp"
 #include "fileView.hpp"
 #include "propertiesBox.hpp"
+#include "raylib.h"
 #include "room.hpp"
 #include "roomViewModesHandler.hpp"
 #include "tileSetView.hpp"
@@ -16,14 +17,14 @@
 
 RoomFileView::RoomFileView() {
 	roomView = RoomView::create();
-	roomView->setSize({"100% - 300", "100% - 32"});
-	roomView->setPosition(0, 32);
+	roomView->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), TextFormat("100%% - %d", TOOLBOX_H)});
+	roomView->setPosition(0, TOOLBOX_H);
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(roomView));
 	widgetContainer.push_back(roomView);
 
 	auto roomLayerGroup = tgui::Group::create();
-	roomLayerGroup->setPosition("100% - 300", 32);
-	roomLayerGroup->setSize({"300", "300"});
+	roomLayerGroup->setPosition(TextFormat("100%% - %d", RIGHT_PANEL_W), LAYER_CHOOSE_H);
+	roomLayerGroup->setSize({ROOM_LAYER_W, ROOM_LAYER_H});
 
 	layerVisitor.group = roomLayerGroup;
 
@@ -40,8 +41,8 @@ RoomFileView::RoomFileView() {
 	roomView->fileView = dynamic_cast<FileView *>(this);
 
 	auto layerChoose = tgui::ComboBox::create();
-	layerChoose->setPosition("100% - 300", 0);
-	layerChoose->setSize(300, 32);
+	layerChoose->setPosition(TextFormat("100%% - %d", RIGHT_PANEL_W), 0);
+	layerChoose->setSize(RIGHT_PANEL_W, LAYER_CHOOSE_H);
 	layerChoose->addItem("Tiles");
 	layerChoose->addItem("Collisions");
 	layerChoose->addItem("Interactables");
@@ -57,8 +58,8 @@ RoomFileView::RoomFileView() {
 	});
 
 	auto props = PropertiesBox::create();
-	props->setSize({"300", "100%"});
-	props->setPosition({"100% - 300", 300 + 32});
+	props->setSize({RIGHT_PANEL_W, "100%"});
+	props->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W), ROOM_LAYER_H + LAYER_CHOOSE_H});
 
 	widthField = IntField::create();
 	widthField->label->setText("Map Height");
@@ -91,7 +92,7 @@ RoomFileView::RoomFileView() {
 	widgetContainer.push_back(props);
 
 	auto toolbox = RoomToolbox::create();
-	toolbox->setSize({164, 32});
+	toolbox->setSize({164, TOOLBOX_H});
 	toolbox->addTool("tool_none.png", RoomTool::TOOL_NONE);
 	toolbox->addTool("tool_place.png", RoomTool::TOOL_PLACE);
 	toolbox->addTool("tool_erase.png", RoomTool::TOOL_ERASE);
