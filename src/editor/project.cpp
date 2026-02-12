@@ -358,14 +358,16 @@ void Project::runProject() {
 	stream = popen(TextFormat("%s -l rpgpplua %s", intepreterPath.c_str(),
 							  scriptPath.c_str()),
 				   "r");
-	if (stream) {
-		while (!feof(stream)) {
-			if (fgets(buffer, 256, stream) != NULL) {
-				outData.append(buffer);
-			}
-		}
-		pclose(stream);
-	}
+	/*
+if (stream) {
+while (!feof(stream)) {
+if (fgets(buffer, 256, stream) != NULL) {
+ outData.append(buffer);
+}
+}
+pclose(stream);
+}
+*/
 
 	printf("Stream data: \n");
 	printf("%s", outData.c_str());
