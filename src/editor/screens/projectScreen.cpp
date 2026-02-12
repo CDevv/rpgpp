@@ -75,10 +75,10 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	auto toolBar = createToolBar();
 
 	auto fileView = tgui::Group::create({
-	    fmt::format("100% - {}", rLIST_WIDTH).c_str(),
-		fmt::format("100% - {}", tBAR_HEIGHT + fTABS_HEIGHT).c_str()
+	    fmt::format("100% - {}", RESLIST_W).c_str(),
+		fmt::format("100% - {}", TOOLBAR_H + FILETABS_H).c_str()
 	});
-	fileView->setPosition(rLIST_WIDTH, tBAR_HEIGHT + fTABS_HEIGHT);
+	fileView->setPosition(RESLIST_W, TOOLBAR_H + FILETABS_H);
 	layout->add(fileView);
 	this->fileViewGroup = fileView;
 
@@ -93,8 +93,8 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	auto tabs2 = tgui::Tabs::create();
 
 	fileTabs = FileTab::create();
-	fileTabs->setSize(fmt::format("100% - {}", rLIST_WIDTH).c_str(), fTABS_HEIGHT);
-	fileTabs->setPosition(rLIST_WIDTH, tBAR_HEIGHT);
+	fileTabs->setSize(fmt::format("100% - {}", RESLIST_W).c_str(), FILETABS_H);
+	fileTabs->setPosition(RESLIST_W, TOOLBAR_H);
 
 	fileTabs->onTabClose([this](int i) {
 		printf("tab close %i \n", i);
@@ -137,7 +137,7 @@ void screens::ProjectScreen::switchView(int index) {
 }
 
 tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
-	auto toolBar = tgui::HorizontalWrap::create({"100%", tBAR_HEIGHT});
+	auto toolBar = tgui::HorizontalWrap::create({"100%", TOOLBAR_H});
 	toolBar->setPosition(0, 0);
 	toolBar->getRenderer()->setSpaceBetweenWidgets(8.0f);
 	toolBar->getRenderer()->setPadding(8);
@@ -194,7 +194,7 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 
 	for (auto filePath : project->getPaths(fileType)) {
 		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
-		fileBtn->setSize("100%", rLIST_RES_BTN_HEIGHT);
+		fileBtn->setSize("100%", RESLIST_RES_BTN_H);
 		fileBtn->getRenderer()->setBackgroundColor(tgui::Color(0, 0, 0));
 		fileBtn->onPress(
 			[this, fileType, filePath] { addFileView(fileType, filePath); });
@@ -247,19 +247,19 @@ tgui::Group::Ptr
 screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	auto project = Editor::instance->getProject();
 
-	auto group = tgui::Group::create({rLIST_WIDTH, fmt::format("100% - {}", tBAR_HEIGHT).c_str()});
-	group->setPosition(0, tBAR_HEIGHT);
+	auto group = tgui::Group::create({RESLIST_W, fmt::format("100% - {}", TOOLBAR_H).c_str()});
+	group->setPosition(0, TOOLBAR_H);
 
 	auto resourceChoose = tgui::ComboBox::create();
 	resourceChoose->setPosition(0, 0);
-	resourceChoose->setSize("100%", rLIST_RES_CHOOSE_HEIGHT);
+	resourceChoose->setSize("100%", RESLIST_RES_CHOOSE_H);
 	resourceChoose->addMultipleItems({"TileSets", "Maps"});
 	resourceChoose->setSelectedItem("Maps");
 	group->add(resourceChoose);
 
 	auto createResourceBtn = tgui::Button::create("Create New");
-	createResourceBtn->setPosition(0, rLIST_RES_CHOOSE_HEIGHT);
-	createResourceBtn->setSize("100%", rLIST_CREATE_RES_BTN_HEIGHT);
+	createResourceBtn->setPosition(0, RESLIST_RES_CHOOSE_H);
+	createResourceBtn->setSize("100%", RESLIST_CREATE_RES_BTN_H);
 	createResourceBtn->onPress([this] {
 		if (!fileInitVisitor->funcIsEmpty(listedResourcesType)) {
 			auto childDialog = NewFileDialog::create();
@@ -272,9 +272,9 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 
 	auto resourceListPanel = tgui::ScrollablePanel::create({
 	    "100%",
-		fmt::format("100% - {}", tBAR_HEIGHT + rLIST_RES_CHOOSE_HEIGHT + rLIST_CREATE_RES_BTN_HEIGHT).c_str()
+		fmt::format("100% - {}", FILETABS_H + RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H).c_str()
 	});
-	resourceListPanel->setPosition(0, rLIST_RES_CHOOSE_HEIGHT + rLIST_CREATE_RES_BTN_HEIGHT);
+	resourceListPanel->setPosition(0, RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H);
 	resourceListPanel->getVerticalScrollbar()->setPolicy(
 		tgui::Scrollbar::Policy::Automatic);
 	resourceListPanel->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);

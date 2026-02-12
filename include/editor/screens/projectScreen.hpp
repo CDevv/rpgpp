@@ -20,15 +20,14 @@
 namespace screens {
 class ProjectScreen : public UIScreen {
   private:
-    static const int tBAR_HEIGHT = 54;
+    static const int TOOLBAR_H = 54;
 
-    static const int fTABS_HEIGHT = 24;
+    static const int FILETABS_H = 24;
 
-    static const int rLIST_WIDTH = 264;
-    static const int rLIST_MARGIN = 4;
-    static const int rLIST_RES_CHOOSE_HEIGHT = 32;
-    static const int rLIST_CREATE_RES_BTN_HEIGHT = 24;
-    static const int rLIST_RES_BTN_HEIGHT = 36;
+    static const int RESLIST_W = 264;
+    static const int RESLIST_RES_CHOOSE_H = 32;
+    static const int RESLIST_CREATE_RES_BTN_H = 24;
+    static const int RESLIST_RES_BTN_H = 36;
 
 	std::unique_ptr<ProjectFileVisitor> fileVisitor;
 	std::vector<std::unique_ptr<ProjectFile>> openedFiles;
