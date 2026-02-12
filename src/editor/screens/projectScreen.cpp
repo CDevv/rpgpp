@@ -124,9 +124,11 @@ void screens::ProjectScreen::addFileView(EngineFileType fileType,
 		fileVisitor->visit(fileType, path);
 	projectFile->initUi(fileViewGroup);
 	projectFile->setFilePath(path);
-	openedFiles.push_back(std::move(projectFile));
 
-	fileTabs->addFileTab(GetFileName(path.c_str()));
+	size_t idx = fileTabs->addFileTab(GetFileName(path.c_str()));
+	if (idx != -1) {
+		openedFiles.insert(openedFiles.begin() + idx, std::move(projectFile));
+	}
 }
 
 void screens::ProjectScreen::switchView(int index) {

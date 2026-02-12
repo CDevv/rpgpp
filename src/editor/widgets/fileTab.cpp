@@ -105,8 +105,8 @@ bool FileTab::select(std::size_t index) {
 // An issue on TGUI library has been opened to allow for adding more information like an identifier
 // to each indivitual Tab for easier tracking of each tab.
 // https://github.com/texus/TGUI/issues/317
-void FileTab::addFileTab(const std::string &fileName) {
-    int tabIdxToInsert = m_selectedTab;
+size_t FileTab::addFileTab(const std::string &fileName) {
+    size_t tabIdxToInsert = m_selectedTab;
     if (tabIdxToInsert == -1) {
         tabIdxToInsert = 0;
     }
@@ -114,11 +114,15 @@ void FileTab::addFileTab(const std::string &fileName) {
     for (size_t i = 0; i < m_tabs.size(); ++i) {
         if (m_tabs[i].text.getString() == fileName) {
             select(i);
-            return;
+            return -1;
         }
     }
 
-    insert(tabIdxToInsert + 1, fileName, true);
+    tabIdxToInsert += 1;
+    tabIdxToInsert = std::min(tabIdxToInsert, m_tabs.size());
+
+    insert(tabIdxToInsert, fileName, true);
+    return tabIdxToInsert;
 }
 
 void FileTab::draw(tgui::BackendRenderTarget &target,
