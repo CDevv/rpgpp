@@ -24,6 +24,7 @@ FileSystemService::FileSystemService() {
 	typeNames[static_cast<int>(EngineFileType::FILE_SOUND)] = "Sounds";
 	typeNames[static_cast<int>(EngineFileType::FILE_MUSIC)] = "Music";
 	typeNames[static_cast<int>(EngineFileType::FILE_PROP)] = "Props";
+	typeNames[static_cast<int>(EngineFileType::FILE_SCRIPT)] = "Scripts";
 
 	NFD_Init();
 }

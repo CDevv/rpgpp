@@ -8,19 +8,19 @@
 #include <typeindex>
 #include <unordered_map>
 
-#define FILETYPE_MAX 9
+#define FILETYPE_MAX 10
 
 enum class EngineFileType {
 	FILE_TILESET,
 	FILE_MAP,
+	FILE_SCRIPT,
 	FILE_ACTOR,
 	FILE_DIALOGUE,
 	FILE_IMAGE,
 	FILE_FONT,
 	FILE_SOUND,
 	FILE_MUSIC,
-	FILE_PROP,
-	FILE_SCRIPT
+	FILE_PROP
 };
 
 class FileSystemService {

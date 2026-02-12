@@ -73,10 +73,9 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 
 	auto toolBar = createToolBar();
 
-	auto fileView = tgui::Group::create({
-	    TextFormat("100%% - %d", RESLIST_W),
-		TextFormat("100%% - %d", TOOLBAR_H + FILETABS_H)
-	});
+	auto fileView =
+		tgui::Group::create({TextFormat("100%% - %d", RESLIST_W),
+							 TextFormat("100%% - %d", TOOLBAR_H + FILETABS_H)});
 	fileView->setPosition(RESLIST_W, TOOLBAR_H + FILETABS_H);
 	layout->add(fileView);
 	this->fileViewGroup = fileView;
@@ -246,13 +245,14 @@ tgui::Group::Ptr
 screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	auto project = Editor::instance->getProject();
 
-	auto group = tgui::Group::create({RESLIST_W, TextFormat("100%% - %d", TOOLBAR_H)});
+	auto group =
+		tgui::Group::create({RESLIST_W, TextFormat("100%% - %d", TOOLBAR_H)});
 	group->setPosition(0, TOOLBAR_H);
 
 	auto resourceChoose = tgui::ComboBox::create();
 	resourceChoose->setPosition(0, 0);
 	resourceChoose->setSize("100%", RESLIST_RES_CHOOSE_H);
-	resourceChoose->addMultipleItems({"TileSets", "Maps"});
+	resourceChoose->addMultipleItems({"TileSets", "Maps", "Scripts"});
 	resourceChoose->setSelectedItem("Maps");
 	group->add(resourceChoose);
 
@@ -269,21 +269,21 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	});
 	group->add(createResourceBtn);
 
-	auto resourceListPanel = tgui::ScrollablePanel::create({
-	    "100%",
-		TextFormat("100%% - %d", FILETABS_H + RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H)
-	});
-	resourceListPanel->setPosition(0, RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H);
+	auto resourceListPanel = tgui::ScrollablePanel::create(
+		{"100%", TextFormat("100%% - %d", FILETABS_H + RESLIST_RES_CHOOSE_H +
+											  RESLIST_CREATE_RES_BTN_H)});
+	resourceListPanel->setPosition(0, RESLIST_RES_CHOOSE_H +
+										  RESLIST_CREATE_RES_BTN_H);
 	resourceListPanel->getVerticalScrollbar()->setPolicy(
 		tgui::Scrollbar::Policy::Automatic);
-	resourceListPanel->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
+	resourceListPanel->getHorizontalScrollbar()->setPolicy(
+		tgui::Scrollbar::Policy::Never);
 	resourceListPanel->getRenderer()->setBackgroundColor(
 		tgui::Color::applyOpacity(tgui::Color::Black, 0.2));
 
 	resourcesLayout = tgui::GrowVerticalLayout::create();
 	resourceListPanel->add(resourcesLayout);
 	group->add(resourceListPanel);
-
 
 	resourceChoose->onItemSelect([this, &fileViewGroup](int index) {
 		EngineFileType currentFileType = static_cast<EngineFileType>(index);

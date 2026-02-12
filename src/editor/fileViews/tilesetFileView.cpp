@@ -1,12 +1,5 @@
 #include "fileViews/tilesetFileView.hpp"
-#include "TGUI/Widgets/CheckBox.hpp"
-#include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/Group.hpp"
-#include "TGUI/Widgets/GrowVerticalLayout.hpp"
-#include "TGUI/Widgets/Label.hpp"
-#include "TGUI/Widgets/ListView.hpp"
-#include "TGUI/Widgets/SpinControl.hpp"
-#include "TGUI/Widgets/ToggleButton.hpp"
 #include "editor.hpp"
 #include "propertiesBox.hpp"
 #include "raylib.h"
@@ -17,7 +10,6 @@
 #include "widgets/intField.hpp"
 #include "widgets/worldView.hpp"
 #include <algorithm>
-#include <cstdio>
 
 TileSetFileView::TileSetFileView() {
 	const auto worldView = TileSetView::create();
