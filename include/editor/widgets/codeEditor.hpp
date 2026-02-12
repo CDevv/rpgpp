@@ -6,17 +6,18 @@
 #include "TGUI/Widgets/TextArea.hpp"
 #include <string>
 
-using namespace tgui;
 
 class CodeEditor : public tgui::TextArea {
   public:
 	static Ptr create();
 
-	void keyPressed(const Event::KeyEvent &event) override;
-	void draw(BackendRenderTarget &target, RenderStates states) const override;
+	void keyPressed(const tgui::Event::KeyEvent &event) override;
+	void draw(tgui::BackendRenderTarget &target, tgui::RenderStates states) const override;
+
   private:
-		Text constructText(const tgui::String&, Vector2f position) const;
-		Text constructText(const tgui::String& text) const;
+		tgui::Text constructText(const tgui::String&, tgui::Vector2f position) const;
+		tgui::Text constructText(const tgui::String& text) const;
+		bool canGainFocus() const;
 };
 
 #endif // RPGPP_CODEEDITOR_H
