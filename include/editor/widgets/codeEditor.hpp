@@ -13,9 +13,10 @@ class CodeEditor : public tgui::TextArea {
 	static Ptr create();
 
 	void keyPressed(const Event::KeyEvent &event) override;
-
-	private:
-		Text createText(const tgui::String& text, const tgui::Vector2f& position);
+	void draw(BackendRenderTarget &target, RenderStates states) const override;
+  private:
+		Text constructText(const tgui::String&, Vector2f position) const;
+		Text constructText(const tgui::String& text) const;
 };
 
 #endif // RPGPP_CODEEDITOR_H
