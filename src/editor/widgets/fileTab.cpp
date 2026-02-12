@@ -8,6 +8,7 @@
 #include "editor.hpp"
 #include "fileTabRenderer.hpp"
 #include <cmath>
+#include <cstddef>
 #include <cstdio>
 #include <memory>
 
@@ -96,6 +97,28 @@ bool FileTab::select(std::size_t index) {
 	// Send the callback
 	onTabSelect.emit(this, index);
 	return true;
+}
+
+// TODO: In case where multiple file with the same name in different directory are opened
+// this could should be updated to use path instead.
+//
+// An issue on TGUI library has been opened to allow for adding more information like an identifier
+// to each indivitual Tab for easier tracking of each tab.
+// https://github.com/texus/TGUI/issues/317
+void FileTab::addFileTab(const std::string &fileName) {
+    int tabIdxToInsert = m_selectedTab;
+    if (tabIdxToInsert == -1) {
+        tabIdxToInsert = 0;
+    }
+
+    for (size_t i = 0; i < m_tabs.size(); ++i) {
+        if (m_tabs[i].text.getString() == fileName) {
+            select(i);
+            return;
+        }
+    }
+
+    insert(tabIdxToInsert + 1, fileName, true);
 }
 
 void FileTab::draw(tgui::BackendRenderTarget &target,

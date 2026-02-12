@@ -38,6 +38,8 @@ class FileTab : public tgui::Tabs {
 
 	bool select(std::size_t i);
 
+	void addFileTab(const std::string &fileName);
+
   private:
     mutable bool isHovering = false;
 
