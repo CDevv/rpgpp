@@ -5,17 +5,14 @@
 #include "TGUI/Texture.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Button.hpp"
-#include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/ContextMenu.hpp"
-#include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/HorizontalWrap.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/MessageBox.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
-#include "TGUI/Widgets/TabContainer.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
 #include "editor.hpp"
 #include "editorGuiService.hpp"
@@ -27,6 +24,7 @@
 #include "projectFileVisitor.hpp"
 #include "raylib.h"
 #include "widgets/fileTab.hpp"
+#include "fmt/format.h"
 #include <cstdio>
 #include <filesystem>
 #include <memory>
@@ -76,8 +74,11 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 
 	auto toolBar = createToolBar();
 
-	auto fileView = tgui::Group::create({"100% - 264", "100% - 54 - 24"});
-	fileView->setPosition(264, 54 + 24);
+	auto fileView = tgui::Group::create({
+	    fmt::format("100% - {}", rLIST_WIDTH).c_str(),
+		fmt::format("100% - {}", tBAR_HEIGHT + fTABS_HEIGHT).c_str()
+	});
+	fileView->setPosition(rLIST_WIDTH, tBAR_HEIGHT + fTABS_HEIGHT);
 	layout->add(fileView);
 	this->fileViewGroup = fileView;
 
@@ -92,8 +93,8 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	auto tabs2 = tgui::Tabs::create();
 
 	fileTabs = FileTab::create();
-	fileTabs->setSize("100% - 264", 24);
-	fileTabs->setPosition(264, 54);
+	fileTabs->setSize(fmt::format("100% - {}", rLIST_WIDTH).c_str(), fTABS_HEIGHT);
+	fileTabs->setPosition(rLIST_WIDTH, tBAR_HEIGHT);
 
 	fileTabs->onTabClose([this](int i) {
 		printf("tab close %i \n", i);
@@ -136,7 +137,7 @@ void screens::ProjectScreen::switchView(int index) {
 }
 
 tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
-	auto toolBar = tgui::HorizontalWrap::create({"100%", 54});
+	auto toolBar = tgui::HorizontalWrap::create({"100%", tBAR_HEIGHT});
 	toolBar->setPosition(0, 0);
 	toolBar->getRenderer()->setSpaceBetweenWidgets(8.0f);
 	toolBar->getRenderer()->setPadding(8);
@@ -193,7 +194,7 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 
 	for (auto filePath : project->getPaths(fileType)) {
 		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
-		fileBtn->setSize("100%", 36);
+		fileBtn->setSize("100%", rLIST_RES_BTN_HEIGHT);
 		fileBtn->getRenderer()->setBackgroundColor(tgui::Color(0, 0, 0));
 		fileBtn->onPress(
 			[this, fileType, filePath] { addFileView(fileType, filePath); });
@@ -246,19 +247,19 @@ tgui::Group::Ptr
 screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	auto project = Editor::instance->getProject();
 
-	auto group = tgui::Group::create({"264", "100% - 54"});
-	group->setPosition(0, 54);
+	auto group = tgui::Group::create({rLIST_WIDTH, fmt::format("100% - {}", tBAR_HEIGHT).c_str()});
+	group->setPosition(0, tBAR_HEIGHT);
 
 	auto resourceChoose = tgui::ComboBox::create();
 	resourceChoose->setPosition(0, 0);
-	resourceChoose->setSize("100%", 54);
+	resourceChoose->setSize("100%", rLIST_RES_CHOOSE_HEIGHT);
 	resourceChoose->addMultipleItems({"TileSets", "Maps"});
 	resourceChoose->setSelectedItem("Maps");
 	group->add(resourceChoose);
 
-	auto createResourceBtn = tgui::Button::create("New..");
-	createResourceBtn->setPosition(0, 54);
-	createResourceBtn->setSize("100%", 24);
+	auto createResourceBtn = tgui::Button::create("Create New");
+	createResourceBtn->setPosition(0, rLIST_RES_CHOOSE_HEIGHT);
+	createResourceBtn->setSize("100%", rLIST_CREATE_RES_BTN_HEIGHT);
 	createResourceBtn->onPress([this] {
 		if (!fileInitVisitor->funcIsEmpty(listedResourcesType)) {
 			auto childDialog = NewFileDialog::create();
@@ -269,18 +270,21 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	});
 	group->add(createResourceBtn);
 
-	auto panel = tgui::ScrollablePanel::create({"100%", "100% - 54"});
-	panel->setPosition(0, 54 + 24);
-	panel->getVerticalScrollbar()->setPolicy(
+	auto resourceListPanel = tgui::ScrollablePanel::create({
+	    "100%",
+		fmt::format("100% - {}", tBAR_HEIGHT + rLIST_RES_CHOOSE_HEIGHT + rLIST_CREATE_RES_BTN_HEIGHT).c_str()
+	});
+	resourceListPanel->setPosition(0, rLIST_RES_CHOOSE_HEIGHT + rLIST_CREATE_RES_BTN_HEIGHT);
+	resourceListPanel->getVerticalScrollbar()->setPolicy(
 		tgui::Scrollbar::Policy::Automatic);
-	panel->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
-	panel->getRenderer()->setBackgroundColor(
+	resourceListPanel->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
+	resourceListPanel->getRenderer()->setBackgroundColor(
 		tgui::Color::applyOpacity(tgui::Color::Black, 0.2));
 
-	group->add(panel);
-
 	resourcesLayout = tgui::GrowVerticalLayout::create();
-	panel->add(resourcesLayout);
+	resourceListPanel->add(resourcesLayout);
+	group->add(resourceListPanel);
+
 
 	resourceChoose->onItemSelect([this, &fileViewGroup](int index) {
 		EngineFileType currentFileType = static_cast<EngineFileType>(index);
