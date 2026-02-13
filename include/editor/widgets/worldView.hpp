@@ -12,11 +12,11 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
   protected:
 	Camera2D camera;
 	RenderTexture texture;
-	bool mouseMiddleButton;
-	bool mouseLeftButton;
-	Vector2 mouseWorldPos;
+	bool mouseMiddleButton = false;
+	bool mouseLeftButton = false;
+	Vector2 mouseWorldPos = Vector2{0, 0};
 	Vector2 getMouseWorldPos();
-	RoomTool tool;
+	RoomTool tool = RoomTool::TOOL_NONE;
 
   public:
 	typedef std::shared_ptr<WorldView> Ptr;

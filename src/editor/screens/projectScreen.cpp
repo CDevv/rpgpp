@@ -190,6 +190,7 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 	this->listedResourcesType = fileType;
 
 	resourcesLayout->removeAllWidgets();
+	resourcesLayout->getRenderer()->setSpaceBetweenWidgets(RESLIST_ITEM_PADDING);
 
 	for (auto filePath : project->getPaths(fileType)) {
 		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
@@ -245,6 +246,7 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 tgui::Group::Ptr
 screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	auto project = Editor::instance->getProject();
+	TranslationService &tService = Editor::instance->getTranslations();
 
 	auto group =
 		tgui::Group::create({RESLIST_W, TextFormat("100%% - %d", TOOLBAR_H)});
@@ -257,7 +259,7 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	resourceChoose->setSelectedItem("Maps");
 	group->add(resourceChoose);
 
-	auto createResourceBtn = tgui::Button::create("Create New");
+	auto createResourceBtn = tgui::Button::create(tService.getKey("screen.project.create_new_resource"));
 	createResourceBtn->setPosition(0, RESLIST_RES_CHOOSE_H);
 	createResourceBtn->setSize("100%", RESLIST_CREATE_RES_BTN_H);
 	createResourceBtn->onPress([this] {

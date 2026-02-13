@@ -16,7 +16,17 @@
   "screen.starting.get_started": "Get Started!",
   "screen.starting.description": "Press on 'New Project' to create a new project, or 'Open Project' to open one!",
 
-  "button.go_back": "Go Back",
   "screen.options.language": "Language",
-  "screen.options.theme": "Theme"
+  "screen.options.theme": "Theme",
+
+  "screen.project.create_new_resource": "New Resource",
+
+  "dialog.new_file.title": "New Resource",
+  "dialog.new_file.name": "Name",
+  "dialog.new_file.file": "File",
+  "dialog.new_file.confirm": "Confirm",
+  "dialog.new_file.cancel": "Cancel",
+
+  "widget.filechooser.select_a_file": "Select a File",
+  "button.go_back": "Go Back"
 }

@@ -16,7 +16,17 @@
   "screen.starting.get_started": "Bắt đầu!",
   "screen.starting.description": "Nhấn vào 'Tạo dự án' để tạo dự án mới, hoặc 'Mở dự án' để mở một dự án!",
 
-  "button.go_back": "Quay lại",
   "screen.options.language": "Ngôn ngữ",
-  "screen.options.theme": "Chủ đề"
+  "screen.options.theme": "Chủ đề",
+
+  "screen.project.create_new_resource": "Tạo tài nguyên",
+
+  "dialog.new_file.title": "Tạo tài nguyên",
+  "dialog.new_file.name": "Tên",
+  "dialog.new_file.file": "Tệp tin",
+  "dialog.new_file.confirm": "Tạo",
+  "dialog.new_file.cancel": "Hủy",
+
+  "widget.filechooser.select_a_file": "Chọn tệp tin",
+  "button.go_back": "Quay lại"
 }

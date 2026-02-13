@@ -9,10 +9,15 @@
 FileChooser::FileChooser(const char *typeName, bool initRenderer)
 	: tgui::SubwidgetContainer(typeName, initRenderer) {
 
-	chosenPathLabel = tgui::Button::create();
+	TranslationService &tService = Editor::instance->getTranslations();
+	chosenPathLabel = tgui::EditBox::create();
+	chosenPathLabel->setText(tService.getKey("widget.filechooser.select_a_file"));
+	chosenPathLabel->setReadOnly(true);
+	chosenPathLabel->setEnabled(false);
 	iconButton = tgui::BitmapButton::create();
 	auto iconTexture = tgui::Texture(
 		Editor::instance->getFs().getResourcePath("open_folder.png"));
+	iconButton->setImageScaling(0.95);
 	iconButton->setImage(iconTexture);
 
 	iconButton->onClick([this] {
@@ -60,9 +65,11 @@ void FileChooser::setSize(const tgui::Layout2d &size) {
 }
 
 void FileChooser::updateSize() {
-	chosenPathLabel->setSize({getSize().x * 0.8f, getSize().y});
-	iconButton->setSize({getSize().x * 0.2f, getSize().y});
-	iconButton->setPosition({getSize().x * 0.8f, 0});
+    int h = getSize().y;
+    int btnSize = h;
+	chosenPathLabel->setSize({getSize().x - btnSize - PADDING, h});
+	iconButton->setSize({btnSize, btnSize});
+	iconButton->setPosition({getSize().x - btnSize, 0});
 }
 
 tgui::String &FileChooser::getChosenPath() { return chosenPath; }

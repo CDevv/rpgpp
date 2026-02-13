@@ -28,6 +28,7 @@ class ProjectScreen : public UIScreen {
     static const int RESLIST_RES_CHOOSE_H = 32;
     static const int RESLIST_CREATE_RES_BTN_H = 24;
     static const int RESLIST_RES_BTN_H = 36;
+    static const int RESLIST_ITEM_PADDING = 4;
 
 	std::unique_ptr<ProjectFileVisitor> fileVisitor;
 	std::vector<std::unique_ptr<ProjectFile>> openedFiles;

@@ -36,6 +36,12 @@ class NewFileDialog {
 	void setPathFilters(
 		std::vector<std::pair<tgui::String, std::vector<tgui::String>>>
 			pathFilters);
+
+  private:
+    static const int FIELD_H = 24;
+    static const int BUTTON_W = 100;
+    static const int BUTTON_H = 24;
+    static const int PADDING = 8;
 };
 
 #endif

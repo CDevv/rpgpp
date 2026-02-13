@@ -4,14 +4,16 @@
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Button.hpp"
+#include "TGUI/Widgets/EditBox.hpp"
 
 class FileChooser : public tgui::SubwidgetContainer {
   private:
 	tgui::String chosenPath;
 	bool selectingDirectory = false;
+	static const int PADDING = 4;
 
   public:
-	tgui::Button::Ptr chosenPathLabel;
+	tgui::EditBox::Ptr chosenPathLabel;
 	tgui::BitmapButton::Ptr iconButton;
 	std::vector<std::pair<tgui::String, std::vector<tgui::String>>> pathFilters;
 
