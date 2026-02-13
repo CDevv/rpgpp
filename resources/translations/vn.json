@@ -20,6 +20,12 @@
   "screen.options.theme": "Chủ đề",
 
   "screen.project.create_new_resource": "Tạo tài nguyên",
+  "screen.project.tilesetview.tile_width": "Độ rộng Tile",
+  "screen.project.tilesetview.tile_height": "Độ cao Tile",
+  "screen.project.tilesetview.texture": "Tệp Texture",
+  "screen.project.roomview.mapwidth": "Độ rộng Map",
+  "screen.project.roomview.mapheight": "Độ cao Map",
+  "screen.project.roomview.tileset_file": "Tệp Tileset",
 
   "dialog.new_file.title": "Tạo tài nguyên",
   "dialog.new_file.name": "Tên",

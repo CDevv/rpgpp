@@ -16,6 +16,8 @@
 #include <memory>
 
 RoomFileView::RoomFileView() {
+    TranslationService &ts = Editor::instance->getTranslations();
+
 	roomView = RoomView::create();
 	roomView->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), TextFormat("100%% - %d", TOOLBOX_H)});
 	roomView->setPosition(0, TOOLBOX_H);
@@ -62,7 +64,7 @@ RoomFileView::RoomFileView() {
 	props->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W), ROOM_LAYER_H + LAYER_CHOOSE_H});
 
 	widthField = IntField::create();
-	widthField->label->setText("Map Height");
+	widthField->label->setText(ts.getKey("screen.project.roomview.mapwidth"));
 	widthField->value->onValueChange([this](int value) {
 		Vector2 worldSize =
 			this->roomView->getRoom()->getTileMap()->getMaxWorldSize();
@@ -72,7 +74,7 @@ RoomFileView::RoomFileView() {
 	props->addIntField(widthField);
 
 	heightField = IntField::create();
-	heightField->label->setText("Map Height");
+	heightField->label->setText(ts.getKey("screen.project.roomview.mapheight"));
 	heightField->value->onValueChange([this](int value) {
 		Vector2 worldSize =
 			this->roomView->getRoom()->getTileMap()->getMaxWorldSize();
@@ -81,7 +83,7 @@ RoomFileView::RoomFileView() {
 	});
 	props->addIntField(heightField);
 
-	tileSetField = FileField::create("TileSet", "...");
+	tileSetField = FileField::create(ts.getKey("screen.project.roomview.tileset_file"), "...");
 	tileSetField->pathFilters = {{"RPG++ TileSet", {"*.rtiles"}}};
 	tileSetField->callback = [this](const tgui::String &path) {
 		auto room = this->roomView->getRoom();

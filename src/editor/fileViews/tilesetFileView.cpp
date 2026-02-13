@@ -5,6 +5,7 @@
 #include "raylib.h"
 #include "tileSetView.hpp"
 #include "tileset.hpp"
+#include "translationService.hpp"
 #include "variant.hpp"
 #include "widgets/fileField.hpp"
 #include "widgets/intField.hpp"
@@ -12,6 +13,8 @@
 #include <algorithm>
 
 TileSetFileView::TileSetFileView() {
+    TranslationService &ts = Editor::instance->getTranslations();
+
 	const auto worldView = TileSetView::create();
 	worldView->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), "100%"});
 	widgetContainer.push_back(worldView);
@@ -24,14 +27,14 @@ TileSetFileView::TileSetFileView() {
 	props->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W), 0});
 
 	widthField = IntField::create();
-	widthField->label->setText("Tile Height");
+	widthField->label->setText(ts.getKey("screen.project.tilesetview.tile_width"));
 	widthField->value->onValueChange([this](int value) {
 		this->worldView->getTileSet()->setTileWidth(value);
 	});
 	props->addIntField(widthField);
 
 	heightField = IntField::create();
-	heightField->label->setText("Tile Height");
+	heightField->label->setText(ts.getKey("screen.project.tilesetview.tile_height"));
 	heightField->value->onValueChange([this](int value) {
 		this->worldView->getTileSet()->setTileHeight(value);
 	});
@@ -49,7 +52,7 @@ TileSetFileView::TileSetFileView() {
 	props->addIntField(widthField);
 	props->addIntField(heightField);
 
-	textureFile = FileField::create("Texture", "...");
+	textureFile = FileField::create(ts.getKey("screen.project.tilesetview.texture"), "...");
 	textureFile->pathFilters = {{
 		{"Images", {"*.png", "*.jpg"}},
 	}};
