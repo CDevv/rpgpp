@@ -36,12 +36,12 @@ void Project::create(const std::string &dirPath, const std::string &title) {
 
 	std::filesystem::path filePath = dirPath;
 	filePath /= "proj.rpgpp";
-	SaveFileText(filePath.c_str(), fileContent.c_str());
+	SaveFileText(filePath.u8string().c_str(), fileContent.c_str());
 
-	MakeDirectory(std::filesystem::path(dirPath).append("tilesets").c_str());
-	MakeDirectory(std::filesystem::path(dirPath).append("maps").c_str());
+	MakeDirectory(std::filesystem::path(dirPath).append("tilesets").u8string().c_str());
+	MakeDirectory(std::filesystem::path(dirPath).append("maps").u8string().c_str());
 
-	Editor::instance->setProject(filePath);
+	Editor::instance->setProject(filePath.u8string());
 	Editor::instance->getGui().setScreen(
 		std::make_unique<screens::ProjectScreen>(), false);
 }
@@ -280,7 +280,7 @@ GameData Project::generateStruct() {
 	interactablesDir /= "resources";
 	interactablesDir /= "interactables";
 
-	auto list = LoadDirectoryFiles(interactablesDir.c_str());
+	auto list = LoadDirectoryFiles(interactablesDir.u8string().c_str());
 	for (int i = 0; i < list.count; i++) {
 		std::string intPath = list.paths[i];
 		Interactable inter(intPath);
@@ -300,7 +300,7 @@ GameData Project::generateStruct() {
 		Editor::instance->getFs().getEditorBaseDir();
 	scriptsDir /= "resources";
 	scriptsDir /= "scripts";
-	auto scriptsList = LoadDirectoryFiles(scriptsDir.c_str());
+	auto scriptsList = LoadDirectoryFiles(scriptsDir.u8string().c_str());
 	for (int i = 0; i < scriptsList.count; i++) {
 		std::string scriptPath = scriptsList.paths[i];
 		auto scriptText = LoadFileText(scriptPath.c_str());

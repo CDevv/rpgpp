@@ -184,7 +184,7 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
 		path /= "game.bin";
 
 		auto data = project->generateStruct();
-		serializeDataToFile(path, data);
+		serializeDataToFile(path.u8string(), data);
 	});
 	toolBar->add(buildBtn);
 

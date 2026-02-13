@@ -29,9 +29,6 @@ Then, to build all targets, run
 xmake build --all
 ```
 
-NOTE!
-The TGUI library that xmake built may not work when linking. In this case, you can attempt to build it yourself. The output should be tgui-s-d.lib on Windows.
-
 Running
 ---
 
