@@ -23,7 +23,7 @@ TranslationService::TranslationService() {
 	this->current_language = Editor::instance->getConfiguration().getStringValue("language");
 }
 
-std::string getKeyWrapper(TranslationService *tr, const std::string &c_language,
+TranslatedString getKeyWrapper(TranslationService *tr, const std::string &c_language,
 			  const std::string &key) {
 	if (tr->translations.find(tr->current_language) !=
 		tr->translations.end()) {
@@ -31,20 +31,22 @@ std::string getKeyWrapper(TranslationService *tr, const std::string &c_language,
 			tr->translations[c_language];
 		if (gotten_translations.find(key) !=
 			gotten_translations.end()) {
-			return gotten_translations[key];
+			TranslatedString s = TranslatedString{gotten_translations[key]};
+			return s;
 		}
-		return tr->translations[DEFAULT_LANGUAGE][key];
+		TranslatedString s = TranslatedString{tr->translations[DEFAULT_LANGUAGE][key]};
+		return s;
 	} else {
 		throw std::out_of_range(
 			"translation doesn't exist in translations.");
 	}
 }
 
-std::string TranslationService::getKey(const std::string &key) {
+TranslatedString TranslationService::getKey(const std::string &key) {
 	return getKeyWrapper(this, current_language, key);
 }
 
-std::string TranslationService::getKey(const std::string &key,
+TranslatedString TranslationService::getKey(const std::string &key,
 					   const std::string &c_language) {
 	return getKeyWrapper(this, c_language, key);
 }
