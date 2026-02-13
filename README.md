@@ -23,26 +23,14 @@ Clone the project using git with
 git clone https://github.com/CDevv/rpgpp
 ```
 
-This project uses submodules from other repositories for it's libraries. You will need to initialize the submodule paths using
-
-```bash
-git submodule init
-```
-
-After that, clone/update the submodules to the project using
-
-```bash
-git submodule update
-```
-
-Another dependency of this project is TGUI (stable release).
-The TGUI library that xmake built may not work when linking. In this case, you can attempt to build it using CMake. The output should be tgui-s-d.lib on Windows.
-
-Finally, to build all targets, run
+Then, to build all targets, run
 
 ```bash
 xmake build --all
 ```
+
+NOTE!
+The TGUI library that xmake built may not work when linking. In this case, you can attempt to build it yourself. The output should be tgui-s-d.lib on Windows.
 
 Running
 ---
