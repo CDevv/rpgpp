@@ -11,6 +11,8 @@
 
 class PropertiesBox : public tgui::ChildWindow {
   protected:
+    static const int GAP = 4;
+
 	tgui::GrowVerticalLayout::Ptr layout;
 	tgui::Widget::Ptr clone() const override;
 

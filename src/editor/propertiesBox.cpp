@@ -16,6 +16,7 @@ PropertiesBox::PropertiesBox(const char *typeName, bool initRenderer)
 	this->setTitle("Props");
 	this->setTitleButtons(tgui::ChildWindow::TitleButton::None);
 	auto vertLayout = tgui::GrowVerticalLayout::create();
+	vertLayout->getRenderer()->setSpaceBetweenWidgets(GAP);
 	add(vertLayout);
 	this->layout = vertLayout;
 }
