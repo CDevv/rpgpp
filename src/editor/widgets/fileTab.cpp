@@ -65,9 +65,12 @@ bool FileTab::leftMousePressed(Vector2f pos) {
 			break;
 		} else if (pos.x >= tabStart + (m_tabs[i].width - MARGIN_LR - CLOSE_BUTTON_SIZE) &&
 				   pos.x < tabEnd - MARGIN_LR) {
+			int prevSelected = m_selectedTab;
 			remove(i);
 			onTabClose.emit(this, i);
-			select(std::min(i + 1, m_tabs.size() - 1));
+			if (prevSelected == i) {
+			    select(std::min(i + 1, m_tabs.size() - 1));
+			}
 			break;
 		}
 
