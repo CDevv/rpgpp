@@ -7,6 +7,7 @@
 #include "TGUI/Text.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
+#include "raylib.h"
 
 #include <cmath>
 #include <cstddef>
@@ -15,7 +16,7 @@
 
 using namespace tgui;
 
-#define CODE_EDITOR_LEFT_COLUMN 50.0f
+#define CODE_EDITOR_LEFT_COLUMN 100.0f
 
 CodeEditor::Ptr CodeEditor::create() { return std::make_shared<CodeEditor>(); }
 
@@ -35,12 +36,12 @@ void CodeEditor::recalculatePositions() {
 
 	float textOffset =
 		Text::getExtraHorizontalPadding(m_fontCached, m_textSizeCached);
-	textOffset -= CODE_EDITOR_LEFT_COLUMN;
 
 	// Calculate the position of the text objects
 	m_selectionRects.clear();
-	m_textBeforeSelection.setPosition({textOffset, 0});
-	m_defaultText.setPosition({textOffset, 0});
+	m_textBeforeSelection.setPosition(
+		{textOffset + CODE_EDITOR_LEFT_COLUMN, 0});
+	m_defaultText.setPosition({textOffset + CODE_EDITOR_LEFT_COLUMN, 0});
 
 	if (m_selStart != m_selEnd) {
 		auto selectionStart = m_selStart;
@@ -73,16 +74,17 @@ void CodeEditor::recalculatePositions() {
 						 .findCharacterPos(
 							 m_textBeforeSelection.getString().length())
 						 .x +
-					 kerningSelectionStart,
+					 kerningSelectionStart + CODE_EDITOR_LEFT_COLUMN,
 				 m_textBeforeSelection.getPosition().y +
 					 (selectionStart.y * m_lineHeight)});
 		} else
 			m_textSelection1.setPosition(
-				{textOffset, m_textBeforeSelection.getPosition().y +
-								 (selectionStart.y * m_lineHeight)});
+				{textOffset + CODE_EDITOR_LEFT_COLUMN,
+				 m_textBeforeSelection.getPosition().y +
+					 (selectionStart.y * m_lineHeight)});
 
 		m_textSelection2.setPosition(
-			{textOffset,
+			{textOffset + CODE_EDITOR_LEFT_COLUMN,
 			 static_cast<float>((selectionStart.y + 1) * m_lineHeight)});
 
 		if (!m_textSelection2.getString().empty() || (selectionEnd.x == 0)) {
@@ -92,7 +94,7 @@ void CodeEditor::recalculatePositions() {
 						 .findCharacterPos(
 							 m_textSelection2.getString().length())
 						 .x +
-					 kerningSelectionEnd,
+					 kerningSelectionEnd + CODE_EDITOR_LEFT_COLUMN,
 				 m_textSelection2.getPosition().y +
 					 ((selectionEnd.y - selectionStart.y - 1) * m_lineHeight)});
 		} else
@@ -106,7 +108,7 @@ void CodeEditor::recalculatePositions() {
 				 m_textSelection1.getPosition().y});
 
 		m_textAfterSelection2.setPosition(
-			{textOffset,
+			{textOffset + CODE_EDITOR_LEFT_COLUMN,
 			 static_cast<float>(selectionEnd.y + 1) * m_lineHeight});
 
 		// Recalculate the selection rectangles
@@ -295,7 +297,7 @@ void CodeEditor::updateSelectionTexts() {
 				m_lines[m_selEnd.y][m_selEnd.x], m_textSizeCached, false);
 
 		const float caretLeft =
-			textOffset +
+			textOffset + CODE_EDITOR_LEFT_COLUMN +
 			tempText.findCharacterPos(tempText.getString().length()).x +
 			kerning;
 		const float caretTop = static_cast<float>(m_selEnd.y) * m_lineHeight;
@@ -340,7 +342,6 @@ void CodeEditor::updateSelectionTexts() {
 }
 
 void CodeEditor::mouseMoved(tgui::Vector2f pos) {
-	printf("over. \n");
 	pos -= getPosition();
 
 	if (!m_mouseHover)
@@ -471,27 +472,138 @@ CodeEditor::findCaretPosition(tgui::Vector2f position) const {
 	return {m_lines[lineNumber].length(), lineNumber};
 }
 
-void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
-	// TODO: ADD SELECTION HIGHLIGHT.
+bool CodeEditor::scrolled(float delta, tgui::Vector2f pos, bool touch) {
+	const bool horizontalScrollbarCanMove =
+		(m_horizontalScrollbar->getViewportSize() <
+		 m_horizontalScrollbar->getMaximum());
+	const bool verticalScrollbarCanMove =
+		(m_verticalScrollbar->getViewportSize() <
+		 m_verticalScrollbar->getMaximum());
 
-	target.drawFilledRect(states, getInnerSize(), Color::Black);
+	bool scrollbarMoved = false;
+	if (horizontalScrollbarCanMove && !touch &&
+		(!verticalScrollbarCanMove ||
+		 m_horizontalScrollbar->isMouseOnWidget(pos - getPosition()) ||
+		 IsKeyReleased(KEY_LEFT_SHIFT))) {
+		scrollbarMoved =
+			m_horizontalScrollbar->scrolled(delta, pos - getPosition(), touch);
+	} else if (verticalScrollbarCanMove) {
+		scrollbarMoved =
+			m_verticalScrollbar->scrolled(delta, pos - getPosition(), touch);
+	}
+
+	if (scrollbarMoved)
+		recalculateVisibleLines();
+
+	return scrollbarMoved;
+}
+
+void CodeEditor::recalculateVisibleLines() {
+	if (m_lineHeight == 0)
+		return;
+
+	const float horiScrollOffset = m_horizontalScrollbar->isShown()
+									   ? m_horizontalScrollbar->getSize().y
+									   : 0.f;
+	m_visibleLines =
+		std::min(static_cast<std::size_t>((getInnerSize().y -
+										   m_paddingCached.getTopPlusBottom() -
+										   horiScrollOffset) /
+										  m_lineHeight),
+				 m_lines.size());
+
+	// Store which area is visible
+	if (m_verticalScrollbar->getViewportSize() <
+		m_verticalScrollbar->getMaximum()) {
+		m_topLine = static_cast<std::size_t>(m_verticalScrollbar->getValue() /
+											 m_lineHeight);
+
+		// The scrollbar may be standing between lines in which case one more
+		// line is visible
+		if (((static_cast<unsigned int>(getInnerSize().y -
+										m_paddingCached.getTopPlusBottom() -
+										horiScrollOffset) %
+			  static_cast<unsigned int>(m_lineHeight)) != 0) ||
+			((m_verticalScrollbar->getValue() %
+			  static_cast<unsigned int>(m_lineHeight)) != 0))
+			m_visibleLines++;
+	} else // There is no vertical scrollbar
+	{
+		m_topLine = 0;
+		m_visibleLines = std::min(
+			static_cast<std::size_t>((getInnerSize().y -
+									  m_paddingCached.getTopPlusBottom() -
+									  horiScrollOffset) /
+									 m_lineHeight),
+			m_lines.size());
+	}
+
+	if (m_horizontalScrollbar->isShown())
+		m_horizontalScrollbar->setPosition(
+			m_bordersCached.getLeft(), getSize().y -
+										   m_bordersCached.getBottom() -
+										   m_horizontalScrollbar->getSize().y);
+
+	if (m_verticalScrollbar->isShown())
+		m_verticalScrollbar->setPosition({getSize().x -
+											  m_bordersCached.getRight() -
+											  m_verticalScrollbar->getSize().x,
+										  m_bordersCached.getTop()});
+}
+
+void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
+	const RenderStates statesForScrollbar = states;
+
+	target.drawFilledRect(states, getInnerSize(), tgui::Color::Black);
 	const auto &innerSize = getInnerSize();
 	const auto lines = this->m_text.split("\n");
 
-	for (int i = 0; i < lines.size(); i++) {
-		auto &currentLine = lines[i];
-		const bool isSelected = i == this->getCaretLine() - 1;
+	auto oldStates = states;
 
-		if (isSelected)
-			target.drawFilledRect(
-				states, {innerSize.x, m_textBeforeSelection.getLineHeight()},
-				Color{50, 50, 50, 255});
+	states.transform.translate(
+		{m_paddingCached.getLeft(), m_paddingCached.getTop()});
+	states.transform.translate(
+		{-static_cast<float>(m_horizontalScrollbar->getValue()),
+		 -static_cast<float>(m_verticalScrollbar->getValue())});
+	for (int i = 0; i < lines.size(); i++) {
+		// Text lineIndex = this->constructText(std::to_string(i + 1));
+		Text lineIndex;
+		lineIndex.setFont(m_textAfterSelection1.getFont());
+		lineIndex.setCharacterSize(m_textSize);
+		lineIndex.setString(std::to_string(i + 1));
+		lineIndex.setColor(tgui::Color::White);
+		lineIndex.setPosition(
+			{CODE_EDITOR_LEFT_COLUMN - lineIndex.getLineWidth(), 0});
+		target.drawText(states, lineIndex);
+
+		states.transform.translate({0, lineIndex.getLineHeight()});
+	}
+
+	states = oldStates;
+
+	{
+		states.transform.translate(
+			{m_paddingCached.getLeft(), m_paddingCached.getTop()});
+
+		float clipWidth = getInnerSize().x - m_paddingCached.getLeftPlusRight();
+		if (m_verticalScrollbar->isShown())
+			clipWidth -= m_verticalScrollbar->getSize().x;
+
+		float clipHeight =
+			getInnerSize().y - m_paddingCached.getTopPlusBottom();
+		if (m_horizontalScrollbar->isShown())
+			clipHeight -= m_horizontalScrollbar->getSize().y;
+
+		target.addClippingLayer(states, {{}, {clipWidth, clipHeight}});
+
+		// Move the text according to the scrollars
+		states.transform.translate(
+			{-static_cast<float>(m_horizontalScrollbar->getValue()),
+			 -static_cast<float>(m_verticalScrollbar->getValue())});
 
 		// Draw the background of the selected text
 		for (const auto &selectionRect : m_selectionRects) {
-			states.transform.translate(
-				{selectionRect.left + (CODE_EDITOR_LEFT_COLUMN * 2),
-				 selectionRect.top});
+			states.transform.translate({selectionRect.left, selectionRect.top});
 			target.drawFilledRect(
 				states,
 				{selectionRect.width,
@@ -499,38 +611,59 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 					 (std::max(m_fontCached.getFontHeight(m_textSizeCached),
 							   m_lineHeight) -
 					  m_lineHeight)},
-				Color::applyOpacity(m_selectedTextBackgroundColorCached,
-									m_opacityCached));
+				tgui::Color::applyOpacity(m_selectedTextBackgroundColorCached,
+										  m_opacityCached));
 			states.transform.translate(
-				{-(selectionRect.left + (CODE_EDITOR_LEFT_COLUMN * 2)),
-				 -selectionRect.top});
+				{-selectionRect.left, -selectionRect.top});
 		}
 
-		// Draw text
-		Text lineIndex = this->constructText(std::to_string(i + 1));
-		lineIndex.setPosition(
-			{CODE_EDITOR_LEFT_COLUMN / 2 - lineIndex.getLineWidth(), 0});
-		target.drawText(states, lineIndex);
+		// Draw the text
+		if (m_text.empty())
+			target.drawText(states, m_defaultText);
+		else {
+			if (m_selStart == m_selEnd)
+				states.transform.translate({CODE_EDITOR_LEFT_COLUMN, 0});
 
-		Text text = this->constructText(currentLine);
-		text.setPosition({CODE_EDITOR_LEFT_COLUMN, 0});
+			target.drawText(states, m_textBeforeSelection);
 
-		target.drawText(states, text);
-		auto leftOffset =
-			CODE_EDITOR_LEFT_COLUMN + m_caretPosition.x - m_caretWidthCached;
+			if (m_selStart == m_selEnd)
+				states.transform.translate({-CODE_EDITOR_LEFT_COLUMN, 0});
 
-		// Blinking cursor
-		if (isSelected && m_focused && m_caretVisible &&
-			(m_caretWidthCached > 0)) {
-			states.transform.translate({leftOffset, 0});
-			target.drawFilledRect(states,
-								  {1, m_textBeforeSelection.getLineHeight()},
-								  Color::White);
-			states.transform.translate({-leftOffset, 0});
+			if (m_selStart != m_selEnd) {
+				target.drawText(states, m_textSelection1);
+				target.drawText(states, m_textSelection2);
+				target.drawText(states, m_textAfterSelection1);
+				target.drawText(states, m_textAfterSelection2);
+			}
 		}
 
-		states.transform.translate({0, lineIndex.getLineHeight()});
+		// Only draw the caret when needed
+		if (m_focused && m_caretVisible && (m_caretWidthCached > 0)) {
+			const float caretHeight = std::max(
+				m_fontCached.getFontHeight(m_textSizeCached), m_lineHeight);
+			states.transform.translate(
+				{std::ceil(m_caretPosition.x - (m_caretWidthCached / 2.f)),
+				 m_caretPosition.y});
+			if (m_selStart == m_selEnd) {
+				states.transform.translate({CODE_EDITOR_LEFT_COLUMN, 0});
+			}
+			target.drawFilledRect(
+				states, {m_caretWidthCached, caretHeight},
+				tgui::Color::applyOpacity(m_caretColorCached, m_opacityCached));
+			if (m_selStart == m_selEnd) {
+				states.transform.translate({-CODE_EDITOR_LEFT_COLUMN, 0});
+			}
+		}
+
+		target.removeClippingLayer();
 	}
+
+	// Draw the scrollbars if needed
+	if (m_verticalScrollbar->isShown())
+		m_verticalScrollbar->draw(target, statesForScrollbar);
+
+	if (m_horizontalScrollbar->isShown())
+		m_horizontalScrollbar->draw(target, statesForScrollbar);
 }
 
 Text CodeEditor::constructText(const tgui::String &text,
@@ -538,9 +671,10 @@ Text CodeEditor::constructText(const tgui::String &text,
 	auto cloneText = Text{};
 
 	cloneText.setFont(m_fontCached);
-	cloneText.setColor(Color::White);
+	cloneText.setColor(tgui::Color::White);
 	cloneText.setString(text);
 	cloneText.setPosition(position);
+	cloneText.setCharacterSize(m_textSize);
 
 	return cloneText;
 }
@@ -549,8 +683,9 @@ Text CodeEditor::constructText(const tgui::String &text) const {
 	auto cloneText = Text{};
 
 	cloneText.setFont(m_fontCached);
-	cloneText.setColor(Color::White);
+	cloneText.setColor(tgui::Color::White);
 	cloneText.setString(text);
+	cloneText.setCharacterSize(m_textSize);
 
 	return cloneText;
 }

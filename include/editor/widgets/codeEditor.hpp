@@ -22,9 +22,12 @@ class CodeEditor : public tgui::TextArea {
 	bool canGainFocus() const override;
 	bool leftMousePressed(tgui::Vector2f pos) override;
 	void mouseMoved(tgui::Vector2f pos) override;
+	bool scrolled(float delta, tgui::Vector2f pos, bool touch) override;
+
 	tgui::Vector2<std::size_t> findCaretPosition(tgui::Vector2f pos) const;
 	void updateSelectionTexts();
 	void recalculatePositions();
+	void recalculateVisibleLines();
 };
 
 #endif // RPGPP_CODEEDITOR_H
