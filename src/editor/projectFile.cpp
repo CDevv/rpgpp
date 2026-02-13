@@ -1,8 +1,8 @@
 #include "projectFile.hpp"
 #include "TGUI/Widgets/Group.hpp"
-#include "emptyView.hpp"
-#include "fileSystemService.hpp"
-#include "fileView.hpp"
+#include "fileViews/emptyView.hpp"
+#include "services/fileSystemService.hpp"
+#include "fileViews/fileView.hpp"
 #include "raylib.h"
 #include "tileset.hpp"
 #include <memory>

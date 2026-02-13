@@ -1,6 +1,6 @@
-#include "codeFileView.hpp"
+#include "fileViews/codeFileView.hpp"
 
-#include "codeEditor.hpp"
+#include "widgets/codeEditor.hpp"
 #include "scriptFile.h"
 
 CodeFileView::CodeFileView() {

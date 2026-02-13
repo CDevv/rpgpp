@@ -1,9 +1,7 @@
 
 #include "actions/editTileAction.hpp"
-#include "gamedata.hpp"
-#include "mapAction.hpp"
+#include "actions/mapAction.hpp"
 #include "tilemap.hpp"
-#include "widgets/roomToolbox.hpp"
 
 EditTileAction::EditTileAction(MapActionData a) : MapAction(a) {}
 

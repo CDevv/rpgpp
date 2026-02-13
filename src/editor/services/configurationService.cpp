@@ -1,4 +1,4 @@
-#include "configurationService.hpp"
+#include "services/configurationService.hpp"
 #include "raylib.h"
 
 ConfigurationService::ConfigurationService() {

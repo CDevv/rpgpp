@@ -1,5 +1,5 @@
 #include "editor.hpp"
-#include "editorGuiService.hpp"
+#include "services/editorGuiService.hpp"
 
 int main() {
 	const auto editor = std::make_unique<Editor>();

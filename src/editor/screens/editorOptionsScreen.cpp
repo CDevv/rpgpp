@@ -2,18 +2,14 @@
 // Created by thefirey33 on 21.01.2026.
 //
 
-#include "editorOptionsScreen.h"
-#include <filesystem>
-#include <fstream>
+#include "screens/editorOptionsScreen.h"
 
 #include "editor.hpp"
-#include "translationService.hpp"
+#include "services/translationService.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/HorizontalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
-#include "TGUI/Widgets/ScrollablePanel.hpp"
-
 
 namespace screens {
     void EditorOptionsScreen::initItems(const tgui::Group::Ptr layout) {

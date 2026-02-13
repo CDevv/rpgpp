@@ -1,14 +1,14 @@
 #include "projectFileVisitor.hpp"
 
-#include "codeFileView.hpp"
-#include "fileSystemService.hpp"
-#include "fileView.hpp"
+#include "fileViews/codeFileView.hpp"
+#include "fileViews/tilesetFileView.hpp"
+#include "fileViews/fileView.hpp"
+#include "fileViews/roomFileView.hpp"
+#include "services/fileSystemService.hpp"
 #include "projectFile.hpp"
 #include "room.hpp"
-#include "roomFileView.hpp"
 #include "scriptFile.h"
 #include "tileset.hpp"
-#include "tilesetFileView.hpp"
 #include "variant.hpp"
 #include <memory>
 #include <utility>

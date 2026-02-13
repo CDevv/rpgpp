@@ -1,6 +1,6 @@
 
 #include "actions/eraseTileAction.hpp"
-#include "mapAction.hpp"
+#include "actions/mapAction.hpp"
 #include "widgets/roomToolbox.hpp"
 
 EraseTileAction::EraseTileAction(MapActionData a) : MapAction(a) {}

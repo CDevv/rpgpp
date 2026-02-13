@@ -1,16 +1,13 @@
-#include "fileSystemService.hpp"
+#include "services/fileSystemService.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
 #include <array>
 #include <nfd.h>
 #include <nfd.hpp>
 #include <string>
-#include <typeindex>
 
 #include "editor.hpp"
-#include "fileViews/tilesetFileView.hpp"
-#include "projectScreen.hpp"
+#include "screens/projectScreen.hpp"
 #include "raylib.h"
-#include "screens/guiScreen.hpp"
 
 FileSystemService::FileSystemService() {
 	editorBaseDir = GetWorkingDirectory();

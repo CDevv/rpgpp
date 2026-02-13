@@ -1,15 +1,13 @@
-#include "welcomeScreen.hpp"
+#include "screens/welcomeScreen.hpp"
+#include "services/editorGuiService.hpp"
+#include "services/translationService.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "editor.hpp"
-#include "editorGuiService.hpp"
-#include "newFileDialog.hpp"
 #include "newProjectWindow.hpp"
 #include "project.hpp"
-#include "translationService.hpp"
-#include <filesystem>
 #include <memory>
 
 void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {

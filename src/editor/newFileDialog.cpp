@@ -9,7 +9,7 @@
 #include "TGUI/Widgets/Panel.hpp"
 #include "editor.hpp"
 #include "raylib.h"
-#include "translationService.hpp"
+#include "services/translationService.hpp"
 #include "widgets/fileChooser.hpp"
 #include <memory>
 

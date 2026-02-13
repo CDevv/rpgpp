@@ -1,5 +1,5 @@
 
-#include "codeEditor.hpp"
+#include "widgets/codeEditor.hpp"
 #include "TGUI/Backend/Renderer/BackendRenderTarget.hpp"
 #include "TGUI/Backend/Renderer/BackendText.hpp"
 #include "TGUI/Backend/Window/BackendGui.hpp"
@@ -11,7 +11,6 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdio>
-#include <iostream>
 #include <string>
 
 using namespace tgui;

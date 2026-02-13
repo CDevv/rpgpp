@@ -1,15 +1,11 @@
 #include "project.hpp"
 #include "dialogueParser.hpp"
 #include "editor.hpp"
-#include "fileSystemService.hpp"
+#include "services/fileSystemService.hpp"
 #include "gamedata.hpp"
 #include "interactable.hpp"
-#include "projectScreen.hpp"
+#include "screens/projectScreen.hpp"
 #include "room.hpp"
-#include "sol/assert.hpp"
-#include "sol/forward.hpp"
-#include "sol/state.hpp"
-#include "sol/types.hpp"
 #include "tileset.hpp"
 #include <cstdio>
 #include <filesystem>

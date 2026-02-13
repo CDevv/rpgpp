@@ -4,7 +4,7 @@
 #include "TGUI/Widgets/Group.hpp"
 #include "editor.hpp"
 #include "enum_visitor/enum_visitor.hpp"
-#include "fileView.hpp"
+#include "fileViews/fileView.hpp"
 #include "propertiesBox.hpp"
 #include "raylib.h"
 #include "room.hpp"

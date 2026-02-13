@@ -1,9 +1,9 @@
 #include "editor.hpp"
-#include "editorGuiService.hpp"
-#include "fileSystemService.hpp"
+#include "services/editorGuiService.hpp"
+#include "services/fileSystemService.hpp"
+#include "services/translationService.hpp"
 #include "project.hpp"
 #include "raylib.h"
-#include "translationService.hpp"
 #include <memory>
 
 Editor *Editor::instance;
