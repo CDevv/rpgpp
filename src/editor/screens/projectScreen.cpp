@@ -119,14 +119,13 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 
 void screens::ProjectScreen::addFileView(EngineFileType fileType,
 										 const std::string &path) {
-	fileViewGroup->removeAllWidgets();
-	std::unique_ptr<ProjectFile> projectFile =
-		fileVisitor->visit(fileType, path);
-	projectFile->initUi(fileViewGroup);
-	projectFile->setFilePath(path);
-
 	size_t idx = fileTabs->addFileTab(GetFileName(path.c_str()));
 	if (idx != -1) {
+    	fileViewGroup->removeAllWidgets();
+    	std::unique_ptr<ProjectFile> projectFile =
+    		fileVisitor->visit(fileType, path);
+    	projectFile->initUi(fileViewGroup);
+    	projectFile->setFilePath(path);
 		openedFiles.insert(openedFiles.begin() + idx, std::move(projectFile));
 	}
 }
