@@ -1,8 +1,8 @@
 #ifndef _RPGPP_PROJECT_H
 #define _RPGPP_PROJECT_H
 
-#include "fileSystemService.hpp"
 #include "gamedata.hpp"
+#include "services/fileSystemService.hpp"
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <string>

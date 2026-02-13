@@ -601,6 +601,20 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 			{-static_cast<float>(m_horizontalScrollbar->getValue()),
 			 -static_cast<float>(m_verticalScrollbar->getValue())});
 
+		auto cx = getLineAt(6);
+		auto cy = getColumnAt(6);
+
+		printf("%zu \n", cx);
+		printf("%zu \n", cy);
+
+		Text placeholder = constructText("\"fucker\"", {0, 0});
+		placeholder.setColor(tgui::Color::Cyan);
+
+		auto charPosVec = m_textBeforeSelection.findCharacterPos(6);
+		charPosVec.x += CODE_EDITOR_LEFT_COLUMN;
+		placeholder.setPosition(charPosVec);
+		target.drawText(states, placeholder);
+
 		// Draw the background of the selected text
 		for (const auto &selectionRect : m_selectionRects) {
 			states.transform.translate({selectionRect.left, selectionRect.top});
@@ -691,3 +705,22 @@ Text CodeEditor::constructText(const tgui::String &text) const {
 }
 
 bool CodeEditor::canGainFocus() const { return true; }
+
+std::size_t CodeEditor::getColumnAt(std::size_t a) const {
+	const auto caret = a;
+	if (caret == 0)
+		return 1;
+	auto lineStart = m_text.rfind('\n', caret - 1);
+	if (lineStart == String::npos)
+		return caret + 1;
+	else
+		return caret - lineStart;
+}
+
+std::size_t CodeEditor::getLineAt(std::size_t a) const {
+	const auto caret = a;
+	if (caret == 0)
+		return 1;
+	else
+		return m_text.substr(0, caret).count('\n') + 1;
+}

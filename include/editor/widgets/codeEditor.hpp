@@ -28,6 +28,8 @@ class CodeEditor : public tgui::TextArea {
 	void updateSelectionTexts();
 	void recalculatePositions();
 	void recalculateVisibleLines();
+	std::size_t getColumnAt(std::size_t a) const;
+	std::size_t getLineAt(std::size_t a) const;
 };
 
 #endif // RPGPP_CODEEDITOR_H

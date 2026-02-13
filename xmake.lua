@@ -30,7 +30,7 @@ on_install("linux", "macosx", "mingw", "windows", function(package)
 end)
 package_end()
 
-add_requires("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
+add_requires("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit", "tree-sitter")
 add_rules("mode.debug", "mode.release")
 set_defaultmode("debug")
 
@@ -70,12 +70,13 @@ if is_plat("windows") then
     --
     add_links("tgui-s-d")
 end
+add_links("tree-sitter-lua")
 set_kind("binary")
 set_languages("cxx17")
 add_includedirs("include/", "include/editor/", os.dirs(path.join(os.scriptdir(), "include/editor/**")))
 add_files("src/editor/**.cpp")
 add_deps("rpgpp")
-add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit")
+add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit", "tree-sitter")
 add_linkdirs("libs/")
 after_build(function(target)
     os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
