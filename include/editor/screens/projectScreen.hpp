@@ -39,6 +39,7 @@ class ProjectScreen : public UIScreen {
 	tgui::GrowVerticalLayout::Ptr resourcesLayout;
 	tgui::ContextMenu::Ptr fileContextMenu;
 	void switchView(int index);
+	void clearView();
 	tgui::HorizontalWrap::Ptr createToolBar();
 	tgui::Group::Ptr createResourcesList(tgui::Group::Ptr fileViewGroup);
 

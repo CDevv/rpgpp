@@ -80,8 +80,7 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	layout->add(fileView);
 	this->fileViewGroup = fileView;
 
-	auto label = tgui::Label::create("Test");
-	fileView->add(label);
+	clearView();
 
 	auto panel = createResourcesList(fileView);
 
@@ -99,13 +98,13 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 		openedFiles.erase(openedFiles.begin() + i);
 
 		if (fileTabs->getTabsCount() == 0) {
-			fileViewGroup->removeAllWidgets();
+			clearView();
 		} else {
 			int selected = fileTabs->getSelectedIndex();
 			if (selected >= 0) {
 				switchView(selected);
 			} else {
-				fileViewGroup->removeAllWidgets();
+				clearView();
 			}
 		}
 	});
@@ -133,6 +132,14 @@ void screens::ProjectScreen::addFileView(EngineFileType fileType,
 void screens::ProjectScreen::switchView(int index) {
 	fileViewGroup->removeAllWidgets();
 	openedFiles.at(index)->addWidgets(fileViewGroup);
+}
+
+void screens::ProjectScreen::clearView() {
+	fileViewGroup->removeAllWidgets();
+	std::unique_ptr<ProjectFile> empty =
+  		fileVisitor->visit(EngineFileType::FILE_EMPTY, ".");
+   	empty->initUi(fileViewGroup);
+    empty->addWidgets(fileViewGroup);
 }
 
 tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {

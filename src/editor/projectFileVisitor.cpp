@@ -17,6 +17,7 @@ ProjectFileVisitor::ProjectFileVisitor() {
 	funcs[static_cast<int>(EngineFileType::FILE_TILESET)] = tilesetView;
 	funcs[static_cast<int>(EngineFileType::FILE_MAP)] = roomView;
 	funcs[static_cast<int>(EngineFileType::FILE_SCRIPT)] = codeView;
+	funcs[static_cast<int>(EngineFileType::FILE_EMPTY)] = emptyView;
 }
 
 std::unique_ptr<ProjectFile>

@@ -8,7 +8,7 @@
 #include <typeindex>
 #include <unordered_map>
 
-#define FILETYPE_MAX 10
+#define FILETYPE_MAX 11
 
 enum class EngineFileType {
 	FILE_TILESET,
@@ -20,7 +20,8 @@ enum class EngineFileType {
 	FILE_FONT,
 	FILE_SOUND,
 	FILE_MUSIC,
-	FILE_PROP
+	FILE_PROP,
+	FILE_EMPTY,
 };
 
 class FileSystemService {
