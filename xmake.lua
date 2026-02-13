@@ -1,6 +1,9 @@
-
 package("raylib")
-set_sourcedir(path.join(os.scriptdir(), "libs/raylib/src"))
+-- set_sourcedir(path.join(os.scriptdir(), "libs/raylib/src"))
+add_urls("https://github.com/raysan5/raylib.git")
+add_versions("5.5.99", "13f9112d8c069ed333acf72c2c1b94a0533c6dc1")
+add_deps("cmake")
+set_license("Zlib")
 
 if is_plat("mingw", "linux", "macosx") then
     add_syslinks("raylib")
@@ -11,14 +14,17 @@ if is_plat("mingw", "windows") then
 end
 
 on_install("linux", "macosx", "mingw", "windows", function(package)
-    os.cd(path.join(os.scriptdir(), "libs/raylib/"))
+    -- os.cd(path.join(os.scriptdir(), "libs/raylib/"))
     import("package.tools.cmake").install(package, {})
 end)
 package_end()
 
 package("tgui")
-set_sourcedir(path.join(os.scriptdir(), "libs/tgui/"))
+-- set_sourcedir(path.join(os.scriptdir(), "libs/tgui/"))
+add_urls("https://github.com/texus/TGUI.git")
+add_versions("1.12.99", "c6d138509f2aae33cbabb09a91c5857eba990657")
 add_deps("cmake", "raylib")
+set_license("Zlib")
 add_extsources("raylib")
 on_install("linux", "macosx", "mingw", "windows", function(package)
     local configs = {}
