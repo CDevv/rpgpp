@@ -14,7 +14,7 @@ ThemeService::ThemeService() {
             const auto name = theme.path().filename().string();
             const auto themeTxtPath = theme.path() / "theme.txt";
             if (fs::exists(themeTxtPath)) {
-                this->themes.try_emplace(name, themeTxtPath);
+                this->themes.try_emplace(name, themeTxtPath.u8string());
             }
         }
     }

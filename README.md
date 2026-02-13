@@ -29,6 +29,13 @@ Then, to build all targets, run
 xmake build --all
 ```
 
+If xmake failed to build, try force reinstalling the packages with
+```bash
+xmake clean --all # remove build artifacts
+xmake require --clean # remove installed package cache for project
+xmake require --force # force install of package
+```
+
 Running
 ---
 
