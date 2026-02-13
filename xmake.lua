@@ -43,7 +43,7 @@ set_defaultmode("debug")
 target("rpgpp")
 set_kind("static")
 set_languages("cxx17")
-add_includedirs("include/", "libs/raylib/src")
+add_includedirs("include/") --, "libs/raylib/src")
 add_linkdirs("libs/")
 add_files("src/*.cpp")
 add_packages("raylib", "nlohmann_json", "luajit")
@@ -67,7 +67,7 @@ add_deps("rpgpp")
 
 target("editor")
 -- add_includedirs("include/", "include/editor/", "libs/raylib/src/", "libs/tgui/include/")
-add_includedirs("libs/raylib/src/", "libs/tgui/include/")
+-- add_includedirs("libs/raylib/src/", "libs/tgui/include/")
 if is_plat("windows") then
     add_defines("TGUI_STATIC")
     -- Add the actual reference to this file, if necessary.
