@@ -23,13 +23,6 @@ package_end()
 -- Could either compile it ourself or ask user to install it outside.
 -- For now, this package definition has been skipped.
 package("tree-sitter-lua")
-on_load(function()
-    import("lib.detect.find_program")
-    if find_program("tree-sitter") == nil then
-        raise(
-            "tree-sitter CLI not found! Please install the tree-sitter CLI with instructions here: https://github.com/tree-sitter/tree-sitter/blob/master/crates/cli/README.md")
-    end
-end)
 add_urls("https://github.com/tree-sitter-grammars/tree-sitter-lua.git")
 add_versions("0.4.99", "e40f5b6e6df9c2d1d6d664ff5d346a75d71ee6b2")
 add_deps("cmake")
