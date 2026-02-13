@@ -36,6 +36,9 @@ void EditorGuiService::init() {
 }
 
 void EditorGuiService::resetUi() {
+    ThemeService &theme = Editor::instance->getThemeService();
+    ConfigurationService &configService = Editor::instance->getConfiguration();
+
 	this->reset_gui_r = false;
 	// Check if we already have a gui already setup, if we do.. don't load
 	// the same assets again.
@@ -43,6 +46,16 @@ void EditorGuiService::resetUi() {
 		this->gui = std::make_unique<tgui::Gui>();
 		Editor::setAppIcon(RPGPP_EXECUTABLE_LOGO);
 	}
+
+	string configTheme;
+
+	try {
+	    configTheme = configService.getStringValue("theme");
+	} catch (const std::exception &e) {
+	    configTheme = "Dark";
+	}
+
+	theme.setTheme(configTheme);
 	// tgui::Theme::setDefault(CURRENT_TESTING_THEME);
 
 	this->setScreen(std::make_unique<screens::WelcomeScreen>(), true);
