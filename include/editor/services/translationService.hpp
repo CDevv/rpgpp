@@ -11,7 +11,7 @@ constexpr auto TRANSLATION_FILE_LOCATION = "translations";
 constexpr auto DEFAULT_LANGUAGE = "en_us";
 
 // A custom string with functionality to replace placeholders in translation string.
-// Can be used directly as a normal `std::string` or `tgui::String`.
+// Can be used directly as a normal `std::string` or `tgui::String` when passing as arguments, or converted into std/tgui string with `static_cast`.
 // Placeholders are defined with two curly brackets (like `{{test}}`)
 // and can be replaced using `.replace("test", "value")`
 class TranslatedString {
