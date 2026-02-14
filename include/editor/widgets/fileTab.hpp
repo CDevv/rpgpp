@@ -8,10 +8,16 @@
 #include <cstddef>
 
 class FileTab : public tgui::Tabs {
-  public:
+  private:
+    mutable bool isHovering = false;
+    mutable bool isDragging = false;
+    mutable tgui::Vector2f startMousePos;
+    mutable tgui::Vector2f endMousePos;
     static const int MARGIN_LR = 8;
     static const int CLOSE_BUTTON_SIZE = 12;
+    constexpr static const tgui::Vector2f BUFFER_BEFORE_TAB_MOVE = {10, 10};
 
+  public:
 	typedef std::shared_ptr<FileTab> Ptr;
 	typedef std::shared_ptr<const FileTab> ConstPtr;
 	tgui::SignalTyped<tgui::String> onTabClose = {"TabClose"};
@@ -35,13 +41,12 @@ class FileTab : public tgui::Tabs {
 	FileTabRenderer *getRenderer() override;
 
 	bool leftMousePressed(tgui::Vector2f pos) override;
+	void mouseMoved(tgui::Vector2f pos) override;
+	void leftMouseReleased(tgui::Vector2f pos) override;
 
 	bool select(std::size_t i);
 
 	size_t addFileTab(const std::string &path, const std::string &fileName);
-
-  private:
-    mutable bool isHovering = false;
 
   protected:
 	Widget::Ptr clone() const override;

@@ -81,6 +81,14 @@ bool FileTab::leftMousePressed(Vector2f pos) {
 	return false;
 }
 
+void FileTab::mouseMoved(tgui::Vector2f pos) {
+    cout << "Mouse in tabs moved at " << pos.x << " " << pos.y << "\n";
+}
+
+void FileTab::leftMouseReleased(tgui::Vector2f pos) {
+    cout << "Mouse in tabs released at " << pos.x << " " << pos.y << "\n";
+}
+
 bool FileTab::select(std::size_t index) {
 	// Don't select a tab that is already selected
 	if (m_selectedTab == static_cast<int>(index))
