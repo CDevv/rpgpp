@@ -27,11 +27,18 @@ add_urls("https://github.com/tree-sitter-grammars/tree-sitter-lua.git")
 add_versions("0.4.99", "e40f5b6e6df9c2d1d6d664ff5d346a75d71ee6b2")
 add_deps("make")
 set_license("MIT")
-on_install("linux", "macosx", "mingw", "windows", function(package)
+on_install("linux", "macosx", function(package)
     local config = {}
     table.insert(config, "install")
     table.insert(config, "PREFIX=" .. package:installdir())
     import("package.tools.make").make(package, config)
+    -- This is a very fucky hack to force the linker to only use the static library.
+    -- But hey, it works!
+    os.rm(path.join(package:installdir(), "lib/*.so"), { async = true })
+    os.rm(path.join(package:installdir(), "lib/*.so.*"), { async = true })
+end)
+on_install("mingw", "windows", function(package)
+    raise("Not implemented yet!")
 end)
 package_end()
 
@@ -61,7 +68,6 @@ target("rpgpp")
 set_kind("static")
 set_languages("cxx17")
 add_includedirs("include/") --, "libs/raylib/src")
-add_linkdirs("libs/")
 add_files("src/*.cpp")
 add_packages("raylib", "nlohmann_json", "luajit")
 if is_plat("linux") then
@@ -79,7 +85,6 @@ set_languages("cxx17")
 add_includedirs("include/")
 add_files("src/rpgpplua/*.cpp")
 add_packages("nlohmann_json", "raylib", "luajit", { public = true })
-add_linkdirs("libs/")
 add_deps("rpgpp")
 
 target("editor")
@@ -93,7 +98,7 @@ if is_plat("windows") then
     --
     -- add_links("tgui-s-d")
 end
-add_links("tree-sitter-lua")
+-- add_links("tree-sitter-lua", { kind = "static" })
 set_kind("binary")
 set_languages("cxx17")
 add_includedirs("include/", "include/editor/", os.dirs(path.join(os.scriptdir(), "include/editor/**")))
@@ -101,7 +106,6 @@ add_files("src/editor/**.cpp")
 add_deps("rpgpp")
 add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit", "tree-sitter",
     "tree-sitter-lua")
-add_linkdirs("libs/")
 after_build(function(target)
     os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
     if is_plat("linux", "macosx") then
