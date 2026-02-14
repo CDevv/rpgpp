@@ -45,8 +45,7 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 		menuBarPtr->setMenuItemEnabled(saveFileHierarchy, true);
 		menuBarPtr->connectMenuItem(saveFileHierarchy, [this] {
 			if (!openedFiles.empty()) {
-				int currentFile = fileTabs->getSelectedIndex();
-				printf("%i \n", currentFile);
+				tgui::String currentFile = fileTabs->getSelectedId();
 				auto &projectFile = openedFiles.at(currentFile);
 				projectFile->saveFile(projectFile->getFilePath());
 			}
@@ -66,7 +65,7 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	fileContextMenu->addMenuItem("Delete.");
 	Editor::instance->getGui().gui->add(fileContextMenu);
 
-	openedFiles = std::vector<std::unique_ptr<ProjectFile>>{};
+	openedFiles = std::map<tgui::String, std::unique_ptr<ProjectFile>>{};
 	fileVisitor = std::make_unique<ProjectFileVisitor>();
 	fileInitVisitor = std::make_unique<FileInitVisitor>();
 	listedResourcesType = EngineFileType::FILE_MAP;
@@ -93,22 +92,19 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	fileTabs->setSize(TextFormat("100%% - %d", RESLIST_W), FILETABS_H);
 	fileTabs->setPosition(RESLIST_W, TOOLBAR_H);
 
-	fileTabs->onTabClose([this](int i) {
-		printf("tab close %i \n", i);
-		openedFiles.erase(openedFiles.begin() + i);
-
-		if (fileTabs->getTabsCount() == 0) {
-			clearView();
-		} else {
-			int selected = fileTabs->getSelectedIndex();
-			if (selected >= 0) {
-				switchView(selected);
-			} else {
-				clearView();
-			}
-		}
+	fileTabs->onTabClose([this](tgui::String id) {
+        openedFiles.erase(id);
+        if (fileTabs->getTabsCount() == 0) {
+       		clearView();
+       	}
 	});
-	fileTabs->onTabSelect([this](int i) { switchView(i); });
+	fileTabs->onTabSelect([this](tgui::String id) {
+    	if (fileTabs->getTabsCount() == 0) {
+    		clearView();
+    	} else {
+            switchView(id);
+    	}
+	});
 
 	layout->add(fileTabs);
 
@@ -118,20 +114,21 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 
 void screens::ProjectScreen::addFileView(EngineFileType fileType,
 										 const std::string &path) {
-	size_t idx = fileTabs->addFileTab(GetFileName(path.c_str()));
+	size_t idx = fileTabs->addFileTab(path, GetFileName(path.c_str()));
 	if (idx != -1) {
     	fileViewGroup->removeAllWidgets();
     	std::unique_ptr<ProjectFile> projectFile =
     		fileVisitor->visit(fileType, path);
     	projectFile->initUi(fileViewGroup);
     	projectFile->setFilePath(path);
-		openedFiles.insert(openedFiles.begin() + idx, std::move(projectFile));
+        tgui::String id = path;
+        openedFiles.try_emplace(id, std::move(projectFile));
 	}
 }
 
-void screens::ProjectScreen::switchView(int index) {
+void screens::ProjectScreen::switchView(tgui::String id) {
 	fileViewGroup->removeAllWidgets();
-	openedFiles.at(index)->addWidgets(fileViewGroup);
+	openedFiles.at(id)->addWidgets(fileViewGroup);
 }
 
 void screens::ProjectScreen::clearView() {
@@ -310,6 +307,6 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 }
 
 ProjectFile &screens::ProjectScreen::getCurrentFile() {
-	int currentFile = fileTabs->getSelectedIndex();
+	tgui::String currentFile = fileTabs->getSelectedId();
 	return *openedFiles.at(currentFile);
 }

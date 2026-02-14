@@ -14,8 +14,8 @@ class FileTab : public tgui::Tabs {
 
 	typedef std::shared_ptr<FileTab> Ptr;
 	typedef std::shared_ptr<const FileTab> ConstPtr;
-	tgui::SignalTyped<int> onTabClose = {"TabClose"};
-	tgui::SignalTyped<int> onTabSelect = {"TabSelect"};
+	tgui::SignalTyped<tgui::String> onTabClose = {"TabClose"};
+	tgui::SignalTyped<tgui::String> onTabSelect = {"TabSelect"};
 
 	FileTab(const char *typeName = "FileTab", bool initRenderer = true);
 
@@ -38,7 +38,7 @@ class FileTab : public tgui::Tabs {
 
 	bool select(std::size_t i);
 
-	size_t addFileTab(const std::string &fileName);
+	size_t addFileTab(const std::string &path, const std::string &fileName);
 
   private:
     mutable bool isHovering = false;

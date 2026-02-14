@@ -31,14 +31,14 @@ class ProjectScreen : public UIScreen {
     static const int RESLIST_ITEM_PADDING = 4;
 
 	std::unique_ptr<ProjectFileVisitor> fileVisitor;
-	std::vector<std::unique_ptr<ProjectFile>> openedFiles;
+	std::map<tgui::String, std::unique_ptr<ProjectFile>> openedFiles;
 	tgui::Group::Ptr fileViewGroup;
 	std::unique_ptr<FileInitVisitor> fileInitVisitor;
 	EngineFileType listedResourcesType;
 	FileTab::Ptr fileTabs;
 	tgui::GrowVerticalLayout::Ptr resourcesLayout;
 	tgui::ContextMenu::Ptr fileContextMenu;
-	void switchView(int index);
+	void switchView(tgui::String id);
 	void clearView();
 	tgui::HorizontalWrap::Ptr createToolBar();
 	tgui::Group::Ptr createResourcesList(tgui::Group::Ptr fileViewGroup);

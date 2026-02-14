@@ -66,10 +66,11 @@ bool FileTab::leftMousePressed(Vector2f pos) {
 		} else if (pos.x >= tabStart + (m_tabs[i].width - MARGIN_LR - CLOSE_BUTTON_SIZE) &&
 				   pos.x < tabEnd - MARGIN_LR) {
 			int prevSelected = m_selectedTab;
+			tgui::String prevId = m_tabs[i].id;
 			remove(i);
-			onTabClose.emit(this, i);
-			if (prevSelected == i) {
-			    select(std::min(i + 1, m_tabs.size() - 1));
+			onTabClose.emit(this, prevId);
+			if (prevSelected == i && m_tabs.size() > 0) {
+			    select(std::min(i, m_tabs.size() - 1));
 			}
 			break;
 		}
@@ -99,24 +100,18 @@ bool FileTab::select(std::size_t index) {
 	updateTextColors();
 
 	// Send the callback
-	onTabSelect.emit(this, index);
+	onTabSelect.emit(this, m_tabs[index].id);
 	return true;
 }
 
-// TODO: In case where multiple file with the same name in different directory are opened
-// this could should be updated to use path instead.
-//
-// An issue on TGUI library has been opened to allow for adding more information like an identifier
-// to each indivitual Tab for easier tracking of each tab.
-// https://github.com/texus/TGUI/issues/317
-size_t FileTab::addFileTab(const std::string &fileName) {
+size_t FileTab::addFileTab(const std::string &path, const std::string &fileName) {
     size_t tabIdxToInsert = m_selectedTab;
     if (tabIdxToInsert == -1) {
         tabIdxToInsert = 0;
     }
 
     for (size_t i = 0; i < m_tabs.size(); ++i) {
-        if (m_tabs[i].text.getString() == fileName) {
+        if (m_tabs[i].id == path) {
             select(i);
             return -1;
         }
@@ -126,6 +121,7 @@ size_t FileTab::addFileTab(const std::string &fileName) {
     tabIdxToInsert = std::min(tabIdxToInsert, m_tabs.size());
 
     insert(tabIdxToInsert, fileName, true);
+    m_tabs[tabIdxToInsert].id = path;
     return tabIdxToInsert;
 }
 
