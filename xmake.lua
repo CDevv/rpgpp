@@ -19,29 +19,36 @@ on_install("linux", "macosx", "mingw", "windows", function(package)
 end)
 package_end()
 
+package("noop")
+set_sourcedir(path.join(os.scriptdir(), "libs/noop"))
+add_deps("cmake")
+set_license("MIT")
+on_install("linux", "macosx", "mingw", "windows", function(package)
+    import("package.tools.cmake").install(package, {})
+end)
+package_end()
+
+
 -- TODO: The build tool for tree-sitter-lua requires TREE_SITTER_CLI.
 -- Could either compile it ourself or ask user to install it outside.
 -- For now, this package definition has been skipped.
 package("tree-sitter-lua")
 add_urls("https://github.com/tree-sitter-grammars/tree-sitter-lua.git")
 add_versions("0.4.99", "e40f5b6e6df9c2d1d6d664ff5d346a75d71ee6b2")
-add_deps("make")
+add_deps("make", "cmake", "noop")
 set_license("MIT")
-on_install("linux", "macosx", function(package)
-    local config = {}
-    table.insert(config, "install")
-    table.insert(config, "PREFIX=" .. package:installdir())
-    import("package.tools.make").make(package, config)
-    -- This is a very fucky hack to force the linker to only use the static library.
-    -- But hey, it works!
-    os.rm(path.join(package:installdir(), "lib/*.so"), { async = true })
-    os.rm(path.join(package:installdir(), "lib/*.so.*"), { async = true })
-end)
--- TODO: Does not work without the tree-sitter CLI tool. Need investigation
-on_install("mingw", "windows", function(package)
+-- This is the most fucky hack I've probably made. It's essentially: I don't
+-- want you to fucking regenerate the grammar file, cause it's already there. But
+-- since you want to regenerate it, how about I pass in a very legit version of tree-sitter CLI
+-- called "noop" so at least you don't have to regenerate it!
+--
+-- NOTE: This only works because the grammar file has already been generated.
+on_install("mingw", "windows", "linux", "macosx", function(package)
+    local noop = package:dep("noop")
     local config = {}
     table.insert(config, "-DCMAKE_BUILD_TYPE=" .. (is_mode("debug") and "Debug" or "Release"))
     table.insert(config, "-DBUILD_SHARED_LIBS=OFF")
+    table.insert(config, "-DTREE_SITTER_CLI=" .. path.join(noop:installdir(), "bin/noop"))
     import("package.tools.cmake").install(package, config)
 end)
 package_end()
@@ -63,7 +70,7 @@ on_install("linux", "macosx", "mingw", "windows", function(package)
 end)
 package_end()
 
-add_requires("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit", "tree-sitter",
+add_requires("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit", "noop", "tree-sitter",
     "tree-sitter-lua")
 add_rules("mode.debug", "mode.release")
 set_defaultmode("debug")
@@ -108,7 +115,7 @@ set_languages("cxx17")
 add_includedirs("include/", "include/editor/", os.dirs(path.join(os.scriptdir(), "include/editor/**")))
 add_files("src/editor/**.cpp")
 add_deps("rpgpp")
-add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit", "tree-sitter",
+add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit", "noop", "tree-sitter",
     "tree-sitter-lua")
 after_build(function(target)
     os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
