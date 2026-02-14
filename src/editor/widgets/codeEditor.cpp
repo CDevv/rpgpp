@@ -9,10 +9,13 @@
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
 #include "raylib.h"
+#include "syntaxHighlighter.hpp"
 #include "tree_sitter/tree-sitter-lua.h"
+#include <TGUI/TextStyle.hpp>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <map>
 #include <tree_sitter/api.h>
 
 #include <cmath>
@@ -27,36 +30,85 @@ using namespace tgui;
 
 CodeEditor::Ptr CodeEditor::create() { return std::make_shared<CodeEditor>(); }
 
-void CodeEditor::parseNode(TSTreeCursor cursor, TSNode node) {
-	printf("%s %u %u \n", ts_node_type(node), ts_node_start_byte(node),
-		   ts_node_end_byte(node));
+void CodeEditor::parseNode(
+	const TSTreeCursor &cursor, const TSNode &node,
+	std::vector<EditorHighlighting::HighlighterStruct> &vector) {
 
-	
+	printf("%s \n", ts_node_type(node));
+	vector.push_back(
+		{ts_node_type(node), ts_node_start_byte(node), ts_node_end_byte(node)});
+
 	auto copy = ts_tree_cursor_copy(&cursor);
-	bool hasChild = ts_tree_cursor_goto_first_child(&copy);
-	if (hasChild)
-		parseNode(copy, ts_tree_cursor_current_node(&copy));
+	if (ts_tree_cursor_goto_first_child(&copy))
+		parseNode(copy, ts_tree_cursor_current_node(&copy), vector);
 
 	auto copy2 = ts_tree_cursor_copy(&cursor);
-	bool hasSibling = ts_tree_cursor_goto_next_sibling(&copy2);
-	if (hasSibling)
-		parseNode(copy2, ts_tree_cursor_current_node(&copy2));
+	if (ts_tree_cursor_goto_next_sibling(&copy2))
+		parseNode(copy2, ts_tree_cursor_current_node(&copy2), vector);
 }
 
-void CodeEditor::parseSyntaxTree(const tgui::String &text) {
-	this->previewText.clear();
+// TODO: IMPLEMENT A BETTER SYNTAX COLORS MAP!
+std::map<std::string, EditorHighlighting::TextStyling> SYNTAX_COLORS = {
+	{"local", {tgui::Color::Red, tgui::TextStyle::Bold}},
+	{"ERROR", {tgui::Color::Red, tgui::TextStyle::Italic}},
+	{"number", {tgui::Color::Green, tgui::TextStyle::Regular}}};
 
-	auto textStr = text.toStdString();
-	auto constCharStr = textStr.c_str();
+void CodeEditor::constructHighlightedText(const tgui::String &text) {
+	std::vector<EditorHighlighting::HighlighterStruct> highlighter = {};
+	this->highlightTree.clear();
+
+	const auto textStr = text.toStdString();
+	const auto constCharStr = textStr.c_str();
 	TSTree *syntaxTree = ts_parser_parse_string(
 		this->syntaxParser, nullptr, constCharStr, strlen(constCharStr));
 
-	auto rootNode = ts_tree_root_node(syntaxTree);
-	auto cursor = ts_tree_cursor_new(rootNode);
+	const auto rootNode = ts_tree_root_node(syntaxTree);
+	const auto cursor = ts_tree_cursor_new(rootNode);
 
-	this->parseNode(cursor, rootNode);
+	parseNode(cursor, rootNode, highlighter);
 
 	ts_tree_delete(syntaxTree);
+
+	// FIXME: i don't know if this is good enough :cry:
+
+	std::string addingStr = {};
+	tgui::Color addingColor = tgui::Color::White;
+	tgui::TextStyle addingStyle = tgui::TextStyle::Regular;
+	auto sizeOfText = m_text.size();
+
+	for (int i = 0; i < sizeOfText; i++) {
+		const auto &_char = m_text[i];
+		if (_char != '\n')
+			addingStr += _char;
+
+		for (auto &node : highlighter) {
+			auto nodeType = node.type;
+			if (i == node.start) {
+
+				if (SYNTAX_COLORS.count(nodeType) == 1) {
+					std::cout << nodeType << std::endl;
+					addingColor = SYNTAX_COLORS[nodeType].color;
+					addingStyle = SYNTAX_COLORS[nodeType].textStyle;
+				} else {
+					addingColor = tgui::Color::White;
+					addingStyle = tgui::TextStyle::Regular;
+				}
+
+			} else if (i == node.end) {
+
+				auto constructedText =
+					this->constructText(addingStr, addingColor);
+				constructedText.setStyle(addingStyle);
+				this->highlightTree.push_back(constructedText);
+				addingStr = {};
+			}
+		}
+
+		if (_char == '\n')
+			this->highlightTree.push_back(this->constructText("\n"));
+	}
+	// Add the remaining string if we have it.
+	this->highlightTree.push_back(this->constructText(addingStr, addingColor));
 }
 
 void CodeEditor::keyPressed(const Event::KeyEvent &event) {
@@ -68,8 +120,9 @@ CodeEditor::CodeEditor() {
 	this->syntaxParser = ts_parser_new();
 	ts_parser_set_language(this->syntaxParser, tree_sitter_lua());
 
-	this->onTextChange.connect(
-		[&](const tgui::String &text) { this->parseSyntaxTree(text); });
+	this->onTextChange.connect([&](const tgui::String &text) {
+		this->constructHighlightedText(text);
+	});
 }
 
 CodeEditor::~CodeEditor() { ts_parser_delete(this->syntaxParser); }
@@ -202,7 +255,7 @@ void CodeEditor::recalculatePositions() {
 			if (selectionStart.y != selectionEnd.y) {
 				m_selectionRects.back().width += textOffset;
 
-				if (m_textSelection2.getString() != U"") {
+				if (!m_textSelection2.getString().empty()) {
 					tempText.setString(
 						m_lines[selectionEnd.y].substr(0, selectionEnd.x));
 					m_selectionRects.emplace_back(
@@ -607,7 +660,7 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 	const auto &innerSize = getInnerSize();
 	const auto lines = this->m_text.split("\n");
 
-	auto oldStates = states;
+	const auto oldStates = states;
 
 	states.transform.translate(
 		{m_paddingCached.getLeft(), m_paddingCached.getTop()});
@@ -673,11 +726,28 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 			if (m_selStart == m_selEnd)
 				states.transform.translate({CODE_EDITOR_LEFT_COLUMN, 0});
 
-			target.drawText(states, m_textBeforeSelection);
+			Vector2f offsetPos = {0, 0};
+			for (const auto &text : this->highlightTree) {
+				target.drawText(states, text);
+				Vector2f vector;
+
+				vector = {text.getLineWidth(), 0};
+				if (text.getString() == "\n") {
+					states.transform.translate({-offsetPos.x, 0});
+					offsetPos.x = 0;
+					vector.y = text.getLineHeight();
+				}
+
+				states.transform.translate(vector);
+				offsetPos += vector;
+			}
+			states.transform.translate(-offsetPos);
 
 			if (m_selStart == m_selEnd)
 				states.transform.translate({-CODE_EDITOR_LEFT_COLUMN, 0});
 
+			// FIXME: Fix selection in the editor, objects are offset for some
+			// reason!
 			if (m_selStart != m_selEnd) {
 				target.drawText(states, m_textSelection1);
 				target.drawText(states, m_textSelection2);
@@ -739,6 +809,18 @@ Text CodeEditor::constructText(const tgui::String &text) const {
 	return cloneText;
 }
 
+Text CodeEditor::constructText(const tgui::String &text,
+							   const tgui::Color &color) const {
+	auto cloneText = Text{};
+
+	cloneText.setFont(m_fontCached);
+	cloneText.setColor(color);
+	cloneText.setString(text);
+	cloneText.setCharacterSize(m_textSize);
+
+	return cloneText;
+}
+
 bool CodeEditor::canGainFocus() const { return true; }
 
 std::size_t CodeEditor::getColumnAt(std::size_t a) const {
@@ -753,8 +835,7 @@ std::size_t CodeEditor::getColumnAt(std::size_t a) const {
 }
 
 std::size_t CodeEditor::getLineAt(std::size_t a) const {
-	const auto caret = a;
-	if (caret == 0)
+	if (const auto caret = a; caret == 0)
 		return 1;
 	else
 		return m_text.substr(0, caret).count('\n') + 1;
