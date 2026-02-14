@@ -4,15 +4,22 @@
 #include "TGUI/Backend/Renderer/BackendText.hpp"
 #include "TGUI/Backend/Window/BackendGui.hpp"
 #include "TGUI/Color.hpp"
+#include "TGUI/String.hpp"
 #include "TGUI/Text.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
 #include "raylib.h"
+#include "tree_sitter/tree-sitter-lua.h"
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+#include <tree_sitter/api.h>
 
 #include <cmath>
 #include <cstddef>
 #include <cstdio>
 #include <string>
+#include <vector>
 
 using namespace tgui;
 
@@ -20,10 +27,52 @@ using namespace tgui;
 
 CodeEditor::Ptr CodeEditor::create() { return std::make_shared<CodeEditor>(); }
 
+void CodeEditor::parseNode(TSTreeCursor cursor, TSNode node) {
+	printf("%s %u %u \n", ts_node_type(node), ts_node_start_byte(node),
+		   ts_node_end_byte(node));
+
+	
+	auto copy = ts_tree_cursor_copy(&cursor);
+	bool hasChild = ts_tree_cursor_goto_first_child(&copy);
+	if (hasChild)
+		parseNode(copy, ts_tree_cursor_current_node(&copy));
+
+	auto copy2 = ts_tree_cursor_copy(&cursor);
+	bool hasSibling = ts_tree_cursor_goto_next_sibling(&copy2);
+	if (hasSibling)
+		parseNode(copy2, ts_tree_cursor_current_node(&copy2));
+}
+
+void CodeEditor::parseSyntaxTree(const tgui::String &text) {
+	this->previewText.clear();
+
+	auto textStr = text.toStdString();
+	auto constCharStr = textStr.c_str();
+	TSTree *syntaxTree = ts_parser_parse_string(
+		this->syntaxParser, nullptr, constCharStr, strlen(constCharStr));
+
+	auto rootNode = ts_tree_root_node(syntaxTree);
+	auto cursor = ts_tree_cursor_new(rootNode);
+
+	this->parseNode(cursor, rootNode);
+
+	ts_tree_delete(syntaxTree);
+}
+
 void CodeEditor::keyPressed(const Event::KeyEvent &event) {
 	// FIXME: ADD TAB KEY FUNCTIONALITY
 	TextArea::keyPressed(event);
 }
+
+CodeEditor::CodeEditor() {
+	this->syntaxParser = ts_parser_new();
+	ts_parser_set_language(this->syntaxParser, tree_sitter_lua());
+
+	this->onTextChange.connect(
+		[&](const tgui::String &text) { this->parseSyntaxTree(text); });
+}
+
+CodeEditor::~CodeEditor() { ts_parser_delete(this->syntaxParser); }
 
 bool CodeEditor::leftMousePressed(tgui::Vector2f pos) {
 	pos.x -= CODE_EDITOR_LEFT_COLUMN;
@@ -600,20 +649,6 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 		states.transform.translate(
 			{-static_cast<float>(m_horizontalScrollbar->getValue()),
 			 -static_cast<float>(m_verticalScrollbar->getValue())});
-
-		auto cx = getLineAt(6);
-		auto cy = getColumnAt(6);
-
-		printf("%zu \n", cx);
-		printf("%zu \n", cy);
-
-		Text placeholder = constructText("\"fucker\"", {0, 0});
-		placeholder.setColor(tgui::Color::Cyan);
-
-		auto charPosVec = m_textBeforeSelection.findCharacterPos(6);
-		charPosVec.x += CODE_EDITOR_LEFT_COLUMN;
-		placeholder.setPosition(charPosVec);
-		target.drawText(states, placeholder);
 
 		// Draw the background of the selected text
 		for (const auto &selectionRect : m_selectionRects) {

@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <tree_sitter/api.h>
 
+/*
 void do_tree_node(TSTreeCursor cursor, TSNode node) {
 	printf("====== \n");
 	printf("type: %s \n", ts_node_type(node));
@@ -26,6 +27,7 @@ void do_tree_node(TSTreeCursor cursor, TSNode node) {
 		do_tree_node(copy2, ts_tree_cursor_current_node(&copy2));
 	}
 }
+*/
 
 CodeFileView::CodeFileView() {
 	codeEditor = CodeEditor::create();
@@ -39,6 +41,7 @@ void CodeFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 	if (variant != nullptr) {
 		const auto ptr = dynamic_cast<Variant<ScriptFile> *>(variant);
 
+		/*
 		TSParser *parser = ts_parser_new();
 
 		ts_parser_set_language(parser, tree_sitter_lua());
@@ -51,11 +54,10 @@ void CodeFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 
 		auto cursor = ts_tree_cursor_new(root);
 		do_tree_node(cursor, root);
+		*/
 
 		codeEditor->setText(ptr->get()->getFileContents());
 		codeEditor->setTextSize(24);
 		addWidgets(layout);
-
-		ts_parser_delete(parser);
 	}
 }
