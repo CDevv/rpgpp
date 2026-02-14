@@ -49,9 +49,18 @@ void CodeEditor::parseNode(
 
 // TODO: IMPLEMENT A BETTER SYNTAX COLORS MAP!
 std::map<std::string, EditorHighlighting::TextStyling> SYNTAX_COLORS = {
-	{"local", {tgui::Color::Red, tgui::TextStyle::Bold}},
+	{"local", {tgui::Color::Red, tgui::TextStyle::Regular}},
 	{"ERROR", {tgui::Color::Red, tgui::TextStyle::Italic}},
-	{"number", {tgui::Color::Green, tgui::TextStyle::Regular}}};
+	{"number", {tgui::Color::Green, tgui::TextStyle::Regular}},
+	{"string_content", {tgui::Color::Cyan, tgui::TextStyle::Regular}},
+	{"identifier", {tgui::Color::Magenta, tgui::TextStyle::Regular}},
+	{"function", {tgui::Color::Yellow, tgui::TextStyle::Regular}},
+	{"function_call", {tgui::Color::Yellow, tgui::TextStyle::Regular}},
+	{"\"", {tgui::Color::Cyan, tgui::TextStyle::Regular}},
+	{"(", {tgui::Color::White, tgui::TextStyle::Regular}},
+	{")", {tgui::Color::White, tgui::TextStyle::Regular}},
+	{"end", {tgui::Color::Yellow, tgui::TextStyle::Regular}},
+};
 
 void CodeEditor::constructHighlightedText(const tgui::String &text) {
 	std::vector<EditorHighlighting::HighlighterStruct> highlighter = {};
@@ -83,7 +92,7 @@ void CodeEditor::constructHighlightedText(const tgui::String &text) {
 
 		for (auto &node : highlighter) {
 			auto nodeType = node.type;
-			if (i == node.start) {
+			if (i == (node.start - 1)) {
 
 				if (SYNTAX_COLORS.count(nodeType) == 1) {
 					std::cout << nodeType << std::endl;
@@ -723,12 +732,28 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 		if (m_text.empty())
 			target.drawText(states, m_defaultText);
 		else {
+			// FIXME: Fix selection in the editor, objects are offset for some
+			// reason!
+			if (m_selStart != m_selEnd) {
+				target.drawText(states, m_textSelection1);
+				target.drawText(states, m_textSelection2);
+				target.drawText(states, m_textAfterSelection1);
+				target.drawText(states, m_textAfterSelection2);
+			}
+
 			if (m_selStart == m_selEnd)
 				states.transform.translate({CODE_EDITOR_LEFT_COLUMN, 0});
 
 			Vector2f offsetPos = {0, 0};
+
+			if (m_selStart != m_selEnd) {
+				states.transform.translate({CODE_EDITOR_LEFT_COLUMN, 0});
+				states.transform.translate({m_paddingCached.getLeft(), 0});
+			}
 			for (const auto &text : this->highlightTree) {
+
 				target.drawText(states, text);
+
 				Vector2f vector;
 
 				vector = {text.getLineWidth(), 0};
@@ -741,19 +766,14 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 				states.transform.translate(vector);
 				offsetPos += vector;
 			}
+			if (m_selStart != m_selEnd) {
+				states.transform.translate({-CODE_EDITOR_LEFT_COLUMN, 0});
+				states.transform.translate({-m_paddingCached.getLeft(), 0});
+			}
 			states.transform.translate(-offsetPos);
 
 			if (m_selStart == m_selEnd)
 				states.transform.translate({-CODE_EDITOR_LEFT_COLUMN, 0});
-
-			// FIXME: Fix selection in the editor, objects are offset for some
-			// reason!
-			if (m_selStart != m_selEnd) {
-				target.drawText(states, m_textSelection1);
-				target.drawText(states, m_textSelection2);
-				target.drawText(states, m_textAfterSelection1);
-				target.drawText(states, m_textAfterSelection2);
-			}
 		}
 
 		// Only draw the caret when needed
@@ -816,7 +836,7 @@ Text CodeEditor::constructText(const tgui::String &text,
 	cloneText.setFont(m_fontCached);
 	cloneText.setColor(color);
 	cloneText.setString(text);
-	cloneText.setCharacterSize(m_textSize);
+	cloneText.setCharacterSize(getTextSize());
 
 	return cloneText;
 }
