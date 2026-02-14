@@ -37,8 +37,7 @@ on_install("linux", "macosx", function(package)
     os.rm(path.join(package:installdir(), "lib/*.so"), { async = true })
     os.rm(path.join(package:installdir(), "lib/*.so.*"), { async = true })
 end)
--- This is another very fucky hack, since for some reason, make works on Linux but not cmake, while cmake works on Windows but not make.
--- ... don't we all love Windows???
+-- TODO: Does not work without the tree-sitter CLI tool. Need investigation
 on_install("mingw", "windows", function(package)
     local config = {}
     table.insert(config, "-DCMAKE_BUILD_TYPE=" .. (is_mode("debug") and "Debug" or "Release"))
