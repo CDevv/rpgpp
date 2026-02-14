@@ -28,10 +28,6 @@ on_install("linux", "macosx", "mingw", "windows", function(package)
 end)
 package_end()
 
-
--- TODO: The build tool for tree-sitter-lua requires TREE_SITTER_CLI.
--- Could either compile it ourself or ask user to install it outside.
--- For now, this package definition has been skipped.
 package("tree-sitter-lua")
 add_urls("https://github.com/tree-sitter-grammars/tree-sitter-lua.git")
 add_versions("0.4.99", "e40f5b6e6df9c2d1d6d664ff5d346a75d71ee6b2")
