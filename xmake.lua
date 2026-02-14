@@ -37,8 +37,13 @@ on_install("linux", "macosx", function(package)
     os.rm(path.join(package:installdir(), "lib/*.so"), { async = true })
     os.rm(path.join(package:installdir(), "lib/*.so.*"), { async = true })
 end)
+-- This is another very fucky hack, since for some reason, make works on Linux but not cmake, while cmake works on Windows but not make.
+-- ... don't we all love Windows???
 on_install("mingw", "windows", function(package)
-    raise("Not implemented yet!")
+    local config = {}
+    table.insert(config, "-DCMAKE_BUILD_TYPE=" .. (is_mode("debug") and "Debug" or "Release"))
+    table.insert(config, "-DBUILD_SHARED_LIBS=OFF")
+    import("package.tools.cmake").install(package, config)
 end)
 package_end()
 
