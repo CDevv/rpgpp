@@ -9,14 +9,14 @@ Requirements
 ---
 
 To build RPG++, you'll need to install the following tools/packages:
-All platforms:
-- [xmake](https://xmake.io/) (follow the instructions on the website to install XMake on your system)
-- [git](https://git-scm.com/)
-Specifically for Linux:
-- gcc, g++, make, and ninja (on Debian-based distros, you can install this via `sudo apt install build-essential`)
-- libx11-dev, libxrandr-dev, libxinerama-dev, libxcursor-dev, libxi-dev, libgl1-mesa-dev, and mesa-common-dev (on Debian-based distros, you can install this via `sudo apt install libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev mesa-common-dev`)
-Specifically for Windows:
-- Visual Studio 2019 or later with Desktop development with C++
+- **All platforms**:
+  - [xmake](https://xmake.io/) (follow the instructions on the website to install XMake on your system)
+  - [git](https://git-scm.com/)
+- Specifically for _Linux_:
+  - gcc, g++, make, and ninja (on Debian-based distros, you can install this via `sudo apt install build-essential`)
+  - libx11-dev, libxrandr-dev, libxinerama-dev, libxcursor-dev, libxi-dev, libgl1-mesa-dev, and mesa-common-dev (Debian-based distros can install this via `sudo apt install libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev mesa-common-dev`)
+- Specifically for _Windows_:
+  - Visual Studio 2019 or later with Desktop development with C++ (community edition will suffice)
 
 Building
 ---

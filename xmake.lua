@@ -37,7 +37,7 @@ set_license("MIT")
 -- This is the most fucky hack I've probably made. It's essentially: I don't
 -- want you to fucking regenerate the grammar file, cause it's already there. But
 -- since you want to regenerate it, how about I pass in a very legit version of tree-sitter CLI
--- called "noop" so at least you don't have to regenerate it!
+-- called "noop" so at least you have something to run!
 --
 -- NOTE: This only works because the grammar file has already been generated.
 on_install("mingw", "windows", "linux", "macosx", function(package)
