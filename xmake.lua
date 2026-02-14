@@ -36,7 +36,7 @@ package("tree-sitter-lua")
 add_urls("https://github.com/tree-sitter-grammars/tree-sitter-lua.git")
 add_versions("0.4.99", "e40f5b6e6df9c2d1d6d664ff5d346a75d71ee6b2")
 add_versions("0.4.100", "e40f5b6e6df9c2d1d6d664ff5d346a75d71ee6b2")
-add_deps("make", "cmake", "noop")
+add_deps("cmake", "noop")
 set_license("MIT")
 -- This is the most fucky hack I've probably made. It's essentially: I don't
 -- want you to fucking regenerate the grammar file, cause it's already there. But
