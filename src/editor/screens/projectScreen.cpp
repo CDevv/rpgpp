@@ -43,8 +43,13 @@ void screens::ProjectScreen::layoutReload() {
 }
 
 void screens::ProjectScreen::mouseMove(int x, int y) {
-    resourcesList->mouseMovedContinous({static_cast<float>(x), static_cast<float>(y)});
-    fileTabs->mouseMovedContinous({static_cast<float>(x), static_cast<float>(y)});
+    resourcesList->manualMouseMoved({static_cast<float>(x), static_cast<float>(y)});
+    fileTabs->manualMouseMoved({static_cast<float>(x), static_cast<float>(y)});
+}
+
+void screens::ProjectScreen::leftMouseReleased(int x, int y) {
+    resourcesList->manualLeftMouseReleased({static_cast<float>(x), static_cast<float>(y)});
+    fileTabs->manualLeftMouseReleased({static_cast<float>(x), static_cast<float>(y)});
 }
 
 void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {

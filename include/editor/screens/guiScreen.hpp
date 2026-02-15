@@ -20,6 +20,10 @@ class UIScreen {
 
 	}
 
+	virtual void leftMouseReleased(int x, int y) {
+
+	}
+
 	virtual void unloadScreen() {
 		// this is a base method when you need to unload textures and such.
 	}

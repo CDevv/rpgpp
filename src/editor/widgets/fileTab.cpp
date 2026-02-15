@@ -83,7 +83,7 @@ bool FileTab::leftMousePressed(Vector2f pos) {
 	return false;
 }
 
-void FileTab::mouseMovedContinous(tgui::Vector2f pos) {
+void FileTab::manualMouseMoved(tgui::Vector2f pos) {
     Tabs::mouseMoved(pos);
     pos -= getPosition();
     deltaMousePos = pos - startMousePos + offsetMousePos;
@@ -113,16 +113,22 @@ void FileTab::mouseMovedContinous(tgui::Vector2f pos) {
 void FileTab::mouseMoved(tgui::Vector2f pos) {
     Widget::mouseMoved(pos);
     if (!useExternalMouseEvent) {
-        mouseMovedContinous(pos);
+        manualMouseMoved(pos);
     }
 }
 
-void FileTab::leftMouseReleased(tgui::Vector2f pos) {
-    Widget::leftMouseReleased(pos);
+void FileTab::manualLeftMouseReleased(tgui::Vector2f pos) {
     pos -= getPosition();
     isHoldingMouse = false;
     isDragging = false;
     offsetMousePos = {0, 0};
+}
+
+void FileTab::leftMouseReleased(tgui::Vector2f pos) {
+    Widget::leftMouseReleased(pos);
+    if (!useExternalMouseEvent) {
+        manualLeftMouseReleased(pos);
+    }
 }
 
 bool FileTab::select(std::size_t index) {

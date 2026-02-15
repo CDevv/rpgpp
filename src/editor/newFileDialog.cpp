@@ -69,6 +69,8 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	cancelButton->onPress([this] { window->close(); });
 	window->add(cancelButton);
 
+	window->setPosition({TextFormat("50%% - %d", window->getSize().x), TextFormat("50%% - %d", window->getSize().y)});
+
 	gui->add(window);
 }
 

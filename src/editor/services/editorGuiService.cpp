@@ -83,6 +83,15 @@ void EditorGuiService::uiLoop() {
 				spt->update();
 			}
 		}
+
+		if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+            leftMouseHeld = true;
+		} else {
+		    if (leftMouseHeld) {
+				currentScreen->leftMouseReleased(GetMouseX(), GetMouseY());
+				leftMouseHeld = false;
+			}
+		}
 		currentScreen->mouseMove(GetMouseX(), GetMouseY());
 		BeginDrawing();
 		ClearBackground(DARKGRAY);

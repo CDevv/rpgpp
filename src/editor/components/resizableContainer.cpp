@@ -77,7 +77,7 @@ bool ResizableContainer::leftMousePressed(tgui::Vector2f pos) {
     return tgui::Group::leftMousePressed(pos);
 }
 
-void ResizableContainer::mouseMovedContinous(tgui::Vector2f pos) {
+void ResizableContainer::manualMouseMoved(tgui::Vector2f pos) {
     auto absolutePos = pos - getPosition();
 
     if (isResizable(ResizeDirection::LEFT) && bounded(absolutePos.x, 0, grabberSize)) {
@@ -122,11 +122,17 @@ void ResizableContainer::mouseMovedContinous(tgui::Vector2f pos) {
 void ResizableContainer::mouseMoved(tgui::Vector2f pos) {
     tgui::Group::mouseMoved(pos);
     if (!useExternalMouseEvent) {
-        mouseMovedContinous(pos);
+        manualMouseMoved(pos);
     }
 }
 
-void ResizableContainer::leftMouseReleased(tgui::Vector2f pos) {
+void ResizableContainer::manualLeftMouseReleased(tgui::Vector2f pos) {
     grabbingFlag = 0;
+}
+
+void ResizableContainer::leftMouseReleased(tgui::Vector2f pos) {
     tgui::Group::leftMouseReleased(pos);
+    if (!useExternalMouseEvent) {
+        manualLeftMouseReleased(pos);
+    }
 }

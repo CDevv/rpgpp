@@ -52,9 +52,10 @@ public:
     static ResizableContainer::Ptr copy(ResizableContainer::ConstPtr widget);
 
     bool useExternalMouseEvent = false;
-    bool leftMousePressed(tgui::Vector2f pos) override;
-	void mouseMovedContinous(tgui::Vector2f pos);
 	void mouseMoved(tgui::Vector2f pos) override;
+	void manualMouseMoved(tgui::Vector2f pos);
+    bool leftMousePressed(tgui::Vector2f pos) override;
+	void manualLeftMouseReleased(tgui::Vector2f pos);
 	void leftMouseReleased(tgui::Vector2f pos) override;
 
 	tgui::SignalTyped<tgui::Layout2d> onResize = {"OnResize"};

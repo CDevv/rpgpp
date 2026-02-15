@@ -5,6 +5,7 @@
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
 #include "editor.hpp"
+#include "raylib.h"
 
 FileChooser::FileChooser(const char *typeName, bool initRenderer)
 	: tgui::SubwidgetContainer(typeName, initRenderer) {
@@ -40,6 +41,7 @@ FileChooser::FileChooser(const char *typeName, bool initRenderer)
 
 	m_container->add(chosenPathLabel);
 	m_container->add(iconButton);
+	m_container->setPosition({TextFormat("50%% - %d", m_container->getSize().x), TextFormat("50%% - %d", m_container->getSize().y)});
 
 	updateSize();
 }

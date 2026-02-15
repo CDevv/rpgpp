@@ -57,8 +57,9 @@ class FileTab : public tgui::Tabs {
 
 	bool leftMousePressed(tgui::Vector2f pos) override;
 	void mouseMoved(tgui::Vector2f pos) override;
-	void mouseMovedContinous(tgui::Vector2f pos);
+	void manualMouseMoved(tgui::Vector2f pos);
 	void leftMouseReleased(tgui::Vector2f pos) override;
+	void manualLeftMouseReleased(tgui::Vector2f pos);
 
 	bool select(std::size_t i);
 
