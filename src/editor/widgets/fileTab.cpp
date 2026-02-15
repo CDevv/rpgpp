@@ -101,10 +101,14 @@ void FileTab::manualMouseMoved(tgui::Vector2f pos) {
                 offsetMousePos.x -=
                     m_tabs[i].width * // width of the hovered tab
                     (deltaMousePos.x / abs(deltaMousePos.x)); // direction of the drag
-                }
+            }
             deltaMousePos = pos - startMousePos + offsetMousePos; // value is updated immediately to avoid flickering
             swappedTab = draggedTab;
-            std::swap(m_tabs[draggedTab], m_tabs[m_hoveringTab]);
+            if (draggedTab < m_hoveringTab) {
+                std::rotate(m_tabs.begin() + draggedTab, m_tabs.begin() + draggedTab + 1, m_tabs.begin() + m_hoveringTab + 1);
+            } else if (draggedTab > m_hoveringTab) {
+                std::rotate(m_tabs.begin() + m_hoveringTab, m_tabs.begin() + draggedTab, m_tabs.begin() + draggedTab + 1);
+            }
             draggedTab = m_hoveringTab;
             m_selectedTab = draggedTab;
         } else if (swappedTab != m_hoveringTab) {
@@ -259,14 +263,20 @@ void FileTab::renderTab(
 		target.drawSprite(tabState, close);
 
 		// Draw the borders between the tabs
-		states.transform.translate({m_tabs[i].width, 0});
-		if ((borderWidth != 0) && (i < m_tabs.size() - 1)) {
-			target.drawFilledRect(
-				states, {borderWidth, usableHeight},
-				tgui::Color::applyOpacity(m_borderColorCached,
-										  m_opacityCached));
-			states.transform.translate({borderWidth, 0});
+		if ((borderWidth != 0) && (i < m_tabs.size())) {
+		    target.drawBorders(
+				states,
+		        Borders{borderWidth},
+		        {m_tabs[i].width, usableHeight},
+				tgui::Color::applyOpacity(m_borderColorCached, m_opacityCached)
+			);
+			// target.drawFilledRect(
+			// 	states, {borderWidth, usableHeight},
+			// 	tgui::Color::applyOpacity(m_borderColorCached,
+			// 							  m_opacityCached));
+			// states.transform.translate({borderWidth, 0});
 		}
+		states.transform.translate({m_tabs[i].width, 0});
 	}
 
 	// Highlight the borders of the selected and hovered tab when requested
@@ -350,17 +360,17 @@ void FileTab::draw(tgui::BackendRenderTarget &target,
 	const bool roundedCorners =
 		(m_roundedBorderRadiusCached > 0) && !m_spriteTab.isSet();
 	if (!roundedCorners) {
-		// Draw the borders around the tabs
-		if (m_bordersCached != Borders{0}) {
-			target.drawBorders(states, m_bordersCached, getSize(),
-							   tgui::Color::applyOpacity(m_borderColorCached,
-														 m_opacityCached));
-			states.transform.translate(m_bordersCached.getOffset());
-		}
+		// // Draw the borders around the tabs
+		// if (m_bordersCached != Borders{0}) {
+		// 	target.drawBorders(states, m_bordersCached, getSize(),
+		// 					   tgui::Color::applyOpacity(m_borderColorCached,
+		// 												 m_opacityCached));
+		// 	states.transform.translate(m_bordersCached.getOffset());
+		// }
 	} else
 		states.transform.translate({borderWidth, 0});
 
-	const float usableHeight = getSize().y - m_bordersCached.getTopPlusBottom();
+	const float usableHeight = getSize().y;
 
 	RenderStates draggingState;
 	for (std::size_t i = 0; i < m_tabs.size(); ++i) {
