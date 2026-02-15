@@ -90,6 +90,10 @@ CodeEditor::getStructsFromText(const tgui::String &text_ref) {
 	return highlighter;
 }
 
+void CodeEditor::changeHighlightedText(const tgui::String &text, int lineIdx) {
+	// TODO: Change the text on edit when the user types in input.
+}
+
 void CodeEditor::constructHighlightedText(const tgui::String &text,
 										  bool editOnlyOnCaret) {
 
@@ -102,8 +106,8 @@ void CodeEditor::constructHighlightedText(const tgui::String &text,
 
 	std::vector<tgui::Text> textVector = {};
 
-	if (editOnlyOnCaret) {
-		// TODO
+	if (editOnlyOnCaret && false) { // ADDED BECAUSE OF TODO
+		this->changeHighlightedText(m_text, this->getCaretLine());
 	} else {
 		this->highlightTree.clear();
 		for (int i = 0; i < m_text.size(); i++) {

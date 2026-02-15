@@ -40,6 +40,7 @@ class CodeEditor : public tgui::TextArea {
 				   std::vector<EditorHighlighting::HighlighterStruct> &vector);
 	void constructHighlightedText(const tgui::String &text,
 								  bool editOnlyOnCaret = false);
+	void changeHighlightedText(const tgui::String &text, int lineIdx);
 	std::vector<EditorHighlighting::HighlighterStruct>
 	getStructsFromText(const tgui::String &text);
 
