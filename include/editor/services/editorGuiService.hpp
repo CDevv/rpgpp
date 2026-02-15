@@ -6,6 +6,7 @@
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/MenuBar.hpp"
+#include "raylib.h"
 #include "screens/guiScreen.hpp"
 #include "updatable.hpp"
 #include <memory>
@@ -17,6 +18,7 @@ constexpr int ACTION_BUTTON_SIZE = 16;
 class EditorGuiService {
   private:
 	std::vector<std::weak_ptr<IUpdatable>> updatableWidgets;
+	int currentCursor = MOUSE_CURSOR_DEFAULT;
 
   public:
 	// gui service constructor.

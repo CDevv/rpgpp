@@ -5,7 +5,7 @@
 #include "editor.hpp"
 #include "enum_visitor/enum_visitor.hpp"
 #include "fileViews/fileView.hpp"
-#include "propertiesBox.hpp"
+#include "widgets/propertiesBox.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "roomViewModesHandler.hpp"

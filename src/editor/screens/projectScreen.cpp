@@ -1,4 +1,6 @@
 #include "screens/projectScreen.hpp"
+#include "TGUI/Vector2.hpp"
+#include "components/resizableContainer.hpp"
 #include "services/editorGuiService.hpp"
 #include "services/fileSystemService.hpp"
 #include "TGUI/Color.hpp"
@@ -30,6 +32,20 @@
 #include <system_error>
 #include <utility>
 #include <vector>
+
+void screens::ProjectScreen::layoutReload() {
+   	fileTabs->setSize(TextFormat("100%% - %d", modifiable_RESLIST_W), FILETABS_H);
+	fileTabs->setPosition(modifiable_RESLIST_W, TOOLBAR_H);
+
+	fileViewGroup->setSize({TextFormat("100%% - %d", modifiable_RESLIST_W),
+						 TextFormat("100%% - %d", TOOLBAR_H + FILETABS_H)});
+	fileViewGroup->setPosition(modifiable_RESLIST_W, TOOLBAR_H + FILETABS_H);
+}
+
+void screens::ProjectScreen::mouseMove(int x, int y) {
+    resourcesList->mouseMovedContinous({static_cast<float>(x), static_cast<float>(y)});
+    fileTabs->mouseMovedContinous({static_cast<float>(x), static_cast<float>(y)});
+}
 
 void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	auto &ts = Editor::instance->getTranslations();
@@ -73,24 +89,25 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	auto toolBar = createToolBar();
 
 	auto fileView =
-		tgui::Group::create({TextFormat("100%% - %d", RESLIST_W),
+		tgui::Group::create({TextFormat("100%% - %d", modifiable_RESLIST_W),
 							 TextFormat("100%% - %d", TOOLBAR_H + FILETABS_H)});
-	fileView->setPosition(RESLIST_W, TOOLBAR_H + FILETABS_H);
+	fileView->setPosition(modifiable_RESLIST_W, TOOLBAR_H + FILETABS_H);
 	layout->add(fileView);
 	this->fileViewGroup = fileView;
 
 	clearView();
 
-	auto panel = createResourcesList(fileView);
+	resourcesList = createResourcesList();
 
-	layout->add(panel);
+	layout->add(resourcesList);
 	layout->add(toolBar);
 
 	auto tabs2 = tgui::Tabs::create();
 
 	fileTabs = FileTab::create();
-	fileTabs->setSize(TextFormat("100%% - %d", RESLIST_W), FILETABS_H);
-	fileTabs->setPosition(RESLIST_W, TOOLBAR_H);
+	fileTabs->setSize(TextFormat("100%% - %d", modifiable_RESLIST_W), FILETABS_H);
+	fileTabs->setPosition(modifiable_RESLIST_W, TOOLBAR_H);
+	fileTabs->useExternalMouseEvent = true;
 
 	fileTabs->onTabClose([this](tgui::String id) {
         openedFiles.erase(id);
@@ -247,14 +264,21 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 	}
 }
 
-tgui::Group::Ptr
-screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
+ResizableContainer::Ptr
+screens::ProjectScreen::createResourcesList() {
 	auto project = Editor::instance->getProject();
 	TranslationService &tService = Editor::instance->getTranslations();
 
 	auto group =
-		tgui::Group::create({RESLIST_W, TextFormat("100%% - %d", TOOLBAR_H)});
-	group->setPosition(0, TOOLBAR_H);
+		ResizableContainer::create({modifiable_RESLIST_W, TextFormat("100%% - %d", TOOLBAR_H)}, {0, TOOLBAR_H});
+	group->enableResize(ResizeDirection::RIGHT);
+	group->setMinResizeWidth(MIN_RESLIST_W);
+	group->setMaxResizeWidth(MAX_RESLIST_W);
+	group->useExternalMouseEvent = true;
+	group->onResize([this, group] {
+		modifiable_RESLIST_W = group->getSize().x;
+		layoutReload();
+	});
 
 	auto resourceChoose = tgui::ComboBox::create();
 	resourceChoose->setPosition(0, 0);
@@ -292,7 +316,7 @@ screens::ProjectScreen::createResourcesList(tgui::Group::Ptr fileViewGroup) {
 	resourceListPanel->add(resourcesLayout);
 	group->add(resourceListPanel);
 
-	resourceChoose->onItemSelect([this, &fileViewGroup](int index) {
+	resourceChoose->onItemSelect([this](int index) {
 		EngineFileType currentFileType = static_cast<EngineFileType>(index);
 		addResourceButtons(currentFileType);
 	});

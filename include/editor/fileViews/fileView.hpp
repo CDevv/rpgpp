@@ -24,6 +24,8 @@ class FileView {
 	virtual ~FileView();
 
 	virtual void init(tgui::Group::Ptr layout, VariantWrapper *variant) {}
+	virtual void mouseMove(int x, int y) {}
+
 	void addWidgets(tgui::Group::Ptr layout);
 	void pushAction(std::unique_ptr<Action> action);
 	void undoAction();

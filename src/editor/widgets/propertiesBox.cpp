@@ -1,4 +1,4 @@
-#include "propertiesBox.hpp"
+#include "widgets/propertiesBox.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Button.hpp"

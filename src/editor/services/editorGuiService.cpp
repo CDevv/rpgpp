@@ -29,6 +29,7 @@ EditorGuiService::EditorGuiService() {
 }
 
 void EditorGuiService::init() {
+    currentCursor = MOUSE_CURSOR_DEFAULT;
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT, "RPG++ Editor");
 
@@ -82,7 +83,7 @@ void EditorGuiService::uiLoop() {
 				spt->update();
 			}
 		}
-
+		currentScreen->mouseMove(GetMouseX(), GetMouseY());
 		BeginDrawing();
 		ClearBackground(DARKGRAY);
 		// Achieve that effect of the gradient.
