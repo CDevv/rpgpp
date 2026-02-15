@@ -1,4 +1,5 @@
-#include "newFileDialog.hpp"
+#include "widgets/newFileDialog.hpp"
+#include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Button.hpp"
@@ -8,7 +9,6 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/Panel.hpp"
 #include "editor.hpp"
-#include "raylib.h"
 #include "services/translationService.hpp"
 #include "widgets/fileChooser.hpp"
 #include <memory>
@@ -49,27 +49,21 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	confirmButton = tgui::Button::create(tService.getKey("dialog.new_file.confirm"));
 	confirmButton->setSize(BUTTON_W, BUTTON_H);
 	confirmButton->setPosition(
-	    TextFormat("100%% - %d - %d", BUTTON_W, PADDING),
-		TextFormat("100%% - %d - %d", BUTTON_H, PADDING)
+        tgui::Layout("100%") - BUTTON_W - PADDING,
+        tgui::Layout("100%") - BUTTON_H - PADDING
 	);
-
-	auto weakTitle = std::weak_ptr<tgui::EditBox>(titleField);
-	auto weakPath = std::weak_ptr<FileChooser>(fileField);
-	auto weakWindow = std::weak_ptr<tgui::ChildWindow>(window);
 
 	window->add(confirmButton);
 
 	cancelButton = tgui::Button::create(tService.getKey("dialog.new_file.cancel"));
 	cancelButton->setSize(BUTTON_W, BUTTON_H);
 	cancelButton->setPosition(
-	    TextFormat("100%% - %d - %d", BUTTON_W + PADDING, BUTTON_W + PADDING),
-		TextFormat("100%% - %d - %d", BUTTON_H, PADDING)
+	    tgui::bindLeft(confirmButton) - BUTTON_W - PADDING,
+		tgui::Layout("100%") - BUTTON_H - PADDING
 	);
 
 	cancelButton->onPress([this] { window->close(); });
 	window->add(cancelButton);
-
-	window->setPosition({TextFormat("50%% - %d", window->getSize().x), TextFormat("50%% - %d", window->getSize().y)});
 
 	gui->add(window);
 }

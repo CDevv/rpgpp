@@ -2,7 +2,7 @@
 #define _RPGPP_FILEINITVISITOR_H
 
 #include "fileSystemService.hpp"
-#include "newFileDialog.hpp"
+#include "widgets/newFileDialog.hpp"
 #include "projectFile.hpp"
 #include <array>
 #include <functional>

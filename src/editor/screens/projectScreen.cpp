@@ -21,7 +21,7 @@
 #include "editor.hpp"
 #include "fileInitVisitor.hpp"
 #include "gamedata.hpp"
-#include "newFileDialog.hpp"
+#include "widgets/newFileDialog.hpp"
 #include "projectFile.hpp"
 #include "projectFileVisitor.hpp"
 #include "raylib.h"
@@ -34,13 +34,7 @@
 #include <vector>
 
 void screens::ProjectScreen::layoutReload() {
-   	projectLabel->setSize(modifiable_RESLIST_W, "100%");
-   	fileTabs->setSize(TextFormat("100%% - %d", modifiable_RESLIST_W), FILETABS_H);
-	fileTabs->setPosition(modifiable_RESLIST_W, TOOLBAR_H);
-
-	fileViewGroup->setSize({TextFormat("100%% - %d", modifiable_RESLIST_W),
-						 TextFormat("100%% - %d", TOOLBAR_H + FILETABS_H)});
-	fileViewGroup->setPosition(modifiable_RESLIST_W, TOOLBAR_H + FILETABS_H);
+    resListWBinder->setSize(modifiable_RESLIST_W, "100%");
 }
 
 void screens::ProjectScreen::mouseMove(int x, int y) {
@@ -92,18 +86,20 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	fileInitVisitor = std::make_unique<FileInitVisitor>();
 	listedResourcesType = EngineFileType::FILE_MAP;
 
-	auto toolBar = createToolBar();
+	resListWBinder = tgui::Group::create({modifiable_RESLIST_W, 0});
+	layout->add(resListWBinder, "resListWBinder");
 
 	auto fileView =
-		tgui::Group::create({TextFormat("100%% - %d", modifiable_RESLIST_W),
-							 TextFormat("100%% - %d", TOOLBAR_H + FILETABS_H)});
-	fileView->setPosition(modifiable_RESLIST_W, TOOLBAR_H + FILETABS_H);
+		tgui::Group::create({tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
+							 tgui::Layout("100%") - tgui::Layout(TOOLBAR_H + FILETABS_H)});
+	fileView->setPosition(tgui::bindWidth(resListWBinder), TOOLBAR_H + FILETABS_H);
 	layout->add(fileView);
 	this->fileViewGroup = fileView;
 
 	clearView();
 
 	resourcesList = createResourcesList();
+	auto toolBar = createToolBar();
 
 	layout->add(resourcesList);
 	layout->add(toolBar);
@@ -111,8 +107,8 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	auto tabs2 = tgui::Tabs::create();
 
 	fileTabs = FileTab::create();
-	fileTabs->setSize(TextFormat("100%% - %d", modifiable_RESLIST_W), FILETABS_H);
-	fileTabs->setPosition(modifiable_RESLIST_W, TOOLBAR_H);
+	fileTabs->setSize(tgui::Layout("100%") - tgui::bindWidth(resListWBinder), FILETABS_H);
+	fileTabs->setPosition(tgui::bindWidth(resListWBinder), TOOLBAR_H);
 	fileTabs->useExternalMouseEvent = true;
 
 	fileTabs->onTabClose([this](tgui::String id) {
@@ -162,10 +158,10 @@ void screens::ProjectScreen::clearView() {
     empty->addWidgets(fileViewGroup);
 }
 
-tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
-	auto toolBar = tgui::HorizontalWrap::create({"100%", TOOLBAR_H});
+tgui::Group::Ptr screens::ProjectScreen::createToolBar() {
+	auto toolBar = tgui::Group::create({"100%", TOOLBAR_H});
 	toolBar->setPosition(0, 0);
-	toolBar->getRenderer()->setSpaceBetweenWidgets(8.0f);
+	// toolBar->getRenderer()->setSpaceBetweenWidgets(8.0f);
 	toolBar->getRenderer()->setPadding(8);
 
 	auto barSize = toolBar->getSize().y;
@@ -176,7 +172,8 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
 	projectLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
 	projectLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	projectLabel->setTextSize(16);
-	projectLabel->setSize(modifiable_RESLIST_W, "100%");
+	projectLabel->setPosition({0, 0});
+	projectLabel->setSize({tgui::bindWidth(resListWBinder), "100%"});
 
 	if (project == nullptr) {
 		projectLabel->setText("uhh, nullptr");
@@ -184,7 +181,7 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
 		projectLabel->setText(project->getTitle());
 	}
 
-	toolBar->add(projectLabel);
+	toolBar->add(projectLabel, "projectLabel");
 
 	auto &fs = Editor::instance->getFs();
 
@@ -192,13 +189,15 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
 	auto playtestImg = tgui::Texture(fs.getResourcePath("playtest.png"));
 	playBtn->setImage(playtestImg);
 	playBtn->setSize({barSize, "100%"});
+	playBtn->setPosition({tgui::bindRight(projectLabel), 0});
 	playBtn->onPress([] { Editor::instance->getProject()->runProject(); });
-	toolBar->add(playBtn);
+	toolBar->add(playBtn, "playBtn");
 
 	auto buildBtn = tgui::BitmapButton::create();
 	auto buildImg = tgui::Texture(fs.getResourcePath("build.png"));
 	buildBtn->setImage(buildImg);
 	buildBtn->setSize({barSize, "100%"});
+	buildBtn->setPosition({tgui::bindRight(playBtn) + 8, 0});
 	buildBtn->onPress([project] {
 		std::filesystem::path path = project->getBasePath();
 		path /= "game.bin";
@@ -276,7 +275,7 @@ screens::ProjectScreen::createResourcesList() {
 	TranslationService &tService = Editor::instance->getTranslations();
 
 	auto group =
-		ResizableContainer::create({modifiable_RESLIST_W, TextFormat("100%% - %d", TOOLBAR_H)}, {0, TOOLBAR_H});
+		ResizableContainer::create({modifiable_RESLIST_W, tgui::Layout("100%") - TOOLBAR_H}, {0, TOOLBAR_H});
 	group->enableResize(ResizeDirection::RIGHT);
 	group->setMinResizeWidth(MIN_RESLIST_W);
 	group->setMaxResizeWidth(MAX_RESLIST_W);
@@ -294,7 +293,7 @@ screens::ProjectScreen::createResourcesList() {
 	group->add(resourceChoose);
 
 	auto createResourceBtn = tgui::Button::create(tService.getKey("screen.project.create_new_resource"));
-	createResourceBtn->setPosition(0, RESLIST_RES_CHOOSE_H);
+	createResourceBtn->setPosition(0, tgui::bindBottom(resourceChoose));
 	createResourceBtn->setSize("100%", RESLIST_CREATE_RES_BTN_H);
 	createResourceBtn->onPress([this] {
 		if (!fileInitVisitor->funcIsEmpty(listedResourcesType)) {
@@ -307,10 +306,8 @@ screens::ProjectScreen::createResourcesList() {
 	group->add(createResourceBtn);
 
 	auto resourceListPanel = tgui::ScrollablePanel::create(
-		{"100%", TextFormat("100%% - %d", FILETABS_H + RESLIST_RES_CHOOSE_H +
-											  RESLIST_CREATE_RES_BTN_H)});
-	resourceListPanel->setPosition(0, RESLIST_RES_CHOOSE_H +
-										  RESLIST_CREATE_RES_BTN_H);
+		{"100%", tgui::Layout("100%") - (FILETABS_H + RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H)});
+	resourceListPanel->setPosition(0, tgui::bindBottom(createResourceBtn));
 	resourceListPanel->getVerticalScrollbar()->setPolicy(
 		tgui::Scrollbar::Policy::Automatic);
 	resourceListPanel->getHorizontalScrollbar()->setPolicy(

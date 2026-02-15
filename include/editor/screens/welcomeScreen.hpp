@@ -3,8 +3,7 @@
 
 #include "TGUI/Widgets/Group.hpp"
 #include "guiScreen.hpp"
-#include "newFileDialog.hpp"
-#include "newProjectWindow.hpp"
+#include "widgets/newProjectWindow.hpp"
 
 namespace screens {
 class WelcomeScreen : public UIScreen {

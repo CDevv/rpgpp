@@ -6,7 +6,7 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "editor.hpp"
-#include "newProjectWindow.hpp"
+#include "widgets/newProjectWindow.hpp"
 #include "project.hpp"
 #include <memory>
 
@@ -58,7 +58,6 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 
 		newProjectDialog->init(Editor::instance->getGui().gui.get());
 		newProjectDialog->fileField->setSelectingDirectory(true);
-		newProjectDialog->fileLabel->setText("Directory..");
 		newProjectDialog->confirmButton->onPress([this] {
 			std::string title =
 				newProjectDialog->titleField->getText().toStdString();

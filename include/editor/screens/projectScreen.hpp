@@ -39,6 +39,7 @@ class ProjectScreen : public UIScreen {
 	std::unique_ptr<FileInitVisitor> fileInitVisitor;
 	EngineFileType listedResourcesType;
 
+	tgui::Group::Ptr resListWBinder;
 	ResizableContainer::Ptr resourcesList;
 	FileTab::Ptr fileTabs;
 	tgui::GrowVerticalLayout::Ptr resourcesLayout;
@@ -47,7 +48,7 @@ class ProjectScreen : public UIScreen {
 
 	void switchView(tgui::String id);
 	void clearView();
-	tgui::HorizontalWrap::Ptr createToolBar();
+	tgui::Group::Ptr createToolBar();
 	ResizableContainer::Ptr createResourcesList();
 
   public:

@@ -1,60 +1,64 @@
-#include "newProjectWindow.hpp"
+#include "widgets/newProjectWindow.hpp"
 #include "TGUI/String.hpp"
-#include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/Panel.hpp"
+#include "editor.hpp"
+#include "translationService.hpp"
 #include "widgets/fileChooser.hpp"
 #include <memory>
 
 NewProjectWindow::NewProjectWindow(const char *typeName, bool initRenderer) {}
 
 void NewProjectWindow::init(tgui::Gui *gui) {
-	window = tgui::ChildWindow::create("New..");
+   	TranslationService &tService = Editor::instance->getTranslations();
+
+	window = tgui::ChildWindow::create(tService.getKey("dialog.new_project.title"));
 	window->setSize(320, 220);
 
 	auto panel = tgui::Panel::create();
-	panel->getRenderer()->setPadding({8});
+	panel->getRenderer()->setPadding({PADDING});
 	window->add(panel);
 
 	auto vertLayout = tgui::GrowVerticalLayout::create();
 	panel->add(vertLayout);
 
-	auto titleLabel = tgui::Label::create("Title");
+	auto titleLabel = tgui::Label::create(tService.getKey("dialog.new_project.name"));
 	vertLayout->add(titleLabel);
 
 	titleField = tgui::EditBox::create();
-	titleField->setSize("100%", 24);
-	titleField->setDefaultText("Title..");
+	titleField->setSize("100%", FIELD_H);
 	vertLayout->add(titleField);
 
 	auto gap = tgui::Label::create();
-	gap->setSize("100%", 24);
+	gap->setSize("100%", FIELD_H);
 	vertLayout->add(gap);
 
-	fileLabel = tgui::Label::create("File..");
+	fileLabel = tgui::Label::create(tService.getKey("dialog.new_project.folder"));
 	vertLayout->add(fileLabel);
 
 	fileField = FileChooser::create();
-	fileField->setSize({"100%", 24});
+	fileField->setSize({"100%", FIELD_H});
 	vertLayout->add(fileField);
 
-	confirmButton = tgui::Button::create("Confirm");
-	confirmButton->setSize(108, 24);
-	confirmButton->setPosition("100% - 108 - 8", "100% - 24 - 8");
-
-	auto weakTitle = std::weak_ptr<tgui::EditBox>(titleField);
-	auto weakPath = std::weak_ptr<FileChooser>(fileField);
-	auto weakWindow = std::weak_ptr<tgui::ChildWindow>(window);
+	confirmButton = tgui::Button::create(tService.getKey("dialog.new_project.confirm"));
+	confirmButton->setSize(BUTTON_W, BUTTON_H);
+	confirmButton->setPosition(
+        tgui::Layout("100%") - BUTTON_W - PADDING,
+        tgui::Layout("100%") - BUTTON_H - PADDING
+	);
 
 	window->add(confirmButton);
 
-	cancelButton = tgui::Button::create("Cancel");
-	cancelButton->setSize(108, 24);
-	cancelButton->setPosition("100% - 108 - 8 - 108 - 8", "100% - 24 - 8");
+	cancelButton = tgui::Button::create(tService.getKey("dialog.new_project.cancel"));
+	cancelButton->setSize(BUTTON_W, BUTTON_H);
+	cancelButton->setPosition(
+	    tgui::bindLeft(confirmButton) - BUTTON_W - PADDING,
+		tgui::Layout("100%") - BUTTON_H - PADDING
+	);
 
 	cancelButton->onPress([this] { window->close(); });
 	window->add(cancelButton);

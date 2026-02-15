@@ -3,7 +3,7 @@
 #include "editor.hpp"
 #include "services/fileSystemService.hpp"
 #include "gamedata.hpp"
-#include "newFileDialog.hpp"
+#include "widgets/newFileDialog.hpp"
 #include "screens/projectScreen.hpp"
 #include "raylib.h"
 #include "room.hpp"

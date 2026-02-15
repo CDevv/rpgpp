@@ -41,7 +41,6 @@ FileChooser::FileChooser(const char *typeName, bool initRenderer)
 
 	m_container->add(chosenPathLabel);
 	m_container->add(iconButton);
-	m_container->setPosition({TextFormat("50%% - %d", m_container->getSize().x), TextFormat("50%% - %d", m_container->getSize().y)});
 
 	updateSize();
 }

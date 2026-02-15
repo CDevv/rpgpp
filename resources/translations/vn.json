@@ -33,6 +33,12 @@
   "dialog.new_file.confirm": "Tạo",
   "dialog.new_file.cancel": "Hủy",
 
+  "dialog.new_project.title": "Tạo dự án",
+  "dialog.new_project.name": "Tên dự án",
+  "dialog.new_project.folder": "Thư mục",
+  "dialog.new_project.confirm": "Tạo",
+  "dialog.new_project.cancel": "Hủy",
+
   "widget.filechooser.select_a_file": "Chọn tệp tin",
   "button.go_back": "Quay lại"
 }

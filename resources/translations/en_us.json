@@ -33,6 +33,12 @@
   "dialog.new_file.confirm": "Confirm",
   "dialog.new_file.cancel": "Cancel",
 
+  "dialog.new_project.title": "New Project",
+  "dialog.new_project.name": "Project Name",
+  "dialog.new_project.folder": "Folder",
+  "dialog.new_project.confirm": "Confirm",
+  "dialog.new_project.cancel": "Cancel",
+
   "widget.filechooser.select_a_file": "Select a File",
   "button.go_back": "Go Back"
 }
