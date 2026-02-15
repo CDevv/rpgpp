@@ -24,6 +24,8 @@ class ProjectScreen : public UIScreen {
     static const int TOOLBAR_H = 54;
 
     static const int FILETABS_H = 32;
+    static const int MIN_TAB_W_IN_FILETABS = 50;
+    static const int MAX_TAB_W_IN_FILETABS = 500;
 
     int modifiable_RESLIST_W = 264;
     static const int MAX_RESLIST_W = 500;
@@ -39,10 +41,13 @@ class ProjectScreen : public UIScreen {
 	std::unique_ptr<FileInitVisitor> fileInitVisitor;
 	EngineFileType listedResourcesType;
 
+	tgui::Group::Ptr toolBar;
 	tgui::Group::Ptr resListWBinder;
 	ResizableContainer::Ptr resourcesList;
-	FileTab::Ptr fileTabs;
 	tgui::GrowVerticalLayout::Ptr resourcesLayout;
+	tgui::ScrollablePanel::Ptr tabsContainer;
+	FileTab::Ptr fileTabs;
+
 	tgui::ContextMenu::Ptr fileContextMenu;
 	tgui::Label::Ptr projectLabel;
 

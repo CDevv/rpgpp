@@ -9,13 +9,14 @@
 
 class FileTab : public tgui::Tabs {
   private:
-    mutable bool isHovering = false;
-    mutable bool isHoldingMouse = false;
-    mutable bool isDragging = false;
-    mutable tgui::Vector2f startMousePos = {0, 0};
-    mutable tgui::Vector2f deltaMousePos = {0, 0};
-    mutable tgui::Vector2f offsetMousePos = {0, 0};
-    mutable size_t draggedTab = -1;
+    bool isHovering = false;
+    bool isHoldingMouse = false;
+    bool isDragging = false;
+    tgui::Vector2f startMousePos = {0, 0};
+    tgui::Vector2f deltaMousePos = {0, 0};
+    tgui::Vector2f offsetMousePos = {0, 0};
+    int draggedTab = -1;
+    int swappedTab = -1;
 
     static const int MARGIN_LR = 8;
     static const int CLOSE_BUTTON_SIZE = 12;

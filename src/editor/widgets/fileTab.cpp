@@ -7,7 +7,6 @@
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
 #include "editor.hpp"
-#include "editorGuiService.hpp"
 #include "fileTabRenderer.hpp"
 #include "raylib.h"
 #include <cmath>
@@ -21,7 +20,7 @@ using namespace tgui;
 FileTab::FileTab(const char *typeName, bool initRenderer)
 	: tgui::Tabs(typeName, false) {
 	m_distanceToSideCached = (std::round(
-		Text::getLineHeight(m_fontCached, getGlobalTextSize()) * 0.4f));
+		Text::getLineHeight(m_fontCached, getGlobalTextSize()) * 2.f));
 	if (initRenderer) {
 		m_renderer = aurora::makeCopied<FileTabRenderer>();
 		setRenderer(tgui::Theme::getDefault()->getRendererNoThrow("Tabs"));
@@ -94,15 +93,22 @@ void FileTab::manualMouseMoved(tgui::Vector2f pos) {
     if (isDragging) {
         SetMouseCursor(MOUSE_CURSOR_RESIZE_ALL);
         cursorModified = true;
-        if (draggedTab != m_hoveringTab) {
-            offsetMousePos.x -=
-                abs(m_hoveringTab - static_cast<int>(draggedTab)) * // how many tabs are between the two
-                m_tabs[draggedTab].width * // width of the tab being dragged
-                (deltaMousePos.x / abs(deltaMousePos.x)); // direction of the drag
+        if (draggedTab != m_hoveringTab and m_hoveringTab >= 0 and swappedTab == -1) {
+            // adds the width between the currently hovering tab and the dragged tab
+            // not counting the dragged tab
+            for (int i = std::min(m_hoveringTab, draggedTab); i <= std::max(m_hoveringTab, draggedTab); i++) {
+                if (i == draggedTab) continue;
+                offsetMousePos.x -=
+                    m_tabs[i].width * // width of the hovered tab
+                    (deltaMousePos.x / abs(deltaMousePos.x)); // direction of the drag
+                }
             deltaMousePos = pos - startMousePos + offsetMousePos; // value is updated immediately to avoid flickering
+            swappedTab = draggedTab;
             std::swap(m_tabs[draggedTab], m_tabs[m_hoveringTab]);
             draggedTab = m_hoveringTab;
             m_selectedTab = draggedTab;
+        } else if (swappedTab != m_hoveringTab) {
+            swappedTab = -1;
         }
     } else if (cursorModified) {
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
@@ -122,6 +128,7 @@ void FileTab::manualLeftMouseReleased(tgui::Vector2f pos) {
     isHoldingMouse = false;
     isDragging = false;
     offsetMousePos = {0, 0};
+    swappedTab = -1;
 }
 
 void FileTab::leftMouseReleased(tgui::Vector2f pos) {
@@ -355,7 +362,6 @@ void FileTab::draw(tgui::BackendRenderTarget &target,
 
 	const float usableHeight = getSize().y - m_bordersCached.getTopPlusBottom();
 
-	// TODO: Implement logic to switch tab when tab moves
 	RenderStates draggingState;
 	for (std::size_t i = 0; i < m_tabs.size(); ++i) {
 		if (isDragging and i == draggedTab) {

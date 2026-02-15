@@ -1,4 +1,9 @@
 #include "screens/projectScreen.hpp"
+#include "TGUI/Vector2.hpp"
+#include "TGUI/Widgets/Scrollbar.hpp"
+#include "components/resizableContainer.hpp"
+#include "services/editorGuiService.hpp"
+#include "services/fileSystemService.hpp"
 #include "TGUI/Color.hpp"
 #include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
@@ -37,16 +42,29 @@ void screens::ProjectScreen::layoutReload() {
 }
 
 void screens::ProjectScreen::mouseMove(int x, int y) {
-	resourcesList->manualMouseMoved(
-		{static_cast<float>(x), static_cast<float>(y)});
-	fileTabs->manualMouseMoved({static_cast<float>(x), static_cast<float>(y)});
+    resourcesList->manualMouseMoved({static_cast<float>(x), static_cast<float>(y)});
+    fileTabs->manualMouseMoved({
+        static_cast<float>(
+            x // coordinate of the mouse cursor relative to the projectScreen
+            - tabsContainer->getPosition().x // coordinate of the tabsContainer relative to the projectScreen
+            + tabsContainer->getContentOffset().x // coordinate of the widget relative to the tabsContainer
+            // why all of these calculations? cause the builtin leftMousePressed method returns the mouse coordinate
+            // relative to the current widget
+        ),
+        static_cast<float>(y - tabsContainer->getPosition().y)
+    });
 }
-
 void screens::ProjectScreen::leftMouseReleased(int x, int y) {
-	resourcesList->manualLeftMouseReleased(
-		{static_cast<float>(x), static_cast<float>(y)});
-	fileTabs->manualLeftMouseReleased(
-		{static_cast<float>(x), static_cast<float>(y)});
+    resourcesList->manualLeftMouseReleased({static_cast<float>(x), static_cast<float>(y)});
+    fileTabs->manualLeftMouseReleased({
+        // ditto
+        static_cast<float>(
+            x
+            - tabsContainer->getPosition().x
+            + tabsContainer->getContentOffset().x
+        ),
+        static_cast<float>(y - tabsContainer->getPosition().y)
+    });
 }
 
 void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
@@ -78,6 +96,8 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 			redoHierarchy, [this] { getCurrentFile().getView().redoAction(); });
 	}
 
+	auto tabs2 = tgui::Tabs::create();
+
 	fileContextMenu = tgui::ContextMenu::create();
 	fileContextMenu->addMenuItem("Copy full path");
 	fileContextMenu->addMenuItem("Delete.");
@@ -88,32 +108,36 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	fileInitVisitor = std::make_unique<FileInitVisitor>();
 	listedResourcesType = EngineFileType::FILE_MAP;
 
+	// For allowing widgets to hook into the width of the resizable resource list
+	// Must ALWAYS be initialized first
 	resListWBinder = tgui::Group::create({modifiable_RESLIST_W, 0});
 	layout->add(resListWBinder, "resListWBinder");
 
-	auto fileView = tgui::Group::create(
-		{tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
-		 tgui::Layout("100%") - tgui::Layout(TOOLBAR_H + FILETABS_H)});
-	fileView->setPosition(tgui::bindWidth(resListWBinder),
-						  TOOLBAR_H + FILETABS_H);
-	layout->add(fileView);
-	this->fileViewGroup = fileView;
-
-	clearView();
-
+	// Resource list
 	resourcesList = createResourcesList();
-	auto toolBar = createToolBar();
-
 	layout->add(resourcesList);
+
+	// Tool bar
+	toolBar = createToolBar();
 	layout->add(toolBar);
 
-	auto tabs2 = tgui::Tabs::create();
+	// File tabs
+	tabsContainer = tgui::ScrollablePanel::create();
+	tabsContainer->getRenderer()->setBorders({0, 0, 0, 0});
+	tabsContainer->getRenderer()->setRoundedBorderRadius(0);
+	tabsContainer->getRenderer()->setPadding(0);
+	tabsContainer->setSize(tgui::Layout("100%") - tgui::bindWidth(resListWBinder), FILETABS_H);
+	tabsContainer->setPosition(tgui::bindWidth(resListWBinder), tgui::bindBottom(toolBar));
+	tabsContainer->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
+	tabsContainer->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
 
 	fileTabs = FileTab::create();
-	fileTabs->setSize(tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
-					  FILETABS_H);
-	fileTabs->setPosition(tgui::bindWidth(resListWBinder), TOOLBAR_H);
+	fileTabs->setHeight(FILETABS_H);
+	fileTabs->setPosition({0, 0});
 	fileTabs->useExternalMouseEvent = true;
+	fileTabs->setAutoSize(true);
+	fileTabs->setMinimumTabWidth(MIN_TAB_W_IN_FILETABS);
+	fileTabs->setMaximumTabWidth(MAX_TAB_W_IN_FILETABS);
 
 	fileTabs->onTabClose([this](tgui::String id) {
 		openedFiles.erase(id);
@@ -129,7 +153,18 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 		}
 	});
 
-	layout->add(fileTabs);
+	tabsContainer->add(fileTabs);
+	layout->add(tabsContainer);
+
+	// File view
+	auto fileView =
+		tgui::Group::create({tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
+							 tgui::Layout("100%") - tgui::bindHeight(toolBar) - tgui::bindHeight(tabsContainer)});
+	fileView->setPosition(tgui::bindWidth(resListWBinder), tgui::bindBottom(tabsContainer));
+	this->fileViewGroup = fileView;
+	clearView();
+	layout->add(fileView);
+
 
 	// Maximize when a project is opened
 	SetWindowState(FLAG_WINDOW_MAXIMIZED);
