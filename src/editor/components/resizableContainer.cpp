@@ -1,11 +1,9 @@
 #include "components/resizableContainer.hpp"
 #include "TGUI/Backend/Renderer/BackendRenderTarget.hpp"
-#include "TGUI/Cursor.hpp"
 #include "TGUI/Layout.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Group.hpp"
-#include "editorGuiService.hpp"
 #include "raylib.h"
 #include <memory>
 
@@ -58,19 +56,37 @@ tgui::Widget::Ptr ResizableContainer::clone() const {
     return std::make_shared<ResizableContainer>(*this);
 }
 
+bool ResizableContainer::inEnabledGrabber(ResizeDirection direction, tgui::Vector2f absolutePos) {
+    if (!isResizable(direction))
+        return false;
+
+    switch (direction) {
+        case ResizeDirection::LEFT:
+            return bounded(absolutePos.x, 0, grabberSize) and bounded(absolutePos.y, 0, getSize().y);
+        case ResizeDirection::RIGHT:
+            return bounded(absolutePos.x, getSize().x - grabberSize, getSize().x) and bounded(absolutePos.y, 0, getSize().y);
+        case ResizeDirection::TOP:
+            return bounded(absolutePos.y, 0, grabberSize) and bounded(absolutePos.x, 0, getSize().x);
+        case ResizeDirection::BOTTOM:
+            return bounded(absolutePos.y, getSize().y - grabberSize, getSize().y) and bounded(absolutePos.x, 0, getSize().x);
+        default:
+            return false;
+    }
+}
+
 bool ResizableContainer::leftMousePressed(tgui::Vector2f pos) {
     auto absolutePos = pos - getPosition();
     startMousePos = absolutePos;
     startSize = getSize();
     startPosition = getPosition();
 
-    if (isResizable(ResizeDirection::LEFT) && bounded(absolutePos.x, 0, grabberSize)) {
+    if (inEnabledGrabber(ResizeDirection::LEFT, absolutePos)) {
         grabbingFlag = static_cast<char>(ResizeDirection::LEFT);
-    } else if (isResizable(ResizeDirection::RIGHT) && bounded(absolutePos.x, getSize().x - grabberSize, getSize().x)) {
+    } else if (inEnabledGrabber(ResizeDirection::RIGHT, absolutePos)) {
         grabbingFlag = static_cast<char>(ResizeDirection::RIGHT);
-    } else if (isResizable(ResizeDirection::TOP) && bounded(absolutePos.y, 0, grabberSize)) {
+    } else if (inEnabledGrabber(ResizeDirection::TOP, absolutePos)) {
         grabbingFlag = static_cast<char>(ResizeDirection::TOP);
-    } else if (isResizable(ResizeDirection::BOTTOM) && bounded(absolutePos.y, getSize().y - grabberSize, getSize().y)) {
+    } else if (inEnabledGrabber(ResizeDirection::BOTTOM, absolutePos)) {
         grabbingFlag = static_cast<char>(ResizeDirection::BOTTOM);
     }
 
@@ -80,16 +96,16 @@ bool ResizableContainer::leftMousePressed(tgui::Vector2f pos) {
 void ResizableContainer::manualMouseMoved(tgui::Vector2f pos) {
     auto absolutePos = pos - getPosition();
 
-    if (isResizable(ResizeDirection::LEFT) && bounded(absolutePos.x, 0, grabberSize)) {
+    if (inEnabledGrabber(ResizeDirection::LEFT, absolutePos)) {
         SetMouseCursor(MOUSE_CURSOR_RESIZE_EW);
         cursorModified = true;
-    } else if (isResizable(ResizeDirection::RIGHT) && bounded(absolutePos.x, getSize().x - grabberSize, getSize().x)) {
+    } else if (inEnabledGrabber(ResizeDirection::RIGHT, absolutePos)) {
         SetMouseCursor(MOUSE_CURSOR_RESIZE_EW);
         cursorModified = true;
-    } else if (isResizable(ResizeDirection::TOP) && bounded(absolutePos.y, 0, grabberSize)) {
+    } else if (inEnabledGrabber(ResizeDirection::TOP, absolutePos)) {
         SetMouseCursor(MOUSE_CURSOR_RESIZE_NS);
         cursorModified = true;
-    } else if (isResizable(ResizeDirection::BOTTOM) && bounded(absolutePos.y, getSize().y - grabberSize, getSize().y)) {
+    } else if (inEnabledGrabber(ResizeDirection::BOTTOM, absolutePos)) {
         SetMouseCursor(MOUSE_CURSOR_RESIZE_NS);
         cursorModified = true;
     } else if (cursorModified) {

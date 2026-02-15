@@ -38,10 +38,13 @@ class ProjectScreen : public UIScreen {
 	tgui::Group::Ptr fileViewGroup;
 	std::unique_ptr<FileInitVisitor> fileInitVisitor;
 	EngineFileType listedResourcesType;
+
 	ResizableContainer::Ptr resourcesList;
 	FileTab::Ptr fileTabs;
 	tgui::GrowVerticalLayout::Ptr resourcesLayout;
 	tgui::ContextMenu::Ptr fileContextMenu;
+	tgui::Label::Ptr projectLabel;
+
 	void switchView(tgui::String id);
 	void clearView();
 	tgui::HorizontalWrap::Ptr createToolBar();

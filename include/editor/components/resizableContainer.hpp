@@ -28,6 +28,8 @@ private:
     tgui::Layout2d startPosition;
     bool isGrabbing = false;
     bool cursorModified = false;
+
+    bool inEnabledGrabber(ResizeDirection direction, tgui::Vector2f absolutePos);
 public:
     ResizableContainer(const tgui::Layout2d &size, const tgui::Layout2d &position);
     void enableResize(ResizeDirection direction);

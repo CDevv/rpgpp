@@ -20,6 +20,7 @@ class EditorGuiService {
 	std::vector<std::weak_ptr<IUpdatable>> updatableWidgets;
 	int currentCursor = MOUSE_CURSOR_DEFAULT;
 	bool leftMouseHeld = false;
+	static const int MENUBAR_H = 32;
 
   public:
 	// gui service constructor.

@@ -34,6 +34,7 @@
 #include <vector>
 
 void screens::ProjectScreen::layoutReload() {
+   	projectLabel->setSize(modifiable_RESLIST_W, "100%");
    	fileTabs->setSize(TextFormat("100%% - %d", modifiable_RESLIST_W), FILETABS_H);
 	fileTabs->setPosition(modifiable_RESLIST_W, TOOLBAR_H);
 
@@ -171,19 +172,19 @@ tgui::HorizontalWrap::Ptr screens::ProjectScreen::createToolBar() {
 
 	auto project = Editor::instance->getProject();
 
-	auto label = tgui::Label::create("text.");
-	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
-	label->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
-	label->setTextSize(16);
-	label->setSize(256, "100%");
+	projectLabel = tgui::Label::create("text.");
+	projectLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
+	projectLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
+	projectLabel->setTextSize(16);
+	projectLabel->setSize(modifiable_RESLIST_W, "100%");
 
 	if (project == nullptr) {
-		label->setText("uhh, nullptr");
+		projectLabel->setText("uhh, nullptr");
 	} else {
-		label->setText(project->getTitle());
+		projectLabel->setText(project->getTitle());
 	}
 
-	toolBar->add(label);
+	toolBar->add(projectLabel);
 
 	auto &fs = Editor::instance->getFs();
 

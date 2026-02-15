@@ -88,11 +88,11 @@ void EditorGuiService::uiLoop() {
             leftMouseHeld = true;
 		} else {
 		    if (leftMouseHeld) {
-				currentScreen->leftMouseReleased(GetMouseX(), GetMouseY());
+				currentScreen->leftMouseReleased(GetMouseX(), GetMouseY() - MENUBAR_H);
 				leftMouseHeld = false;
 			}
 		}
-		currentScreen->mouseMove(GetMouseX(), GetMouseY());
+		currentScreen->mouseMove(GetMouseX(), GetMouseY() - MENUBAR_H);
 		BeginDrawing();
 		ClearBackground(DARKGRAY);
 		// Achieve that effect of the gradient.
@@ -147,7 +147,7 @@ tgui::Group::Ptr EditorGuiService::uiChangePreInit(UIScreen *setToScreen) {
 	initMenuBar();
 
 	auto group = tgui::Group::create({"100%"});
-	group->setPosition(0, "30");
+	group->setPosition(0, MENUBAR_H);
 
 	if (this->currentScreen != nullptr)
 		this->currentScreen->unloadScreen();
@@ -236,7 +236,7 @@ void EditorGuiService::initMenuBar() {
 		Editor::instance->getGui().setScreen(
 			std::make_unique<screens::AboutScreen>(), false);
 	});
-	menuBar->setSize({"100%", "30"});
+	menuBar->setSize({"100%", MENUBAR_H});
 	this->gui->add(menuBar);
 }
 
