@@ -148,6 +148,7 @@ tgui::Group::Ptr EditorGuiService::uiChangePreInit(UIScreen *setToScreen) {
 
 	auto group = tgui::Group::create({"100%"});
 	group->setPosition(0, MENUBAR_H);
+	group->setSize({"100%", tgui::Layout("100%") - MENUBAR_H});
 
 	if (this->currentScreen != nullptr)
 		this->currentScreen->unloadScreen();

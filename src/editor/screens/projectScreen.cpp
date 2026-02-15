@@ -13,7 +13,6 @@
 #include "TGUI/Widgets/ContextMenu.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
-#include "TGUI/Widgets/HorizontalWrap.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/MessageBox.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
@@ -306,7 +305,7 @@ screens::ProjectScreen::createResourcesList() {
 	group->add(createResourceBtn);
 
 	auto resourceListPanel = tgui::ScrollablePanel::create(
-		{"100%", tgui::Layout("100%") - (FILETABS_H + RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H)});
+		{"100%", tgui::Layout("100%") - (RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H)});
 	resourceListPanel->setPosition(0, tgui::bindBottom(createResourceBtn));
 	resourceListPanel->getVerticalScrollbar()->setPolicy(
 		tgui::Scrollbar::Policy::Automatic);
