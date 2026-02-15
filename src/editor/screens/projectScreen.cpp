@@ -1,12 +1,9 @@
 #include "screens/projectScreen.hpp"
-#include "TGUI/Vector2.hpp"
-#include "components/resizableContainer.hpp"
-#include "services/editorGuiService.hpp"
-#include "services/fileSystemService.hpp"
 #include "TGUI/Color.hpp"
 #include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Texture.hpp"
+#include "TGUI/Vector2.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
@@ -17,14 +14,17 @@
 #include "TGUI/Widgets/MessageBox.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
+#include "components/resizableContainer.hpp"
 #include "editor.hpp"
 #include "fileInitVisitor.hpp"
 #include "gamedata.hpp"
-#include "widgets/newFileDialog.hpp"
 #include "projectFile.hpp"
 #include "projectFileVisitor.hpp"
 #include "raylib.h"
+#include "services/editorGuiService.hpp"
+#include "services/fileSystemService.hpp"
 #include "widgets/fileTab.hpp"
+#include "widgets/newFileDialog.hpp"
 #include <cstdio>
 #include <filesystem>
 #include <memory>
@@ -33,17 +33,20 @@
 #include <vector>
 
 void screens::ProjectScreen::layoutReload() {
-    resListWBinder->setSize(modifiable_RESLIST_W, "100%");
+	resListWBinder->setSize(modifiable_RESLIST_W, "100%");
 }
 
 void screens::ProjectScreen::mouseMove(int x, int y) {
-    resourcesList->manualMouseMoved({static_cast<float>(x), static_cast<float>(y)});
-    fileTabs->manualMouseMoved({static_cast<float>(x), static_cast<float>(y)});
+	resourcesList->manualMouseMoved(
+		{static_cast<float>(x), static_cast<float>(y)});
+	fileTabs->manualMouseMoved({static_cast<float>(x), static_cast<float>(y)});
 }
 
 void screens::ProjectScreen::leftMouseReleased(int x, int y) {
-    resourcesList->manualLeftMouseReleased({static_cast<float>(x), static_cast<float>(y)});
-    fileTabs->manualLeftMouseReleased({static_cast<float>(x), static_cast<float>(y)});
+	resourcesList->manualLeftMouseReleased(
+		{static_cast<float>(x), static_cast<float>(y)});
+	fileTabs->manualLeftMouseReleased(
+		{static_cast<float>(x), static_cast<float>(y)});
 }
 
 void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
@@ -88,10 +91,11 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	resListWBinder = tgui::Group::create({modifiable_RESLIST_W, 0});
 	layout->add(resListWBinder, "resListWBinder");
 
-	auto fileView =
-		tgui::Group::create({tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
-							 tgui::Layout("100%") - tgui::Layout(TOOLBAR_H + FILETABS_H)});
-	fileView->setPosition(tgui::bindWidth(resListWBinder), TOOLBAR_H + FILETABS_H);
+	auto fileView = tgui::Group::create(
+		{tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
+		 tgui::Layout("100%") - tgui::Layout(TOOLBAR_H + FILETABS_H)});
+	fileView->setPosition(tgui::bindWidth(resListWBinder),
+						  TOOLBAR_H + FILETABS_H);
 	layout->add(fileView);
 	this->fileViewGroup = fileView;
 
@@ -106,22 +110,23 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	auto tabs2 = tgui::Tabs::create();
 
 	fileTabs = FileTab::create();
-	fileTabs->setSize(tgui::Layout("100%") - tgui::bindWidth(resListWBinder), FILETABS_H);
+	fileTabs->setSize(tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
+					  FILETABS_H);
 	fileTabs->setPosition(tgui::bindWidth(resListWBinder), TOOLBAR_H);
 	fileTabs->useExternalMouseEvent = true;
 
 	fileTabs->onTabClose([this](tgui::String id) {
-        openedFiles.erase(id);
-        if (fileTabs->getTabsCount() == 0) {
-       		clearView();
-       	}
+		openedFiles.erase(id);
+		if (fileTabs->getTabsCount() == 0) {
+			clearView();
+		}
 	});
 	fileTabs->onTabSelect([this](tgui::String id) {
-    	if (fileTabs->getTabsCount() == 0) {
-    		clearView();
-    	} else {
-            switchView(id);
-    	}
+		if (fileTabs->getTabsCount() == 0) {
+			clearView();
+		} else {
+			switchView(id);
+		}
 	});
 
 	layout->add(fileTabs);
@@ -132,15 +137,19 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 
 void screens::ProjectScreen::addFileView(EngineFileType fileType,
 										 const std::string &path) {
+
+	Editor::instance->getGui().gui->setTabKeyUsageEnabled(
+		fileType != EngineFileType::FILE_SCRIPT);
+
 	size_t idx = fileTabs->addFileTab(path, GetFileName(path.c_str()));
 	if (idx != -1) {
-    	fileViewGroup->removeAllWidgets();
-    	std::unique_ptr<ProjectFile> projectFile =
-    		fileVisitor->visit(fileType, path);
-    	projectFile->initUi(fileViewGroup);
-    	projectFile->setFilePath(path);
-        tgui::String id = path;
-        openedFiles.try_emplace(id, std::move(projectFile));
+		fileViewGroup->removeAllWidgets();
+		std::unique_ptr<ProjectFile> projectFile =
+			fileVisitor->visit(fileType, path);
+		projectFile->initUi(fileViewGroup);
+		projectFile->setFilePath(path);
+		tgui::String id = path;
+		openedFiles.try_emplace(id, std::move(projectFile));
 	}
 }
 
@@ -152,9 +161,9 @@ void screens::ProjectScreen::switchView(tgui::String id) {
 void screens::ProjectScreen::clearView() {
 	fileViewGroup->removeAllWidgets();
 	std::unique_ptr<ProjectFile> empty =
-  		fileVisitor->visit(EngineFileType::FILE_EMPTY, ".");
-   	empty->initUi(fileViewGroup);
-    empty->addWidgets(fileViewGroup);
+		fileVisitor->visit(EngineFileType::FILE_EMPTY, ".");
+	empty->initUi(fileViewGroup);
+	empty->addWidgets(fileViewGroup);
 }
 
 tgui::Group::Ptr screens::ProjectScreen::createToolBar() {
@@ -215,7 +224,8 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 	this->listedResourcesType = fileType;
 
 	resourcesLayout->removeAllWidgets();
-	resourcesLayout->getRenderer()->setSpaceBetweenWidgets(RESLIST_ITEM_PADDING);
+	resourcesLayout->getRenderer()->setSpaceBetweenWidgets(
+		RESLIST_ITEM_PADDING);
 
 	for (auto filePath : project->getPaths(fileType)) {
 		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
@@ -268,13 +278,13 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 	}
 }
 
-ResizableContainer::Ptr
-screens::ProjectScreen::createResourcesList() {
+ResizableContainer::Ptr screens::ProjectScreen::createResourcesList() {
 	auto project = Editor::instance->getProject();
 	TranslationService &tService = Editor::instance->getTranslations();
 
-	auto group =
-		ResizableContainer::create({modifiable_RESLIST_W, tgui::Layout("100%") - TOOLBAR_H}, {0, TOOLBAR_H});
+	auto group = ResizableContainer::create(
+		{modifiable_RESLIST_W, tgui::Layout("100%") - TOOLBAR_H},
+		{0, TOOLBAR_H});
 	group->enableResize(ResizeDirection::RIGHT);
 	group->setMinResizeWidth(MIN_RESLIST_W);
 	group->setMaxResizeWidth(MAX_RESLIST_W);
@@ -291,7 +301,8 @@ screens::ProjectScreen::createResourcesList() {
 	resourceChoose->setSelectedItem("Maps");
 	group->add(resourceChoose);
 
-	auto createResourceBtn = tgui::Button::create(tService.getKey("screen.project.create_new_resource"));
+	auto createResourceBtn = tgui::Button::create(
+		tService.getKey("screen.project.create_new_resource"));
 	createResourceBtn->setPosition(0, tgui::bindBottom(resourceChoose));
 	createResourceBtn->setSize("100%", RESLIST_CREATE_RES_BTN_H);
 	createResourceBtn->onPress([this] {
@@ -305,7 +316,8 @@ screens::ProjectScreen::createResourcesList() {
 	group->add(createResourceBtn);
 
 	auto resourceListPanel = tgui::ScrollablePanel::create(
-		{"100%", tgui::Layout("100%") - (RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H)});
+		{"100%", tgui::Layout("100%") -
+					 (RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H)});
 	resourceListPanel->setPosition(0, tgui::bindBottom(createResourceBtn));
 	resourceListPanel->getVerticalScrollbar()->setPolicy(
 		tgui::Scrollbar::Policy::Automatic);

@@ -8,10 +8,14 @@
 #include "TGUI/Text.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
+#include "editor.hpp"
 #include "raylib.h"
 #include "syntaxHighlighter.hpp"
 #include "tree_sitter/tree-sitter-lua.h"
+#include <TGUI/Event.hpp>
+#include <TGUI/Font.hpp>
 #include <TGUI/TextStyle.hpp>
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
@@ -22,6 +26,7 @@
 #include <cstddef>
 #include <cstdio>
 #include <string>
+#include <utility>
 #include <vector>
 
 using namespace tgui;
@@ -52,6 +57,7 @@ printf("%s : %u:%u\n", ts_node_type(node), ts_node_start_byte(node),
 
 // TODO: IMPLEMENT A BETTER SYNTAX COLORS MAP!
 std::map<std::string, EditorHighlighting::TextStyling> SYNTAX_COLORS = {
+	{"ERROR", {tgui::Color::Red, tgui::TextStyle::Regular}},
 	{"local", {tgui::Color::Red, tgui::TextStyle::Regular}},
 	{"number", {tgui::Color::Green, tgui::TextStyle::Regular}},
 	{"string_content", {tgui::Color::Cyan, tgui::TextStyle::Regular}},
@@ -63,14 +69,13 @@ std::map<std::string, EditorHighlighting::TextStyling> SYNTAX_COLORS = {
 	{")", {tgui::Color::White, tgui::TextStyle::Regular}},
 	{"end", {tgui::Color::Yellow, tgui::TextStyle::Regular}},
 	{"--", {tgui::Color(84, 81, 103), tgui::TextStyle::Regular}},
-	{"comment_content", {tgui::Color(84, 81, 103), tgui::TextStyle::Regular}},
-	{"ERROR", {tgui::Color::Red, tgui::TextStyle::Italic}}};
+	{"comment_content", {tgui::Color(84, 81, 103), tgui::TextStyle::Regular}}};
 
-void CodeEditor::constructHighlightedText(const tgui::String &text) {
+std::vector<EditorHighlighting::HighlighterStruct>
+CodeEditor::getStructsFromText(const tgui::String &text_ref) {
 	std::vector<EditorHighlighting::HighlighterStruct> highlighter = {};
-	this->highlightTree.clear();
 
-	const auto textStr = text.toStdString();
+	const auto textStr = text_ref.toStdString();
 	const auto constCharStr = textStr.c_str();
 	TSTree *syntaxTree = ts_parser_parse_string(
 		this->syntaxParser, nullptr, constCharStr, strlen(constCharStr));
@@ -82,74 +87,94 @@ void CodeEditor::constructHighlightedText(const tgui::String &text) {
 
 	ts_tree_delete(syntaxTree);
 
-	// FIXME: i don't know if this is good enough :cry:
+	return highlighter;
+}
+
+void CodeEditor::constructHighlightedText(const tgui::String &text,
+										  bool editOnlyOnCaret) {
+
+	auto highlighter = this->getStructsFromText(text);
 
 	int addingStrStart = 0;
 	std::string addingStr = {};
 	tgui::Color addingColor = tgui::Color::White;
 	tgui::TextStyle addingStyle = tgui::TextStyle::Regular;
-	auto sizeOfText = m_text.size();
 
-	for (int i = 0; i < sizeOfText; i++) {
-		const auto &_char = m_text[i];
+	std::vector<tgui::Text> textVector = {};
 
-		if (_char != '\n') {
-			printf("%c \n", _char);
-		} else {
-			printf("\\n \n");
-		}
+	if (editOnlyOnCaret) {
+		// TODO
+	} else {
+		this->highlightTree.clear();
+		for (int i = 0; i < m_text.size(); i++) {
+			const auto &_char = m_text[i];
 
-		if (_char != '\n')
-			addingStr += _char;
+			// if (_char != '\n') {
+			// 	printf("%c \n", _char);
+			// } else {
+			// 	printf("\\n \n");
+			// }
 
-		for (auto &node : highlighter) {
-			auto nodeType = node.type;
-			if (i == (node.start - 1)) {
+			if (_char != '\n')
+				addingStr += _char;
 
-				if (SYNTAX_COLORS.count(nodeType) == 1) {
-					printf("%s: %u:%u \n", nodeType, node.start, node.end);
-					addingColor = SYNTAX_COLORS[nodeType].color;
-					addingStyle = SYNTAX_COLORS[nodeType].textStyle;
-				} else {
-					addingColor = tgui::Color::White;
-					addingStyle = tgui::TextStyle::Regular;
+			for (auto &node : highlighter) {
+				auto nodeType = node.type;
+				if (i == (node.start - 1)) {
+
+					if (SYNTAX_COLORS.count(nodeType) == 1) {
+						printf("%s: START: %u END: %u \n", nodeType, node.start,
+							   node.end);
+						addingColor = SYNTAX_COLORS[nodeType].color;
+						addingStyle = SYNTAX_COLORS[nodeType].textStyle;
+					} else {
+						addingColor = tgui::Color::White;
+						addingStyle = tgui::TextStyle::Regular;
+					}
+
+				} else if (i == (node.end - 1)) {
+
+					auto constructedText =
+						this->constructText(addingStr, addingColor);
+					constructedText.setStyle(addingStyle);
+					if (addingStrStart != 0) {
+					}
+					// printf("adding %s \n", addingStr.c_str());
+					textVector.push_back(constructedText);
+					addingStr = {};
+					addingStrStart = i;
+				}
+			}
+
+			if (_char == '\n') {
+				// printf("addingStr: %s \n", addingStr.c_str());
+				if (!addingStr.empty()) {
+					auto constructedText =
+						this->constructText(addingStr, addingColor);
+					constructedText.setStyle(addingStyle);
+					// printf("adding %s \n", addingStr.c_str());
+					textVector.push_back(constructedText);
+					addingStr = {};
+					addingStrStart = i;
 				}
 
-			} else if (i == (node.end - 1)) {
+				// printf("pushing newline at %i \n", i);
+				textVector.push_back(this->constructText("\n"));
 
-				auto constructedText =
-					this->constructText(addingStr, addingColor);
-				constructedText.setStyle(addingStyle);
-				if (addingStrStart != 0) {
-				}
-				printf("adding %s \n", addingStr.c_str());
-				this->highlightTree.push_back(constructedText);
-				addingStr = {};
-				addingStrStart = i;
+				this->highlightTree.push_back(textVector);
+
+				textVector = {};
 			}
 		}
 
-		if (_char == '\n') {
-			printf("addingStr: %s \n", addingStr.c_str());
-			if (!addingStr.empty()) {
-				auto constructedText =
-					this->constructText(addingStr, addingColor);
-				constructedText.setStyle(addingStyle);
-				printf("adding %s \n", addingStr.c_str());
-				this->highlightTree.push_back(constructedText);
-				addingStr = {};
-				addingStrStart = i;
-			}
+		// Add the remaining string if we have it.
+		textVector.push_back(
+			this->constructText(addingStr, tgui::Color::White));
+		printf("added %s \n", addingStr.c_str());
 
-			printf("pushing newline at %i \n", i);
-			this->highlightTree.push_back(this->constructText("\n"));
-		}
+		if (!textVector.empty())
+			this->highlightTree.push_back(textVector);
 	}
-	// Add the remaining string if we have it.
-	this->highlightTree.push_back(
-		this->constructText(addingStr, tgui::Color::White));
-	printf("added %s \n", addingStr.c_str());
-
 	/*
 for (auto item : highlightTree) {
 	if (item.getString() == "\n") {
@@ -160,21 +185,21 @@ for (auto item : highlightTree) {
 }
 */
 
-	printf("m_text: \n%s \n", m_text.toStdString().c_str());
-}
+	// printf("m_text: \n%s \n", m_text.toStdString().c_str());
 
-void CodeEditor::keyPressed(const Event::KeyEvent &event) {
-	// FIXME: ADD TAB KEY FUNCTIONALITY
-	TextArea::keyPressed(event);
+	std::cout << this->highlightTree.size() << std::endl;
 }
 
 CodeEditor::CodeEditor() {
+
 	this->syntaxParser = ts_parser_new();
 	ts_parser_set_language(this->syntaxParser, tree_sitter_lua());
 
 	this->onTextChange.connect([&](const tgui::String &text) {
-		this->constructHighlightedText(text);
+		this->constructHighlightedText(text, this->highlightTree.size() > 0);
 	});
+
+	this->setMouseCursor(Cursor::Type::Text);
 }
 
 CodeEditor::~CodeEditor() { ts_parser_delete(this->syntaxParser); }
@@ -729,7 +754,8 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 		lineIndex.setPosition(
 			{CODE_EDITOR_LEFT_COLUMN - lineIndex.getLineWidth(), 0});
 		target.drawText(states, lineIndex);
-
+		target.drawFilledRect(states, {2, lineIndex.getLineHeight()},
+							  tgui::Color::White);
 		states.transform.translate({0, lineIndex.getLineHeight()});
 	}
 
@@ -757,7 +783,10 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 
 		// Draw the background of the selected text
 		for (const auto &selectionRect : m_selectionRects) {
-			states.transform.translate({selectionRect.left, selectionRect.top});
+
+			auto leftSelection =
+				max(selectionRect.left, CODE_EDITOR_LEFT_COLUMN);
+			states.transform.translate({leftSelection, selectionRect.top});
 			target.drawFilledRect(
 				states,
 				{selectionRect.width,
@@ -767,22 +796,13 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 					  m_lineHeight)},
 				tgui::Color::applyOpacity(m_selectedTextBackgroundColorCached,
 										  m_opacityCached));
-			states.transform.translate(
-				{-selectionRect.left, -selectionRect.top});
+			states.transform.translate({-leftSelection, -selectionRect.top});
 		}
 
 		// Draw the text
 		if (m_text.empty())
 			target.drawText(states, m_defaultText);
 		else {
-			// FIXME: Fix selection in the editor, objects are offset for some
-			// reason!
-			if (m_selStart != m_selEnd) {
-				target.drawText(states, m_textSelection1);
-				target.drawText(states, m_textSelection2);
-				target.drawText(states, m_textAfterSelection1);
-				target.drawText(states, m_textAfterSelection2);
-			}
 
 			if (m_selStart == m_selEnd)
 				states.transform.translate({CODE_EDITOR_LEFT_COLUMN, 0});
@@ -795,28 +815,30 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 			}
 
 			// printf("=== \n");
-			for (const auto &text : this->highlightTree) {
+			for (const auto &textContainer : this->highlightTree) {
 
-				target.drawText(states, text);
+				for (const auto &text : textContainer) {
+					target.drawText(states, text);
 
-				Vector2f vector;
+					Vector2f vector;
 
-				vector = {text.getLineWidth(), 0};
-				if (text.getString() == "\n") {
-					states.transform.translate({-offsetPos.x, 0});
-					offsetPos.x = 0;
-					vector.y = text.getLineHeight();
+					vector = {text.getLineWidth(), 0};
+					if (text.getString() == "\n") {
+						states.transform.translate({-offsetPos.x, 0});
+						offsetPos.x = 0;
+						vector.y = text.getLineHeight();
 
-					// printf("\\n");
+						// printf("\\n");
+					}
+
+					/*
+					printf("%s: %f, %f \n",
+					text.getString().toStdString().c_str(), vector.x, vector.y);
+						   */
+
+					states.transform.translate(vector);
+					offsetPos += vector;
 				}
-
-				/*
-				printf("%s: %f, %f \n", text.getString().toStdString().c_str(),
-					   vector.x, vector.y);
-					   */
-
-				states.transform.translate(vector);
-				offsetPos += vector;
 			}
 			// printf("=== \n");
 			if (m_selStart != m_selEnd) {
@@ -889,7 +911,7 @@ Text CodeEditor::constructText(const tgui::String &text,
 	cloneText.setFont(m_fontCached);
 	cloneText.setColor(color);
 	cloneText.setString(text);
-	cloneText.setCharacterSize(getTextSize());
+	cloneText.setCharacterSize(m_textSize);
 
 	return cloneText;
 }

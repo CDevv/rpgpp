@@ -31,6 +31,7 @@ void do_tree_node(TSTreeCursor cursor, TSNode node) {
 
 CodeFileView::CodeFileView() {
 	codeEditor = CodeEditor::create();
+	codeEditor->setTextSize(24);
 	codeEditor->setSize({"100%", "100%"});
 	widgetContainer.push_back(codeEditor);
 }
@@ -57,7 +58,6 @@ void CodeFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 		*/
 
 		codeEditor->setText(ptr->get()->getFileContents());
-		codeEditor->setTextSize(24);
 		addWidgets(layout);
 	}
 }

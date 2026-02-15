@@ -3,11 +3,11 @@
 #include "TGUI/Loading/Theme.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/Group.hpp"
+#include "editor.hpp"
+#include "raylib.h"
 #include "screens/aboutScreen.h"
 #include "screens/guiScreen.hpp"
 #include "screens/welcomeScreen.hpp"
-#include "editor.hpp"
-#include "raylib.h"
 #include "services/translationService.hpp"
 #include "updatable.hpp"
 #include <TGUI/AllWidgets.hpp>
@@ -29,7 +29,7 @@ EditorGuiService::EditorGuiService() {
 }
 
 void EditorGuiService::init() {
-    currentCursor = MOUSE_CURSOR_DEFAULT;
+	currentCursor = MOUSE_CURSOR_DEFAULT;
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT, "RPG++ Editor");
 
@@ -37,8 +37,8 @@ void EditorGuiService::init() {
 }
 
 void EditorGuiService::resetUi() {
-    ThemeService &theme = Editor::instance->getThemeService();
-    ConfigurationService &configService = Editor::instance->getConfiguration();
+	ThemeService &theme = Editor::instance->getThemeService();
+	ConfigurationService &configService = Editor::instance->getConfiguration();
 
 	this->reset_gui_r = false;
 	// Check if we already have a gui already setup, if we do.. don't load
@@ -51,9 +51,9 @@ void EditorGuiService::resetUi() {
 	string configTheme;
 
 	try {
-	    configTheme = configService.getStringValue("theme");
+		configTheme = configService.getStringValue("theme");
 	} catch (const std::exception &e) {
-	    configTheme = "Dark";
+		configTheme = "Dark";
 	}
 
 	theme.setTheme(configTheme);
@@ -85,10 +85,11 @@ void EditorGuiService::uiLoop() {
 		}
 
 		if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
-            leftMouseHeld = true;
+			leftMouseHeld = true;
 		} else {
-		    if (leftMouseHeld) {
-				currentScreen->leftMouseReleased(GetMouseX(), GetMouseY() - MENUBAR_H);
+			if (leftMouseHeld) {
+				currentScreen->leftMouseReleased(GetMouseX(),
+												 GetMouseY() - MENUBAR_H);
 				leftMouseHeld = false;
 			}
 		}
@@ -180,7 +181,8 @@ void EditorGuiService::createLogoCenter(
 	const tgui::GrowVerticalLayout::Ptr &layout) {
 
 	const auto boxLayout = tgui::BoxLayout::create({"100%", 96});
-	std::string logoPath = Editor::instance->getFs().getResourcePath("logo-ups.png");
+	std::string logoPath =
+		Editor::instance->getFs().getResourcePath("logo-ups.png");
 	const auto welcomePic = tgui::Picture::create(logoPath.c_str());
 	welcomePic->setOrigin({0.5, 0.5});
 	welcomePic->setPosition({"50%", "50%"});
@@ -204,7 +206,8 @@ void EditorGuiService::initMenuBar() {
 	auto &ts = Editor::instance->getTranslations();
 
 	const auto &fileOptionsTranslation = ts.getKey("menu.file");
-	const auto &fileOpenProjectTranslation = ts.getKey("menu.file.open_project");
+	const auto &fileOpenProjectTranslation =
+		ts.getKey("menu.file.open_project");
 
 	menuBar->addMenu(fileOptionsTranslation);
 	menuBar->addMenuItem(ts.getKey("menu.file.new_project"));
@@ -243,7 +246,8 @@ void EditorGuiService::initMenuBar() {
 
 void EditorGuiService::gotoPreviousScreen() {
 	if (!this->screenHistory.empty()) {
-		std::unique_ptr<UIScreen> lastScreen = std::move(this->screenHistory.back());
+		std::unique_ptr<UIScreen> lastScreen =
+			std::move(this->screenHistory.back());
 		this->screenHistory.pop_back();
 
 		auto group = this->uiChangePreInit(lastScreen.get());

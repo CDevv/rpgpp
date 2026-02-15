@@ -17,7 +17,6 @@ class CodeEditor : public tgui::TextArea {
 	CodeEditor();
 	~CodeEditor();
 
-	void keyPressed(const tgui::Event::KeyEvent &event) override;
 	void draw(tgui::BackendRenderTarget &target,
 			  tgui::RenderStates states) const override;
 
@@ -31,17 +30,24 @@ class CodeEditor : public tgui::TextArea {
 							 const tgui::Color &color) const;
 	bool canGainFocus() const override;
 	bool leftMousePressed(tgui::Vector2f pos) override;
+
 	void mouseMoved(tgui::Vector2f pos) override;
+
 	bool scrolled(float delta, tgui::Vector2f pos, bool touch) override;
 
-	std::vector<tgui::Text> highlightTree;
+	std::vector<std::vector<tgui::Text>> highlightTree;
 	void parseNode(const TSTreeCursor &cursor, const TSNode &node,
 				   std::vector<EditorHighlighting::HighlighterStruct> &vector);
-	void constructHighlightedText(const tgui::String &text);
+	void constructHighlightedText(const tgui::String &text,
+								  bool editOnlyOnCaret = false);
+	std::vector<EditorHighlighting::HighlighterStruct>
+	getStructsFromText(const tgui::String &text);
 
 	tgui::Vector2<std::size_t> findCaretPosition(tgui::Vector2f pos) const;
+
 	void updateSelectionTexts();
 	void recalculatePositions();
+
 	void recalculateVisibleLines();
 	std::size_t getColumnAt(std::size_t a) const;
 	std::size_t getLineAt(std::size_t a) const;

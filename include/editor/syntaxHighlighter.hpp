@@ -20,6 +20,7 @@ struct TextStyling {
 	tgui::Color color;
 	tgui::TextStyle textStyle;
 };
+
 } // namespace EditorHighlighting
 
 #endif /* RPGPP_SYNTAX_HIGHLIGHTER */
