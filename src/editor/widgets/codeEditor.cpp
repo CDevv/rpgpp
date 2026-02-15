@@ -34,7 +34,10 @@ void CodeEditor::parseNode(
 	const TSTreeCursor &cursor, const TSNode &node,
 	std::vector<EditorHighlighting::HighlighterStruct> &vector) {
 
-	printf("%s \n", ts_node_type(node));
+	/*
+printf("%s : %u:%u\n", ts_node_type(node), ts_node_start_byte(node),
+	   ts_node_end_byte(node));
+	   */
 	vector.push_back(
 		{ts_node_type(node), ts_node_start_byte(node), ts_node_end_byte(node)});
 
@@ -50,7 +53,6 @@ void CodeEditor::parseNode(
 // TODO: IMPLEMENT A BETTER SYNTAX COLORS MAP!
 std::map<std::string, EditorHighlighting::TextStyling> SYNTAX_COLORS = {
 	{"local", {tgui::Color::Red, tgui::TextStyle::Regular}},
-	{"ERROR", {tgui::Color::Red, tgui::TextStyle::Italic}},
 	{"number", {tgui::Color::Green, tgui::TextStyle::Regular}},
 	{"string_content", {tgui::Color::Cyan, tgui::TextStyle::Regular}},
 	{"identifier", {tgui::Color::Magenta, tgui::TextStyle::Regular}},
@@ -60,7 +62,9 @@ std::map<std::string, EditorHighlighting::TextStyling> SYNTAX_COLORS = {
 	{"(", {tgui::Color::White, tgui::TextStyle::Regular}},
 	{")", {tgui::Color::White, tgui::TextStyle::Regular}},
 	{"end", {tgui::Color::Yellow, tgui::TextStyle::Regular}},
-};
+	{"--", {tgui::Color(84, 81, 103), tgui::TextStyle::Regular}},
+	{"comment_content", {tgui::Color(84, 81, 103), tgui::TextStyle::Regular}},
+	{"ERROR", {tgui::Color::Red, tgui::TextStyle::Italic}}};
 
 void CodeEditor::constructHighlightedText(const tgui::String &text) {
 	std::vector<EditorHighlighting::HighlighterStruct> highlighter = {};
@@ -80,6 +84,7 @@ void CodeEditor::constructHighlightedText(const tgui::String &text) {
 
 	// FIXME: i don't know if this is good enough :cry:
 
+	int addingStrStart = 0;
 	std::string addingStr = {};
 	tgui::Color addingColor = tgui::Color::White;
 	tgui::TextStyle addingStyle = tgui::TextStyle::Regular;
@@ -87,6 +92,13 @@ void CodeEditor::constructHighlightedText(const tgui::String &text) {
 
 	for (int i = 0; i < sizeOfText; i++) {
 		const auto &_char = m_text[i];
+
+		if (_char != '\n') {
+			printf("%c \n", _char);
+		} else {
+			printf("\\n \n");
+		}
+
 		if (_char != '\n')
 			addingStr += _char;
 
@@ -95,7 +107,7 @@ void CodeEditor::constructHighlightedText(const tgui::String &text) {
 			if (i == (node.start - 1)) {
 
 				if (SYNTAX_COLORS.count(nodeType) == 1) {
-					std::cout << nodeType << std::endl;
+					printf("%s: %u:%u \n", nodeType, node.start, node.end);
 					addingColor = SYNTAX_COLORS[nodeType].color;
 					addingStyle = SYNTAX_COLORS[nodeType].textStyle;
 				} else {
@@ -103,21 +115,52 @@ void CodeEditor::constructHighlightedText(const tgui::String &text) {
 					addingStyle = tgui::TextStyle::Regular;
 				}
 
-			} else if (i == node.end) {
+			} else if (i == (node.end - 1)) {
 
 				auto constructedText =
 					this->constructText(addingStr, addingColor);
 				constructedText.setStyle(addingStyle);
+				if (addingStrStart != 0) {
+				}
+				printf("adding %s \n", addingStr.c_str());
 				this->highlightTree.push_back(constructedText);
 				addingStr = {};
+				addingStrStart = i;
 			}
 		}
 
-		if (_char == '\n')
+		if (_char == '\n') {
+			printf("addingStr: %s \n", addingStr.c_str());
+			if (!addingStr.empty()) {
+				auto constructedText =
+					this->constructText(addingStr, addingColor);
+				constructedText.setStyle(addingStyle);
+				printf("adding %s \n", addingStr.c_str());
+				this->highlightTree.push_back(constructedText);
+				addingStr = {};
+				addingStrStart = i;
+			}
+
+			printf("pushing newline at %i \n", i);
 			this->highlightTree.push_back(this->constructText("\n"));
+		}
 	}
 	// Add the remaining string if we have it.
-	this->highlightTree.push_back(this->constructText(addingStr, addingColor));
+	this->highlightTree.push_back(
+		this->constructText(addingStr, tgui::Color::White));
+	printf("added %s \n", addingStr.c_str());
+
+	/*
+for (auto item : highlightTree) {
+	if (item.getString() == "\n") {
+		printf("\\n \n");
+	} else {
+		printf("%s \n", item.getString().toStdString().c_str());
+	}
+}
+*/
+
+	printf("m_text: \n%s \n", m_text.toStdString().c_str());
 }
 
 void CodeEditor::keyPressed(const Event::KeyEvent &event) {
@@ -750,6 +793,8 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 				states.transform.translate({CODE_EDITOR_LEFT_COLUMN, 0});
 				states.transform.translate({m_paddingCached.getLeft(), 0});
 			}
+
+			// printf("=== \n");
 			for (const auto &text : this->highlightTree) {
 
 				target.drawText(states, text);
@@ -761,11 +806,19 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 					states.transform.translate({-offsetPos.x, 0});
 					offsetPos.x = 0;
 					vector.y = text.getLineHeight();
+
+					// printf("\\n");
 				}
+
+				/*
+				printf("%s: %f, %f \n", text.getString().toStdString().c_str(),
+					   vector.x, vector.y);
+					   */
 
 				states.transform.translate(vector);
 				offsetPos += vector;
 			}
+			// printf("=== \n");
 			if (m_selStart != m_selEnd) {
 				states.transform.translate({-CODE_EDITOR_LEFT_COLUMN, 0});
 				states.transform.translate({-m_paddingCached.getLeft(), 0});
