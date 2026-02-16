@@ -1,7 +1,6 @@
 #include "roomLayerViewVisitor.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Label.hpp"
-#include "roomToolbox.hpp"
 
 RoomLayerViewVisitor::RoomLayerViewVisitor() {
 	tileSetView = TileSetView::create();

@@ -26,6 +26,8 @@
   "screen.project.roomview.mapwidth": "Độ rộng Map",
   "screen.project.roomview.mapheight": "Độ cao Map",
   "screen.project.roomview.tileset_file": "Tệp Tileset",
+  "screen.project.toolbar.play": "Chạy chương trình",
+  "screen.project.toolbar.build": "Dịch và tạo chương trình",
 
   "dialog.new_file.title": "Tạo tài nguyên",
   "dialog.new_file.name": "Tên",

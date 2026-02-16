@@ -18,7 +18,6 @@
 #include "tile.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
-#include "widgets/roomToolbox.hpp"
 #include "widgets/worldView.hpp"
 #include <cmath>
 #include <memory>

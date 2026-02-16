@@ -26,6 +26,8 @@
   "screen.project.roomview.mapwidth": "Map Width",
   "screen.project.roomview.mapheight": "Map Height",
   "screen.project.roomview.tileset_file": "Tileset File",
+  "screen.project.toolbar.play": "Play",
+  "screen.project.toolbar.build": "Build",
 
   "dialog.new_file.title": "New Resource",
   "dialog.new_file.name": "Name",

@@ -5,7 +5,7 @@
 #include "TGUI/Widget.hpp"
 #include "raylib.h"
 #include "updatable.hpp"
-#include "widgets/roomToolbox.hpp"
+#include "constants/room.hpp"
 #include <memory>
 
 class WorldView : public tgui::CanvasRaylib, public IUpdatable {

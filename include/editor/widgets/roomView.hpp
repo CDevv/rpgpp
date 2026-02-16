@@ -9,7 +9,6 @@
 #include "room.hpp"
 #include "tileSetView.hpp"
 #include "tilemap.hpp"
-#include "widgets/roomToolbox.hpp"
 #include "widgets/worldView.hpp"
 #include <memory>
 

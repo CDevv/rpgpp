@@ -3,7 +3,6 @@
 
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
-#include "roomToolbox.hpp"
 #include "tileSetView.hpp"
 #include <enum_visitor/enum_visitor.hpp>
 

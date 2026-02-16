@@ -14,6 +14,7 @@
 #include "guiScreen.hpp"
 #include "projectFile.hpp"
 #include "projectFileVisitor.hpp"
+#include "translationService.hpp"
 #include "widgets/fileTab.hpp"
 #include <memory>
 #include <vector>
@@ -53,7 +54,7 @@ class ProjectScreen : public UIScreen {
 
 	void switchView(tgui::String id);
 	void clearView();
-	tgui::Group::Ptr createToolBar();
+	tgui::Group::Ptr createToolBar(TranslationService &ts);
 	ResizableContainer::Ptr createResourcesList();
 
   public:

@@ -3,9 +3,7 @@
 #include "gamedata.hpp"
 #include "raylib.h"
 #include "tileset.hpp"
-#include "widgets/roomToolbox.hpp"
 #include "widgets/worldView.hpp"
-#include <cstdio>
 
 TileSetView::TileSetView() {}
 

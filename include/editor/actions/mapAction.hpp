@@ -3,9 +3,7 @@
 
 #include "action.hpp"
 #include "room.hpp"
-#include "roomToolbox.hpp"
 #include "roomView.hpp"
-#include "tilemap.hpp"
 #include <memory>
 #include <utility>
 

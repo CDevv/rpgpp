@@ -2,6 +2,7 @@
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widgets/Scrollbar.hpp"
 #include "components/resizableContainer.hpp"
+#include "components/tooltip.hpp"
 #include "services/editorGuiService.hpp"
 #include "services/fileSystemService.hpp"
 #include "TGUI/Color.hpp"
@@ -28,6 +29,7 @@
 #include "raylib.h"
 #include "services/editorGuiService.hpp"
 #include "services/fileSystemService.hpp"
+#include "translationService.hpp"
 #include "widgets/fileTab.hpp"
 #include "widgets/newFileDialog.hpp"
 #include <cstdio>
@@ -118,7 +120,7 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	layout->add(resourcesList);
 
 	// Tool bar
-	toolBar = createToolBar();
+	toolBar = createToolBar(ts);
 	layout->add(toolBar);
 
 	// File tabs
@@ -201,7 +203,7 @@ void screens::ProjectScreen::clearView() {
 	empty->addWidgets(fileViewGroup);
 }
 
-tgui::Group::Ptr screens::ProjectScreen::createToolBar() {
+tgui::Group::Ptr screens::ProjectScreen::createToolBar(TranslationService &ts) {
 	auto toolBar = tgui::Group::create({"100%", TOOLBAR_H});
 	toolBar->setPosition(0, 0);
 	// toolBar->getRenderer()->setSpaceBetweenWidgets(8.0f);
@@ -228,14 +230,17 @@ tgui::Group::Ptr screens::ProjectScreen::createToolBar() {
 
 	auto &fs = Editor::instance->getFs();
 
+	auto playBtnTooltip = Tooltip::create(ts.getKey("screen.project.toolbar.play"));
 	auto playBtn = tgui::BitmapButton::create();
 	auto playtestImg = tgui::Texture(fs.getResourcePath("playtest.png"));
 	playBtn->setImage(playtestImg);
 	playBtn->setSize({barSize, "100%"});
 	playBtn->setPosition({tgui::bindRight(projectLabel), 0});
 	playBtn->onPress([] { Editor::instance->getProject()->runProject(); });
+	playBtn->setToolTip(playBtnTooltip);
 	toolBar->add(playBtn, "playBtn");
 
+	auto buildTooltip = Tooltip::create(ts.getKey("screen.project.toolbar.build"));
 	auto buildBtn = tgui::BitmapButton::create();
 	auto buildImg = tgui::Texture(fs.getResourcePath("build.png"));
 	buildBtn->setImage(buildImg);
@@ -248,6 +253,7 @@ tgui::Group::Ptr screens::ProjectScreen::createToolBar() {
 		auto data = project->generateStruct();
 		serializeDataToFile(path.u8string(), data);
 	});
+	buildBtn->setToolTip(buildTooltip);
 	toolBar->add(buildBtn);
 
 	return toolBar;

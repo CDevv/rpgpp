@@ -1,6 +1,5 @@
 #include "widgets/worldView.hpp"
 #include "TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp"
-#include "TGUI/Backend/Window/BackendGui.hpp"
 #include "TGUI/Event.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
@@ -8,7 +7,6 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "updatable.hpp"
-#include "widgets/roomToolbox.hpp"
 #include <TGUI/Backend/Renderer/Raylib/BackendRendererRaylib.hpp>
 #include <TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp>
 #include <TGUI/Backend/Window/Backend.hpp>

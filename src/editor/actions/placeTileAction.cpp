@@ -1,10 +1,7 @@
 #include "actions/placeTileAction.hpp"
-#include "gamedata.hpp"
 #include "actions/mapAction.hpp"
 #include "raylib.h"
 #include "room.hpp"
-#include "widgets/roomToolbox.hpp"
-#include <utility>
 
 PlaceTileAction::PlaceTileAction(MapActionData a) : MapAction(a) {}
 

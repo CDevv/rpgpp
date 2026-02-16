@@ -5,7 +5,6 @@
 #include "gamedata.hpp"
 #include "room.hpp"
 #include "tileSetView.hpp"
-#include "widgets/roomToolbox.hpp"
 #include "widgets/roomView.hpp"
 #include <memory>
 

@@ -6,6 +6,7 @@
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
+#include "components/tooltip.hpp"
 #include "editor.hpp"
 #include "fileTabRenderer.hpp"
 #include "raylib.h"
@@ -31,6 +32,8 @@ FileTab::FileTab(const char *typeName, bool initRenderer)
 					   1.25f) +
 			m_bordersCached.getTopPlusBottom());
 	}
+	tooltip = Tooltip::create("");
+    //setToolTip(tooltip);
 }
 
 FileTab::Ptr FileTab::create() { return std::make_shared<FileTab>(); }
@@ -89,6 +92,8 @@ void FileTab::manualMouseMoved(tgui::Vector2f pos) {
     if (isHoldingMouse and (abs(deltaMousePos.x) >= BUFFER_BEFORE_TAB_MOVE.x or abs(deltaMousePos.y) >= BUFFER_BEFORE_TAB_MOVE.y)) {
         isDragging = true;
     }
+
+    //if (m_hoveringTab > 0) tooltip->setText(m_tabs[m_hoveringTab].id);
 
     if (isDragging) {
         SetMouseCursor(MOUSE_CURSOR_RESIZE_ALL);

@@ -4,6 +4,7 @@
 #include "TGUI/Signal.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
+#include "components/tooltip.hpp"
 #include "fileTabRenderer.hpp"
 #include <cstddef>
 
@@ -17,6 +18,8 @@ class FileTab : public tgui::Tabs {
     tgui::Vector2f offsetMousePos = {0, 0};
     int draggedTab = -1;
     int swappedTab = -1;
+
+    Tooltip::Ptr tooltip;
 
     static const int MARGIN_LR = 8;
     static const int CLOSE_BUTTON_SIZE = 12;

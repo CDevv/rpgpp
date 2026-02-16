@@ -2,20 +2,23 @@
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
+#include "TGUI/Widgets/Scrollbar.hpp"
 #include "editor.hpp"
 #include "enum_visitor/enum_visitor.hpp"
 #include "fileViews/fileView.hpp"
+#include "widgets/toolbox.hpp"
 #include "widgets/propertiesBox.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "roomViewModesHandler.hpp"
 #include "tileSetView.hpp"
 #include "widgets/fileField.hpp"
-#include "widgets/roomToolbox.hpp"
 #include "widgets/roomView.hpp"
+#include "worldView.hpp"
 #include <memory>
 
 RoomFileView::RoomFileView() {
+    RoomTool a;
     TranslationService &ts = Editor::instance->getTranslations();
 
 	roomView = RoomView::create();
@@ -93,18 +96,22 @@ RoomFileView::RoomFileView() {
 
 	widgetContainer.push_back(props);
 
-	auto toolbox = RoomToolbox::create();
-	toolbox->setSize({164, TOOLBOX_H});
-	toolbox->addTool("tool_none.png", RoomTool::TOOL_NONE);
-	toolbox->addTool("tool_place.png", RoomTool::TOOL_PLACE);
-	toolbox->addTool("tool_erase.png", RoomTool::TOOL_ERASE);
-	toolbox->addTool("tool_edit.png", RoomTool::TOOL_EDIT);
-	toolbox->onToolPressed([this](RoomTool tool) {
-		tileSetView->setTool(tool);
-		roomView->setTool(tool);
+	// toolbox->onBrushPressed(
+	// 	[this](bool brushMode) { roomView->setBrush(brushMode); });
+
+	auto toolbox = Toolbox<RoomTool>::create();
+	toolbox->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
+	toolbox->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
+	toolbox->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), TOOLBOX_H});
+	toolbox->addItem(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_NONE, "Mouse", "tool_none.png"});
+	toolbox->addItem(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_PLACE, "Place", "tool_place.png"});
+	toolbox->addItem(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_ERASE, "Erase", "tool_erase.png"});
+	toolbox->addItem(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_EDIT, "Edit", "tool_edit.png"});
+	toolbox->onItemClicked([this](ToolboxItem<RoomTool> tool) {
+        tileSetView->setTool(tool.id);
+        roomView->setTool(tool.id);
+	    cout << "Selected tool: " << tool.text << endl;
 	});
-	toolbox->onBrushPressed(
-		[this](bool brushMode) { roomView->setBrush(brushMode); });
 	widgetContainer.push_back(toolbox);
 }
 
