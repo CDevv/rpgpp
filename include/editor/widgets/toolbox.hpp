@@ -49,7 +49,8 @@ public:
     float getSpaceBetweenItems() const;
     void setItemPadding(float padding);
     float getItemPadding() const;
-    void addItem(const ToolboxItem<Type> &item, int idx = -1);
+    void addTool(const ToolboxItem<Type> &item, int idx = -1);
+    void addWidget(tgui::Widget::Ptr widget, int idx = -1);
     void removeItemById(const Type &id);
 
     tgui::SignalTyped<const ToolboxItem<Type> &> onItemClicked = {"OnItemClicked"};
@@ -108,7 +109,7 @@ void Toolbox<T>::resetToolSelection(std::string groupToReset) {
 }
 
 template<typename T>
-void Toolbox<T>::addItem(const ToolboxItem<T> &item, int idx) {
+void Toolbox<T>::addTool(const ToolboxItem<T> &item, int idx) {
     tgui::Texture texture(
         Editor::instance->getFs().getResourcePath(item.iconResourcePath));
 
@@ -148,6 +149,11 @@ void Toolbox<T>::addItem(const ToolboxItem<T> &item, int idx) {
     this->container->insert(idx, btn);
     toolGroup[item.group].insert(item.id);
 };
+
+template<typename T>
+void Toolbox<T>::addWidget(tgui::Widget::Ptr widget, int idx) {
+    this->container->insert(idx, widget);
+}
 
 template<typename T>
 void Toolbox<T>::removeItemById(const T &id) {

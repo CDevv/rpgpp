@@ -1,5 +1,6 @@
 #include "fileViews/roomFileView.hpp"
 #include "TGUI/String.hpp"
+#include "TGUI/Widgets/CheckBox.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/Scrollbar.hpp"
@@ -103,10 +104,19 @@ RoomFileView::RoomFileView() {
 	toolbox->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
 	toolbox->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
 	toolbox->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), TOOLBOX_H});
-	toolbox->addItem(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_NONE, "Mouse", "tool_none.png"});
-	toolbox->addItem(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_PLACE, "Place", "tool_place.png"});
-	toolbox->addItem(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_ERASE, "Erase", "tool_erase.png"});
-	toolbox->addItem(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_EDIT, "Edit", "tool_edit.png"});
+	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_NONE, "Mouse", "tool_none.png"});
+	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_PLACE, "Place", "tool_place.png"});
+	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_ERASE, "Erase", "tool_erase.png"});
+	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_EDIT, "Edit", "tool_edit.png"});
+
+	auto brushToggle = tgui::CheckBox::create("Enable brush mode");
+	brushToggle->onChange([this, brushToggle]() {
+	    roomView->setBrush(brushToggle->isChecked());
+	});
+	auto brushToggleSize = TOOLBOX_H - toolbox->getRenderer()->getPadding().getTop();
+	brushToggle->setSize({brushToggleSize, brushToggleSize});
+	toolbox->addWidget(brushToggle);
+
 	toolbox->onItemClicked([this](ToolboxItem<RoomTool> tool) {
         tileSetView->setTool(tool.id);
         roomView->setTool(tool.id);
