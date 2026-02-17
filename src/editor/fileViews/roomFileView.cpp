@@ -12,10 +12,10 @@
 #include "raylib.h"
 #include "room.hpp"
 #include "roomViewModesHandler.hpp"
-#include "tileSetView.hpp"
+#include "views/tileSetView.hpp"
 #include "widgets/fileField.hpp"
-#include "widgets/roomView.hpp"
-#include "worldView.hpp"
+#include "views/roomView.hpp"
+#include "views/worldView.hpp"
 #include <memory>
 
 RoomFileView::RoomFileView() {

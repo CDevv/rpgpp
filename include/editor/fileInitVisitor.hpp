@@ -1,12 +1,10 @@
 #ifndef _RPGPP_FILEINITVISITOR_H
 #define _RPGPP_FILEINITVISITOR_H
 
-#include "fileSystemService.hpp"
+#include "services/fileSystemService.hpp"
 #include "widgets/newFileDialog.hpp"
-#include "projectFile.hpp"
 #include <array>
 #include <functional>
-#include <memory>
 
 class FileInitVisitor {
   private:

@@ -4,20 +4,16 @@
 #include "TGUI/Widgets/ContextMenu.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
-#include "TGUI/Widgets/HorizontalWrap.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "components/resizableContainer.hpp"
-#include "editor.hpp"
 #include "fileInitVisitor.hpp"
-#include "fileSystemService.hpp"
-#include "fileViews/fileView.hpp"
+#include "services/fileSystemService.hpp"
 #include "guiScreen.hpp"
 #include "projectFile.hpp"
 #include "projectFileVisitor.hpp"
-#include "translationService.hpp"
+#include "services/translationService.hpp"
 #include "widgets/fileTab.hpp"
 #include <memory>
-#include <vector>
 
 namespace screens {
 class ProjectScreen : public UIScreen {

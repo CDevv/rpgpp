@@ -1,4 +1,4 @@
-#include "widgets/roomView.hpp"
+#include "views/roomView.hpp"
 #include "TGUI/Event.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
@@ -18,7 +18,7 @@
 #include "tile.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
-#include "widgets/worldView.hpp"
+#include "views/worldView.hpp"
 #include <cmath>
 #include <memory>
 #include <utility>

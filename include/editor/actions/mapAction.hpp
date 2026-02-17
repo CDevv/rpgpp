@@ -3,7 +3,7 @@
 
 #include "action.hpp"
 #include "room.hpp"
-#include "roomView.hpp"
+#include "views/roomView.hpp"
 #include <memory>
 #include <utility>
 

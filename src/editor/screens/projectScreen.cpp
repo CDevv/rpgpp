@@ -1,5 +1,6 @@
 #include "screens/projectScreen.hpp"
 #include "TGUI/Vector2.hpp"
+#include "TGUI/Widgets/MessageBox.hpp"
 #include "TGUI/Widgets/Scrollbar.hpp"
 #include "components/resizableContainer.hpp"
 #include "components/tooltip.hpp"
@@ -13,30 +14,22 @@
 #include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
-#include "TGUI/Widgets/ContextMenu.hpp"
 #include "TGUI/Widgets/Group.hpp"
-#include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
-#include "TGUI/Widgets/MessageBox.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
 #include "components/resizableContainer.hpp"
 #include "editor.hpp"
-#include "fileInitVisitor.hpp"
 #include "gamedata.hpp"
 #include "projectFile.hpp"
-#include "projectFileVisitor.hpp"
 #include "raylib.h"
 #include "services/editorGuiService.hpp"
 #include "services/fileSystemService.hpp"
-#include "translationService.hpp"
-#include "widgets/fileTab.hpp"
+#include "services/translationService.hpp"
 #include "widgets/newFileDialog.hpp"
 #include <cstdio>
 #include <filesystem>
 #include <memory>
-#include <system_error>
-#include <utility>
 #include <vector>
 
 void screens::ProjectScreen::layoutReload() {

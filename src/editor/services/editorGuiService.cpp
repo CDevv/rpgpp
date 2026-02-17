@@ -15,7 +15,7 @@
 #include <memory>
 #include <string>
 
-#include "editorOptionsScreen.h"
+#include "screens/editorOptionsScreen.h"
 
 constexpr int BASE_WINDOW_WIDTH = 800;
 constexpr int BASE_WINDOW_HEIGHT = 600;

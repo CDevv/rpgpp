@@ -1,15 +1,15 @@
 #include "fileViews/tilesetFileView.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "editor.hpp"
-#include "propertiesBox.hpp"
+#include "widgets/propertiesBox.hpp"
 #include "raylib.h"
-#include "tileSetView.hpp"
+#include "views/tileSetView.hpp"
 #include "tileset.hpp"
-#include "translationService.hpp"
+#include "services/translationService.hpp"
 #include "variant.hpp"
 #include "widgets/fileField.hpp"
 #include "widgets/intField.hpp"
-#include "widgets/worldView.hpp"
+#include "views/worldView.hpp"
 #include <algorithm>
 
 TileSetFileView::TileSetFileView() {

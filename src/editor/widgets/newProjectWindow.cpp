@@ -7,7 +7,7 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/Panel.hpp"
 #include "editor.hpp"
-#include "translationService.hpp"
+#include "services/translationService.hpp"
 #include "widgets/fileChooser.hpp"
 #include <memory>
 

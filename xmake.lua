@@ -109,7 +109,7 @@ end
 -- add_links("tree-sitter-lua", { kind = "static" })
 set_kind("binary")
 set_languages("cxx17")
-add_includedirs("include/", "include/editor/", os.dirs(path.join(os.scriptdir(), "include/editor/**")))
+add_includedirs("include/", "include/editor/", os.dirs(path.join(os.scriptdir())))
 add_files("src/editor/**.cpp")
 add_deps("rpgpp")
 add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit", "noop", "tree-sitter",

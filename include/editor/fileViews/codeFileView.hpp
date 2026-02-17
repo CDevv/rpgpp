@@ -1,7 +1,7 @@
 
 #ifndef RPGPP_CODEFILEVIEW_H
 #define RPGPP_CODEFILEVIEW_H
-#include "codeEditor.hpp"
+#include "widgets/codeEditor.hpp"
 #include "fileView.hpp"
 
 class CodeFileView : public FileView {

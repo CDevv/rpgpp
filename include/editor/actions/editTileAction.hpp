@@ -2,7 +2,7 @@
 #define _RPGPP_EDITTILEACTION_H
 
 #include "mapAction.hpp"
-#include "tileSetView.hpp"
+#include "views/tileSetView.hpp"
 
 class EditTileAction : public MapAction {
   public:

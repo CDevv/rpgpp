@@ -4,7 +4,7 @@
 #include "TGUI/Signal.hpp"
 #include "gamedata.hpp"
 #include "tileset.hpp"
-#include "widgets/worldView.hpp"
+#include "views/worldView.hpp"
 #include <memory>
 
 class TileSetView : public WorldView {

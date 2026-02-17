@@ -3,13 +3,13 @@
 
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
-#include "fileView.hpp"
+#include "fileViews/fileView.hpp"
 #include "gamedata.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "tileSetView.hpp"
 #include "tilemap.hpp"
-#include "widgets/worldView.hpp"
+#include "views/worldView.hpp"
 #include <memory>
 
 class RoomViewModesHandler;

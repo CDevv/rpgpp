@@ -1,9 +1,9 @@
-#include "tileSetView.hpp"
+#include "views/tileSetView.hpp"
 #include "TGUI/Vector2.hpp"
 #include "gamedata.hpp"
 #include "raylib.h"
 #include "tileset.hpp"
-#include "widgets/worldView.hpp"
+#include "views/worldView.hpp"
 
 TileSetView::TileSetView() {}
 

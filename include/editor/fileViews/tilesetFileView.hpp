@@ -2,7 +2,7 @@
 #define _RPGPP_FILEVIEWS_TILESETFILEVIEW_H
 
 #include "fileView.hpp"
-#include "tileSetView.hpp"
+#include "views/tileSetView.hpp"
 #include "variant.hpp"
 #include "widgets/fileField.hpp"
 #include "widgets/intField.hpp"

@@ -1,16 +1,16 @@
 #ifndef _RGPP_EDITOR_H
 #define _RGPP_EDITOR_H
 
-#include "editorGuiService.hpp"
-#include "fileSystemService.hpp"
+#include "services/editorGuiService.hpp"
+#include "services/fileSystemService.hpp"
 #include "project.hpp"
 #include "raylib.h"
-#include "translationService.hpp"
-#include "themeService.hpp"
+#include "services/translationService.hpp"
+#include "services/themeService.hpp"
 #include <memory>
 #include <string>
 
-#include "configurationService.hpp"
+#include "services/configurationService.hpp"
 
 #define RPGPP_VERSION 0.1
 
