@@ -82,6 +82,7 @@ template<typename T>
 Toolbox<T>::Toolbox() : tgui::ScrollablePanel() {
     getRenderer()->setPadding({2, 2, 2, 2});
     getRenderer()->setBorders({0, 0, 0, 0});
+    getRenderer()->setRoundedBorderRadius(0);
     this->container = tgui::GrowHorizontalLayout::create();
     this->container->getRenderer()->setPadding({0, 0, 0, 0});
     this->container->getRenderer()->setSpaceBetweenWidgets(spaceBetweenItems);
@@ -102,7 +103,12 @@ void Toolbox<T>::resetToolSelection(std::string groupToReset) {
         if (auto btn = std::dynamic_pointer_cast<tgui::BitmapButton>(widgets)) {
             ToolboxItemIdentifier<T> identifier = btn->getUserData<ToolboxItemIdentifier<T>>();
             if (groupToReset == identifier.group) {
-                btn->getRenderer()->setBackgroundColor(defaultBtn->getRenderer()->getBackgroundColor());
+                tgui::ButtonRenderer* renderer = btn->getRenderer();
+                tgui::ButtonRenderer* defaultRenderer = defaultBtn->getRenderer();
+                renderer->setBackgroundColor(defaultRenderer->getBackgroundColor());
+                renderer->setBackgroundColorHover(defaultRenderer->getBackgroundColorHover());
+                renderer->setTexture(defaultRenderer->getTexture());
+                renderer->setTextureHover(defaultRenderer->getTextureHover());
             }
         }
     }
@@ -143,7 +149,11 @@ void Toolbox<T>::addTool(const ToolboxItem<T> &item, int idx) {
         selectToolInGroup[item.group] = item.id;
         onItemClicked.emit(this, item);
         resetToolSelection(item.group);
-        btn->getRenderer()->setBackgroundColor(btn->getRenderer()->getBackgroundColorDown());
+        tgui::ButtonRenderer* renderer = btn->getRenderer();
+        renderer->setBackgroundColor(renderer->getBackgroundColorDown());
+        renderer->setBackgroundColorHover(renderer->getBackgroundColorDown());
+        renderer->setTexture(renderer->getTextureDown());
+        renderer->setTextureHover(renderer->getTextureDown());
     });
 
     this->container->insert(idx, btn);

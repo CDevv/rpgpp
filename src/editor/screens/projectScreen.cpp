@@ -206,7 +206,6 @@ void screens::ProjectScreen::clearView() {
 tgui::Group::Ptr screens::ProjectScreen::createToolBar(TranslationService &ts) {
 	auto toolBar = tgui::Group::create({"100%", TOOLBAR_H});
 	toolBar->setPosition(0, 0);
-	// toolBar->getRenderer()->setSpaceBetweenWidgets(8.0f);
 	toolBar->getRenderer()->setPadding(8);
 
 	auto barSize = toolBar->getSize().y;
@@ -271,7 +270,6 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 	for (auto filePath : project->getPaths(fileType)) {
 		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
 		fileBtn->setSize("100%", RESLIST_RES_BTN_H);
-		fileBtn->getRenderer()->setBackgroundColor(tgui::Color(0, 0, 0));
 		fileBtn->onPress(
 			[this, fileType, filePath] { addFileView(fileType, filePath); });
 		fileBtn->onRightMousePress([this, filePath] {
