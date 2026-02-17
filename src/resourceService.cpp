@@ -25,7 +25,7 @@ void ResourceService::addTextureFromFile(const std::string &filePath) {
 
 void ResourceService::unload() const {
   for (const auto &[name, texture] : textures) {
-    UnloadTexture(texture);
+	UnloadTexture(texture);
   }
 }
 

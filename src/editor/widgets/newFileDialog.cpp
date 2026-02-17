@@ -49,8 +49,8 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	confirmButton = tgui::Button::create(tService.getKey("dialog.new_file.confirm"));
 	confirmButton->setSize(BUTTON_W, BUTTON_H);
 	confirmButton->setPosition(
-        tgui::Layout("100%") - BUTTON_W - PADDING,
-        tgui::Layout("100%") - BUTTON_H - PADDING
+	tgui::Layout("100%") - BUTTON_W - PADDING,
+	tgui::Layout("100%") - BUTTON_H - PADDING
 	);
 
 	window->add(confirmButton);

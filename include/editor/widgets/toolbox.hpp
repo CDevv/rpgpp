@@ -11,171 +11,171 @@
 
 template <typename IdType>
 struct ToolboxItemIdentifier {
-    std::string group;
-    IdType id;
+	std::string group;
+	IdType id;
 };
 
 template <typename IdType>
 struct ToolboxItem : ToolboxItemIdentifier<IdType> {
-    std::string text{};
-    std::string iconResourcePath{};
+	std::string text{};
+	std::string iconResourcePath{};
 };
 
 template <typename Type>
 class Toolbox : public tgui::ScrollablePanel {
 private:
-    std::vector<ToolboxItem<Type>> toolboxItems;
-    float spaceBetweenItems = 4;
-    float itemPadding = 0;
+	std::vector<ToolboxItem<Type>> toolboxItems;
+	float spaceBetweenItems = 4;
+	float itemPadding = 0;
 
-    tgui::GrowHorizontalLayout::Ptr container;
-    std::map<std::string, set<Type>> toolGroup;
-    std::map<std::string, Type> selectToolInGroup;
+	tgui::GrowHorizontalLayout::Ptr container;
+	std::map<std::string, set<Type>> toolGroup;
+	std::map<std::string, Type> selectToolInGroup;
 
-    void resetToolSelection(std::string groupToReset);
+	void resetToolSelection(std::string groupToReset);
 
-    // void readjustContentSize();
+	// void readjustContentSize();
 public:
-    Toolbox();
-    ~Toolbox();
+	Toolbox();
+	~Toolbox();
 
-    typedef std::shared_ptr<Toolbox> Ptr;
-    typedef std::shared_ptr<const Toolbox> ConstPtr;
+	typedef std::shared_ptr<Toolbox> Ptr;
+	typedef std::shared_ptr<const Toolbox> ConstPtr;
 
-    static Toolbox::Ptr create();
-    static Toolbox::Ptr copy(Toolbox::ConstPtr other);
+	static Toolbox::Ptr create();
+	static Toolbox::Ptr copy(Toolbox::ConstPtr other);
 
-    void setSpaceBetweenItems(float space);
-    float getSpaceBetweenItems() const;
-    void setItemPadding(float padding);
-    float getItemPadding() const;
-    void addTool(const ToolboxItem<Type> &item, int idx = -1);
-    void addWidget(tgui::Widget::Ptr widget, int idx = -1);
-    void removeItemById(const Type &id);
+	void setSpaceBetweenItems(float space);
+	float getSpaceBetweenItems() const;
+	void setItemPadding(float padding);
+	float getItemPadding() const;
+	void addTool(const ToolboxItem<Type> &item, int idx = -1);
+	void addWidget(tgui::Widget::Ptr widget, int idx = -1);
+	void removeItemById(const Type &id);
 
-    tgui::SignalTyped<const ToolboxItem<Type> &> onItemClicked = {"OnItemClicked"};
+	tgui::SignalTyped<const ToolboxItem<Type> &> onItemClicked = {"OnItemClicked"};
 protected:
 	Widget::Ptr clone() const override;
 };
 
 template<typename T>
 void Toolbox<T>::setSpaceBetweenItems(float space) {
-    spaceBetweenItems = space;
+	spaceBetweenItems = space;
 }
 
 template<typename T>
 float Toolbox<T>::getSpaceBetweenItems() const {
-    return spaceBetweenItems;
+	return spaceBetweenItems;
 }
 
 template<typename T>
 void Toolbox<T>::setItemPadding(float padding) {
-    itemPadding = padding;
+	itemPadding = padding;
 }
 
 template<typename T>
 float Toolbox<T>::getItemPadding() const {
-    return itemPadding;
+	return itemPadding;
 }
 
 template<typename T>
 Toolbox<T>::Toolbox() : tgui::ScrollablePanel() {
-    getRenderer()->setPadding({2, 2, 2, 2});
-    getRenderer()->setBorders({0, 0, 0, 0});
-    getRenderer()->setRoundedBorderRadius(0);
-    this->container = tgui::GrowHorizontalLayout::create();
-    this->container->getRenderer()->setPadding({0, 0, 0, 0});
-    this->container->getRenderer()->setSpaceBetweenWidgets(spaceBetweenItems);
-    this->container->setPosition(0, 0);
-    this->container->setSize({"100%", "100%"});
-    this->add(this->container);
+	getRenderer()->setPadding({2, 2, 2, 2});
+	getRenderer()->setBorders({0, 0, 0, 0});
+	getRenderer()->setRoundedBorderRadius(0);
+	this->container = tgui::GrowHorizontalLayout::create();
+	this->container->getRenderer()->setPadding({0, 0, 0, 0});
+	this->container->getRenderer()->setSpaceBetweenWidgets(spaceBetweenItems);
+	this->container->setPosition(0, 0);
+	this->container->setSize({"100%", "100%"});
+	this->add(this->container);
 }
 
 template<typename T>
 Toolbox<T>::~Toolbox() {
-    this->container->removeAllWidgets();
+	this->container->removeAllWidgets();
 }
 
 template<typename T>
 void Toolbox<T>::resetToolSelection(std::string groupToReset) {
-    auto defaultBtn = tgui::Button::create();
-    for (const auto& widgets : this->container->getWidgets()) {
-        if (auto btn = std::dynamic_pointer_cast<tgui::BitmapButton>(widgets)) {
-            ToolboxItemIdentifier<T> identifier = btn->getUserData<ToolboxItemIdentifier<T>>();
-            if (groupToReset == identifier.group) {
-                tgui::ButtonRenderer* renderer = btn->getRenderer();
-                tgui::ButtonRenderer* defaultRenderer = defaultBtn->getRenderer();
-                renderer->setBackgroundColor(defaultRenderer->getBackgroundColor());
-                renderer->setBackgroundColorHover(defaultRenderer->getBackgroundColorHover());
-                renderer->setTexture(defaultRenderer->getTexture());
-                renderer->setTextureHover(defaultRenderer->getTextureHover());
-            }
-        }
-    }
+	auto defaultBtn = tgui::Button::create();
+	for (const auto& widgets : this->container->getWidgets()) {
+	if (auto btn = std::dynamic_pointer_cast<tgui::BitmapButton>(widgets)) {
+	ToolboxItemIdentifier<T> identifier = btn->getUserData<ToolboxItemIdentifier<T>>();
+	if (groupToReset == identifier.group) {
+	tgui::ButtonRenderer* renderer = btn->getRenderer();
+	tgui::ButtonRenderer* defaultRenderer = defaultBtn->getRenderer();
+	renderer->setBackgroundColor(defaultRenderer->getBackgroundColor());
+	renderer->setBackgroundColorHover(defaultRenderer->getBackgroundColorHover());
+	renderer->setTexture(defaultRenderer->getTexture());
+	renderer->setTextureHover(defaultRenderer->getTextureHover());
+	}
+	}
+	}
 }
 
 template<typename T>
 void Toolbox<T>::addTool(const ToolboxItem<T> &item, int idx) {
-    tgui::Texture texture(
-        Editor::instance->getFs().getResourcePath(item.iconResourcePath));
+	tgui::Texture texture(
+	Editor::instance->getFs().getResourcePath(item.iconResourcePath));
 
-    set<T> toolsInGroup{};
-    if (toolGroup.find(item.group) != toolGroup.end()) {
-        toolsInGroup = toolGroup.at(item.group);
-    }
+	set<T> toolsInGroup{};
+	if (toolGroup.find(item.group) != toolGroup.end()) {
+	toolsInGroup = toolGroup.at(item.group);
+	}
 
-    if (toolsInGroup.find(item.id) != toolsInGroup.end()) {
-        throw std::runtime_error("Tool already exists in group");
-    }
+	if (toolsInGroup.find(item.id) != toolsInGroup.end()) {
+	throw std::runtime_error("Tool already exists in group");
+	}
 
-    auto btn = tgui::BitmapButton::create();
-    btn->setImageScaling(0.8);
-    btn->setImage(texture);
-    btn->setWidth(std::max(getSize().y, btn->getSize().x));
-    ToolboxItemIdentifier<T> identifier;
-    identifier.group = item.group;
-    identifier.id = item.id;
-    btn->setUserData(identifier);
+	auto btn = tgui::BitmapButton::create();
+	btn->setImageScaling(0.8);
+	btn->setImage(texture);
+	btn->setWidth(std::max(getSize().y, btn->getSize().x));
+	ToolboxItemIdentifier<T> identifier;
+	identifier.group = item.group;
+	identifier.id = item.id;
+	btn->setUserData(identifier);
 
-    auto tooltip = Tooltip::create(item.text);
-    btn->setToolTip(tooltip);
+	auto tooltip = Tooltip::create(item.text);
+	btn->setToolTip(tooltip);
 
-    btn->onClick([this, btn, item, toolsInGroup]() {
-        if (selectToolInGroup.find(item.group) != selectToolInGroup.end()) {
-            if (selectToolInGroup.at(item.group) == item.id) {
-                return;
-            }
-        }
-        selectToolInGroup[item.group] = item.id;
-        onItemClicked.emit(this, item);
-        resetToolSelection(item.group);
-        tgui::ButtonRenderer* renderer = btn->getRenderer();
-        renderer->setBackgroundColor(renderer->getBackgroundColorDown());
-        renderer->setBackgroundColorHover(renderer->getBackgroundColorDown());
-        renderer->setTexture(renderer->getTextureDown());
-        renderer->setTextureHover(renderer->getTextureDown());
-    });
+	btn->onClick([this, btn, item, toolsInGroup]() {
+	if (selectToolInGroup.find(item.group) != selectToolInGroup.end()) {
+	if (selectToolInGroup.at(item.group) == item.id) {
+	return;
+	}
+	}
+	selectToolInGroup[item.group] = item.id;
+	onItemClicked.emit(this, item);
+	resetToolSelection(item.group);
+	tgui::ButtonRenderer* renderer = btn->getRenderer();
+	renderer->setBackgroundColor(renderer->getBackgroundColorDown());
+	renderer->setBackgroundColorHover(renderer->getBackgroundColorDown());
+	renderer->setTexture(renderer->getTextureDown());
+	renderer->setTextureHover(renderer->getTextureDown());
+	});
 
-    this->container->insert(idx, btn);
-    toolGroup[item.group].insert(item.id);
+	this->container->insert(idx, btn);
+	toolGroup[item.group].insert(item.id);
 };
 
 template<typename T>
 void Toolbox<T>::addWidget(tgui::Widget::Ptr widget, int idx) {
-    this->container->insert(idx, widget);
+	this->container->insert(idx, widget);
 }
 
 template<typename T>
 void Toolbox<T>::removeItemById(const T &id) {
-    for (const auto& widget : this->container->getWidgets()) {
-        ToolboxItemIdentifier<T> identifier = widget->getUserData<ToolboxItemIdentifier<T>>();
-        if (identifier.id == id) {
-            this->container->remove(widget);
-            toolGroup[identifier.group].erase(id);
-            break;
-        }
-    }
-    // readjustContentSize();
+	for (const auto& widget : this->container->getWidgets()) {
+	ToolboxItemIdentifier<T> identifier = widget->getUserData<ToolboxItemIdentifier<T>>();
+	if (identifier.id == id) {
+	this->container->remove(widget);
+	toolGroup[identifier.group].erase(id);
+	break;
+	}
+	}
+	// readjustContentSize();
 }
 
 template<typename T>

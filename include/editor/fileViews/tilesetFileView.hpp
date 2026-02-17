@@ -9,7 +9,7 @@
 
 class TileSetFileView : public FileView {
   private:
-    static const int RIGHT_PANEL_W = 300;
+	static const int RIGHT_PANEL_W = 300;
 	TileSetView::Ptr worldView;
 	IntField::Ptr widthField;
 	IntField::Ptr heightField;

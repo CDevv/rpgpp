@@ -66,8 +66,8 @@ void FileChooser::setSize(const tgui::Layout2d &size) {
 }
 
 void FileChooser::updateSize() {
-    int h = getSize().y;
-    int btnSize = h;
+	int h = getSize().y;
+	int btnSize = h;
 	chosenPathLabel->setSize({getSize().x - btnSize - PADDING, h});
 	iconButton->setSize({btnSize, btnSize});
 	iconButton->setPosition({getSize().x - btnSize, 0});

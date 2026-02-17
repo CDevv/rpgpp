@@ -37,29 +37,29 @@ void screens::ProjectScreen::layoutReload() {
 }
 
 void screens::ProjectScreen::mouseMove(int x, int y) {
-    resourcesList->manualMouseMoved({static_cast<float>(x), static_cast<float>(y)});
-    fileTabs->manualMouseMoved({
-        static_cast<float>(
-            x // coordinate of the mouse cursor relative to the projectScreen
-            - tabsContainer->getPosition().x // coordinate of the tabsContainer relative to the projectScreen
-            + tabsContainer->getContentOffset().x // coordinate of the widget relative to the tabsContainer
-            // why all of these calculations? cause the builtin leftMousePressed method returns the mouse coordinate
-            // relative to the current widget
-        ),
-        static_cast<float>(y - tabsContainer->getPosition().y)
-    });
+	resourcesList->manualMouseMoved({static_cast<float>(x), static_cast<float>(y)});
+	fileTabs->manualMouseMoved({
+	static_cast<float>(
+	x // coordinate of the mouse cursor relative to the projectScreen
+	- tabsContainer->getPosition().x // coordinate of the tabsContainer relative to the projectScreen
+	+ tabsContainer->getContentOffset().x // coordinate of the widget relative to the tabsContainer
+	// why all of these calculations? cause the builtin leftMousePressed method returns the mouse coordinate
+	// relative to the current widget
+	),
+	static_cast<float>(y - tabsContainer->getPosition().y)
+	});
 }
 void screens::ProjectScreen::leftMouseReleased(int x, int y) {
-    resourcesList->manualLeftMouseReleased({static_cast<float>(x), static_cast<float>(y)});
-    fileTabs->manualLeftMouseReleased({
-        // ditto
-        static_cast<float>(
-            x
-            - tabsContainer->getPosition().x
-            + tabsContainer->getContentOffset().x
-        ),
-        static_cast<float>(y - tabsContainer->getPosition().y)
-    });
+	resourcesList->manualLeftMouseReleased({static_cast<float>(x), static_cast<float>(y)});
+	fileTabs->manualLeftMouseReleased({
+	// ditto
+	static_cast<float>(
+	x
+	- tabsContainer->getPosition().x
+	+ tabsContainer->getContentOffset().x
+	),
+	static_cast<float>(y - tabsContainer->getPosition().y)
+	});
 }
 
 void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {

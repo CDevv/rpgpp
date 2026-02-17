@@ -10,11 +10,11 @@ constexpr const char* DEFAULT_THEME = "Dark";
 
 class ThemeService {
 public:
-    ThemeService();
-    std::string current_theme_name = DEFAULT_THEME;
-    std::shared_ptr<tgui::Theme> current_theme;
-    void setTheme(const string& themeName);
-    std::vector<std::string> getThemes();
-    std::map<std::string, std::string>
-        themes = {};
+	ThemeService();
+	std::string current_theme_name = DEFAULT_THEME;
+	std::shared_ptr<tgui::Theme> current_theme;
+	void setTheme(const string& themeName);
+	std::vector<std::string> getThemes();
+	std::map<std::string, std::string>
+	themes = {};
 };
