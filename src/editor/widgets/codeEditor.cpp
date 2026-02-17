@@ -19,6 +19,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <list>
 #include <map>
 #include <tree_sitter/api.h>
 
@@ -32,28 +33,6 @@
 using namespace tgui;
 
 #define CODE_EDITOR_LEFT_COLUMN 100.0f
-
-CodeEditor::Ptr CodeEditor::create() { return std::make_shared<CodeEditor>(); }
-
-void CodeEditor::parseNode(
-	const TSTreeCursor &cursor, const TSNode &node,
-	std::vector<EditorHighlighting::HighlighterStruct> &vector) {
-
-	/*
-printf("%s : %u:%u\n", ts_node_type(node), ts_node_start_byte(node),
-	   ts_node_end_byte(node));
-	   */
-	vector.push_back(
-		{ts_node_type(node), ts_node_start_byte(node), ts_node_end_byte(node)});
-
-	auto copy = ts_tree_cursor_copy(&cursor);
-	if (ts_tree_cursor_goto_first_child(&copy))
-		parseNode(copy, ts_tree_cursor_current_node(&copy), vector);
-
-	auto copy2 = ts_tree_cursor_copy(&cursor);
-	if (ts_tree_cursor_goto_next_sibling(&copy2))
-		parseNode(copy2, ts_tree_cursor_current_node(&copy2), vector);
-}
 
 // TODO: IMPLEMENT A BETTER SYNTAX COLORS MAP!
 std::map<std::string, EditorHighlighting::TextStyling> SYNTAX_COLORS = {
@@ -71,6 +50,111 @@ std::map<std::string, EditorHighlighting::TextStyling> SYNTAX_COLORS = {
 	{"--", {tgui::Color(84, 81, 103), tgui::TextStyle::Regular}},
 	{"comment_content", {tgui::Color(84, 81, 103), tgui::TextStyle::Regular}}};
 
+CodeEditor::CodeEditor() {
+
+	this->syntaxParser = ts_parser_new();
+	ts_parser_set_language(this->syntaxParser, tree_sitter_lua());
+
+	this->onTextChange.connect([&](const tgui::String &text) {
+		// this->constructHighlightedText(text, this->highlightTree.size() > 0);
+		textWhole = constructText(m_text);
+	});
+
+	this->setMouseCursor(Cursor::Type::Text);
+}
+
+CodeEditor::~CodeEditor() {
+	ts_parser_delete(this->syntaxParser);
+	if (tsTree != nullptr) {
+		ts_tree_delete(tsTree);
+	}
+}
+
+tgui::Vector2f CodeEditor::findCharacterPosWhole(std::size_t pos) const {
+	return textWhole.findCharacterPos(pos);
+}
+
+CodeEditor::Ptr CodeEditor::create() { return std::make_shared<CodeEditor>(); }
+
+void CodeEditor::parseNode(
+	const TSTreeCursor &cursor, const TSNode &node,
+	std::list<EditorHighlighting::TextPiece> &list) const {
+
+	if (ts_node_child_count(node) == 0) {
+		printf("%s. \n", ts_node_type(node));
+
+		auto row = static_cast<int>(ts_node_start_point(node).row);
+		auto column = static_cast<int>(ts_node_start_point(node).column);
+
+		std::string lineBefore =
+			TextSubtext(m_lines[row].toStdString().c_str(), 0,
+						ts_node_start_point(node).column);
+
+		auto textLineBefore = constructText(lineBefore);
+
+		auto text = this->constructText(TextSubtext(
+			m_lines[row].toStdString().c_str(),
+			ts_node_start_point(node).column, ts_node_end_point(node).column));
+
+		if (SYNTAX_COLORS.count(ts_node_type(node)) > 0) {
+			text.setColor(SYNTAX_COLORS[ts_node_type(node)].color);
+		} else {
+			text.setColor(tgui::Color::White);
+		}
+
+		auto a = textLineBefore.getLineWidth();
+		auto b = textLineBefore.getLineHeight() * row;
+
+		EditorHighlighting::TextPiece piece;
+		piece.text = text;
+		piece.pos = {a, b};
+		piece.nodeStart = ts_node_start_byte(node);
+		piece.nodeEnd = ts_node_end_byte(node);
+
+		list.push_back(piece);
+		/*
+		auto row = static_cast<int>(ts_node_start_point(node).row);
+		auto column = static_cast<int>(ts_node_start_point(node).column);
+
+		if (m_lines.size() > row) {
+			std::string lineBefore =
+				TextSubtext(m_lines[row].toStdString().c_str(), 0,
+							ts_node_start_point(node).column);
+
+			auto textLineBefore = constructText(lineBefore);
+
+			auto text = this->constructText(
+				TextSubtext(m_lines[row].toStdString().c_str(),
+							ts_node_start_point(node).column,
+							ts_node_end_point(node).column));
+
+			auto a = textLineBefore.getLineWidth();
+			auto b = textLineBefore.getLineHeight() * row;
+
+			text.setPosition({a, b});
+			if (SYNTAX_COLORS.count(ts_node_type(node)) > 0) {
+				text.setColor(SYNTAX_COLORS[ts_node_type(node)].color);
+			} else {
+				text.setColor(tgui::Color::White);
+			}
+
+			if ((b >= m_verticalScrollbar->getValue()) &&
+				(b < m_verticalScrollbar->getValue() + 200)) {
+				target.drawText(states, text);
+			}
+		}
+			*/
+	}
+
+	auto copy = ts_tree_cursor_copy(&cursor);
+	if (ts_tree_cursor_goto_first_child(&copy))
+		parseNode(copy, ts_tree_cursor_current_node(&copy), list);
+
+	auto copy2 = ts_tree_cursor_copy(&cursor);
+	if (ts_tree_cursor_goto_next_sibling(&copy2))
+		parseNode(copy2, ts_tree_cursor_current_node(&copy2), list);
+}
+
 std::vector<EditorHighlighting::HighlighterStruct>
 CodeEditor::getStructsFromText(const tgui::String &text_ref) {
 	std::vector<EditorHighlighting::HighlighterStruct> highlighter = {};
@@ -83,28 +167,174 @@ CodeEditor::getStructsFromText(const tgui::String &text_ref) {
 	const auto rootNode = ts_tree_root_node(syntaxTree);
 	const auto cursor = ts_tree_cursor_new(rootNode);
 
-	parseNode(cursor, rootNode, highlighter);
+	// parseNode(cursor, rootNode, highlighter);
 
-	ts_tree_delete(syntaxTree);
+	// ts_tree_delete(syntaxTree);
+	tsTree = syntaxTree;
 
 	return highlighter;
+}
+
+void CodeEditor::setCode(tgui::String text) {
+	TextArea::setText(text);
+
+	if (tsTree == nullptr) {
+		const auto textStr = getText().toStdString();
+		const auto constCharStr = textStr.c_str();
+		TSTree *syntaxTree = ts_parser_parse_string(
+			this->syntaxParser, nullptr, constCharStr, strlen(constCharStr));
+
+		tsTree = syntaxTree;
+	}
+
+	const auto rootNode = ts_tree_root_node(tsTree);
+	const auto cursor = ts_tree_cursor_new(rootNode);
+
+	std::vector<EditorHighlighting::HighlighterStruct> highlighter = {};
+	// parseNode(cursor, rootNode, highlighter);
+
+	// constructHighlightedText(highlighter, 0, m_text.size());
+	// constructHighlightedText(highlighter);
 }
 
 void CodeEditor::changeHighlightedText(const tgui::String &text, int lineIdx) {
 	// TODO: Change the text on edit when the user types in input.
 }
 
-void CodeEditor::constructHighlightedText(const tgui::String &text,
-										  bool editOnlyOnCaret) {
-
-	auto highlighter = this->getStructsFromText(text);
-
+void CodeEditor::constructHighlightedText(
+	std::vector<EditorHighlighting::HighlighterStruct> &highlighter, int start,
+	int end) {
 	int addingStrStart = 0;
 	std::string addingStr = {};
 	tgui::Color addingColor = tgui::Color::White;
 	tgui::TextStyle addingStyle = tgui::TextStyle::Regular;
 
 	std::vector<tgui::Text> textVector = {};
+
+	tgui::Text whole = constructText(m_text);
+
+	printf("start,end: %i, %i \n", start, end);
+
+	for (int i = start; i <= end; i++) {
+		for (auto it = highlightVec.begin(); it < highlightVec.end(); it++) {
+			if (i >= it->nodeStart && i <= it->nodeEnd) {
+				highlightVec.erase(it);
+			}
+		}
+	}
+
+	for (auto it = highlightVec.begin(); it < highlightVec.end(); it++) {
+		if (it->nodeEnd >= m_text.size()) {
+			highlightVec.erase(it);
+		}
+	}
+
+	// this->highlightTree.clear();
+	for (int i = start; i <= end; i++) {
+		if (m_text.size() < end)
+			return;
+
+		const auto &_char = m_text[i];
+
+		if (_char != '\n')
+			addingStr += _char;
+
+		for (auto &node : highlighter) {
+			auto nodeType = node.type;
+
+			if (SYNTAX_COLORS.count(nodeType) == 1) {
+				/*
+				printf("%s: START: %u END: %u \n", nodeType.c_str(), node.start,
+					   node.end);
+					   */
+				addingColor = SYNTAX_COLORS[nodeType].color;
+				addingStyle = SYNTAX_COLORS[nodeType].textStyle;
+			} else {
+				/*
+				printf("%s: START: %u END: %u \n", nodeType.c_str(), node.start,
+					   node.end);
+					   */
+				addingColor = tgui::Color::White;
+				addingStyle = tgui::TextStyle::Regular;
+			}
+
+			if (nodeType == "chunk") {
+				continue;
+			}
+
+			if (i >= static_cast<int>(node.start) &&
+				i <= static_cast<int>(node.end)) {
+				// printf("i: %i \n", i);
+				addingStr = {};
+
+				if (!node.hasChild) {
+					/*
+					printf("node.type, node.start, node.end: %s, %u, %u \n",
+						   node.type.c_str(), node.start, node.end);
+					printf("has child: %i \n", node.hasChild);
+					*/
+					std::size_t newStart = node.start;
+					std::size_t newEnd = node.end;
+					for (int j = node.start; j < node.end; j++) {
+						addingStr += m_text[j];
+						if (m_text[j] == '\n') {
+							auto constructedText =
+								this->constructText(addingStr, addingColor);
+							constructedText.setStyle(addingStyle);
+							textVector.push_back(constructedText);
+							addingStr = {};
+
+							// textVector.push_back(this->constructText("\n"));
+
+							// this->highlightTree.push_back(textVector);
+
+							EditorHighlighting::TextPiece piece;
+							piece.text = constructedText;
+							piece.pos = whole.findCharacterPos(node.start);
+							piece.nodeStart = newStart;
+							piece.nodeEnd = node.end;
+
+							this->highlightVec.push_back(piece);
+
+							newStart = j + 1;
+						}
+					}
+
+					auto constructedText =
+						this->constructText(addingStr, addingColor);
+					constructedText.setStyle(addingStyle);
+					textVector.push_back(constructedText);
+					addingStr = {};
+
+					// this->highlightTree.push_back(textVector);
+
+					EditorHighlighting::TextPiece piece;
+					piece.text = constructedText;
+					piece.pos = whole.findCharacterPos(newStart);
+					piece.nodeStart = newStart;
+					piece.nodeEnd = node.end;
+
+					this->highlightVec.push_back(piece);
+				}
+			}
+		}
+	}
+}
+
+void CodeEditor::constructHighlightedText(
+	std::vector<EditorHighlighting::HighlighterStruct> &highlight,
+	bool editOnlyOnCaret) {
+	int addingStrStart = 0;
+	std::string addingStr = {};
+	tgui::Color addingColor = tgui::Color::White;
+	tgui::TextStyle addingStyle = tgui::TextStyle::Regular;
+
+	std::vector<tgui::Text> textVector = {};
+
+	tgui::Text whole = constructText(m_text);
+
+	std::size_t newStart = 0;
+	std::size_t newEnd = 0;
 
 	if (editOnlyOnCaret && false) { // ADDED BECAUSE OF TODO
 		this->changeHighlightedText(m_text, this->getCaretLine());
@@ -113,28 +343,27 @@ void CodeEditor::constructHighlightedText(const tgui::String &text,
 		for (int i = 0; i < m_text.size(); i++) {
 			const auto &_char = m_text[i];
 
-			// if (_char != '\n') {
-			// 	printf("%c \n", _char);
-			// } else {
-			// 	printf("\\n \n");
-			// }
-
 			if (_char != '\n')
 				addingStr += _char;
 
-			for (auto &node : highlighter) {
+			for (auto &node : highlight) {
 				auto nodeType = node.type;
-				if (i == (node.start - 1)) {
 
+				if (node.hasChild)
+					continue;
+
+				if (i == (node.start - 1)) {
 					if (SYNTAX_COLORS.count(nodeType) == 1) {
-						printf("%s: START: %u END: %u \n", nodeType, node.start,
-							   node.end);
+						printf("%s: START: %u END: %u \n", nodeType.c_str(),
+							   node.start, node.end);
+
 						addingColor = SYNTAX_COLORS[nodeType].color;
 						addingStyle = SYNTAX_COLORS[nodeType].textStyle;
 					} else {
 						addingColor = tgui::Color::White;
 						addingStyle = tgui::TextStyle::Regular;
 					}
+					newStart = i + 1;
 
 				} else if (i == (node.end - 1)) {
 
@@ -144,9 +373,19 @@ void CodeEditor::constructHighlightedText(const tgui::String &text,
 					if (addingStrStart != 0) {
 					}
 					// printf("adding %s \n", addingStr.c_str());
-					textVector.push_back(constructedText);
+					// textVector.push_back(constructedText);
 					addingStr = {};
 					addingStrStart = i;
+
+					EditorHighlighting::TextPiece piece;
+					piece.text = constructedText;
+					piece.pos = whole.findCharacterPos(newStart);
+					piece.nodeStart = newStart;
+					piece.nodeEnd = node.end;
+
+					this->highlightVec.push_back(piece);
+
+					newEnd = i;
 				}
 			}
 
@@ -157,15 +396,25 @@ void CodeEditor::constructHighlightedText(const tgui::String &text,
 						this->constructText(addingStr, addingColor);
 					constructedText.setStyle(addingStyle);
 					// printf("adding %s \n", addingStr.c_str());
-					textVector.push_back(constructedText);
+					// textVector.push_back(constructedText);
 					addingStr = {};
 					addingStrStart = i;
+
+					EditorHighlighting::TextPiece piece;
+					piece.text = constructedText;
+					piece.pos = whole.findCharacterPos(newStart);
+					piece.nodeStart = newStart;
+					piece.nodeEnd = i + 1;
+
+					this->highlightVec.push_back(piece);
+
+					newStart = i + 1;
 				}
 
 				// printf("pushing newline at %i \n", i);
-				textVector.push_back(this->constructText("\n"));
+				// textVector.push_back(this->constructText("\n"));
 
-				this->highlightTree.push_back(textVector);
+				// this->highlightTree.push_back(textVector);
 
 				textVector = {};
 			}
@@ -179,38 +428,248 @@ void CodeEditor::constructHighlightedText(const tgui::String &text,
 		if (!textVector.empty())
 			this->highlightTree.push_back(textVector);
 	}
-	/*
-for (auto item : highlightTree) {
-	if (item.getString() == "\n") {
-		printf("\\n \n");
-	} else {
-		printf("%s \n", item.getString().toStdString().c_str());
-	}
+
+	std::cout << this->highlightVec.size() << std::endl;
 }
-*/
-
-	// printf("m_text: \n%s \n", m_text.toStdString().c_str());
-
-	std::cout << this->highlightTree.size() << std::endl;
-}
-
-CodeEditor::CodeEditor() {
-
-	this->syntaxParser = ts_parser_new();
-	ts_parser_set_language(this->syntaxParser, tree_sitter_lua());
-
-	this->onTextChange.connect([&](const tgui::String &text) {
-		this->constructHighlightedText(text, this->highlightTree.size() > 0);
-	});
-
-	this->setMouseCursor(Cursor::Type::Text);
-}
-
-CodeEditor::~CodeEditor() { ts_parser_delete(this->syntaxParser); }
 
 bool CodeEditor::leftMousePressed(tgui::Vector2f pos) {
 	pos.x -= CODE_EDITOR_LEFT_COLUMN;
 	return TextArea::leftMousePressed(pos);
+}
+
+void CodeEditor::textEntered(char32_t key) {
+	if (m_readOnly)
+		return;
+
+	// Don't allow carriage return characters, they only cause trouble
+	if (key == '\r')
+		return;
+
+	// Make sure we don't exceed our maximum characters limit
+	if ((m_maxChars > 0) && (m_text.length() + 1 > m_maxChars))
+		return;
+
+	auto insert = TGUI_LAMBDA_CAPTURE_EQ_THIS() {
+		deleteSelectedCharacters();
+
+		const std::size_t caretPosition = getSelectionEnd();
+
+		m_text.insert(caretPosition, 1, key);
+		m_lines[m_selEnd.y].insert(m_selEnd.x, 1, key);
+
+		TSInputEdit edit;
+		edit.start_byte = caretPosition;
+		edit.start_point = {static_cast<uint32_t>(m_selEnd.x),
+							static_cast<uint32_t>(m_selEnd.y)};
+
+		edit.old_end_byte = caretPosition;
+		edit.old_end_point = {static_cast<uint32_t>(m_selEnd.x),
+							  static_cast<uint32_t>(m_selEnd.y)};
+
+		edit.new_end_byte = caretPosition + 1;
+		edit.new_end_point = {
+			static_cast<uint32_t>(getColumnAt(caretPosition + 1)),
+			static_cast<uint32_t>(getLineAt(caretPosition + 1))};
+
+		if (tsTree == nullptr) {
+			const auto textStr = getText().toStdString();
+			const auto constCharStr = textStr.c_str();
+			TSTree *syntaxTree =
+				ts_parser_parse_string(this->syntaxParser, nullptr,
+									   constCharStr, strlen(constCharStr));
+
+			tsTree = syntaxTree;
+		}
+
+		// ts_tree_edit(tsTree, &edit);
+
+		const auto textStr = m_text.toStdString();
+		const auto constCharStr = textStr.c_str();
+		TSTree *syntaxTree = ts_parser_parse_string(
+			this->syntaxParser, nullptr, constCharStr, strlen(constCharStr));
+
+		const auto rootNode = ts_tree_root_node(tsTree);
+		const auto cursor = ts_tree_cursor_new(rootNode);
+
+		std::vector<EditorHighlighting::HighlighterStruct> highlighter = {};
+		// parseNode(cursor, rootNode, highlighter);
+
+		// this->fuck = highlighter;
+
+		list.clear();
+		parseNode(cursor, rootNode, list);
+
+		int count = 0;
+		for (int i = 0; i < getCaretLine(); i++) {
+			count += m_lines[i].size();
+		}
+		/*
+		constructHighlightedText(highlighter, count,
+								 count +
+									 m_lines[getLineAt(caretPosition)].size());
+									 */
+
+		// Increment the caret position, unless you type a newline at the start
+		// of a line while that line only existed due to word wrapping
+		if ((key != U'\n') || (m_selEnd.x > 0) || (m_selEnd.y == 0) ||
+			m_lines[m_selEnd.y - 1].empty() ||
+			(m_text[caretPosition - 1] == U'\n')) {
+			m_selStart.x++;
+			m_selEnd.x++;
+		}
+
+		// Do not emit onCaretPositionChanged signal yet, as it could be
+		// invalid.
+		rearrangeText(true, false);
+	};
+
+	// If there is a scrollbar then inserting can't go wrong
+	if (m_verticalScrollbar->getPolicy() != Scrollbar::Policy::Never) {
+		const auto oldSelEnd = m_selEnd;
+		insert();
+		if (oldSelEnd != m_selEnd)
+			onCaretPositionChange.emit(this);
+	} else // There is no scrollbar, the text may not fit
+	{
+		// Store the data so that it can be reverted
+		const auto oldText = m_text;
+		const auto oldSelStart = m_selStart;
+		const auto oldSelEnd = m_selEnd;
+
+		// Try to insert the character
+		insert();
+
+		// Undo the insert if the text does not fit
+		if (m_lines.size() >
+			static_cast<std::size_t>(getInnerSize().y / m_lineHeight)) {
+			m_text = oldText;
+			m_selStart = oldSelStart;
+			m_selEnd = oldSelEnd;
+
+			rearrangeText(true);
+		}
+		// If the caret position changed, emit signal.
+		else if (oldSelEnd != m_selEnd) {
+			onCaretPositionChange.emit(this);
+		}
+	}
+
+	// The caret should be visible again
+	m_caretVisible = true;
+	m_animationTimeElapsed = {};
+
+	onTextChange.emit(this, m_text);
+}
+
+void CodeEditor::keyPressed(const tgui::Event::KeyEvent &event) {
+	if (event.code == Event::KeyboardKey::Backspace)
+		backspaceKeyPressed();
+	else
+		tgui::TextArea::keyPressed(event);
+}
+
+void CodeEditor::backspaceKeyPressed() {
+	if (m_readOnly)
+		return;
+
+	// Check that we did not select any characters
+	if (m_selStart == m_selEnd) {
+		const std::size_t pos = getSelectionEnd();
+		if (pos > 0) {
+			if (m_selEnd.x > 0) {
+				// There is a specific case that we have to watch out for. When
+				// we are removing the last character on a line which was placed
+				// there by word wrap and a newline follows this character then
+				// the caret has to be placed at the line above (before the
+				// newline) instead of at the same line (after the newline)
+				if ((m_lines[m_selEnd.y].length() == 1) && (pos > 1) &&
+					(pos < m_text.length()) && (m_text[pos - 2] != '\n') &&
+					(m_text[pos] == '\n') && (m_selEnd.y > 0)) {
+					m_selEnd.y--;
+					m_selEnd.x = m_lines[m_selEnd.y].length();
+				} else // Just remove the character normally
+					--m_selEnd.x;
+			} else // At the beginning of the line
+			{
+				if (m_selEnd.y > 0) {
+					--m_selEnd.y;
+					m_selEnd.x = m_lines[m_selEnd.y].length();
+
+					if ((m_text[pos - 1] != '\n') && m_selEnd.x > 0)
+						--m_selEnd.x;
+				}
+			}
+
+			m_selStart = m_selEnd;
+
+			m_text.erase(pos - 1, 1);
+
+			// treesitter
+
+			TSInputEdit edit;
+			edit.start_byte = pos;
+			edit.start_point = {static_cast<uint32_t>(getColumnAt(pos)),
+								static_cast<uint32_t>(getLineAt(pos))};
+
+			edit.old_end_byte = pos;
+			edit.old_end_point = {static_cast<uint32_t>(getColumnAt(pos)),
+								  static_cast<uint32_t>(getLineAt(pos))};
+
+			edit.new_end_byte = pos - 1;
+			edit.new_end_point = {static_cast<uint32_t>(getColumnAt(pos - 1)),
+								  static_cast<uint32_t>(getLineAt(pos - 1))};
+
+			if (edit.old_end_point.column == 1) {
+				printf("so old.. \n");
+			}
+
+			if (tsTree == nullptr) {
+				const auto textStr = getText().toStdString();
+				const auto constCharStr = textStr.c_str();
+				TSTree *syntaxTree =
+					ts_parser_parse_string(this->syntaxParser, nullptr,
+										   constCharStr, strlen(constCharStr));
+
+				tsTree = syntaxTree;
+			}
+
+			// ts_tree_edit(tsTree, &edit);
+
+			const auto textStr = getText().toStdString();
+			const auto constCharStr = textStr.c_str();
+			TSTree *syntaxTree =
+				ts_parser_parse_string(this->syntaxParser, nullptr,
+									   constCharStr, strlen(constCharStr));
+
+			tsTree = syntaxTree;
+
+			const auto rootNode = ts_tree_root_node(syntaxTree);
+			const auto cursor = ts_tree_cursor_new(rootNode);
+
+			std::vector<EditorHighlighting::HighlighterStruct> highlighter = {};
+			// parseNode(cursor, rootNode, highlighter);
+
+			// constructHighlightedText(highlighter, pos - 2, m_text.size() -
+			// 1);
+
+			list.clear();
+			parseNode(cursor, rootNode, list);
+
+			// If the "special case" above passes, and we let rearrangeText()
+			// emit the onCaretPositionChange signal, the same signal will be
+			// emitted twice. So prevent sending signal in rearrangeText() and
+			// always send it manually afterwards.
+			rearrangeText(true, false);
+			onCaretPositionChange.emit(this);
+		}
+	} else // When you did select some characters then delete them
+		deleteSelectedCharacters();
+
+	// The caret should be visible again
+	m_caretVisible = true;
+	m_animationTimeElapsed = {};
+
+	onTextChange.emit(this, m_text);
 }
 
 void CodeEditor::recalculatePositions() {
@@ -819,10 +1278,18 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 			}
 
 			// printf("=== \n");
+			// printf("%u \n", m_verticalScrollbar->getValue());
+			// printf("%f \n", clipHeight);
+			/*
 			for (const auto &textContainer : this->highlightTree) {
 
 				for (const auto &text : textContainer) {
-					target.drawText(states, text);
+					if (offsetPos.y >= m_verticalScrollbar->getValue() &&
+						offsetPos.y <=
+							(m_verticalScrollbar->getValue() + clipHeight)) {
+
+						target.drawText(states, text);
+					}
 
 					Vector2f vector;
 
@@ -831,20 +1298,49 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 						states.transform.translate({-offsetPos.x, 0});
 						offsetPos.x = 0;
 						vector.y = text.getLineHeight();
-
-						// printf("\\n");
 					}
-
-					/*
-					printf("%s: %f, %f \n",
-					text.getString().toStdString().c_str(), vector.x, vector.y);
-						   */
 
 					states.transform.translate(vector);
 					offsetPos += vector;
 				}
 			}
+			*/
+			/*
+			for (const auto &textPiece : highlightVec) {
+				states.transform.translate(textPiece.pos);
+				if ((textPiece.pos.y >= m_verticalScrollbar->getValue()) &&
+					(textPiece.pos.y <
+					 m_verticalScrollbar->getValue() + clipHeight)) {
+					target.drawText(states, textPiece.text);
+				}
+				states.transform.translate(-textPiece.pos);
+			}
+			*/
+
+			/*
+			for (auto &nodeItem : highlighter) {
+				if (getLineAt(nodeItem.start) > m_visibleLines) {
+					continue;
+				}
+				auto textString = std::string(
+					TextSubtext(m_text.toStdString().c_str(), nodeItem.start,
+								nodeItem.end - nodeItem.start));
+				printf("nodeItem. \n");
+			}
+			*/
+
+			for (auto &textPiece : list) {
+				states.transform.translate(textPiece.pos);
+				if ((textPiece.pos.y >= m_verticalScrollbar->getValue()) &&
+					(textPiece.pos.y <
+					 m_verticalScrollbar->getValue() + clipHeight)) {
+					target.drawText(states, textPiece.text);
+				}
+				states.transform.translate(-textPiece.pos);
+			}
+
 			// printf("=== \n");
+
 			if (m_selStart != m_selEnd) {
 				states.transform.translate({-CODE_EDITOR_LEFT_COLUMN, 0});
 				states.transform.translate({-m_paddingCached.getLeft(), 0});

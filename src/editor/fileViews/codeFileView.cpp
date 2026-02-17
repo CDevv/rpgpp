@@ -57,7 +57,7 @@ void CodeFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 		do_tree_node(cursor, root);
 		*/
 
-		codeEditor->setText(ptr->get()->getFileContents());
+		codeEditor->setCode(ptr->get()->getFileContents());
 		addWidgets(layout);
 	}
 }
