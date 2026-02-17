@@ -91,7 +91,18 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 			redoHierarchy, [this] { getCurrentFile().getView().redoAction(); });
 	}
 
-	auto tabs2 = tgui::Tabs::create();
+	// Commentary:
+	// So while I was re-designing the project screen, I came across this single Tabs widget that's
+	// not being used anywhere. Not even once. And I thought to myself: "Well this seems useless".
+	// So I deleted it, and for some reason, the entire theming for Tabs in the screen got fcked.
+	// At first, I thought it could be something related to me changing the order of widgets being declared.
+	// Then I thought that the ThemeService had some bugs, so I investigated but found nothing.
+	// After that, I decided to revert my progress on this file, at which point, I figured out pretty quickly that
+	// this one variable is the sole reason why the theming got fcked.
+	//
+	// So... yea, for future developers, if you're reading this: Please don't delete this seemingly extra widget.
+	// It's what keeping the project screen together.
+	auto _tab = tgui::Tabs::create();
 
 	fileContextMenu = tgui::ContextMenu::create();
 	fileContextMenu->addMenuItem("Copy full path");
