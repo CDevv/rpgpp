@@ -2,8 +2,8 @@
 #include "raylib.h"
 
 ConfigurationService::ConfigurationService() {
-    std::filesystem::path baseDir = GetWorkingDirectory();
-    baseDir /= RPGPP_CONFIG_FILE;
+	std::filesystem::path baseDir = GetWorkingDirectory();
+	baseDir /= RPGPP_CONFIG_FILE;
 	if (std::filesystem::exists(baseDir)) {
 		this->iniFile = std::make_unique<mINI::INIFile>(baseDir.string());
 		this->iniFile->read(this->iniStructure);

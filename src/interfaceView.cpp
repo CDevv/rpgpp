@@ -17,12 +17,12 @@ void InterfaceView::addElement(UIElement *element) {
 
 void InterfaceView::update() const {
   for (auto &&i : elements) {
-    i->update();
+	i->update();
   }
 }
 
 void InterfaceView::draw() const {
   for (auto &&i : elements) {
-    i->draw();
+	i->draw();
   }
 }

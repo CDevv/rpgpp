@@ -10,35 +10,35 @@
 
 class FileTab : public tgui::Tabs {
   private:
-    bool isHovering = false;
-    bool isHoldingMouse = false;
-    bool isDragging = false;
-    tgui::Vector2f startMousePos = {0, 0};
-    tgui::Vector2f deltaMousePos = {0, 0};
-    tgui::Vector2f offsetMousePos = {0, 0};
-    int draggedTab = -1;
-    int swappedTab = -1;
+	bool isHovering = false;
+	bool isHoldingMouse = false;
+	bool isDragging = false;
+	tgui::Vector2f startMousePos = {0, 0};
+	tgui::Vector2f deltaMousePos = {0, 0};
+	tgui::Vector2f offsetMousePos = {0, 0};
+	int draggedTab = -1;
+	int swappedTab = -1;
 
-    Tooltip::Ptr tooltip;
+	Tooltip::Ptr tooltip;
 
-    static const int MARGIN_LR = 8;
-    static const int CLOSE_BUTTON_SIZE = 12;
-    constexpr static const tgui::Vector2f BUFFER_BEFORE_TAB_MOVE = {10, 10};
+	static const int MARGIN_LR = 8;
+	static const int CLOSE_BUTTON_SIZE = 12;
+	constexpr static const tgui::Vector2f BUFFER_BEFORE_TAB_MOVE = {10, 10};
 
-    bool cursorModified = false;
+	bool cursorModified = false;
 
-    void renderTab(
-        tgui::BackendRenderTarget &target,
-        tgui::RenderStates &states,
-        int idx,
-        bool roundedCorners,
-        float borderWidth,
-        float usableHeight,
-        tgui::Sprite &close
-    ) const;
+	void renderTab(
+	tgui::BackendRenderTarget &target,
+	tgui::RenderStates &states,
+	int idx,
+	bool roundedCorners,
+	float borderWidth,
+	float usableHeight,
+	tgui::Sprite &close
+	) const;
 
   public:
-    bool useExternalMouseEvent = false;
+	bool useExternalMouseEvent = false;
 	typedef std::shared_ptr<FileTab> Ptr;
 	typedef std::shared_ptr<const FileTab> ConstPtr;
 	tgui::SignalTyped<tgui::String> onTabClose = {"TabClose"};

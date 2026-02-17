@@ -13,15 +13,15 @@ int main() {
   SetTargetFPS(60);
 
   while (!WindowShouldClose()) {
-    game.update();
+	game.update();
 
-    BeginDrawing();
+	BeginDrawing();
 
-    ClearBackground(RAYWHITE);
+	ClearBackground(RAYWHITE);
 
-    game.draw();
+	game.draw();
 
-    EndDrawing();
+	EndDrawing();
   }
 
   game.unload();

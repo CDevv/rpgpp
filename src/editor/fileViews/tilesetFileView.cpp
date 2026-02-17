@@ -13,7 +13,7 @@
 #include <algorithm>
 
 TileSetFileView::TileSetFileView() {
-    TranslationService &ts = Editor::instance->getTranslations();
+	TranslationService &ts = Editor::instance->getTranslations();
 
 	const auto worldView = TileSetView::create();
 	worldView->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), "100%"});

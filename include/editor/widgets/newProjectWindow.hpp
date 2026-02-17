@@ -38,10 +38,10 @@ class NewProjectWindow {
 			pathFilters);
 
   private:
-    static const int FIELD_H = 24;
-    static const int BUTTON_W = 100;
-    static const int BUTTON_H = 24;
-    static const int PADDING = 8;
+	static const int FIELD_H = 24;
+	static const int BUTTON_W = 100;
+	static const int BUTTON_H = 24;
+	static const int PADDING = 8;
 };
 
 #endif

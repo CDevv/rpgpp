@@ -19,8 +19,8 @@
 #include <memory>
 
 RoomFileView::RoomFileView() {
-    RoomTool a;
-    TranslationService &ts = Editor::instance->getTranslations();
+	RoomTool a;
+	TranslationService &ts = Editor::instance->getTranslations();
 
 	roomView = RoomView::create();
 	roomView->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), TextFormat("100%% - %d", TOOLBOX_H)});
@@ -118,8 +118,8 @@ RoomFileView::RoomFileView() {
 	toolbox->addWidget(brushToggle);
 
 	toolbox->onItemClicked([this](ToolboxItem<RoomTool> tool) {
-        tileSetView->setTool(tool.id);
-        roomView->setTool(tool.id);
+	tileSetView->setTool(tool.id);
+	roomView->setTool(tool.id);
 	    cout << "Selected tool: " << tool.text << endl;
 	});
 	widgetContainer.push_back(toolbox);

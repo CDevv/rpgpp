@@ -33,7 +33,7 @@ FileTab::FileTab(const char *typeName, bool initRenderer)
 			m_bordersCached.getTopPlusBottom());
 	}
 	tooltip = Tooltip::create("");
-    //setToolTip(tooltip);
+	//setToolTip(tooltip);
 }
 
 FileTab::Ptr FileTab::create() { return std::make_shared<FileTab>(); }
@@ -86,65 +86,65 @@ bool FileTab::leftMousePressed(Vector2f pos) {
 }
 
 void FileTab::manualMouseMoved(tgui::Vector2f pos) {
-    Tabs::mouseMoved(pos);
-    pos -= getPosition();
-    deltaMousePos = pos - startMousePos + offsetMousePos;
-    if (isHoldingMouse and (abs(deltaMousePos.x) >= BUFFER_BEFORE_TAB_MOVE.x or abs(deltaMousePos.y) >= BUFFER_BEFORE_TAB_MOVE.y)) {
-        isDragging = true;
-    }
+	Tabs::mouseMoved(pos);
+	pos -= getPosition();
+	deltaMousePos = pos - startMousePos + offsetMousePos;
+	if (isHoldingMouse and (abs(deltaMousePos.x) >= BUFFER_BEFORE_TAB_MOVE.x or abs(deltaMousePos.y) >= BUFFER_BEFORE_TAB_MOVE.y)) {
+	isDragging = true;
+	}
 
-    //if (m_hoveringTab > 0) tooltip->setText(m_tabs[m_hoveringTab].id);
+	//if (m_hoveringTab > 0) tooltip->setText(m_tabs[m_hoveringTab].id);
 
-    if (isDragging) {
-        SetMouseCursor(MOUSE_CURSOR_RESIZE_ALL);
-        cursorModified = true;
-        if (draggedTab != m_hoveringTab and m_hoveringTab >= 0 and swappedTab == -1) {
-            // adds the width between the currently hovering tab and the dragged tab
-            // not counting the dragged tab
-            for (int i = std::min(m_hoveringTab, draggedTab); i <= std::max(m_hoveringTab, draggedTab); i++) {
-                if (i == draggedTab) continue;
-                offsetMousePos.x -=
-                    m_tabs[i].width * // width of the hovered tab
-                    (deltaMousePos.x / abs(deltaMousePos.x)); // direction of the drag
-            }
-            deltaMousePos = pos - startMousePos + offsetMousePos; // value is updated immediately to avoid flickering
-            swappedTab = draggedTab;
-            if (draggedTab < m_hoveringTab) {
-                std::rotate(m_tabs.begin() + draggedTab, m_tabs.begin() + draggedTab + 1, m_tabs.begin() + m_hoveringTab + 1);
-            } else if (draggedTab > m_hoveringTab) {
-                std::rotate(m_tabs.begin() + m_hoveringTab, m_tabs.begin() + draggedTab, m_tabs.begin() + draggedTab + 1);
-            }
-            draggedTab = m_hoveringTab;
-            m_selectedTab = draggedTab;
-        } else if (swappedTab != m_hoveringTab) {
-            swappedTab = -1;
-        }
-    } else if (cursorModified) {
-        SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-        cursorModified = false;
-    }
+	if (isDragging) {
+	SetMouseCursor(MOUSE_CURSOR_RESIZE_ALL);
+	cursorModified = true;
+	if (draggedTab != m_hoveringTab and m_hoveringTab >= 0 and swappedTab == -1) {
+	// adds the width between the currently hovering tab and the dragged tab
+	// not counting the dragged tab
+	for (int i = std::min(m_hoveringTab, draggedTab); i <= std::max(m_hoveringTab, draggedTab); i++) {
+	if (i == draggedTab) continue;
+	offsetMousePos.x -=
+	m_tabs[i].width * // width of the hovered tab
+	(deltaMousePos.x / abs(deltaMousePos.x)); // direction of the drag
+	}
+	deltaMousePos = pos - startMousePos + offsetMousePos; // value is updated immediately to avoid flickering
+	swappedTab = draggedTab;
+	if (draggedTab < m_hoveringTab) {
+	std::rotate(m_tabs.begin() + draggedTab, m_tabs.begin() + draggedTab + 1, m_tabs.begin() + m_hoveringTab + 1);
+	} else if (draggedTab > m_hoveringTab) {
+	std::rotate(m_tabs.begin() + m_hoveringTab, m_tabs.begin() + draggedTab, m_tabs.begin() + draggedTab + 1);
+	}
+	draggedTab = m_hoveringTab;
+	m_selectedTab = draggedTab;
+	} else if (swappedTab != m_hoveringTab) {
+	swappedTab = -1;
+	}
+	} else if (cursorModified) {
+	SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+	cursorModified = false;
+	}
 }
 
 void FileTab::mouseMoved(tgui::Vector2f pos) {
-    Widget::mouseMoved(pos);
-    if (!useExternalMouseEvent) {
-        manualMouseMoved(pos);
-    }
+	Widget::mouseMoved(pos);
+	if (!useExternalMouseEvent) {
+	manualMouseMoved(pos);
+	}
 }
 
 void FileTab::manualLeftMouseReleased(tgui::Vector2f pos) {
-    pos -= getPosition();
-    isHoldingMouse = false;
-    isDragging = false;
-    offsetMousePos = {0, 0};
-    swappedTab = -1;
+	pos -= getPosition();
+	isHoldingMouse = false;
+	isDragging = false;
+	offsetMousePos = {0, 0};
+	swappedTab = -1;
 }
 
 void FileTab::leftMouseReleased(tgui::Vector2f pos) {
-    Widget::leftMouseReleased(pos);
-    if (!useExternalMouseEvent) {
-        manualLeftMouseReleased(pos);
-    }
+	Widget::leftMouseReleased(pos);
+	if (!useExternalMouseEvent) {
+	manualLeftMouseReleased(pos);
+	}
 }
 
 bool FileTab::select(std::size_t index) {
@@ -171,36 +171,36 @@ bool FileTab::select(std::size_t index) {
 }
 
 size_t FileTab::addFileTab(const std::string &path, const std::string &fileName) {
-    size_t tabIdxToInsert = m_selectedTab;
-    if (tabIdxToInsert == -1) {
-        tabIdxToInsert = 0;
-    }
+	size_t tabIdxToInsert = m_selectedTab;
+	if (tabIdxToInsert == -1) {
+	tabIdxToInsert = 0;
+	}
 
-    for (size_t i = 0; i < m_tabs.size(); ++i) {
-        if (m_tabs[i].id == path) {
-            select(i);
-            return -1;
-        }
-    }
+	for (size_t i = 0; i < m_tabs.size(); ++i) {
+	if (m_tabs[i].id == path) {
+	select(i);
+	return -1;
+	}
+	}
 
-    tabIdxToInsert += 1;
-    tabIdxToInsert = std::min(tabIdxToInsert, m_tabs.size());
+	tabIdxToInsert += 1;
+	tabIdxToInsert = std::min(tabIdxToInsert, m_tabs.size());
 
-    insert(tabIdxToInsert, fileName, true);
-    m_tabs[tabIdxToInsert].id = path;
-    return tabIdxToInsert;
+	insert(tabIdxToInsert, fileName, true);
+	m_tabs[tabIdxToInsert].id = path;
+	return tabIdxToInsert;
 }
 
 void FileTab::renderTab(
-    tgui::BackendRenderTarget &target,
-    tgui::RenderStates &states,
-    int i,
-    bool roundedCorners,
-    float borderWidth,
-    float usableHeight,
-    tgui::Sprite &close
+	tgui::BackendRenderTarget &target,
+	tgui::RenderStates &states,
+	int i,
+	bool roundedCorners,
+	float borderWidth,
+	float usableHeight,
+	tgui::Sprite &close
 ) const {
-    if (!m_tabs[i].visible)
+	if (!m_tabs[i].visible)
 		return;
 
 	RenderStates textStates = states;
@@ -387,9 +387,9 @@ void FileTab::draw(tgui::BackendRenderTarget &target,
 	    renderTab(target, states, i, roundedCorners, borderWidth, usableHeight, close);
 	}
 	if (isDragging) {
-    	draggingState.transform.translate({deltaMousePos.x, 0});
-    	renderTab(target, draggingState, draggedTab, roundedCorners, borderWidth, usableHeight, close);
-        draggingState.transform.translate({-deltaMousePos.x, 0});
+		draggingState.transform.translate({deltaMousePos.x, 0});
+		renderTab(target, draggingState, draggedTab, roundedCorners, borderWidth, usableHeight, close);
+	draggingState.transform.translate({-deltaMousePos.x, 0});
 	}
 }
 

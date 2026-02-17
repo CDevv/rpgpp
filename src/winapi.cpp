@@ -45,24 +45,24 @@ void WinCreateProcEx(std::string cmdLine, HANDLE outHandle, HANDLE inHandle, DWO
 {
 	#ifdef _WIN32
 	STARTUPINFO si;
-    PROCESS_INFORMATION pi;
+	PROCESS_INFORMATION pi;
 	
 	ZeroMemory(&si, sizeof(si));
-    si.cb = sizeof(si);
-    ZeroMemory(&pi, sizeof(pi));
-    if (outHandle != NULL) {
-    	si.hStdError = outHandle;
+	si.cb = sizeof(si);
+	ZeroMemory(&pi, sizeof(pi));
+	if (outHandle != NULL) {
+		si.hStdError = outHandle;
    		si.hStdOutput = outHandle;
-    }
-    if (inHandle != NULL) {
-    	si.hStdInput = inHandle;
-    }
-    si.dwFlags |= dwFlags;
+	}
+	if (inHandle != NULL) {
+		si.hStdInput = inHandle;
+	}
+	si.dwFlags |= dwFlags;
 
-    BOOL handleInheritance = FALSE;
-    if (dwFlags == STARTF_USESTDHANDLES) {
-    	handleInheritance = TRUE;
-    }
+	BOOL handleInheritance = FALSE;
+	if (dwFlags == STARTF_USESTDHANDLES) {
+		handleInheritance = TRUE;
+	}
 	
 	if (CreateProcess(NULL, const_cast<char*>(cmdLine.data()), NULL, NULL, handleInheritance, 0, NULL, NULL, &si, &pi)) {
 		// Wait until child process exits.
@@ -107,7 +107,7 @@ VsInfo WinVsWhere(std::string path)
    	saAttr.lpSecurityDescriptor = NULL; 
 
 	if (!CreatePipe(&g_hChildStd_OUT_Rd, &g_hChildStd_OUT_Wr, &saAttr, 0)) 
-    {
+	{
 		printf("StdoutRd CreatePipe");
 	  	return result;
 	}

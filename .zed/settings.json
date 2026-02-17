@@ -1,0 +1,13 @@
+{
+  "preferred_line_length": 80,
+  "soft_wrap": "preferred_line_length",
+  "show_whitespaces": "selection",
+  "indent_guides": {
+    "active_line_width": 1,
+    "enabled": true
+  },
+  "tab_size": 4,
+  "hard_tabs": true,
+  "show_wrap_guides": true,
+  "project_name": "RPG++"
+}

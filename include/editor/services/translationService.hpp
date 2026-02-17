@@ -15,20 +15,20 @@ constexpr auto DEFAULT_LANGUAGE = "en_us";
 // Placeholders are defined with two curly brackets (like `{{test}}`)
 // and can be replaced using `.replace("test", "value")`
 class TranslatedString {
-    private:
-        std::string value;
-    public:
-        TranslatedString(const std::string& value) : value(value) {}
-        TranslatedString replace(const std::string& k, const std::string& v) {
-            std::string finder = "{{" + k + "}}";
-            size_t pos = value.find(finder);
-            if (pos != std::string::npos) {
-                value.replace(pos, finder.length(), v);
-            }
-            return TranslatedString(value);
-        }
-        operator const std::string&() const { return value; }
-        operator const tgui::String() const { return tgui::String{value}; }
+	private:
+	std::string value;
+	public:
+	TranslatedString(const std::string& value) : value(value) {}
+	TranslatedString replace(const std::string& k, const std::string& v) {
+	std::string finder = "{{" + k + "}}";
+	size_t pos = value.find(finder);
+	if (pos != std::string::npos) {
+	value.replace(pos, finder.length(), v);
+	}
+	return TranslatedString(value);
+	}
+	operator const std::string&() const { return value; }
+	operator const tgui::String() const { return tgui::String{value}; }
 };
 
 class TranslationService {
@@ -36,8 +36,8 @@ public:
   TranslationService();
   std::string current_language = DEFAULT_LANGUAGE;
   std::map<std::string, std::map<std::string, std::string, std::less<>>,
-           std::less<>>
-      translations = {};
+	   std::less<>>
+	  translations = {};
   TranslatedString getKey(const std::string &key);
   TranslatedString getKey(const std::string &key, const std::string &c_language);
   std::string getLanguageIdentifierByKey(const std::string& language_key);
