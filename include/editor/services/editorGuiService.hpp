@@ -51,6 +51,7 @@ class EditorGuiService {
 
 	void gotoPreviousScreen();
 	void reloadUi();
+	void alert(tgui::String title, tgui::String content);
 	static void createLogoCenter(const tgui::GrowVerticalLayout::Ptr &layout);
 	static void centerWidget(tgui::Widget::Ptr widget);
 };

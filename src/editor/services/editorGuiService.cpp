@@ -3,6 +3,7 @@
 #include "TGUI/Loading/Theme.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/Group.hpp"
+#include "TGUI/Widgets/MessageBox.hpp"
 #include "editor.hpp"
 #include "raylib.h"
 #include "screens/aboutScreen.h"
@@ -261,4 +262,16 @@ void EditorGuiService::centerWidget(tgui::Widget::Ptr widget) {
 	widget->setPosition(
 		(GetScreenWidth() / 2.0f) - (widget->getSize().x / 2.0f),
 		(GetScreenHeight() / 2.0f) - (widget->getSize().y / 2.0f));
+}
+
+void EditorGuiService::alert(tgui::String title, tgui::String content) {
+	tgui::MessageBox::Ptr dialog = tgui::MessageBox::create();
+	dialog->setText(content);
+	dialog->setTitle(title);
+	dialog->addButton("Ok");
+	dialog->onButtonPress([this, dialog]() {
+		gui->remove(dialog);
+	});
+	gui->add(dialog);
+	centerWidget(dialog);
 }
