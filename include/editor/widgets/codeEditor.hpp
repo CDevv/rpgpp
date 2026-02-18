@@ -52,13 +52,6 @@ class CodeEditor : public tgui::TextArea {
 
 	void parseNode(const TSTreeCursor &cursor, const TSNode &node,
 				   std::list<EditorHighlighting::TextPiece> &list) const;
-	void constructHighlightedText(
-		std::vector<EditorHighlighting::HighlighterStruct> &highlight,
-		bool editOnlyOnCaret = false);
-	void constructHighlightedText(
-		std::vector<EditorHighlighting::HighlighterStruct> &highlight,
-		int start, int end);
-	void changeHighlightedText(const tgui::String &text, int lineIdx);
 
 	std::vector<EditorHighlighting::HighlighterStruct>
 	getStructsFromText(const tgui::String &text);

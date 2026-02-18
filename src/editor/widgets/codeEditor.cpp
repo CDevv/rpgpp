@@ -53,6 +53,7 @@ std::map<std::string, EditorHighlighting::TextStyling> SYNTAX_COLORS = {
 CodeEditor::CodeEditor() {
 
 	this->syntaxParser = ts_parser_new();
+
 	ts_parser_set_language(this->syntaxParser, tree_sitter_lua());
 
 	this->onTextChange.connect([&](const tgui::String &text) {
@@ -80,11 +81,18 @@ void CodeEditor::parseNode(
 	const TSTreeCursor &cursor, const TSNode &node,
 	std::list<EditorHighlighting::TextPiece> &list) const {
 
+	auto nodeStartPoint = ts_node_start_point(node);
+	auto nodeEndPoint = ts_node_end_point(node);
+
 	if (ts_node_child_count(node) == 0) {
 		printf("%s. \n", ts_node_type(node));
 
 		auto row = static_cast<int>(ts_node_start_point(node).row);
 		auto column = static_cast<int>(ts_node_start_point(node).column);
+
+		if (m_lines.size() < row) {
+			return;
+		}
 
 		std::string lineBefore =
 			TextSubtext(m_lines[row].toStdString().c_str(), 0,
@@ -92,9 +100,32 @@ void CodeEditor::parseNode(
 
 		auto textLineBefore = constructText(lineBefore);
 
+		/*
+		std::string subtext =
+			TextSubtext(m_text.toStdString().c_str(), ts_node_start_byte(node),
+						ts_node_end_byte(node));
+
+		int j = 0;
+		std::string s = "";
+		for (auto c : subtext) {
+			if (c == '\n') {
+				if (j != subtext.size() - 1) {
+					printf("%s \n", s.c_str());
+					s = "";
+				}
+			} else {
+				s.push_back(c);
+			}
+			j++;
+		}
+		printf("%s \n", s.c_str());
+		*/
+
 		auto text = this->constructText(TextSubtext(
 			m_lines[row].toStdString().c_str(),
 			ts_node_start_point(node).column, ts_node_end_point(node).column));
+
+		// auto text = constructText(s);
 
 		if (SYNTAX_COLORS.count(ts_node_type(node)) > 0) {
 			text.setColor(SYNTAX_COLORS[ts_node_type(node)].color);
@@ -112,38 +143,6 @@ void CodeEditor::parseNode(
 		piece.nodeEnd = ts_node_end_byte(node);
 
 		list.push_back(piece);
-		/*
-		auto row = static_cast<int>(ts_node_start_point(node).row);
-		auto column = static_cast<int>(ts_node_start_point(node).column);
-
-		if (m_lines.size() > row) {
-			std::string lineBefore =
-				TextSubtext(m_lines[row].toStdString().c_str(), 0,
-							ts_node_start_point(node).column);
-
-			auto textLineBefore = constructText(lineBefore);
-
-			auto text = this->constructText(
-				TextSubtext(m_lines[row].toStdString().c_str(),
-							ts_node_start_point(node).column,
-							ts_node_end_point(node).column));
-
-			auto a = textLineBefore.getLineWidth();
-			auto b = textLineBefore.getLineHeight() * row;
-
-			text.setPosition({a, b});
-			if (SYNTAX_COLORS.count(ts_node_type(node)) > 0) {
-				text.setColor(SYNTAX_COLORS[ts_node_type(node)].color);
-			} else {
-				text.setColor(tgui::Color::White);
-			}
-
-			if ((b >= m_verticalScrollbar->getValue()) &&
-				(b < m_verticalScrollbar->getValue() + 200)) {
-				target.drawText(states, text);
-			}
-		}
-			*/
 	}
 
 	auto copy = ts_tree_cursor_copy(&cursor);
@@ -167,9 +166,6 @@ CodeEditor::getStructsFromText(const tgui::String &text_ref) {
 	const auto rootNode = ts_tree_root_node(syntaxTree);
 	const auto cursor = ts_tree_cursor_new(rootNode);
 
-	// parseNode(cursor, rootNode, highlighter);
-
-	// ts_tree_delete(syntaxTree);
 	tsTree = syntaxTree;
 
 	return highlighter;
@@ -190,246 +186,7 @@ void CodeEditor::setCode(tgui::String text) {
 	const auto rootNode = ts_tree_root_node(tsTree);
 	const auto cursor = ts_tree_cursor_new(rootNode);
 
-	std::vector<EditorHighlighting::HighlighterStruct> highlighter = {};
-	// parseNode(cursor, rootNode, highlighter);
-
-	// constructHighlightedText(highlighter, 0, m_text.size());
-	// constructHighlightedText(highlighter);
-}
-
-void CodeEditor::changeHighlightedText(const tgui::String &text, int lineIdx) {
-	// TODO: Change the text on edit when the user types in input.
-}
-
-void CodeEditor::constructHighlightedText(
-	std::vector<EditorHighlighting::HighlighterStruct> &highlighter, int start,
-	int end) {
-	int addingStrStart = 0;
-	std::string addingStr = {};
-	tgui::Color addingColor = tgui::Color::White;
-	tgui::TextStyle addingStyle = tgui::TextStyle::Regular;
-
-	std::vector<tgui::Text> textVector = {};
-
-	tgui::Text whole = constructText(m_text);
-
-	printf("start,end: %i, %i \n", start, end);
-
-	for (int i = start; i <= end; i++) {
-		for (auto it = highlightVec.begin(); it < highlightVec.end(); it++) {
-			if (i >= it->nodeStart && i <= it->nodeEnd) {
-				highlightVec.erase(it);
-			}
-		}
-	}
-
-	for (auto it = highlightVec.begin(); it < highlightVec.end(); it++) {
-		if (it->nodeEnd >= m_text.size()) {
-			highlightVec.erase(it);
-		}
-	}
-
-	// this->highlightTree.clear();
-	for (int i = start; i <= end; i++) {
-		if (m_text.size() < end)
-			return;
-
-		const auto &_char = m_text[i];
-
-		if (_char != '\n')
-			addingStr += _char;
-
-		for (auto &node : highlighter) {
-			auto nodeType = node.type;
-
-			if (SYNTAX_COLORS.count(nodeType) == 1) {
-				/*
-				printf("%s: START: %u END: %u \n", nodeType.c_str(), node.start,
-					   node.end);
-					   */
-				addingColor = SYNTAX_COLORS[nodeType].color;
-				addingStyle = SYNTAX_COLORS[nodeType].textStyle;
-			} else {
-				/*
-				printf("%s: START: %u END: %u \n", nodeType.c_str(), node.start,
-					   node.end);
-					   */
-				addingColor = tgui::Color::White;
-				addingStyle = tgui::TextStyle::Regular;
-			}
-
-			if (nodeType == "chunk") {
-				continue;
-			}
-
-			if (i >= static_cast<int>(node.start) &&
-				i <= static_cast<int>(node.end)) {
-				// printf("i: %i \n", i);
-				addingStr = {};
-
-				if (!node.hasChild) {
-					/*
-					printf("node.type, node.start, node.end: %s, %u, %u \n",
-						   node.type.c_str(), node.start, node.end);
-					printf("has child: %i \n", node.hasChild);
-					*/
-					std::size_t newStart = node.start;
-					std::size_t newEnd = node.end;
-					for (int j = node.start; j < node.end; j++) {
-						addingStr += m_text[j];
-						if (m_text[j] == '\n') {
-							auto constructedText =
-								this->constructText(addingStr, addingColor);
-							constructedText.setStyle(addingStyle);
-							textVector.push_back(constructedText);
-							addingStr = {};
-
-							// textVector.push_back(this->constructText("\n"));
-
-							// this->highlightTree.push_back(textVector);
-
-							EditorHighlighting::TextPiece piece;
-							piece.text = constructedText;
-							piece.pos = whole.findCharacterPos(node.start);
-							piece.nodeStart = newStart;
-							piece.nodeEnd = node.end;
-
-							this->highlightVec.push_back(piece);
-
-							newStart = j + 1;
-						}
-					}
-
-					auto constructedText =
-						this->constructText(addingStr, addingColor);
-					constructedText.setStyle(addingStyle);
-					textVector.push_back(constructedText);
-					addingStr = {};
-
-					// this->highlightTree.push_back(textVector);
-
-					EditorHighlighting::TextPiece piece;
-					piece.text = constructedText;
-					piece.pos = whole.findCharacterPos(newStart);
-					piece.nodeStart = newStart;
-					piece.nodeEnd = node.end;
-
-					this->highlightVec.push_back(piece);
-				}
-			}
-		}
-	}
-}
-
-void CodeEditor::constructHighlightedText(
-	std::vector<EditorHighlighting::HighlighterStruct> &highlight,
-	bool editOnlyOnCaret) {
-	int addingStrStart = 0;
-	std::string addingStr = {};
-	tgui::Color addingColor = tgui::Color::White;
-	tgui::TextStyle addingStyle = tgui::TextStyle::Regular;
-
-	std::vector<tgui::Text> textVector = {};
-
-	tgui::Text whole = constructText(m_text);
-
-	std::size_t newStart = 0;
-	std::size_t newEnd = 0;
-
-	if (editOnlyOnCaret && false) { // ADDED BECAUSE OF TODO
-		this->changeHighlightedText(m_text, this->getCaretLine());
-	} else {
-		this->highlightTree.clear();
-		for (int i = 0; i < m_text.size(); i++) {
-			const auto &_char = m_text[i];
-
-			if (_char != '\n')
-				addingStr += _char;
-
-			for (auto &node : highlight) {
-				auto nodeType = node.type;
-
-				if (node.hasChild)
-					continue;
-
-				if (i == (node.start - 1)) {
-					if (SYNTAX_COLORS.count(nodeType) == 1) {
-						printf("%s: START: %u END: %u \n", nodeType.c_str(),
-							   node.start, node.end);
-
-						addingColor = SYNTAX_COLORS[nodeType].color;
-						addingStyle = SYNTAX_COLORS[nodeType].textStyle;
-					} else {
-						addingColor = tgui::Color::White;
-						addingStyle = tgui::TextStyle::Regular;
-					}
-					newStart = i + 1;
-
-				} else if (i == (node.end - 1)) {
-
-					auto constructedText =
-						this->constructText(addingStr, addingColor);
-					constructedText.setStyle(addingStyle);
-					if (addingStrStart != 0) {
-					}
-					// printf("adding %s \n", addingStr.c_str());
-					// textVector.push_back(constructedText);
-					addingStr = {};
-					addingStrStart = i;
-
-					EditorHighlighting::TextPiece piece;
-					piece.text = constructedText;
-					piece.pos = whole.findCharacterPos(newStart);
-					piece.nodeStart = newStart;
-					piece.nodeEnd = node.end;
-
-					this->highlightVec.push_back(piece);
-
-					newEnd = i;
-				}
-			}
-
-			if (_char == '\n') {
-				// printf("addingStr: %s \n", addingStr.c_str());
-				if (!addingStr.empty()) {
-					auto constructedText =
-						this->constructText(addingStr, addingColor);
-					constructedText.setStyle(addingStyle);
-					// printf("adding %s \n", addingStr.c_str());
-					// textVector.push_back(constructedText);
-					addingStr = {};
-					addingStrStart = i;
-
-					EditorHighlighting::TextPiece piece;
-					piece.text = constructedText;
-					piece.pos = whole.findCharacterPos(newStart);
-					piece.nodeStart = newStart;
-					piece.nodeEnd = i + 1;
-
-					this->highlightVec.push_back(piece);
-
-					newStart = i + 1;
-				}
-
-				// printf("pushing newline at %i \n", i);
-				// textVector.push_back(this->constructText("\n"));
-
-				// this->highlightTree.push_back(textVector);
-
-				textVector = {};
-			}
-		}
-
-		// Add the remaining string if we have it.
-		textVector.push_back(
-			this->constructText(addingStr, tgui::Color::White));
-		printf("added %s \n", addingStr.c_str());
-
-		if (!textVector.empty())
-			this->highlightTree.push_back(textVector);
-	}
-
-	std::cout << this->highlightVec.size() << std::endl;
+	// parseNode(cursor, rootNode, list);
 }
 
 bool CodeEditor::leftMousePressed(tgui::Vector2f pos) {
@@ -487,6 +244,8 @@ void CodeEditor::textEntered(char32_t key) {
 		const auto constCharStr = textStr.c_str();
 		TSTree *syntaxTree = ts_parser_parse_string(
 			this->syntaxParser, nullptr, constCharStr, strlen(constCharStr));
+
+		tsTree = syntaxTree;
 
 		const auto rootNode = ts_tree_root_node(tsTree);
 		const auto cursor = ts_tree_cursor_new(rootNode);
@@ -619,10 +378,6 @@ void CodeEditor::backspaceKeyPressed() {
 			edit.new_end_point = {static_cast<uint32_t>(getColumnAt(pos - 1)),
 								  static_cast<uint32_t>(getLineAt(pos - 1))};
 
-			if (edit.old_end_point.column == 1) {
-				printf("so old.. \n");
-			}
-
 			if (tsTree == nullptr) {
 				const auto textStr = getText().toStdString();
 				const auto constCharStr = textStr.c_str();
@@ -643,14 +398,8 @@ void CodeEditor::backspaceKeyPressed() {
 
 			tsTree = syntaxTree;
 
-			const auto rootNode = ts_tree_root_node(syntaxTree);
+			const auto rootNode = ts_tree_root_node(tsTree);
 			const auto cursor = ts_tree_cursor_new(rootNode);
-
-			std::vector<EditorHighlighting::HighlighterStruct> highlighter = {};
-			// parseNode(cursor, rootNode, highlighter);
-
-			// constructHighlightedText(highlighter, pos - 2, m_text.size() -
-			// 1);
 
 			list.clear();
 			parseNode(cursor, rootNode, list);
@@ -1277,58 +1026,6 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 				states.transform.translate({m_paddingCached.getLeft(), 0});
 			}
 
-			// printf("=== \n");
-			// printf("%u \n", m_verticalScrollbar->getValue());
-			// printf("%f \n", clipHeight);
-			/*
-			for (const auto &textContainer : this->highlightTree) {
-
-				for (const auto &text : textContainer) {
-					if (offsetPos.y >= m_verticalScrollbar->getValue() &&
-						offsetPos.y <=
-							(m_verticalScrollbar->getValue() + clipHeight)) {
-
-						target.drawText(states, text);
-					}
-
-					Vector2f vector;
-
-					vector = {text.getLineWidth(), 0};
-					if (text.getString() == "\n") {
-						states.transform.translate({-offsetPos.x, 0});
-						offsetPos.x = 0;
-						vector.y = text.getLineHeight();
-					}
-
-					states.transform.translate(vector);
-					offsetPos += vector;
-				}
-			}
-			*/
-			/*
-			for (const auto &textPiece : highlightVec) {
-				states.transform.translate(textPiece.pos);
-				if ((textPiece.pos.y >= m_verticalScrollbar->getValue()) &&
-					(textPiece.pos.y <
-					 m_verticalScrollbar->getValue() + clipHeight)) {
-					target.drawText(states, textPiece.text);
-				}
-				states.transform.translate(-textPiece.pos);
-			}
-			*/
-
-			/*
-			for (auto &nodeItem : highlighter) {
-				if (getLineAt(nodeItem.start) > m_visibleLines) {
-					continue;
-				}
-				auto textString = std::string(
-					TextSubtext(m_text.toStdString().c_str(), nodeItem.start,
-								nodeItem.end - nodeItem.start));
-				printf("nodeItem. \n");
-			}
-			*/
-
 			for (auto &textPiece : list) {
 				states.transform.translate(textPiece.pos);
 				if ((textPiece.pos.y >= m_verticalScrollbar->getValue()) &&
@@ -1338,8 +1035,6 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 				}
 				states.transform.translate(-textPiece.pos);
 			}
-
-			// printf("=== \n");
 
 			if (m_selStart != m_selEnd) {
 				states.transform.translate({-CODE_EDITOR_LEFT_COLUMN, 0});
