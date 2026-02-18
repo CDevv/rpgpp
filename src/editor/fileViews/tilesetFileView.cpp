@@ -1,15 +1,15 @@
 #include "fileViews/tilesetFileView.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "editor.hpp"
-#include "widgets/propertiesBox.hpp"
 #include "raylib.h"
-#include "views/tileSetView.hpp"
-#include "tileset.hpp"
 #include "services/translationService.hpp"
+#include "tileset.hpp"
 #include "variant.hpp"
+#include "views/tileSetView.hpp"
+#include "views/worldView.hpp"
 #include "widgets/fileField.hpp"
 #include "widgets/intField.hpp"
-#include "views/worldView.hpp"
+#include "widgets/propertiesBox.hpp"
 #include <algorithm>
 
 TileSetFileView::TileSetFileView() {
@@ -27,14 +27,16 @@ TileSetFileView::TileSetFileView() {
 	props->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W), 0});
 
 	widthField = IntField::create();
-	widthField->label->setText(ts.getKey("screen.project.tilesetview.tile_width"));
+	widthField->label->setText(
+		ts.getKey("screen.project.tilesetview.tile_width"));
 	widthField->value->onValueChange([this](int value) {
 		this->worldView->getTileSet()->setTileWidth(value);
 	});
 	props->addIntField(widthField);
 
 	heightField = IntField::create();
-	heightField->label->setText(ts.getKey("screen.project.tilesetview.tile_height"));
+	heightField->label->setText(
+		ts.getKey("screen.project.tilesetview.tile_height"));
 	heightField->value->onValueChange([this](int value) {
 		this->worldView->getTileSet()->setTileHeight(value);
 	});
@@ -52,7 +54,8 @@ TileSetFileView::TileSetFileView() {
 	props->addIntField(widthField);
 	props->addIntField(heightField);
 
-	textureFile = FileField::create(ts.getKey("screen.project.tilesetview.texture"), "...");
+	textureFile = FileField::create(
+		ts.getKey("screen.project.tilesetview.texture"), "...");
 	textureFile->pathFilters = {{
 		{"Images", {"*.png", "*.jpg"}},
 	}};

@@ -1,11 +1,4 @@
 #include "screens/projectScreen.hpp"
-#include "TGUI/Vector2.hpp"
-#include "TGUI/Widgets/MessageBox.hpp"
-#include "TGUI/Widgets/Scrollbar.hpp"
-#include "components/resizableContainer.hpp"
-#include "components/tooltip.hpp"
-#include "services/editorGuiService.hpp"
-#include "services/fileSystemService.hpp"
 #include "TGUI/Color.hpp"
 #include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
@@ -16,9 +9,12 @@
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/Label.hpp"
+#include "TGUI/Widgets/MessageBox.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
+#include "TGUI/Widgets/Scrollbar.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
 #include "components/resizableContainer.hpp"
+#include "components/tooltip.hpp"
 #include "editor.hpp"
 #include "gamedata.hpp"
 #include "projectFile.hpp"
@@ -37,29 +33,29 @@ void screens::ProjectScreen::layoutReload() {
 }
 
 void screens::ProjectScreen::mouseMove(int x, int y) {
-	resourcesList->manualMouseMoved({static_cast<float>(x), static_cast<float>(y)});
-	fileTabs->manualMouseMoved({
-	static_cast<float>(
-	x // coordinate of the mouse cursor relative to the projectScreen
-	- tabsContainer->getPosition().x // coordinate of the tabsContainer relative to the projectScreen
-	+ tabsContainer->getContentOffset().x // coordinate of the widget relative to the tabsContainer
-	// why all of these calculations? cause the builtin leftMousePressed method returns the mouse coordinate
-	// relative to the current widget
-	),
-	static_cast<float>(y - tabsContainer->getPosition().y)
-	});
+	resourcesList->manualMouseMoved(
+		{static_cast<float>(x), static_cast<float>(y)});
+	fileTabs->manualMouseMoved(
+		{static_cast<float>(
+			 x // coordinate of the mouse cursor relative to the projectScreen
+			 - tabsContainer->getPosition().x // coordinate of the tabsContainer
+											  // relative to the projectScreen
+			 + tabsContainer->getContentOffset()
+				   .x // coordinate of the widget relative to the tabsContainer
+			 // why all of these calculations? cause the builtin
+			 // leftMousePressed method returns the mouse coordinate relative to
+			 // the current widget
+			 ),
+		 static_cast<float>(y - tabsContainer->getPosition().y)});
 }
 void screens::ProjectScreen::leftMouseReleased(int x, int y) {
-	resourcesList->manualLeftMouseReleased({static_cast<float>(x), static_cast<float>(y)});
-	fileTabs->manualLeftMouseReleased({
-	// ditto
-	static_cast<float>(
-	x
-	- tabsContainer->getPosition().x
-	+ tabsContainer->getContentOffset().x
-	),
-	static_cast<float>(y - tabsContainer->getPosition().y)
-	});
+	resourcesList->manualLeftMouseReleased(
+		{static_cast<float>(x), static_cast<float>(y)});
+	fileTabs->manualLeftMouseReleased(
+		{// ditto
+		 static_cast<float>(x - tabsContainer->getPosition().x +
+							tabsContainer->getContentOffset().x),
+		 static_cast<float>(y - tabsContainer->getPosition().y)});
 }
 
 void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
@@ -92,16 +88,19 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	}
 
 	// Commentary:
-	// So while I was re-designing the project screen, I came across this single Tabs widget that's
-	// not being used anywhere. Not even once. And I thought to myself: "Well this seems useless".
-	// So I deleted it, and for some reason, the entire theming for Tabs in the screen got fcked.
-	// At first, I thought it could be something related to me changing the order of widgets being declared.
-	// Then I thought that the ThemeService had some bugs, so I investigated but found nothing.
-	// After that, I decided to revert my progress on this file, at which point, I figured out pretty quickly that
+	// So while I was re-designing the project screen, I came across this single
+	// Tabs widget that's not being used anywhere. Not even once. And I thought
+	// to myself: "Well this seems useless". So I deleted it, and for some
+	// reason, the entire theming for Tabs in the screen got fcked. At first, I
+	// thought it could be something related to me changing the order of widgets
+	// being declared. Then I thought that the ThemeService had some bugs, so I
+	// investigated but found nothing. After that, I decided to revert my
+	// progress on this file, at which point, I figured out pretty quickly that
 	// this one variable is the sole reason why the theming got fcked.
 	//
-	// So... yea, for future developers, if you're reading this: Please don't delete this seemingly extra widget.
-	// It's what keeping the project screen together.
+	// So... yea, for future developers, if you're reading this: Please don't
+	// delete this seemingly extra widget. It's what keeping the project screen
+	// together.
 	auto _tab = tgui::Tabs::create();
 
 	fileContextMenu = tgui::ContextMenu::create();
@@ -114,8 +113,8 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	fileInitVisitor = std::make_unique<FileInitVisitor>();
 	listedResourcesType = EngineFileType::FILE_MAP;
 
-	// For allowing widgets to hook into the width of the resizable resource list
-	// Must ALWAYS be initialized first
+	// For allowing widgets to hook into the width of the resizable resource
+	// list Must ALWAYS be initialized first
 	resListWBinder = tgui::Group::create({modifiable_RESLIST_W, 0});
 	layout->add(resListWBinder, "resListWBinder");
 
@@ -132,10 +131,14 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	tabsContainer->getRenderer()->setBorders({0, 0, 0, 0});
 	tabsContainer->getRenderer()->setRoundedBorderRadius(0);
 	tabsContainer->getRenderer()->setPadding(0);
-	tabsContainer->setSize(tgui::Layout("100%") - tgui::bindWidth(resListWBinder), FILETABS_H);
-	tabsContainer->setPosition(tgui::bindWidth(resListWBinder), tgui::bindBottom(toolBar));
-	tabsContainer->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
-	tabsContainer->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
+	tabsContainer->setSize(
+		tgui::Layout("100%") - tgui::bindWidth(resListWBinder), FILETABS_H);
+	tabsContainer->setPosition(tgui::bindWidth(resListWBinder),
+							   tgui::bindBottom(toolBar));
+	tabsContainer->getVerticalScrollbar()->setPolicy(
+		tgui::Scrollbar::Policy::Never);
+	tabsContainer->getHorizontalScrollbar()->setPolicy(
+		tgui::Scrollbar::Policy::Never);
 
 	fileTabs = FileTab::create();
 	fileTabs->setHeight(FILETABS_H);
@@ -163,14 +166,15 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	layout->add(tabsContainer);
 
 	// File view
-	auto fileView =
-		tgui::Group::create({tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
-							 tgui::Layout("100%") - tgui::bindHeight(toolBar) - tgui::bindHeight(tabsContainer)});
-	fileView->setPosition(tgui::bindWidth(resListWBinder), tgui::bindBottom(tabsContainer));
+	auto fileView = tgui::Group::create(
+		{tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
+		 tgui::Layout("100%") - tgui::bindHeight(toolBar) -
+			 tgui::bindHeight(tabsContainer)});
+	fileView->setPosition(tgui::bindWidth(resListWBinder),
+						  tgui::bindBottom(tabsContainer));
 	this->fileViewGroup = fileView;
 	clearView();
 	layout->add(fileView);
-
 
 	// Maximize when a project is opened
 	SetWindowState(FLAG_WINDOW_MAXIMIZED);
@@ -233,7 +237,8 @@ tgui::Group::Ptr screens::ProjectScreen::createToolBar(TranslationService &ts) {
 
 	auto &fs = Editor::instance->getFs();
 
-	auto playBtnTooltip = Tooltip::create(ts.getKey("screen.project.toolbar.play"));
+	auto playBtnTooltip =
+		Tooltip::create(ts.getKey("screen.project.toolbar.play"));
 	auto playBtn = tgui::BitmapButton::create();
 	auto playtestImg = tgui::Texture(fs.getResourcePath("playtest.png"));
 	playBtn->setImage(playtestImg);
@@ -243,7 +248,8 @@ tgui::Group::Ptr screens::ProjectScreen::createToolBar(TranslationService &ts) {
 	playBtn->setToolTip(playBtnTooltip);
 	toolBar->add(playBtn, "playBtn");
 
-	auto buildTooltip = Tooltip::create(ts.getKey("screen.project.toolbar.build"));
+	auto buildTooltip =
+		Tooltip::create(ts.getKey("screen.project.toolbar.build"));
 	auto buildBtn = tgui::BitmapButton::create();
 	auto buildImg = tgui::Texture(fs.getResourcePath("build.png"));
 	buildBtn->setImage(buildImg);

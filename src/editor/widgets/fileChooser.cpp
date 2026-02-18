@@ -12,7 +12,8 @@ FileChooser::FileChooser(const char *typeName, bool initRenderer)
 
 	TranslationService &tService = Editor::instance->getTranslations();
 	chosenPathLabel = tgui::EditBox::create();
-	chosenPathLabel->setText(tService.getKey("widget.filechooser.select_a_file"));
+	chosenPathLabel->setText(
+		tService.getKey("widget.filechooser.select_a_file"));
 	chosenPathLabel->setReadOnly(true);
 	chosenPathLabel->setEnabled(false);
 	iconButton = tgui::BitmapButton::create();

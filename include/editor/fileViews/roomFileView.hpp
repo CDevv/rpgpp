@@ -4,10 +4,10 @@
 #include "fileView.hpp"
 #include "roomLayerViewVisitor.hpp"
 #include "roomViewModesHandler.hpp"
+#include "views/roomView.hpp"
 #include "views/tileSetView.hpp"
 #include "widgets/fileField.hpp"
 #include "widgets/intField.hpp"
-#include "views/roomView.hpp"
 #include <memory>
 
 class RoomFileView : public FileView {

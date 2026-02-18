@@ -16,13 +16,9 @@ class UIScreen {
 		// to create widgets.
 	}
 
-	virtual void mouseMove(int x, int y) {
+	virtual void mouseMove(int x, int y) {}
 
-	}
-
-	virtual void leftMouseReleased(int x, int y) {
-
-	}
+	virtual void leftMouseReleased(int x, int y) {}
 
 	virtual void unloadScreen() {
 		// this is a base method when you need to unload textures and such.

@@ -1,9 +1,9 @@
 #include "editor.hpp"
+#include "project.hpp"
+#include "raylib.h"
 #include "services/editorGuiService.hpp"
 #include "services/fileSystemService.hpp"
 #include "services/translationService.hpp"
-#include "project.hpp"
-#include "raylib.h"
 #include <memory>
 
 Editor *Editor::instance;
@@ -26,31 +26,23 @@ void Editor::setAppIcon(const std::string &icon_path) {
 	SetWindowIcon(img_loader);
 }
 
-EditorGuiService& Editor::getGui() const {
-	return *guiService;
-}
+EditorGuiService &Editor::getGui() const { return *guiService; }
 
-TranslationService& Editor::getTranslations() const {
+TranslationService &Editor::getTranslations() const {
 	return *translationService;
 }
 
-ThemeService& Editor::getThemeService() const {
-	return *themeService;
-}
+ThemeService &Editor::getThemeService() const { return *themeService; }
 
-FileSystemService& Editor::getFs() const {
-	return *fileSystem;
-}
+FileSystemService &Editor::getFs() const { return *fileSystem; }
 
-Project* Editor::getProject() const {
-	return project.get();
-}
+Project *Editor::getProject() const { return project.get(); }
 
 ConfigurationService &Editor::getConfiguration() const {
 	return *configurationService;
 }
 
-void Editor::setProject(const std::string& path) {
+void Editor::setProject(const std::string &path) {
 	project = std::make_unique<Project>(path);
 }
 

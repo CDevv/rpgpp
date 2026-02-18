@@ -1,8 +1,8 @@
 #ifndef _RPGPP_PROJECTFILEVISITOR_H
 #define _RPGPP_PROJECTFILEVISITOR_H
 
-#include "services/fileSystemService.hpp"
 #include "projectFile.hpp"
+#include "services/fileSystemService.hpp"
 #include <array>
 #include <functional>
 #include <memory>

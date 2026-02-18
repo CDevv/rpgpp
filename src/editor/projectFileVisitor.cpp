@@ -1,13 +1,13 @@
 #include "projectFileVisitor.hpp"
 
 #include "fileViews/codeFileView.hpp"
-#include "fileViews/tilesetFileView.hpp"
 #include "fileViews/fileView.hpp"
 #include "fileViews/roomFileView.hpp"
-#include "services/fileSystemService.hpp"
+#include "fileViews/tilesetFileView.hpp"
 #include "projectFile.hpp"
 #include "room.hpp"
 #include "scriptFile.h"
+#include "services/fileSystemService.hpp"
 #include "tileset.hpp"
 #include "variant.hpp"
 #include <memory>
@@ -54,7 +54,8 @@ ProjectFileVisitor::roomView(const std::string &path) {
 std::unique_ptr<ProjectFile>
 ProjectFileVisitor::codeView(const std::string &path) {
 	std::unique_ptr<FileView> view = std::make_unique<CodeFileView>();
-	std::unique_ptr<VariantWrapper> variant = std::make_unique<Variant<ScriptFile>>(new ScriptFile(path));
+	std::unique_ptr<VariantWrapper> variant =
+		std::make_unique<Variant<ScriptFile>>(new ScriptFile(path));
 	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
 										 EngineFileType::FILE_SCRIPT);
 }

@@ -1,66 +1,63 @@
 #include "soundService.hpp"
-#include <raylib.h>
 #include "game.hpp"
+#include <raylib.h>
 
-SoundService::SoundService()
-{
+SoundService::SoundService() {
 	music = {};
 	musicLoaded = false;
 	lastId = "";
 }
 
-bool SoundService::loadMusic(const std::string &id)
-{
-	GameData& gameData = Game::getBin();
+bool SoundService::loadMusic(const std::string &id) {
+	GameData &gameData = Game::getBin();
 
-	if (lastId == id) return true;
+	if (lastId == id)
+		return true;
 
 	if (gameData.music.count(id) != 0) {
-	if (gameData.music[id].isSound) return musicLoaded;
+		if (gameData.music[id].isSound)
+			return musicLoaded;
 
-	Music newMusic = LoadMusicStream(gameData.music[id].relativePath.c_str());
-	if (IsMusicValid(newMusic)) {
-	unload();
+		Music newMusic =
+			LoadMusicStream(gameData.music[id].relativePath.c_str());
+		if (IsMusicValid(newMusic)) {
+			unload();
 
-	this->music = newMusic;
-	musicLoaded = true;
-	}
+			this->music = newMusic;
+			musicLoaded = true;
+		}
 	}
 
 	return musicLoaded;
 }
 
-void SoundService::playMusic() const
-{
+void SoundService::playMusic() const {
 	if (musicLoaded) {
-	PlayMusicStream(music);
+		PlayMusicStream(music);
 	}
 }
 
-void SoundService::playSound(const std::string &id) const
-{
-	GameData& gameData = Game::getBin();
+void SoundService::playSound(const std::string &id) const {
+	GameData &gameData = Game::getBin();
 
 	if (gameData.music.count(id) != 0) {
-	if (gameData.music[id].isSound) {
-	Sound sound = LoadSound(gameData.music[id].relativePath.c_str());
+		if (gameData.music[id].isSound) {
+			Sound sound = LoadSound(gameData.music[id].relativePath.c_str());
 
-	PlaySound(sound);
-	}
-	}
-}
-
-void SoundService::update() const
-{
-	if (musicLoaded) {
-	UpdateMusicStream(music);
+			PlaySound(sound);
+		}
 	}
 }
 
-void SoundService::unload() const
-{
+void SoundService::update() const {
 	if (musicLoaded) {
-	StopMusicStream(music);
-	UnloadMusicStream(music);
+		UpdateMusicStream(music);
+	}
+}
+
+void SoundService::unload() const {
+	if (musicLoaded) {
+		StopMusicStream(music);
+		UnloadMusicStream(music);
 	}
 }

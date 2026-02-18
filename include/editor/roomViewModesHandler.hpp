@@ -4,8 +4,8 @@
 #include "TGUI/Vector2.hpp"
 #include "gamedata.hpp"
 #include "room.hpp"
-#include "views/tileSetView.hpp"
 #include "views/roomView.hpp"
+#include "views/tileSetView.hpp"
 #include <memory>
 
 struct RoomViewState {

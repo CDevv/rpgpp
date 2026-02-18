@@ -2,8 +2,8 @@
 #define RPGPP_RESIZABLECONTAINER_H
 #include "TGUI/Layout.hpp"
 #include "TGUI/Signal.hpp"
-#include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Vector2.hpp"
+#include "TGUI/Widgets/Group.hpp"
 
 enum class ResizeDirection {
 	NONE = 0,
@@ -13,8 +13,8 @@ enum class ResizeDirection {
 	BOTTOM = 1 << 3
 };
 
-class ResizableContainer: public tgui::Group {
-private:
+class ResizableContainer : public tgui::Group {
+  private:
 	char resizeFlags = 0;
 	int grabberSize = 15;
 	int maxResizeWidth = 0;
@@ -29,9 +29,12 @@ private:
 	bool isGrabbing = false;
 	bool cursorModified = false;
 
-	bool inEnabledGrabber(ResizeDirection direction, tgui::Vector2f absolutePos);
-public:
-	ResizableContainer(const tgui::Layout2d &size, const tgui::Layout2d &position);
+	bool inEnabledGrabber(ResizeDirection direction,
+						  tgui::Vector2f absolutePos);
+
+  public:
+	ResizableContainer(const tgui::Layout2d &size,
+					   const tgui::Layout2d &position);
 	void enableResize(ResizeDirection direction);
 	void disableResize(ResizeDirection direction);
 	bool isResizable(ResizeDirection direction);
@@ -50,7 +53,8 @@ public:
 	typedef std::shared_ptr<ResizableContainer> Ptr;
 	typedef std::shared_ptr<const ResizableContainer> ConstPtr;
 
-	static ResizableContainer::Ptr create(const tgui::Layout2d &size, const tgui::Layout2d &position);
+	static ResizableContainer::Ptr create(const tgui::Layout2d &size,
+										  const tgui::Layout2d &position);
 	static ResizableContainer::Ptr copy(ResizableContainer::ConstPtr widget);
 
 	bool useExternalMouseEvent = false;
@@ -61,8 +65,9 @@ public:
 	void leftMouseReleased(tgui::Vector2f pos) override;
 
 	tgui::SignalTyped<tgui::Layout2d> onResize = {"OnResize"};
-protected:
+
+  protected:
 	tgui::Widget::Ptr clone() const override;
 };
 
-#endif //RPGPP_RESIZABLECONTAINER_H
+#endif // RPGPP_RESIZABLECONTAINER_H

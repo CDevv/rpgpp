@@ -1,12 +1,12 @@
 #ifndef _RGPP_EDITOR_H
 #define _RGPP_EDITOR_H
 
-#include "services/editorGuiService.hpp"
-#include "services/fileSystemService.hpp"
 #include "project.hpp"
 #include "raylib.h"
-#include "services/translationService.hpp"
+#include "services/editorGuiService.hpp"
+#include "services/fileSystemService.hpp"
 #include "services/themeService.hpp"
+#include "services/translationService.hpp"
 #include <memory>
 #include <string>
 

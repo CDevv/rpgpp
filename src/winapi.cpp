@@ -8,29 +8,30 @@
 
 #ifdef _WIN32
 
-char* WinReadFromHandle(HANDLE handle)
-{
+char *WinReadFromHandle(HANDLE handle) {
 	DWORD dwRead;
 	CHAR charBuf[4096];
 	BOOL bSuccess = FALSE;
 
 	for (;;) {
 		bSuccess = ReadFile(handle, charBuf, 4096, &dwRead, NULL);
-		if (!bSuccess || dwRead == 0) break;
+		if (!bSuccess || dwRead == 0)
+			break;
 
-		if (!bSuccess) break;
+		if (!bSuccess)
+			break;
 	}
 
 	return charBuf;
 }
 
-void WinWriteToHandle(HANDLE handle, std::string str)
-{
+void WinWriteToHandle(HANDLE handle, std::string str) {
 	DWORD dwWritten;
 	CHAR charBuf[4096];
 	BOOL bSuccess = FALSE;
 
-	bSuccess = WriteFile(handle, static_cast<char*>(str.data()), str.size(), &dwWritten, NULL);
+	bSuccess = WriteFile(handle, static_cast<char *>(str.data()), str.size(),
+						 &dwWritten, NULL);
 	if (!bSuccess) {
 		printf("WriteFile Error: %d", GetLastError());
 		return;
@@ -41,18 +42,18 @@ void WinWriteToHandle(HANDLE handle, std::string str)
 	}
 }
 
-void WinCreateProcEx(std::string cmdLine, HANDLE outHandle, HANDLE inHandle, DWORD dwFlags, bool wait)
-{
-	#ifdef _WIN32
+void WinCreateProcEx(std::string cmdLine, HANDLE outHandle, HANDLE inHandle,
+					 DWORD dwFlags, bool wait) {
+#ifdef _WIN32
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
-	
+
 	ZeroMemory(&si, sizeof(si));
 	si.cb = sizeof(si);
 	ZeroMemory(&pi, sizeof(pi));
 	if (outHandle != NULL) {
 		si.hStdError = outHandle;
-   		si.hStdOutput = outHandle;
+		si.hStdOutput = outHandle;
 	}
 	if (inHandle != NULL) {
 		si.hStdInput = inHandle;
@@ -63,34 +64,35 @@ void WinCreateProcEx(std::string cmdLine, HANDLE outHandle, HANDLE inHandle, DWO
 	if (dwFlags == STARTF_USESTDHANDLES) {
 		handleInheritance = TRUE;
 	}
-	
-	if (CreateProcess(NULL, const_cast<char*>(cmdLine.data()), NULL, NULL, handleInheritance, 0, NULL, NULL, &si, &pi)) {
+
+	if (CreateProcess(NULL, const_cast<char *>(cmdLine.data()), NULL, NULL,
+					  handleInheritance, 0, NULL, NULL, &si, &pi)) {
 		// Wait until child process exits.
 		if (wait) {
 			WaitForSingleObject(pi.hProcess, INFINITE);
 		}
 
-		// Close process and thread handles. 
+		// Close process and thread handles.
 		CloseHandle(pi.hProcess);
 		CloseHandle(pi.hThread);
 
-		if (outHandle != NULL) CloseHandle(outHandle);
-		if (inHandle != NULL) CloseHandle(inHandle);
+		if (outHandle != NULL)
+			CloseHandle(outHandle);
+		if (inHandle != NULL)
+			CloseHandle(inHandle);
 	} else {
 		printf("WinCreateProc: CreateProcess failed (%d).\n", GetLastError());
 	}
-	#else
+#else
 	printf("This is for Windows API only");
-	#endif
+#endif
 }
 
-void WinCreateProc(std::string cmdLine)
-{
+void WinCreateProc(std::string cmdLine) {
 	WinCreateProcEx(cmdLine, NULL, NULL, STARTF_FORCEONFEEDBACK, true);
 }
 
-VsInfo WinVsWhere(std::string path)
-{
+VsInfo WinVsWhere(std::string path) {
 	VsInfo result;
 
 	printf("%s : \n", path.c_str());
@@ -102,14 +104,13 @@ VsInfo WinVsWhere(std::string path)
 
 	SECURITY_ATTRIBUTES saAttr;
 
-	saAttr.nLength = sizeof(SECURITY_ATTRIBUTES); 
-   	saAttr.bInheritHandle = TRUE; 
-   	saAttr.lpSecurityDescriptor = NULL; 
+	saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
+	saAttr.bInheritHandle = TRUE;
+	saAttr.lpSecurityDescriptor = NULL;
 
-	if (!CreatePipe(&g_hChildStd_OUT_Rd, &g_hChildStd_OUT_Wr, &saAttr, 0)) 
-	{
+	if (!CreatePipe(&g_hChildStd_OUT_Rd, &g_hChildStd_OUT_Wr, &saAttr, 0)) {
 		printf("StdoutRd CreatePipe");
-	  	return result;
+		return result;
 	}
 
 	if (!SetHandleInformation(g_hChildStd_OUT_Rd, HANDLE_FLAG_INHERIT, 0)) {
@@ -117,21 +118,20 @@ VsInfo WinVsWhere(std::string path)
 		return result;
 	}
 
-	if (!CreatePipe(&g_hChildStd_IN_Rd, &g_hChildStd_IN_Wr, &saAttr, 0))
-	{
+	if (!CreatePipe(&g_hChildStd_IN_Rd, &g_hChildStd_IN_Wr, &saAttr, 0)) {
 		printf("Stdin CreatePipe");
 		return result;
 	}
 
-	if (!SetHandleInformation(g_hChildStd_IN_Wr, HANDLE_FLAG_INHERIT, 0))
-	{
+	if (!SetHandleInformation(g_hChildStd_IN_Wr, HANDLE_FLAG_INHERIT, 0)) {
 		printf("Stdin SetHandleInformation");
 		return result;
 	}
 
-	WinCreateProcEx(path, g_hChildStd_OUT_Wr, NULL, STARTF_USESTDHANDLES, false);
+	WinCreateProcEx(path, g_hChildStd_OUT_Wr, NULL, STARTF_USESTDHANDLES,
+					false);
 
-	CHAR* charBuf = WinReadFromHandle(g_hChildStd_OUT_Rd);
+	CHAR *charBuf = WinReadFromHandle(g_hChildStd_OUT_Rd);
 	std::string bufferString = charBuf;
 	VsInfo info = ParseVsWhereData(bufferString);
 	result = info;
@@ -139,8 +139,7 @@ VsInfo WinVsWhere(std::string path)
 	return result;
 }
 
-VsInfo ParseVsWhereData(std::string output)
-{
+VsInfo ParseVsWhereData(std::string output) {
 	VsInfo struc;
 	std::size_t found = output.find("installationPath:");
 	std::string installationPath;
@@ -164,13 +163,11 @@ VsInfo ParseVsWhereData(std::string output)
 #else
 
 void WinCreateProc(std::string cmdLine) {}
-VsInfo WinVsWhere(std::string path)
-{
+VsInfo WinVsWhere(std::string path) {
 	VsInfo info;
 	return info;
 }
-VsInfo ParseVsWhereData(std::string output)
-{
+VsInfo ParseVsWhereData(std::string output) {
 	VsInfo info;
 	return info;
 }

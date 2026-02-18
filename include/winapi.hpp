@@ -4,9 +4,9 @@
 #include <string>
 
 struct VsInfo {
-    std::string installationPath;
-    std::string vsdevcmdPath;
-    std::string auxiliaryPath;
+	std::string installationPath;
+	std::string vsdevcmdPath;
+	std::string auxiliaryPath;
 };
 
 void WinCreateProc(std::string cmdLine);

@@ -7,15 +7,15 @@
 #include "editor.hpp"
 #include "enum_visitor/enum_visitor.hpp"
 #include "fileViews/fileView.hpp"
-#include "widgets/toolbox.hpp"
-#include "widgets/propertiesBox.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "roomViewModesHandler.hpp"
-#include "views/tileSetView.hpp"
-#include "widgets/fileField.hpp"
 #include "views/roomView.hpp"
+#include "views/tileSetView.hpp"
 #include "views/worldView.hpp"
+#include "widgets/fileField.hpp"
+#include "widgets/propertiesBox.hpp"
+#include "widgets/toolbox.hpp"
 #include <memory>
 
 RoomFileView::RoomFileView() {
@@ -23,13 +23,15 @@ RoomFileView::RoomFileView() {
 	TranslationService &ts = Editor::instance->getTranslations();
 
 	roomView = RoomView::create();
-	roomView->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), TextFormat("100%% - %d", TOOLBOX_H)});
+	roomView->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W),
+					   TextFormat("100%% - %d", TOOLBOX_H)});
 	roomView->setPosition(0, TOOLBOX_H);
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(roomView));
 	widgetContainer.push_back(roomView);
 
 	auto roomLayerGroup = tgui::Group::create();
-	roomLayerGroup->setPosition(TextFormat("100%% - %d", RIGHT_PANEL_W), LAYER_CHOOSE_H);
+	roomLayerGroup->setPosition(TextFormat("100%% - %d", RIGHT_PANEL_W),
+								LAYER_CHOOSE_H);
 	roomLayerGroup->setSize({ROOM_LAYER_W, ROOM_LAYER_H});
 
 	layerVisitor.group = roomLayerGroup;
@@ -65,7 +67,8 @@ RoomFileView::RoomFileView() {
 
 	auto props = PropertiesBox::create();
 	props->setSize({RIGHT_PANEL_W, "100%"});
-	props->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W), ROOM_LAYER_H + LAYER_CHOOSE_H});
+	props->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W),
+						ROOM_LAYER_H + LAYER_CHOOSE_H});
 
 	widthField = IntField::create();
 	widthField->label->setText(ts.getKey("screen.project.roomview.mapwidth"));
@@ -87,7 +90,8 @@ RoomFileView::RoomFileView() {
 	});
 	props->addIntField(heightField);
 
-	tileSetField = FileField::create(ts.getKey("screen.project.roomview.tileset_file"), "...");
+	tileSetField = FileField::create(
+		ts.getKey("screen.project.roomview.tileset_file"), "...");
 	tileSetField->pathFilters = {{"RPG++ TileSet", {"*.rtiles"}}};
 	tileSetField->callback = [this](const tgui::String &path) {
 		auto room = this->roomView->getRoom();
@@ -102,25 +106,31 @@ RoomFileView::RoomFileView() {
 
 	auto toolbox = Toolbox<RoomTool>::create();
 	toolbox->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
-	toolbox->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
+	toolbox->getHorizontalScrollbar()->setPolicy(
+		tgui::Scrollbar::Policy::Never);
 	toolbox->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), TOOLBOX_H});
-	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_NONE, "Mouse", "tool_none.png"});
-	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_PLACE, "Place", "tool_place.png"});
-	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_ERASE, "Erase", "tool_erase.png"});
-	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_EDIT, "Edit", "tool_edit.png"});
+	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_NONE, "Mouse",
+										   "tool_none.png"});
+	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_PLACE,
+										   "Place", "tool_place.png"});
+	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_ERASE,
+										   "Erase", "tool_erase.png"});
+	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_EDIT, "Edit",
+										   "tool_edit.png"});
 
 	auto brushToggle = tgui::CheckBox::create("Enable brush mode");
 	brushToggle->onChange([this, brushToggle]() {
-	    roomView->setBrush(brushToggle->isChecked());
+		roomView->setBrush(brushToggle->isChecked());
 	});
-	auto brushToggleSize = TOOLBOX_H - toolbox->getRenderer()->getPadding().getTop();
+	auto brushToggleSize =
+		TOOLBOX_H - toolbox->getRenderer()->getPadding().getTop();
 	brushToggle->setSize({brushToggleSize, brushToggleSize});
 	toolbox->addWidget(brushToggle);
 
 	toolbox->onItemClicked([this](ToolboxItem<RoomTool> tool) {
-	tileSetView->setTool(tool.id);
-	roomView->setTool(tool.id);
-	    cout << "Selected tool: " << tool.text << endl;
+		tileSetView->setTool(tool.id);
+		roomView->setTool(tool.id);
+		cout << "Selected tool: " << tool.text << endl;
 	});
 	widgetContainer.push_back(toolbox);
 }

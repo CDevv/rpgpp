@@ -16,8 +16,9 @@
 NewFileDialog::NewFileDialog(const char *typeName, bool initRenderer) {}
 
 void NewFileDialog::init(tgui::Gui *gui) {
-   	TranslationService &tService = Editor::instance->getTranslations();
-	window = tgui::ChildWindow::create(tService.getKey("dialog.new_file.title"));
+	TranslationService &tService = Editor::instance->getTranslations();
+	window =
+		tgui::ChildWindow::create(tService.getKey("dialog.new_file.title"));
 	window->setSize(320, 220);
 
 	auto panel = tgui::Panel::create();
@@ -27,7 +28,8 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	auto vertLayout = tgui::GrowVerticalLayout::create();
 	panel->add(vertLayout);
 
-	auto titleLabel = tgui::Label::create(tService.getKey("dialog.new_file.name"));
+	auto titleLabel =
+		tgui::Label::create(tService.getKey("dialog.new_file.name"));
 	vertLayout->add(titleLabel);
 
 	titleField = tgui::EditBox::create();
@@ -46,21 +48,20 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	fileField->setSize({"100%", FIELD_H});
 	vertLayout->add(fileField);
 
-	confirmButton = tgui::Button::create(tService.getKey("dialog.new_file.confirm"));
+	confirmButton =
+		tgui::Button::create(tService.getKey("dialog.new_file.confirm"));
 	confirmButton->setSize(BUTTON_W, BUTTON_H);
-	confirmButton->setPosition(
-	tgui::Layout("100%") - BUTTON_W - PADDING,
-	tgui::Layout("100%") - BUTTON_H - PADDING
-	);
+	confirmButton->setPosition(tgui::Layout("100%") - BUTTON_W - PADDING,
+							   tgui::Layout("100%") - BUTTON_H - PADDING);
 
 	window->add(confirmButton);
 
-	cancelButton = tgui::Button::create(tService.getKey("dialog.new_file.cancel"));
+	cancelButton =
+		tgui::Button::create(tService.getKey("dialog.new_file.cancel"));
 	cancelButton->setSize(BUTTON_W, BUTTON_H);
-	cancelButton->setPosition(
-	    tgui::bindLeft(confirmButton) - BUTTON_W - PADDING,
-		tgui::Layout("100%") - BUTTON_H - PADDING
-	);
+	cancelButton->setPosition(tgui::bindLeft(confirmButton) - BUTTON_W -
+								  PADDING,
+							  tgui::Layout("100%") - BUTTON_H - PADDING);
 
 	cancelButton->onPress([this] { window->close(); });
 	window->add(cancelButton);

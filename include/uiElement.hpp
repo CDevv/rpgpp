@@ -2,12 +2,12 @@
 #define _RPGPP_UIELEMENT_H
 
 class UIElement {
-public:
-    virtual ~UIElement() = default;
+  public:
+	virtual ~UIElement() = default;
 
-    UIElement();
-    virtual void update();
-    virtual void draw();
+	UIElement();
+	virtual void update();
+	virtual void draw();
 };
 
 #endif

@@ -27,15 +27,10 @@ class FileTab : public tgui::Tabs {
 
 	bool cursorModified = false;
 
-	void renderTab(
-	tgui::BackendRenderTarget &target,
-	tgui::RenderStates &states,
-	int idx,
-	bool roundedCorners,
-	float borderWidth,
-	float usableHeight,
-	tgui::Sprite &close
-	) const;
+	void renderTab(tgui::BackendRenderTarget &target,
+				   tgui::RenderStates &states, int idx, bool roundedCorners,
+				   float borderWidth, float usableHeight,
+				   tgui::Sprite &close) const;
 
   public:
 	bool useExternalMouseEvent = false;

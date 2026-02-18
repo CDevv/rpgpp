@@ -3,14 +3,14 @@
 #include <raylib.h>
 
 Tile::Tile() {
-  this->worldCoords = Vector2{0, 0};
-  this->placed = false;
+	this->worldCoords = Vector2{0, 0};
+	this->placed = false;
 }
 
 void Tile::place(AtlasTile atlas_to_set, Vector2 world_coords_to_set) {
-  this->atlasTile = atlas_to_set;
-  this->worldCoords = world_coords_to_set;
-  this->placed = true;
+	this->atlasTile = atlas_to_set;
+	this->worldCoords = world_coords_to_set;
+	this->placed = true;
 }
 
 void Tile::erase() { this->placed = false; }

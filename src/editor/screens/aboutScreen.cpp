@@ -23,9 +23,8 @@ void AboutScreen::initItems(tgui::Group::Ptr layout) {
 	verticalLayout->getRenderer()->setSpaceBetweenWidgets(5.0f);
 	EditorGuiService::createLogoCenter(verticalLayout);
 	auto goBack = tgui::Button::create(tService.getKey("button.go_back"));
-	goBack->onPress.connect([] {
-		Editor::instance->getGui().gotoPreviousScreen();
-	});
+	goBack->onPress.connect(
+		[] { Editor::instance->getGui().gotoPreviousScreen(); });
 
 	goBack->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
 	std::stringstream informationText;

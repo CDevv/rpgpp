@@ -3,9 +3,9 @@
 
 #include "TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp"
 #include "TGUI/Widget.hpp"
+#include "constants/room.hpp"
 #include "raylib.h"
 #include "updatable.hpp"
-#include "constants/room.hpp"
 #include <memory>
 
 class WorldView : public tgui::CanvasRaylib, public IUpdatable {

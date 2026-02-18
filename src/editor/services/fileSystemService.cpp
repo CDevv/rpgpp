@@ -6,8 +6,8 @@
 #include <string>
 
 #include "editor.hpp"
-#include "screens/projectScreen.hpp"
 #include "raylib.h"
+#include "screens/projectScreen.hpp"
 
 FileSystemService::FileSystemService() {
 	editorBaseDir = GetWorkingDirectory();
