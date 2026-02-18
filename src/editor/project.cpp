@@ -30,7 +30,7 @@ Project::Project(const std::string &path) {
 }
 
 void Project::create(const std::string &dirPath, const std::string &title) {
-	json j;
+	json j = json::object();
 	j["title"] = title;
 	std::string fileContent = j.dump(4);
 
@@ -38,8 +38,10 @@ void Project::create(const std::string &dirPath, const std::string &title) {
 	filePath /= "proj.rpgpp";
 	SaveFileText(filePath.u8string().c_str(), fileContent.c_str());
 
-	MakeDirectory(std::filesystem::path(dirPath).append("tilesets").u8string().c_str());
-	MakeDirectory(std::filesystem::path(dirPath).append("maps").u8string().c_str());
+	MakeDirectory(
+		std::filesystem::path(dirPath).append("tilesets").u8string().c_str());
+	MakeDirectory(
+		std::filesystem::path(dirPath).append("maps").u8string().c_str());
 
 	Editor::instance->setProject(filePath.u8string());
 	Editor::instance->getGui().setScreen(
@@ -47,7 +49,7 @@ void Project::create(const std::string &dirPath, const std::string &title) {
 }
 
 json Project::toJson() {
-	json j;
+	json j = json::object();
 	j["title"] = projectTitle;
 
 	return j;

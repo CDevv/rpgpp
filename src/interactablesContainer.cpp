@@ -152,7 +152,7 @@ void InteractablesContainer::addJsonData(json roomJson) {
 }
 
 json InteractablesContainer::dumpJson() {
-	json j;
+	json j = json::object();
 	for (auto &&i : vec) {
 		auto *inter = i.get();
 		int tileX = static_cast<int>(inter->getWorldPos().x);

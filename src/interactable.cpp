@@ -65,7 +65,7 @@ Interactable::Interactable(InteractableInRoomBin bin) {
 }
 
 json Interactable::dumpJson() {
-	json j;
+	json j = json::object();
 	j.push_back({"name", type});
 	j.push_back({"props", *props});
 	j.push_back({"script", scriptPath});
