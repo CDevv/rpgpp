@@ -108,6 +108,11 @@ if is_plat("windows") then
 end
 -- add_links("tree-sitter-lua", { kind = "static" })
 set_kind("binary")
+-- FIX FOR MSVC !!!!
+-- NOTE: DO NOT DELETE THIS LINE
+if is_plat("windows") then
+    add_cxxflags("/permissive-")
+end
 set_languages("cxx17")
 add_includedirs("include/", "include/editor/", os.dirs(path.join(os.scriptdir())))
 add_files("src/editor/**.cpp")
