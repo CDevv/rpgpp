@@ -40,7 +40,6 @@ game-src/*/lib/
 /game
 build/
 bin/
-libs/
 execs/**
 *.bin
 .cache/
