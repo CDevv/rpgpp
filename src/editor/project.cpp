@@ -32,7 +32,7 @@ Project::Project(const std::string &path) {
 void Project::create(const std::string &dirPath, const std::string &title) {
 	json j = json::object();
 	j["title"] = title;
-	std::string fileContent = j.dump(4);
+	std::string fileContent = j.dump();
 
 	std::filesystem::path filePath = dirPath;
 	filePath /= "proj.rpgpp";

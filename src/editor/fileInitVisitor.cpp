@@ -54,7 +54,7 @@ void FileInitVisitor::tileset(NewFileDialog::Ptr dialog) {
 			nlohmann::json fileJson = tileSet->dumpJson();
 			std::string newFilePath =
 				TextFormat("tilesets/%s.tiles", title.c_str());
-			SaveFileText(newFilePath.c_str(), fileJson.dump(4).c_str());
+			SaveFileText(newFilePath.c_str(), fileJson.dump().c_str());
 
 			auto ptr = aurora::downcast<screens::ProjectScreen *>(
 				Editor::instance->getGui().currentScreen.get());
@@ -82,7 +82,7 @@ void FileInitVisitor::room(NewFileDialog::Ptr dialog) {
 			std::string newFilePath =
 				TextFormat("maps/%s.tiles", title.c_str());
 			nlohmann::json fileJson = room->dumpJson();
-			SaveFileText(newFilePath.c_str(), fileJson.dump(4).c_str());
+			SaveFileText(newFilePath.c_str(), fileJson.dump().c_str());
 
 			auto ptr = aurora::downcast<screens::ProjectScreen *>(
 				Editor::instance->getGui().currentScreen.get());

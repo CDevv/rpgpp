@@ -40,7 +40,7 @@ void ProjectFile::addWidgets(tgui::Group::Ptr layout) {
 void ProjectFile::saveFile(const std::string &path) {
 	auto saveable = variant->toSaveable();
 	json j = saveable->dumpJson();
-	SaveFileText(path.c_str(), j.dump(4).c_str());
+	SaveFileText(path.c_str(), j.dump().c_str());
 }
 
 FileView &ProjectFile::getView() { return *view; }
