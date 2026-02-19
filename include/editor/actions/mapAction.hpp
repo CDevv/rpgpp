@@ -5,6 +5,7 @@
 #include "room.hpp"
 #include "views/roomView.hpp"
 #include <memory>
+#include <string>
 #include <utility>
 
 struct MapActionData {
@@ -12,6 +13,7 @@ struct MapActionData {
 	Room *room;
 	RoomLayer layer;
 	std::string interactable;
+	std::string interactableTitle;
 	Vector2 worldTile;
 	Vector2 tile;
 	Vector2 prevTile;

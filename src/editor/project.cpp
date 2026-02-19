@@ -76,6 +76,27 @@ std::vector<std::string> Project::getPaths(EngineFileType fileType) {
 	return vec;
 }
 
+std::map<std::string, std::string> Project::getInteractableNames() {
+	std::map<std::string, std::string> map{};
+
+	// built-in interactables
+
+	std::filesystem::path interactablesDir =
+		Editor::instance->getFs().getEditorBaseDir();
+	interactablesDir /= "resources";
+	interactablesDir /= "interactables";
+
+	auto list = LoadDirectoryFiles(interactablesDir.u8string().c_str());
+	for (int i = 0; i < list.count; i++) {
+		std::string intPath = list.paths[i];
+		Interactable inter(intPath);
+
+		map[GetFileNameWithoutExt(intPath.c_str())] = inter.getDisplayTitle();
+	}
+
+	return map;
+}
+
 GameData Project::generateStruct() {
 	GameData data;
 	data.title = projectTitle;
@@ -350,22 +371,27 @@ void Project::runProject() {
 
 	ChangeDirectory(projectPath.c_str());
 
+	std::string cmdLine = TextFormat(
+		"%s -l rpgpplua %s", intepreterPath.c_str(), scriptPath.c_str());
+	printf("%s \n", cmdLine.c_str());
+
+	// popen(cmdLine.c_str(), "r");
+
 	std::string outData;
 	char buffer[256];
 	FILE *stream;
 	stream = popen(TextFormat("%s -l rpgpplua %s", intepreterPath.c_str(),
 							  scriptPath.c_str()),
 				   "r");
-	/*
-if (stream) {
-while (!feof(stream)) {
-if (fgets(buffer, 256, stream) != NULL) {
- outData.append(buffer);
-}
-}
-pclose(stream);
-}
-*/
+
+	if (stream) {
+		while (!feof(stream)) {
+			if (fgets(buffer, 256, stream) != NULL) {
+				outData.append(buffer);
+			}
+		}
+		pclose(stream);
+	}
 
 	printf("Stream data: \n");
 	printf("%s", outData.c_str());

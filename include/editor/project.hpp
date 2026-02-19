@@ -3,6 +3,7 @@
 
 #include "gamedata.hpp"
 #include "services/fileSystemService.hpp"
+#include <map>
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <string>
@@ -22,6 +23,7 @@ class Project {
 	std::string &getTitle();
 	std::string &getBasePath();
 	std::vector<std::string> getPaths(EngineFileType fileType);
+	std::map<std::string, std::string> getInteractableNames();
 	GameData generateStruct();
 	void runProject();
 };

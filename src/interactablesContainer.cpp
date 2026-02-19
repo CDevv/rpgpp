@@ -5,6 +5,7 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
+#include <utility>
 #include <vector>
 
 InteractablesContainer::InteractablesContainer() {}
@@ -27,8 +28,10 @@ void InteractablesContainer::add(int x, int y, const std::string &type) {
 
 	Vector2 tilePos = {static_cast<float>(x), static_cast<float>(y)};
 
-	vec.push_back(
-		std::make_unique<Interactable>(type, tilePos, _RPGPP_TILESIZE));
+	std::unique_ptr<Interactable> inter =
+		std::make_unique<Interactable>(type, tilePos, _RPGPP_TILESIZE);
+
+	vec.push_back(std::move(inter));
 }
 
 void InteractablesContainer::addBin(InteractableInRoomBin bin) {
@@ -158,11 +161,13 @@ json InteractablesContainer::dumpJson() {
 		int tileX = static_cast<int>(inter->getWorldPos().x);
 		int tileY = static_cast<int>(inter->getWorldPos().y);
 
-		auto key = TextFormat("%i:%i", tileX, tileY);
+		auto key = TextFormat("%i;%i", tileX, tileY);
 
-		json interJson;
+		auto interProps = inter->getProps();
+
+		json interJson = json::object();
 		interJson.push_back({"src", inter->getType()});
-		interJson.push_back({"props", inter->getProps()});
+		interJson.push_back({"props", interProps});
 
 		j.push_back({key, interJson});
 	}

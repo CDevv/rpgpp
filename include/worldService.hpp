@@ -4,6 +4,7 @@
 #include "gamedata.hpp"
 #include "player.hpp"
 #include "room.hpp"
+#include <map>
 #include <memory>
 #include <string>
 
@@ -24,6 +25,7 @@ class WorldService {
 	bool transitionSecondStage;
 
   public:
+	std::map<std::string, std::string> interactableNames{};
 	/** Empty constructor. */
 	WorldService();
 	/** Get a reference to the current room. */

@@ -147,14 +147,25 @@ void RoomView::drawCanvas() {
 		DrawRectangleRec(destRect, Fade(RED, 0.2f));
 	}
 
+	// interactables
+	auto interactableNames =
+		Editor::instance->getProject()->getInteractableNames();
 	for (auto interactable : room->getInteractables().getList()) {
 		int tileX = static_cast<int>(interactable->getWorldPos().x);
 		int tileY = static_cast<int>(interactable->getWorldPos().y);
 
 		Rectangle destRect = getDestRect(tileMap, tileX, tileY);
 
+		std::string shownTitle = interactable->getType();
+
+		if (!interactableNames.empty()) {
+			if (interactableNames.count(interactable->getType()) > 0) {
+				shownTitle = interactableNames[interactable->getType()];
+			}
+		}
+
 		DrawRectangleRec(destRect, Fade(YELLOW, 0.2f));
-		DrawText(TextFormat("%s", interactable->getType().c_str()),
+		DrawText(TextFormat("%s", shownTitle.c_str()),
 				 static_cast<int>(destRect.x), static_cast<int>(destRect.y), 16,
 				 ORANGE);
 
@@ -290,8 +301,7 @@ void RoomView::handleModePress(tgui::Vector2f pos) {
 				 static_cast<float>(atlasTilePos.y)};
 	data.worldTile = {static_cast<float>(tileMouse.x),
 					  static_cast<float>(tileMouse.y)};
-	data.interactable = static_cast<InteractableType>(
-		interactableChoose->getSelectedItemIndex() + 1);
+	data.interactable = interactableChoose->getSelectedItem().toStdString();
 
 	switch (tool) {
 	case RoomTool::TOOL_PLACE: {
