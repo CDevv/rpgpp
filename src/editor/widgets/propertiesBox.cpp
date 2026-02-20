@@ -9,7 +9,9 @@
 #include "TGUI/Widgets/ToggleButton.hpp"
 #include "widgets/fileField.hpp"
 #include "widgets/intField.hpp"
+#include "widgets/textField.hpp"
 #include <memory>
+#include <nlohmann/json.hpp>
 
 PropertiesBox::PropertiesBox(const char *typeName, bool initRenderer)
 	: tgui::ChildWindow(typeName, initRenderer) {
@@ -40,6 +42,25 @@ tgui::Widget::Ptr PropertiesBox::clone() const {
 void PropertiesBox::draw(tgui::BackendRenderTarget &target,
 						 tgui::RenderStates states) const {
 	tgui::ChildWindow::draw(target, states);
+}
+
+void PropertiesBox::addPropsJson(nlohmann::json &j) {
+	for (auto item : j.items()) {
+		printf("%s \n", item.key().c_str());
+		if (item.value().is_string()) {
+			printf("%s \n", item.value().get<std::string>().c_str());
+
+			auto textField = TextField::create();
+			textField->label->setText(item.key());
+			textField->value->setText(item.value().get<std::string>());
+			textField->value->onTextChange(
+				[&j, item](const tgui::String &text) {
+					std::string st = text.toStdString();
+					j.at(item.key()) = st;
+				});
+			addTextField(textField);
+		}
+	}
 }
 
 void PropertiesBox::addToggleField(const tgui::String &title) {
@@ -94,6 +115,11 @@ void PropertiesBox::addIntField(IntField::Ptr field) {
 }
 
 void PropertiesBox::addFileField(FileField::Ptr field) {
+	field->setSize({"100%", 24});
+	layout->add(field);
+}
+
+void PropertiesBox::addTextField(TextField::Ptr field) {
 	field->setSize({"100%", 24});
 	layout->add(field);
 }

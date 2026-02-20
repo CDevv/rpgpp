@@ -333,6 +333,10 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 	TileMap *tileMap = room->getTileMap();
 
 	selectedTile = getTileAtMouse();
+	if (!tileMap->worldPosIsValid({static_cast<float>(selectedTile.x),
+								   static_cast<float>(selectedTile.y)})) {
+		return;
+	}
 	Vector2 atlasCoords = tileMap->getTile(selectedTile.x, selectedTile.y)
 							  .getAtlasTile()
 							  .getAtlasCoords();
@@ -365,6 +369,7 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 		IVector tileMouse = getTileAtMouse();
 		layerVisitor->inter =
 			room->getInteractables().getInt(tileMouse.x, tileMouse.y);
+		layerVisitor->group->removeAllWidgets();
 		mj::visit(*layerVisitor, layer);
 	} break;
 	default:

@@ -3,6 +3,8 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "editor.hpp"
 #include "views/worldView.hpp"
+#include "widgets/propertiesBox.hpp"
+#include "widgets/textField.hpp"
 #include <cstdio>
 #include <raylib.h>
 #include <string>
@@ -42,15 +44,10 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>) {
 		if (inter == nullptr) {
 			group->add(tgui::Label::create("Interactables"));
 		} else {
-			if (inter->getProps().is_object()) {
-				for (auto item : inter->getProps().items()) {
-					printf("%s \n", item.key().c_str());
-					if (item.value().is_string()) {
-						printf("%s \n",
-							   item.value().get<std::string>().c_str());
-					}
-				}
-			}
+			auto propBox = PropertiesBox::create();
+			propBox->setSize("100%", "100%");
+			group->add(propBox);
+			propBox->addPropsJson(inter->getProps());
 		}
 	} else {
 		group->add(tgui::Label::create("Interactables"));

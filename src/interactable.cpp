@@ -10,6 +10,7 @@
 #include <nlohmann/json_fwd.hpp>
 #include <raylib.h>
 #include <stdio.h>
+#include <string>
 
 std::array<std::string, INTTYPE_MAX> Interactable::interactableTypeNames = {
 	"Blank", "Dialogue", "Warper"};
@@ -107,14 +108,13 @@ void Interactable::setDisplayTitle(const std::string &newTitle) {
 std::string &Interactable::getDisplayTitle() { return displayTitle; }
 
 void Interactable::interact() {
-	if (type == "dialogue") {
-		printf("interaction!\n");
-	} else {
-		printf("two.\n");
-	}
-
 	sol::state lua;
 	lua.open_libraries(sol::lib::base);
+	for (auto prop : props->items()) {
+		if (prop.value().is_string()) {
+			lua[prop.key()] = prop.value().get<std::string>();
+		}
+	}
 	Game::setLua(lua);
 
 	printf("type: %s \n", type.c_str());

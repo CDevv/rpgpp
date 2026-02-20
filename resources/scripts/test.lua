@@ -1,4 +1,4 @@
 function interact()
-print("Boy cannae")
-opendiag("diag")
+print(dialogue)
+opendiag(dialogue)
 end
