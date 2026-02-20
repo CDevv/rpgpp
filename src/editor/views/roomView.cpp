@@ -10,6 +10,7 @@
 #include "actions/placeTileAction.hpp"
 #include "actor.hpp"
 #include "editor.hpp"
+#include "enum_visitor/enum_visitor.hpp"
 #include "gamedata.hpp"
 #include "interactable.hpp"
 #include "raylib.h"
@@ -301,7 +302,10 @@ void RoomView::handleModePress(tgui::Vector2f pos) {
 				 static_cast<float>(atlasTilePos.y)};
 	data.worldTile = {static_cast<float>(tileMouse.x),
 					  static_cast<float>(tileMouse.y)};
-	data.interactable = interactableChoose->getSelectedItem().toStdString();
+	data.interactable = GetFileNameWithoutExt(
+		interactableChoose->getSelectedItemId().toStdString().c_str());
+	data.interactableFullPath =
+		interactableChoose->getSelectedItemId().toStdString();
 
 	switch (tool) {
 	case RoomTool::TOOL_PLACE: {
@@ -356,6 +360,12 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 				std::make_unique<EditTileAction>(data);
 			screen->getCurrentFile().getView().pushAction(std::move(act));
 		});
+	} break;
+	case RoomLayer::LAYER_INTERACTABLES: {
+		IVector tileMouse = getTileAtMouse();
+		layerVisitor->inter =
+			room->getInteractables().getInt(tileMouse.x, tileMouse.y);
+		mj::visit(*layerVisitor, layer);
 	} break;
 	default:
 		break;

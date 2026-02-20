@@ -14,12 +14,12 @@ void draw_text_lua(const char *text, int posX, int posY, int fontSize) {
 }
 
 void clear_bg_lua() { ClearBackground(RAYWHITE); }
+
 extern "C"
 #ifdef _WIN32
 	__declspec(dllexport)
 #endif
-	int
-	luaopen_rpgpplua(lua_State *L) {
+	int luaopen_rpgpplua(lua_State *L) {
 	sol::state_view lua(L);
 	lua.set_function("printer", &printer);
 

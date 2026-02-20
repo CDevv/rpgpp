@@ -7,6 +7,7 @@
 #include "gamedata.hpp"
 #include "raylib.h"
 #include "room.hpp"
+#include "roomLayerViewVisitor.hpp"
 #include "tileSetView.hpp"
 #include "tilemap.hpp"
 #include "views/worldView.hpp"
@@ -39,6 +40,7 @@ class RoomView : public WorldView {
 	TileSetView *tileSetView{nullptr};
 	FileView *fileView;
 	tgui::ComboBox *interactableChoose;
+	RoomLayerViewVisitor *layerVisitor;
 
 	RoomView();
 

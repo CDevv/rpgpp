@@ -3,7 +3,9 @@
 
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
+#include "interactable.hpp"
 #include "views/tileSetView.hpp"
+#include "views/worldView.hpp"
 #include <enum_visitor/enum_visitor.hpp>
 
 class RoomLayerViewVisitor
@@ -13,6 +15,8 @@ class RoomLayerViewVisitor
   public:
 	RoomLayerViewVisitor();
 	tgui::Group::Ptr group{nullptr};
+	RoomTool tool;
+	Interactable *inter{nullptr};
 	void operator()(enum_v<RoomLayer::LAYER_COLLISION>);
 	void operator()(enum_v<RoomLayer::LAYER_TILES>);
 	void operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>);

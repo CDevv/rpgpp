@@ -25,7 +25,6 @@ class WorldService {
 	bool transitionSecondStage;
 
   public:
-	std::map<std::string, std::string> interactableNames{};
 	/** Empty constructor. */
 	WorldService();
 	/** Get a reference to the current room. */

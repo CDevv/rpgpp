@@ -80,7 +80,6 @@ std::map<std::string, std::string> Project::getInteractableNames() {
 	std::map<std::string, std::string> map{};
 
 	// built-in interactables
-
 	std::filesystem::path interactablesDir =
 		Editor::instance->getFs().getEditorBaseDir();
 	interactablesDir /= "resources";
@@ -91,7 +90,7 @@ std::map<std::string, std::string> Project::getInteractableNames() {
 		std::string intPath = list.paths[i];
 		Interactable inter(intPath);
 
-		map[GetFileNameWithoutExt(intPath.c_str())] = inter.getDisplayTitle();
+		map[intPath.c_str()] = inter.getDisplayTitle();
 	}
 
 	return map;

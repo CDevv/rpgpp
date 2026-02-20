@@ -2,6 +2,7 @@
 #include "gamedata.hpp"
 #include "interactable.hpp"
 #include "tilemap.hpp"
+#include <cstdio>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
@@ -21,10 +22,13 @@ bool InteractablesContainer::interactableExists(int x, int y) {
 	return false;
 }
 
-void InteractablesContainer::add(int x, int y, const std::string &type) {
+Interactable *InteractablesContainer::add(int x, int y,
+										  const std::string &type) {
 	if (interactableExists(x, y)) {
-		return;
+		return nullptr;
 	}
+
+	printf("%s \n", type.c_str());
 
 	Vector2 tilePos = {static_cast<float>(x), static_cast<float>(y)};
 
@@ -32,6 +36,8 @@ void InteractablesContainer::add(int x, int y, const std::string &type) {
 		std::make_unique<Interactable>(type, tilePos, _RPGPP_TILESIZE);
 
 	vec.push_back(std::move(inter));
+
+	return getInt(x, y);
 }
 
 void InteractablesContainer::addBin(InteractableInRoomBin bin) {
@@ -106,10 +112,11 @@ void InteractablesContainer::addJsonData(json roomJson) {
 		int y = std::stoi(std::string(textSplit[1]));
 
 		std::string src = inter.at("src");
+		auto props = inter.at("props");
 
 		add(x, y, src);
 
-		getInt(x, y)->setProps(inter.at("props"));
+		getInt(x, y)->setProps(props);
 	}
 
 	// std::vector<std::vector<int>> interactablesVec =

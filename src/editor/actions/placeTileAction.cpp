@@ -1,7 +1,9 @@
 #include "actions/placeTileAction.hpp"
 #include "actions/mapAction.hpp"
+#include "editor.hpp"
 #include "raylib.h"
 #include "room.hpp"
+#include <nlohmann/json_fwd.hpp>
 
 PlaceTileAction::PlaceTileAction(MapActionData a) : MapAction(a) {}
 
@@ -19,8 +21,13 @@ void PlaceTileAction::execute() {
 													data.worldTile.y);
 	} break;
 	case RoomLayer::LAYER_INTERACTABLES: {
-		data.room->getInteractables().add(data.worldTile.x, data.worldTile.y,
-										  data.interactable);
+		auto inter = data.room->getInteractables().add(
+			data.worldTile.x, data.worldTile.y, data.interactable);
+		if (inter != nullptr) {
+			nlohmann::json interJson =
+				json::parse(LoadFileText(data.interactableFullPath.c_str()));
+			inter->setProps(interJson.at("props"));
+		}
 	} break;
 	default:
 		break;

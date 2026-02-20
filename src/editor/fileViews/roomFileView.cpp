@@ -35,6 +35,7 @@ RoomFileView::RoomFileView() {
 	roomLayerGroup->setSize({ROOM_LAYER_W, ROOM_LAYER_H});
 
 	layerVisitor.group = roomLayerGroup;
+	roomView->layerVisitor = &layerVisitor;
 
 	tileSetView = layerVisitor.tileSetView;
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(tileSetView));
@@ -48,7 +49,7 @@ RoomFileView::RoomFileView() {
 	modesHandler->view = roomView;
 	roomView->fileView = dynamic_cast<FileView *>(this);
 
-	auto layerChoose = tgui::ComboBox::create();
+	layerChoose = tgui::ComboBox::create();
 	layerChoose->setPosition(TextFormat("100%% - %d", RIGHT_PANEL_W), 0);
 	layerChoose->setSize(RIGHT_PANEL_W, LAYER_CHOOSE_H);
 	layerChoose->addItem("Tiles");
@@ -130,6 +131,10 @@ RoomFileView::RoomFileView() {
 	toolbox->onItemClicked([this](ToolboxItem<RoomTool> tool) {
 		tileSetView->setTool(tool.id);
 		roomView->setTool(tool.id);
+		layerVisitor.tool = tool.id;
+		layerVisitor.group->removeAllWidgets();
+		mj::visit(layerVisitor,
+				  static_cast<RoomLayer>(layerChoose->getSelectedItemIndex()));
 		cout << "Selected tool: " << tool.text << endl;
 	});
 	widgetContainer.push_back(toolbox);
