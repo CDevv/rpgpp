@@ -21,6 +21,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <sys/types.h>
 #include <tree_sitter/api.h>
 
 #include <cmath>
@@ -90,13 +91,15 @@ void CodeEditor::parseNode(
 		auto row = static_cast<int>(ts_node_start_point(node).row);
 		auto column = static_cast<int>(ts_node_start_point(node).column);
 
-		if (m_lines.size() < row) {
+		if (row > m_lines.size() - 1) {
 			return;
 		}
 
+		auto rowString = m_lines[row].toStdString();
+		std::cout << "PARSE ROW: " << row << std::endl;
+
 		std::string lineBefore =
-			TextSubtext(m_lines[row].toStdString().c_str(), 0,
-						ts_node_start_point(node).column);
+			TextSubtext(rowString.c_str(), 0, ts_node_start_point(node).column);
 
 		auto textLineBefore = constructText(lineBefore);
 
@@ -174,19 +177,21 @@ CodeEditor::getStructsFromText(const tgui::String &text_ref) {
 void CodeEditor::setCode(tgui::String text) {
 	TextArea::setText(text);
 
-	if (tsTree == nullptr) {
-		const auto textStr = getText().toStdString();
-		const auto constCharStr = textStr.c_str();
-		TSTree *syntaxTree = ts_parser_parse_string(
-			this->syntaxParser, nullptr, constCharStr, strlen(constCharStr));
+	const auto textStr = getText().toStdString();
+	const auto constCharStr = textStr.c_str();
+	TSTree *syntaxTree = ts_parser_parse_string(
+		this->syntaxParser, nullptr, constCharStr, strlen(constCharStr));
 
-		tsTree = syntaxTree;
-	}
+	tsTree = syntaxTree;
 
 	const auto rootNode = ts_tree_root_node(tsTree);
 	const auto cursor = ts_tree_cursor_new(rootNode);
 
-	// parseNode(cursor, rootNode, list);
+	// Windows Line Endings Fix.
+	text.replace("\r\n", "\n");
+	m_lines = text.split(U"\n");
+
+	parseNode(cursor, rootNode, list);
 }
 
 bool CodeEditor::leftMousePressed(tgui::Vector2f pos) {
@@ -956,6 +961,7 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 	states.transform.translate(
 		{-static_cast<float>(m_horizontalScrollbar->getValue()),
 		 -static_cast<float>(m_verticalScrollbar->getValue())});
+
 	for (int i = 0; i < lines.size(); i++) {
 		// Text lineIndex = this->constructText(std::to_string(i + 1));
 		Text lineIndex;
