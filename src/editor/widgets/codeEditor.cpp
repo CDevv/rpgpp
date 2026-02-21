@@ -28,6 +28,7 @@
 #include <cstddef>
 #include <cstdio>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -78,9 +79,10 @@ tgui::Vector2f CodeEditor::findCharacterPosWhole(std::size_t pos) const {
 
 CodeEditor::Ptr CodeEditor::create() { return std::make_shared<CodeEditor>(); }
 
-void CodeEditor::parseNode(
-	const TSTreeCursor &cursor, const TSNode &node,
-	std::list<EditorHighlighting::TextPiece> &list) const {
+void CodeEditor::parseNode(const TSTreeCursor &cursor, const TSNode &node,
+						   std::list<EditorHighlighting::TextPiece> &list) {
+
+	m_lines = m_text.split("\n");
 
 	auto nodeStartPoint = ts_node_start_point(node);
 	auto nodeEndPoint = ts_node_end_point(node);
@@ -96,7 +98,6 @@ void CodeEditor::parseNode(
 		}
 
 		auto rowString = m_lines[row].toStdString();
-		std::cout << "PARSE ROW: " << row << std::endl;
 
 		std::string lineBefore =
 			TextSubtext(rowString.c_str(), 0, ts_node_start_point(node).column);
@@ -248,7 +249,7 @@ void CodeEditor::textEntered(char32_t key) {
 		const auto textStr = m_text.toStdString();
 		const auto constCharStr = textStr.c_str();
 		TSTree *syntaxTree = ts_parser_parse_string(
-			this->syntaxParser, nullptr, constCharStr, strlen(constCharStr));
+			this->syntaxParser, tsTree, constCharStr, strlen(constCharStr));
 
 		tsTree = syntaxTree;
 
@@ -972,8 +973,12 @@ void CodeEditor::draw(BackendRenderTarget &target, RenderStates states) const {
 		lineIndex.setPosition(
 			{CODE_EDITOR_LEFT_COLUMN - lineIndex.getLineWidth(), 0});
 		target.drawText(states, lineIndex);
-		target.drawFilledRect(states, {2, lineIndex.getLineHeight()},
-							  tgui::Color::White);
+
+		if (this->getCaretLine() == i + 1 && m_selectionRects.empty()) {
+			target.drawFilledRect(
+				states, {m_size.x.getValue(), lineIndex.getLineHeight()},
+				tgui::Color{255, 255, 255, 50});
+		}
 		states.transform.translate({0, lineIndex.getLineHeight()});
 	}
 
