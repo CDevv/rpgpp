@@ -4,6 +4,7 @@
 #include "gamedata.hpp"
 #include "player.hpp"
 #include "room.hpp"
+#include <map>
 #include <memory>
 #include <string>
 

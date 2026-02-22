@@ -35,6 +35,7 @@ RoomFileView::RoomFileView() {
 	roomLayerGroup->setSize({ROOM_LAYER_W, ROOM_LAYER_H});
 
 	layerVisitor.group = roomLayerGroup;
+	roomView->layerVisitor = &layerVisitor;
 
 	tileSetView = layerVisitor.tileSetView;
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(tileSetView));
@@ -43,17 +44,19 @@ RoomFileView::RoomFileView() {
 
 	roomView->tileSetView = tileSetView.get();
 	roomView->interactableChoose = layerVisitor.interactableChoose.get();
+	roomView->propChoose = layerVisitor.propChoose.get();
 
 	modesHandler = std::make_unique<RoomViewModesHandler>();
 	modesHandler->view = roomView;
 	roomView->fileView = dynamic_cast<FileView *>(this);
 
-	auto layerChoose = tgui::ComboBox::create();
+	layerChoose = tgui::ComboBox::create();
 	layerChoose->setPosition(TextFormat("100%% - %d", RIGHT_PANEL_W), 0);
 	layerChoose->setSize(RIGHT_PANEL_W, LAYER_CHOOSE_H);
 	layerChoose->addItem("Tiles");
 	layerChoose->addItem("Collisions");
 	layerChoose->addItem("Interactables");
+	layerChoose->addItem("Props");
 	layerChoose->setSelectedItemByIndex(0);
 	widgetContainer.push_back(layerChoose);
 
@@ -101,9 +104,6 @@ RoomFileView::RoomFileView() {
 
 	widgetContainer.push_back(props);
 
-	// toolbox->onBrushPressed(
-	// 	[this](bool brushMode) { roomView->setBrush(brushMode); });
-
 	auto toolbox = Toolbox<RoomTool>::create();
 	toolbox->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
 	toolbox->getHorizontalScrollbar()->setPolicy(
@@ -130,6 +130,10 @@ RoomFileView::RoomFileView() {
 	toolbox->onItemClicked([this](ToolboxItem<RoomTool> tool) {
 		tileSetView->setTool(tool.id);
 		roomView->setTool(tool.id);
+		layerVisitor.tool = tool.id;
+		layerVisitor.group->removeAllWidgets();
+		mj::visit(layerVisitor,
+				  static_cast<RoomLayer>(layerChoose->getSelectedItemIndex()));
 		cout << "Selected tool: " << tool.text << endl;
 	});
 	widgetContainer.push_back(toolbox);

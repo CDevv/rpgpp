@@ -166,14 +166,11 @@ TileMap::TileMap(const RoomBin &bin) {
 
 	for (auto const &row : bin.tiles) {
 		for (auto col : row) {
-			/*
-			auto atlasPos = Vector2{col.atlasPos.x / tileSet->getTileSize().x,
-									col.atlasPos.y / tileSet->getTileSize().y};
-									*/
 			auto worldPos = Vector2{static_cast<float>(col.worldPos.x),
 									static_cast<float>(col.worldPos.y)};
 			auto atlasPos = Vector2{static_cast<float>(col.atlasPos.x),
 									static_cast<float>(col.atlasPos.y)};
+
 			this->setTile(worldPos, atlasPos);
 		}
 	}
@@ -251,6 +248,8 @@ void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos) {
 
 	if (!atlasPosIsValid(atlasPos)) {
 		setEmptyTile(worldPos);
+		printf("placing invalid atlas tile on %f, %f.. \n", worldPos.x,
+			   worldPos.y);
 		return;
 	}
 
@@ -310,11 +309,6 @@ void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos) const {
 	if (!atlasPosIsValid(atlasPos)) {
 		return;
 	}
-
-	/*
-	Vector2 resultVector = {atlasPos.x * atlasTileSize,
-							atlasPos.y * atlasTileSize};
-							*/
 
 	AtlasTile tile = tileSet->getTile(atlasPos);
 

@@ -29,7 +29,9 @@ class CodeEditor : public tgui::TextArea {
   private:
 	TSParser *syntaxParser;
 	TSTree *tsTree{nullptr};
-	std::vector<std::vector<tgui::Text>> highlightTree;
+
+	// std::vector<std::vector<tgui::Text>> highlightTree;
+
 	std::vector<EditorHighlighting::TextPiece> highlightVec;
 	std::vector<EditorHighlighting::HighlighterStruct> fuck;
 	tgui::Text textWhole;
@@ -51,7 +53,7 @@ class CodeEditor : public tgui::TextArea {
 	void backspaceKeyPressed();
 
 	void parseNode(const TSTreeCursor &cursor, const TSNode &node,
-				   std::list<EditorHighlighting::TextPiece> &list) const;
+				   std::list<EditorHighlighting::TextPiece> &list);
 
 	std::vector<EditorHighlighting::HighlighterStruct>
 	getStructsFromText(const tgui::String &text);

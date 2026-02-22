@@ -10,11 +10,13 @@
 #include "actions/placeTileAction.hpp"
 #include "actor.hpp"
 #include "editor.hpp"
+#include "enum_visitor/enum_visitor.hpp"
 #include "gamedata.hpp"
 #include "interactable.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "screens/projectScreen.hpp"
+#include "services/fileSystemService.hpp"
 #include "tile.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
@@ -147,20 +149,47 @@ void RoomView::drawCanvas() {
 		DrawRectangleRec(destRect, Fade(RED, 0.2f));
 	}
 
+	// interactables
+	auto interactableNames =
+		Editor::instance->getProject()->getInteractableNames();
 	for (auto interactable : room->getInteractables().getList()) {
 		int tileX = static_cast<int>(interactable->getWorldPos().x);
 		int tileY = static_cast<int>(interactable->getWorldPos().y);
 
 		Rectangle destRect = getDestRect(tileMap, tileX, tileY);
 
+		std::string shownTitle = interactable->getType();
+
+		if (!interactableNames.empty()) {
+			if (interactableNames.count(interactable->getType()) > 0) {
+				shownTitle = interactableNames[interactable->getType()];
+			}
+		}
+
 		DrawRectangleRec(destRect, Fade(YELLOW, 0.2f));
-		DrawText(TextFormat("%s", interactable->getType().c_str()),
+		DrawText(TextFormat("%s", shownTitle.c_str()),
 				 static_cast<int>(destRect.x), static_cast<int>(destRect.y), 16,
 				 ORANGE);
 
 		if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
 			// auto tooltip = tgui::Label::create("Interactable");
 		}
+	}
+
+	// props
+	for (auto &&prop : room->getProps()) {
+		auto pos = prop.getWorldPos();
+		auto texture = prop.getTexture();
+
+		Rectangle source = {0, 0, static_cast<float>(texture.width),
+							static_cast<float>(texture.height)};
+		Rectangle dest = {
+			pos.x, pos.y,
+			static_cast<float>(texture.width) * RPGPP_DRAW_MULTIPLIER,
+			static_cast<float>(texture.height) * RPGPP_DRAW_MULTIPLIER};
+
+		DrawTexturePro(texture, source, dest, {0.0f, 0.0f}, 0.0f,
+					   Fade(WHITE, 0.5f));
 	}
 
 	DrawCircleV(getMouseWorldPos(), 1.0f, MAROON);
@@ -290,8 +319,17 @@ void RoomView::handleModePress(tgui::Vector2f pos) {
 				 static_cast<float>(atlasTilePos.y)};
 	data.worldTile = {static_cast<float>(tileMouse.x),
 					  static_cast<float>(tileMouse.y)};
-	data.interactable = static_cast<InteractableType>(
-		interactableChoose->getSelectedItemIndex() + 1);
+	if (layer == RoomLayer::LAYER_INTERACTABLES) {
+		data.interactable = GetFileNameWithoutExt(
+			interactableChoose->getSelectedItemId().toStdString().c_str());
+		data.interactableFullPath =
+			interactableChoose->getSelectedItemId().toStdString();
+	} else {
+		data.interactable = GetFileNameWithoutExt(
+			propChoose->getSelectedItemId().toStdString().c_str());
+		data.interactableFullPath =
+			propChoose->getSelectedItemId().toStdString();
+	}
 
 	switch (tool) {
 	case RoomTool::TOOL_PLACE: {
@@ -319,6 +357,10 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 	TileMap *tileMap = room->getTileMap();
 
 	selectedTile = getTileAtMouse();
+	if (!tileMap->worldPosIsValid({static_cast<float>(selectedTile.x),
+								   static_cast<float>(selectedTile.y)})) {
+		return;
+	}
 	Vector2 atlasCoords = tileMap->getTile(selectedTile.x, selectedTile.y)
 							  .getAtlasTile()
 							  .getAtlasCoords();
@@ -346,6 +388,13 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 				std::make_unique<EditTileAction>(data);
 			screen->getCurrentFile().getView().pushAction(std::move(act));
 		});
+	} break;
+	case RoomLayer::LAYER_INTERACTABLES: {
+		IVector tileMouse = getTileAtMouse();
+		layerVisitor->inter =
+			room->getInteractables().getInt(tileMouse.x, tileMouse.y);
+		layerVisitor->group->removeAllWidgets();
+		mj::visit(*layerVisitor, layer);
 	} break;
 	default:
 		break;

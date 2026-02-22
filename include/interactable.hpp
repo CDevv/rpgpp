@@ -23,6 +23,8 @@ class Interactable : public ISaveable {
 	bool valid;
 	/** The type of this Interactable */
 	std::string type;
+	/** The displayed title in the Editor. */
+	std::string displayTitle;
 	/** The position of this Interactable in terms of tiles */
 	Vector2 tilePos;
 	/** Tile size in pixels */
@@ -74,11 +76,14 @@ class Interactable : public ISaveable {
 	void setType(const std::string &type);
 	/** Set a property of this interactable. */
 	void setProp(std::string key, std::string value);
+	/** Set properties using a nlohmann::json object. */
 	void setProps(nlohmann::json j);
 	/** Get source script file. */
 	const std::string &getScriptSourcePath();
 	/** Get the properties json object. */
 	nlohmann::json &getProps();
+	void setDisplayTitle(const std::string &newTitle);
+	std::string &getDisplayTitle();
 };
 
 // struct DiagInt {

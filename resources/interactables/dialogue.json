@@ -2,6 +2,9 @@
     "name": "Diag",
     "script": "test.lua",
     "props": {
-        "dialogue": "string"
+        "dialogue": {
+            "propType": "dialogue",
+            "value": "string"
+        }
     }
 }

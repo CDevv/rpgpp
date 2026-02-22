@@ -10,6 +10,7 @@
 #include <nlohmann/json_fwd.hpp>
 #include <raylib.h>
 #include <stdio.h>
+#include <string>
 
 std::array<std::string, INTTYPE_MAX> Interactable::interactableTypeNames = {
 	"Blank", "Dialogue", "Warper"};
@@ -24,6 +25,7 @@ Interactable::Interactable(const std::string &path) {
 	json intJson = json::parse(jsonString);
 
 	type = GetFileNameWithoutExt(path.c_str());
+	displayTitle = intJson.at("name");
 	props = std::make_unique<nlohmann::json>(intJson.at("props"));
 	scriptPath = intJson.at("script");
 
@@ -50,7 +52,6 @@ Interactable::Interactable(InteractableInRoomBin bin) {
 	this->type = bin.type;
 	this->props =
 		std::make_unique<nlohmann::json>(json::from_cbor(bin.propsCbor));
-	// json::from_cbor(bin.propsCbor);
 
 	Vector2 tilePos = {static_cast<float>(bin.x), static_cast<float>(bin.y)};
 
@@ -66,7 +67,7 @@ Interactable::Interactable(InteractableInRoomBin bin) {
 
 json Interactable::dumpJson() {
 	json j = json::object();
-	j.push_back({"name", type});
+	j.push_back({"name", displayTitle});
 	j.push_back({"props", *props});
 	j.push_back({"script", scriptPath});
 
@@ -100,21 +101,32 @@ nlohmann::json &Interactable::getProps() { return *props; }
 
 const std::string &Interactable::getScriptSourcePath() { return scriptPath; }
 
-void Interactable::interact() {
-	if (type == "dialogue") {
-		printf("interaction!\n");
-	} else {
-		printf("two.\n");
-	}
+void Interactable::setDisplayTitle(const std::string &newTitle) {
+	displayTitle = newTitle;
+}
 
+std::string &Interactable::getDisplayTitle() { return displayTitle; }
+
+void Interactable::interact() {
 	sol::state lua;
 	lua.open_libraries(sol::lib::base);
+	for (auto prop : props->items()) {
+		if (prop.value().is_object()) {
+			lua[prop.key()] = prop.value().at("value").get<std::string>();
+		} else if (prop.value().is_string()) {
+			lua[prop.key()] = prop.value().get<std::string>();
+		} else if (prop.value().is_number()) {
+			lua[prop.key()] = prop.value().get<float>();
+		}
+	}
 	Game::setLua(lua);
+
+	printf("type: %s \n", type.c_str());
 
 	auto intBin = Game::getBin().interactables.at(type);
 	if (Game::getBin().scripts.count(intBin.scriptPath) != 0) {
 		auto bc = Game::getBin().scripts[intBin.scriptPath].bytecode;
-		auto result = lua.script(bc);
+		auto result = lua.safe_script(bc);
 		if (!result.valid()) {
 			printf("uh oh. \n");
 			return;

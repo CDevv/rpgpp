@@ -19,7 +19,7 @@ class InteractablesContainer {
 	/** Empty constructor */
 	InteractablesContainer();
 	/** Add a new Interactable with tile position and type */
-	void add(int x, int y, const std::string &type);
+	Interactable *add(int x, int y, const std::string &type);
 	/** Add a new Interactable using a bin structure */
 	void addBin(InteractableInRoomBin bin);
 	/** Get an Interactable by its tile position */

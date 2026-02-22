@@ -14,7 +14,6 @@
 #include <cstddef>
 #include <cstdio>
 #include <memory>
-#include <utility>
 
 using namespace tgui;
 
@@ -385,7 +384,7 @@ void FileTab::draw(tgui::BackendRenderTarget &target,
 	for (std::size_t i = 0; i < m_tabs.size(); ++i) {
 		if (isDragging and i == draggedTab) {
 			draggingState = states;
-			states.transform.translate({m_tabs[i].width + borderWidth, 0});
+			states.transform.translate({m_tabs[i].width, 0});
 			continue;
 		}
 		renderTab(target, states, i, roundedCorners, borderWidth, usableHeight,

@@ -8,6 +8,7 @@
 #include "views/tileSetView.hpp"
 #include "widgets/fileField.hpp"
 #include "widgets/intField.hpp"
+#include <TGUI/Widgets/ComboBox.hpp>
 #include <memory>
 
 class RoomFileView : public FileView {
@@ -19,6 +20,7 @@ class RoomFileView : public FileView {
 	static const int ROOM_LAYER_H = RIGHT_PANEL_W;
 
 	RoomLayerViewVisitor layerVisitor;
+	tgui::ComboBox::Ptr layerChoose;
 	RoomView::Ptr roomView;
 	TileSetView::Ptr tileSetView;
 	IntField::Ptr widthField;

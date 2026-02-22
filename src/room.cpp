@@ -208,38 +208,23 @@ json Room::dumpJson() {
 	// Vector for interactables
 	auto interactableProps = interactables->dumpJson();
 
-	auto propsMap = std::map<std::string, std::vector<std::string>>{};
-	/*
+	auto propsMap = std::map<std::string, nlohmann::json>{};
+
 	for (auto &&p : *props) {
 		std::string key =
 			TextFormat("%i;%i", static_cast<int>(p.getWorldTilePos().x),
 					   static_cast<int>(p.getWorldTilePos().y));
 
-		auto propVec = std::vector<std::string>{};
-		propVec.push_back(p.getSourcePath());
+		auto propJson = json::object();
+		propJson["src"] =
+			TextFormat("props/%s", GetFileName(p.getSourcePath().c_str()));
 
 		if (p.getHasInteractable()) {
-			switch (p.getInteractable()->type) {
-			case INT_TWO:
-				propVec.push_back(
-					(dynamic_cast<IntBase<DiagInt> *>(p.getInteractable()))
-						->get()
-						.dialogueSource);
-				break;
-			case INT_WARPER:
-				propVec.push_back(
-					(dynamic_cast<IntBase<WarperInt> *>(p.getInteractable()))
-						->get()
-						.targetRoom);
-				break;
-			default:
-				break;
-			}
+			propJson["props"] = p.getInteractable()->getProps();
 		}
 
-		propsMap[key] = propVec;
+		propsMap[key] = propJson;
 	}
-		*/
 
 	auto actorsMap = std::map<std::string, std::string>{};
 	for (auto &&a : *actors) {
