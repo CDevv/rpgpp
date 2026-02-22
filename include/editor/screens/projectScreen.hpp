@@ -48,12 +48,14 @@ class ProjectScreen : public UIScreen {
 	tgui::ContextMenu::Ptr fileContextMenu;
 	tgui::Label::Ptr projectLabel;
 
+
+private:
 	void switchView(tgui::String id);
 	void clearView();
 	tgui::Group::Ptr createToolBar(TranslationService &ts);
 	ResizableContainer::Ptr createResourcesList();
 
-  public:
+public:
 	void addFileView(EngineFileType fileType, const std::string &path);
 	void addResourceButtons(EngineFileType fileType);
 	void mouseMove(int x, int y) override;

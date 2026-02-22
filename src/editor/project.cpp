@@ -15,6 +15,7 @@
 #include <raylib.h>
 #include <string>
 #include <vector>
+#include <cassert>
 
 using json = nlohmann::json;
 
@@ -63,15 +64,18 @@ std::vector<std::string> Project::getPaths(EngineFileType fileType) {
 	std::filesystem::path subdir = projectPath;
 	subdir /=
 		TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
+
+  assert(subdir.string().empty() == false && "directory path is empty");
+
 	auto pathList =
-		LoadDirectoryFiles(reinterpret_cast<const char *>(subdir.c_str()));
+		LoadDirectoryFiles(subdir.string().c_str());
 	std::vector<std::string> vec = {};
 
 	for (int i = 0; i < pathList.count; i++) {
 		vec.emplace_back(pathList.paths[i]);
 	}
-
-	UnloadDirectoryFiles(pathList);
+  
+  UnloadDirectoryFiles(pathList);
 
 	return vec;
 }
