@@ -48,7 +48,7 @@ template <class Archive> void serialize(Archive &a, ImageBin &b) {
 }
 
 template <class Archive> void serialize(Archive &a, MusicBin &b) {
-	a(b.relativePath, b.isSound);
+	a(b.relativePath, b.isSound, b.fileData, b.fileExt);
 }
 
 template <class Archive> void serialize(Archive &a, PropBin &b) {

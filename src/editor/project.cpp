@@ -281,13 +281,27 @@ GameData Project::generateStruct() {
 	}
 
 	for (auto musicPath : getPaths(EngineFileType::FILE_MUSIC)) {
+		MusicBin musicBin;
+
+		int dataSize = 0;
+		auto fileData = LoadFileData(musicPath.c_str(), &dataSize);
+
+		for (int i = 0; i < dataSize; i++) {
+			musicBin.fileData.push_back(fileData[i]);
+		}
+
+		musicBin.fileExt = GetFileExtension(musicPath.c_str());
+
+		musicBin.isSound = false;
+
+		data.music[GetFileNameWithoutExt(musicPath.c_str())] = musicBin;
 	}
 
 	for (auto propPath : getPaths(EngineFileType::FILE_PROP)) {
 		Prop prop = Prop(propPath);
 
 		PropBin bin;
-		bin.name = propPath;
+		bin.name = GetFileNameWithoutExt(propPath.c_str());
 		bin.atlasRect = IRect{static_cast<int>(prop.getAtlasRect().x),
 							  static_cast<int>(prop.getAtlasRect().y),
 							  static_cast<int>(prop.getAtlasRect().width),

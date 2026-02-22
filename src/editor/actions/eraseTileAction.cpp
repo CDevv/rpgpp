@@ -1,6 +1,7 @@
 
 #include "actions/eraseTileAction.hpp"
 #include "actions/mapAction.hpp"
+#include "views/worldView.hpp"
 
 EraseTileAction::EraseTileAction(MapActionData a) : MapAction(a) {}
 
@@ -18,6 +19,10 @@ void EraseTileAction::execute() {
 		data.room->getInteractables().removeInteractable(
 			static_cast<int>(data.worldTile.x),
 			static_cast<int>(data.worldTile.y));
+	} break;
+	case RoomLayer::LAYER_PROPS: {
+		data.room->removeProp({static_cast<float>(data.worldTile.x),
+							   static_cast<float>(data.worldTile.y)});
 	} break;
 	default:
 		break;

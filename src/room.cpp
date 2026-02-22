@@ -151,8 +151,13 @@ Room::Room(const RoomBin &bin) : Room() {
 	}
 
 	for (auto const &propSource : bin.props) {
+		printf("a \n");
 		for (auto const &propBin : Game::getBin().props) {
-			if (propBin.name == propSource.name) {
+			std::string actualSource =
+				GetFileNameWithoutExt(propSource.name.c_str());
+			printf("%s ; %s \n", propBin.name.c_str(), actualSource.c_str());
+			if (propBin.name == actualSource) {
+				printf("c \n");
 				auto p = Prop(propBin);
 				p.setWorldTilePos(
 					Vector2{static_cast<float>(propSource.tilePos.x),
@@ -183,6 +188,7 @@ Room::Room(const RoomBin &bin) : Room() {
 	}
 
 	musicSource = bin.musicSource;
+
 	if (!bin.musicSource.empty()) {
 		Game::getSounds().loadMusic(bin.musicSource);
 		Game::getSounds().playMusic();

@@ -99,8 +99,17 @@ RoomFileView::RoomFileView() {
 	tileSetField->callback = [this](const tgui::String &path) {
 		auto room = this->roomView->getRoom();
 		room->getTileMap()->setTileSet(path.toStdString());
+		tileSetView->setTileSet(room->getTileMap()->getTileSet());
 	};
 	props->addFileField(tileSetField);
+
+	musicFileField = FileField::create("BG Music", "");
+	musicFileField->pathFilters = {{"Music File", {"*.mp4", "*.ogg", "*.wav"}}};
+	musicFileField->callback = [this](const tgui::String &path) {
+		roomView->getRoom()->setMusicSource(
+			GetFileNameWithoutExt(path.toStdString().c_str()));
+	};
+	props->addFileField(musicFileField);
 
 	widgetContainer.push_back(props);
 
@@ -117,6 +126,9 @@ RoomFileView::RoomFileView() {
 										   "Erase", "tool_erase.png"});
 	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_EDIT, "Edit",
 										   "tool_edit.png"});
+	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_STARTPOINT,
+										   "Start Point",
+										   "tool_startpoint.png"});
 
 	auto brushToggle = tgui::CheckBox::create("Enable brush mode");
 	brushToggle->onChange([this, brushToggle]() {
@@ -153,6 +165,8 @@ void RoomFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 	widthField->value->setValue(room->getTileMap()->getMaxWorldSize().x);
 	heightField->value->setValue(room->getTileMap()->getMaxWorldSize().y);
 	tileSetField->value->setText(room->getTileMap()->getTileSetSource());
+	musicFileField->value->setText(
+		GetFileNameWithoutExt(room->getMusicSource().c_str()));
 
 	addWidgets(layout);
 }

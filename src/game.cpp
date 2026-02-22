@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "gamedata.hpp"
 #include "soundService.hpp"
+#include <cstdio>
 #include <memory>
 #include <raylib.h>
 #include <sol/forward.hpp>
@@ -90,8 +91,12 @@ void Game::unload() {
 }
 
 void lua_opendiag(const std::string &id) {
-	auto diag = Game::getBin().dialogues[id];
-	Game::getUi().showDialogue(diag);
+	if (Game::getBin().dialogues.count(id) > 0) {
+		auto diag = Game::getBin().dialogues[id];
+		Game::getUi().showDialogue(diag);
+	} else {
+		fprintf(stderr, "This dialogue does not exist: %s \n", id.c_str());
+	}
 }
 
 void Game::setLua(sol::state_view lua) {

@@ -17,9 +17,25 @@ RoomLayerViewVisitor::RoomLayerViewVisitor() {
 	interactableChoose->setDefaultText("Dialogue");
 
 	propChoose = tgui::ComboBox::create();
+	propChoose->onItemSelect([this](int index) {
+		auto id = propChoose->getIdByIndex(index);
+		Prop p(id.toStdString());
+
+		if (IsTextureValid(propTexture)) {
+			UnloadTexture(propTexture);
+		}
+
+		propTexture = p.getTexture();
+	});
 
 	auto map = Editor::instance->getProject()->getInteractableNames();
 	interactableChoose->setSelectedItemByIndex(0);
+}
+
+RoomLayerViewVisitor::~RoomLayerViewVisitor() {
+	if (IsTextureValid(propTexture)) {
+		UnloadTexture(propTexture);
+	}
 }
 
 void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_TILES>) {
@@ -67,6 +83,22 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_PROPS>) {
 		}
 		propChoose->setSelectedItemByIndex(0);
 
+		Prop p(propChoose->getSelectedItemId().toStdString());
+		propTexture = p.getTexture();
+
 		group->add(propChoose);
+	} else if (tool == RoomTool::TOOL_ERASE) {
+		group->add(tgui::Label::create("Erase a Prop.."));
+	} else if (tool == RoomTool::TOOL_EDIT) {
+		if (prop == nullptr) {
+			group->add(tgui::Label::create("No valid Prop."));
+		} else {
+			if (prop->getHasInteractable()) {
+				auto propBox = PropertiesBox::create();
+				propBox->setSize("100%", "100%");
+				group->add(propBox);
+				propBox->addPropsJson(prop->getInteractable()->getProps());
+			}
+		}
 	}
 }

@@ -82,6 +82,8 @@ struct ImageBin {
 struct MusicBin {
 	std::string relativePath;
 	bool isSound;
+	std::vector<unsigned char> fileData;
+	std::string fileExt;
 };
 
 struct PropBin {

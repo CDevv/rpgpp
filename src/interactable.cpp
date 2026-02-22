@@ -121,8 +121,6 @@ void Interactable::interact() {
 	}
 	Game::setLua(lua);
 
-	printf("type: %s \n", type.c_str());
-
 	auto intBin = Game::getBin().interactables.at(type);
 	if (Game::getBin().scripts.count(intBin.scriptPath) != 0) {
 		auto bc = Game::getBin().scripts[intBin.scriptPath].bytecode;

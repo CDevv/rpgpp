@@ -8,6 +8,7 @@
 #include "actions/eraseTileAction.hpp"
 #include "actions/mapAction.hpp"
 #include "actions/placeTileAction.hpp"
+#include "actions/startPointAction.hpp"
 #include "actor.hpp"
 #include "editor.hpp"
 #include "enum_visitor/enum_visitor.hpp"
@@ -139,6 +140,13 @@ void RoomView::drawCanvas() {
 		}
 	}
 
+	// start tile
+	auto startTile = room->getStartTile();
+	auto startTileDestRect =
+		getDestRect(room->getTileMap(), static_cast<int>(startTile.x),
+					static_cast<int>(startTile.y));
+	DrawRectangleLinesEx(startTileDestRect, 2.0f, Fade(GREEN, 0.5f));
+
 	// collisions
 	for (auto collision : room->getCollisions().getVector()) {
 		int tileX = static_cast<int>(collision.x);
@@ -234,6 +242,13 @@ void RoomView::handleMode(int x, int y) {
 	case RoomTool::TOOL_EDIT:
 		handleEditMode(x, y);
 		break;
+	case RoomTool::TOOL_STARTPOINT: {
+		auto destRect = getDestRect(room->getTileMap(), x, y);
+
+		if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
+			DrawRectangleRec(destRect, Fade(GREEN, 0.4f));
+		}
+	} break;
 	default:
 		break;
 	}
@@ -275,6 +290,18 @@ void RoomView::handlePlaceMode(int x, int y) {
 			Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
 			DrawRectangleRec(destRect, Fade(YELLOW, 0.7f));
 		}
+		case RoomLayer::LAYER_PROPS: {
+			IVector tileMouse = getTileAtMouse();
+			Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
+
+			if (IsTextureValid(layerVisitor->propTexture)) {
+				Rectangle source = {
+					0, 0, static_cast<float>(layerVisitor->propTexture.width),
+					static_cast<float>(layerVisitor->propTexture.height)};
+				DrawTexturePro(layerVisitor->propTexture, source, destRect,
+							   {0.0f, 0.0f}, 0.0f, Fade(WHITE, 0.7f));
+			}
+		} break;
 		default:
 			break;
 		}
@@ -345,6 +372,12 @@ void RoomView::handleModePress(tgui::Vector2f pos) {
 	case RoomTool::TOOL_EDIT:
 		handleEditPress(pos);
 		break;
+	case RoomTool::TOOL_STARTPOINT: {
+		data.prevTile = room->getStartTile();
+		std::unique_ptr<Action> act = std::make_unique<StartPointAction>(data);
+
+		screen->getCurrentFile().getView().pushAction(std::move(act));
+	} break;
 	default:
 		break;
 	}
@@ -396,6 +429,13 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 		layerVisitor->group->removeAllWidgets();
 		mj::visit(*layerVisitor, layer);
 	} break;
+	case RoomLayer::LAYER_PROPS: {
+		IVector tileMouse = getTileAtMouse();
+		layerVisitor->prop = room->getPropAt(
+			{static_cast<float>(tileMouse.x), static_cast<float>(tileMouse.y)});
+		layerVisitor->group->removeAllWidgets();
+		mj::visit(*layerVisitor, layer);
+	}
 	default:
 		break;
 	}

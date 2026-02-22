@@ -26,6 +26,7 @@ class RoomFileView : public FileView {
 	IntField::Ptr widthField;
 	IntField::Ptr heightField;
 	FileField::Ptr tileSetField;
+	FileField::Ptr musicFileField;
 
   public:
 	std::unique_ptr<RoomViewModesHandler> modesHandler;

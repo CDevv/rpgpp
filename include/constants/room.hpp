@@ -4,4 +4,10 @@ enum class RoomLayer {
 	LAYER_INTERACTABLES,
 	LAYER_PROPS
 };
-enum class RoomTool { TOOL_NONE, TOOL_PLACE, TOOL_ERASE, TOOL_EDIT };
+enum class RoomTool {
+	TOOL_NONE,
+	TOOL_PLACE,
+	TOOL_ERASE,
+	TOOL_EDIT,
+	TOOL_STARTPOINT
+};

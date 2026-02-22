@@ -4,9 +4,11 @@
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "interactable.hpp"
+#include "prop.hpp"
 #include "views/tileSetView.hpp"
 #include "views/worldView.hpp"
 #include <enum_visitor/enum_visitor.hpp>
+#include <raylib.h>
 
 class RoomLayerViewVisitor
 	: public mj::enum_visitor<
@@ -17,6 +19,8 @@ class RoomLayerViewVisitor
 	tgui::Group::Ptr group{nullptr};
 	RoomTool tool;
 	Interactable *inter{nullptr};
+	Prop *prop{nullptr};
+	Texture2D propTexture;
 	void operator()(enum_v<RoomLayer::LAYER_COLLISION>);
 	void operator()(enum_v<RoomLayer::LAYER_TILES>);
 	void operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>);
@@ -25,6 +29,8 @@ class RoomLayerViewVisitor
 	TileSetView::Ptr tileSetView;
 	tgui::ComboBox::Ptr interactableChoose;
 	tgui::ComboBox::Ptr propChoose;
+
+	~RoomLayerViewVisitor();
 };
 
 #endif

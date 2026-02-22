@@ -1,5 +1,6 @@
 #include "soundService.hpp"
 #include "game.hpp"
+#include <cstdio>
 #include <raylib.h>
 
 SoundService::SoundService() {
@@ -14,12 +15,21 @@ bool SoundService::loadMusic(const std::string &id) {
 	if (lastId == id)
 		return true;
 
+	printf("%s \n", id.c_str());
+	printf("%zu", gameData.music.count(id));
+
 	if (gameData.music.count(id) != 0) {
 		if (gameData.music[id].isSound)
 			return musicLoaded;
 
-		Music newMusic =
-			LoadMusicStream(gameData.music[id].relativePath.c_str());
+		auto &musicBin = gameData.music[id];
+
+		Music newMusic = LoadMusicStreamFromMemory(musicBin.fileExt.c_str(),
+												   musicBin.fileData.data(),
+												   musicBin.fileData.size());
+
+		printf("loaded.. \n");
+
 		if (IsMusicValid(newMusic)) {
 			unload();
 
