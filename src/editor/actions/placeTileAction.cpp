@@ -36,7 +36,7 @@ void PlaceTileAction::execute() {
 		Prop p(data.interactableFullPath);
 		p.setWorldTilePos({data.worldTile.x, data.worldTile.y},
 						  data.room->getWorldTileSize());
-		if (p.getInteractable() != nullptr) {
+		if (p.getInteractable() != nullptr && p.getHasInteractable()) {
 			auto interType = p.getInteractable()->getType();
 			auto interNames =
 				Editor::instance->getProject()->getInteractableNames();
