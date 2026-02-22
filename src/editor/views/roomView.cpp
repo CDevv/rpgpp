@@ -16,6 +16,7 @@
 #include "raylib.h"
 #include "room.hpp"
 #include "screens/projectScreen.hpp"
+#include "services/fileSystemService.hpp"
 #include "tile.hpp"
 #include "tilemap.hpp"
 #include "tileset.hpp"
@@ -175,6 +176,22 @@ void RoomView::drawCanvas() {
 		}
 	}
 
+	// props
+	for (auto &&prop : room->getProps()) {
+		auto pos = prop.getWorldPos();
+		auto texture = prop.getTexture();
+
+		Rectangle source = {0, 0, static_cast<float>(texture.width),
+							static_cast<float>(texture.height)};
+		Rectangle dest = {
+			pos.x, pos.y,
+			static_cast<float>(texture.width) * RPGPP_DRAW_MULTIPLIER,
+			static_cast<float>(texture.height) * RPGPP_DRAW_MULTIPLIER};
+
+		DrawTexturePro(texture, source, dest, {0.0f, 0.0f}, 0.0f,
+					   Fade(WHITE, 0.5f));
+	}
+
 	DrawCircleV(getMouseWorldPos(), 1.0f, MAROON);
 }
 
@@ -302,10 +319,17 @@ void RoomView::handleModePress(tgui::Vector2f pos) {
 				 static_cast<float>(atlasTilePos.y)};
 	data.worldTile = {static_cast<float>(tileMouse.x),
 					  static_cast<float>(tileMouse.y)};
-	data.interactable = GetFileNameWithoutExt(
-		interactableChoose->getSelectedItemId().toStdString().c_str());
-	data.interactableFullPath =
-		interactableChoose->getSelectedItemId().toStdString();
+	if (layer == RoomLayer::LAYER_INTERACTABLES) {
+		data.interactable = GetFileNameWithoutExt(
+			interactableChoose->getSelectedItemId().toStdString().c_str());
+		data.interactableFullPath =
+			interactableChoose->getSelectedItemId().toStdString();
+	} else {
+		data.interactable = GetFileNameWithoutExt(
+			propChoose->getSelectedItemId().toStdString().c_str());
+		data.interactableFullPath =
+			propChoose->getSelectedItemId().toStdString();
+	}
 
 	switch (tool) {
 	case RoomTool::TOOL_PLACE: {

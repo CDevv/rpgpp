@@ -16,6 +16,8 @@ RoomLayerViewVisitor::RoomLayerViewVisitor() {
 	interactableChoose = tgui::ComboBox::create();
 	interactableChoose->setDefaultText("Dialogue");
 
+	propChoose = tgui::ComboBox::create();
+
 	auto map = Editor::instance->getProject()->getInteractableNames();
 	interactableChoose->setSelectedItemByIndex(0);
 }
@@ -51,5 +53,20 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>) {
 		}
 	} else {
 		group->add(tgui::Label::create("Interactables"));
+	}
+}
+
+void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_PROPS>) {
+	if (tool == RoomTool::TOOL_PLACE) {
+		group->add(tgui::Label::create("Props"));
+		propChoose->removeAllItems();
+		auto vec = Editor::instance->getProject()->getPropsNames();
+		for (auto propPath : vec) {
+			propChoose->addItem(GetFileNameWithoutExt(propPath.c_str()),
+								propPath);
+		}
+		propChoose->setSelectedItemByIndex(0);
+
+		group->add(propChoose);
 	}
 }

@@ -44,6 +44,7 @@ RoomFileView::RoomFileView() {
 
 	roomView->tileSetView = tileSetView.get();
 	roomView->interactableChoose = layerVisitor.interactableChoose.get();
+	roomView->propChoose = layerVisitor.propChoose.get();
 
 	modesHandler = std::make_unique<RoomViewModesHandler>();
 	modesHandler->view = roomView;
@@ -55,6 +56,7 @@ RoomFileView::RoomFileView() {
 	layerChoose->addItem("Tiles");
 	layerChoose->addItem("Collisions");
 	layerChoose->addItem("Interactables");
+	layerChoose->addItem("Props");
 	layerChoose->setSelectedItemByIndex(0);
 	widgetContainer.push_back(layerChoose);
 
@@ -101,9 +103,6 @@ RoomFileView::RoomFileView() {
 	props->addFileField(tileSetField);
 
 	widgetContainer.push_back(props);
-
-	// toolbox->onBrushPressed(
-	// 	[this](bool brushMode) { roomView->setBrush(brushMode); });
 
 	auto toolbox = Toolbox<RoomTool>::create();
 	toolbox->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);

@@ -40,6 +40,7 @@ class RoomView : public WorldView {
 	TileSetView *tileSetView{nullptr};
 	FileView *fileView;
 	tgui::ComboBox *interactableChoose;
+	tgui::ComboBox *propChoose;
 	RoomLayerViewVisitor *layerVisitor;
 
 	RoomView();

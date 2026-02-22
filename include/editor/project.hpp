@@ -24,6 +24,7 @@ class Project {
 	std::string &getBasePath();
 	std::vector<std::string> getPaths(EngineFileType fileType);
 	std::map<std::string, std::string> getInteractableNames();
+	std::vector<std::string> getPropsNames();
 	GameData generateStruct();
 	void runProject();
 };

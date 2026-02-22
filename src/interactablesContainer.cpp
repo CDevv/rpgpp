@@ -118,47 +118,6 @@ void InteractablesContainer::addJsonData(json roomJson) {
 
 		getInt(x, y)->setProps(props);
 	}
-
-	// std::vector<std::vector<int>> interactablesVec =
-	// 	roomJson.at("interactables");
-	// for (auto v : interactablesVec) {
-	// 	int x = v[0];
-	// 	int y = v[1];
-	// 	InteractableType itype = static_cast<InteractableType>(v[2]);
-	// 	bool onTouch = static_cast<bool>(v[3]);
-
-	// 	this->add(x, y, itype);
-	// 	getInt(x, y)->setOnTouch(onTouch);
-	// }
-
-	// if (roomJson.contains("interactable_props")) {
-	// 	std::map<std::string, std::vector<std::string>> interactablesPropsVec =
-	// 		roomJson.at("interactable_props");
-	// 	for (auto [key, value] : interactablesPropsVec) {
-	// 		int count = 0;
-	// 		char **textSplit = TextSplit(key.c_str(), ';', &count);
-	// 		if (count != 2)
-	// 			return;
-
-	// 		int x = std::stoi(std::string(textSplit[0]));
-	// 		int y = std::stoi(std::string(textSplit[1]));
-
-	// 		IntBaseWrapper *inter = this->getInt(x, y);
-
-	// 		inter_apply_vec(inter, value);
-	// 		/*
-	// 		if (inter->type == INT_TWO) {
-	// 			DiagInt diagInt;
-	// 			diagInt.dialogueSource = value.at(0);
-
-	// 			(static_cast<IntBase<DiagInt>*>(inter))->set(diagInt);
-	// 		}
-	// 		if (inter->type == INT_WARPER) {
-	// 			(static_cast<IntBase<WarperInt>*>(inter))->set({value.at(0)});
-	// 		}
-	// 		 */
-	// 	}
-	// }
 }
 
 json InteractablesContainer::dumpJson() {

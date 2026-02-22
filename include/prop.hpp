@@ -47,6 +47,7 @@ class Prop {
 	bool getHasInteractable() const;
 	Interactable *getInteractable() const;
 	void setInteractableType(const std::string &type);
+	std::string &getInteractableType();
 	void draw() const;
 };
 

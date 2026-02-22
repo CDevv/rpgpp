@@ -96,6 +96,14 @@ std::map<std::string, std::string> Project::getInteractableNames() {
 	return map;
 }
 
+std::vector<std::string> Project::getPropsNames() {
+	std::vector<std::string> vec;
+	for (auto propPath : getPaths(EngineFileType::FILE_PROP)) {
+		vec.push_back(propPath);
+	}
+	return vec;
+}
+
 GameData Project::generateStruct() {
 	GameData data;
 	data.title = projectTitle;

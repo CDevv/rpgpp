@@ -166,10 +166,6 @@ TileMap::TileMap(const RoomBin &bin) {
 
 	for (auto const &row : bin.tiles) {
 		for (auto col : row) {
-			/*
-			auto atlasPos = Vector2{col.atlasPos.x / tileSet->getTileSize().x,
-									col.atlasPos.y / tileSet->getTileSize().y};
-									*/
 			auto worldPos = Vector2{static_cast<float>(col.worldPos.x),
 									static_cast<float>(col.worldPos.y)};
 			auto atlasPos = Vector2{static_cast<float>(col.atlasPos.x),
@@ -247,8 +243,6 @@ int TileMap::getWorldTileSize() const { return worldTileSize; }
 Tile TileMap::getTile(int x, int y) const { return this->tiles[x][y]; }
 
 void TileMap::setTile(Vector2 worldPos, Vector2 atlasPos) {
-	printf("placing %f, %f on %f, %f \n", atlasPos.x, atlasPos.y, worldPos.x,
-		   worldPos.y);
 	if (!worldPosIsValid(worldPos))
 		return;
 
@@ -316,14 +310,7 @@ void TileMap::drawTile(Vector2 worldPos, Vector2 atlasPos) const {
 		return;
 	}
 
-	/*
-	Vector2 resultVector = {atlasPos.x * atlasTileSize,
-							atlasPos.y * atlasTileSize};
-							*/
-
 	AtlasTile tile = tileSet->getTile(atlasPos);
-
-	// printf("%f, %f \n", worldPos.x, worldPos.y);
 
 	this->drawTile(worldPos, tile);
 }
@@ -350,11 +337,6 @@ void TileMap::drawTile(Vector2 worldPos, AtlasTile tile) const {
 	Rectangle worldCoordsRect = {worldCoords.x, worldCoords.y,
 								 static_cast<float>(worldTileSize),
 								 static_cast<float>(worldTileSize)};
-
-	/*
-printf("%f, %f; %f, %f \n", atlasCoordsRect.x, atlasCoordsRect.y,
-worldCoordsRect.x, worldCoordsRect.y);
-*/
 
 	// draw it
 	DrawTexturePro(texture, atlasCoordsRect, worldCoordsRect, origin, rotation,

@@ -10,8 +10,10 @@
 #include "widgets/fileField.hpp"
 #include "widgets/intField.hpp"
 #include "widgets/textField.hpp"
+#include <cstdio>
 #include <memory>
 #include <nlohmann/json.hpp>
+#include <raylib.h>
 
 PropertiesBox::PropertiesBox(const char *typeName, bool initRenderer)
 	: tgui::ChildWindow(typeName, initRenderer) {
@@ -59,6 +61,40 @@ void PropertiesBox::addPropsJson(nlohmann::json &j) {
 					j.at(item.key()) = st;
 				});
 			addTextField(textField);
+		}
+		if (item.value().is_number()) {
+			auto intField = IntField::create();
+			intField->label->setText(item.key());
+			intField->value->setValue(item.value().get<float>());
+			intField->value->onValueChange(
+				[&j, item](float value) { j.at(item.key()) = value; });
+			addIntField(intField);
+		}
+		if (item.value().is_object()) {
+			if (item.value().contains("propType")) {
+				std::string propType = item.value().at("propType");
+
+				auto fileField = FileField::create();
+				fileField->label->setText(item.key());
+				fileField->value->setText(
+					item.value().at("value").get<std::string>());
+				fileField->callback = [&j, item,
+									   this](const tgui::String &filePath) {
+					printf("%s \n", filePath.toStdString().c_str());
+					printf("%s \n", GetFileNameWithoutExt(
+										filePath.toStdString().c_str()));
+					auto &ref = j.at(item.key());
+
+					ref.at("value") =
+						GetFileNameWithoutExt(filePath.toStdString().c_str());
+				};
+
+				if (propType == "dialogue") {
+					fileField->pathFilters = {{"Dialogue", {"*.rdiag"}}};
+				}
+
+				addFileField(fileField);
+			}
 		}
 	}
 }

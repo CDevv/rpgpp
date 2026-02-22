@@ -9,9 +9,9 @@
 #include <enum_visitor/enum_visitor.hpp>
 
 class RoomLayerViewVisitor
-	: public mj::enum_visitor<RoomLayer, RoomLayer::LAYER_TILES,
-							  RoomLayer::LAYER_COLLISION,
-							  RoomLayer::LAYER_INTERACTABLES> {
+	: public mj::enum_visitor<
+		  RoomLayer, RoomLayer::LAYER_TILES, RoomLayer::LAYER_COLLISION,
+		  RoomLayer::LAYER_INTERACTABLES, RoomLayer::LAYER_PROPS> {
   public:
 	RoomLayerViewVisitor();
 	tgui::Group::Ptr group{nullptr};
@@ -20,9 +20,11 @@ class RoomLayerViewVisitor
 	void operator()(enum_v<RoomLayer::LAYER_COLLISION>);
 	void operator()(enum_v<RoomLayer::LAYER_TILES>);
 	void operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>);
+	void operator()(enum_v<RoomLayer::LAYER_PROPS>);
 
 	TileSetView::Ptr tileSetView;
 	tgui::ComboBox::Ptr interactableChoose;
+	tgui::ComboBox::Ptr propChoose;
 };
 
 #endif
