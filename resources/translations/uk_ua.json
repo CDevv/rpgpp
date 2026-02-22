@@ -1,0 +1,46 @@
+{
+  "language": "Українська",
+
+  "menu.file": "Файл",
+  "menu.file.new_project": "Новий проєкт",
+  "menu.file.open_project": "Відкрити проєкт",
+  "menu.file.save_file": "Зберегти файл",
+  "menu.edit": "Редагувати",
+  "menu.edit.undo": "Скасувати",
+  "menu.edit.redo": "Повторити",
+  "menu.options": "Опції",
+  "menu.options.editor": "Налаштувати Редактор...",
+  "menu.about": "Інформація",
+  "menu.about.rpgpp": "Про RPG++...",
+
+  "screen.starting.get_started": "Розпочніть!",
+  "screen.starting.description": "Нажміть на 'Новий проєкт' для створення нового проєкту, або 'Відкрити проєкт' щоб відкрити якийсь з них!",
+
+  "screen.options.language": "Мова",
+  "screen.options.theme": "Тема",
+
+  "screen.project.create_new_resource": "Новий ресурс",
+  "screen.project.tilesetview.tile_width": "Ширина Клітинки",
+  "screen.project.tilesetview.tile_height": "Висота Клітинки",
+  "screen.project.tilesetview.texture": "Текстура",
+  "screen.project.roomview.mapwidth": "Ширина Мапи",
+  "screen.project.roomview.mapheight": "Висота Мапи",
+  "screen.project.roomview.tileset_file": "Файл Клітинкового Атласу",
+  "screen.project.toolbar.play": "Запустити",
+  "screen.project.toolbar.build": "Збудувати",
+
+  "dialog.new_file.title": "Новий Ресурс",
+  "dialog.new_file.name": "Ім'я",
+  "dialog.new_file.file": "Файл",
+  "dialog.new_file.confirm": "Підвердити",
+  "dialog.new_file.cancel": "Скасувати",
+
+  "dialog.new_project.title": "Новий Проєкт",
+  "dialog.new_project.name": "Ім'я Проєкту",
+  "dialog.new_project.folder": "Папка",
+  "dialog.new_project.confirm": "Підвердити",
+  "dialog.new_project.cancel": "Скасувати",
+
+  "widget.filechooser.select_a_file": "Оберіть Файл",
+  "button.go_back": "Повернутися"
+}

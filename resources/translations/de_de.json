@@ -1,0 +1,46 @@
+{
+  "language": "Deutsch",
+
+  "menu.file": "Datei",
+  "menu.file.new_project": "Neu Projekt",
+  "menu.file.open_project": "Öffnen Projekt",
+  "menu.file.save_file": "Speichern Datei",
+  "menu.edit": "Bearbeiten",
+  "menu.edit.undo": "Rückgängig",
+  "menu.edit.redo": "Wiederhohlen",
+  "menu.options": "Einstellungen",
+  "menu.options.editor": "Editor einstellen...",
+  "menu.about": "Über",
+  "menu.about.rpgpp": "Über RPG++...",
+
+  "screen.starting.get_started": "Los gehts!",
+  "screen.starting.description": "Drücken Sie auf 'Neu Projekt', um ein neues Projekt zu erstellen, oder 'Projekt Öffnen', um es zu öffnen!",
+
+  "screen.options.language": "Sprache",
+  "screen.options.theme": "Thema",
+
+  "screen.project.create_new_resource": "Neue Ressource",
+  "screen.project.tilesetview.tile_width": "Fliesenbreite",
+  "screen.project.tilesetview.tile_height": "Fliesenhöhe",
+  "screen.project.tilesetview.texture": "Textur",
+  "screen.project.roomview.mapwidth": "Kartenbreite",
+  "screen.project.roomview.mapheight": "Kartenhöhe",
+  "screen.project.roomview.tileset_file": "Fliesenset Datei",
+  "screen.project.toolbar.play": "Spielen",
+  "screen.project.toolbar.build": "Bauen",
+
+  "dialog.new_file.title": "Neue Ressource",
+  "dialog.new_file.name": "Name",
+  "dialog.new_file.file": "Datei",
+  "dialog.new_file.confirm": "Bestätigen",
+  "dialog.new_file.cancel": "Abbrechen",
+
+  "dialog.new_project.title": "Neu Projekt",
+  "dialog.new_project.name": "Projektname",
+  "dialog.new_project.folder": "Ordner",
+  "dialog.new_project.confirm": "Bestätigen",
+  "dialog.new_project.cancel": "Abbrechen",
+
+  "widget.filechooser.select_a_file": "ein Datei auswählen",
+  "button.go_back": "Zurück"
+}
