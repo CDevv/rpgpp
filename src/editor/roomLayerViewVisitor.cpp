@@ -1,4 +1,5 @@
 #include "roomLayerViewVisitor.hpp"
+#include "TGUI/Widgets/CheckBox.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "editor.hpp"
@@ -62,8 +63,17 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>) {
 		if (inter == nullptr) {
 			group->add(tgui::Label::create("Interactables"));
 		} else {
+			auto onTouchCheck = tgui::CheckBox::create("Interact on touch?");
+			onTouchCheck->setSize(24, 24);
+			onTouchCheck->setPosition(8, 8);
+			onTouchCheck->setChecked(inter->isOnTouch());
+			onTouchCheck->onCheck(
+				[this](bool value) { inter->setOnTouch(value); });
+			group->add(onTouchCheck);
+
 			auto propBox = PropertiesBox::create();
 			propBox->setSize("100%", "100%");
+			propBox->setPosition(0, 36);
 			group->add(propBox);
 			propBox->addPropsJson(inter->getProps());
 		}
@@ -98,6 +108,9 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_PROPS>) {
 				propBox->setSize("100%", "100%");
 				group->add(propBox);
 				propBox->addPropsJson(prop->getInteractable()->getProps());
+			} else {
+				group->add(
+					tgui::Label::create("This Prop has no Interactable"));
 			}
 		}
 	}

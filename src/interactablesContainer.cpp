@@ -114,9 +114,9 @@ void InteractablesContainer::addJsonData(json roomJson) {
 		std::string src = inter.at("src");
 		auto props = inter.at("props");
 
-		add(x, y, src);
-
-		getInt(x, y)->setProps(props);
+		auto newInter = add(x, y, src);
+		newInter->setProps(props);
+		newInter->setOnTouch(inter.at("onTouch"));
 	}
 }
 
@@ -134,6 +134,7 @@ json InteractablesContainer::dumpJson() {
 		json interJson = json::object();
 		interJson.push_back({"src", inter->getType()});
 		interJson.push_back({"props", interProps});
+		interJson.push_back({"onTouch", inter->isOnTouch()});
 
 		j.push_back({key, interJson});
 	}

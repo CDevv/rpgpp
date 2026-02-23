@@ -68,10 +68,11 @@ class Interactable : public ISaveable {
 	Vector2 getWorldPos() const;
 	/** Get the onTouch member. */
 	bool isOnTouch() const;
-	/** Invoke the virtual interact method. Each Interactable has its own
-	 * interact method. Shall be invoked when the player interacts with the
-	 * Interactable */
-	virtual void interact();
+	/** Set whether this interactable will be invoked when player touches it. */
+	void setOnTouch(bool onTouch);
+	/** Invoke the interact method. Each interactable has a script with an
+	 * 'interact' function. */
+	void interact();
 	/** Change the interactable's type */
 	void setType(const std::string &type);
 	/** Set a property of this interactable. */
@@ -82,49 +83,10 @@ class Interactable : public ISaveable {
 	const std::string &getScriptSourcePath();
 	/** Get the properties json object. */
 	nlohmann::json &getProps();
+	/** Set the Interactable's display title (shown in Editor) */
 	void setDisplayTitle(const std::string &newTitle);
+	/** Get the Interactable's display title. */
 	std::string &getDisplayTitle();
 };
-
-// struct DiagInt {
-// 	std::string dialogueSource;
-// };
-
-// struct WarperInt {
-// 	std::string targetRoom;
-// };
-
-// class IntBaseWrapper {
-//   public:
-// 	InteractableType type;
-// 	Vector2 pos;
-// 	bool onTouch = false;
-// 	IntBaseWrapper();
-// 	virtual ~IntBaseWrapper();
-// 	virtual void interact();
-// 	void setOnTouch(bool val) { onTouch = val; };
-// };
-
-// /** Templated class for Interactable types */
-// template <typename T> class IntBase : public IntBaseWrapper {
-//   private:
-// 	/** The data */
-// 	T data;
-
-//   public:
-// 	/** Constructor, which takes the position and the type enum. */
-// 	IntBase<T>(Vector2 pos, InteractableType type) {
-// 		this->pos = pos;
-// 		this->type = type;
-// 	};
-// 	/** Constructor, which takes the data itself. */
-// 	IntBase<T>(T value) { data = value; };
-// 	/** Data setter. */
-// 	void set(T data) { this->data = data; };
-// 	/** Data getter. */
-// 	T get() { return data; };
-// 	/** The interact method. */
-// 	void interact();
-// };
 
 #endif

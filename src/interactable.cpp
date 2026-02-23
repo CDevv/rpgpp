@@ -86,6 +86,8 @@ Vector2 Interactable::getWorldPos() const { return this->tilePos; }
 
 bool Interactable::isOnTouch() const { return onTouch; }
 
+void Interactable::setOnTouch(bool onTouch) { this->onTouch = onTouch; }
+
 const std::string &Interactable::getType() const { return this->type; }
 
 void Interactable::setType(const std::string &type) {

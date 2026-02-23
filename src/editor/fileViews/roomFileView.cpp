@@ -111,6 +111,11 @@ RoomFileView::RoomFileView() {
 	};
 	props->addFileField(musicFileField);
 
+	props->addButton("Clear Music", [this] {
+		roomView->getRoom()->setMusicSource("");
+		musicFileField->value->setText("");
+	});
+
 	widgetContainer.push_back(props);
 
 	auto toolbox = Toolbox<RoomTool>::create();

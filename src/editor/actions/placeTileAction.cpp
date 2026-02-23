@@ -30,6 +30,7 @@ void PlaceTileAction::execute() {
 			nlohmann::json interJson =
 				json::parse(LoadFileText(data.interactableFullPath.c_str()));
 			inter->setProps(interJson.at("props"));
+			inter->setOnTouch(interJson.at("onTouch"));
 		}
 	} break;
 	case RoomLayer::LAYER_PROPS: {
