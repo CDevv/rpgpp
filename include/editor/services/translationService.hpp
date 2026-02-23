@@ -5,7 +5,10 @@
 #include <functional>
 #include <map>
 #include <string>
+
 using namespace std;
+
+class Editor;
 
 constexpr auto TRANSLATION_FILE_LOCATION = "translations";
 constexpr auto DEFAULT_LANGUAGE = "en_us";
@@ -35,7 +38,7 @@ class TranslatedString {
 
 class TranslationService {
   public:
-	TranslationService();
+	TranslationService(Editor* editor_ptr);
 	std::string current_language = DEFAULT_LANGUAGE;
 	std::map<std::string, std::map<std::string, std::string, std::less<>>,
 			 std::less<>>

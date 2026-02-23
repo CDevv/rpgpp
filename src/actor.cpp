@@ -91,29 +91,21 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
 	}
 
 	// Some default animations
-	std::vector<std::vector<int>> down = {{2, 0}, {3, 0}};
-	addAnimationFrames(RPGPP_DOWN, down);
+	addAnimationFrames(RPGPP_DOWN, {{2, 0}, {3, 0}});
 
-	std::vector<std::vector<int>> downIdle = {{0, 0}, {1, 0}};
-	addAnimationFrames(RPGPP_DOWN_IDLE, downIdle);
+	addAnimationFrames(RPGPP_DOWN_IDLE, {{0, 0}, {1, 0}});
 
-	std::vector<std::vector<int>> up = {{2, 1}, {3, 1}};
-	addAnimationFrames(RPGPP_UP, up);
+	addAnimationFrames(RPGPP_UP, {{2, 1}, {3, 1}});
 
-	std::vector<std::vector<int>> upIdle = {{0, 1}, {1, 1}};
-	addAnimationFrames(RPGPP_UP_IDLE, upIdle);
+	addAnimationFrames(RPGPP_UP_IDLE, {{0, 1}, {1, 1}});
 
-	std::vector<std::vector<int>> left = {{2, 2}, {3, 2}};
-	addAnimationFrames(RPGPP_LEFT, left);
+	addAnimationFrames(RPGPP_LEFT, {{2, 2}, {3, 2}});
 
-	std::vector<std::vector<int>> leftIdle = {{0, 2}, {1, 2}};
-	addAnimationFrames(RPGPP_LEFT_IDLE, leftIdle);
+	addAnimationFrames(RPGPP_LEFT_IDLE, {{0, 2}, {1, 2}});
 
-	std::vector<std::vector<int>> right = {{2, 3}, {3, 3}};
-	addAnimationFrames(RPGPP_RIGHT, right);
+	addAnimationFrames(RPGPP_RIGHT,  {{2, 3}, {3, 3}});
 
-	std::vector<std::vector<int>> rightIdle = {{0, 3}, {1, 3}};
-	addAnimationFrames(RPGPP_RIGHT_IDLE, rightIdle);
+	addAnimationFrames(RPGPP_RIGHT_IDLE, {{0, 3}, {1, 3}});
 
 	Vector2 defaultTileAtlasPos =
 		animations[currentAnimation].at(0);

@@ -16,13 +16,20 @@
 
 class Editor {
   private:
-	// the current editor gui service, responsible for managing the gui.
-	std::unique_ptr<EditorGuiService> guiService;
-	// the translation service responsible for all the i18n.
-	std::unique_ptr<TranslationService> translationService;
-	std::unique_ptr<ThemeService> themeService;
-	std::unique_ptr<FileSystemService> fileSystem;
-	std::unique_ptr<ConfigurationService> configurationService;
+  // NOTE: always initialize the configuration service first.
+  // Otherwise, everything gets screwed over.
+  // NOTE: leave this order of fields,
+  // because constructors would be called in declaration order!
+  ConfigurationService configurationService;
+  // filesystem must be initialized second, as many services depend on it.
+  FileSystemService fileSystem; 
+  // dependant on Editor class itself \/
+  // the translation service responsible for all the i18n.
+  TranslationService translationService; 
+  // the current editor gui service, responsible for managing the gui.
+  ThemeService themeService;
+  EditorGuiService guiService;
+	
 
   public:
 	Editor();
@@ -33,11 +40,11 @@ class Editor {
 	Image appIcon{};
 	// the current editor instance.
 	static Editor *instance;
-	EditorGuiService &getGui() const;
-	TranslationService &getTranslations() const;
-	ThemeService &getThemeService() const;
-	FileSystemService &getFs() const;
-	ConfigurationService &getConfiguration() const;
+	EditorGuiService &getGui();
+	TranslationService &getTranslations();
+	ThemeService &getThemeService();
+	FileSystemService &getFs();
+	ConfigurationService &getConfiguration();
 	Project *getProject() const;
 	void setProject(const std::string &path);
 	// this sets the icon of the editor.

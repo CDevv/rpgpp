@@ -45,7 +45,7 @@ std::string &FileSystemService::getTypeName(EngineFileType fileType) {
 	return typeNames[static_cast<int>(fileType)];
 }
 
-std::string &FileSystemService::getEditorBaseDir() { return editorBaseDir; }
+const std::string &FileSystemService::getEditorBaseDir() { return editorBaseDir; }
 
 std::string FileSystemService::getResourcePath(const std::string &path) {
 	std::filesystem::path result = editorBaseDir;

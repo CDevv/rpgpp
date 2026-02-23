@@ -5,12 +5,14 @@
 
 using namespace std;
 
+class Editor;
+
 constexpr const char *THEME_DIR = "themes";
 constexpr const char *DEFAULT_THEME = "Dark";
 
 class ThemeService {
   public:
-	ThemeService();
+	ThemeService(Editor* editor_ptr);
 	std::string current_theme_name = DEFAULT_THEME;
 	std::shared_ptr<tgui::Theme> current_theme;
 	void setTheme(const string &themeName);

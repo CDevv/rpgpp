@@ -12,9 +12,9 @@
 
 using json = nlohmann::json;
 
-TranslationService::TranslationService() {
+TranslationService::TranslationService(Editor* editor_ptr) {
 	for (auto const &directory_entry : filesystem::directory_iterator(
-			 Editor::instance->getFs().getResourcePath(
+			 editor_ptr->getFs().getResourcePath(
 				 TRANSLATION_FILE_LOCATION))) {
 		// add the translation to the translations map.
 		this->translations.try_emplace(
@@ -22,7 +22,7 @@ TranslationService::TranslationService() {
 			json::parse(ifstream(directory_entry.path())));
 	}
 	this->current_language =
-		Editor::instance->getConfiguration().getStringValue("language");
+		editor_ptr->getConfiguration().getStringValue("language");
 }
 
 TranslatedString getKeyWrapper(TranslationService *tr,

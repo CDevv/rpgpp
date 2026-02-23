@@ -27,6 +27,7 @@
 #include <filesystem>
 #include <memory>
 #include <vector>
+#include <cassert>
 
 void screens::ProjectScreen::layoutReload() {
 	resListWBinder->setSize(modifiable_RESLIST_W, "100%");
@@ -227,11 +228,9 @@ tgui::Group::Ptr screens::ProjectScreen::createToolBar(TranslationService &ts) {
 	projectLabel->setPosition({0, 0});
 	projectLabel->setSize({tgui::bindWidth(resListWBinder), "100%"});
 
-	if (project == nullptr) {
-		projectLabel->setText("uhh, nullptr");
-	} else {
-		projectLabel->setText(project->getTitle());
-	}
+  assert(project && "project isn't instanciated (nullptr)");
+
+  projectLabel->setText(project->getTitle());
 
 	toolBar->add(projectLabel, "projectLabel");
 

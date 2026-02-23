@@ -6,9 +6,9 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-ThemeService::ThemeService() {
+ThemeService::ThemeService(Editor* editor_ptr) {
 	for (const auto &theme : fs::directory_iterator(
-			 Editor::instance->getFs().getResourcePath(THEME_DIR))) {
+			 editor_ptr->getFs().getResourcePath(THEME_DIR))) {
 		// each theme is a folder, where the theme name is the folder name
 		// itself in each folder should always have a file called "theme.txt"
 		if (theme.is_directory()) {

@@ -7,17 +7,9 @@
 #include <memory>
 
 Editor *Editor::instance;
-Editor::Editor() {
+
+Editor::Editor() : configurationService(), translationService(this), themeService(this), project{nullptr} {
 	instance = this;
-	// NOTE: always initialize the configuration service first.
-	// Otherwise, everything gets screwed over.
-	this->configurationService = std::make_unique<ConfigurationService>();
-	// filesystem must be initialized second, as many services depend on it.
-	this->fileSystem = std::make_unique<FileSystemService>();
-	this->translationService = std::make_unique<TranslationService>();
-	this->themeService = std::make_unique<ThemeService>();
-	this->project = std::unique_ptr<Project>{nullptr};
-	this->guiService = std::make_unique<EditorGuiService>();
 }
 
 void Editor::setAppIcon(const std::string &icon_path) {
@@ -26,20 +18,20 @@ void Editor::setAppIcon(const std::string &icon_path) {
 	SetWindowIcon(img_loader);
 }
 
-EditorGuiService &Editor::getGui() const { return *guiService; }
+EditorGuiService &Editor::getGui() { return guiService; }
 
-TranslationService &Editor::getTranslations() const {
-	return *translationService;
+TranslationService &Editor::getTranslations() {
+	return translationService;
 }
 
-ThemeService &Editor::getThemeService() const { return *themeService; }
+ThemeService &Editor::getThemeService() { return themeService; }
 
-FileSystemService &Editor::getFs() const { return *fileSystem; }
+FileSystemService &Editor::getFs() { return fileSystem; }
 
 Project *Editor::getProject() const { return project.get(); }
 
-ConfigurationService &Editor::getConfiguration() const {
-	return *configurationService;
+ConfigurationService &Editor::getConfiguration() {
+	return configurationService;
 }
 
 void Editor::setProject(const std::string &path) {
