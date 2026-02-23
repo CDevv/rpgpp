@@ -13,7 +13,7 @@
 using json = nlohmann::json;
 
 /** Direction enum, representing an animation state. */
-enum Direction {
+enum Direction : short {
 	RPGPP_DOWN_IDLE = 0,  ///< Down Idle state.
 	RPGPP_DOWN = 1,		  ///< Down state.
 	RPGPP_UP_IDLE = 2,	  ///< Up Idle state.
@@ -47,7 +47,7 @@ class Actor {
 	Rectangle collisionRect{};
 	/** An array of the animations. Each std::vector<Vector2> represents the
 	 * frames of an animation. */
-	std::array<std::unique_ptr<std::vector<Vector2>>, 8> animations;
+	std::array<std::vector<Vector2>, 8> animations;
 	/** A Direction enum, showing the current animation that is being played. */
 	Direction currentAnimation;
 
@@ -95,16 +95,16 @@ class Actor {
 	Vector2 getCollisionCenter() const;
 	/** Add a frame in the chosen animation. The frame represents an atlas tile
 	 * from this Actor's TileSet. */
-	void addAnimationFrame(Direction id, Vector2 atlasPos) const;
+	void addAnimationFrame(Direction id, Vector2 atlasPos);
 	/** Remove a frame in the chosen animation, specified by an index. */
 	void removeAnimationFrame(Direction id, int frameIndex);
 	/** Change a frame in the chosen animation to another atlas tile from the
 	 * TileSet. */
 	void setAnimationFrame(Direction id, int frameIndex,
-						   Vector2 atlasTile) const;
+						   Vector2 atlasTile);
 	/** Add multiple frames to the chosen animation. */
 	void addAnimationFrames(Direction id,
-							const std::vector<std::vector<int>> &frames) const;
+							const std::vector<std::vector<int>> &frames);
 	/** Change the Actor's current animation and play it. */
 	void changeAnimation(Direction id);
 	/** Get the path of the used TileSet. */

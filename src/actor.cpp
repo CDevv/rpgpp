@@ -7,6 +7,7 @@
 #include <raylib.h>
 #include <raymath.h>
 #include <utility>
+#include <cassert>
 using json = nlohmann::json;
 
 Actor::Actor(const std::string &fileName) {
@@ -35,7 +36,7 @@ Actor::Actor(const std::string &fileName) {
 	this->tileSet = std::make_unique<TileSet>(tileSetSource);
 
 	for (int i = 0; i < 8; i++) {
-		animations[i] = std::make_unique<std::vector<Vector2>>();
+		animations[i] = std::vector<Vector2>();
 	}
 
 	std::vector<std::vector<int>> down = j.at("animations").at("down");
@@ -64,7 +65,7 @@ Actor::Actor(const std::string &fileName) {
 	addAnimationFrames(RPGPP_RIGHT_IDLE, rightIdle);
 
 	Vector2 defaultTileAtlasPos =
-		animations[static_cast<int>(currentAnimation)]->at(0);
+		animations[currentAnimation].at(0);
 	this->tile = tileSet->getTile(defaultTileAtlasPos);
 
 	UnloadFileText(jsonContent);
@@ -86,7 +87,7 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
 	this->currentAnimation = RPGPP_DOWN_IDLE;
 
 	for (int i = 0; i < 8; i++) {
-		animations[i] = std::make_unique<std::vector<Vector2>>();
+		animations[i] = std::vector<Vector2>();
 	}
 
 	// Some default animations
@@ -115,7 +116,7 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
 	addAnimationFrames(RPGPP_RIGHT_IDLE, rightIdle);
 
 	Vector2 defaultTileAtlasPos =
-		animations[static_cast<int>(currentAnimation)]->at(0);
+		animations[currentAnimation].at(0);
 	this->tile = tileSet->getTile(defaultTileAtlasPos);
 
 	// Default collision box..
@@ -147,7 +148,7 @@ Actor::Actor(ActorBin bin) {
 
 	// animations
 	for (int i = 0; i < 8; i++) {
-		animations[i] = std::make_unique<std::vector<Vector2>>();
+		animations[i] = std::vector<Vector2>();
 	}
 	for (int i = 0; i < 8; i++) {
 		std::vector<IVector> binFrames = bin.animations[i];
@@ -174,7 +175,7 @@ json Actor::dumpJson() {
 
 	for (int i = 0; i < 8; i++) {
 		std::vector<std::vector<int>> framesVec;
-		std::vector<Vector2> animFrames = *animations[i];
+		std::vector<Vector2> animFrames = animations[i];
 
 		for (Vector2 frameVector : animFrames) {
 			std::vector<int> outFrame;
@@ -235,8 +236,8 @@ void Actor::update() {
 			currentFrame = 0;
 
 		Vector2 atlasTileSize = tileSet->getTileSize();
-		auto animId = static_cast<int>(currentAnimation);
-		Vector2 atlasPos = animations[animId]->at(currentFrame);
+		auto animId = currentAnimation;
+		Vector2 atlasPos = animations[animId].at(currentFrame);
 		atlasPos =
 			Vector2{atlasPos.x * atlasTileSize.x, atlasPos.y * atlasTileSize.y};
 
@@ -335,8 +336,8 @@ Vector2 Actor::getCollisionCenter() const {
 	return result;
 }
 
-void Actor::addAnimationFrame(Direction id, Vector2 atlasPos) const {
-	animations[static_cast<int>(id)]->push_back(atlasPos);
+void Actor::addAnimationFrame(Direction id, Vector2 atlasPos) {
+	animations[id].push_back(atlasPos);
 }
 
 void Actor::removeAnimationFrame(Direction id, int frameIndex) {
@@ -345,25 +346,23 @@ void Actor::removeAnimationFrame(Direction id, int frameIndex) {
 	}
 	if (frameIndex == 0)
 		return;
-	animations[static_cast<int>(id)]->erase(
-		animations[static_cast<int>(id)]->begin() + frameIndex);
+  // how do we know the frame was valid on index side?
+  assert(frameIndex < animations[id].size() && "requested animation index is invalid");
+	animations[id].erase(
+		animations[id].begin() + frameIndex);
 }
 
 void Actor::setAnimationFrame(Direction id, int frameIndex,
-							  Vector2 atlasTile) const {
-	animations[static_cast<int>(id)]->at(frameIndex) = atlasTile;
+							  Vector2 atlasTile) {
+	animations[id][frameIndex] = atlasTile;
 }
 
 void Actor::addAnimationFrames(
-	const Direction id, const std::vector<std::vector<int>> &frames) const {
-	auto idNum = static_cast<int>(id);
-
+	const Direction id, const std::vector<std::vector<int>> &frames) {
 	for (int i = 0; i < frames.size(); i++) {
 		int x = frames.at(i).at(0);
 		int y = frames.at(i).at(1);
-		auto pos = Vector2{static_cast<float>(x), static_cast<float>(y)};
-
-		animations[idNum]->push_back(pos);
+		animations[id].push_back(Vector2{static_cast<float>(x), static_cast<float>(y)});
 	}
 }
 
@@ -380,17 +379,17 @@ void Actor::changeAnimation(Direction id) {
 std::array<std::vector<Vector2>, 8> Actor::getAnimationsRaw() const {
 	std::array<std::vector<Vector2>, 8> result;
 	for (int i = 0; i < 8; i++) {
-		std::vector<Vector2> animFrames = *animations[i];
+		std::vector<Vector2> animFrames = animations[i];
 		result[i] = animFrames;
 	}
 	return result;
 }
 
 std::vector<Vector2> Actor::getAnimationRaw(const Direction id) const {
-	if (animations[static_cast<int>(id)] == nullptr) {
+	if (animations[id].empty()) {
 		return {};
 	}
-	std::vector<Vector2> animFrames = *animations[static_cast<int>(id)];
+	std::vector<Vector2> animFrames = animations[id];
 	return animFrames;
 }
 
