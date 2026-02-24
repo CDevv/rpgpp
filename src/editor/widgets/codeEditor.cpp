@@ -1,3 +1,30 @@
+/*
+	TODO
+
+	Completely re-imagine the codeEditor and completely re-design it.
+	As in it's current state, it's very laggy and has tons of bugs.
+
+	The Fix Planned:
+
+	The way I will redesign it in up and coming days, is instead of adding
+   everything to a giant list, Make tree-sitter parse the contents, then use a
+   Raylib Canvas to render the text on the screen with Raylib.
+
+	On a line-change, only edit the changed line in the std::list or std::vector
+   that holds all the text styling data.
+
+	The styling data will be stored in the std::list or std::vector, inside
+   "containers.". The std::list will contain containers, that will hold the data
+   of every styling data per keyword into it, so when a line is changed, instead
+   of attempting to figure out where it starts and ends, only change the
+   specified container. So, we don't have to reconstruct the entire styling data
+   from scratch over and over again.
+
+   Along with the new system reading the new highlighting data, null-breaks
+   SHOULD NOT reset the current highlighting state, tree-sitter handles
+   everything in bytes, so the system should accept that.
+
+*/
 
 #include "widgets/codeEditor.hpp"
 #include "TGUI/Backend/Renderer/BackendRenderTarget.hpp"
