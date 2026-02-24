@@ -18,6 +18,10 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	Vector2 getMouseWorldPos();
 	RoomTool tool = RoomTool::TOOL_NONE;
 
+	float cameraZoomSpeed = 0.2f;
+	float cameraMinZoom = 0.5f;
+	float cameraMaxZoom = 5;
+
   public:
 	typedef std::shared_ptr<WorldView> Ptr;
 	typedef std::shared_ptr<const WorldView> ConstPtr;

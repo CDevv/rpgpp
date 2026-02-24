@@ -10,6 +10,7 @@
 #include <TGUI/Backend/Renderer/Raylib/BackendRendererRaylib.hpp>
 #include <TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp>
 #include <TGUI/Backend/Window/Backend.hpp>
+#include <cmath>
 #include <cstdio>
 #include <memory>
 
@@ -85,8 +86,8 @@ bool WorldView::scrolled(float delta, tgui::Vector2f pos, bool touch) {
 		camera.offset = mousePos;
 		camera.target = mouseWorldPos;
 
-		float scale = delta * 0.2f;
-		camera.zoom = Clamp(camera.zoom + scale, 1.0f, 5.0f);
+		camera.zoom *= std::sqrt(exp(delta * cameraZoomSpeed));
+		camera.zoom = Clamp(camera.zoom, cameraMinZoom, cameraMaxZoom);
 	}
 
 	return Widget::scrolled(delta, pos, touch);
