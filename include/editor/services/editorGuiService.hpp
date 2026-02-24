@@ -3,28 +3,31 @@
 
 #include "TGUI/Backend/raylib.hpp"
 #include "TGUI/Widget.hpp"
+#include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/MenuBar.hpp"
 #include "raylib.h"
 #include "screens/guiScreen.hpp"
+#include "services/childWindowSubService.hpp"
 #include "updatable.hpp"
+#include <map>
 #include <memory>
 #include <vector>
 constexpr auto RPGPP_EXECUTABLE_LOGO = "resources/app-icon.png";
-// TODO: Add theme switching.
 constexpr int ACTION_BUTTON_SIZE = 16;
 
 class EditorGuiService {
   private:
 	std::vector<std::weak_ptr<IUpdatable>> updatableWidgets;
+	std::unique_ptr<ChildWindowSubService> childWindowService;
+
 	int currentCursor = MOUSE_CURSOR_DEFAULT;
 	bool leftMouseHeld = false;
 	static const int MENUBAR_H = 32;
 
   public:
-	// gui service constructor.
-	bool reset_gui_r = false;
+	bool isResettingUI = false;
 	EditorGuiService();
 	~EditorGuiService() = default;
 
@@ -37,6 +40,9 @@ class EditorGuiService {
 
 	std::weak_ptr<tgui::MenuBar> menuBar{};
 	std::map<std::string, std::string> translations = {};
+
+	ChildWindowSubService *getChildWindowSubService();
+
 	void init();
 	void uiLoop();
 	void initMenuBar();
@@ -47,7 +53,7 @@ class EditorGuiService {
 
 	void resetUi();
 	tgui::Group::Ptr uiChangePreInit(UIScreen *setToScreen);
-	void setResetUi() { this->reset_gui_r = true; }
+	void setResetUi() { this->isResettingUI = true; }
 
 	void gotoPreviousScreen();
 	void reloadUi();
