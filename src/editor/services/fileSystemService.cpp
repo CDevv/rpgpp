@@ -23,6 +23,9 @@ FileSystemService::FileSystemService() {
 	typeNames[static_cast<int>(EngineFileType::FILE_PROP)] = "Props";
 	typeNames[static_cast<int>(EngineFileType::FILE_SCRIPT)] = "Scripts";
 
+	typeNames[static_cast<int>(EngineFileType::FILE_EMPTY)] =
+		"Project Directory";
+
 	NFD_Init();
 }
 
@@ -45,7 +48,13 @@ std::string &FileSystemService::getTypeName(EngineFileType fileType) {
 	return typeNames[static_cast<int>(fileType)];
 }
 
-const std::string &FileSystemService::getEditorBaseDir() { return editorBaseDir; }
+std::array<std::string, FILETYPE_MAX> &FileSystemService::getTypeNames() {
+	return typeNames;
+}
+
+const std::string &FileSystemService::getEditorBaseDir() {
+	return editorBaseDir;
+}
 
 std::string FileSystemService::getResourcePath(const std::string &path) {
 	std::filesystem::path result = editorBaseDir;

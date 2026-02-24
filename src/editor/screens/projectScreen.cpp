@@ -23,11 +23,11 @@
 #include "services/fileSystemService.hpp"
 #include "services/translationService.hpp"
 #include "widgets/newFileDialog.hpp"
+#include <cassert>
 #include <cstdio>
 #include <filesystem>
 #include <memory>
 #include <vector>
-#include <cassert>
 
 void screens::ProjectScreen::layoutReload() {
 	resListWBinder->setSize(modifiable_RESLIST_W, "100%");
@@ -228,9 +228,9 @@ tgui::Group::Ptr screens::ProjectScreen::createToolBar(TranslationService &ts) {
 	projectLabel->setPosition({0, 0});
 	projectLabel->setSize({tgui::bindWidth(resListWBinder), "100%"});
 
-  assert(project && "project isn't instanciated (nullptr)");
+	assert(project && "project isn't instanciated (nullptr)");
 
-  projectLabel->setText(project->getTitle());
+	projectLabel->setText(project->getTitle());
 
 	toolBar->add(projectLabel, "projectLabel");
 
@@ -345,7 +345,10 @@ ResizableContainer::Ptr screens::ProjectScreen::createResourcesList() {
 	auto resourceChoose = tgui::ComboBox::create();
 	resourceChoose->setPosition(0, 0);
 	resourceChoose->setSize("100%", RESLIST_RES_CHOOSE_H);
-	resourceChoose->addMultipleItems({"TileSets", "Maps", "Scripts"});
+	for (auto typeName : Editor::instance->getFs().getTypeNames()) {
+		resourceChoose->addItem(typeName);
+	}
+	// resourceChoose->addMultipleItems({"TileSets", "Maps", "Scripts"});
 	resourceChoose->setSelectedItem("Maps");
 	group->add(resourceChoose);
 
