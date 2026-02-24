@@ -18,7 +18,7 @@ struct DialogueLine {
 	std::vector<DialogueTextSection> sections;
 };
 
-struct Dialogue {
+struct DialogueBin {
 	std::string title;
 	std::vector<DialogueLine> lines;
 };
@@ -28,7 +28,7 @@ class DialogueBalloon {
 	Rectangle rect;
 	Rectangle textRect;
 	Rectangle textPortraitRect;
-	Dialogue dialogue;
+	DialogueBin dialogue;
 	std::string text;
 	DialogueTextSection sectionText;
 	bool firstCharTyped;
@@ -47,7 +47,7 @@ class DialogueBalloon {
 	DialogueBalloon(Rectangle rect);
 	void update();
 	void draw();
-	void showDialogue(const Dialogue &newDialogue);
+	void showDialogue(const DialogueBin &newDialogue);
 	void hideDialogue();
 	void charP(Vector2 charMeasure, const char *c, Color color);
 };

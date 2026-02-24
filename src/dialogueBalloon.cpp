@@ -174,7 +174,7 @@ void DialogueBalloon::charP(Vector2 charMeasure, const char *c, Color color) {
 	DrawTextEx(font, c, finalCharPos, 13 * 3, 1, color);
 }
 
-void DialogueBalloon::showDialogue(const Dialogue &newDialogue) {
+void DialogueBalloon::showDialogue(const DialogueBin &newDialogue) {
 	if (active)
 		return;
 

@@ -69,7 +69,7 @@ template <class Archive> void serialize(Archive &a, DialogueLine &b) {
 	a(b.text, b.sections, b.imageId, b.hasPortrait, b.characterName);
 }
 
-template <class Archive> void serialize(Archive &a, Dialogue &b) {
+template <class Archive> void serialize(Archive &a, DialogueBin &b) {
 	a(b.title, b.lines);
 }
 

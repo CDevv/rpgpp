@@ -121,7 +121,7 @@ struct GameData {
 	std::vector<RoomBin> rooms;
 	std::vector<ActorBin> actors;
 	std::vector<PropBin> props;
-	std::map<std::string, Dialogue> dialogues;
+	std::map<std::string, DialogueBin> dialogues;
 	std::map<std::string, MusicBin> music;
 	std::map<std::string, ScriptBin> scripts;
 };

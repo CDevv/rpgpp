@@ -22,6 +22,7 @@ class ProjectFileVisitor {
 	static std::unique_ptr<ProjectFile> tilesetView(const std::string &path);
 	static std::unique_ptr<ProjectFile> roomView(const std::string &path);
 	static std::unique_ptr<ProjectFile> codeView(const std::string &path);
+	static std::unique_ptr<ProjectFile> dialogueView(const std::string &path);
 };
 
 #endif
