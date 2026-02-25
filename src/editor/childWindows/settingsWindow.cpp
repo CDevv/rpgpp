@@ -1,36 +1,27 @@
-//
-// Created by thefirey33 on 21.01.2026.
-//
-
-#include "screens/editorOptionsScreen.h"
-
-#include "TGUI/Widgets/Button.hpp"
+#include "childWindows/settingsWindow.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
+#include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/HorizontalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
+#include "childWindows/popupWindow.hpp"
 #include "editor.hpp"
-#include "services/translationService.hpp"
 
-namespace screens {
-void EditorOptionsScreen::initItems(const tgui::Group::Ptr layout) {
+SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	TranslationService &ts = Editor::instance->getTranslations();
 	ThemeService &theme = Editor::instance->getThemeService();
 
-	const auto verticGrowLayout = tgui::GrowVerticalLayout::create();
-	verticGrowLayout->setSize(640, "100%");
-	verticGrowLayout->setPosition({"50%", "50%"});
-	verticGrowLayout->setOrigin({0.5, 0.5});
-	verticGrowLayout->getRenderer()->setSpaceBetweenWidgets(10.0f);
+	const auto layout = tgui::GrowVerticalLayout::create();
+
+	layout->setSize("80%", "100%");
+	layout->setPosition({"50%", "50%"});
+	layout->setOrigin({0.5, 0.5});
+	layout->getRenderer()->setSpaceBetweenWidgets(10.0f);
+
 	const auto topOptionsHeader =
 		tgui::Label::create(ts.getKey("menu.options.editor"));
 	topOptionsHeader->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	topOptionsHeader->getRenderer()->setTextSize(20);
-	verticGrowLayout->add(topOptionsHeader);
-
-	const auto backButton = tgui::Button::create(ts.getKey("button.go_back"));
-	backButton->onPress.connect(
-		[] { Editor::instance->getGui().gotoPreviousScreen(); });
-	backButton->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
+	layout->add(topOptionsHeader);
 
 	// Language
 	const auto languageLayout = tgui::HorizontalLayout::create();
@@ -41,6 +32,7 @@ void EditorOptionsScreen::initItems(const tgui::Group::Ptr layout) {
 		else
 			languageSelector->addItem(name);
 	}
+
 	if (const auto langTranslation = ts.getKey("language");
 		languageSelector->contains(langTranslation))
 		languageSelector->setSelectedItem(langTranslation);
@@ -88,10 +80,8 @@ void EditorOptionsScreen::initItems(const tgui::Group::Ptr layout) {
 	themeLayout->add(themeLabel);
 	themeLayout->add(themeSelector);
 
-	verticGrowLayout->add(languageLayout);
-	verticGrowLayout->add(themeLayout);
-	verticGrowLayout->add(backButton);
+	layout->add(languageLayout);
+	layout->add(themeLayout);
 
-	layout->add(verticGrowLayout);
+	this->currentWindow->add(layout);
 }
-} // namespace screens

@@ -8,7 +8,9 @@
 
 Editor *Editor::instance;
 
-Editor::Editor() : configurationService(), translationService(this), themeService(this), project{nullptr} {
+Editor::Editor()
+	: configurationService(), translationService(this), themeService(this),
+	  project{nullptr} {
 	instance = this;
 }
 
@@ -20,9 +22,7 @@ void Editor::setAppIcon(const std::string &icon_path) {
 
 EditorGuiService &Editor::getGui() { return guiService; }
 
-TranslationService &Editor::getTranslations() {
-	return translationService;
-}
+TranslationService &Editor::getTranslations() { return translationService; }
 
 ThemeService &Editor::getThemeService() { return themeService; }
 

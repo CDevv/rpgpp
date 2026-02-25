@@ -1,4 +1,5 @@
 #include "project.hpp"
+#include "dialogue.hpp"
 #include "dialogueParser.hpp"
 #include "editor.hpp"
 #include "gamedata.hpp"
@@ -7,6 +8,7 @@
 #include "screens/projectScreen.hpp"
 #include "services/fileSystemService.hpp"
 #include "tileset.hpp"
+#include <cassert>
 #include <cstdio>
 #include <filesystem>
 #include <memory>
@@ -15,7 +17,6 @@
 #include <raylib.h>
 #include <string>
 #include <vector>
-#include <cassert>
 
 using json = nlohmann::json;
 
@@ -65,19 +66,28 @@ std::vector<std::string> Project::getPaths(EngineFileType fileType) {
 	subdir /=
 		TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
 
-  assert(subdir.string().empty() == false && "directory path is empty");
+	assert(subdir.string().empty() == false && "directory path is empty");
 
-	auto pathList =
-		LoadDirectoryFiles(subdir.string().c_str());
+	auto pathList = LoadDirectoryFiles(subdir.string().c_str());
 	std::vector<std::string> vec = {};
 
 	for (int i = 0; i < pathList.count; i++) {
 		vec.emplace_back(pathList.paths[i]);
 	}
-  
-  UnloadDirectoryFiles(pathList);
+
+	UnloadDirectoryFiles(pathList);
 
 	return vec;
+}
+
+std::string Project::getResourcePath(EngineFileType fileType,
+									 const std::string &fileName) {
+	std::filesystem::path subdir = projectPath;
+	subdir /=
+		TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
+	subdir /= fileName;
+
+	return subdir.string();
 }
 
 std::map<std::string, std::string> Project::getInteractableNames() {
@@ -252,8 +262,8 @@ GameData Project::generateStruct() {
 	}
 
 	for (auto diagPath : getPaths(EngineFileType::FILE_DIALOGUE)) {
-		std::string diagText = LoadFileText(diagPath.c_str());
-		Dialogue diag = parseDialogueText(diagText);
+		Dialogue dialogue(diagPath);
+		DialogueBin diag = dialogue.getData();
 
 		diag.title = GetFileNameWithoutExt(diagPath.c_str());
 		data.dialogues[GetFileNameWithoutExt(diagPath.c_str())] = diag;

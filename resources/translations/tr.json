@@ -1,16 +1,44 @@
 {
   "language": "Türkçe",
-
   "menu.file": "Dosya",
   "menu.file.new_project": "Yeni Proje",
   "menu.file.open_project": "Proje Aç",
+  "menu.file.save_file": "Dosyayı Kaydet",
+  "menu.edit": "Düzenle",
+  "menu.edit.undo": "Geri Al",
+  "menu.edit.redo": "Yinele",
   "menu.options": "Seçenekler...",
   "menu.options.editor": "Düzenleyici Seçenekleri...",
   "menu.about": "Bilgi",
   "menu.about.rpgpp": "RPG++ Hakkında...",
+  "menu.about.rpgpp_description": "C++ ile yazılan RPG oyun motoru.",
 
   "screen.starting.get_started": "Başlayın!",
   "screen.starting.description": "'Yeni Proje'ye tıklayarak yeni proje oluşturun, ya da 'Proje Aç'a basarak proje açın!",
   "button.go_back": "Geri",
-  "screen.options.language": "Dil"
+  "screen.options.language": "Dil",
+  "screen.options.theme": "Tema",
+
+  "screen.project.create_new_resource": "Yeni Kaynak",
+  "screen.project.tilesetview.tile_width": "Kare Genişliği",
+  "screen.project.tilesetview.tile_height": "Kare Yüksekliği",
+  "screen.project.tilesetview.texture": "Doku",
+  "screen.project.roomview.mapwidth": "Harita Genişliği",
+  "screen.project.roomview.mapheight": "Harita Yüksekliği",
+  "screen.project.roomview.tileset_file": "Kare Seti Dosyası",
+  "screen.project.toolbar.play": "Oyna",
+  "screen.project.toolbar.build": "Derle",
+
+  "dialog.new_file.title": "Yeni Kaynak",
+  "dialog.new_file.name": "Ad",
+  "dialog.new_file.file": "Dosya",
+  "dialog.new_file.confirm": "Kabul Et",
+  "dialog.new_file.cancel": "İptal",
+
+  "dialog.new_project.title": "Yeni Proje",
+  "dialog.new_project.name": "Proje Adı",
+  "dialog.new_project.folder": "Klasör",
+  "dialog.new_project.confirm": "Kabul Et",
+  "dialog.new_project.cancel": "İptal",
+  "widget.filechooser.select_a_file": "Dosya Seç"
 }

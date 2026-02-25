@@ -52,7 +52,7 @@ Font InterfaceService::getFont() const { return font; }
 
 Texture InterfaceService::getTexture() const { return uiTexture; }
 
-void InterfaceService::showDialogue(const Dialogue &dialogue) {
+void InterfaceService::showDialogue(const DialogueBin &dialogue) {
 	this->dialogue.showDialogue(dialogue);
 }
 

@@ -6,17 +6,16 @@
 #include "TGUI/Widgets/MessageBox.hpp"
 #include "editor.hpp"
 #include "raylib.h"
-#include "screens/aboutScreen.h"
 #include "screens/guiScreen.hpp"
 #include "screens/welcomeScreen.hpp"
+#include "services/childWindowSubService.hpp"
 #include "services/translationService.hpp"
 #include "updatable.hpp"
 #include <TGUI/AllWidgets.hpp>
+#include <TGUI/Widgets/ChildWindow.hpp>
 #include <cmath>
 #include <memory>
 #include <string>
-
-#include "screens/editorOptionsScreen.h"
 
 constexpr int BASE_WINDOW_WIDTH = 800;
 constexpr int BASE_WINDOW_HEIGHT = 600;
@@ -24,9 +23,10 @@ constexpr float GRADIENT_SPEED_MUTLIPLIER = 0.3f;
 constexpr float GRADIENT_COLOR_MULTIPLIER = 40.0f;
 
 EditorGuiService::EditorGuiService() {
-	reset_gui_r = false;
+	isResettingUI = false;
 	gui = std::unique_ptr<tgui::Gui>();
 	currentScreen = std::unique_ptr<UIScreen>();
+	childWindowService = std::unique_ptr<ChildWindowSubService>();
 }
 
 void EditorGuiService::init() {
@@ -41,7 +41,7 @@ void EditorGuiService::resetUi() {
 	ThemeService &theme = Editor::instance->getThemeService();
 	ConfigurationService &configService = Editor::instance->getConfiguration();
 
-	this->reset_gui_r = false;
+	this->isResettingUI = false;
 	// Check if we already have a gui already setup, if we do.. don't load
 	// the same assets again.
 	if (this->gui == nullptr) {
@@ -58,6 +58,11 @@ void EditorGuiService::resetUi() {
 	}
 
 	theme.setTheme(configTheme);
+	// NOTE: The theme is not set properly if this is not initialized after it.
+	if (this->childWindowService != nullptr)
+		this->childWindowService->createWindows();
+	else
+		this->childWindowService = std::make_unique<ChildWindowSubService>();
 	// tgui::Theme::setDefault(CURRENT_TESTING_THEME);
 
 	this->setScreen(std::make_unique<screens::WelcomeScreen>(), true);
@@ -114,10 +119,13 @@ void EditorGuiService::uiLoop() {
 		// MSVC. But the solution was... to put a boolean to tell the
 		// loop to reset it with an if statement. NOTE: If you think of a
 		// better solution. Too Bad!
-		if (reset_gui_r)
+		if (isResettingUI) {
 			this->resetUi();
+			this->childWindowService->createWindows();
+		}
 		EndDrawing();
 	}
+	this->childWindowService.reset();
 	currentScreen.reset();
 	gui.reset();
 }
@@ -193,10 +201,14 @@ void EditorGuiService::createLogoCenter(
 }
 
 void EditorGuiService::reloadUi() {
-
 	auto group = this->uiChangePreInit(this->currentScreen.get());
 	this->currentScreen->initItems(group);
 	gui->add(group);
+	this->childWindowService->createWindows();
+}
+
+ChildWindowSubService *EditorGuiService::getChildWindowSubService() {
+	return this->childWindowService.get();
 }
 
 void EditorGuiService::initMenuBar() {
@@ -227,19 +239,16 @@ void EditorGuiService::initMenuBar() {
 	menuBar->addMenu(optionsTranslation);
 	menuBar->addMenuItem(editorOptionsTranslation);
 	menuBar->connectMenuItem(
-		{optionsTranslation, editorOptionsTranslation}, [] {
-			Editor::instance->getGui().setScreen(
-				std::make_unique<screens::EditorOptionsScreen>(), false);
-		});
+		{optionsTranslation, editorOptionsTranslation},
+		[&] { this->childWindowService->openWindow("options"); });
 
 	const auto &aboutOptions = ts.getKey("menu.about"),
 			   &aboutRpgpp = ts.getKey("menu.about.rpgpp");
 	menuBar->addMenu(aboutOptions);
 	menuBar->addMenuItem(aboutRpgpp);
 
-	menuBar->connectMenuItem({aboutOptions, aboutRpgpp}, [] {
-		Editor::instance->getGui().setScreen(
-			std::make_unique<screens::AboutScreen>(), false);
+	menuBar->connectMenuItem({aboutOptions, aboutRpgpp}, [&] {
+		this->childWindowService->openWindow("about");
 	});
 	menuBar->setSize({"100%", MENUBAR_H});
 	this->gui->add(menuBar);
@@ -269,9 +278,7 @@ void EditorGuiService::alert(tgui::String title, tgui::String content) {
 	dialog->setText(content);
 	dialog->setTitle(title);
 	dialog->addButton("Ok");
-	dialog->onButtonPress([this, dialog]() {
-		gui->remove(dialog);
-	});
+	dialog->onButtonPress([this, dialog]() { gui->remove(dialog); });
 	gui->add(dialog);
 	centerWidget(dialog);
 }

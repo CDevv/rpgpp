@@ -6,7 +6,6 @@
 #include <string>
 using json = nlohmann::json;
 
-Dialogue parseDialogueText(std::string text);
-json dialogueDumpJson(const Dialogue &diag);
+std::vector<DialogueTextSection> parseDialogueContent(const std::string &t);
 
 #endif

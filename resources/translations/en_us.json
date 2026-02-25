@@ -12,6 +12,7 @@
   "menu.options.editor": "Editor Options...",
   "menu.about": "About",
   "menu.about.rpgpp": "About RPG++...",
+  "menu.about.rpgpp_description": "RPG engine, written in C++.",
 
   "screen.starting.get_started": "Get Started!",
   "screen.starting.description": "Press on 'New Project' to create a new project, or 'Open Project' to open one!",

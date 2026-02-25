@@ -30,7 +30,7 @@ class InterfaceService {
 	/** Get the texture, used for UI nine-patch components. */
 	Texture getTexture() const;
 	/** Open the dialogue with a Dialogue structure */
-	void showDialogue(const Dialogue &dialogue);
+	void showDialogue(const DialogueBin &dialogue);
 	/** Update routine. */
 	void update();
 	/** Draw routine. */

@@ -1,4 +1,5 @@
 #include "services/translationService.hpp"
+#include <cstdio>
 #include <filesystem>
 #include <fstream>
 #include <functional>
@@ -12,10 +13,9 @@
 
 using json = nlohmann::json;
 
-TranslationService::TranslationService(Editor* editor_ptr) {
+TranslationService::TranslationService(Editor *editor_ptr) {
 	for (auto const &directory_entry : filesystem::directory_iterator(
-			 editor_ptr->getFs().getResourcePath(
-				 TRANSLATION_FILE_LOCATION))) {
+			 editor_ptr->getFs().getResourcePath(TRANSLATION_FILE_LOCATION))) {
 		// add the translation to the translations map.
 		this->translations.try_emplace(
 			directory_entry.path().stem().string(),
@@ -37,6 +37,8 @@ TranslatedString getKeyWrapper(TranslationService *tr,
 		}
 		TranslatedString s =
 			TranslatedString{tr->translations[DEFAULT_LANGUAGE][key]};
+		printf("TRANSLATION WARNING: %s key doesn't exist for language %s\n",
+			   key.c_str(), c_language.c_str());
 		return s;
 	} else {
 		throw std::out_of_range("translation doesn't exist in translations.");
