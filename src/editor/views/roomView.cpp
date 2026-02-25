@@ -186,18 +186,7 @@ void RoomView::drawCanvas() {
 
 	// props
 	for (auto &&prop : room->getProps()) {
-		auto pos = prop.getWorldPos();
-		auto texture = prop.getTexture();
-
-		Rectangle source = {0, 0, static_cast<float>(texture.width),
-							static_cast<float>(texture.height)};
-		Rectangle dest = {
-			pos.x, pos.y,
-			static_cast<float>(texture.width) * RPGPP_DRAW_MULTIPLIER,
-			static_cast<float>(texture.height) * RPGPP_DRAW_MULTIPLIER};
-
-		DrawTexturePro(texture, source, dest, {0.0f, 0.0f}, 0.0f,
-					   Fade(WHITE, 0.5f));
+		prop.draw();
 	}
 
 	DrawCircleV(getMouseWorldPos(), 1.0f, MAROON);
@@ -332,11 +321,13 @@ void RoomView::handleEraseMode(int x, int y) {
 }
 
 void RoomView::handleModePress(tgui::Vector2f pos) {
+	IVector tileMouse = getTileAtMouse();
+	IVector atlasTilePos = tileSetView->getSelectedTile();
+	if (!room->getTileMap()->worldPosIsValid(Vector2{static_cast<float>(tileMouse.x), static_cast<float>(tileMouse.y)})) return;
+
 	auto screen = aurora::downcast<screens::ProjectScreen *>(
 		Editor::instance->getGui().currentScreen.get());
 
-	IVector tileMouse = getTileAtMouse();
-	IVector atlasTilePos = tileSetView->getSelectedTile();
 
 	MapActionData data;
 	data.view = this;
