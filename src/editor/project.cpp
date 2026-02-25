@@ -29,6 +29,7 @@ Project::Project(const std::string &path) {
 	this->projectTitle = j.at("title");
 
 	ChangeDirectory(projectPath.c_str());
+	UnloadFileText(jsonContent);
 }
 
 void Project::create(const std::string &dirPath, const std::string &title) {
@@ -106,6 +107,7 @@ std::map<std::string, std::string> Project::getInteractableNames() {
 
 		map[intPath.c_str()] = inter.getDisplayTitle();
 	}
+	UnloadDirectoryFiles(list);
 
 	return map;
 }
@@ -295,6 +297,7 @@ GameData Project::generateStruct() {
 	}
 
 	for (auto musicPath : getPaths(EngineFileType::FILE_MUSIC)) {
+		// TODO: Unsafe memory handling (no Unload function)
 		MusicBin musicBin;
 
 		int dataSize = 0;
@@ -305,9 +308,7 @@ GameData Project::generateStruct() {
 		}
 
 		musicBin.fileExt = GetFileExtension(musicPath.c_str());
-
 		musicBin.isSound = false;
-
 		data.music[GetFileNameWithoutExt(musicPath.c_str())] = musicBin;
 	}
 
@@ -352,6 +353,7 @@ GameData Project::generateStruct() {
 
 		data.interactables[inter.getType()] = bin;
 	}
+	UnloadDirectoryFiles(list);
 
 	// scripts
 	std::filesystem::path scriptsDir =
@@ -379,7 +381,9 @@ GameData Project::generateStruct() {
 		bin.bytecode = scriptText;
 
 		data.scripts[GetFileName(scriptPath.c_str())] = bin;
+		UnloadFileText(scriptText);
 	}
+	UnloadDirectoryFiles(scriptsList);
 
 	return data;
 }

@@ -14,6 +14,7 @@
 #include <cstdio>
 #include <memory>
 
+// TODO: Possible memory leak (Load with no Unload visible)
 WorldView::WorldView(const char *typeName, bool initRenderer)
 	: tgui::CanvasRaylib(typeName, initRenderer) {
 	mouseMiddleButton = false;

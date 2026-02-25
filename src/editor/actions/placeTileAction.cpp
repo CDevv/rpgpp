@@ -5,7 +5,6 @@
 #include "raylib.h"
 #include "room.hpp"
 #include "views/worldView.hpp"
-#include <cstring>
 #include <nlohmann/json_fwd.hpp>
 
 PlaceTileAction::PlaceTileAction(MapActionData a) : MapAction(a) {}
@@ -27,8 +26,10 @@ void PlaceTileAction::execute() {
 		auto inter = data.room->getInteractables().add(
 			data.worldTile.x, data.worldTile.y, data.interactable);
 		if (inter != nullptr) {
+			char* txt = LoadFileText(data.interactableFullPath.c_str());
 			nlohmann::json interJson =
-				json::parse(LoadFileText(data.interactableFullPath.c_str()));
+				json::parse(txt);
+			UnloadFileText(txt);
 			inter->setProps(interJson.at("props"));
 			inter->setOnTouch(interJson.at("onTouch"));
 		}
@@ -50,8 +51,11 @@ void PlaceTileAction::execute() {
 					interFileName = interPath;
 				}
 			}
+
+			char* txt = LoadFileText(interFileName.c_str());
 			nlohmann::json propJson =
-				json::parse(LoadFileText(interFileName.c_str()));
+				json::parse(txt);
+			UnloadFileText(txt);
 			p.getInteractable()->setProps(propJson.at("props"));
 		}
 		data.room->addProp(std::move(p));

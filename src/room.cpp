@@ -52,6 +52,7 @@ Room::Room(const std::string &fileName, int tileSize) {
 
 	char *jsonString = LoadFileText(fileName.c_str());
 	json roomJson = json::parse(jsonString);
+	UnloadFileText(jsonString);
 
 	std::vector<int> startPosVec = roomJson.at("start_pos");
 	startTile = Vector2{static_cast<float>(startPosVec[0]),
@@ -117,8 +118,6 @@ Room::Room(const std::string &fileName, int tileSize) {
 	interactables->addJsonData(roomJson.at("interactables"));
 
 	musicSource = roomJson.at("music_source");
-
-	UnloadFileText(jsonString);
 }
 
 Room::Room(std::unique_ptr<TileMap> tileMap) : Room() {

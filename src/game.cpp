@@ -54,6 +54,7 @@ void Game::useBin(const std::string &filePath) {
 			LoadImageFromMemory(".png", data.data.data(), data.dataSize);
 		Texture2D texture = LoadTextureFromImage(image);
 		resources->addTexture(name, texture);
+		UnloadImage(image);
 	}
 
 	SetWindowTitle(gameData->title.c_str());

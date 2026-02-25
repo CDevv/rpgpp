@@ -3,16 +3,17 @@
 
 #include "fileView.hpp"
 #include "variant.hpp"
+#include "views/propView.hpp"
 
 class PropFileView : public FileView {
 public:
-	PropFileView(const std::string& path);
+	PropFileView();
 	virtual ~PropFileView();
 	void init(tgui::Group::Ptr layout, VariantWrapper *variant) override;
 
 private:
 	void handleModePress(tgui::Vector2f pos);
-
+	PropView::Ptr propView;
 };
 
 #endif

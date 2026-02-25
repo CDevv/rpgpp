@@ -21,6 +21,7 @@ Actor::Actor(const std::string &fileName) {
 
 	char *jsonContent = LoadFileText(fileName.c_str());
 	json j = json::parse(jsonContent);
+	UnloadFileText(jsonContent);
 
 	std::vector<int> collisionInfo = j.at("collision");
 	int x = collisionInfo.at(0);
@@ -67,8 +68,6 @@ Actor::Actor(const std::string &fileName) {
 	Vector2 defaultTileAtlasPos =
 		animations[currentAnimation].at(0);
 	this->tile = tileSet->getTile(defaultTileAtlasPos);
-
-	UnloadFileText(jsonContent);
 }
 
 Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,

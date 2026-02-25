@@ -23,13 +23,13 @@ Interactable::Interactable()
 Interactable::Interactable(const std::string &path) {
 	char *jsonString = LoadFileText(path.c_str());
 	json intJson = json::parse(jsonString);
+	UnloadFileText(jsonString);
 
 	type = GetFileNameWithoutExt(path.c_str());
 	displayTitle = intJson.at("name");
 	props = std::make_unique<nlohmann::json>(intJson.at("props"));
 	scriptPath = intJson.at("script");
 
-	UnloadFileText(jsonString);
 }
 
 Interactable::Interactable(const std::string &type, Vector2 tilePos,

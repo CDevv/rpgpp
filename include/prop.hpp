@@ -3,6 +3,7 @@
 
 #include "gamedata.hpp"
 #include "interactable.hpp"
+#include "saveable.hpp"
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
@@ -10,7 +11,7 @@
 
 using json = nlohmann::json;
 
-class Prop {
+class Prop : public ISaveable {
   private:
 	std::string sourcePath;
 	Vector2 worldPos;

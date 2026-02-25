@@ -19,8 +19,7 @@ Prop::Prop(const std::string &filePath) {
 	this->worldPos = Vector2{0, 0};
 	this->tilePos = Vector2{0, 0};
 
-	std::string jsonString = LoadFileText(filePath.c_str());
-
+	char* jsonString = LoadFileText(filePath.c_str());
 	json json = json::parse(jsonString);
 	std::vector<int> atlasRectVec = json.at("atlas_rect");
 	if (atlasRectVec.size() != 4) {
@@ -51,6 +50,7 @@ Prop::Prop(const std::string &filePath) {
 		this->interactable =
 			std::make_unique<Interactable>(intType, tilePos, _RPGPP_TILESIZE);
 	}
+	UnloadFileText(jsonString);
 }
 
 Prop::Prop(Rectangle atlasRect, Vector2 worldPos) : texture() {
