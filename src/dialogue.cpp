@@ -7,7 +7,7 @@
 
 Dialogue::Dialogue(const std::string &filePath) {
 	DialogueBin result;
-	char* fileTxt = LoadFileText(filePath.c_str());
+	char *fileTxt = LoadFileText(filePath.c_str());
 
 	try {
 		json jsonObj = json::parse(fileTxt);
@@ -52,3 +52,15 @@ nlohmann::json Dialogue::dumpJson() {
 }
 
 DialogueBin &Dialogue::getData() { return dialogueBin; }
+
+DialogueLine Dialogue::addNewLine() {
+	DialogueLine newLine;
+	newLine.characterName = "Character";
+	newLine.hasPortrait = false;
+	newLine.imageId = "";
+	newLine.text = "Enter text here!";
+
+	dialogueBin.lines.push_back(newLine);
+
+	return newLine;
+}

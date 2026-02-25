@@ -11,6 +11,7 @@ class Dialogue : public ISaveable {
   public:
 	Dialogue() = default;
 	Dialogue(const std::string &filePath);
+	DialogueLine addNewLine();
 	nlohmann::json dumpJson() override;
 	DialogueBin &getData();
 };
