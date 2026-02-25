@@ -1,21 +1,21 @@
-#ifndef RPGPP_PROPVIEWER
-#define RPGPP_PROPVIEWER
+#ifndef _RPGPP_PROPVIEWER_H
+#define _RPGPP_PROPVIEWER_H
 #include "prop.hpp"
 #include "views/worldView.hpp"
 #include <memory>
 
 class PropView : public WorldView {
 public:
+	PropView();
 	typedef std::shared_ptr<PropView> Ptr;
-	std::unique_ptr<Prop> p;
+	Prop* p{nullptr};
 
 	static PropView::Ptr create(Prop *prop);
 	static PropView::Ptr create();
-	void setProp(std::unique_ptr<Prop> newProp);
+	void setProp(Prop* newProp);
 
 	Prop *getProp() const;
 
-	PropView();
 	void drawCanvas() override;
 	void drawOverlay() override;
 

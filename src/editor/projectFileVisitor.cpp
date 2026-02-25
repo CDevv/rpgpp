@@ -4,6 +4,7 @@
 #include "fileViews/codeFileView.hpp"
 #include "fileViews/dialogueFileView.hpp"
 #include "fileViews/fileView.hpp"
+#include "fileViews/propFileView.hpp"
 #include "fileViews/roomFileView.hpp"
 #include "fileViews/tilesetFileView.hpp"
 #include "projectFile.hpp"
@@ -21,6 +22,7 @@ ProjectFileVisitor::ProjectFileVisitor() {
 	funcs[static_cast<int>(EngineFileType::FILE_SCRIPT)] = codeView;
 	funcs[static_cast<int>(EngineFileType::FILE_DIALOGUE)] = dialogueView;
 	funcs[static_cast<int>(EngineFileType::FILE_EMPTY)] = emptyView;
+	funcs[static_cast<int>(EngineFileType::FILE_PROP)] = propView;
 }
 
 std::unique_ptr<ProjectFile>
@@ -70,4 +72,13 @@ ProjectFileVisitor::dialogueView(const std::string &path) {
 		std::make_unique<Variant<Dialogue>>(new Dialogue(path));
 	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
 										 EngineFileType::FILE_DIALOGUE);
+}
+
+std::unique_ptr<ProjectFile>
+ProjectFileVisitor::propView(const std::string &path) {
+	std::unique_ptr<FileView> view = std::make_unique<PropFileView>();
+	std::unique_ptr<VariantWrapper> variant =
+		std::make_unique<Variant<Prop>>(new Prop(path));
+	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
+										 EngineFileType::FILE_PROP);
 }
