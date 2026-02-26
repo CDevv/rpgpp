@@ -139,20 +139,23 @@ void Toolbox<T>::addTool(const ToolboxItem<T> &item, int idx) {
 
 	btn->setToolTip(Tooltip::create(item.text));
 
-	btn->onClick([this, btn, item, toolsInGroup]() {
-		if (selectToolInGroup.find(item.group) != selectToolInGroup.end()) {
-			if (selectToolInGroup.at(item.group) == item.id) {
-				return;
+	std::weak_ptr<tgui::BitmapButton> weakBtn = btn;
+	btn->onClick([this, weakBtn, item, toolsInGroup]() {
+		if (auto btn = weakBtn.lock()) {
+			if (selectToolInGroup.find(item.group) != selectToolInGroup.end()) {
+				if (selectToolInGroup.at(item.group) == item.id) {
+					return;
+				}
 			}
+			selectToolInGroup[item.group] = item.id;
+			onItemClicked.emit(this, item);
+			resetToolSelection(item.group);
+			tgui::ButtonRenderer *renderer = btn->getRenderer();
+			renderer->setBackgroundColor(renderer->getBackgroundColorDown());
+			renderer->setBackgroundColorHover(renderer->getBackgroundColorDown());
+			renderer->setTexture(renderer->getTextureDown());
+			renderer->setTextureHover(renderer->getTextureDown());
 		}
-		selectToolInGroup[item.group] = item.id;
-		onItemClicked.emit(this, item);
-		resetToolSelection(item.group);
-		tgui::ButtonRenderer *renderer = btn->getRenderer();
-		renderer->setBackgroundColor(renderer->getBackgroundColorDown());
-		renderer->setBackgroundColorHover(renderer->getBackgroundColorDown());
-		renderer->setTexture(renderer->getTextureDown());
-		renderer->setTextureHover(renderer->getTextureDown());
 	});
 
 	this->container->insert(idx, btn);
