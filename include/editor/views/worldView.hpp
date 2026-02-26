@@ -27,6 +27,7 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	typedef std::shared_ptr<const WorldView> ConstPtr;
 
 	WorldView(const char *typeName = "WorldView", bool initRenderer = true);
+	~WorldView();
 
 	static WorldView::Ptr create();
 	static WorldView::Ptr copy(const WorldView::ConstPtr &widget);
