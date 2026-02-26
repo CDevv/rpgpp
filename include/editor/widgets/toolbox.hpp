@@ -86,6 +86,9 @@ template <typename T> Toolbox<T>::Toolbox() : tgui::ScrollablePanel() {
 }
 
 template <typename T> Toolbox<T>::~Toolbox() {
+	for (auto &w : this->container->getWidgets()) {
+		w->setToolTip(nullptr);
+	}
 	this->container->removeAllWidgets();
 }
 
@@ -134,8 +137,7 @@ void Toolbox<T>::addTool(const ToolboxItem<T> &item, int idx) {
 	identifier.id = item.id;
 	btn->setUserData(identifier);
 
-	auto tooltip = Tooltip::create(item.text);
-	btn->setToolTip(tooltip);
+	btn->setToolTip(Tooltip::create(item.text));
 
 	btn->onClick([this, btn, item, toolsInGroup]() {
 		if (selectToolInGroup.find(item.group) != selectToolInGroup.end()) {

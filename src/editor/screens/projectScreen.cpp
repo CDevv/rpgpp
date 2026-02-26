@@ -300,20 +300,24 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 							tgui::HorizontalAlignment::Right);
 						EditorGuiService::centerWidget(messageBox);
 
+						std::weak_ptr<tgui::MessageBox> weakBox = messageBox;
+
 						messageBox->onButtonPress(
-							[this, msgBox = messageBox.get(),
+							[this, weakBox,
 							 filePath](const tgui::String &button) {
 								assert(button == "Yes" || button == "No");
-								if (button == "Yes") {
-									std::error_code ec;
-									std::filesystem::remove(filePath, ec);
-									addResourceButtons(listedResourcesType);
-									if (ec) {
-										printf("%s \n", ec.message().c_str());
-									}
-								}
-								msgBox->getParent()->remove(
-									msgBox->shared_from_this());
+								if (auto box = weakBox.lock())
+						        {
+						            if (button == "Yes")
+						            {
+						                std::error_code ec;
+						                std::filesystem::remove(filePath, ec);
+						                addResourceButtons(listedResourcesType);
+						            }
+
+						            if (auto parent = box->getParent())
+						                parent->remove(box);
+						        }
 							});
 
 						Editor::instance->getGui().gui->add(messageBox);

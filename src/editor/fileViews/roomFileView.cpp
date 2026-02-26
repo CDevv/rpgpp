@@ -136,8 +136,8 @@ RoomFileView::RoomFileView() {
 										   "tool_startpoint.png"});
 
 	auto brushToggle = tgui::CheckBox::create("Enable brush mode");
-	brushToggle->onChange([this, brushToggle]() {
-		roomView->setBrush(brushToggle->isChecked());
+	brushToggle->onChange([this](bool toggled) {
+		roomView->setBrush(toggled);
 	});
 	auto brushToggleSize =
 		TOOLBOX_H - toolbox->getRenderer()->getPadding().getTop();
