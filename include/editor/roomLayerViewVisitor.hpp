@@ -20,7 +20,7 @@ class RoomLayerViewVisitor
 	RoomTool tool;
 	Interactable *inter{nullptr};
 	Prop *prop{nullptr};
-	Texture2D propTexture;
+	Texture2D propTexture{};
 	void operator()(enum_v<RoomLayer::LAYER_COLLISION>);
 	void operator()(enum_v<RoomLayer::LAYER_TILES>);
 	void operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>);

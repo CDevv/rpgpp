@@ -33,6 +33,12 @@ WorldView::WorldView(const char *typeName, bool initRenderer)
 	tool = RoomTool::TOOL_NONE;
 }
 
+WorldView::~WorldView() {
+	if (IsRenderTextureValid(texture)) {
+		UnloadRenderTexture(texture);
+	}
+}
+
 WorldView::Ptr WorldView::create() { return std::make_shared<WorldView>(); }
 
 WorldView::Ptr WorldView::copy(const ConstPtr &widget) {
