@@ -29,6 +29,7 @@ class Project {
 	std::vector<std::string> getPropsNames();
 	GameData generateStruct();
 	void runProject();
+	void buildProject();
 };
 
 #endif

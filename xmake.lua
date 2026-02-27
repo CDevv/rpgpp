@@ -95,6 +95,13 @@ add_files("src/rpgpplua/*.cpp")
 add_packages("nlohmann_json", "raylib", "luajit", { public = true })
 add_deps("rpgpp")
 
+target("game")
+set_kind("binary")
+add_deps("rpgpp")
+set_languages("cxx17")
+add_includedirs("include/")
+add_files("src/game/main.cpp")
+
 target("editor")
 -- add_includedirs("include/", "include/editor/", "libs/raylib/src/", "libs/tgui/include/")
 -- add_includedirs("libs/raylib/src/", "libs/tgui/include/")

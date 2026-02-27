@@ -9,14 +9,30 @@
 #include "services/fileSystemService.hpp"
 #include "tileset.hpp"
 #include <cassert>
+#include <csignal>
+#include <cstddef>
 #include <cstdio>
+#include <cstdlib>
 #include <filesystem>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <raylib.h>
 #include <string>
+#include <sys/wait.h>
+#include <unistd.h>
 #include <vector>
+
+#ifdef __linux__
+
+#include <fcntl.h>
+#include <semaphore.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#endif
 
 using json = nlohmann::json;
 
@@ -440,4 +456,51 @@ void Project::runProject() {
 #endif
 
 	// ChangeDirectory(editorBasePath.c_str());
+}
+
+void Project::buildProject() {
+	// Generate the bin file first
+	auto bin = generateStruct();
+
+	std::filesystem::path binPath = projectPath;
+	binPath /= "game.bin";
+	serializeDataToFile(binPath.u8string(), bin);
+
+	// Copy base game file
+	std::filesystem::path baseGamePath =
+		Editor::instance->getFs().getEditorBaseDir();
+
+	std::filesystem::path resultPath = projectPath;
+
+#ifdef _WIN64
+	baseGamePath /= "game.exe";
+	resultPath /= "game.exe";
+#else
+	baseGamePath /= "game";
+	resultPath /= projectTitle;
+#endif
+
+	std::filesystem::copy(baseGamePath, resultPath,
+						  std::filesystem::copy_options::update_existing);
+
+#ifdef _WIN64
+
+#else
+
+	pid_t pid = fork();
+
+	if (pid == 0) {
+		int fd = open("log.log", O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+
+		dup2(fd, STDOUT_FILENO);
+
+		execl(resultPath.c_str(), NULL);
+	} else if (pid > 0) {
+		printf("Started the game.. \n");
+		wait(0);
+	} else {
+		printf("Error while forking..\n");
+	}
+
+#endif
 }
