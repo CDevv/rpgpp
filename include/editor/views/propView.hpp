@@ -3,6 +3,7 @@
 #include "components/resizableCanvasBox.hpp"
 #include "prop.hpp"
 #include "views/worldView.hpp"
+#include <list>
 #include <memory>
 
 class PropView : public WorldView {
@@ -22,9 +23,9 @@ public:
 
 	bool leftMousePressed(tgui::Vector2f pos) override;
 	void mouseMoved(tgui::Vector2f pos) override;
-	// void leftMouseReleased(tgui::Vector2f pos) override;
+	void leftMouseReleased(tgui::Vector2f pos) override;
 private:
-	ResizableCanvasBox atlasBox = ResizableCanvasBox(0, 0, 0, 0, RED);
-	ResizableCanvasBox collisionBox = ResizableCanvasBox(0, 0, 0, 0, RED);
+	std::list<ResizableCanvasBox> boxes;
+	ResizableCanvasBox* focusedBox = nullptr;
 };
 #endif
