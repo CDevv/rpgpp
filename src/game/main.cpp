@@ -10,6 +10,8 @@ int main() {
 	Game game;
 	game.init();
 
+	game.useBin("game.bin");
+
 	SetTargetFPS(60);
 
 	while (!WindowShouldClose()) {

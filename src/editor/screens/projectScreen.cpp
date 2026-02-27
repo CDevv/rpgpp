@@ -254,13 +254,7 @@ tgui::Group::Ptr screens::ProjectScreen::createToolBar(TranslationService &ts) {
 	buildBtn->setImage(buildImg);
 	buildBtn->setSize({barSize, "100%"});
 	buildBtn->setPosition({tgui::bindRight(playBtn) + 8, 0});
-	buildBtn->onPress([project] {
-		std::filesystem::path path = project->getBasePath();
-		path /= "game.bin";
-
-		auto data = project->generateStruct();
-		serializeDataToFile(path.u8string(), data);
-	});
+	buildBtn->onPress([project] { project->buildProject(); });
 	buildBtn->setToolTip(buildTooltip);
 	toolBar->add(buildBtn);
 
@@ -306,18 +300,16 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 							[this, weakBox,
 							 filePath](const tgui::String &button) {
 								assert(button == "Yes" || button == "No");
-								if (auto box = weakBox.lock())
-						        {
-						            if (button == "Yes")
-						            {
-						                std::error_code ec;
-						                std::filesystem::remove(filePath, ec);
-						                addResourceButtons(listedResourcesType);
-						            }
+								if (auto box = weakBox.lock()) {
+									if (button == "Yes") {
+										std::error_code ec;
+										std::filesystem::remove(filePath, ec);
+										addResourceButtons(listedResourcesType);
+									}
 
-						            if (auto parent = box->getParent())
-						                parent->remove(box);
-						        }
+									if (auto parent = box->getParent())
+										parent->remove(box);
+								}
 							});
 
 						Editor::instance->getGui().gui->add(messageBox);
