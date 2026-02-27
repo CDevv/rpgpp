@@ -5,9 +5,10 @@
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
-#include "textField.hpp"
-#include "widgets/fileField.hpp"
-#include "widgets/intField.hpp"
+#include "widgets/propertyFields/boolField.hpp"
+#include "widgets/propertyFields/textField.hpp"
+#include "widgets/propertyFields/fileField.hpp"
+#include "widgets/propertyFields/intField.hpp"
 #include <functional>
 #include <nlohmann/json_fwd.hpp>
 
@@ -32,12 +33,13 @@ class PropertiesBox : public tgui::ChildWindow {
 			  tgui::RenderStates states) const override;
 
 	void addPropsJson(nlohmann::json &j);
-	void addToggleField(const tgui::String &title);
+	// void addToggleField(const tgui::String &title);
 	void addIntField(const tgui::String &title, int initialValue,
 					 std::function<void(float)> callback);
 	void addIntField(IntField::Ptr field);
 	void addFileField(FileField::Ptr field);
 	void addTextField(TextField::Ptr field);
+	void addBooleanField(BoolField::Ptr field);
 	void addButton(const tgui::String &title, std::function<void()> callback);
 };
 

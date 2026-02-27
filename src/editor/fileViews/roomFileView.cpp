@@ -13,7 +13,7 @@
 #include "views/roomView.hpp"
 #include "views/tileSetView.hpp"
 #include "views/worldView.hpp"
-#include "widgets/fileField.hpp"
+#include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertiesBox.hpp"
 #include "widgets/toolbox.hpp"
 #include <memory>

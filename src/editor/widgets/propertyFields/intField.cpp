@@ -1,13 +1,13 @@
-#include "widgets/intField.hpp"
+#include "widgets/propertyFields/intField.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"
 #include <memory>
-
+#include "widgets/propertyFields/fieldConfig.hpp"
 IntField::IntField(const char *typeName, bool initRenderer)
 	: tgui::SubwidgetContainer(typeName, initRenderer) {
 	label = tgui::Label::create("Label");
-	label->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
+	label->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
 	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
 	value = tgui::SpinControl::create(0, 100);
 
@@ -37,8 +37,9 @@ void IntField::setSize(const tgui::Layout2d &size) {
 }
 
 void IntField::updateSize() {
-	label->setSize({getSize().x * 0.5f, getSize().y});
-	value->setSize({getSize().x * 0.5f, getSize().y});
+	label->setPosition({PADDING, 0});
+	label->setSize({getSize().x * 0.5f - PADDING, getSize().y});
+	value->setSize({getSize().x * 0.5f - PADDING, getSize().y});
 
 	value->setPosition({getSize().x * 0.5, 0});
 }

@@ -4,8 +4,8 @@
 #include "fileView.hpp"
 #include "variant.hpp"
 #include "views/tileSetView.hpp"
-#include "widgets/fileField.hpp"
-#include "widgets/intField.hpp"
+#include "widgets/propertyFields/fileField.hpp"
+#include "widgets/propertyFields/intField.hpp"
 
 class TileSetFileView : public FileView {
   private:

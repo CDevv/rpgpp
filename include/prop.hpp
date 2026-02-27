@@ -46,6 +46,7 @@ class Prop : public ISaveable {
 	Rectangle getWorldCollisionRect() const;
 	Vector2 getCollisionCenter() const;
 	bool getHasInteractable() const;
+	void setHasInteractable(bool value);
 	Interactable *getInteractable() const;
 	void setInteractableType(const std::string &type);
 	std::string &getInteractableType();

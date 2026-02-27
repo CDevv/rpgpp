@@ -1,14 +1,14 @@
-#include "widgets/textField.hpp"
+#include "widgets/propertyFields/textField.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Label.hpp"
-#include "TGUI/Widgets/SpinControl.hpp"
 #include <TGUI/Widgets/EditBox.hpp>
+#include "widgets/propertyFields/fieldConfig.hpp"
 #include <memory>
 
 TextField::TextField(const char *typeName, bool initRenderer)
 	: tgui::SubwidgetContainer(typeName, initRenderer) {
 	label = tgui::Label::create("Label");
-	label->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
+	label->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
 	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
 	value = tgui::EditBox::create();
 
@@ -38,8 +38,9 @@ void TextField::setSize(const tgui::Layout2d &size) {
 }
 
 void TextField::updateSize() {
-	label->setSize({getSize().x * 0.5f, getSize().y});
-	value->setSize({getSize().x * 0.5f, getSize().y});
+	label->setPosition({PADDING, 0});
+	label->setSize({getSize().x * 0.5f - PADDING, getSize().y});
+	value->setSize({getSize().x * 0.5f - PADDING, getSize().y});
 
 	value->setPosition({getSize().x * 0.5, 0});
 }

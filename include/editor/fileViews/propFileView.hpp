@@ -4,6 +4,8 @@
 #include "fileView.hpp"
 #include "variant.hpp"
 #include "views/propView.hpp"
+#include "widgets/propertyFields/boolField.hpp"
+#include "widgets/propertyFields/fileField.hpp"
 
 class PropFileView : public FileView {
 public:
@@ -15,6 +17,15 @@ private:
 	void handleModePress(tgui::Vector2f pos);
 	PropView::Ptr propView;
 	static const int RIGHT_PANEL_W = 300;
+
+	// IntField::Ptr atlasWidthField;
+	// IntField::Ptr atlasHeightField;
+	// IntField::Ptr collisionWidthField;
+	// IntField::Ptr collisionHeightField;
+	BoolField::Ptr hasInteractableField;
+	FileField::Ptr propImageField;
+
+
 };
 
 #endif

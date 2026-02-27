@@ -50,6 +50,9 @@ void PropView::drawCanvas() {
 		{0, 0}, 0, WHITE
 	);
 
+	DrawLine(0, -10000, 0, 10000, RED);
+	DrawLine(-10000, 0, 10000, 0, BLUE);
+
 	for (auto &box : boxes) {
 		box.draw();
 	}

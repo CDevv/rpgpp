@@ -5,8 +5,6 @@
 #include "editor.hpp"
 #include "views/worldView.hpp"
 #include "widgets/propertiesBox.hpp"
-#include "widgets/textField.hpp"
-#include <cstdio>
 #include <raylib.h>
 #include <string>
 

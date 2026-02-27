@@ -6,14 +6,14 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"
-#include "TGUI/Widgets/ToggleButton.hpp"
-#include "widgets/fileField.hpp"
-#include "widgets/intField.hpp"
-#include "widgets/textField.hpp"
-#include <cstdio>
+#include "widgets/propertyFields/boolField.hpp"
+#include "widgets/propertyFields/fileField.hpp"
+#include "widgets/propertyFields/intField.hpp"
+#include "widgets/propertyFields/textField.hpp"
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
+#include "widgets/propertyFields/fieldConfig.hpp"
 
 PropertiesBox::PropertiesBox(const char *typeName, bool initRenderer)
 	: tgui::ChildWindow(typeName, initRenderer) {
@@ -70,6 +70,14 @@ void PropertiesBox::addPropsJson(nlohmann::json &j) {
 				[&j, item](float value) { j.at(item.key()) = value; });
 			addIntField(intField);
 		}
+		if (item.value().is_boolean()) {
+			auto boolField = BoolField::create();
+			boolField->label->setText(item.key());
+			boolField->value->setChecked(item.value().get<bool>());
+			boolField->value->onChange(
+				[&j, item](bool checked) { j.at(item.key()) = checked; });
+			addBooleanField(boolField);
+		}
 		if (item.value().is_object()) {
 			if (item.value().contains("propType")) {
 				std::string propType = item.value().at("propType");
@@ -99,27 +107,11 @@ void PropertiesBox::addPropsJson(nlohmann::json &j) {
 	}
 }
 
-void PropertiesBox::addToggleField(const tgui::String &title) {
-	auto group1 = tgui::Group::create({"100%", 24});
-
-	auto label = tgui::Label::create(title);
-	label->setSize({"50%", "100%"});
-	label->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
-	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
-	group1->add(label);
-
-	auto value = tgui::ToggleButton::create();
-	value->setSize({"50%", "100%"});
-	value->setPosition("50%", 0);
-	group1->add(value);
-
-	layout->add(group1);
-}
-
 void PropertiesBox::addButton(const tgui::String &title,
 							  std::function<void()> callback) {
 	auto button = tgui::Button::create(title);
-	button->setSize("100%", 24);
+	button->setSize(TextFormat("100%% - %d", PADDING * 2), 24);
+	button->setPosition({PADDING, 0});
 	button->onPress(callback);
 
 	layout->add(button);
@@ -156,6 +148,11 @@ void PropertiesBox::addFileField(FileField::Ptr field) {
 }
 
 void PropertiesBox::addTextField(TextField::Ptr field) {
+	field->setSize({"100%", 24});
+	layout->add(field);
+}
+
+void PropertiesBox::addBooleanField(BoolField::Ptr field) {
 	field->setSize({"100%", 24});
 	layout->add(field);
 }

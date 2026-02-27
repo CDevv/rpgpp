@@ -6,8 +6,8 @@
 #include "roomViewModesHandler.hpp"
 #include "views/roomView.hpp"
 #include "views/tileSetView.hpp"
-#include "widgets/fileField.hpp"
-#include "widgets/intField.hpp"
+#include "widgets/propertyFields/fileField.hpp"
+#include "widgets/propertyFields/intField.hpp"
 #include <TGUI/Widgets/ComboBox.hpp>
 #include <memory>
 

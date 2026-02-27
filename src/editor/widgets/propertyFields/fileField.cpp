@@ -1,4 +1,4 @@
-#include "widgets/fileField.hpp"
+#include "widgets/propertyFields/fileField.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
@@ -6,11 +6,11 @@
 #include "raylib.h"
 #include <memory>
 #include <string>
-
+#include "widgets/propertyFields/fieldConfig.hpp"
 FileField::FileField(const char *typeName, bool initRenderer)
 	: tgui::SubwidgetContainer(typeName, initRenderer) {
 	label = tgui::Label::create("Label");
-	label->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
+	label->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
 	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
 
 	value = tgui::Button::create();
@@ -69,8 +69,9 @@ void FileField::setSize(const tgui::Layout2d &size) {
 }
 
 void FileField::updateSize() {
-	label->setSize({getSize().x * 0.5f, getSize().y});
-	value->setSize({getSize().x * 0.5f, getSize().y});
+	label->setPosition({PADDING, 0});
+	label->setSize({getSize().x * 0.5f - PADDING, getSize().y});
+	value->setSize({getSize().x * 0.5f - PADDING, getSize().y});
 
 	value->setPosition({getSize().x * 0.5, 0});
 }
