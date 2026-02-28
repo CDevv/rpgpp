@@ -37,6 +37,8 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	void draw(tgui::BackendRenderTarget &target,
 			  tgui::RenderStates states) const override;
 
+	void resetRender();
+
 	void mouseMoved(tgui::Vector2f pos) override;
 	bool scrolled(float delta, tgui::Vector2f pos, bool touch) override;
 

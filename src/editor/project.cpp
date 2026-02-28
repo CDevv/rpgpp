@@ -409,6 +409,14 @@ GameData Project::generateStruct() {
 }
 
 void Project::runProject() {
+	// Generate the bin first
+	auto bin = generateStruct();
+
+	std::filesystem::path binPath = projectPath;
+	binPath /= "game.bin";
+	serializeDataToFile(binPath.u8string(), bin);
+
+	// run project
 	std::string editorBasePath = Editor::instance->getFs().getEditorBaseDir();
 
 	std::filesystem::path libPath = editorBasePath;
