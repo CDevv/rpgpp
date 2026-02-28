@@ -34,14 +34,15 @@
 			"language": "Ngôn ngữ",
 			"theme": "Chủ đề"
 		},
-
-		"empty": {
-			"notice": "Chưa mở tệp tin nào, hoặc tệp tin chưa được hỗ trợ để mở!"
-		},
-
 		"project": {
 			"create_new_resource": "Tạo tài nguyên",
-
+			"emptyview": {
+				"notice": "Chưa mở tệp tin nào, hoặc tệp tin chưa được hỗ trợ để mở!"
+			},
+			"dialogueview": {
+				"add_new_line": "Tạo hội thoại mới",
+				"has_a_portrait": "Hiển thị ảnh hội thoại?"
+			},
 			"tilesetview": {
 				"tile_width": "Độ rộng Tile",
 				"tile_height": "Độ cao Tile",

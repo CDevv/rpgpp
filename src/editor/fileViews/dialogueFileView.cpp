@@ -12,6 +12,7 @@
 #include "editor.hpp"
 #include "raylib.h"
 #include "services/fileSystemService.hpp"
+#include "services/translationService.hpp"
 #include "variant.hpp"
 #include <TGUI/Widgets/BitmapButton.hpp>
 #include <TGUI/Widgets/CheckBox.hpp>
@@ -20,6 +21,7 @@
 #include <memory>
 
 DialogueFileView::DialogueFileView() {
+	TranslationService &ts = Editor::instance->getTranslations();
 	noImageTexture = tgui::Texture(
 		Editor::instance->getFs().getResourcePath("no-image.png"));
 
@@ -28,7 +30,7 @@ DialogueFileView::DialogueFileView() {
 
 	auto toolsPanel = tgui::Panel::create({"100%", 32});
 	toolsPanel->getRenderer()->setPadding({4, 4});
-	newLineButton = tgui::Button::create("Add new line..");
+	newLineButton = tgui::Button::create(ts.getKey("screen.project.dialogueview.add_new_line"));
 	newLineButton->setSize("20%", "100%");
 	toolsPanel->add(newLineButton);
 
@@ -52,6 +54,7 @@ DialogueFileView::DialogueFileView() {
 
 tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data,
 												 DialogueLine line, size_t i) {
+	TranslationService &ts = Editor::instance->getTranslations();
 	auto panel = tgui::Panel::create({"100%", DIALOGUE_PANEL_HEIGHT});
 	panel->getRenderer()->setPadding({16, 16});
 
@@ -108,7 +111,7 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data,
 	});
 	panel->add(diagTextEdit);
 
-	auto hasImageCheck = tgui::CheckBox::create("Has a portrait?");
+	auto hasImageCheck = tgui::CheckBox::create(ts.getKey("screen.project.dialogueview.has_a_portrait"));
 	hasImageCheck->setSize(32, 32);
 	hasImageCheck->setChecked(line.hasPortrait);
 

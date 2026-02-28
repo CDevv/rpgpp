@@ -8,6 +8,7 @@
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "dialogueBalloon.hpp"
 #include "fileViews/fileView.hpp"
+#include "services/translationService.hpp"
 #include <cstddef>
 #include <vector>
 

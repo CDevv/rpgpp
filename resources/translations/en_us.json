@@ -31,11 +31,15 @@
 			"language": "Language",
 			"theme": "Theme"
 		},
-		"empty": {
-			"notice": "No file opened or view not defined yet!"
-		},
 		"project": {
 			"create_new_resource": "New Resource",
+			"emptyview": {
+				"notice": "No file opened or view not defined yet!"
+			},
+			"dialogueview": {
+				"add_new_line": "Add a new line",
+				"has_a_portrait": "Has a portrait?"
+			},
 			"tilesetview": {
 				"tile_width": "Tile Width",
 				"tile_height": "Tile Height",
