@@ -9,7 +9,6 @@
 #include "services/fileSystemService.hpp"
 #include "tileset.hpp"
 #include <cassert>
-#include <csignal>
 #include <cstddef>
 #include <cstdio>
 #include <cstdlib>
@@ -19,17 +18,22 @@
 #include <nlohmann/json_fwd.hpp>
 #include <raylib.h>
 #include <string>
-#include <sys/wait.h>
-#include <unistd.h>
 #include <vector>
 
-#ifdef __linux__
+#ifdef _WIN64
+
+#include "fix_win32_compatibility.h"
+#include <windows.h>
+#include <winnt.h>
+
+#else
 
 #include <fcntl.h>
 #include <semaphore.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #endif
@@ -474,7 +478,7 @@ void Project::buildProject() {
 
 #ifdef _WIN64
 	baseGamePath /= "game.exe";
-	resultPath /= "game.exe";
+	resultPath /= TextFormat("%s.exe", projectTitle.c_str());
 #else
 	baseGamePath /= "game";
 	resultPath /= projectTitle;
@@ -484,6 +488,34 @@ void Project::buildProject() {
 						  std::filesystem::copy_options::update_existing);
 
 #ifdef _WIN64
+
+	HANDLE outFile = nullptr;
+
+	outFile = CreateFile("log.log", GENERIC_WRITE, FILE_SHARE_WRITE, NULL,
+						 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	PROCESS_INFORMATION piProcInfo;
+	STARTUPINFO siStartInfo;
+
+	ZeroMemory(&piProcInfo, sizeof(PROCESS_INFORMATION));
+
+	ZeroMemory(&siStartInfo, sizeof(STARTUPINFO));
+	siStartInfo.cb = sizeof(STARTUPINFO);
+	siStartInfo.hStdOutput = outFile;
+	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
+
+	bool success =
+		CreateProcess(NULL, resultPath.string().data(), NULL, NULL, true, 0,
+					  NULL, NULL, &siStartInfo, &piProcInfo);
+
+	if (!success) {
+		printf("Child process could not be created.. \n");
+	} else {
+		CloseHandle(piProcInfo.hProcess);
+		CloseHandle(piProcInfo.hThread);
+
+		CloseHandle(outFile);
+	}
 
 #else
 
