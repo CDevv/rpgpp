@@ -31,6 +31,9 @@
 			"language": "Language",
 			"theme": "Theme"
 		},
+		"empty": {
+			"notice": "No file opened or view not defined yet!"
+		},
 		"project": {
 			"create_new_resource": "New Resource",
 			"tilesetview": {

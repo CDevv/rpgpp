@@ -35,6 +35,10 @@
 			"theme": "Chủ đề"
 		},
 
+		"empty": {
+			"notice": "Chưa mở tệp tin nào, hoặc tệp tin chưa được hỗ trợ để mở!"
+		},
+
 		"project": {
 			"create_new_resource": "Tạo tài nguyên",
 
