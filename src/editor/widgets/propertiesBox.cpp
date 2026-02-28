@@ -107,7 +107,7 @@ void PropertiesBox::addPropsJson(nlohmann::json &j) {
 	}
 }
 
-void PropertiesBox::addButton(const tgui::String &title,
+tgui::Button::Ptr PropertiesBox::constructButton(const tgui::String &title,
 							  std::function<void()> callback) {
 	auto button = tgui::Button::create(title);
 	button->setSize(TextFormat("100%% - %d", PADDING * 2), 24);
@@ -115,6 +115,13 @@ void PropertiesBox::addButton(const tgui::String &title,
 	button->onPress(callback);
 
 	layout->add(button);
+
+	return button;
+}
+
+void PropertiesBox::addButton(const tgui::String &title,
+							  std::function<void()> callback) {
+	this->constructButton(title, callback);
 }
 
 void PropertiesBox::addIntField(const tgui::String &title, int initialValue,

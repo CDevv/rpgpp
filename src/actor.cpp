@@ -216,6 +216,10 @@ json Actor::dumpJson() {
 
 void Actor::unload() const { tileSet->unload(); }
 
+int Actor::getCurrentFrame() const{
+	return this->currentFrame;
+}
+
 void Actor::update() {
 	frameCounter++;
 

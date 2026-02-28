@@ -24,6 +24,7 @@ class ProjectFileVisitor {
 	static std::unique_ptr<ProjectFile> codeView(const std::string &path);
 	static std::unique_ptr<ProjectFile> dialogueView(const std::string &path);
 	static std::unique_ptr<ProjectFile> propView(const std::string &path);
+	static std::unique_ptr<ProjectFile> actorView(const std::string &path);
 };
 
 #endif

@@ -74,10 +74,10 @@ set_defaultmode("debug")
 
 target("rpgpp")
 set_kind("static")
+add_packages("raylib", "nlohmann_json", "luajit")
 set_languages("cxx17")
 add_includedirs("include/") --, "libs/raylib/src")
 add_files("src/*.cpp")
-add_packages("raylib", "nlohmann_json", "luajit")
 if is_plat("linux") then
     add_cxxflags("-fPIC")
 end
@@ -98,6 +98,8 @@ add_deps("rpgpp")
 target("game")
 set_kind("binary")
 add_deps("rpgpp")
+-- for some very cool bizarre reason, xmake didn't compile the game target without these.
+add_packages("nlohmann_json", "raylib", "luajit")
 set_languages("cxx17")
 add_includedirs("include/")
 add_files("src/game/main.cpp")

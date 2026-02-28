@@ -41,6 +41,7 @@ class PropertiesBox : public tgui::ChildWindow {
 	void addTextField(TextField::Ptr field);
 	void addBooleanField(BoolField::Ptr field);
 	void addButton(const tgui::String &title, std::function<void()> callback);
+	tgui::Button::Ptr constructButton(const tgui::String &title, std::function<void()> callback);
 };
 
 #endif

@@ -27,7 +27,7 @@ WorldView::WorldView(const char *typeName, bool initRenderer)
 	camera = {};
 	camera.offset = Vector2{0, 0};
 	camera.rotation = 0.0f;
-	camera.target = Vector2{0, 0};
+	camera.target = Vector2{-20.0f, -20.0f};
 	camera.zoom = 1.0f;
 
 	tool = RoomTool::TOOL_NONE;
@@ -84,6 +84,17 @@ void WorldView::mouseMoved(tgui::Vector2f pos) {
 	tgui::Widget::mouseMoved(pos);
 }
 
+constexpr int MAXIMUM_LINE = 10000;
+
+void WorldView::drawOrigin(){
+	// since this function is used to draw the origin x-y axis, it's been moved here.
+
+	DrawLine(0, -MAXIMUM_LINE, 0, MAXIMUM_LINE, RED);
+	DrawLine(-MAXIMUM_LINE, 0, MAXIMUM_LINE, 0, BLUE);
+
+	DrawCircle(0, 0, 1.0f, RED);
+}
+
 bool WorldView::scrolled(float delta, tgui::Vector2f pos, bool touch) {
 	if (!touch) {
 		auto widgetPos = getPosition();
@@ -118,11 +129,8 @@ void WorldView::keyPressed(const tgui::Event::KeyEvent &event) {
 bool WorldView::canGainFocus() const { return true; }
 
 void WorldView::update() {
-	if (IsMouseButtonDown(MOUSE_MIDDLE_BUTTON)) {
-		mouseMiddleButton = true;
-	} else {
-		mouseMiddleButton = false;
-	}
+	mouseMiddleButton = IsMouseButtonDown(MOUSE_MIDDLE_BUTTON);
+	SetMouseCursor(mouseMiddleButton ? MOUSE_CURSOR_RESIZE_ALL : MOUSE_CURSOR_DEFAULT);
 
 	// if (IsKeyPressed(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_Z)) {
 	// 	printf("left ctrl + z \n");

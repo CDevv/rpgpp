@@ -6,6 +6,7 @@
 #include <list>
 #include <memory>
 
+
 class PropView : public WorldView {
 public:
 	PropView();

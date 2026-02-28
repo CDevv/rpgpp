@@ -3,6 +3,7 @@
 
 #include "atlasTile.hpp"
 #include "gamedata.hpp"
+#include "saveable.hpp"
 #include "tileset.hpp"
 #include <array>
 #include <memory>
@@ -12,6 +13,7 @@
 
 using json = nlohmann::json;
 
+#define RPGPP_MAX_DIRECTION 7
 /** Direction enum, representing an animation state. */
 enum Direction : short {
 	RPGPP_DOWN_IDLE = 0,  ///< Down Idle state.
@@ -27,7 +29,7 @@ enum Direction : short {
 /** The Actor class represents an Actor in the game's world.
  * @see [Direction](Direction.md)
  */
-class Actor {
+class Actor : public ISaveable {
   private:
 	std::string sourcePath;
 	/** The used TileSet for this Actor's sprites. */
@@ -63,7 +65,7 @@ class Actor {
 	/** Constructor that takes an ActorBin binary structure */
 	Actor(ActorBin bin);
 	/** Dump this Actor's data to a nlohmann::json object. */
-	json dumpJson();
+	json dumpJson() override;
 	/** Unload routine. The UnloadTexture function will called here. */
 	void unload() const;
 	/** Update routine. */
@@ -86,6 +88,8 @@ class Actor {
 	Rectangle getRect() const;
 	/** Get a reference to this Actor's TileSet. */
 	TileSet &getTileSet() const;
+	/** Get the current frame of this actor. */
+	int getCurrentFrame() const;
 	/** Set this Actor's TileSet using a path to the tileset file. */
 	void setTileSet(const std::string &newTileSetSource);
 	/** Get the collision rectangle of this Actor if it was moved by the
@@ -100,8 +104,7 @@ class Actor {
 	void removeAnimationFrame(Direction id, int frameIndex);
 	/** Change a frame in the chosen animation to another atlas tile from the
 	 * TileSet. */
-	void setAnimationFrame(Direction id, int frameIndex,
-						   Vector2 atlasTile);
+	void setAnimationFrame(Direction id, int frameIndex, Vector2 atlasTile);
 	/** Add multiple frames to the chosen animation. */
 	void addAnimationFrames(Direction id,
 							const std::vector<std::vector<int>> &frames);

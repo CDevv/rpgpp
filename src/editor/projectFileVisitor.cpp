@@ -1,6 +1,8 @@
 #include "projectFileVisitor.hpp"
 
+#include "actor.hpp"
 #include "dialogue.hpp"
+#include "fileViews/actorFileView.hpp"
 #include "fileViews/codeFileView.hpp"
 #include "fileViews/dialogueFileView.hpp"
 #include "fileViews/fileView.hpp"
@@ -22,6 +24,7 @@ ProjectFileVisitor::ProjectFileVisitor() {
 	funcs[static_cast<int>(EngineFileType::FILE_SCRIPT)] = codeView;
 	funcs[static_cast<int>(EngineFileType::FILE_DIALOGUE)] = dialogueView;
 	funcs[static_cast<int>(EngineFileType::FILE_EMPTY)] = emptyView;
+	funcs[static_cast<int>(EngineFileType::FILE_ACTOR)] = actorView;
 	funcs[static_cast<int>(EngineFileType::FILE_PROP)] = propView;
 }
 
@@ -72,6 +75,15 @@ ProjectFileVisitor::dialogueView(const std::string &path) {
 		std::make_unique<Variant<Dialogue>>(new Dialogue(path));
 	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
 										 EngineFileType::FILE_DIALOGUE);
+}
+
+std::unique_ptr<ProjectFile>
+ProjectFileVisitor::actorView(const std::string &path) {
+	std::unique_ptr<FileView> view = std::make_unique<ActorFileView>();
+	std::unique_ptr<VariantWrapper> variant =
+		std::make_unique<Variant<Actor>>(new Actor(path));
+	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
+										 EngineFileType::FILE_ACTOR);
 }
 
 std::unique_ptr<ProjectFile>

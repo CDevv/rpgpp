@@ -1,6 +1,5 @@
 {
 	"language": "English",
-
 	"menu.file": "File",
 	"menu.file.new_project": "New Project",
 	"menu.file.open_project": "Open Project",
@@ -13,22 +12,17 @@
 	"menu.about": "About",
 	"menu.about.rpgpp": "About RPG++...",
 	"menu.about.rpgpp_description": "RPG engine, written in C++.",
-
 	"screen.starting.get_started": "Get Started!",
 	"screen.starting.description": "Press on 'New Project' to create a new project, or 'Open Project' to open one!",
-
 	"screen.options.language": "Language",
 	"screen.options.theme": "Theme",
-
 	"screen.project.create_new_resource": "New Resource",
 	"screen.project.tilesetview.tile_width": "Tile Width",
 	"screen.project.tilesetview.tile_height": "Tile Height",
 	"screen.project.tilesetview.texture": "Texture",
-
 	"screen.project.roomview.mapwidth": "Map Width",
 	"screen.project.roomview.mapheight": "Map Height",
 	"screen.project.roomview.tileset_file": "Tileset File",
-
 	"screen.project.propview.atlas.width": "Atlas Width",
 	"screen.project.propview.atlas.height": "Atlas Height",
 	"screen.project.propview.collision.width": "Collision Width",
@@ -36,22 +30,25 @@
 	"screen.project.propview.has_interactable": "Has interactable?",
 	"screen.project.propview.image": "Prop Image",
 	"screen.project.propview.interactable_type": "Interactable Type",
-
+	"screen.project.actorview.dir0": "Down",
+	"screen.project.actorview.dir1": "Up",
+	"screen.project.actorview.dir2": "Left",
+	"screen.project.actorview.dir3": "Right",
+	"screen.project.actorview.play": "Play",
+	"screen.project.actorview.stop": "Stop",
+	"screen.project.actorview.is_walk": "Is Walking Animation?",
 	"screen.project.toolbar.play": "Play",
 	"screen.project.toolbar.build": "Build",
-
 	"dialog.new_file.title": "New Resource",
 	"dialog.new_file.name": "Name",
 	"dialog.new_file.file": "File",
 	"dialog.new_file.confirm": "Confirm",
 	"dialog.new_file.cancel": "Cancel",
-
 	"dialog.new_project.title": "New Project",
 	"dialog.new_project.name": "Project Name",
 	"dialog.new_project.folder": "Folder",
 	"dialog.new_project.confirm": "Confirm",
 	"dialog.new_project.cancel": "Cancel",
-
 	"widget.filechooser.select_a_file": "Select a File",
 	"button.go_back": "Go Back"
 }

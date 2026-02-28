@@ -8,6 +8,7 @@
 #include "updatable.hpp"
 #include <memory>
 
+
 class WorldView : public tgui::CanvasRaylib, public IUpdatable {
   protected:
 	Camera2D camera;
@@ -49,6 +50,8 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 
 	virtual void drawCanvas();
 	virtual void drawOverlay();
+
+	void drawOrigin();
 
 	void update() override;
 	static std::shared_ptr<IUpdatable>
