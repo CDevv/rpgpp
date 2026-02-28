@@ -6,4 +6,8 @@
 		"label": "Run Editor",
 		"command": "xmake run editor",
 	},
+	{
+		"label": "Run translation checker",
+		"command": "xmake run translation_checker",
+	},
 ]

@@ -113,6 +113,8 @@ int main() {
 				target,
 				entry.path().filename().string());
 		}
+
+		std::cout << "Please note that this tool checks translation files within the generated build file, NOT within the source files as of now. To check for translations, ensure that the editor is build first." << std::endl;
 	} catch (const std::exception& e) {
 		std::cerr << "Error: " << e.what() << "\n";
 		return 1;

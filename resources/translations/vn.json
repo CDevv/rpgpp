@@ -19,7 +19,8 @@
 		},
 		"about": {
 			"_label": "Thông tin",
-			"rpgpp": "Thông tin về RPG++..."
+			"rpgpp": "Thông tin về RPG++...",
+			"rpgpp_description": "Phần mềm phát triển game RPG, được lập trình sử dụng C++."
 		}
 	},
 
@@ -55,6 +56,16 @@
 				"has_interactable": "Có thể tương tác?",
 				"image": "Tệp ảnh",
 				"interactable_type": "Loại tương tác"
+			},
+
+			"actorview": {
+				"dir0": "Dưới",
+				"dir1": "Lên",
+				"dir2": "Trái",
+				"dir3": "Phải",
+				"play": "Chạy",
+				"stop": "Dừng",
+				"is_walk": "Có phải animation đi?"
 			},
 
 			"toolbar": {
