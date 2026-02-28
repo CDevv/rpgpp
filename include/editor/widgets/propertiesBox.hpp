@@ -9,6 +9,7 @@
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/intField.hpp"
 #include "widgets/propertyFields/rectangleField.hpp"
+#include "widgets/propertyFields/selectField.hpp"
 #include "widgets/propertyFields/textField.hpp"
 #include <functional>
 #include <nlohmann/json_fwd.hpp>
@@ -42,6 +43,7 @@ class PropertiesBox : public tgui::ChildWindow {
 	void addTextField(TextField::Ptr field);
 	void addBooleanField(BoolField::Ptr field);
 	void addRectangleField(RectangleField::Ptr field);
+	void addSelectField(SelectField::Ptr field);
 	void addButton(const tgui::String &title, std::function<void()> callback);
 	tgui::Button::Ptr constructButton(const tgui::String &title,
 									  std::function<void()> callback);

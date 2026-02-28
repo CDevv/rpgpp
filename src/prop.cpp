@@ -167,6 +167,8 @@ void Prop::setHasInteractable(bool value) { this->hasInteractable = value; }
 
 Interactable *Prop::getInteractable() const { return interactable.get(); }
 
+std::string Prop::getInteractableType() const { return interactable->getType(); }
+
 void Prop::setInteractableType(const std::string &type) {
 	if (hasInteractable && interactable->getType() == type) {
 		return;

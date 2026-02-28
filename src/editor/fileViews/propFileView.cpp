@@ -1,5 +1,7 @@
 #include "fileViews/propFileView.hpp"
+#include "TGUI/String.hpp"
 #include "editor.hpp"
+#include "project.hpp"
 #include "prop.hpp"
 #include "raylib.h"
 #include "variant.hpp"
@@ -7,6 +9,7 @@
 #include "widgets/propertiesBox.hpp"
 #include "widgets/propertyFields/boolField.hpp"
 #include "widgets/propertyFields/fileField.hpp"
+#include "widgets/propertyFields/selectField.hpp"
 
 PropFileView::PropFileView() {
 	TranslationService &ts = Editor::instance->getTranslations();
@@ -25,6 +28,16 @@ PropFileView::PropFileView() {
 	hasInteractableField->value->onChange(
 		[this](bool value) { propView->getProp()->setHasInteractable(value); });
 	propBox->addBooleanField(hasInteractableField);
+
+	interactableTypeField = SelectField::create();
+	interactableTypeField->label->setText(ts.getKey("screen.project.propview.interactable_type"));
+	for (const auto& [k, v] : Editor::instance->getProject()->getInteractableNames()) {
+		interactableTypeField->value->addItem(GetFileNameWithoutExt(k.c_str()));
+	}
+	interactableTypeField->value->onItemSelect([this](const tgui::String &item) {
+		propView->getProp()->setInteractableType(item.toStdString());
+	});
+	propBox->addSelectField(interactableTypeField);
 
 	propImageField = FileField::create();
 	propImageField->label->setText(ts.getKey("screen.project.propview.image"));
@@ -73,5 +86,6 @@ void PropFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 	propImageField->value->setText(GetFileName(prop->getImagePath()));
 	atlasRectField->setValue(prop->getAtlasRect());
 	collisionsField->setValue(prop->getCollisionRect());
+	interactableTypeField->value->setSelectedItem(prop->getInteractableType());
 	addWidgets(layout);
 }

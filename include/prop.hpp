@@ -49,7 +49,7 @@ class Prop : public ISaveable {
 	void setHasInteractable(bool value);
 	Interactable *getInteractable() const;
 	void setInteractableType(const std::string &type);
-	std::string &getInteractableType();
+	std::string getInteractableType() const;
 	void draw() const;
 };
 

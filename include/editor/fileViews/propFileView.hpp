@@ -7,6 +7,7 @@
 #include "widgets/propertyFields/boolField.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/rectangleField.hpp"
+#include "widgets/propertyFields/selectField.hpp"
 
 class PropFileView : public FileView {
   public:
@@ -21,6 +22,7 @@ class PropFileView : public FileView {
 
 	BoolField::Ptr hasInteractableField;
 	FileField::Ptr propImageField;
+	SelectField::Ptr interactableTypeField;
 	RectangleField::Ptr atlasRectField;
 	RectangleField::Ptr collisionsField;
 };
