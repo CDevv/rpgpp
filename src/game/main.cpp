@@ -6,6 +6,7 @@ int main() {
 	const int height = 480;
 
 	InitWindow(width, height, "Window");
+	InitAudioDevice();
 
 	Game game;
 	game.init();
@@ -29,6 +30,7 @@ int main() {
 	game.unload();
 
 	CloseWindow();
+	CloseAudioDevice();
 
 	return 0;
 }

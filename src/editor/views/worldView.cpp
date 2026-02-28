@@ -55,11 +55,6 @@ tgui::Widget::Ptr WorldView::clone() const {
 
 void WorldView::setSize(const tgui::Layout2d &size) {
 	tgui::CanvasRaylib::setSize(size);
-
-	UnloadRenderTexture(texture);
-	tgui::Vector2f newSize = getSize();
-	texture = LoadRenderTexture(static_cast<int>(newSize.x),
-								static_cast<int>(newSize.y));
 }
 
 bool WorldView::isMouseOnWidget(tgui::Vector2f pos) const {
@@ -129,14 +124,20 @@ void WorldView::keyPressed(const tgui::Event::KeyEvent &event) {
 
 bool WorldView::canGainFocus() const { return true; }
 
+void WorldView::resetRender() {
+	if (IsRenderTextureValid(m_textureTarget)) {
+		UnloadRenderTexture(m_textureTarget);
+	}
+	tgui::Vector2f newSize = getSize();
+	printf("%f, %f \n", newSize.x, newSize.y);
+	m_textureTarget = LoadRenderTexture(static_cast<int>(newSize.x),
+										static_cast<int>(newSize.y));
+}
+
 void WorldView::update() {
 	mouseMiddleButton = IsMouseButtonDown(MOUSE_MIDDLE_BUTTON);
 	SetMouseCursor(mouseMiddleButton ? MOUSE_CURSOR_RESIZE_ALL
 									 : MOUSE_CURSOR_DEFAULT);
-
-	// if (IsKeyPressed(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_Z)) {
-	// 	printf("left ctrl + z \n");
-	// }
 
 	BeginTextureMode(m_textureTarget);
 
