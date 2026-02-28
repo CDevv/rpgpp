@@ -104,16 +104,15 @@ set_languages("cxx17")
 add_includedirs("include/")
 add_files("src/game/main.cpp")
 
-target("translation_checker")
-set_default(false)
-set_kind("binary")
-set_languages("cxx17")
-add_includedirs("include/")
-add_packages("nlohmann_json")
-add_files("tools/translation_checker/main.cpp")
-if is_mode("release") then
-	set_enabled(false)
-end
+task("check_translation")
+on_run(function()
+	import("tools.translation_checker.checker")
+	checker.Main()
+end)
+set_menu {
+	usage = "xmake check_translation",
+	description = "Check the project's translation status."
+}
 
 target("editor")
 -- add_includedirs("include/", "include/editor/", "libs/raylib/src/", "libs/tgui/include/")
@@ -160,4 +159,5 @@ after_build(function(target)
 	os.rm("$(curdir)/execs", { async = true })
 	-- remove this line to test if the configuration file changes
 	os.cp("$(curdir)/rpgpp.ini", "$(builddir)/$(plat)/$(arch)/$(mode)/", { copy_if_different = true })
+	print("Pro tip: Check whether translations are up to date with `xmake check_translation`!")
 end)
