@@ -13,13 +13,37 @@
 
 using json = nlohmann::json;
 
+static void flattenJson(const json &j,
+						std::map<std::string, std::string, std::less<>> &out,
+						const std::string &prefix = "")
+{
+	for (auto it = j.begin(); it != j.end(); ++it) {
+		std::string key = prefix.empty() ? it.key() : prefix + "." + it.key();
+		if (it->is_object()) {
+			flattenJson(*it, out, key);
+		} else if (it->is_string()) {
+			out[key] = it->get<std::string>();
+		} else {
+			out[key] = it->dump();
+		}
+	}
+}
+
 TranslationService::TranslationService(Editor *editor_ptr) {
 	for (auto const &directory_entry : filesystem::directory_iterator(
 			 editor_ptr->getFs().getResourcePath(TRANSLATION_FILE_LOCATION))) {
 		// add the translation to the translations map.
+		if (directory_entry.path().extension() != ".json")
+			continue;
+
+		ifstream file(directory_entry.path());
+		json parsed = json::parse(file);
+
+		std::map<std::string, std::string, std::less<>> translated;
+		flattenJson(parsed, translated);
 		this->translations.try_emplace(
 			directory_entry.path().stem().string(),
-			json::parse(ifstream(directory_entry.path())));
+			std::move(translated));
 	}
 	this->current_language =
 		editor_ptr->getConfiguration().getStringValue("language");

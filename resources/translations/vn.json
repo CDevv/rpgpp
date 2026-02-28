@@ -1,53 +1,94 @@
 {
 	"language": "Tiếng Việt",
 
-	"menu.file": "Tệp tin",
-	"menu.file.new_project": "Tạo dự án",
-	"menu.file.open_project": "Mở dự án",
-	"menu.file.save_file": "Lưu tệp",
-	"menu.edit": "Chỉnh sửa",
-	"menu.edit.undo": "Hoàn tác",
-	"menu.edit.redo": "Làm lại",
-	"menu.options": "Tùy chọn",
-	"menu.options.editor": "Tùy chọn chương trình...",
-	"menu.about": "Thông tin",
-	"menu.about.rpgpp": "Thông tin về RPG++...",
+	"menu": {
+		"file": {
+			"_label": "Tệp tin",
+			"new_project": "Tạo dự án",
+			"open_project": "Mở dự án",
+			"save_file": "Lưu tệp"
+		},
+		"edit": {
+			"_label": "Chỉnh sửa",
+			"undo": "Hoàn tác",
+			"redo": "Làm lại"
+		},
+		"options": {
+			"_label": "Tùy chọn",
+			"editor": "Tùy chọn chương trình..."
+		},
+		"about": {
+			"_label": "Thông tin",
+			"rpgpp": "Thông tin về RPG++..."
+		}
+	},
 
-	"screen.starting.get_started": "Bắt đầu!",
-	"screen.starting.description": "Nhấn vào 'Tạo dự án' để tạo dự án mới, hoặc 'Mở dự án' để mở một dự án!",
+	"screen": {
+		"starting": {
+			"get_started": "Bắt đầu!",
+			"description": "Nhấn vào 'Tạo dự án' để tạo dự án mới, hoặc 'Mở dự án' để mở một dự án!"
+		},
 
-	"screen.options.language": "Ngôn ngữ",
-	"screen.options.theme": "Chủ đề",
+		"options": {
+			"language": "Ngôn ngữ",
+			"theme": "Chủ đề"
+		},
 
-	"screen.project.create_new_resource": "Tạo tài nguyên",
-	"screen.project.tilesetview.tile_width": "Độ rộng Tile",
-	"screen.project.tilesetview.tile_height": "Độ cao Tile",
-	"screen.project.tilesetview.texture": "Tệp Texture",
-	"screen.project.roomview.mapwidth": "Độ rộng Map",
-	"screen.project.roomview.mapheight": "Độ cao Map",
-	"screen.project.roomview.tileset_file": "Tệp Tileset",
+		"project": {
+			"create_new_resource": "Tạo tài nguyên",
 
-	"screen.project.propview.atlas": "Kích cỡ Atlas",
-	"screen.project.propview.collision": "Kích cỡ Collision",
-	"screen.project.propview.has_interactable": "Có thể tương tác?",
-	"screen.project.propview.image": "Tệp ảnh",
-	"screen.project.propview.interactable_type": "Loại tương tác",
+			"tilesetview": {
+				"tile_width": "Độ rộng Tile",
+				"tile_height": "Độ cao Tile",
+				"texture": "Tệp Texture"
+			},
 
-	"screen.project.toolbar.play": "Chạy chương trình",
-	"screen.project.toolbar.build": "Dịch và tạo chương trình",
+			"roomview": {
+				"mapwidth": "Độ rộng Map",
+				"mapheight": "Độ cao Map",
+				"tileset_file": "Tệp Tileset"
+			},
 
-	"dialog.new_file.title": "Tạo tài nguyên",
-	"dialog.new_file.name": "Tên",
-	"dialog.new_file.file": "Tệp tin",
-	"dialog.new_file.confirm": "Tạo",
-	"dialog.new_file.cancel": "Hủy",
+			"propview": {
+				"atlas": "Kích cỡ Atlas",
+				"collision": "Kích cỡ Collision",
+				"has_interactable": "Có thể tương tác?",
+				"image": "Tệp ảnh",
+				"interactable_type": "Loại tương tác"
+			},
 
-	"dialog.new_project.title": "Tạo dự án",
-	"dialog.new_project.name": "Tên dự án",
-	"dialog.new_project.folder": "Thư mục",
-	"dialog.new_project.confirm": "Tạo",
-	"dialog.new_project.cancel": "Hủy",
+			"toolbar": {
+				"play": "Chạy chương trình",
+				"build": "Dịch và tạo chương trình"
+			}
+		}
+	},
 
-	"widget.filechooser.select_a_file": "Chọn tệp tin",
-	"button.go_back": "Quay lại"
+	"dialog": {
+		"new_file": {
+			"title": "Tạo tài nguyên",
+			"name": "Tên",
+			"file": "Tệp tin",
+			"confirm": "Tạo",
+			"cancel": "Hủy"
+		},
+
+		"new_project": {
+			"title": "Tạo dự án",
+			"name": "Tên dự án",
+			"folder": "Thư mục",
+			"confirm": "Tạo",
+			"cancel": "Hủy"
+		}
+	},
+
+	"widget": {
+		"filechooser": {
+			"select_a_file": "Chọn tệp tin"
+		}
+	},
+
+	"button": {
+		"go_back": "Quay lại"
+	}
 }

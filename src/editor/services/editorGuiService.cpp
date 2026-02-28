@@ -218,7 +218,7 @@ void EditorGuiService::initMenuBar() {
 	this->menuBar = menuBar;
 	auto &ts = Editor::instance->getTranslations();
 
-	const auto &fileOptionsTranslation = ts.getKey("menu.file");
+	const auto &fileOptionsTranslation = ts.getKey("menu.file._label");
 	const auto &fileOpenProjectTranslation =
 		ts.getKey("menu.file.open_project");
 
@@ -230,11 +230,11 @@ void EditorGuiService::initMenuBar() {
 		{fileOptionsTranslation, fileOpenProjectTranslation},
 		[] { Editor::instance->getFs().promptOpenProject(); });
 
-	menuBar->addMenu(ts.getKey("menu.edit"));
+	menuBar->addMenu(ts.getKey("menu.edit._label"));
 	menuBar->addMenuItem(ts.getKey("menu.edit.undo"));
 	menuBar->addMenuItem(ts.getKey("menu.edit.redo"));
 
-	const auto optionsTranslation = ts.getKey("menu.options");
+	const auto optionsTranslation = ts.getKey("menu.options._label");
 	const auto editorOptionsTranslation = ts.getKey("menu.options.editor");
 	menuBar->addMenu(optionsTranslation);
 	menuBar->addMenuItem(editorOptionsTranslation);
@@ -242,7 +242,7 @@ void EditorGuiService::initMenuBar() {
 		{optionsTranslation, editorOptionsTranslation},
 		[&] { this->childWindowService->openWindow("options"); });
 
-	const auto &aboutOptions = ts.getKey("menu.about"),
+	const auto &aboutOptions = ts.getKey("menu.about._label"),
 			   &aboutRpgpp = ts.getKey("menu.about.rpgpp");
 	menuBar->addMenu(aboutOptions);
 	menuBar->addMenuItem(aboutRpgpp);

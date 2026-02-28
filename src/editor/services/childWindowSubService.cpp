@@ -17,11 +17,11 @@ void ChildWindowSubService::createWindows() {
 
 	this->childWindows.try_emplace(
 		"about",
-		std::unique_ptr<AboutWindow>(new AboutWindow(ts.getKey("menu.about"))));
+		std::unique_ptr<AboutWindow>(new AboutWindow(ts.getKey("menu.about._label"))));
 
 	this->childWindows.try_emplace(
 		"options", std::unique_ptr<SettingsWindow>(
-					   new SettingsWindow(ts.getKey("menu.options"))));
+					   new SettingsWindow(ts.getKey("menu.options._label"))));
 }
 
 void ChildWindowSubService::openWindow(const std::string &windowName) {
