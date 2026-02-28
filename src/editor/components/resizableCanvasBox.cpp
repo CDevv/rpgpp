@@ -35,21 +35,23 @@ void ResizableCanvasBox::updateRec(Rectangle rec) {
 }
 
 bool ResizableCanvasBox::leftMousePressed(Vector2 mousePos) {
+	resizeDirection = NONE;
 	if (mousePos.x >= x && mousePos.x <= x + width && mousePos.y >= y &&
 		mousePos.y <= y + height) {
 		if (mousePos.x >= x && mousePos.x <= x + RESIZE_MARGIN) {
-			resizeDirection = LEFT;
-		} else if (mousePos.x >= x + width - RESIZE_MARGIN &&
-				   mousePos.x <= x + width) {
-			resizeDirection = RIGHT;
-		} else if (mousePos.y >= y && mousePos.y <= y + RESIZE_MARGIN) {
-			resizeDirection = TOP;
-		} else if (mousePos.y >= y + height - RESIZE_MARGIN &&
-				   mousePos.y <= y + height) {
-			resizeDirection = BOTTOM;
-		} else {
-			resizeDirection = NONE;
-			isMoving = true;
+			resizeDirection |= LEFT;
+		}
+		if (mousePos.x >= x + width - RESIZE_MARGIN && mousePos.x <= x + width) {
+			resizeDirection |= RIGHT;
+		}
+		if (mousePos.y >= y && mousePos.y <= y + RESIZE_MARGIN) {
+			resizeDirection |= TOP;
+		}
+		if (mousePos.y >= y + height - RESIZE_MARGIN && mousePos.y <= y + height) {
+			resizeDirection |= BOTTOM;
+		}
+		if (resizeDirection == NONE) {
+			resizeDirection |= MOVE;
 		}
 		isResizing = true;
 		startMousePos = mousePos;
@@ -64,59 +66,44 @@ bool ResizableCanvasBox::leftMousePressed(Vector2 mousePos) {
 }
 
 void ResizableCanvasBox::mouseMoved(Vector2 mousePos) {
-	// switch (resizeDirection) {
-	// 	case ResizeDirection::LEFT:
-	// 	case ResizeDirection::RIGHT:
-	// 		SetMouseCursor(MOUSE_CURSOR_RESIZE_EW);
-	// 		break;
-	// 	case ResizeDirection::TOP:
-	// 	case ResizeDirection::BOTTOM:
-	// 		SetMouseCursor(MOUSE_CURSOR_RESIZE_NS);
-	// 		break;
-	// 	case ResizeDirection::NONE:
-	// 		if (isMoving) {
-	// 			SetMouseCursor(MOUSE_CURSOR_RESIZE_ALL);
-	// 		} else {
-	// 			SetMouseCursor(MOUSE_CURSOR_ARROW);
-	// 		}
-	// 		break;
-	// }
-
 	if (!isResizing || !focused)
 		return;
-	switch (resizeDirection) {
-	case ResizeDirection::LEFT:
-		x = prevX + std::round(mousePos.x - startMousePos.x);
-		width = prevWidth - std::round(mousePos.x - startMousePos.x);
-		break;
-	case ResizeDirection::RIGHT:
-		width = prevWidth + std::round(mousePos.x - startMousePos.x);
-		break;
-	case ResizeDirection::TOP:
-		y = prevY + std::round(mousePos.y - startMousePos.y);
-		height = prevHeight - std::round(mousePos.y - startMousePos.y);
-		break;
-	case ResizeDirection::BOTTOM:
-		height = prevHeight + std::round(mousePos.y - startMousePos.y);
-		break;
-	case ResizeDirection::NONE:
-		if (!isMoving)
-			break;
-		x = prevX + std::round(mousePos.x - startMousePos.x);
-		y = prevY + std::round(mousePos.y - startMousePos.y);
-		break;
-	default:
-		break;
+
+	int dx = std::round(mousePos.x - startMousePos.x);
+	int dy = std::round(mousePos.y - startMousePos.y);
+
+	if ((resizeDirection & LEFT) && prevWidth - dx < minSize)
+	    dx = prevWidth - minSize;
+
+	if ((resizeDirection & TOP) && prevHeight - dy < minSize)
+	    dy = prevHeight - minSize;
+
+	if (resizeDirection & LEFT) {
+		x = prevX + dx;
+		width = prevWidth - dx;
+	}
+	if (resizeDirection & RIGHT) {
+		width = prevWidth + dx;
+	}
+	if (resizeDirection & TOP) {
+		y = prevY + dy;
+		height = prevHeight - dy;
+	}
+	if (resizeDirection & BOTTOM) {
+		height = prevHeight + dy;
+	}
+	if (resizeDirection & MOVE) {
+		x = prevX + dx;
+		y = prevY + dy;
 	}
 
-	width = std::max(2.f, width);
-	height = std::max(2.f, height);
+	width = std::max(minSize, width);
+	height = std::max(minSize, height);
 }
 
 Rectangle ResizableCanvasBox::leftMouseReleased(Vector2 mousePos) {
 	if (isResizing) {
 		isResizing = false;
-		isMoving = false;
 		resizeDirection = NONE;
 	}
 	return Rectangle{x, y, width, height};

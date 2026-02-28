@@ -3,7 +3,8 @@
 #include "raylib.h"
 #include <string>
 
-enum ResizeDirection { NONE, TOP, BOTTOM, LEFT, RIGHT };
+enum ResizeDirection {
+	NONE = 0, MOVE = 1 << 0, TOP = 1 << 1, BOTTOM = 1 << 2, LEFT = 1 << 3, RIGHT = 1 << 4 };
 
 class ResizableCanvasBox {
   public:
@@ -26,17 +27,19 @@ class ResizableCanvasBox {
 	bool focused = false;
 	std::string id{};
 
+	void setMinSize(float size) { minSize = std::max(size, 2.f); }
+	float getMinSize() const { return minSize; }
   private:
-	const float RESIZE_MARGIN = 2.f;
+	const float RESIZE_MARGIN = 1.f;
+	float minSize = 2.f;
 
 	float x, y, width, height;
 	Color color = RED;
 
 	bool isResizing = false;
-	bool isMoving = false;
 	Vector2 startMousePos{};
 	float prevX = 0, prevY = 0, prevWidth = 0, prevHeight = 0;
-	ResizeDirection resizeDirection = NONE;
+	int resizeDirection = NONE;
 };
 
 #endif

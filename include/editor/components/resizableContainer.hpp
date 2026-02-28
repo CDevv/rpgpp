@@ -6,7 +6,7 @@
 #include "TGUI/Widgets/Group.hpp"
 
 enum class ResizeDirection {
-	NONE = 0,
+	MOVE = 0,
 	LEFT = 1 << 0,
 	RIGHT = 1 << 1,
 	TOP = 1 << 2,
