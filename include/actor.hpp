@@ -6,6 +6,7 @@
 #include "saveable.hpp"
 #include "tileset.hpp"
 #include <array>
+#include <functional>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
@@ -90,8 +91,12 @@ class Actor : public ISaveable {
 	TileSet &getTileSet() const;
 	/** Get the current frame of this actor. */
 	int getCurrentFrame() const;
+	/** Get the current direction of this actor. */
+	Direction getAnimationDirection() const;
 	/** Set this Actor's TileSet using a path to the tileset file. */
 	void setTileSet(const std::string &newTileSetSource);
+	/** The callback when the current frame changes. */
+	std::function<void()> onFrameChanged;
 	/** Get the collision rectangle of this Actor if it was moved by the
 	 * velocity vector */
 	Rectangle getCollisionRect(Vector2 velocity) const;

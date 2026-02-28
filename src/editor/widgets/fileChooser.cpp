@@ -2,7 +2,6 @@
 #include "TGUI/String.hpp"
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
-#include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
 #include "editor.hpp"
 #include "raylib.h"

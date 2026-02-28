@@ -1,47 +1,99 @@
 {
 	"language": "Türkçe",
-	"menu.file._label": "Dosya",
-	"menu.file.new_project": "Yeni Proje",
-	"menu.file.open_project": "Proje Aç",
-	"menu.file.save_file": "Dosyayı Kaydet",
-	"menu.edit._label": "Düzenle",
-	"menu.edit.undo": "Geri Al",
-	"menu.edit.redo": "Yinele",
-	"menu.options._label": "Seçenekler...",
-	"menu.options.editor": "Düzenleyici Seçenekleri...",
-	"menu.about._label": "Bilgi",
-	"menu.about.rpgpp": "RPG++ Hakkında...",
-	"menu.about.rpgpp_description": "C++ ile yazılan RPG oyun motoru.",
-	"screen.starting.get_started": "Başlayın!",
-	"screen.starting.description": "'Yeni Proje'ye tıklayarak yeni proje oluşturun, ya da 'Proje Aç'a basarak proje açın!",
-	"button.go_back": "Geri",
-	"screen.options.language": "Dil",
-	"screen.options.theme": "Tema",
-	"screen.project.create_new_resource": "Yeni Kaynak",
-	"screen.project.tilesetview.tile_width": "Kare Genişliği",
-	"screen.project.tilesetview.tile_height": "Kare Yüksekliği",
-	"screen.project.tilesetview.texture": "Doku",
-	"screen.project.roomview.mapwidth": "Harita Genişliği",
-	"screen.project.roomview.mapheight": "Harita Yüksekliği",
-	"screen.project.roomview.tileset_file": "Kare Seti Dosyası",
-	"screen.project.toolbar.play": "Oyna",
-	"screen.project.toolbar.build": "Derle",
-	"screen.project.actorview.dir0": "Aşağı",
-	"screen.project.actorview.dir1": "Yukarı",
-	"screen.project.actorview.dir2": "Sol",
-	"screen.project.actorview.dir3": "Sağ",
-	"screen.project.actorview.play": "Oynat",
-	"screen.project.actorview.stop": "Durdur",
-	"screen.project.actorview.is_walk": "Yürüme Animasyonu Mu?",
-	"dialog.new_file.title": "Yeni Kaynak",
-	"dialog.new_file.name": "Ad",
-	"dialog.new_file.file": "Dosya",
-	"dialog.new_file.confirm": "Kabul Et",
-	"dialog.new_file.cancel": "İptal",
-	"dialog.new_project.title": "Yeni Proje",
-	"dialog.new_project.name": "Proje Adı",
-	"dialog.new_project.folder": "Klasör",
-	"dialog.new_project.confirm": "Kabul Et",
-	"dialog.new_project.cancel": "İptal",
-	"widget.filechooser.select_a_file": "Dosya Seç"
+	"menu": {
+		"file": {
+			"_label": "Dosya",
+			"new_project": "Yeni Proje",
+			"open_project": "Proje Aç",
+			"save_file": "Dosyayı Kaydet"
+		},
+		"edit": {
+			"_label": "Düzenle",
+			"undo": "Geri Al",
+			"redo": "Yinele"
+		},
+		"options": {
+			"_label": "Seçenekler",
+			"editor": "Düzenleyici Seçenekleri..."
+		},
+		"about": {
+			"_label": "Bilgi",
+			"rpgpp": "RPG++ Hakkında...",
+			"rpgpp_description": "C++'da yazılmış, RPG oyun motoru."
+		}
+	},
+	"screen": {
+		"starting": {
+			"get_started": "Başla!",
+			"description": "'Yeni Proje'ye tıklayarak yeni proje oluşturun, ya da 'Proje Aç' ile birini açın!"
+		},
+		"options": {
+			"language": "Dil",
+			"theme": "Tema"
+		},
+		"project": {
+			"create_new_resource": "Yeni Kaynak",
+			"emptyview": {
+				"notice": "Hiç bir dosya ya da görünüş tanımlanmamıştır!"
+			},
+			"dialogueview": {
+				"add_new_line": "Yeni satır ekle",
+				"has_a_portrait": "Portresi olacak mı?"
+			},
+			"tilesetview": {
+				"tile_width": "Kare Genişliği",
+				"tile_height": "Kare Yüksekliği",
+				"texture": "Doku"
+			},
+			"roomview": {
+				"mapwidth": "Harita Genişliği",
+				"mapheight": "Harita Yüksekliği",
+				"tileset_file": "Kare Seti Dosyası"
+			},
+			"propview": {
+				"atlas": "Atlas Büyüklüğü",
+				"collision": "Çarpışma Karesi Büyüklüğü",
+				"has_interactable": "Interaktifi Varmı?",
+				"image": "Obje Fotoğrafı",
+				"interactable_type": "Interaktif Türü"
+			},
+			"actorview": {
+				"dir0": "Aşağı",
+				"dir1": "Yukarı",
+				"dir2": "Sol",
+				"dir3": "Sağ",
+				"play": "Oynat",
+				"pause": "Duraklat",
+				"is_walk": "Yürüme Animasyonu Mu?"
+			},
+			"toolbar": {
+				"play": "Oyna",
+				"build": "Derle"
+			}
+		}
+	},
+	"dialog": {
+		"new_file": {
+			"title": "Yeni Kaynak",
+			"name": "Dosya Adı",
+			"file": "Dosya",
+			"confirm": "Kabul Et",
+			"cancel": "İptal"
+		},
+		"new_project": {
+			"title": "Yeni Proje",
+			"name": "Proje Adı",
+			"folder": "Klasör",
+			"confirm": "Kabul Et",
+			"cancel": "İptal"
+		}
+	},
+	"widget": {
+		"filechooser": {
+			"select_a_file": "Dosya Seç"
+		}
+	},
+	"button": {
+		"go_back": "Geri Git"
+	}
 }

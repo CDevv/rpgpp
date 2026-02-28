@@ -85,8 +85,8 @@ void WorldView::drawOrigin() {
 	// since this function is used to draw the origin x-y axis, it's been moved
 	// here.
 
-	DrawLine(0, -MAXIMUM_LINE, 0, MAXIMUM_LINE, RED);
-	DrawLine(-MAXIMUM_LINE, 0, MAXIMUM_LINE, 0, BLUE);
+	DrawLine(0, -MAXIMUM_LINE, 0, MAXIMUM_LINE, DARKGREEN);
+	DrawLine(-MAXIMUM_LINE, 0, MAXIMUM_LINE, 0, RED);
 
 	DrawCircle(0, 0, 1.0f, RED);
 }

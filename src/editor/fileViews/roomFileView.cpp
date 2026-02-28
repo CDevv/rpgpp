@@ -16,7 +16,6 @@
 #include "widgets/propertiesBox.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/toolbox.hpp"
-#include <cstdio>
 #include <memory>
 
 RoomFileView::RoomFileView() {

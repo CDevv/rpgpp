@@ -216,6 +216,8 @@ void Actor::unload() const { tileSet->unload(); }
 
 int Actor::getCurrentFrame() const { return this->currentFrame; }
 
+Direction Actor::getAnimationDirection() const {return this->currentAnimation;}
+
 void Actor::update() {
 	frameCounter++;
 

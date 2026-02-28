@@ -10,4 +10,8 @@
 		"label": "Run translation checker",
 		"command": "xmake run translation_checker",
 	},
+	{
+		"label": "Build All",
+		"command": "xmake build --all"
+	}
 ]

@@ -63,7 +63,7 @@
 				"dir2": "Left",
 				"dir3": "Right",
 				"play": "Play",
-				"stop": "Stop",
+				"pause": "Pause",
 				"is_walk": "Is Walking Animation?"
 			},
 			"toolbar": {

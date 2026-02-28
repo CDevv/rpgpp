@@ -3,6 +3,7 @@
 
 #include "actor.hpp"
 #include "components/resizableCanvasBox.hpp"
+#include "raylib.h"
 #include "views/worldView.hpp"
 #include <memory>
 
@@ -10,20 +11,23 @@ constexpr float DEFAULT_ANIMATION_SPEED{2.0f};
 
 class ActorView : public WorldView {
   private:
+
 	ResizableCanvasBox *collisionBox;
 
-	// Animation Editor Stuff.
-	float animationFrameDuration{DEFAULT_ANIMATION_SPEED};
-	float animationCurrentDuration{0.0f};
+	float animationFrameDuration {DEFAULT_ANIMATION_SPEED};
+	float animationCurrentDuration {0.0f};
 
   public:
+
 	ActorView();
 
 	Actor *actor{nullptr};
-	bool isPlaying{false};
+	bool isPlaying {false};
+
 	typedef std::shared_ptr<ActorView> Ptr;
 
 	void setActor(Actor *actor);
+	void setCollisionRect(const Rectangle& rect);
 
 	void drawCanvas() override;
 

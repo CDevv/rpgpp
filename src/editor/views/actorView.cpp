@@ -11,6 +11,7 @@
 
 constexpr float DELTATIME_DIFFERENCE = 100.0f;
 
+
 ActorView::ActorView() { camera.zoom = 5.0f; }
 
 ActorView::Ptr ActorView::create() { return std::make_shared<ActorView>(); }
@@ -44,6 +45,11 @@ bool ActorView::leftMousePressed(tgui::Vector2f pos) {
 		collisionBox->focused = true;
 
 	return WorldView::leftMousePressed(pos);
+}
+
+void ActorView::setCollisionRect(const Rectangle& collision){
+	this->actor->setCollisionRect(collision);
+	this->collisionBox->updateRec(collision);
 }
 
 void ActorView::leftMouseReleased(tgui::Vector2f pos) {
