@@ -8,7 +8,6 @@
 #include "updatable.hpp"
 #include <memory>
 
-
 class WorldView : public tgui::CanvasRaylib, public IUpdatable {
   protected:
 	Camera2D camera;

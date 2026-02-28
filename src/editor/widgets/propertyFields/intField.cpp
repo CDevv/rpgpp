@@ -2,8 +2,8 @@
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"
-#include <memory>
 #include "widgets/propertyFields/fieldConfig.hpp"
+#include <memory>
 IntField::IntField(const char *typeName, bool initRenderer)
 	: tgui::SubwidgetContainer(typeName, initRenderer) {
 	label = tgui::Label::create("Label");

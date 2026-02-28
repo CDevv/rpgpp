@@ -19,7 +19,7 @@ Prop::Prop(const std::string &filePath) {
 	this->worldPos = Vector2{0, 0};
 	this->tilePos = Vector2{0, 0};
 
-	char* jsonString = LoadFileText(filePath.c_str());
+	char *jsonString = LoadFileText(filePath.c_str());
 	json json = json::parse(jsonString);
 	std::vector<int> atlasRectVec = json.at("atlas_rect");
 	if (atlasRectVec.size() != 4) {
@@ -163,9 +163,7 @@ Vector2 Prop::getCollisionCenter() const {
 }
 
 bool Prop::getHasInteractable() const { return hasInteractable; }
-void Prop::setHasInteractable(bool value) {
-	this->hasInteractable = value;
-}
+void Prop::setHasInteractable(bool value) { this->hasInteractable = value; }
 
 Interactable *Prop::getInteractable() const { return interactable.get(); }
 

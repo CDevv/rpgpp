@@ -40,5 +40,4 @@ void BoolField::updateSize() {
 	label->setSize({getSize().x - PADDING * 3 - checkboxSize, height});
 	value->setSize({checkboxSize, height});
 	value->setPosition({getSize().x - PADDING - checkboxSize, 0});
-
 }

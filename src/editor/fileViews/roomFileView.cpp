@@ -13,8 +13,8 @@
 #include "views/roomView.hpp"
 #include "views/tileSetView.hpp"
 #include "views/worldView.hpp"
-#include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertiesBox.hpp"
+#include "widgets/propertyFields/fileField.hpp"
 #include "widgets/toolbox.hpp"
 #include <memory>
 
@@ -136,9 +136,8 @@ RoomFileView::RoomFileView() {
 										   "tool_startpoint.png"});
 
 	auto brushToggle = tgui::CheckBox::create("Enable brush mode");
-	brushToggle->onChange([this](bool toggled) {
-		roomView->setBrush(toggled);
-	});
+	brushToggle->onChange(
+		[this](bool toggled) { roomView->setBrush(toggled); });
 	auto brushToggleSize =
 		TOOLBOX_H - toolbox->getRenderer()->getPadding().getTop();
 	brushToggle->setSize({brushToggleSize, brushToggleSize});

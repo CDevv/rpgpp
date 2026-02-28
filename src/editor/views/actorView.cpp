@@ -29,15 +29,16 @@ void ActorView::setActor(Actor *actor) {
 }
 
 void ActorView::mouseMoved(tgui::Vector2f pos) {
-	if (this->actor == nullptr) return;
+	if (this->actor == nullptr)
+		return;
 
 	collisionBox->mouseMoved(getMouseWorldPos());
 	WorldView::mouseMoved(pos);
 }
 
-
 bool ActorView::leftMousePressed(tgui::Vector2f pos) {
-	if (this->actor == nullptr) return false;
+	if (this->actor == nullptr)
+		return false;
 
 	if (collisionBox->leftMousePressed(getMouseWorldPos()))
 		collisionBox->focused = true;
@@ -46,9 +47,11 @@ bool ActorView::leftMousePressed(tgui::Vector2f pos) {
 }
 
 void ActorView::leftMouseReleased(tgui::Vector2f pos) {
-	if (this->actor == nullptr) return;
+	if (this->actor == nullptr)
+		return;
 
-	actor->setCollisionRect(collisionBox->leftMouseReleased(getMouseWorldPos()));
+	actor->setCollisionRect(
+		collisionBox->leftMouseReleased(getMouseWorldPos()));
 	collisionBox->focused = false;
 
 	WorldView::leftMouseReleased(pos);

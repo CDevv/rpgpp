@@ -9,7 +9,8 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "widgets/fileChooser.hpp"
 
-// TODO: Segfault happens when editor is closed. This widget could be causing segfault, specially when it is at least opened once.
+// TODO: Segfault happens when editor is closed. This widget could be causing
+// segfault, specially when it is at least opened once.
 class NewProjectWindow {
   public:
 	tgui::ChildWindow::Ptr window;

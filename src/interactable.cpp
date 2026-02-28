@@ -29,7 +29,6 @@ Interactable::Interactable(const std::string &path) {
 	displayTitle = intJson.at("name");
 	props = std::make_unique<nlohmann::json>(intJson.at("props"));
 	scriptPath = intJson.at("script");
-
 }
 
 Interactable::Interactable(const std::string &type, Vector2 tilePos,

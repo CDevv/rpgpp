@@ -86,8 +86,9 @@ void WorldView::mouseMoved(tgui::Vector2f pos) {
 
 constexpr int MAXIMUM_LINE = 10000;
 
-void WorldView::drawOrigin(){
-	// since this function is used to draw the origin x-y axis, it's been moved here.
+void WorldView::drawOrigin() {
+	// since this function is used to draw the origin x-y axis, it's been moved
+	// here.
 
 	DrawLine(0, -MAXIMUM_LINE, 0, MAXIMUM_LINE, RED);
 	DrawLine(-MAXIMUM_LINE, 0, MAXIMUM_LINE, 0, BLUE);
@@ -130,7 +131,8 @@ bool WorldView::canGainFocus() const { return true; }
 
 void WorldView::update() {
 	mouseMiddleButton = IsMouseButtonDown(MOUSE_MIDDLE_BUTTON);
-	SetMouseCursor(mouseMiddleButton ? MOUSE_CURSOR_RESIZE_ALL : MOUSE_CURSOR_DEFAULT);
+	SetMouseCursor(mouseMiddleButton ? MOUSE_CURSOR_RESIZE_ALL
+									 : MOUSE_CURSOR_DEFAULT);
 
 	// if (IsKeyPressed(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_Z)) {
 	// 	printf("left ctrl + z \n");

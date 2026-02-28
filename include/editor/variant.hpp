@@ -18,8 +18,9 @@ class SaveableVariant {
 
 template <typename T> class Variant : public VariantWrapper {
   public:
-  static_assert(std::is_base_of<ISaveable, T>::value, "The template is not the base of ISaveable");
-  
+	static_assert(std::is_base_of<ISaveable, T>::value,
+				  "The template is not the base of ISaveable");
+
 	std::unique_ptr<T> data;
 	Variant() = default;
 	Variant(T *p) {

@@ -7,9 +7,9 @@
 #include "variant.hpp"
 #include "views/tileSetView.hpp"
 #include "views/worldView.hpp"
+#include "widgets/propertiesBox.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/intField.hpp"
-#include "widgets/propertiesBox.hpp"
 #include <algorithm>
 
 TileSetFileView::TileSetFileView() {

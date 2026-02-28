@@ -26,9 +26,8 @@ void PlaceTileAction::execute() {
 		auto inter = data.room->getInteractables().add(
 			data.worldTile.x, data.worldTile.y, data.interactable);
 		if (inter != nullptr) {
-			char* txt = LoadFileText(data.interactableFullPath.c_str());
-			nlohmann::json interJson =
-				json::parse(txt);
+			char *txt = LoadFileText(data.interactableFullPath.c_str());
+			nlohmann::json interJson = json::parse(txt);
 			UnloadFileText(txt);
 			inter->setProps(interJson.at("props"));
 			inter->setOnTouch(interJson.at("onTouch"));
@@ -52,9 +51,8 @@ void PlaceTileAction::execute() {
 				}
 			}
 
-			char* txt = LoadFileText(interFileName.c_str());
-			nlohmann::json propJson =
-				json::parse(txt);
+			char *txt = LoadFileText(interFileName.c_str());
+			nlohmann::json propJson = json::parse(txt);
 			UnloadFileText(txt);
 			p.getInteractable()->setProps(propJson.at("props"));
 		}

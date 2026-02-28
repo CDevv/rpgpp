@@ -6,24 +6,25 @@
 #include "TGUI/Widgets/CheckBox.hpp"
 #include "TGUI/Widgets/Label.hpp"
 class BoolField : public tgui::SubwidgetContainer {
-	private:
-		void updateSize();
+  private:
+	void updateSize();
 
-	protected:
-		tgui::Widget::Ptr clone() const override;
-	public:
-		tgui::Label::Ptr label;
-		tgui::CheckBox::Ptr value;
+  protected:
+	tgui::Widget::Ptr clone() const override;
 
-		typedef std::shared_ptr<BoolField> Ptr;
-		typedef std::shared_ptr<const BoolField> ConstPtr;
+  public:
+	tgui::Label::Ptr label;
+	tgui::CheckBox::Ptr value;
 
-		BoolField(const char *typeName = "BoolField", bool initRenderer = true);
+	typedef std::shared_ptr<BoolField> Ptr;
+	typedef std::shared_ptr<const BoolField> ConstPtr;
 
-		static Ptr create();
-		static Ptr copy(ConstPtr widget);
+	BoolField(const char *typeName = "BoolField", bool initRenderer = true);
 
-		void setSize(const tgui::Layout2d &size) override;
+	static Ptr create();
+	static Ptr copy(ConstPtr widget);
+
+	void setSize(const tgui::Layout2d &size) override;
 };
 
 #endif

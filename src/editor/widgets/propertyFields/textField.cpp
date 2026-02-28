@@ -1,8 +1,8 @@
 #include "widgets/propertyFields/textField.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Label.hpp"
-#include <TGUI/Widgets/EditBox.hpp>
 #include "widgets/propertyFields/fieldConfig.hpp"
+#include <TGUI/Widgets/EditBox.hpp>
 #include <memory>
 
 TextField::TextField(const char *typeName, bool initRenderer)

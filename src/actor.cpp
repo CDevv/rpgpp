@@ -1,13 +1,13 @@
 #include "actor.hpp"
 #include "game.hpp"
 #include "gamedata.hpp"
+#include <cassert>
 #include <functional>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
 #include <raymath.h>
 #include <utility>
-#include <cassert>
 using json = nlohmann::json;
 
 Actor::Actor(const std::string &fileName) {
@@ -65,8 +65,7 @@ Actor::Actor(const std::string &fileName) {
 		j.at("animations").at("right-idle");
 	addAnimationFrames(RPGPP_RIGHT_IDLE, rightIdle);
 
-	Vector2 defaultTileAtlasPos =
-		animations[currentAnimation].at(0);
+	Vector2 defaultTileAtlasPos = animations[currentAnimation].at(0);
 	this->tile = tileSet->getTile(defaultTileAtlasPos);
 }
 
@@ -102,12 +101,11 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
 
 	addAnimationFrames(RPGPP_LEFT_IDLE, {{0, 2}, {1, 2}});
 
-	addAnimationFrames(RPGPP_RIGHT,  {{2, 3}, {3, 3}});
+	addAnimationFrames(RPGPP_RIGHT, {{2, 3}, {3, 3}});
 
 	addAnimationFrames(RPGPP_RIGHT_IDLE, {{0, 3}, {1, 3}});
 
-	Vector2 defaultTileAtlasPos =
-		animations[currentAnimation].at(0);
+	Vector2 defaultTileAtlasPos = animations[currentAnimation].at(0);
 	this->tile = tileSet->getTile(defaultTileAtlasPos);
 
 	// Default collision box..
@@ -216,9 +214,7 @@ json Actor::dumpJson() {
 
 void Actor::unload() const { tileSet->unload(); }
 
-int Actor::getCurrentFrame() const{
-	return this->currentFrame;
-}
+int Actor::getCurrentFrame() const { return this->currentFrame; }
 
 void Actor::update() {
 	frameCounter++;
@@ -341,23 +337,23 @@ void Actor::removeAnimationFrame(Direction id, int frameIndex) {
 	}
 	if (frameIndex == 0)
 		return;
-  // how do we know the frame was valid on index side?
-  assert(frameIndex < animations[id].size() && "requested animation index is invalid");
-	animations[id].erase(
-		animations[id].begin() + frameIndex);
+	// how do we know the frame was valid on index side?
+	assert(frameIndex < animations[id].size() &&
+		   "requested animation index is invalid");
+	animations[id].erase(animations[id].begin() + frameIndex);
 }
 
-void Actor::setAnimationFrame(Direction id, int frameIndex,
-							  Vector2 atlasTile) {
+void Actor::setAnimationFrame(Direction id, int frameIndex, Vector2 atlasTile) {
 	animations[id][frameIndex] = atlasTile;
 }
 
-void Actor::addAnimationFrames(
-	const Direction id, const std::vector<std::vector<int>> &frames) {
+void Actor::addAnimationFrames(const Direction id,
+							   const std::vector<std::vector<int>> &frames) {
 	for (int i = 0; i < frames.size(); i++) {
 		int x = frames.at(i).at(0);
 		int y = frames.at(i).at(1);
-		animations[id].push_back(Vector2{static_cast<float>(x), static_cast<float>(y)});
+		animations[id].push_back(
+			Vector2{static_cast<float>(x), static_cast<float>(y)});
 	}
 }
 

@@ -4,9 +4,9 @@
 #include "TGUI/Widgets/FileDialog.hpp"
 #include "editor.hpp"
 #include "raylib.h"
+#include "widgets/propertyFields/fieldConfig.hpp"
 #include <memory>
 #include <string>
-#include "widgets/propertyFields/fieldConfig.hpp"
 FileField::FileField(const char *typeName, bool initRenderer)
 	: tgui::SubwidgetContainer(typeName, initRenderer) {
 	label = tgui::Label::create("Label");

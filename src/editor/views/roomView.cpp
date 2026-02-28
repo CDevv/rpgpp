@@ -320,11 +320,12 @@ void RoomView::handleEraseMode(int x, int y) {
 void RoomView::handleModePress(tgui::Vector2f pos) {
 	IVector tileMouse = getTileAtMouse();
 	IVector atlasTilePos = tileSetView->getSelectedTile();
-	if (!room->getTileMap()->worldPosIsValid(Vector2{static_cast<float>(tileMouse.x), static_cast<float>(tileMouse.y)})) return;
+	if (!room->getTileMap()->worldPosIsValid(Vector2{
+			static_cast<float>(tileMouse.x), static_cast<float>(tileMouse.y)}))
+		return;
 
 	auto screen = aurora::downcast<screens::ProjectScreen *>(
 		Editor::instance->getGui().currentScreen.get());
-
 
 	MapActionData data;
 	data.view = this;

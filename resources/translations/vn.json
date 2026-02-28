@@ -27,10 +27,8 @@
 	"screen.project.roomview.mapheight": "Độ cao Map",
 	"screen.project.roomview.tileset_file": "Tệp Tileset",
 
-	"screen.project.propview.atlas.width": "Độ rộng Atlas",
-	"screen.project.propview.atlas.height": "Độ dài Atlas",
-	"screen.project.propview.collision.width": "Độ rộng Collision",
-	"screen.project.propview.collision.height": "Độ dài Collision",
+	"screen.project.propview.atlas": "Kích cỡ Atlas",
+	"screen.project.propview.collision": "Kích cỡ Collision",
 	"screen.project.propview.has_interactable": "Có thể tương tác?",
 	"screen.project.propview.image": "Tệp ảnh",
 	"screen.project.propview.interactable_type": "Loại tương tác",

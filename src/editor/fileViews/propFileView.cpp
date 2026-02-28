@@ -14,43 +14,47 @@ PropFileView::PropFileView() {
 	propView = PropView::create();
 	propView->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), "100%"});
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(propView));
-	widgetContainer.push_back(propView);
-
 
 	auto propBox = PropertiesBox::create();
 	propBox->setSize({RIGHT_PANEL_W, "100%"});
 	propBox->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W), 0});
 
 	hasInteractableField = BoolField::create();
-	hasInteractableField->label->setText(ts.getKey("screen.project.propview.has_interactable"));
-	hasInteractableField->value->onChange([this](bool value) {
-		propView->getProp()->setHasInteractable(value);
-	});
+	hasInteractableField->label->setText(
+		ts.getKey("screen.project.propview.has_interactable"));
+	hasInteractableField->value->onChange(
+		[this](bool value) { propView->getProp()->setHasInteractable(value); });
 	propBox->addBooleanField(hasInteractableField);
 
 	propImageField = FileField::create();
 	propImageField->label->setText(ts.getKey("screen.project.propview.image"));
-	propImageField->pathFilters = {{"Image", {"*.png"}}}; // TODO: Add more image types
+	propImageField->pathFilters = {
+		{"Image", {"*.png"}}}; // TODO: Add more image types
 	propImageField->callback = [this](const tgui::String &path) {
 		propView->getProp()->setTextureFromPath(path.toStdString());
-	};;
+	};
+	;
 	propBox->addFileField(propImageField);
 
-	// atlasRectField = RectangleField::create();
-	// atlasRectField->label->setText("test1");
-	// atlasRectField->onChange([this](Rectangle r) {
-	// 	propView->getProp()->setAtlasRect(r);
-	// });
-	// propBox->addRectangleField(atlasRectField);
+	atlasRectField = RectangleField::create();
+	atlasRectField->label->setText(ts.getKey("screen.project.propview.atlas"));
+	atlasRectField->onChange(
+		[this](Rectangle r) { propView->updateAtlasRect(r); });
+	propBox->addRectangleField(atlasRectField);
 
-	// collisionsField = RectangleField::create();
-	// collisionsField->label->setText("test2");
-	// collisionsField->onChange([this](Rectangle r) {
-	// 	propView->getProp()->setCollisionRect(r);
-	// });
-	// propBox->addRectangleField(collisionsField);
+	collisionsField = RectangleField::create();
+	collisionsField->label->setText(
+		ts.getKey("screen.project.propview.collision"));
+	collisionsField->onChange(
+		[this](Rectangle r) { propView->updateCollisionRect(r); });
+	propBox->addRectangleField(collisionsField);
 
+	propView->onUpdatedAtlasRect(
+		[this](Rectangle r) { atlasRectField->setValue(r); });
+	propView->onUpdatedCollisionRect(
+		[this](Rectangle r) { collisionsField->setValue(r); });
 	widgetContainer.push_back(propBox);
+	widgetContainer.push_back(propView);
 }
 
 void PropFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
@@ -67,7 +71,7 @@ void PropFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 	propView->setProp(prop);
 	hasInteractableField->value->setChecked(prop->getHasInteractable());
 	propImageField->value->setText(prop->getImagePath());
-	// atlasRectField->setValue(prop->getAtlasRect());
-	// collisionsField->setValue(prop->getCollisionRect());
+	atlasRectField->setValue(prop->getAtlasRect());
+	collisionsField->setValue(prop->getCollisionRect());
 	addWidgets(layout);
 }

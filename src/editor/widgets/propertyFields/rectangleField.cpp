@@ -3,6 +3,7 @@
 #include "TGUI/Widget.hpp"
 #include "raylib.h"
 #include "widgets/propertyFields/fieldConfig.hpp"
+#include <climits>
 
 void setAlign(tgui::Label::Ptr widget) {
 	widget->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
@@ -17,30 +18,30 @@ RectangleField::RectangleField(const char *typeName, bool initRenderer)
 	l_x = tgui::Label::create("X");
 	setAlign(l_x);
 	value_x = tgui::SpinControl::create();
-	value_x->onValueChange([this](int _) {
-		onChange.emit(this, getValue());
-	});
+	value_x->setMinimum(INT_MIN);
+	value_x->setMaximum(INT_MAX);
+	value_x->onValueChange([this](int _) { onChange.emit(this, getValue()); });
 
 	l_y = tgui::Label::create("Y");
 	setAlign(l_y);
 	value_y = tgui::SpinControl::create();
-	value_y->onValueChange([this](int _) {
-		onChange.emit(this, getValue());
-	});
+	value_y->setMinimum(INT_MIN);
+	value_y->setMaximum(INT_MAX);
+	value_y->onValueChange([this](int _) { onChange.emit(this, getValue()); });
 
 	l_width = tgui::Label::create("W");
 	setAlign(l_width);
 	value_width = tgui::SpinControl::create();
-	value_width->onValueChange([this](int _) {
-		onChange.emit(this, getValue());
-	});
+	value_width->setMaximum(INT_MAX);
+	value_width->onValueChange(
+		[this](int _) { onChange.emit(this, getValue()); });
 
 	l_height = tgui::Label::create("H");
 	setAlign(l_height);
 	value_height = tgui::SpinControl::create();
-	value_height->onValueChange([this](int _) {
-		onChange.emit(this, getValue());
-	});
+	value_height->setMaximum(INT_MAX);
+	value_height->onValueChange(
+		[this](int _) { onChange.emit(this, getValue()); });
 
 	m_container->add(label);
 
@@ -65,10 +66,13 @@ void RectangleField::setValue(Rectangle value) {
 }
 
 Rectangle RectangleField::getValue() {
-	return Rectangle{value_x->getValue(), value_y->getValue(), value_width->getValue(), value_height->getValue()};
+	return Rectangle{value_x->getValue(), value_y->getValue(),
+					 value_width->getValue(), value_height->getValue()};
 }
 
-RectangleField::Ptr RectangleField::create() { return std::make_shared<RectangleField>(); }
+RectangleField::Ptr RectangleField::create() {
+	return std::make_shared<RectangleField>();
+}
 
 RectangleField::Ptr RectangleField::copy(RectangleField::ConstPtr widget) {
 	if (widget) {
@@ -95,19 +99,22 @@ void RectangleField::updateSize() {
 
 	auto fieldW = paddedW / 4;
 	l_x->setPosition({PADDING, tgui::bindBottom(label)});
-	l_x->setSize({fieldW / 2, height / 2});
+	l_x->setSize({fieldW * 0.3, height / 2});
 	value_x->setPosition({tgui::bindRight(l_x), tgui::bindBottom(label)});
-	value_x->setSize({fieldW / 2, height / 2});
+	value_x->setSize({fieldW * 0.7, height / 2});
 	l_y->setPosition({tgui::bindRight(value_x), tgui::bindBottom(label)});
-	l_y->setSize({fieldW / 2, height / 2});
+	l_y->setSize({fieldW * 0.3, height / 2});
 	value_y->setPosition({tgui::bindRight(l_y), tgui::bindBottom(label)});
-	value_y->setSize({fieldW / 2, height / 2});
+	value_y->setSize({fieldW * 0.7, height / 2});
 	l_width->setPosition({tgui::bindRight(value_y), tgui::bindBottom(label)});
-	l_width->setSize({fieldW / 2, height / 2});
-	value_width->setPosition({tgui::bindRight(l_width), tgui::bindBottom(label)});
-	value_width->setSize({fieldW / 2, height / 2});
-	l_height->setPosition({tgui::bindRight(value_width), tgui::bindBottom(label)});
-	l_height->setSize({fieldW / 2, height / 2});
-	value_height->setPosition({tgui::bindRight(l_height), tgui::bindBottom(label)});
-	value_height->setSize({fieldW / 2, height / 2});
+	l_width->setSize({fieldW * 0.3, height / 2});
+	value_width->setPosition(
+		{tgui::bindRight(l_width), tgui::bindBottom(label)});
+	value_width->setSize({fieldW * 0.7, height / 2});
+	l_height->setPosition(
+		{tgui::bindRight(value_width), tgui::bindBottom(label)});
+	l_height->setSize({fieldW * 0.3, height / 2});
+	value_height->setPosition(
+		{tgui::bindRight(l_height), tgui::bindBottom(label)});
+	value_height->setSize({fieldW * 0.7, height / 2});
 }

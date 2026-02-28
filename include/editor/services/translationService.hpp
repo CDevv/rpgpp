@@ -38,7 +38,7 @@ class TranslatedString {
 
 class TranslationService {
   public:
-	TranslationService(Editor* editor_ptr);
+	TranslationService(Editor *editor_ptr);
 	std::string current_language = DEFAULT_LANGUAGE;
 	std::map<std::string, std::map<std::string, std::string, std::less<>>,
 			 std::less<>>

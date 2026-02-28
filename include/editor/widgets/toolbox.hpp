@@ -152,7 +152,8 @@ void Toolbox<T>::addTool(const ToolboxItem<T> &item, int idx) {
 			resetToolSelection(item.group);
 			tgui::ButtonRenderer *renderer = btn->getRenderer();
 			renderer->setBackgroundColor(renderer->getBackgroundColorDown());
-			renderer->setBackgroundColorHover(renderer->getBackgroundColorDown());
+			renderer->setBackgroundColorHover(
+				renderer->getBackgroundColorDown());
 			renderer->setTexture(renderer->getTextureDown());
 			renderer->setTextureHover(renderer->getTextureDown());
 		}

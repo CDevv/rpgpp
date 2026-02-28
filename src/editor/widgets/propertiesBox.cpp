@@ -7,6 +7,7 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"
 #include "widgets/propertyFields/boolField.hpp"
+#include "widgets/propertyFields/fieldConfig.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/intField.hpp"
 #include "widgets/propertyFields/rectangleField.hpp"
@@ -14,7 +15,6 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
-#include "widgets/propertyFields/fieldConfig.hpp"
 
 PropertiesBox::PropertiesBox(const char *typeName, bool initRenderer)
 	: tgui::ChildWindow(typeName, initRenderer) {
@@ -108,8 +108,9 @@ void PropertiesBox::addPropsJson(nlohmann::json &j) {
 	}
 }
 
-tgui::Button::Ptr PropertiesBox::constructButton(const tgui::String &title,
-							  std::function<void()> callback) {
+tgui::Button::Ptr
+PropertiesBox::constructButton(const tgui::String &title,
+							   std::function<void()> callback) {
 	auto button = tgui::Button::create(title);
 	button->setSize(TextFormat("100%% - %d", PADDING * 2), 24);
 	button->setPosition({PADDING, 0});

@@ -8,10 +8,9 @@
 
 constexpr float DEFAULT_ANIMATION_SPEED{2.0f};
 
-
 class ActorView : public WorldView {
   private:
-	ResizableCanvasBox* collisionBox;
+	ResizableCanvasBox *collisionBox;
 
 	// Animation Editor Stuff.
 	float animationFrameDuration{DEFAULT_ANIMATION_SPEED};
