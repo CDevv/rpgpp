@@ -6,6 +6,7 @@
 #include "views/propView.hpp"
 #include "widgets/propertyFields/boolField.hpp"
 #include "widgets/propertyFields/fileField.hpp"
+#include "widgets/propertyFields/rectangleField.hpp"
 
 class PropFileView : public FileView {
 public:
@@ -18,13 +19,10 @@ private:
 	PropView::Ptr propView;
 	static const int RIGHT_PANEL_W = 300;
 
-	// IntField::Ptr atlasWidthField;
-	// IntField::Ptr atlasHeightField;
-	// IntField::Ptr collisionWidthField;
-	// IntField::Ptr collisionHeightField;
 	BoolField::Ptr hasInteractableField;
 	FileField::Ptr propImageField;
-
+	RectangleField::Ptr atlasRectField;
+	RectangleField::Ptr collisionsField;
 
 };
 

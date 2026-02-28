@@ -6,6 +6,7 @@
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "widgets/propertyFields/boolField.hpp"
+#include "widgets/propertyFields/rectangleField.hpp"
 #include "widgets/propertyFields/textField.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/intField.hpp"
@@ -40,6 +41,7 @@ class PropertiesBox : public tgui::ChildWindow {
 	void addFileField(FileField::Ptr field);
 	void addTextField(TextField::Ptr field);
 	void addBooleanField(BoolField::Ptr field);
+	void addRectangleField(RectangleField::Ptr field);
 	void addButton(const tgui::String &title, std::function<void()> callback);
 	tgui::Button::Ptr constructButton(const tgui::String &title, std::function<void()> callback);
 };

@@ -1,6 +1,7 @@
 #include "fileViews/propFileView.hpp"
 #include "editor.hpp"
 #include "prop.hpp"
+#include "raylib.h"
 #include "variant.hpp"
 #include "views/propView.hpp"
 #include "widgets/propertiesBox.hpp"
@@ -35,12 +36,19 @@ PropFileView::PropFileView() {
 	};;
 	propBox->addFileField(propImageField);
 
-	// atlasWidthField = IntField::create();
-	// atlasWidthField->label->setText(ts.getKey("screen.project.propview.atlas.width"));
-	// atlasWidthField->value->onValueChange([this](int value) {
-
+	// atlasRectField = RectangleField::create();
+	// atlasRectField->label->setText("test1");
+	// atlasRectField->onChange([this](Rectangle r) {
+	// 	propView->getProp()->setAtlasRect(r);
 	// });
-	// propBox->addIntField(atlasWidthField);
+	// propBox->addRectangleField(atlasRectField);
+
+	// collisionsField = RectangleField::create();
+	// collisionsField->label->setText("test2");
+	// collisionsField->onChange([this](Rectangle r) {
+	// 	propView->getProp()->setCollisionRect(r);
+	// });
+	// propBox->addRectangleField(collisionsField);
 
 	widgetContainer.push_back(propBox);
 }
@@ -59,5 +67,7 @@ void PropFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 	propView->setProp(prop);
 	hasInteractableField->value->setChecked(prop->getHasInteractable());
 	propImageField->value->setText(prop->getImagePath());
+	// atlasRectField->setValue(prop->getAtlasRect());
+	// collisionsField->setValue(prop->getCollisionRect());
 	addWidgets(layout);
 }

@@ -9,6 +9,7 @@
 #include "widgets/propertyFields/boolField.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/intField.hpp"
+#include "widgets/propertyFields/rectangleField.hpp"
 #include "widgets/propertyFields/textField.hpp"
 #include <memory>
 #include <nlohmann/json.hpp>
@@ -161,5 +162,10 @@ void PropertiesBox::addTextField(TextField::Ptr field) {
 
 void PropertiesBox::addBooleanField(BoolField::Ptr field) {
 	field->setSize({"100%", 24});
+	layout->add(field);
+}
+
+void PropertiesBox::addRectangleField(RectangleField::Ptr field) {
+	field->setSize({"100%", 48});
 	layout->add(field);
 }
