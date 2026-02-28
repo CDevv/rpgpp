@@ -70,7 +70,7 @@ void PropFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 
 	propView->setProp(prop);
 	hasInteractableField->value->setChecked(prop->getHasInteractable());
-	propImageField->value->setText(prop->getImagePath());
+	propImageField->value->setText(GetFileName(prop->getImagePath()));
 	atlasRectField->setValue(prop->getAtlasRect());
 	collisionsField->setValue(prop->getCollisionRect());
 	addWidgets(layout);
