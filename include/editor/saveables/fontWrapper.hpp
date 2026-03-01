@@ -10,6 +10,7 @@
 class FontWrapper : public ISaveable {
   public:
 	Font font{};
+	std::string fontSource;
 	FontWrapper() = default;
 	~FontWrapper();
 	FontWrapper(const std::string &filePath);
