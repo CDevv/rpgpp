@@ -26,6 +26,8 @@ class EditorGuiService {
 	bool leftMouseHeld = false;
 	static const int MENUBAR_H = 32;
 
+	tgui::MenuBar::Ptr menuBarPtr;
+
   public:
 	bool isResettingUI = false;
 	EditorGuiService();

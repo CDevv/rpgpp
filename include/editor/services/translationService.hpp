@@ -5,6 +5,7 @@
 #include <functional>
 #include <map>
 #include <string>
+#include <unordered_map>
 
 using namespace std;
 
@@ -38,14 +39,25 @@ class TranslatedString {
 
 class TranslationService {
   public:
+	using ListenerID = size_t;
+	using Callback = std::function<void(ListenerID id)>;
 	TranslationService(Editor *editor_ptr);
-	std::string current_language = DEFAULT_LANGUAGE;
 	std::map<std::string, std::map<std::string, std::string, std::less<>>,
 			 std::less<>>
 		translations = {};
 	TranslatedString getKey(const std::string &key);
 	TranslatedString getKey(const std::string &key,
 							const std::string &c_language);
+	void setLanguage(const std::string &language);
+	std::string getCurrentLanguage() const { return current_language; }
 	std::string getLanguageIdentifierByKey(const std::string &language_key);
+	ListenerID addListener(Callback cb);
+	void removeListener(ListenerID id);
+
+  private:
+	std::string current_language = DEFAULT_LANGUAGE;
+	std::unordered_map<ListenerID, Callback> listeners;
+	ListenerID lastID = 1;
+	void notify();
 };
 #endif

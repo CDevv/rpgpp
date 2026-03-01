@@ -1,28 +1,24 @@
 #include "childWindows/aboutWindow.hpp"
 #include "TGUI/Config.hpp"
 #include "TGUI/Layout.hpp"
-#include "TGUI/Texture.hpp"
-#include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
-#include "TGUI/Widgets/Picture.hpp"
-#include "TGUI/Widgets/VerticalLayout.hpp"
 #include "childWindows/popupWindow.hpp"
 #include "editor.hpp"
-#include "services/translationService.hpp"
+#include "bindTranslation.hpp"
 #include <string>
 
 AboutWindow::AboutWindow(const std::string &title) : PopupWindow(title) {
-	TranslationService &ts = Editor::instance->getTranslations();
-
 	auto layout = tgui::GrowVerticalLayout::create();
 	layout->getRenderer()->setSpaceBetweenWidgets(4.0f);
 
 	EditorGuiService::createLogoCenter(layout);
 
 	auto infoText =
-		tgui::Label::create(ts.getKey("menu.about.rpgpp_description"));
+		tgui::Label::create();
+	bindTranslation(infoText, "menu.about.rpgpp_description", &tgui::Label::setText);
+	bindTranslation<tgui::ChildWindow>(this->currentWindow, "menu.about._label", &tgui::ChildWindow::setTitle);
 	infoText->setTextSize(20);
 	infoText->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	layout->add(infoText);

@@ -2,6 +2,7 @@
 
 #include "fileViews/actorFileView.hpp"
 #include "TGUI/String.hpp"
+#include "TGUI/Widgets/Label.hpp"
 #include "actor.hpp"
 #include "editor.hpp"
 #include "raylib.h"
@@ -10,6 +11,7 @@
 #include "widgets/frameEditor.hpp"
 #include "widgets/propertiesBox.hpp"
 #include "widgets/propertyFields/fileField.hpp"
+#include "bindTranslation.hpp"
 
 constexpr int IDLE_OFFSET{2};
 constexpr int RIGHT_PANEL_W{300};
@@ -34,9 +36,8 @@ ActorFileView::ActorFileView() {
 
 	// The TileSet Editor
 	this->tileSetField = FileField::create();
-	auto tileSetFileTr = ts.getKey("screen.project.roomview.tileset_file");
-	tileSetField->label->setText(tileSetFileTr);
-	tileSetField->pathFilters = {{tileSetFileTr, {"*.rtiles"}}};
+	bindTranslation<tgui::Label>(tileSetField->label, "screen.project.roomview.tileset_file", &tgui::Label::setText);
+	tileSetField->pathFilters = {{tileSetField->label->getText(), {"*.rtiles"}}};
 	tileSetField->callback = [this](const tgui::String &text) {
 		actorView->actor->setTileSet(text.toStdString());
 	};
@@ -44,8 +45,7 @@ ActorFileView::ActorFileView() {
 
 	// Collision Rectangle Editor
 	collisionField = RectangleField::create();
-	collisionField->label->setText(
-		ts.getKey("screen.project.propview.collision"));
+	bindTranslation<tgui::Label>(collisionField->label, "screen.project.propview.collision", &tgui::Label::setText);
 	collisionField->onChange(
 		[this](Rectangle r) { actorView->setCollisionRect(r); });
 	propBox->addRectangleField(collisionField);

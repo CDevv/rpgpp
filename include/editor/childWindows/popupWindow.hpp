@@ -9,6 +9,7 @@ class PopupWindow {
 
 	tgui::ChildWindow::Ptr currentWindow;
 	PopupWindow(const std::string &title);
+	~PopupWindow() { close(); };
 
 	void open();
 	void close();

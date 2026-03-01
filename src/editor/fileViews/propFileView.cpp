@@ -10,7 +10,7 @@
 #include "widgets/propertyFields/boolField.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/selectField.hpp"
-
+#include "bindTranslation.hpp"
 PropFileView::PropFileView() {
 	TranslationService &ts = Editor::instance->getTranslations();
 
@@ -23,8 +23,7 @@ PropFileView::PropFileView() {
 	propBox->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W), 0});
 
 	hasInteractableField = BoolField::create();
-	hasInteractableField->label->setText(
-		ts.getKey("screen.project.propview.has_interactable"));
+	bindTranslation(hasInteractableField->label, "screen.project.propview.has_interactable", &tgui::Label::setText);
 	hasInteractableField->value->onChange([this](bool value) {
 		propView->getProp()->setHasInteractable(value);
 		interactableTypeField->setEnabled(value);
@@ -37,8 +36,7 @@ PropFileView::PropFileView() {
 	propBox->addBooleanField(hasInteractableField);
 
 	interactableTypeField = SelectField::create();
-	interactableTypeField->label->setText(
-		ts.getKey("screen.project.propview.interactable_type"));
+	bindTranslation(interactableTypeField->label, "screen.project.propview.interactable_type", &tgui::Label::setText);
 	for (const auto &[k, v] :
 		 Editor::instance->getProject()->getInteractableNames()) {
 		interactableTypeField->value->addItem(GetFileNameWithoutExt(k.c_str()));
@@ -50,7 +48,7 @@ PropFileView::PropFileView() {
 	propBox->addSelectField(interactableTypeField);
 
 	propImageField = FileField::create();
-	propImageField->label->setText(ts.getKey("screen.project.propview.image"));
+	bindTranslation(propImageField->label, "screen.project.propview.image", &tgui::Label::setText);
 	propImageField->pathFilters = {
 		{"Image", {"*.png"}}}; // TODO: Add more image types
 	propImageField->callback = [this](const tgui::String &path) {
@@ -59,14 +57,13 @@ PropFileView::PropFileView() {
 	propBox->addFileField(propImageField);
 
 	atlasRectField = RectangleField::create();
-	atlasRectField->label->setText(ts.getKey("screen.project.propview.atlas"));
+	bindTranslation(atlasRectField->label, "screen.project.propview.atlas", &tgui::Label::setText);
 	atlasRectField->onChange(
 		[this](Rectangle r) { propView->updateAtlasRect(r); });
 	propBox->addRectangleField(atlasRectField);
 
 	collisionsField = RectangleField::create();
-	collisionsField->label->setText(
-		ts.getKey("screen.project.propview.collision"));
+	bindTranslation(collisionsField->label, "screen.project.propview.collision", &tgui::Label::setText);
 	collisionsField->onChange(
 		[this](Rectangle r) { propView->updateCollisionRect(r); });
 	propBox->addRectangleField(collisionsField);

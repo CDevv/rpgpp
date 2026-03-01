@@ -50,7 +50,7 @@ TranslationService::TranslationService(Editor *editor_ptr) {
 TranslatedString getKeyWrapper(TranslationService *tr,
 							   const std::string &c_language,
 							   const std::string &key) {
-	if (tr->translations.find(tr->current_language) != tr->translations.end()) {
+	if (tr->translations.find(tr->getCurrentLanguage()) != tr->translations.end()) {
 		map<string, string, less<>> gotten_translations =
 			tr->translations[c_language];
 		if (gotten_translations.find(key) != gotten_translations.end()) {
@@ -67,10 +67,35 @@ TranslatedString getKeyWrapper(TranslationService *tr,
 	}
 }
 
+void TranslationService::setLanguage(const std::string &language) {
+	current_language = language;
+
+	for (auto& [id, cb] : listeners) {
+		cb(id);
+	}
+}
+
+TranslationService::ListenerID TranslationService::addListener(Callback cb) {
+	ListenerID id = lastID++;
+	listeners[id] = std::move(cb);
+	std::cout << listeners.size() << "\n";
+	return id;
+}
+
+void TranslationService::removeListener(ListenerID id) {
+	if (listeners.find(id) != listeners.end()) {
+		listeners.erase(id);
+	}
+}
+
+// @notice Use of getKey is not recommended unless you guarantee that the widget using the provided
+// translation can update itself when translation changes. Otherwise, please use `bindTranslation()` in `bindTranslation.hpp`
 TranslatedString TranslationService::getKey(const std::string &key) {
 	return getKeyWrapper(this, current_language, key);
 }
 
+// @notice Use of getKey is not recommended unless you guarantee that the widget using the provided
+// translation can update itself when translation changes. Otherwise, please use `bindTranslation()` in `bindTranslation.hpp`
 TranslatedString TranslationService::getKey(const std::string &key,
 											const std::string &c_language) {
 	return getKeyWrapper(this, c_language, key);

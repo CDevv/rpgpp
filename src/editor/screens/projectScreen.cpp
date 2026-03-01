@@ -9,6 +9,7 @@
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/Label.hpp"
+#include "TGUI/Widgets/MenuBar.hpp"
 #include "TGUI/Widgets/MessageBox.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "TGUI/Widgets/Scrollbar.hpp"
@@ -16,7 +17,6 @@
 #include "components/resizableContainer.hpp"
 #include "components/tooltip.hpp"
 #include "editor.hpp"
-#include "gamedata.hpp"
 #include "projectFile.hpp"
 #include "raylib.h"
 #include "services/editorGuiService.hpp"
@@ -28,12 +28,13 @@
 #include <filesystem>
 #include <memory>
 #include <vector>
-
-void screens::ProjectScreen::layoutReload() {
+#include "bindTranslation.hpp"
+using namespace screens;
+void ProjectScreen::layoutReload() {
 	resListWBinder->setSize(modifiable_RESLIST_W, "100%");
 }
 
-void screens::ProjectScreen::mouseMove(int x, int y) {
+void ProjectScreen::mouseMove(int x, int y) {
 	resourcesList->manualMouseMoved(
 		{static_cast<float>(x), static_cast<float>(y)});
 	fileTabs->manualMouseMoved(
@@ -49,7 +50,7 @@ void screens::ProjectScreen::mouseMove(int x, int y) {
 			 ),
 		 static_cast<float>(y - tabsContainer->getPosition().y)});
 }
-void screens::ProjectScreen::leftMouseReleased(int x, int y) {
+void ProjectScreen::leftMouseReleased(int x, int y) {
 	resourcesList->manualLeftMouseReleased(
 		{static_cast<float>(x), static_cast<float>(y)});
 	fileTabs->manualLeftMouseReleased(
@@ -59,33 +60,35 @@ void screens::ProjectScreen::leftMouseReleased(int x, int y) {
 		 static_cast<float>(y - tabsContainer->getPosition().y)});
 }
 
-void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
+void ProjectScreen::bindMenuBar(tgui::MenuBar::Ptr menuBarPtr) {
 	auto &ts = Editor::instance->getTranslations();
+	std::vector<tgui::String> saveFileHierarchy = {
+		ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")};
+	std::vector<tgui::String> undoHierarchy = {
+		ts.getKey("menu.edit._label"), ts.getKey("menu.edit.undo")};
+	std::vector<tgui::String> redoHierarchy = {
+		ts.getKey("menu.edit._label"), ts.getKey("menu.edit.redo")};
+	menuBarPtr->setMenuItemEnabled(saveFileHierarchy, true);
+	menuBarPtr->connectMenuItem(saveFileHierarchy, [this] {
+		if (!openedFiles.empty()) {
+			tgui::String currentFile = fileTabs->getSelectedId();
+			auto &projectFile = openedFiles.at(currentFile);
+			projectFile->saveFile(projectFile->getFilePath());
+		}
+	});
 
-	if (!Editor::instance->getGui().menuBar.expired()) {
-		auto menuBarPtr = Editor::instance->getGui().menuBar.lock();
-		std::vector<tgui::String> saveFileHierarchy = {
-			ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")};
-		std::vector<tgui::String> undoHierarchy = {
-			ts.getKey("menu.edit._label"), ts.getKey("menu.edit.undo")};
-		std::vector<tgui::String> redoHierarchy = {
-			ts.getKey("menu.edit._label"), ts.getKey("menu.edit.redo")};
-		menuBarPtr->setMenuItemEnabled(saveFileHierarchy, true);
-		menuBarPtr->connectMenuItem(saveFileHierarchy, [this] {
-			if (!openedFiles.empty()) {
-				tgui::String currentFile = fileTabs->getSelectedId();
-				auto &projectFile = openedFiles.at(currentFile);
-				projectFile->saveFile(projectFile->getFilePath());
-			}
-		});
+	menuBarPtr->setMenuItemEnabled(undoHierarchy, true);
+	menuBarPtr->connectMenuItem(
+		undoHierarchy, [this] { getCurrentFile().getView().undoAction(); });
 
-		menuBarPtr->setMenuItemEnabled(undoHierarchy, true);
-		menuBarPtr->connectMenuItem(
-			undoHierarchy, [this] { getCurrentFile().getView().undoAction(); });
+	menuBarPtr->setMenuItemEnabled(redoHierarchy, true);
+	menuBarPtr->connectMenuItem(
+		redoHierarchy, [this] { getCurrentFile().getView().redoAction(); });
+}
 
-		menuBarPtr->setMenuItemEnabled(redoHierarchy, true);
-		menuBarPtr->connectMenuItem(
-			redoHierarchy, [this] { getCurrentFile().getView().redoAction(); });
+void ProjectScreen::initItems(tgui::Group::Ptr layout) {
+	if (auto ptr = Editor::instance->getGui().menuBar.lock()) {
+		bindMenuBar(ptr);
 	}
 
 	// Commentary:
@@ -124,7 +127,7 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	layout->add(resourcesList);
 
 	// Tool bar
-	toolBar = createToolBar(ts);
+	toolBar = createToolBar();
 	layout->add(toolBar);
 
 	// File tabs
@@ -181,7 +184,7 @@ void screens::ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	SetWindowState(FLAG_WINDOW_MAXIMIZED);
 }
 
-void screens::ProjectScreen::addFileView(EngineFileType fileType,
+void ProjectScreen::addFileView(EngineFileType fileType,
 										 const std::string &path) {
 
 	Editor::instance->getGui().gui->setTabKeyUsageEnabled(
@@ -199,12 +202,12 @@ void screens::ProjectScreen::addFileView(EngineFileType fileType,
 	}
 }
 
-void screens::ProjectScreen::switchView(tgui::String id) {
+void ProjectScreen::switchView(tgui::String id) {
 	fileViewGroup->removeAllWidgets();
 	openedFiles.at(id)->addWidgets(fileViewGroup);
 }
 
-void screens::ProjectScreen::clearView() {
+void ProjectScreen::clearView() {
 	fileViewGroup->removeAllWidgets();
 	std::unique_ptr<ProjectFile> empty =
 		fileVisitor->visit(EngineFileType::FILE_EMPTY, ".");
@@ -212,7 +215,7 @@ void screens::ProjectScreen::clearView() {
 	empty->addWidgets(fileViewGroup);
 }
 
-tgui::Group::Ptr screens::ProjectScreen::createToolBar(TranslationService &ts) {
+tgui::Group::Ptr ProjectScreen::createToolBar() {
 	auto toolBar = tgui::Group::create({"100%", TOOLBAR_H});
 	toolBar->setPosition(0, 0);
 	toolBar->getRenderer()->setPadding(8);
@@ -237,7 +240,8 @@ tgui::Group::Ptr screens::ProjectScreen::createToolBar(TranslationService &ts) {
 	auto &fs = Editor::instance->getFs();
 
 	auto playBtnTooltip =
-		Tooltip::create(ts.getKey("screen.project.toolbar.play"));
+		Tooltip::create("");
+	bindTranslation<Tooltip>(playBtnTooltip, "screen.project.toolbar.play", &Tooltip::setText);
 	auto playBtn = tgui::BitmapButton::create();
 	auto playtestImg = tgui::Texture(fs.getResourcePath("playtest.png"));
 	playBtn->setImage(playtestImg);
@@ -248,7 +252,8 @@ tgui::Group::Ptr screens::ProjectScreen::createToolBar(TranslationService &ts) {
 	toolBar->add(playBtn, "playBtn");
 
 	auto buildTooltip =
-		Tooltip::create(ts.getKey("screen.project.toolbar.build"));
+		Tooltip::create("");
+	bindTranslation<Tooltip>(buildTooltip, "screen.project.toolbar.build", &Tooltip::setText);
 	auto buildBtn = tgui::BitmapButton::create();
 	auto buildImg = tgui::Texture(fs.getResourcePath("build.png"));
 	buildBtn->setImage(buildImg);
@@ -261,7 +266,7 @@ tgui::Group::Ptr screens::ProjectScreen::createToolBar(TranslationService &ts) {
 	return toolBar;
 }
 
-void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
+void ProjectScreen::addResourceButtons(EngineFileType fileType) {
 	auto project = Editor::instance->getProject();
 
 	this->listedResourcesType = fileType;
@@ -322,7 +327,7 @@ void screens::ProjectScreen::addResourceButtons(EngineFileType fileType) {
 	}
 }
 
-ResizableContainer::Ptr screens::ProjectScreen::createResourcesList() {
+ResizableContainer::Ptr ProjectScreen::createResourcesList() {
 	auto project = Editor::instance->getProject();
 	TranslationService &tService = Editor::instance->getTranslations();
 
@@ -348,8 +353,8 @@ ResizableContainer::Ptr screens::ProjectScreen::createResourcesList() {
 	resourceChoose->setSelectedItem("Maps");
 	group->add(resourceChoose);
 
-	auto createResourceBtn = tgui::Button::create(
-		tService.getKey("screen.project.create_new_resource"));
+	auto createResourceBtn = tgui::Button::create();
+	bindTranslation<tgui::Button>(createResourceBtn, "screen.project.create_new_resource", &tgui::Button::setText);
 	createResourceBtn->setPosition(0, tgui::bindBottom(resourceChoose));
 	createResourceBtn->setSize("100%", RESLIST_CREATE_RES_BTN_H);
 	createResourceBtn->onPress([this] {
@@ -391,7 +396,7 @@ ResizableContainer::Ptr screens::ProjectScreen::createResourcesList() {
 	return group;
 }
 
-ProjectFile &screens::ProjectScreen::getCurrentFile() {
+ProjectFile &ProjectScreen::getCurrentFile() {
 	tgui::String currentFile = fileTabs->getSelectedId();
 	return *openedFiles.at(currentFile);
 }

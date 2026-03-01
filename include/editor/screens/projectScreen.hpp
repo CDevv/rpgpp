@@ -50,7 +50,7 @@ class ProjectScreen : public UIScreen {
   private:
 	void switchView(tgui::String id);
 	void clearView();
-	tgui::Group::Ptr createToolBar(TranslationService &ts);
+	tgui::Group::Ptr createToolBar();
 	ResizableContainer::Ptr createResourcesList();
 
   public:
@@ -58,6 +58,7 @@ class ProjectScreen : public UIScreen {
 	void addResourceButtons(EngineFileType fileType);
 	void mouseMove(int x, int y) override;
 	void leftMouseReleased(int x, int y) override;
+	void bindMenuBar(tgui::MenuBar::Ptr menubar) override;
 	void layoutReload();
 	ProjectFile &getCurrentFile();
 	void initItems(tgui::Group::Ptr layout) override;

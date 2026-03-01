@@ -17,7 +17,7 @@
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/toolbox.hpp"
 #include <memory>
-
+#include "bindTranslation.hpp"
 RoomFileView::RoomFileView() {
 	RoomTool a;
 	TranslationService &ts = Editor::instance->getTranslations();
@@ -74,7 +74,7 @@ RoomFileView::RoomFileView() {
 						ROOM_LAYER_H + LAYER_CHOOSE_H});
 
 	widthField = IntField::create();
-	widthField->label->setText(ts.getKey("screen.project.roomview.mapwidth"));
+	bindTranslation(widthField->label, "screen.project.roomview.mapwidth", &tgui::Label::setText);
 	widthField->value->onValueChange([this](int value) {
 		Vector2 worldSize =
 			this->roomView->getRoom()->getTileMap()->getMaxWorldSize();
@@ -84,7 +84,7 @@ RoomFileView::RoomFileView() {
 	props->addIntField(widthField);
 
 	heightField = IntField::create();
-	heightField->label->setText(ts.getKey("screen.project.roomview.mapheight"));
+	bindTranslation(heightField->label, "screen.project.roomview.mapheight", &tgui::Label::setText);
 	heightField->value->onValueChange([this](int value) {
 		Vector2 worldSize =
 			this->roomView->getRoom()->getTileMap()->getMaxWorldSize();
@@ -93,8 +93,8 @@ RoomFileView::RoomFileView() {
 	});
 	props->addIntField(heightField);
 
-	tileSetField = FileField::create(
-		ts.getKey("screen.project.roomview.tileset_file"), "...");
+	tileSetField = FileField::create("", "...");
+	bindTranslation(tileSetField->label, "screen.project.roomview.tileset_file", &tgui::Label::setText);
 	tileSetField->pathFilters = {{"RPG++ TileSet", {"*.rtiles"}}};
 	tileSetField->callback = [this](const tgui::String &path) {
 		auto room = this->roomView->getRoom();

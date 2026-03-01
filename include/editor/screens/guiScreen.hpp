@@ -1,6 +1,7 @@
 #ifndef _RPGPP_BASE_GUI_WIDGET_H
 #define _RPGPP_BASE_GUI_WIDGET_H
 
+#include "TGUI/Widgets/MenuBar.hpp"
 #include <TGUI/Widgets/Group.hpp>
 #include <string>
 
@@ -16,10 +17,9 @@ class UIScreen {
 		// to create widgets.
 	}
 
+	virtual void bindMenuBar(tgui::MenuBar::Ptr menubar) {}
 	virtual void mouseMove(int x, int y) {}
-
 	virtual void leftMouseReleased(int x, int y) {}
-
 	virtual void unloadScreen() {
 		// this is a base method when you need to unload textures and such.
 	}

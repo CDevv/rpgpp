@@ -5,10 +5,13 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "childWindows/popupWindow.hpp"
 #include "editor.hpp"
+#include "bindTranslation.hpp"
 
 SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	TranslationService &ts = Editor::instance->getTranslations();
 	ThemeService &theme = Editor::instance->getThemeService();
+
+	bindTranslation<tgui::ChildWindow>(this->currentWindow, "menu.options._label", &tgui::ChildWindow::setTitle);
 
 	const auto layout = tgui::GrowVerticalLayout::create();
 
@@ -18,9 +21,10 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	layout->getRenderer()->setSpaceBetweenWidgets(10.0f);
 
 	const auto topOptionsHeader =
-		tgui::Label::create(ts.getKey("menu.options.editor"));
+		tgui::Label::create();
 	topOptionsHeader->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	topOptionsHeader->getRenderer()->setTextSize(20);
+	bindTranslation(topOptionsHeader, "menu.options.editor", &tgui::Label::setText);
 	layout->add(topOptionsHeader);
 
 	// Language
@@ -38,18 +42,23 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 		languageSelector->setSelectedItem(langTranslation);
 
 	languageSelector->onItemSelect.connect([&](const tgui::String &item) {
-		ts.current_language = ts.getLanguageIdentifierByKey(item.toStdString());
+		ts.setLanguage(ts.getLanguageIdentifierByKey(item.toStdString()));
 		ConfigurationService &configService =
 			Editor::instance->getConfiguration();
-		configService.setStringValue("language", ts.current_language);
+		configService.setStringValue("language", ts.getCurrentLanguage());
 		configService.saveConfiguration();
-		Editor::instance->getGui().reloadUi();
+		Editor::instance->getGui().initMenuBar();
+		if (auto ptr = Editor::instance->getGui().menuBar.lock()) {
+			Editor::instance->getGui().currentScreen->bindMenuBar(ptr);
+		}
+		// Editor::instance->getGui().reloadUi();
 	});
 
 	languageLayout->setSize({"100%", 30});
 	const auto languageLabel =
-		tgui::Label::create(ts.getKey("screen.options.language"));
+		tgui::Label::create();
 	languageLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
+	bindTranslation(languageLabel, "screen.options.language", &tgui::Label::setText);
 
 	languageLayout->add(languageLabel);
 	languageLayout->add(languageSelector);
@@ -60,8 +69,9 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 
 	themeLayout->setSize({"100%", 30});
 	const auto themeLabel =
-		tgui::Label::create(ts.getKey("screen.options.theme"));
+		tgui::Label::create();
 	themeLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
+	bindTranslation(themeLabel, "screen.options.theme", &tgui::Label::setText);
 
 	for (const auto &theme : theme.getThemes())
 		themeSelector->addItem(theme);

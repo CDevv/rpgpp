@@ -69,7 +69,8 @@
 				"dir2": "Trái",
 				"dir3": "Phải",
 				"play": "Chạy",
-				"is_walk": "Có phải animation đi?"
+				"pause": "Tạm dừng",
+				"is_non_idle": "Có phải animation?"
 			},
 
 			"toolbar": {

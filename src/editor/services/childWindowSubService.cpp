@@ -10,18 +10,16 @@
 ChildWindowSubService::ChildWindowSubService() { this->createWindows(); }
 
 void ChildWindowSubService::createWindows() {
-	TranslationService &ts = Editor::instance->getTranslations();
-
 	if (!this->childWindows.empty())
 		this->childWindows.clear();
 
 	this->childWindows.try_emplace(
 		"about", std::unique_ptr<AboutWindow>(
-					 new AboutWindow(ts.getKey("menu.about._label"))));
+					 new AboutWindow("")));
 
 	this->childWindows.try_emplace(
 		"options", std::unique_ptr<SettingsWindow>(
-					   new SettingsWindow(ts.getKey("menu.options._label"))));
+					   new SettingsWindow("")));
 }
 
 void ChildWindowSubService::openWindow(const std::string &windowName) {

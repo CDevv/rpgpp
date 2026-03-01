@@ -223,45 +223,48 @@ ChildWindowSubService *EditorGuiService::getChildWindowSubService() {
 
 void EditorGuiService::initMenuBar() {
 	// Clear if there's data left over.
-	this->translations.clear();
-	auto menuBar = tgui::MenuBar::create();
-	this->menuBar = menuBar;
+	// this->translations.clear();
+	if (this->menuBarPtr != nullptr) {
+		gui->remove(this->menuBarPtr);
+	}
+	menuBarPtr = tgui::MenuBar::create();
+	this->menuBar = menuBarPtr;
 	auto &ts = Editor::instance->getTranslations();
 
 	const auto &fileOptionsTranslation = ts.getKey("menu.file._label");
 	const auto &fileOpenProjectTranslation =
 		ts.getKey("menu.file.open_project");
 
-	menuBar->addMenu(fileOptionsTranslation);
-	menuBar->addMenuItem(ts.getKey("menu.file.new_project"));
-	menuBar->addMenuItem(fileOpenProjectTranslation);
-	menuBar->addMenuItem(ts.getKey("menu.file.save_file"));
-	menuBar->connectMenuItem(
+	menuBarPtr->addMenu(fileOptionsTranslation);
+	menuBarPtr->addMenuItem(ts.getKey("menu.file.new_project"));
+	menuBarPtr->addMenuItem(fileOpenProjectTranslation);
+	menuBarPtr->addMenuItem(ts.getKey("menu.file.save_file"));
+	menuBarPtr->connectMenuItem(
 		{fileOptionsTranslation, fileOpenProjectTranslation},
 		[] { Editor::instance->getFs().promptOpenProject(); });
 
-	menuBar->addMenu(ts.getKey("menu.edit._label"));
-	menuBar->addMenuItem(ts.getKey("menu.edit.undo"));
-	menuBar->addMenuItem(ts.getKey("menu.edit.redo"));
+	menuBarPtr->addMenu(ts.getKey("menu.edit._label"));
+	menuBarPtr->addMenuItem(ts.getKey("menu.edit.undo"));
+	menuBarPtr->addMenuItem(ts.getKey("menu.edit.redo"));
 
 	const auto optionsTranslation = ts.getKey("menu.options._label");
 	const auto editorOptionsTranslation = ts.getKey("menu.options.editor");
-	menuBar->addMenu(optionsTranslation);
-	menuBar->addMenuItem(editorOptionsTranslation);
-	menuBar->connectMenuItem(
+	menuBarPtr->addMenu(optionsTranslation);
+	menuBarPtr->addMenuItem(editorOptionsTranslation);
+	menuBarPtr->connectMenuItem(
 		{optionsTranslation, editorOptionsTranslation},
 		[&] { this->childWindowService->openWindow("options"); });
 
 	const auto &aboutOptions = ts.getKey("menu.about._label"),
 			   &aboutRpgpp = ts.getKey("menu.about.rpgpp");
-	menuBar->addMenu(aboutOptions);
-	menuBar->addMenuItem(aboutRpgpp);
+	menuBarPtr->addMenu(aboutOptions);
+	menuBarPtr->addMenuItem(aboutRpgpp);
 
-	menuBar->connectMenuItem({aboutOptions, aboutRpgpp}, [&] {
+	menuBarPtr->connectMenuItem({aboutOptions, aboutRpgpp}, [&] {
 		this->childWindowService->openWindow("about");
 	});
-	menuBar->setSize({"100%", MENUBAR_H});
-	this->gui->add(menuBar);
+	menuBarPtr->setSize({"100%", MENUBAR_H});
+	this->gui->add(menuBarPtr);
 }
 
 void EditorGuiService::gotoPreviousScreen() {
