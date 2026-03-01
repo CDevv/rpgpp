@@ -5,11 +5,12 @@
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
+#include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"
 #include <memory>
 
-class SelectField : public tgui::SubwidgetContainer {
+class SelectField : public tgui::Group {
   private:
 	void updateSize();
 
