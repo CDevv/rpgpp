@@ -30,7 +30,8 @@ DialogueFileView::DialogueFileView() {
 
 	auto toolsPanel = tgui::Panel::create({"100%", 32});
 	toolsPanel->getRenderer()->setPadding({4, 4});
-	newLineButton = tgui::Button::create(ts.getKey("screen.project.dialogueview.add_new_line"));
+	newLineButton = tgui::Button::create(
+		ts.getKey("screen.project.dialogueview.add_new_line"));
 	newLineButton->setSize("20%", "100%");
 	toolsPanel->add(newLineButton);
 
@@ -39,7 +40,6 @@ DialogueFileView::DialogueFileView() {
 	mainPanel = tgui::ScrollablePanel::create({"100%", "100% - 32"});
 	mainPanel->setPosition(0, 32);
 	mainPanel->getRenderer()->setPadding({16, 16});
-	mainPanel->setContentSize({0, 1000});
 
 	mainPanel->getVerticalScrollbar()->setPolicy(
 		tgui::Scrollbar::Policy::Automatic);
@@ -111,7 +111,8 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data,
 	});
 	panel->add(diagTextEdit);
 
-	auto hasImageCheck = tgui::CheckBox::create(ts.getKey("screen.project.dialogueview.has_a_portrait"));
+	auto hasImageCheck = tgui::CheckBox::create(
+		ts.getKey("screen.project.dialogueview.has_a_portrait"));
 	hasImageCheck->setSize(32, 32);
 	hasImageCheck->setChecked(line.hasPortrait);
 

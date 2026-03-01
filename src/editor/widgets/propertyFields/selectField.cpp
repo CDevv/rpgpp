@@ -19,7 +19,9 @@ SelectField::SelectField(const char *typeName, bool initRenderer)
 	updateSize();
 }
 
-SelectField::Ptr SelectField::create() { return std::make_shared<SelectField>(); }
+SelectField::Ptr SelectField::create() {
+	return std::make_shared<SelectField>();
+}
 
 SelectField::Ptr SelectField::copy(SelectField::ConstPtr widget) {
 	if (widget) {

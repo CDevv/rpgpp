@@ -15,8 +15,7 @@ using json = nlohmann::json;
 
 static void flattenJson(const json &j,
 						std::map<std::string, std::string, std::less<>> &out,
-						const std::string &prefix = "")
-{
+						const std::string &prefix = "") {
 	for (auto it = j.begin(); it != j.end(); ++it) {
 		std::string key = prefix.empty() ? it.key() : prefix + "." + it.key();
 		if (it->is_object()) {
@@ -41,9 +40,8 @@ TranslationService::TranslationService(Editor *editor_ptr) {
 
 		std::map<std::string, std::string, std::less<>> translated;
 		flattenJson(parsed, translated);
-		this->translations.try_emplace(
-			directory_entry.path().stem().string(),
-			std::move(translated));
+		this->translations.try_emplace(directory_entry.path().stem().string(),
+									   std::move(translated));
 	}
 	this->current_language =
 		editor_ptr->getConfiguration().getStringValue("language");

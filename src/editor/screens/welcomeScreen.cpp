@@ -16,11 +16,14 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	if (!Editor::instance->getGui().menuBar.expired()) {
 		auto menuBarPtr = Editor::instance->getGui().menuBar.lock();
 		menuBarPtr->setMenuItemEnabled(
-			{ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")}, false);
+			{ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")},
+			false);
 		menuBarPtr->setMenuItemEnabled(
-			{ts.getKey("menu.edit._label"), ts.getKey("menu.edit.undo")}, false);
+			{ts.getKey("menu.edit._label"), ts.getKey("menu.edit.undo")},
+			false);
 		menuBarPtr->setMenuItemEnabled(
-			{ts.getKey("menu.edit._label"), ts.getKey("menu.edit.redo")}, false);
+			{ts.getKey("menu.edit._label"), ts.getKey("menu.edit.redo")},
+			false);
 	}
 
 	const auto verticalLayout = tgui::GrowVerticalLayout::create();

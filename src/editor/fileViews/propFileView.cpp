@@ -25,26 +25,28 @@ PropFileView::PropFileView() {
 	hasInteractableField = BoolField::create();
 	hasInteractableField->label->setText(
 		ts.getKey("screen.project.propview.has_interactable"));
-	hasInteractableField->value->onChange(
-		[this](bool value) {
-			propView->getProp()->setHasInteractable(value);
-			interactableTypeField->setEnabled(value);
-			if (value) {
-				interactableTypeField->value->setSelectedItemByIndex(0);
-			} else {
-				interactableTypeField->value->deselectItem();
-			}
-		});
+	hasInteractableField->value->onChange([this](bool value) {
+		propView->getProp()->setHasInteractable(value);
+		interactableTypeField->setEnabled(value);
+		if (value) {
+			interactableTypeField->value->setSelectedItemByIndex(0);
+		} else {
+			interactableTypeField->value->deselectItem();
+		}
+	});
 	propBox->addBooleanField(hasInteractableField);
 
 	interactableTypeField = SelectField::create();
-	interactableTypeField->label->setText(ts.getKey("screen.project.propview.interactable_type"));
-	for (const auto& [k, v] : Editor::instance->getProject()->getInteractableNames()) {
+	interactableTypeField->label->setText(
+		ts.getKey("screen.project.propview.interactable_type"));
+	for (const auto &[k, v] :
+		 Editor::instance->getProject()->getInteractableNames()) {
 		interactableTypeField->value->addItem(GetFileNameWithoutExt(k.c_str()));
 	}
-	interactableTypeField->value->onItemSelect([this](const tgui::String &item) {
-		propView->getProp()->setInteractableType(item.toStdString());
-	});
+	interactableTypeField->value->onItemSelect(
+		[this](const tgui::String &item) {
+			propView->getProp()->setInteractableType(item.toStdString());
+		});
 	propBox->addSelectField(interactableTypeField);
 
 	propImageField = FileField::create();

@@ -16,8 +16,8 @@ void ChildWindowSubService::createWindows() {
 		this->childWindows.clear();
 
 	this->childWindows.try_emplace(
-		"about",
-		std::unique_ptr<AboutWindow>(new AboutWindow(ts.getKey("menu.about._label"))));
+		"about", std::unique_ptr<AboutWindow>(
+					 new AboutWindow(ts.getKey("menu.about._label"))));
 
 	this->childWindows.try_emplace(
 		"options", std::unique_ptr<SettingsWindow>(

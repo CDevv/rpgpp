@@ -10,7 +10,7 @@
 class ActorFileView : public FileView {
   private:
 	FrameEditor::Ptr frameEditor;
-	
+
 	FileField::Ptr tileSetField;
 	RectangleField::Ptr collisionField;
 	ActorView::Ptr actorView;
