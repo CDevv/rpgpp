@@ -27,10 +27,10 @@ ActorView::Ptr ActorView::create(Actor *actor) {
 void ActorView::setActor(Actor *actor) {
 	this->actor = actor;
 
-	this->collisionBox = new ResizableCanvasBox(
+	this->collisionBox = std::make_unique<ResizableCanvasBox>(
 		"collisionRect", this->actor->getCollisionRect(), RED);
 
-	this->atlasBox = new ResizableCanvasBox(
+	this->atlasBox = std::make_unique<ResizableCanvasBox>(
 		"atlasRect", actor->getCurrentAnimationRectangle(), BLUE, false);
 }
 

@@ -11,8 +11,8 @@ constexpr float DEFAULT_ANIMATION_SPEED{2.0f};
 
 class ActorView : public WorldView {
   private:
-	ResizableCanvasBox *collisionBox;
-	ResizableCanvasBox *atlasBox;
+	std::unique_ptr<ResizableCanvasBox> collisionBox;
+	std::unique_ptr<ResizableCanvasBox> atlasBox;
 	float animationCurrentDuration{0.0f};
 
   public:
