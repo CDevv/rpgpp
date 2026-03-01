@@ -229,6 +229,24 @@ Vector2 Actor::getCurrentAnimationAtlas() const {
 	return this->getAnimationRaw(this->currentAnimation).at(currentFrame);
 }
 
+Vector2 Actor::getAnimationAtlasByIdx(int frameIndex) const {
+	return this->getAnimationRaw(this->currentAnimation).at(frameIndex);
+}
+
+void Actor::setAnimationFrame(int frameIndex) {
+	this->currentFrame = frameIndex;
+
+	Vector2 atlasTileSize = tileSet->getTileSize();
+	Vector2 atlasPos = animations[currentAnimation].at(currentFrame);
+	atlasPos =
+		Vector2{atlasPos.x * atlasTileSize.x, atlasPos.y * atlasTileSize.y};
+
+	if (this->onFrameChanged != nullptr)
+		this->onFrameChanged(this->currentFrame);
+
+	this->tile = tileSet->getTile(atlasPos);
+}
+
 Rectangle Actor::getCurrentAnimationRectangle() const {
 	const auto &atlasPos = this->getCurrentAnimationAtlas();
 	const auto &atlasSize = this->getTileSet().getTileSize();
@@ -246,16 +264,7 @@ void Actor::update() {
 		if (currentFrame >= this->getAnimationCount())
 			currentFrame = 0;
 
-		Vector2 atlasTileSize = tileSet->getTileSize();
-		auto animId = currentAnimation;
-		Vector2 atlasPos = animations[animId].at(currentFrame);
-		atlasPos =
-			Vector2{atlasPos.x * atlasTileSize.x, atlasPos.y * atlasTileSize.y};
-
-		if (this->onFrameChanged != nullptr)
-			this->onFrameChanged(this->currentFrame);
-
-		this->tile = tileSet->getTile(atlasPos);
+		this->setAnimationFrame(currentFrame);
 	}
 }
 

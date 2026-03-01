@@ -58,10 +58,14 @@
         "interactable_type": "Interaktif Türü"
       },
       "actorview": {
-        "dir0": "Aşağı",
-        "dir1": "Yukarı",
-        "dir2": "Sol",
-        "dir3": "Sağ",
+        "dir0": "Aşağı (Boşta)",
+        "dir1": "Aşağı",
+        "dir2": "Yukarı (Boşta)",
+        "dir3": "Yukarı",
+        "dir4": "Sol (Boşta)",
+        "dir5": "Sol",
+        "dir6": "Sağ (Boşta)",
+        "dir7": "Sağ",
         "play": "Oynat",
         "pause": "Duraklat",
         "is_non_idle": "Boşta Olmayan Animasyon Mu?"

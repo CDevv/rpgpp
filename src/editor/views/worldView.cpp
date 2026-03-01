@@ -136,8 +136,6 @@ void WorldView::resetRender() {
 
 void WorldView::update() {
 	mouseMiddleButton = IsMouseButtonDown(MOUSE_MIDDLE_BUTTON);
-	SetMouseCursor(mouseMiddleButton ? MOUSE_CURSOR_RESIZE_ALL
-									 : MOUSE_CURSOR_DEFAULT);
 
 	BeginTextureMode(m_textureTarget);
 

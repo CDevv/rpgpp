@@ -20,7 +20,7 @@ constexpr int BOTTOM_ANIMATION_PANEL{200};
 ActorFileView::ActorFileView() {
 	TranslationService &ts = Editor::instance->getTranslations();
 
-	this->actorView = ActorView::create();
+	this->actorView = ActorView::create(this);
 	Editor::instance->getGui().addUpdate(
 		WorldView::asUpdatable(this->actorView));
 
@@ -40,6 +40,11 @@ ActorFileView::ActorFileView() {
 	tileSetField->pathFilters = {{tileSetField->label->getText(), {"*.rtiles"}}};
 	tileSetField->callback = [this](const tgui::String &text) {
 		actorView->actor->setTileSet(text.toStdString());
+		// fix for the atlas rectangle not sizing up properly.
+		actorView->setAtlasRect(
+			actorView->actor->getCurrentAnimationRectangle());
+		frameEditor->updateFrameButtons(true);
+		actorView->actor->resetAnimation();
 	};
 	propBox->addFileField(tileSetField);
 
@@ -78,8 +83,8 @@ void ActorFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 				actorView->actor->getCurrentAnimationRectangle());
 		};
 
-		// NOTE: Always initialize this later. Otherwise, we might see flying
-		// ComboBoxes, John.
+		// NOTE: Always initialize this later. Otherwise, we might see
+		// flying ComboBoxes, John.
 		frameEditor->init();
 
 		addWidgets(layout);

@@ -2,24 +2,28 @@
 #include "TGUI/Vector2.hpp"
 #include "actor.hpp"
 #include "components/resizableCanvasBox.hpp"
+#include "fileViews/actorFileView.hpp"
+#include "gamedata.hpp"
 #include "raylib.h"
 #include "tileset.hpp"
 #include "views/worldView.hpp"
 #include <iostream>
 #include <memory>
-#include <string>
 
 constexpr float DELTATIME_DIFFERENCE = 100.0f;
 
-ActorView::ActorView() {
+ActorView::ActorView(ActorFileView *actorFileView)
+	: actorFileView(actorFileView) {
 	camera.zoom = 5.0f;
 	cameraMaxZoom = 10.0f;
 }
 
-ActorView::Ptr ActorView::create() { return std::make_shared<ActorView>(); }
+ActorView::Ptr ActorView::create(ActorFileView *actorFileView) {
+	return std::make_shared<ActorView>(actorFileView);
+}
 
-ActorView::Ptr ActorView::create(Actor *actor) {
-	auto ptr = std::make_shared<ActorView>();
+ActorView::Ptr ActorView::create(ActorFileView *actorFileView, Actor *actor) {
+	auto ptr = std::make_shared<ActorView>(actorFileView);
 	ptr->setActor(actor);
 	return ptr;
 }
@@ -32,6 +36,8 @@ void ActorView::setActor(Actor *actor) {
 
 	this->atlasBox = std::make_unique<ResizableCanvasBox>(
 		"atlasRect", actor->getCurrentAnimationRectangle(), BLUE, false);
+
+	actor->resetAnimation();
 }
 
 void ActorView::mouseMoved(tgui::Vector2f pos) {
@@ -40,7 +46,8 @@ void ActorView::mouseMoved(tgui::Vector2f pos) {
 
 	const auto &mousePos = getMouseWorldPos();
 
-	collisionBox->mouseMoved(mousePos);
+	collisionBox->mouseMoved(mousePos, RPGPP_DRAW_MULTIPLIER,
+							 RPGPP_DRAW_MULTIPLIER);
 
 	const auto &tileSize = this->actor->getTileSet().getTileSize();
 
@@ -83,6 +90,8 @@ void ActorView::leftMouseReleased(tgui::Vector2f pos) {
 	this->actor->setAnimationFrame(this->actor->getAnimationDirection(),
 								   this->actor->getCurrentFrame(),
 								   {rect.x / tileSize.x, rect.y / tileSize.y});
+
+	actorFileView->frameEditor->updateFrameButtons();
 
 	atlasBox->focused = false;
 	WorldView::leftMouseReleased(pos);

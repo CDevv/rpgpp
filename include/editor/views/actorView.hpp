@@ -9,14 +9,17 @@
 
 constexpr float DEFAULT_ANIMATION_SPEED{2.0f};
 
+class ActorFileView;
 class ActorView : public WorldView {
   private:
 	std::unique_ptr<ResizableCanvasBox> collisionBox;
 	std::unique_ptr<ResizableCanvasBox> atlasBox;
 	float animationCurrentDuration{0.0f};
 
+	ActorFileView *actorFileView;
+
   public:
-	ActorView();
+	ActorView(ActorFileView *actorFileView);
 
 	Actor *actor{nullptr};
 
@@ -37,8 +40,8 @@ class ActorView : public WorldView {
 	void mouseMoved(tgui::Vector2f pos) override;
 	void leftMouseReleased(tgui::Vector2f pos) override;
 
-	static ActorView::Ptr create();
-	static ActorView::Ptr create(Actor *actor);
+	static ActorView::Ptr create(ActorFileView *actorFileView);
+	static ActorView::Ptr create(ActorFileView *actorFileView, Actor *actor);
 };
 
 #endif

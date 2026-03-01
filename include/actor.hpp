@@ -91,12 +91,18 @@ class Actor : public ISaveable {
 	TileSet &getTileSet() const;
 	/** Get the current frame of this actor. */
 	int getCurrentFrame() const;
+	/** Reset the animation back to frame 0. */
+	void resetAnimation() { this->setAnimationFrame(0); }
 	/** Get the current direction of this actor. */
 	Direction getAnimationDirection() const;
 	/** Get the current animation atlas of this actor. */
 	Vector2 getCurrentAnimationAtlas() const;
 	/** Get the current animation rectangle of this actor. */
 	Rectangle getCurrentAnimationRectangle() const;
+	/** Get an atlas of this actor by frame index. */
+	Vector2 getAnimationAtlasByIdx(int frameIndex) const;
+	/** Set the current frame. */
+	void setAnimationFrame(int frameIndex);
 	/** Get the current size of the animation in the direction. */
 	int getAnimationCount() const;
 	/** Set this Actor's TileSet using a path to the tileset file. */

@@ -1,9 +1,13 @@
 #include "widgets/frameEditor.hpp"
+#include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widget.hpp"
-#include "TGUI/Widgets/CheckBox.hpp"
+#include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/GrowHorizontalLayout.hpp"
+#include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/ToggleButton.hpp"
+#include "actor.hpp"
+#include "components/frameButton.hpp"
 #include "editor.hpp"
 #include "fileViews/actorFileView.hpp"
 #include "raylib.h"
@@ -11,33 +15,41 @@
 #include <cstddef>
 #include <memory>
 
-constexpr int IDLE_ANIMATION_COUNT = 4;
 constexpr int MAX_TOP_BAR_HEIGHT = 30;
+constexpr int MAX_ANI_BAR_HEIGHT = 50;
 
 FrameEditor::FrameEditor(ActorFileView *fileView, const char *typeName,
 						 bool initRenderer)
-	: tgui::Panel(typeName, initRenderer), fileView(fileView),
+	: tgui::ScrollablePanel(typeName, initRenderer), fileView(fileView),
 	  actorView(fileView->getActorView()) {}
 
 void FrameEditor::onFrameChange(int currentFrame) {}
 
-void FrameEditor::init() {
-	TranslationService &ts = Editor::instance->getTranslations();
+void FrameEditor::updateFrameButtons(bool reImport) {
+	for (auto &button : this->frameButtons) {
+		button->updateSprite(reImport);
+	}
+}
 
+void FrameEditor::init() {
+	const auto &actor = actorView->actor;
+	TranslationService &ts = Editor::instance->getTranslations();
 	auto topBarLayout = tgui::GrowHorizontalLayout::create();
 	topBarLayout->setSize({"100%", MAX_TOP_BAR_HEIGHT});
 	topBarLayout->getRenderer()->setSpaceBetweenWidgets(10.0f);
 
 	this->directionChooser = tgui::ComboBox::create();
 
-	for (int i = 0; i < IDLE_ANIMATION_COUNT; i++)
+	for (int i = 0; i <= RPGPP_MAX_DIRECTION; i++)
 		directionChooser->addItem(
 			ts.getKey(TextFormat("screen.project.actorview.dir%d", i)));
 
 	directionChooser->setSelectedItemByIndex(0);
 
-	directionChooser->onItemSelect.connect(
-		[this](const size_t &index) { this->changeFrameState(index); });
+	directionChooser->onItemSelect.connect([this](const size_t &index) {
+		this->changeFrameState(index);
+		this->updateFrameButtons();
+	});
 
 	topBarLayout->add(directionChooser);
 
@@ -53,20 +65,62 @@ void FrameEditor::init() {
 	playPauseButton->setSize({100, "100%"});
 	topBarLayout->add(playPauseButton);
 
-	this->walkAnimation = tgui::CheckBox::create(
-		ts.getKey("screen.project.actorview.is_non_idle"));
-	walkAnimation->onChange.connect([this] { this->changeFrameState(); });
-	walkAnimation->setSize(30, "100%");
-
-	topBarLayout->add(this->walkAnimation);
-
 	auto editingAtlasData = tgui::ToggleButton::create("Edit Animation Data");
 	editingAtlasData->setSize({200, "100%"});
 	editingAtlasData->onToggle.connect(
 		[this](const bool isChecked) { actorView->editData = isChecked; });
 	topBarLayout->add(editingAtlasData);
 
+	auto delFrame =
+		tgui::Button::create(ts.getKey("screen.project.actorview.delete"));
+	delFrame->onPress.connect([&] {
+		if (actor->getAnimationCount() > 1) {
+			// Remove the last frame button.
+			actor->removeAnimationFrame(actor->getAnimationDirection(),
+										actor->getCurrentFrame());
+
+			const auto &lastButton = this->frameButtons.back();
+
+			this->frameLayout->remove(lastButton);
+			frameButtons.pop_back();
+
+			this->updateFrameButtons();
+		}
+	});
+	topBarLayout->add(delFrame);
+
 	this->add(topBarLayout);
+
+	this->frameLayout = tgui::GrowHorizontalLayout::create();
+	frameLayout->getRenderer()->setSpaceBetweenWidgets(3.0f);
+
+	for (int i = 0; i < actor->getAnimationCount(); i++)
+		this->addFrameButton(i);
+
+	auto encaserLayout = tgui::GrowHorizontalLayout::create();
+	encaserLayout->add(frameLayout);
+
+	auto addFrame = tgui::Button::create("+");
+	addFrame->onPress.connect([&, this] {
+		actor->addAnimationFrame(actor->getAnimationDirection(), {0, 0});
+		this->addFrameButton(actor->getAnimationCount() - 1);
+	});
+
+	encaserLayout->setSize({"100%", MAX_ANI_BAR_HEIGHT});
+	encaserLayout->setPosition({0, MAX_TOP_BAR_HEIGHT + 10});
+	encaserLayout->add(addFrame);
+
+	this->add(encaserLayout);
+}
+
+void FrameEditor::addFrameButton(int index) {
+	const auto &actor = actorView->actor;
+	auto frameButton = FrameButton::create(index, actor);
+	frameButton->onFrameChange.connect(
+		[&](const int &index) { actor->setAnimationFrame(index); });
+
+	this->frameButtons.push_back(frameButton);
+	this->frameLayout->add(frameButton);
 }
 
 FrameEditor::Ptr FrameEditor::create(ActorFileView *fileView) {
@@ -78,14 +132,8 @@ tgui::Widget::Ptr FrameEditor::clone() const {
 }
 
 void FrameEditor::changeFrameState(int index) {
-	this->actorView->actor->changeAnimation(static_cast<Direction>(
-		(index * 2) + (this->walkAnimation->isChecked() ? 1 : 0)));
-	this->actorView->actor->update();
-}
+	const auto &actor = actorView->actor;
 
-void FrameEditor::changeFrameState() {
-	this->actorView->actor->changeAnimation(
-		static_cast<Direction>((directionChooser->getSelectedItemIndex() * 2) +
-							   (this->walkAnimation->isChecked() ? 1 : 0)));
-	this->actorView->actor->update();
+	actor->changeAnimation(static_cast<Direction>(index));
+	actor->resetAnimation();
 }

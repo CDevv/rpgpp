@@ -9,17 +9,15 @@
 
 class ActorFileView : public FileView {
   private:
-	FrameEditor::Ptr frameEditor;
-
 	FileField::Ptr tileSetField;
 	RectangleField::Ptr collisionField;
 	ActorView::Ptr actorView;
 
   public:
 	ActorFileView();
+	FrameEditor::Ptr frameEditor;
 
 	ActorView::Ptr getActorView() const { return actorView; }
-
 	void init(tgui::Group::Ptr layout, VariantWrapper *variant) override;
 };
 

@@ -58,12 +58,17 @@
         "interactable_type": "Interactable Type"
       },
       "actorview": {
-        "dir0": "Down",
-        "dir1": "Up",
-        "dir2": "Left",
-        "dir3": "Right",
+        "dir0": "Down (Idle)",
+        "dir1": "Down",
+        "dir2": "Up (Idle)",
+        "dir3": "Up",
+        "dir4": "Left (Idle)",
+        "dir5": "Left",
+        "dir6": "Right (Idle)",
+        "dir7": "Right",
         "play": "Play",
         "pause": "Pause",
+        "delete": "Delete Frame",
         "is_non_idle": "Is Non-Idle Animation?"
       },
       "toolbar": {
