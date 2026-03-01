@@ -64,12 +64,17 @@
 			},
 
 			"actorview": {
-				"dir0": "Dưới",
-				"dir1": "Lên",
-				"dir2": "Trái",
-				"dir3": "Phải",
+				"dir0": "Xuống (tĩnh)",
+				"dir1": "Xuống",
+				"dir2": "Trên (tĩnh)",
+				"dir3": "Trên",
+				"dir4": "Trái (tĩnh)",
+				"dir5": "Trái",
+				"dir6": "Phải (tĩnh)",
+				"dir7": "Phải",
 				"play": "Chạy",
 				"pause": "Tạm dừng",
+				"delete": "Xóa frame",
 				"is_non_idle": "Có phải animation?"
 			},
 
