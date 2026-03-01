@@ -14,6 +14,7 @@
 #include "services/translationService.hpp"
 #include <cstddef>
 #include <memory>
+#include "bindTranslation.hpp"
 
 constexpr int MAX_TOP_BAR_HEIGHT = 30;
 constexpr int MAX_ANI_BAR_HEIGHT = 50;
@@ -40,11 +41,13 @@ void FrameEditor::init() {
 
 	this->directionChooser = tgui::ComboBox::create();
 
-	for (int i = 0; i <= RPGPP_MAX_DIRECTION; i++)
-		directionChooser->addItem(
-			ts.getKey(TextFormat("screen.project.actorview.dir%d", i)));
-
-	directionChooser->setSelectedItemByIndex(0);
+	bindCustomTranslation<tgui::ComboBox>(directionChooser, [](tgui::ComboBox::Ptr box, TranslationService &ts) {
+		box->removeAllItems();
+		for (int i = 0; i <= RPGPP_MAX_DIRECTION; i++)
+			box->addItem(
+				ts.getKey(TextFormat("screen.project.actorview.dir%d", i)));
+		box->setSelectedItemByIndex(0);
+	});
 
 	directionChooser->onItemSelect.connect([this](const size_t &index) {
 		this->changeFrameState(index);
@@ -72,7 +75,8 @@ void FrameEditor::init() {
 	topBarLayout->add(editingAtlasData);
 
 	auto delFrame =
-		tgui::Button::create(ts.getKey("screen.project.actorview.delete"));
+		tgui::Button::create();
+	bindTranslation<tgui::Button>(delFrame, "screen.project.actorview.delete", &tgui::Button::setText);
 	delFrame->onPress.connect([&] {
 		if (actor->getAnimationCount() > 1) {
 			// Remove the last frame button.

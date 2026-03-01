@@ -1,5 +1,6 @@
 #include "editor.hpp"
 #include "services/translationService.hpp"
+#include <functional>
 #include <memory>
 
 class TSConnection {
@@ -35,4 +36,19 @@ void bindTranslation(std::shared_ptr<WidgetType> widget, const std::string &key,
 	//     Editor::instance->getTranslations().removeListener(id);
 	// There's currently an issue on TGUI's repo to add support for callback
 	// when a widget gets destroyed https://github.com/texus/TGUI/issues/326
+}
+
+template <typename WidgetType>
+void bindCustomTranslation(std::shared_ptr<WidgetType> widget, std::function<void(std::shared_ptr<WidgetType>, TranslationService&)> cb) {
+	auto &ts = Editor::instance->getTranslations();
+	std::weak_ptr<WidgetType> weakWidget = widget;
+
+	cb(widget, ts);
+	auto id = ts.addListener(
+		[weakWidget, cb, &ts](TranslationService::ListenerID id) {
+			if (auto w = weakWidget.lock()) {
+				cb(w, ts);
+			}
+		}
+	);
 }
