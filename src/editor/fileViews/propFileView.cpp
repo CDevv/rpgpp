@@ -26,7 +26,15 @@ PropFileView::PropFileView() {
 	hasInteractableField->label->setText(
 		ts.getKey("screen.project.propview.has_interactable"));
 	hasInteractableField->value->onChange(
-		[this](bool value) { propView->getProp()->setHasInteractable(value); });
+		[this](bool value) {
+			propView->getProp()->setHasInteractable(value);
+			interactableTypeField->setEnabled(value);
+			if (value) {
+				interactableTypeField->value->setSelectedItemByIndex(0);
+			} else {
+				interactableTypeField->value->deselectItem();
+			}
+		});
 	propBox->addBooleanField(hasInteractableField);
 
 	interactableTypeField = SelectField::create();
@@ -46,7 +54,6 @@ PropFileView::PropFileView() {
 	propImageField->callback = [this](const tgui::String &path) {
 		propView->getProp()->setTextureFromPath(path.toStdString());
 	};
-	;
 	propBox->addFileField(propImageField);
 
 	atlasRectField = RectangleField::create();
@@ -87,5 +94,6 @@ void PropFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 	atlasRectField->setValue(prop->getAtlasRect());
 	collisionsField->setValue(prop->getCollisionRect());
 	interactableTypeField->value->setSelectedItem(prop->getInteractableType());
+	interactableTypeField->setEnabled(prop->getHasInteractable());
 	addWidgets(layout);
 }
