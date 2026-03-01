@@ -2,18 +2,19 @@
 #include "widgets/propertyFields/selectField.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
+#include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "widgets/propertyFields/fieldConfig.hpp"
 #include <memory>
 SelectField::SelectField(const char *typeName, bool initRenderer)
-	: tgui::SubwidgetContainer(typeName, initRenderer) {
+	: tgui::Group(typeName, initRenderer) {
 	label = tgui::Label::create("Label");
 	label->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
 	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
 	value = tgui::ComboBox::create();
 
-	m_container->add(label);
-	m_container->add(value);
+	add(label);
+	add(value);
 
 	updateSize();
 }
@@ -33,7 +34,7 @@ tgui::Widget::Ptr SelectField::clone() const {
 }
 
 void SelectField::setSize(const tgui::Layout2d &size) {
-	tgui::SubwidgetContainer::setSize(size);
+	tgui::Group::setSize(size);
 	updateSize();
 }
 

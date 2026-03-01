@@ -20,7 +20,7 @@
 		"about": {
 			"_label": "Thông tin",
 			"rpgpp": "Thông tin về RPG++...",
-			"rpgpp_description": "Phần mềm phát triển game RPG, được lập trình sử dụng C++."
+			"rpgpp_description": "Phần mềm phát triển trò chơi RPG, được lập trình bằng ngôn ngữ C++."
 		}
 	},
 
