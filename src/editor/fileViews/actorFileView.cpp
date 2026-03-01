@@ -23,8 +23,7 @@ ActorFileView::ActorFileView() {
 	auto canvasHeight = TextFormat("100%% - %d", BOTTOM_ANIMATION_PANEL);
 	auto rightPanelOffset = TextFormat("100%% - %d", RIGHT_PANEL_W);
 
-	actorView->setSize({rightPanelOffset,
-		canvasHeight});
+	actorView->setSize({rightPanelOffset, canvasHeight});
 	widgetContainer.push_back(this->actorView);
 
 	auto propBox = PropertiesBox::create();
@@ -49,19 +48,14 @@ ActorFileView::ActorFileView() {
 		[this](Rectangle r) { actorView->setCollisionRect(r); });
 	propBox->addRectangleField(collisionField);
 
-	auto frameEditor = FrameEditor::create(this);
-	frameEditor->setPosition( {0, canvasHeight} );
+	this->frameEditor = FrameEditor::create(this);
+	frameEditor->setPosition({0, canvasHeight});
 	frameEditor->getRenderer()->setPadding(5);
-	frameEditor->setSize( {rightPanelOffset, BOTTOM_ANIMATION_PANEL} );
-
-	// NOTE: Always initialize this later. Otherwise, we might see flying ComboBoxes, John.
-	frameEditor->init();
+	frameEditor->setSize({rightPanelOffset, BOTTOM_ANIMATION_PANEL});
 
 	widgetContainer.push_back(frameEditor);
-
 	widgetContainer.push_back(propBox);
 }
-
 
 void ActorFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 	this->variant = variant;
@@ -71,9 +65,20 @@ void ActorFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 		const auto ptrRaw = ptr->get();
 
 		this->actorView->setActor(ptrRaw);
+
 		this->tileSetField->setValue(
 			GetFileName(ptrRaw->getTileSetSource().c_str()));
 		this->collisionField->setValue(ptrRaw->getCollisionRect());
+
+		actorView->actor->onFrameChanged = [this](const int &frame) {
+			this->frameEditor->onFrameChange(frame);
+			this->actorView->setAtlasRect(
+				actorView->actor->getCurrentAnimationRectangle());
+		};
+
+		// NOTE: Always initialize this later. Otherwise, we might see flying
+		// ComboBoxes, John.
+		frameEditor->init();
 
 		addWidgets(layout);
 	}

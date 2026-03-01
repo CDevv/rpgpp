@@ -2,6 +2,7 @@
 #include "game.hpp"
 #include "gamedata.hpp"
 #include <cassert>
+#include <cstdint>
 #include <functional>
 #include <memory>
 #include <nlohmann/json.hpp>
@@ -216,7 +217,24 @@ void Actor::unload() const { tileSet->unload(); }
 
 int Actor::getCurrentFrame() const { return this->currentFrame; }
 
-Direction Actor::getAnimationDirection() const {return this->currentAnimation;}
+int Actor::getAnimationCount() const {
+	return this->getAnimationRaw(this->currentAnimation).size();
+}
+
+Direction Actor::getAnimationDirection() const {
+	return this->currentAnimation;
+}
+
+Vector2 Actor::getCurrentAnimationAtlas() const {
+	return this->getAnimationRaw(this->currentAnimation).at(currentFrame);
+}
+
+Rectangle Actor::getCurrentAnimationRectangle() const {
+	const auto &atlasPos = this->getCurrentAnimationAtlas();
+	const auto &atlasSize = this->getTileSet().getTileSize();
+	return {atlasPos.x * atlasSize.x, atlasPos.y * atlasSize.y, atlasSize.x,
+			atlasSize.y};
+}
 
 void Actor::update() {
 	frameCounter++;
@@ -225,7 +243,7 @@ void Actor::update() {
 		frameCounter = 0;
 		currentFrame++;
 
-		if (currentFrame >= 2)
+		if (currentFrame >= this->getAnimationCount())
 			currentFrame = 0;
 
 		Vector2 atlasTileSize = tileSet->getTileSize();
@@ -233,6 +251,9 @@ void Actor::update() {
 		Vector2 atlasPos = animations[animId].at(currentFrame);
 		atlasPos =
 			Vector2{atlasPos.x * atlasTileSize.x, atlasPos.y * atlasTileSize.y};
+
+		if (this->onFrameChanged != nullptr)
+			this->onFrameChanged(this->currentFrame);
 
 		this->tile = tileSet->getTile(atlasPos);
 	}

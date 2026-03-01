@@ -27,7 +27,7 @@ WorldView::WorldView(const char *typeName, bool initRenderer)
 	camera = {};
 	camera.offset = Vector2{0, 0};
 	camera.rotation = 0.0f;
-	camera.target = Vector2{-20.0f, -20.0f};
+	camera.target = Vector2{0, 0.0f};
 	camera.zoom = 1.0f;
 
 	tool = RoomTool::TOOL_NONE;

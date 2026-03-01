@@ -11,7 +11,6 @@
 #include <cstddef>
 #include <list>
 #include <memory>
-#include <string>
 #include <vector>
 class CodeEditor : public tgui::TextArea {
   public:

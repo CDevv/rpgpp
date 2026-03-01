@@ -11,23 +11,25 @@ constexpr float DEFAULT_ANIMATION_SPEED{2.0f};
 
 class ActorView : public WorldView {
   private:
-
 	ResizableCanvasBox *collisionBox;
-
-	float animationFrameDuration {DEFAULT_ANIMATION_SPEED};
-	float animationCurrentDuration {0.0f};
+	ResizableCanvasBox *atlasBox;
+	float animationCurrentDuration{0.0f};
 
   public:
-
 	ActorView();
 
 	Actor *actor{nullptr};
-	bool isPlaying {false};
+
+	// Animation Settings
+	bool isPlaying{false};
+	bool editData{false};
+	float animationFrameDuration{DEFAULT_ANIMATION_SPEED};
 
 	typedef std::shared_ptr<ActorView> Ptr;
 
 	void setActor(Actor *actor);
-	void setCollisionRect(const Rectangle& rect);
+	void setAtlasRect(const Rectangle &rect);
+	void setCollisionRect(const Rectangle &rect);
 
 	void drawCanvas() override;
 

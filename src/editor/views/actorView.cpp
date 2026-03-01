@@ -5,14 +5,17 @@
 #include "raylib.h"
 #include "tileset.hpp"
 #include "views/worldView.hpp"
+#include <cmath>
 #include <iostream>
 #include <memory>
 #include <string>
 
 constexpr float DELTATIME_DIFFERENCE = 100.0f;
 
-
-ActorView::ActorView() { camera.zoom = 5.0f; }
+ActorView::ActorView() {
+	camera.zoom = 5.0f;
+	cameraMaxZoom = 10.0f;
+}
 
 ActorView::Ptr ActorView::create() { return std::make_shared<ActorView>(); }
 
@@ -27,13 +30,23 @@ void ActorView::setActor(Actor *actor) {
 
 	this->collisionBox = new ResizableCanvasBox(
 		"collisionRect", this->actor->getCollisionRect(), RED);
+
+	this->atlasBox = new ResizableCanvasBox(
+		"atlasRect", actor->getCurrentAnimationRectangle(), BLUE, false);
 }
 
 void ActorView::mouseMoved(tgui::Vector2f pos) {
 	if (this->actor == nullptr)
 		return;
 
-	collisionBox->mouseMoved(getMouseWorldPos());
+	const auto &mousePos = getMouseWorldPos();
+
+	collisionBox->mouseMoved(mousePos);
+
+	const auto &tileSize = this->actor->getTileSet().getTileSize();
+
+	atlasBox->mouseMoved(mousePos, tileSize.x, tileSize.y);
+
 	WorldView::mouseMoved(pos);
 }
 
@@ -41,13 +54,18 @@ bool ActorView::leftMousePressed(tgui::Vector2f pos) {
 	if (this->actor == nullptr)
 		return false;
 
-	if (collisionBox->leftMousePressed(getMouseWorldPos()))
+	const auto &mousePos = getMouseWorldPos();
+
+	if (collisionBox->leftMousePressed(mousePos) && !this->editData)
 		collisionBox->focused = true;
+
+	if (atlasBox->leftMousePressed(mousePos) && this->editData)
+		atlasBox->focused = true;
 
 	return WorldView::leftMousePressed(pos);
 }
 
-void ActorView::setCollisionRect(const Rectangle& collision){
+void ActorView::setCollisionRect(const Rectangle &collision) {
 	this->actor->setCollisionRect(collision);
 	this->collisionBox->updateRec(collision);
 }
@@ -56,11 +74,23 @@ void ActorView::leftMouseReleased(tgui::Vector2f pos) {
 	if (this->actor == nullptr)
 		return;
 
-	actor->setCollisionRect(
-		collisionBox->leftMouseReleased(getMouseWorldPos()));
+	const auto &mousePos = getMouseWorldPos();
+	actor->setCollisionRect(collisionBox->leftMouseReleased(mousePos));
 	collisionBox->focused = false;
 
+	const auto &tileSize = this->actor->getTileSet().getTileSize();
+	const auto &rect = atlasBox->leftMouseReleased(mousePos);
+
+	this->actor->setAnimationFrame(this->actor->getAnimationDirection(),
+								   this->actor->getCurrentFrame(),
+								   {rect.x / tileSize.x, rect.y / tileSize.y});
+
+	atlasBox->focused = false;
 	WorldView::leftMouseReleased(pos);
+}
+
+void ActorView::setAtlasRect(const Rectangle &rect) {
+	this->atlasBox->updateRec(rect);
 }
 
 void ActorView::drawCanvas() {
@@ -81,8 +111,13 @@ void ActorView::drawCanvas() {
 	this->animationCurrentDuration += GetFrameTime();
 
 	ClearBackground(RAYWHITE);
-	actor->draw();
-	collisionBox->draw();
+	if (!this->editData) {
+		actor->draw();
+		collisionBox->draw();
+	} else {
+		DrawTexture(tileSet.getTexture(), 0, 0, WHITE);
+		atlasBox->draw();
+	}
 	this->drawOrigin();
 
 	DrawCircleV(getMouseWorldPos(), 1.0f, MAROON);

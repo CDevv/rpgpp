@@ -93,10 +93,16 @@ class Actor : public ISaveable {
 	int getCurrentFrame() const;
 	/** Get the current direction of this actor. */
 	Direction getAnimationDirection() const;
+	/** Get the current animation atlas of this actor. */
+	Vector2 getCurrentAnimationAtlas() const;
+	/** Get the current animation rectangle of this actor. */
+	Rectangle getCurrentAnimationRectangle() const;
+	/** Get the current size of the animation in the direction. */
+	int getAnimationCount() const;
 	/** Set this Actor's TileSet using a path to the tileset file. */
 	void setTileSet(const std::string &newTileSetSource);
 	/** The callback when the current frame changes. */
-	std::function<void()> onFrameChanged;
+	std::function<void(int)> onFrameChanged;
 	/** Get the collision rectangle of this Actor if it was moved by the
 	 * velocity vector */
 	Rectangle getCollisionRect(Vector2 velocity) const;
