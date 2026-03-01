@@ -1,3 +1,5 @@
+// TODO: Timeline, where the user can add frames and remove them.
+
 #include "fileViews/actorFileView.hpp"
 #include "TGUI/String.hpp"
 #include "actor.hpp"

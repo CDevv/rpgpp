@@ -5,7 +5,6 @@
 #include "raylib.h"
 #include "tileset.hpp"
 #include "views/worldView.hpp"
-#include <cmath>
 #include <iostream>
 #include <memory>
 #include <string>
