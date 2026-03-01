@@ -38,7 +38,6 @@ class ProjectScreen : public UIScreen {
 	std::unique_ptr<FileInitVisitor> fileInitVisitor;
 	EngineFileType listedResourcesType;
 
-	tgui::Group::Ptr toolBar;
 	tgui::Group::Ptr resListWBinder;
 	ResizableContainer::Ptr resourcesList;
 	tgui::GrowVerticalLayout::Ptr resourcesLayout;
@@ -63,6 +62,8 @@ class ProjectScreen : public UIScreen {
 	ProjectFile &getCurrentFile();
 	void initItems(tgui::Group::Ptr layout) override;
 	const std::string getNameOfScreen() override { return "Project"; }
+
+	tgui::Group::Ptr toolBar;
 };
 } // namespace screens
 #endif

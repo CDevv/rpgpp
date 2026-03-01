@@ -13,7 +13,7 @@
 // segfault, specially when it is at least opened once.
 class NewProjectWindow {
   public:
-	tgui::ChildWindow::Ptr window;
+	tgui::ChildWindow::Ptr window{nullptr};
 	tgui::EditBox::Ptr titleField;
 	FileChooser::Ptr fileField;
 	tgui::Button::Ptr confirmButton;

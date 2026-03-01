@@ -1,8 +1,12 @@
 #include "TGUI/Loading/Theme.hpp"
+#include "TGUI/Renderers/ButtonRenderer.hpp"
 #include "editor.hpp"
+#include "screens/projectScreen.hpp"
 #include "services/fileSystemService.hpp"
+#include <cstdio>
 #include <filesystem>
 #include <memory>
+#include <utility>
 using namespace std;
 namespace fs = std::filesystem;
 
@@ -26,6 +30,7 @@ ThemeService::ThemeService(Editor *editor_ptr) {
 
 void ThemeService::setTheme(const string &themeName) {
 	if (this->themes.find(themeName) != this->themes.end()) {
+
 		this->current_theme_name = themeName;
 		this->current_theme = std::make_shared<tgui::Theme>(
 			this->themes[this->current_theme_name]);

@@ -13,12 +13,13 @@ class ProjectFile {
 	std::unique_ptr<VariantWrapper> variant;
 	EngineFileType fileType;
 	std::string filePath;
+	bool isSaveable = true;
 
   public:
 	ProjectFile();
 	ProjectFile(std::unique_ptr<FileView> view,
 				std::unique_ptr<VariantWrapper> variant,
-				EngineFileType fileType);
+				EngineFileType fileType, bool isSaveable = true);
 	void setFilePath(const std::string &filePath);
 	std::string &getFilePath();
 	void initUi(tgui::Group::Ptr group);

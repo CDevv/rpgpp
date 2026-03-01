@@ -5,6 +5,7 @@
 #include "raylib.h"
 #include "services/fileSystemService.hpp"
 #include "tileset.hpp"
+#include "variant.hpp"
 #include <memory>
 #include <string>
 #include <utility>
@@ -13,10 +14,11 @@ ProjectFile::ProjectFile() { view = std::make_unique<EmptyFileView>(); }
 
 ProjectFile::ProjectFile(std::unique_ptr<FileView> view,
 						 std::unique_ptr<VariantWrapper> variant,
-						 EngineFileType fileType) {
+						 EngineFileType fileType, bool isSaveable) {
 	this->view = std::move(view);
 	this->variant = std::move(variant);
 	this->fileType = fileType;
+	this->isSaveable = isSaveable;
 }
 
 void ProjectFile::setFilePath(const std::string &filePath) {
@@ -38,6 +40,9 @@ void ProjectFile::addWidgets(tgui::Group::Ptr layout) {
 }
 
 void ProjectFile::saveFile(const std::string &path) {
+	if (!isSaveable)
+		return;
+
 	auto saveable = variant->toSaveable();
 	json j = saveable->dumpJson();
 	SaveFileText(path.c_str(), j.dump().c_str());

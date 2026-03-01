@@ -104,11 +104,13 @@ RoomFileView::RoomFileView() {
 	props->addFileField(tileSetField);
 
 	musicFileField = FileField::create("BG Music", "");
+	musicFileField->setWidgetName("file");
 	musicFileField->pathFilters = {{"Music File", {"*.mp4", "*.ogg", "*.wav"}}};
 	musicFileField->callback = [this](const tgui::String &path) {
 		roomView->getRoom()->setMusicSource(
 			GetFileNameWithoutExt(path.toStdString().c_str()));
 	};
+
 	props->addFileField(musicFileField);
 
 	props->addButton("Clear Music", [this] {

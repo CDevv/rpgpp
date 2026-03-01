@@ -43,4 +43,5 @@ void Editor::unload() const {
 	// Unload all the assets currently loaded and close the window.
 	UnloadImage(this->appIcon);
 	CloseWindow();
+	CloseAudioDevice();
 }

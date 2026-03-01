@@ -1,6 +1,7 @@
 #include "services/editorGuiService.hpp"
 #include "TGUI/Backend/raylib.hpp"
 #include "TGUI/Loading/Theme.hpp"
+#include "TGUI/ObjectConverter.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/MessageBox.hpp"
@@ -14,6 +15,7 @@
 #include <TGUI/AllWidgets.hpp>
 #include <TGUI/Widgets/ChildWindow.hpp>
 #include <cmath>
+#include <cstdio>
 #include <memory>
 #include <string>
 
@@ -33,6 +35,7 @@ void EditorGuiService::init() {
 	currentCursor = MOUSE_CURSOR_DEFAULT;
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT, "RPG++ Editor");
+	InitAudioDevice();
 
 	this->resetUi();
 }
@@ -102,15 +105,20 @@ void EditorGuiService::uiLoop() {
 		currentScreen->mouseMove(GetMouseX(), GetMouseY() - MENUBAR_H);
 		BeginDrawing();
 		ClearBackground(DARKGRAY);
-		// Achieve that effect of the gradient.
+
+		auto bgProp = tgui::Theme::getDefault()->getGlobalProperty(
+			"BackgroundColorDisabled");
+		if (bgProp.getType() == tgui::ObjectConverter::Type::None) {
+			bgProp =
+				tgui::Theme::getDefault()->getGlobalProperty("BackgroundColor");
+		}
+		auto bgColor = bgProp.getColor();
 		auto topGradientColor = static_cast<unsigned char>(
 			abs(sin(GetTime() * GRADIENT_SPEED_MUTLIPLIER)) *
 			GRADIENT_COLOR_MULTIPLIER);
-		// Draw the gradient.
-		DrawRectangleGradientV(
+		DrawRectangle(
 			0, 0, GetRenderWidth(), GetRenderHeight(),
-			{topGradientColor, topGradientColor, topGradientColor, 255},
-			{40, 40, 40, 255});
+			{bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), 255});
 		cg->draw();
 		// Due to many reasons, one time... Thefirey33 decided to talk
 		// to the C++ MSVC Compiler if he can reset the current state of
@@ -201,10 +209,12 @@ void EditorGuiService::createLogoCenter(
 }
 
 void EditorGuiService::reloadUi() {
+	/*
 	auto group = this->uiChangePreInit(this->currentScreen.get());
 	this->currentScreen->initItems(group);
 	gui->add(group);
 	this->childWindowService->createWindows();
+	*/
 }
 
 ChildWindowSubService *EditorGuiService::getChildWindowSubService() {

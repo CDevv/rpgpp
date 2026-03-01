@@ -5,12 +5,16 @@
 #include "fileViews/actorFileView.hpp"
 #include "fileViews/codeFileView.hpp"
 #include "fileViews/dialogueFileView.hpp"
+#include "fileViews/emptyView.hpp"
 #include "fileViews/fileView.hpp"
 #include "fileViews/propFileView.hpp"
 #include "fileViews/roomFileView.hpp"
 #include "fileViews/tilesetFileView.hpp"
 #include "projectFile.hpp"
 #include "room.hpp"
+#include "saveables/fontWrapper.hpp"
+#include "saveables/imageWrapper.hpp"
+#include "saveables/soundWrapper.hpp"
 #include "scriptFile.h"
 #include "services/fileSystemService.hpp"
 #include "tileset.hpp"
@@ -26,6 +30,10 @@ ProjectFileVisitor::ProjectFileVisitor() {
 	funcs[static_cast<int>(EngineFileType::FILE_EMPTY)] = emptyView;
 	funcs[static_cast<int>(EngineFileType::FILE_ACTOR)] = actorView;
 	funcs[static_cast<int>(EngineFileType::FILE_PROP)] = propView;
+	funcs[static_cast<int>(EngineFileType::FILE_IMAGE)] = imageView;
+	funcs[static_cast<int>(EngineFileType::FILE_FONT)] = fontView;
+	funcs[static_cast<int>(EngineFileType::FILE_SOUND)] = soundView;
+	funcs[static_cast<int>(EngineFileType::FILE_MUSIC)] = musicView;
 }
 
 std::unique_ptr<ProjectFile>
@@ -93,4 +101,40 @@ ProjectFileVisitor::propView(const std::string &path) {
 		std::make_unique<Variant<Prop>>(new Prop(path));
 	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
 										 EngineFileType::FILE_PROP);
+}
+
+std::unique_ptr<ProjectFile>
+ProjectFileVisitor::imageView(const std::string &path) {
+	std::unique_ptr<EmptyFileView> view = std::make_unique<EmptyFileView>();
+	std::unique_ptr<VariantWrapper> variant =
+		std::make_unique<Variant<ImageWrapper>>(new ImageWrapper(path));
+	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
+										 EngineFileType::FILE_IMAGE, false);
+}
+
+std::unique_ptr<ProjectFile>
+ProjectFileVisitor::fontView(const std::string &path) {
+	std::unique_ptr<EmptyFileView> view = std::make_unique<EmptyFileView>();
+	std::unique_ptr<VariantWrapper> variant =
+		std::make_unique<Variant<FontWrapper>>(new FontWrapper(path));
+	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
+										 EngineFileType::FILE_FONT, false);
+}
+
+std::unique_ptr<ProjectFile>
+ProjectFileVisitor::soundView(const std::string &path) {
+	std::unique_ptr<EmptyFileView> view = std::make_unique<EmptyFileView>();
+	std::unique_ptr<VariantWrapper> variant =
+		std::make_unique<Variant<SoundWrapper>>(new SoundWrapper(path));
+	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
+										 EngineFileType::FILE_SOUND, false);
+}
+
+std::unique_ptr<ProjectFile>
+ProjectFileVisitor::musicView(const std::string &path) {
+	std::unique_ptr<EmptyFileView> view = std::make_unique<EmptyFileView>();
+	std::unique_ptr<VariantWrapper> variant =
+		std::make_unique<Variant<SoundWrapper>>(new SoundWrapper(path));
+	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
+										 EngineFileType::FILE_MUSIC, false);
 }

@@ -80,8 +80,13 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	themeLayout->add(themeLabel);
 	themeLayout->add(themeSelector);
 
+	auto warnLabel = tgui::Label::create(
+		"It is recommended to restart the editor after switching theme!");
+	warnLabel->setSize({"100%", 100});
+
 	layout->add(languageLayout);
 	layout->add(themeLayout);
+	layout->add(warnLabel);
 
 	this->currentWindow->add(layout);
 }

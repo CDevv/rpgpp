@@ -32,4 +32,8 @@ template <typename T> class Variant : public VariantWrapper {
 	ISaveable *toSaveable() { return dynamic_cast<ISaveable *>(data.get()); }
 };
 
+template <typename T> ISaveable *toSaveable(Variant<T> *variant) {
+	return dynamic_cast<ISaveable *>(variant->data.get());
+}
+
 #endif

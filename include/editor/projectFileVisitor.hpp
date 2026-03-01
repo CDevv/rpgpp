@@ -25,6 +25,10 @@ class ProjectFileVisitor {
 	static std::unique_ptr<ProjectFile> dialogueView(const std::string &path);
 	static std::unique_ptr<ProjectFile> propView(const std::string &path);
 	static std::unique_ptr<ProjectFile> actorView(const std::string &path);
+	static std::unique_ptr<ProjectFile> imageView(const std::string &path);
+	static std::unique_ptr<ProjectFile> fontView(const std::string &path);
+	static std::unique_ptr<ProjectFile> soundView(const std::string &path);
+	static std::unique_ptr<ProjectFile> musicView(const std::string &path);
 };
 
 #endif
