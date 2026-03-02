@@ -3,15 +3,17 @@
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
+#include "bindTranslation.hpp"
 #include "editor.hpp"
 #include "raylib.h"
-#include "bindTranslation.hpp"
 FileChooser::FileChooser(const char *typeName, bool initRenderer)
 	: tgui::SubwidgetContainer(typeName, initRenderer) {
 
 	TranslationService &tService = Editor::instance->getTranslations();
 	chosenPathLabel = tgui::EditBox::create();
-	bindTranslation<tgui::EditBox>(chosenPathLabel, "widget.filechooser.select_a_file", &tgui::EditBox::setText);
+	bindTranslation<tgui::EditBox>(chosenPathLabel,
+								   "widget.filechooser.select_a_file",
+								   &tgui::EditBox::setText);
 	chosenPathLabel->setReadOnly(true);
 	chosenPathLabel->setEnabled(false);
 	iconButton = tgui::BitmapButton::create();

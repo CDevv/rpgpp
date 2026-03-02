@@ -4,6 +4,7 @@
 
 SoundWrapper::SoundWrapper(const std::string &filePath) {
 	sound = LoadMusicStream(filePath.c_str());
+	source = filePath;
 }
 
 SoundWrapper::~SoundWrapper() {

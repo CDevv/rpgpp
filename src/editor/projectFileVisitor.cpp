@@ -11,6 +11,7 @@
 #include "fileViews/imageFileView.hpp"
 #include "fileViews/propFileView.hpp"
 #include "fileViews/roomFileView.hpp"
+#include "fileViews/soundFileView.hpp"
 #include "fileViews/tilesetFileView.hpp"
 #include "projectFile.hpp"
 #include "room.hpp"
@@ -125,7 +126,7 @@ ProjectFileVisitor::fontView(const std::string &path) {
 
 std::unique_ptr<ProjectFile>
 ProjectFileVisitor::soundView(const std::string &path) {
-	std::unique_ptr<EmptyFileView> view = std::make_unique<EmptyFileView>();
+	std::unique_ptr<SoundFileView> view = std::make_unique<SoundFileView>();
 	std::unique_ptr<VariantWrapper> variant =
 		std::make_unique<Variant<SoundWrapper>>(new SoundWrapper(path));
 	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
@@ -134,7 +135,7 @@ ProjectFileVisitor::soundView(const std::string &path) {
 
 std::unique_ptr<ProjectFile>
 ProjectFileVisitor::musicView(const std::string &path) {
-	std::unique_ptr<EmptyFileView> view = std::make_unique<EmptyFileView>();
+	std::unique_ptr<SoundFileView> view = std::make_unique<SoundFileView>();
 	std::unique_ptr<VariantWrapper> variant =
 		std::make_unique<Variant<SoundWrapper>>(new SoundWrapper(path));
 	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),

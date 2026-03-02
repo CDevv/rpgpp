@@ -10,6 +10,7 @@
 class SoundWrapper : public ISaveable {
   public:
 	Music sound{};
+	std::string source;
 	SoundWrapper() = default;
 	~SoundWrapper();
 	SoundWrapper(const std::string &filePath);
