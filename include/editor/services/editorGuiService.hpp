@@ -26,7 +26,7 @@ class EditorGuiService {
 	bool leftMouseHeld = false;
 	static const int MENUBAR_H = 32;
 
-	tgui::MenuBar::Ptr menuBarPtr;
+	std::weak_ptr<tgui::Group> screenContainer{};
 
   public:
 	bool isResettingUI = false;

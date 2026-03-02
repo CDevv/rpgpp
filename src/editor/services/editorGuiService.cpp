@@ -17,6 +17,7 @@
 #include <cmath>
 #include <cstdio>
 #include <memory>
+#include <stdexcept>
 #include <string>
 
 constexpr int BASE_WINDOW_WIDTH = 800;
@@ -67,6 +68,16 @@ void EditorGuiService::resetUi() {
 	else
 		this->childWindowService = std::make_unique<ChildWindowSubService>();
 	// tgui::Theme::setDefault(CURRENT_TESTING_THEME);
+
+	initMenuBar();
+
+	auto group = tgui::Group::create({"100%"});
+	group->setPosition(0, MENUBAR_H);
+	group->setSize({"100%", tgui::Layout("100%") - MENUBAR_H});
+
+	gui->add(group);
+
+	screenContainer = group;
 
 	this->setScreen(std::make_unique<screens::WelcomeScreen>(), true);
 }
@@ -151,7 +162,7 @@ void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
 	this->screenHistory.push_back(std::move(this->currentScreen));
 	this->currentScreen.swap(setToScreen);
 	this->currentScreen->initItems(group);
-	gui->add(group);
+	// gui->add(group);
 }
 
 /**
@@ -161,19 +172,27 @@ void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
  * @return the group that the screen must use to position and add it's widgets.
  */
 tgui::Group::Ptr EditorGuiService::uiChangePreInit(UIScreen *setToScreen) {
+	/*
 	gui->removeAllWidgets();
 	initMenuBar();
 
 	auto group = tgui::Group::create({"100%"});
 	group->setPosition(0, MENUBAR_H);
 	group->setSize({"100%", tgui::Layout("100%") - MENUBAR_H});
+	*/
+
+	if (screenContainer.expired()) {
+		throw std::runtime_error("Screen container's weak pointer is expired");
+	}
+
+	screenContainer.lock()->removeAllWidgets();
 
 	if (this->currentScreen != nullptr)
 		this->currentScreen->unloadScreen();
 	std::string title = "RPG++ Editor - ";
 	title.append(setToScreen->getNameOfScreen());
 	SetWindowTitle(title.c_str());
-	return group;
+	return screenContainer.lock();
 }
 
 void EditorGuiService::addUpdate(std::shared_ptr<IUpdatable> widget) {
@@ -222,12 +241,7 @@ ChildWindowSubService *EditorGuiService::getChildWindowSubService() {
 }
 
 void EditorGuiService::initMenuBar() {
-	// Clear if there's data left over.
-	// this->translations.clear();
-	if (this->menuBarPtr != nullptr) {
-		gui->remove(this->menuBarPtr);
-	}
-	menuBarPtr = tgui::MenuBar::create();
+	auto menuBarPtr = tgui::MenuBar::create();
 	this->menuBar = menuBarPtr;
 	auto &ts = Editor::instance->getTranslations();
 
