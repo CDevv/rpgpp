@@ -8,10 +8,10 @@
 	},
 	{
 		"label": "Run translation checker",
-		"command": "xmake run translation_checker",
+		"command": "xmake check_translation",
 	},
 	{
 		"label": "Build All",
-		"command": "xmake build --all"
-	}
+		"command": "xmake build --all",
+	},
 ]
