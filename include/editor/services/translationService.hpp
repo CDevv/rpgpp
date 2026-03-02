@@ -40,7 +40,7 @@ class TranslatedString {
 class TranslationService {
   public:
 	using ListenerID = size_t;
-	using Callback = std::function<void(ListenerID id)>;
+	using Callback = std::function<bool(TranslationService &ts, ListenerID id, bool checkingAlive)>;
 	TranslationService(Editor *editor_ptr);
 	std::map<std::string, std::map<std::string, std::string, std::less<>>,
 			 std::less<>>
@@ -53,6 +53,7 @@ class TranslationService {
 	std::string getLanguageIdentifierByKey(const std::string &language_key);
 	ListenerID addListener(Callback cb);
 	void removeListener(ListenerID id);
+	void purgeDeadListeners();
 
   private:
 	std::string current_language = DEFAULT_LANGUAGE;

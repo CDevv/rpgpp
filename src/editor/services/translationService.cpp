@@ -71,20 +71,34 @@ void TranslationService::setLanguage(const std::string &language) {
 	current_language = language;
 
 	for (auto& [id, cb] : listeners) {
-		cb(id);
+		cb(*this, id, false);
 	}
 }
 
 TranslationService::ListenerID TranslationService::addListener(Callback cb) {
 	ListenerID id = lastID++;
 	listeners[id] = std::move(cb);
-	std::cout << listeners.size() << "\n";
+	// std::cout << "Added listener " << id << " (total: " << listeners.size() << ")\n";
+	purgeDeadListeners();
 	return id;
 }
 
 void TranslationService::removeListener(ListenerID id) {
 	if (listeners.find(id) != listeners.end()) {
 		listeners.erase(id);
+	}
+}
+
+void TranslationService::purgeDeadListeners() {
+	vector<ListenerID> toBePurged;
+	for (auto& [id, cb] : listeners) {
+		if (!cb(*this, id, true)) {
+			toBePurged.push_back(id);
+		}
+	}
+	for (auto id : toBePurged) {
+		// std::cout << "Purging listener " << id << "\n";
+		removeListener(id);
 	}
 }
 

@@ -12,6 +12,9 @@ class TSConnection {
 	TranslationService::ListenerID id;
 };
 
+// TODO: Can do the removing of dead listeners by looping and purging dead listeners every addListener call, before all the other logic
+// Or do removing of dead listeners when change language. looping and purging before the other loop that call the callback
+
 template <typename WidgetType>
 void bindTranslation(std::shared_ptr<WidgetType> widget, const std::string &key,
 					 void (WidgetType::*setter)(const tgui::String &)) {
@@ -22,13 +25,12 @@ void bindTranslation(std::shared_ptr<WidgetType> widget, const std::string &key,
 	(widget.get()->*setter)(ts.getKey(key));
 
 	auto id = ts.addListener(
-		[weakWidget, key, setter](TranslationService::ListenerID id) {
+		[weakWidget, key, setter](TranslationService &ts, TranslationService::ListenerID id, bool checkingAlive) {
 			if (auto w = weakWidget.lock()) {
-				auto &ts = Editor::instance->getTranslations();
-				(w.get()->*setter)(ts.getKey(key));
-
+				if (!checkingAlive) (w.get()->*setter)(ts.getKey(key));
+				return true;
 			} else {
-				// Editor::instance->getTranslations().removeListener(id);
+				return false;
 			}
 		});
 
@@ -39,15 +41,18 @@ void bindTranslation(std::shared_ptr<WidgetType> widget, const std::string &key,
 }
 
 template <typename WidgetType>
-void bindCustomTranslation(std::shared_ptr<WidgetType> widget, std::function<void(std::shared_ptr<WidgetType>, TranslationService&)> cb) {
+void bindCustomTranslation(std::shared_ptr<WidgetType> widget, std::function<void(std::shared_ptr<WidgetType> widget, TranslationService&)> cb) {
 	auto &ts = Editor::instance->getTranslations();
 	std::weak_ptr<WidgetType> weakWidget = widget;
 
 	cb(widget, ts);
 	auto id = ts.addListener(
-		[weakWidget, cb, &ts](TranslationService::ListenerID id) {
+		[weakWidget, cb](TranslationService &ts, TranslationService::ListenerID id, bool checkingAlive) {
 			if (auto w = weakWidget.lock()) {
-				cb(w, ts);
+				if (!checkingAlive) cb(w, ts);
+				return true;
+			} else {
+				return false;
 			}
 		}
 	);
