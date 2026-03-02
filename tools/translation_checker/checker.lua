@@ -101,12 +101,9 @@ function Main()
 
 	local base = _LoadAndFlatten(baseFile)
 	for _, filepath in ipairs(translatedFiles) do
-		if filepath == baseFile then
-			goto continue
+		if path.filename(filepath) ~= path.filename(baseFile) then
+			local target = _LoadAndFlatten(filepath)
+			_CompareTranslation(base, target, path.filename(filepath))
 		end
-
-		local target = _LoadAndFlatten(filepath)
-		_CompareTranslation(base, target, path.filename(filepath))
-		::continue::
 	end
 end
