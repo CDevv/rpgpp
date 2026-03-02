@@ -5,11 +5,13 @@ RPG++ is an experimental 2D RPG game engine written in C++. It is currently in e
 
 ***This is a fresh restart, there are currently no RPG++ lua bindings, the engine hasn't been implemented in this branch yet.***
 
+<img src="docs/readme_img1.png" alt="screenshot of engine" width="640">
+
 Requirements
 ---
 
 To build RPG++, you'll need to install the following tools/packages:
-- **All platforms**:
+- **For all platforms**:
   - [xmake](https://xmake.io/) (follow the instructions on the website to install XMake on your system)
   - [git](https://git-scm.com/)
 - Specifically for _Linux_:
@@ -27,7 +29,7 @@ Clone the project using git with
 git clone https://github.com/CDevv/rpgpp
 ```
 
-Then, to build all targets, run
+To build all targets, run
 
 ```bash
 xmake build --all
@@ -49,7 +51,37 @@ To start the editor, run
 xmake run editor
 ```
 
+Translation
+---
+
+Translation are located in `resources/translations`, containing JSON files with their names being the language code.
+
+Each JSON files is structured as either flattened JSON:
+```json
+{
+	"language": "<name_of_language>",
+	"translation.key": "<translation_value>"
+}
+```
+or nested JSON:
+```json
+{
+	"language": "<name_of_language>",
+	"translation": {
+		"key": "<translation_value>"
+	}
+}
+```
+Both types are supported, though we recommend using nested JSON for better organization.
+
+If you wish to improve an existing language, you can do so by modifying the language file of the language you know. Or if you want to add a new language, create a new JSON file within the folder, specify the language via the `language` key, and then translate the root translation file (en_us.json). The engine will automatically pick it up.
+
+To check for translation progress, you can do so via
+```
+xmake check_translation
+```
+
 License
 ---
 
-This software uses the MIT License.
+This software is licensed under the MIT License.

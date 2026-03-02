@@ -1,104 +1,107 @@
 {
-  "language": "English",
-  "menu": {
-    "file": {
-      "_label": "File",
-      "new_project": "New Project",
-      "open_project": "Open Project",
-      "save_file": "Save File"
-    },
-    "edit": {
-      "_label": "Edit",
-      "undo": "Undo",
-      "redo": "Redo"
-    },
-    "options": {
-      "_label": "Options",
-      "editor": "Editor Options..."
-    },
-    "about": {
-      "_label": "About",
-      "rpgpp": "About RPG++...",
-      "rpgpp_description": "RPG engine, written in C++."
-    }
-  },
-  "screen": {
-    "starting": {
-      "get_started": "Get Started!",
-      "description": "Press on 'New Project' to create a new project, or 'Open Project' to open one!"
-    },
-    "options": {
-      "language": "Language",
-      "theme": "Theme"
-    },
-    "project": {
-      "create_new_resource": "New Resource",
-      "emptyview": {
-        "notice": "No file opened or view not defined yet!"
-      },
-      "dialogueview": {
-        "add_new_line": "Add a new line",
-        "has_a_portrait": "Has a portrait?"
-      },
-      "tilesetview": {
-        "tile_width": "Tile Width",
-        "tile_height": "Tile Height",
-        "texture": "Texture"
-      },
-      "roomview": {
-        "mapwidth": "Map Width",
-        "mapheight": "Map Height",
-        "tileset_file": "Tileset File"
-      },
-      "propview": {
-        "atlas": "Atlas Size",
-        "collision": "Collision Size",
-        "has_interactable": "Has interactable?",
-        "image": "Prop Image",
-        "interactable_type": "Interactable Type"
-      },
-      "actorview": {
-        "dir0": "Down (Idle)",
-        "dir1": "Down",
-        "dir2": "Up (Idle)",
-        "dir3": "Up",
-        "dir4": "Left (Idle)",
-        "dir5": "Left",
-        "dir6": "Right (Idle)",
-        "dir7": "Right",
-        "play": "Play",
-        "pause": "Pause",
-        "delete": "Delete Frame",
-        "is_non_idle": "Is Non-Idle Animation?"
-      },
-      "toolbar": {
-        "play": "Play",
-        "build": "Build"
-      }
-    }
-  },
-  "dialog": {
-    "new_file": {
-      "title": "New Resource",
-      "name": "Name",
-      "file": "File",
-      "confirm": "Confirm",
-      "cancel": "Cancel"
-    },
-    "new_project": {
-      "title": "New Project",
-      "name": "Project Name",
-      "folder": "Folder",
-      "confirm": "Confirm",
-      "cancel": "Cancel"
-    }
-  },
-  "widget": {
-    "filechooser": {
-      "select_a_file": "Select a File"
-    }
-  },
-  "button": {
-    "go_back": "Go Back"
-  }
+	"language": "English",
+	"menu": {
+		"file": {
+			"_label": "File",
+			"new_project": "New Project",
+			"open_project": "Open Project",
+			"save_file": "Save File"
+		},
+		"edit": {
+			"_label": "Edit",
+			"undo": "Undo",
+			"redo": "Redo"
+		},
+		"options": {
+			"_label": "Options",
+			"editor": "Editor Options..."
+		},
+		"about": {
+			"_label": "About",
+			"rpgpp": "About RPG++...",
+			"rpgpp_description": "RPG engine, written in C++."
+		}
+	},
+	"screen": {
+		"starting": {
+			"get_started": "Get Started!",
+			"description": "Press on 'New Project' to create a new project, or 'Open Project' to open one!"
+		},
+		"options": {
+			"language": "Language",
+			"theme": "Theme",
+			"theme_notice": "It is recommended to restart the editor after switching theme!"
+		},
+		"project": {
+			"create_new_resource": "New Resource",
+			"emptyview": {
+				"notice": "No file opened or view not defined yet!"
+			},
+			"dialogueview": {
+				"add_new_line": "Add a new line",
+				"has_a_portrait": "Has a portrait?"
+			},
+			"tilesetview": {
+				"tile_width": "Tile Width",
+				"tile_height": "Tile Height",
+				"texture": "Texture"
+			},
+			"roomview": {
+				"enable_brush": "Enable Brush Mode",
+				"mapwidth": "Map Width",
+				"mapheight": "Map Height",
+				"tileset_file": "Tileset File",
+				"bg_music_file": "BG Music"
+			},
+			"propview": {
+				"atlas": "Atlas Size",
+				"collision": "Collision Size",
+				"has_interactable": "Has interactable?",
+				"image": "Prop Image",
+				"interactable_type": "Interactable Type"
+			},
+			"actorview": {
+				"dir0": "Down (Idle)",
+				"dir1": "Down",
+				"dir2": "Up (Idle)",
+				"dir3": "Up",
+				"dir4": "Left (Idle)",
+				"dir5": "Left",
+				"dir6": "Right (Idle)",
+				"dir7": "Right",
+				"play": "Play",
+				"pause": "Pause",
+				"delete": "Delete Frame",
+				"is_non_idle": "Is Non-Idle Animation?"
+			},
+			"toolbar": {
+				"play": "Play",
+				"build": "Build"
+			}
+		}
+	},
+	"dialog": {
+		"new_file": {
+			"title": "New Resource",
+			"name": "Name",
+			"file": "File",
+			"confirm": "Confirm",
+			"cancel": "Cancel"
+		},
+		"new_project": {
+			"title": "New Project",
+			"name": "Project Name",
+			"folder": "Folder",
+			"confirm": "Confirm",
+			"cancel": "Cancel"
+		}
+	},
+	"widget": {
+		"filechooser": {
+			"select_a_file": "Select a File"
+		}
+	},
+	"button": {
+		"go_back": "Go Back"
+	}
 }

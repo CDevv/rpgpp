@@ -42,16 +42,17 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 		languageSelector->setSelectedItem(langTranslation);
 
 	languageSelector->onItemSelect.connect([&](const tgui::String &item) {
-		ts.setLanguage(ts.getLanguageIdentifierByKey(item.toStdString()));
 		ConfigurationService &configService =
 			Editor::instance->getConfiguration();
 		configService.setStringValue("language", ts.getCurrentLanguage());
 		configService.saveConfiguration();
+
+		ts.setLanguage(ts.getLanguageIdentifierByKey(item.toStdString()));
+		// Can't think of a way to reload the menu bar without recreating it
 		Editor::instance->getGui().initMenuBar();
 		if (auto ptr = Editor::instance->getGui().menuBar.lock()) {
 			Editor::instance->getGui().currentScreen->bindMenuBar(ptr);
 		}
-		// Editor::instance->getGui().reloadUi();
 	});
 
 	languageLayout->setSize({"100%", 30});
@@ -90,8 +91,8 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	themeLayout->add(themeLabel);
 	themeLayout->add(themeSelector);
 
-	auto warnLabel = tgui::Label::create(
-		"It is recommended to restart the editor after switching theme!");
+	auto warnLabel = tgui::Label::create();
+	bindTranslation(warnLabel, "screen.options.theme_notice", &tgui::Label::setText);
 	warnLabel->setSize({"100%", 100});
 
 	layout->add(languageLayout);

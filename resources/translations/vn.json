@@ -32,7 +32,8 @@
 
 		"options": {
 			"language": "Ngôn ngữ",
-			"theme": "Chủ đề"
+			"theme": "Chủ đề",
+			"theme_notice": "Để áp dụng chủ đề mới, vui lòng khởi động lại phần mềm!"
 		},
 		"project": {
 			"create_new_resource": "Tạo tài nguyên",
@@ -50,9 +51,11 @@
 			},
 
 			"roomview": {
+				"enable_brush": "Bật chế độ vẽ",
 				"mapwidth": "Độ rộng Map",
 				"mapheight": "Độ cao Map",
-				"tileset_file": "Tệp Tileset"
+				"tileset_file": "Tệp Tileset",
+				"bg_music_file": "Tệp nhạc nền"
 			},
 
 			"propview": {

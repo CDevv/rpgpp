@@ -103,7 +103,8 @@ RoomFileView::RoomFileView() {
 	};
 	props->addFileField(tileSetField);
 
-	musicFileField = FileField::create("BG Music", "");
+	musicFileField = FileField::create("", "");
+	bindTranslation(musicFileField->label, "screen.project.roomview.bg_music_file", &tgui::Label::setText);
 	musicFileField->setWidgetName("file");
 	musicFileField->pathFilters = {{"Music File", {"*.mp4", "*.ogg", "*.wav"}}};
 	musicFileField->callback = [this](const tgui::String &path) {
@@ -137,7 +138,8 @@ RoomFileView::RoomFileView() {
 										   "Start Point",
 										   "tool_startpoint.png"});
 
-	auto brushToggle = tgui::CheckBox::create("Enable brush mode");
+	auto brushToggle = tgui::CheckBox::create();
+	bindTranslation<tgui::CheckBox>(brushToggle, "screen.project.roomview.enable_brush", &tgui::CheckBox::setText);
 	brushToggle->onChange(
 		[this](bool toggled) { roomView->setBrush(toggled); });
 	auto brushToggleSize =
