@@ -78,6 +78,7 @@
 				"play": "Chạy",
 				"pause": "Tạm dừng",
 				"delete": "Xóa frame",
+				"edit_anim_data": "Chỉnh sửa dữ liệu animation",
 				"is_non_idle": "Có phải animation?"
 			},
 

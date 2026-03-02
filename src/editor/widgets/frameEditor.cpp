@@ -57,18 +57,27 @@ void FrameEditor::init() {
 	topBarLayout->add(directionChooser);
 
 	playPauseButton =
-		tgui::ToggleButton::create(ts.getKey("screen.project.actorview.play"));
+		tgui::ToggleButton::create();
 
-	playPauseButton->onToggle.connect([&, this](const bool &checked) {
-		playPauseButton->setText(
-			checked ? ts.getKey("screen.project.actorview.pause")
-					: ts.getKey("screen.project.actorview.play"));
-		actorView->isPlaying = checked;
+	bindCustomTranslation<tgui::ToggleButton>(playPauseButton, [this](tgui::ToggleButton::Ptr button, TranslationService &ts) {
+		if (button->isDown()) {
+			button->setText(ts.getKey("screen.project.actorview.pause"));
+		} else {
+			button->setText(ts.getKey("screen.project.actorview.play"));
+		}
+		button->onToggle.disconnectAll();
+		button->onToggle.connect([&, button](const bool &checked) {
+			button->setText(
+				checked ? ts.getKey("screen.project.actorview.pause")
+						: ts.getKey("screen.project.actorview.play"));
+			actorView->isPlaying = checked;
+		});
 	});
 	playPauseButton->setSize({100, "100%"});
 	topBarLayout->add(playPauseButton);
 
-	auto editingAtlasData = tgui::ToggleButton::create("Edit Animation Data");
+	auto editingAtlasData = tgui::ToggleButton::create();
+	bindTranslation<tgui::ToggleButton>(editingAtlasData, "screen.project.actorview.edit_anim_data", &tgui::ToggleButton::setText);
 	editingAtlasData->setSize({200, "100%"});
 	editingAtlasData->onToggle.connect(
 		[this](const bool isChecked) { actorView->editData = isChecked; });
