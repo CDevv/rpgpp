@@ -41,6 +41,7 @@ class SoundPlayer : public tgui::SubwidgetContainer, public IUpdatable {
 
 	bool isPlaying = false;
 	bool mouseOnSlider = false;
+	bool hasPlayed = false;
 
   protected:
 	Widget::Ptr clone() const override;

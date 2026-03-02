@@ -50,9 +50,15 @@ SoundPlayer::SoundPlayer(const char *typeName, bool initRenderer)
 			playbackWeak.lock()->setImage(pauseTexture);
 			if (IsMusicValid(sound->sound)) {
 				if (slider->getValue() > 0) {
-					ResumeMusicStream(sound->sound);
+					if (hasPlayed) {
+						ResumeMusicStream(sound->sound);
+					} else {
+						PlayMusicStream(sound->sound);
+						SeekMusicStream(sound->sound, slider->getValue());
+					}
 				} else {
 					PlayMusicStream(sound->sound);
+					hasPlayed = true;
 				}
 			} else {
 				printf("seems this music is invalid.. \n");
