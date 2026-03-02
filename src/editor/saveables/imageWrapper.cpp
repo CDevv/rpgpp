@@ -6,6 +6,7 @@
 ImageWrapper::ImageWrapper(const std::string &filePath) {
 	printf("%s \n", filePath.c_str());
 	image = LoadImage(filePath.c_str());
+	source = filePath;
 }
 
 ImageWrapper::~ImageWrapper() {

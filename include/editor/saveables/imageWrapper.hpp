@@ -10,6 +10,8 @@
 class ImageWrapper : public ISaveable {
   public:
 	Image image{};
+	std::string source;
+
 	ImageWrapper() = default;
 	~ImageWrapper();
 	ImageWrapper(const std::string &filePath);

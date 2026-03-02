@@ -8,6 +8,7 @@
 #include "fileViews/emptyView.hpp"
 #include "fileViews/fileView.hpp"
 #include "fileViews/fontFileView.hpp"
+#include "fileViews/imageFileView.hpp"
 #include "fileViews/propFileView.hpp"
 #include "fileViews/roomFileView.hpp"
 #include "fileViews/tilesetFileView.hpp"
@@ -106,7 +107,7 @@ ProjectFileVisitor::propView(const std::string &path) {
 
 std::unique_ptr<ProjectFile>
 ProjectFileVisitor::imageView(const std::string &path) {
-	std::unique_ptr<EmptyFileView> view = std::make_unique<EmptyFileView>();
+	std::unique_ptr<ImageFileView> view = std::make_unique<ImageFileView>();
 	std::unique_ptr<VariantWrapper> variant =
 		std::make_unique<Variant<ImageWrapper>>(new ImageWrapper(path));
 	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
