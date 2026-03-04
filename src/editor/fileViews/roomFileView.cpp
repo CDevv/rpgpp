@@ -157,10 +157,6 @@ RoomFileView::RoomFileView() {
 		cout << "Selected tool: " << tool.text << endl;
 	});
 	widgetContainer.push_back(toolbox);
-
-	Editor::instance->getGui().gui->onViewChange.disconnectAll();
-	Editor::instance->getGui().gui->onViewChange(
-		[this] { roomView->resetRender(); });
 }
 
 void RoomFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {

@@ -21,6 +21,7 @@ WorldView::WorldView(const char *typeName, bool initRenderer)
 	mouseWorldPos = {0, 0};
 
 	tgui::Vector2f size = getSize();
+	widgetSize = size;
 	texture =
 		LoadRenderTexture(static_cast<int>(size.x), static_cast<int>(size.y));
 
@@ -139,6 +140,11 @@ void WorldView::resetRender() {
 
 void WorldView::update() {
 	mouseMiddleButton = IsMouseButtonDown(MOUSE_MIDDLE_BUTTON);
+
+	if (widgetSize != getSize()) {
+		widgetSize = getSize();
+		resetRender();
+	}
 
 	BeginTextureMode(m_textureTarget);
 

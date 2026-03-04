@@ -2,6 +2,7 @@
 #define _RPGPP_WORLDVIEW_H
 
 #include "TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp"
+#include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
 #include "constants/room.hpp"
 #include "raylib.h"
@@ -21,6 +22,7 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	float cameraZoomSpeed = 0.2f;
 	float cameraMinZoom = 0.5f;
 	float cameraMaxZoom = 5;
+	tgui::Vector2f widgetSize{};
 
   public:
 	typedef std::shared_ptr<WorldView> Ptr;
