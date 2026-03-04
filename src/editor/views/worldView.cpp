@@ -125,13 +125,16 @@ void WorldView::keyPressed(const tgui::Event::KeyEvent &event) {
 bool WorldView::canGainFocus() const { return true; }
 
 void WorldView::resetRender() {
-	if (IsRenderTextureValid(m_textureTarget)) {
-		UnloadRenderTexture(m_textureTarget);
-	}
 	tgui::Vector2f newSize = getSize();
-	printf("%f, %f \n", newSize.x, newSize.y);
 	m_textureTarget = LoadRenderTexture(static_cast<int>(newSize.x),
 										static_cast<int>(newSize.y));
+	m_backendTexture->replaceInternalTexture(m_textureTarget.texture);
+	if (m_textureTarget.id) {
+		m_textureSize = tgui::Vector2u{newSize};
+	} else {
+		m_textureSize = {};
+	}
+	m_usedTextureSize = tgui::Vector2u{newSize};
 }
 
 void WorldView::update() {
