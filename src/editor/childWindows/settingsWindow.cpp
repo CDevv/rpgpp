@@ -3,15 +3,17 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/HorizontalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
+#include "bindTranslation.hpp"
 #include "childWindows/popupWindow.hpp"
 #include "editor.hpp"
-#include "bindTranslation.hpp"
 
 SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	TranslationService &ts = Editor::instance->getTranslations();
 	ThemeService &theme = Editor::instance->getThemeService();
 
-	bindTranslation<tgui::ChildWindow>(this->currentWindow, "menu.options._label", &tgui::ChildWindow::setTitle);
+	bindTranslation<tgui::ChildWindow>(this->currentWindow,
+									   "menu.options._label",
+									   &tgui::ChildWindow::setTitle);
 
 	const auto layout = tgui::GrowVerticalLayout::create();
 
@@ -20,11 +22,11 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	layout->setOrigin({0.5, 0.5});
 	layout->getRenderer()->setSpaceBetweenWidgets(10.0f);
 
-	const auto topOptionsHeader =
-		tgui::Label::create();
+	const auto topOptionsHeader = tgui::Label::create();
 	topOptionsHeader->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	topOptionsHeader->getRenderer()->setTextSize(20);
-	bindTranslation(topOptionsHeader, "menu.options.editor", &tgui::Label::setText);
+	bindTranslation(topOptionsHeader, "menu.options.editor",
+					&tgui::Label::setText);
 	layout->add(topOptionsHeader);
 
 	// Language
@@ -56,10 +58,10 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	});
 
 	languageLayout->setSize({"100%", 30});
-	const auto languageLabel =
-		tgui::Label::create();
+	const auto languageLabel = tgui::Label::create();
 	languageLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
-	bindTranslation(languageLabel, "screen.options.language", &tgui::Label::setText);
+	bindTranslation(languageLabel, "screen.options.language",
+					&tgui::Label::setText);
 
 	languageLayout->add(languageLabel);
 	languageLayout->add(languageSelector);
@@ -69,8 +71,7 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	const auto themeSelector = tgui::ComboBox::create();
 
 	themeLayout->setSize({"100%", 30});
-	const auto themeLabel =
-		tgui::Label::create();
+	const auto themeLabel = tgui::Label::create();
 	themeLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
 	bindTranslation(themeLabel, "screen.options.theme", &tgui::Label::setText);
 
@@ -92,7 +93,8 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	themeLayout->add(themeSelector);
 
 	auto warnLabel = tgui::Label::create();
-	bindTranslation(warnLabel, "screen.options.theme_notice", &tgui::Label::setText);
+	bindTranslation(warnLabel, "screen.options.theme_notice",
+					&tgui::Label::setText);
 	warnLabel->setSize({"100%", 100});
 
 	layout->add(languageLayout);

@@ -7,6 +7,7 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/ToggleButton.hpp"
 #include "actor.hpp"
+#include "bindTranslation.hpp"
 #include "components/frameButton.hpp"
 #include "editor.hpp"
 #include "fileViews/actorFileView.hpp"
@@ -14,7 +15,6 @@
 #include "services/translationService.hpp"
 #include <cstddef>
 #include <memory>
-#include "bindTranslation.hpp"
 
 constexpr int MAX_TOP_BAR_HEIGHT = 30;
 constexpr int MAX_ANI_BAR_HEIGHT = 50;
@@ -41,13 +41,14 @@ void FrameEditor::init() {
 
 	this->directionChooser = tgui::ComboBox::create();
 
-	bindCustomTranslation<tgui::ComboBox>(directionChooser, [](tgui::ComboBox::Ptr box, TranslationService &ts) {
-		box->removeAllItems();
-		for (int i = 0; i <= RPGPP_MAX_DIRECTION; i++)
-			box->addItem(
-				ts.getKey(TextFormat("screen.project.actorview.dir%d", i)));
-		box->setSelectedItemByIndex(0);
-	});
+	bindCustomTranslation<tgui::ComboBox>(
+		directionChooser, [](tgui::ComboBox::Ptr box, TranslationService &ts) {
+			box->removeAllItems();
+			for (int i = 0; i <= RPGPP_MAX_DIRECTION; i++)
+				box->addItem(
+					ts.getKey(TextFormat("screen.project.actorview.dir%d", i)));
+			box->setSelectedItemByIndex(0);
+		});
 
 	directionChooser->onItemSelect.connect([this](const size_t &index) {
 		this->changeFrameState(index);
@@ -56,36 +57,39 @@ void FrameEditor::init() {
 
 	topBarLayout->add(directionChooser);
 
-	playPauseButton =
-		tgui::ToggleButton::create();
+	playPauseButton = tgui::ToggleButton::create();
 
-	bindCustomTranslation<tgui::ToggleButton>(playPauseButton, [this](tgui::ToggleButton::Ptr button, TranslationService &ts) {
-		if (button->isDown()) {
-			button->setText(ts.getKey("screen.project.actorview.pause"));
-		} else {
-			button->setText(ts.getKey("screen.project.actorview.play"));
-		}
-		button->onToggle.disconnectAll();
-		button->onToggle.connect([&, button](const bool &checked) {
-			button->setText(
-				checked ? ts.getKey("screen.project.actorview.pause")
-						: ts.getKey("screen.project.actorview.play"));
-			actorView->isPlaying = checked;
+	bindCustomTranslation<tgui::ToggleButton>(
+		playPauseButton,
+		[this](tgui::ToggleButton::Ptr button, TranslationService &ts) {
+			if (button->isDown()) {
+				button->setText(ts.getKey("screen.project.actorview.pause"));
+			} else {
+				button->setText(ts.getKey("screen.project.actorview.play"));
+			}
+			button->onToggle.disconnectAll();
+			button->onToggle.connect([&, button](const bool &checked) {
+				button->setText(
+					checked ? ts.getKey("screen.project.actorview.pause")
+							: ts.getKey("screen.project.actorview.play"));
+				actorView->isPlaying = checked;
+			});
 		});
-	});
 	playPauseButton->setSize({100, "100%"});
 	topBarLayout->add(playPauseButton);
 
 	auto editingAtlasData = tgui::ToggleButton::create();
-	bindTranslation<tgui::ToggleButton>(editingAtlasData, "screen.project.actorview.edit_anim_data", &tgui::ToggleButton::setText);
+	bindTranslation<tgui::ToggleButton>(
+		editingAtlasData, "screen.project.actorview.edit_anim_data",
+		&tgui::ToggleButton::setText);
 	editingAtlasData->setSize({200, "100%"});
 	editingAtlasData->onToggle.connect(
 		[this](const bool isChecked) { actorView->editData = isChecked; });
 	topBarLayout->add(editingAtlasData);
 
-	auto delFrame =
-		tgui::Button::create();
-	bindTranslation<tgui::Button>(delFrame, "screen.project.actorview.delete", &tgui::Button::setText);
+	auto delFrame = tgui::Button::create();
+	bindTranslation<tgui::Button>(delFrame, "screen.project.actorview.delete",
+								  &tgui::Button::setText);
 	delFrame->onPress.connect([&] {
 		if (actor->getAnimationCount() > 1) {
 			// Remove the last frame button.

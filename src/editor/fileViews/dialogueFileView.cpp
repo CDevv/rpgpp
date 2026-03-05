@@ -8,6 +8,7 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Panel.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
+#include "bindTranslation.hpp"
 #include "dialogue.hpp"
 #include "editor.hpp"
 #include "raylib.h"
@@ -19,7 +20,6 @@
 #include <TGUI/Widgets/Picture.hpp>
 #include <TGUI/Widgets/ScrollablePanel.hpp>
 #include <memory>
-#include "bindTranslation.hpp"
 
 DialogueFileView::DialogueFileView() {
 	TranslationService &ts = Editor::instance->getTranslations();
@@ -33,7 +33,9 @@ DialogueFileView::DialogueFileView() {
 	toolsPanel->getRenderer()->setPadding({4, 4});
 	newLineButton = tgui::Button::create();
 
-	bindTranslation<tgui::Button>(newLineButton, "screen.project.dialogueview.add_new_line", &tgui::Button::setText);
+	bindTranslation<tgui::Button>(newLineButton,
+								  "screen.project.dialogueview.add_new_line",
+								  &tgui::Button::setText);
 	newLineButton->setSize("20%", "100%");
 	toolsPanel->add(newLineButton);
 
@@ -114,7 +116,9 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data,
 	panel->add(diagTextEdit);
 
 	auto hasImageCheck = tgui::CheckBox::create();
-	bindTranslation<tgui::CheckBox>(hasImageCheck, "screen.project.dialogueview.has_a_portrait", &tgui::CheckBox::setText);
+	bindTranslation<tgui::CheckBox>(
+		hasImageCheck, "screen.project.dialogueview.has_a_portrait",
+		&tgui::CheckBox::setText);
 	hasImageCheck->setSize(32, 32);
 	hasImageCheck->setChecked(line.hasPortrait);
 

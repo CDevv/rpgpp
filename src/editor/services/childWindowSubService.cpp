@@ -14,12 +14,10 @@ void ChildWindowSubService::createWindows() {
 		this->childWindows.clear();
 
 	this->childWindows.try_emplace(
-		"about", std::unique_ptr<AboutWindow>(
-					 new AboutWindow("")));
+		"about", std::unique_ptr<AboutWindow>(new AboutWindow("")));
 
 	this->childWindows.try_emplace(
-		"options", std::unique_ptr<SettingsWindow>(
-					   new SettingsWindow("")));
+		"options", std::unique_ptr<SettingsWindow>(new SettingsWindow("")));
 }
 
 void ChildWindowSubService::openWindow(const std::string &windowName) {

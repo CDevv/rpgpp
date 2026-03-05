@@ -7,12 +7,12 @@
 #include "TGUI/Widgets/MessageBox.hpp"
 #include "editor.hpp"
 #include "raylib.h"
+#include "rlgl.h"
 #include "screens/guiScreen.hpp"
 #include "screens/welcomeScreen.hpp"
 #include "services/childWindowSubService.hpp"
 #include "services/translationService.hpp"
 #include "updatable.hpp"
-#include "rlgl.h"
 #include <TGUI/AllWidgets.hpp>
 #include <TGUI/Widgets/ChildWindow.hpp>
 #include <cmath>
@@ -93,7 +93,7 @@ void EditorGuiService::uiLoop() {
 	// main loop.
 	while (!WindowShouldClose()) {
 		if (IsKeyPressed(KEY_F3))
-        	perfOverlay.Toggle();
+			perfOverlay.Toggle();
 		perfOverlay.Update();
 
 		cg->handleEvents();

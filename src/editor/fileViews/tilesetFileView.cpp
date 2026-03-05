@@ -1,5 +1,6 @@
 #include "fileViews/tilesetFileView.hpp"
 #include "TGUI/Widgets/Group.hpp"
+#include "bindTranslation.hpp"
 #include "editor.hpp"
 #include "raylib.h"
 #include "services/translationService.hpp"
@@ -11,7 +12,6 @@
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/intField.hpp"
 #include <algorithm>
-#include "bindTranslation.hpp"
 TileSetFileView::TileSetFileView() {
 	TranslationService &ts = Editor::instance->getTranslations();
 
@@ -27,14 +27,17 @@ TileSetFileView::TileSetFileView() {
 	props->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W), 0});
 
 	widthField = IntField::create();
-	bindTranslation(widthField->label, "screen.project.tilesetview.tile_width", &tgui::Label::setText);
+	bindTranslation(widthField->label, "screen.project.tilesetview.tile_width",
+					&tgui::Label::setText);
 	widthField->value->onValueChange([this](int value) {
 		this->worldView->getTileSet()->setTileWidth(value);
 	});
 	props->addIntField(widthField);
 
 	heightField = IntField::create();
-	bindTranslation(heightField->label, "screen.project.tilesetview.tile_height", &tgui::Label::setText);
+	bindTranslation(heightField->label,
+					"screen.project.tilesetview.tile_height",
+					&tgui::Label::setText);
 	heightField->value->onValueChange([this](int value) {
 		this->worldView->getTileSet()->setTileHeight(value);
 	});
@@ -53,7 +56,8 @@ TileSetFileView::TileSetFileView() {
 	props->addIntField(heightField);
 
 	textureFile = FileField::create("", "...");
-	bindTranslation(textureFile->label, "screen.project.tilesetview.texture", &tgui::Label::setText);
+	bindTranslation(textureFile->label, "screen.project.tilesetview.texture",
+					&tgui::Label::setText);
 	textureFile->pathFilters = {{
 		{"Images", {"*.png", "*.jpg"}},
 	}};

@@ -6,6 +6,7 @@
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/MenuBar.hpp"
+#include "components/perfOverlay.hpp"
 #include "raylib.h"
 #include "screens/guiScreen.hpp"
 #include "services/childWindowSubService.hpp"
@@ -13,7 +14,6 @@
 #include <map>
 #include <memory>
 #include <vector>
-#include "components/perfOverlay.hpp"
 constexpr auto RPGPP_EXECUTABLE_LOGO = "resources/app-icon.png";
 constexpr int ACTION_BUTTON_SIZE = 16;
 
