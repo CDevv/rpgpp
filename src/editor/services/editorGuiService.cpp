@@ -12,6 +12,7 @@
 #include "services/childWindowSubService.hpp"
 #include "services/translationService.hpp"
 #include "updatable.hpp"
+#include "rlgl.h"
 #include <TGUI/AllWidgets.hpp>
 #include <TGUI/Widgets/ChildWindow.hpp>
 #include <cmath>
@@ -91,6 +92,10 @@ void EditorGuiService::uiLoop() {
 	tgui::Theme::addRendererInheritanceParent("RoomToolbox", "Tabs");
 	// main loop.
 	while (!WindowShouldClose()) {
+		if (IsKeyPressed(KEY_F3))
+        	perfOverlay.Toggle();
+		perfOverlay.Update();
+
 		cg->handleEvents();
 		while (const int pressed_char = GetCharPressed())
 			cg->handleCharPressed(pressed_char);
@@ -142,6 +147,8 @@ void EditorGuiService::uiLoop() {
 			this->resetUi();
 			this->childWindowService->createWindows();
 		}
+
+		perfOverlay.Draw(20, 40, 400, 100);
 		EndDrawing();
 	}
 	this->childWindowService.reset();

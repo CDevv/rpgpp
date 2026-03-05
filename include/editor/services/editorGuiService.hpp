@@ -3,7 +3,6 @@
 
 #include "TGUI/Backend/raylib.hpp"
 #include "TGUI/Widget.hpp"
-#include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/MenuBar.hpp"
@@ -14,6 +13,7 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include "components/perfOverlay.hpp"
 constexpr auto RPGPP_EXECUTABLE_LOGO = "resources/app-icon.png";
 constexpr int ACTION_BUTTON_SIZE = 16;
 
@@ -21,6 +21,7 @@ class EditorGuiService {
   private:
 	std::vector<std::weak_ptr<IUpdatable>> updatableWidgets;
 	std::unique_ptr<ChildWindowSubService> childWindowService;
+	PerformanceOverlay perfOverlay;
 
 	int currentCursor = MOUSE_CURSOR_DEFAULT;
 	bool leftMouseHeld = false;
