@@ -4,6 +4,7 @@
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "actor.hpp"
+#include "bindTranslation.hpp"
 #include "editor.hpp"
 #include "raylib.h"
 #include "services/translationService.hpp"
@@ -11,7 +12,6 @@
 #include "widgets/frameEditor.hpp"
 #include "widgets/propertiesBox.hpp"
 #include "widgets/propertyFields/fileField.hpp"
-#include "bindTranslation.hpp"
 
 constexpr int IDLE_OFFSET{2};
 constexpr int RIGHT_PANEL_W{300};
@@ -36,8 +36,11 @@ ActorFileView::ActorFileView() {
 
 	// The TileSet Editor
 	this->tileSetField = FileField::create();
-	bindTranslation<tgui::Label>(tileSetField->label, "screen.project.roomview.tileset_file", &tgui::Label::setText);
-	tileSetField->pathFilters = {{tileSetField->label->getText(), {"*.rtiles"}}};
+	bindTranslation<tgui::Label>(tileSetField->label,
+								 "screen.project.roomview.tileset_file",
+								 &tgui::Label::setText);
+	tileSetField->pathFilters = {
+		{tileSetField->label->getText(), {"*.rtiles"}}};
 	tileSetField->callback = [this](const tgui::String &text) {
 		actorView->actor->setTileSet(text.toStdString());
 		// fix for the atlas rectangle not sizing up properly.
@@ -50,7 +53,9 @@ ActorFileView::ActorFileView() {
 
 	// Collision Rectangle Editor
 	collisionField = RectangleField::create();
-	bindTranslation<tgui::Label>(collisionField->label, "screen.project.propview.collision", &tgui::Label::setText);
+	bindTranslation<tgui::Label>(collisionField->label,
+								 "screen.project.propview.collision",
+								 &tgui::Label::setText);
 	collisionField->onChange(
 		[this](Rectangle r) { actorView->setCollisionRect(r); });
 	propBox->addRectangleField(collisionField);

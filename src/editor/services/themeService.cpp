@@ -32,9 +32,10 @@ void ThemeService::setTheme(const string &themeName) {
 	if (this->themes.find(themeName) != this->themes.end()) {
 
 		this->current_theme_name = themeName;
-		this->current_theme = std::make_shared<tgui::Theme>(
-			this->themes[this->current_theme_name]);
-		tgui::Theme::setDefault(this->current_theme);
+		this->current_theme->load(this->themes[this->current_theme_name]);
+		// this->current_theme = std::make_shared<tgui::Theme>(
+		// 	this->themes[this->current_theme_name]);
+		// tgui::Theme::setDefault(this->current_theme);
 	}
 }
 

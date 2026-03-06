@@ -14,6 +14,7 @@
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "TGUI/Widgets/Scrollbar.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
+#include "bindTranslation.hpp"
 #include "components/resizableContainer.hpp"
 #include "components/tooltip.hpp"
 #include "editor.hpp"
@@ -28,7 +29,6 @@
 #include <filesystem>
 #include <memory>
 #include <vector>
-#include "bindTranslation.hpp"
 using namespace screens;
 void ProjectScreen::layoutReload() {
 	resListWBinder->setSize(modifiable_RESLIST_W, "100%");
@@ -64,10 +64,10 @@ void ProjectScreen::bindMenuBar(tgui::MenuBar::Ptr menuBarPtr) {
 	auto &ts = Editor::instance->getTranslations();
 	std::vector<tgui::String> saveFileHierarchy = {
 		ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")};
-	std::vector<tgui::String> undoHierarchy = {
-		ts.getKey("menu.edit._label"), ts.getKey("menu.edit.undo")};
-	std::vector<tgui::String> redoHierarchy = {
-		ts.getKey("menu.edit._label"), ts.getKey("menu.edit.redo")};
+	std::vector<tgui::String> undoHierarchy = {ts.getKey("menu.edit._label"),
+											   ts.getKey("menu.edit.undo")};
+	std::vector<tgui::String> redoHierarchy = {ts.getKey("menu.edit._label"),
+											   ts.getKey("menu.edit.redo")};
 	menuBarPtr->setMenuItemEnabled(saveFileHierarchy, true);
 	menuBarPtr->connectMenuItem(saveFileHierarchy, [this] {
 		if (!openedFiles.empty()) {
@@ -185,7 +185,7 @@ void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 }
 
 void ProjectScreen::addFileView(EngineFileType fileType,
-										 const std::string &path) {
+								const std::string &path) {
 
 	Editor::instance->getGui().gui->setTabKeyUsageEnabled(
 		fileType != EngineFileType::FILE_SCRIPT);
@@ -239,9 +239,9 @@ tgui::Group::Ptr ProjectScreen::createToolBar() {
 
 	auto &fs = Editor::instance->getFs();
 
-	auto playBtnTooltip =
-		Tooltip::create("");
-	bindTranslation<Tooltip>(playBtnTooltip, "screen.project.toolbar.play", &Tooltip::setText);
+	auto playBtnTooltip = Tooltip::create("");
+	bindTranslation<Tooltip>(playBtnTooltip, "screen.project.toolbar.play",
+							 &Tooltip::setText);
 	auto playBtn = tgui::BitmapButton::create();
 	auto playtestImg = tgui::Texture(fs.getResourcePath("playtest.png"));
 	playBtn->setImage(playtestImg);
@@ -251,9 +251,9 @@ tgui::Group::Ptr ProjectScreen::createToolBar() {
 	playBtn->setToolTip(playBtnTooltip);
 	toolBar->add(playBtn, "playBtn");
 
-	auto buildTooltip =
-		Tooltip::create("");
-	bindTranslation<Tooltip>(buildTooltip, "screen.project.toolbar.build", &Tooltip::setText);
+	auto buildTooltip = Tooltip::create("");
+	bindTranslation<Tooltip>(buildTooltip, "screen.project.toolbar.build",
+							 &Tooltip::setText);
 	auto buildBtn = tgui::BitmapButton::create();
 	auto buildImg = tgui::Texture(fs.getResourcePath("build.png"));
 	buildBtn->setImage(buildImg);
@@ -354,7 +354,9 @@ ResizableContainer::Ptr ProjectScreen::createResourcesList() {
 	group->add(resourceChoose);
 
 	auto createResourceBtn = tgui::Button::create();
-	bindTranslation<tgui::Button>(createResourceBtn, "screen.project.create_new_resource", &tgui::Button::setText);
+	bindTranslation<tgui::Button>(createResourceBtn,
+								  "screen.project.create_new_resource",
+								  &tgui::Button::setText);
 	createResourceBtn->setPosition(0, tgui::bindBottom(resourceChoose));
 	createResourceBtn->setSize("100%", RESLIST_CREATE_RES_BTN_H);
 	createResourceBtn->onPress([this] {
@@ -375,8 +377,6 @@ ResizableContainer::Ptr ProjectScreen::createResourcesList() {
 		tgui::Scrollbar::Policy::Automatic);
 	resourceListPanel->getHorizontalScrollbar()->setPolicy(
 		tgui::Scrollbar::Policy::Never);
-	resourceListPanel->getRenderer()->setBackgroundColor(
-		tgui::Color::applyOpacity(tgui::Color::Black, 0.2));
 
 	resourcesLayout = tgui::GrowVerticalLayout::create();
 	resourceListPanel->add(resourcesLayout);

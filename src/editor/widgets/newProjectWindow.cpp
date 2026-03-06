@@ -6,19 +6,19 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/Panel.hpp"
+#include "bindTranslation.hpp"
 #include "editor.hpp"
 #include "services/translationService.hpp"
 #include "widgets/fileChooser.hpp"
 #include <memory>
-#include "bindTranslation.hpp"
 NewProjectWindow::NewProjectWindow(const char *typeName, bool initRenderer) {}
 
 void NewProjectWindow::init(tgui::Gui *gui) {
 	TranslationService &tService = Editor::instance->getTranslations();
 
-	window =
-		tgui::ChildWindow::create();
-	bindTranslation<tgui::ChildWindow>(window, "dialog.new_project.title", &tgui::ChildWindow::setTitle);
+	window = tgui::ChildWindow::create();
+	bindTranslation<tgui::ChildWindow>(window, "dialog.new_project.title",
+									   &tgui::ChildWindow::setTitle);
 	window->setSize(320, 220);
 
 	auto panel = tgui::Panel::create();
@@ -28,9 +28,9 @@ void NewProjectWindow::init(tgui::Gui *gui) {
 	auto vertLayout = tgui::GrowVerticalLayout::create();
 	panel->add(vertLayout);
 
-	auto titleLabel =
-		tgui::Label::create();
-	bindTranslation<tgui::Label>(titleLabel, "dialog.new_project.name", &tgui::Label::setText);
+	auto titleLabel = tgui::Label::create();
+	bindTranslation<tgui::Label>(titleLabel, "dialog.new_project.name",
+								 &tgui::Label::setText);
 	vertLayout->add(titleLabel);
 
 	titleField = tgui::EditBox::create();
@@ -41,27 +41,27 @@ void NewProjectWindow::init(tgui::Gui *gui) {
 	gap->setSize("100%", FIELD_H);
 	vertLayout->add(gap);
 
-	fileLabel =
-		tgui::Label::create();
-	bindTranslation<tgui::Label>(fileLabel, "dialog.new_project.folder", &tgui::Label::setText);
+	fileLabel = tgui::Label::create();
+	bindTranslation<tgui::Label>(fileLabel, "dialog.new_project.folder",
+								 &tgui::Label::setText);
 	vertLayout->add(fileLabel);
 
 	fileField = FileChooser::create();
 	fileField->setSize({"100%", FIELD_H});
 	vertLayout->add(fileField);
 
-	confirmButton =
-		tgui::Button::create();
-	bindTranslation<tgui::Button>(confirmButton, "dialog.new_project.confirm", &tgui::Button::setText);
+	confirmButton = tgui::Button::create();
+	bindTranslation<tgui::Button>(confirmButton, "dialog.new_project.confirm",
+								  &tgui::Button::setText);
 	confirmButton->setSize(BUTTON_W, BUTTON_H);
 	confirmButton->setPosition(tgui::Layout("100%") - BUTTON_W - PADDING,
 							   tgui::Layout("100%") - BUTTON_H - PADDING);
 
 	window->add(confirmButton);
 
-	cancelButton =
-		tgui::Button::create();
-	bindTranslation<tgui::Button>(cancelButton, "dialog.new_project.cancel", &tgui::Button::setText);
+	cancelButton = tgui::Button::create();
+	bindTranslation<tgui::Button>(cancelButton, "dialog.new_project.cancel",
+								  &tgui::Button::setText);
 	cancelButton->setSize(BUTTON_W, BUTTON_H);
 	cancelButton->setPosition(tgui::bindLeft(confirmButton) - BUTTON_W -
 								  PADDING,

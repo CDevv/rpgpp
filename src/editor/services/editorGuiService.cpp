@@ -7,6 +7,7 @@
 #include "TGUI/Widgets/MessageBox.hpp"
 #include "editor.hpp"
 #include "raylib.h"
+#include "rlgl.h"
 #include "screens/guiScreen.hpp"
 #include "screens/welcomeScreen.hpp"
 #include "services/childWindowSubService.hpp"
@@ -67,7 +68,6 @@ void EditorGuiService::resetUi() {
 		this->childWindowService->createWindows();
 	else
 		this->childWindowService = std::make_unique<ChildWindowSubService>();
-	// tgui::Theme::setDefault(CURRENT_TESTING_THEME);
 
 	initMenuBar();
 
@@ -91,6 +91,10 @@ void EditorGuiService::uiLoop() {
 	tgui::Theme::addRendererInheritanceParent("RoomToolbox", "Tabs");
 	// main loop.
 	while (!WindowShouldClose()) {
+		if (IsKeyPressed(KEY_F3))
+			perfOverlay.Toggle();
+		perfOverlay.Update();
+
 		cg->handleEvents();
 		while (const int pressed_char = GetCharPressed())
 			cg->handleCharPressed(pressed_char);
@@ -142,6 +146,8 @@ void EditorGuiService::uiLoop() {
 			this->resetUi();
 			this->childWindowService->createWindows();
 		}
+
+		perfOverlay.Draw(20, 40, 400, 100);
 		EndDrawing();
 	}
 	this->childWindowService.reset();
@@ -158,11 +164,9 @@ void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
 		return;
 	}
 	auto group = this->uiChangePreInit(setToScreen.get());
-	// this->prevScreen = this->currentScreen.release();
 	this->screenHistory.push_back(std::move(this->currentScreen));
 	this->currentScreen.swap(setToScreen);
 	this->currentScreen->initItems(group);
-	// gui->add(group);
 }
 
 /**
@@ -172,15 +176,6 @@ void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
  * @return the group that the screen must use to position and add it's widgets.
  */
 tgui::Group::Ptr EditorGuiService::uiChangePreInit(UIScreen *setToScreen) {
-	/*
-	gui->removeAllWidgets();
-	initMenuBar();
-
-	auto group = tgui::Group::create({"100%"});
-	group->setPosition(0, MENUBAR_H);
-	group->setSize({"100%", tgui::Layout("100%") - MENUBAR_H});
-	*/
-
 	if (screenContainer.expired()) {
 		throw std::runtime_error("Screen container's weak pointer is expired");
 	}

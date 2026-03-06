@@ -3,10 +3,10 @@
 
 #include "TGUI/Backend/raylib.hpp"
 #include "TGUI/Widget.hpp"
-#include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/MenuBar.hpp"
+#include "components/perfOverlay.hpp"
 #include "raylib.h"
 #include "screens/guiScreen.hpp"
 #include "services/childWindowSubService.hpp"
@@ -21,6 +21,7 @@ class EditorGuiService {
   private:
 	std::vector<std::weak_ptr<IUpdatable>> updatableWidgets;
 	std::unique_ptr<ChildWindowSubService> childWindowService;
+	PerformanceOverlay perfOverlay;
 
 	int currentCursor = MOUSE_CURSOR_DEFAULT;
 	bool leftMouseHeld = false;

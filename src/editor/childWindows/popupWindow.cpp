@@ -28,7 +28,6 @@ void PopupWindow::open() {
 	this->currentWindow->setPosition({"50%", "50%"});
 	this->currentWindow->showWithEffect(ANIMATION_TYPE,
 										tgui::Duration(ANIMATION_DURATION));
-	this->currentWindow->getRenderer()->setTitleBarHeight(TITLEBAR_HEIGHT);
 	this->windowIsOpen = true;
 }
 

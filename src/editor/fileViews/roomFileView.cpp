@@ -4,6 +4,7 @@
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/Scrollbar.hpp"
+#include "bindTranslation.hpp"
 #include "editor.hpp"
 #include "enum_visitor/enum_visitor.hpp"
 #include "fileViews/fileView.hpp"
@@ -17,7 +18,6 @@
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/toolbox.hpp"
 #include <memory>
-#include "bindTranslation.hpp"
 RoomFileView::RoomFileView() {
 	RoomTool a;
 	TranslationService &ts = Editor::instance->getTranslations();
@@ -74,7 +74,8 @@ RoomFileView::RoomFileView() {
 						ROOM_LAYER_H + LAYER_CHOOSE_H});
 
 	widthField = IntField::create();
-	bindTranslation(widthField->label, "screen.project.roomview.mapwidth", &tgui::Label::setText);
+	bindTranslation(widthField->label, "screen.project.roomview.mapwidth",
+					&tgui::Label::setText);
 	widthField->value->onValueChange([this](int value) {
 		Vector2 worldSize =
 			this->roomView->getRoom()->getTileMap()->getMaxWorldSize();
@@ -84,7 +85,8 @@ RoomFileView::RoomFileView() {
 	props->addIntField(widthField);
 
 	heightField = IntField::create();
-	bindTranslation(heightField->label, "screen.project.roomview.mapheight", &tgui::Label::setText);
+	bindTranslation(heightField->label, "screen.project.roomview.mapheight",
+					&tgui::Label::setText);
 	heightField->value->onValueChange([this](int value) {
 		Vector2 worldSize =
 			this->roomView->getRoom()->getTileMap()->getMaxWorldSize();
@@ -94,7 +96,8 @@ RoomFileView::RoomFileView() {
 	props->addIntField(heightField);
 
 	tileSetField = FileField::create("", "...");
-	bindTranslation(tileSetField->label, "screen.project.roomview.tileset_file", &tgui::Label::setText);
+	bindTranslation(tileSetField->label, "screen.project.roomview.tileset_file",
+					&tgui::Label::setText);
 	tileSetField->pathFilters = {{"RPG++ TileSet", {"*.rtiles"}}};
 	tileSetField->callback = [this](const tgui::String &path) {
 		auto room = this->roomView->getRoom();
@@ -104,7 +107,9 @@ RoomFileView::RoomFileView() {
 	props->addFileField(tileSetField);
 
 	musicFileField = FileField::create("", "");
-	bindTranslation(musicFileField->label, "screen.project.roomview.bg_music_file", &tgui::Label::setText);
+	bindTranslation(musicFileField->label,
+					"screen.project.roomview.bg_music_file",
+					&tgui::Label::setText);
 	musicFileField->setWidgetName("file");
 	musicFileField->pathFilters = {{"Music File", {"*.mp4", "*.ogg", "*.wav"}}};
 	musicFileField->callback = [this](const tgui::String &path) {
@@ -139,7 +144,9 @@ RoomFileView::RoomFileView() {
 										   "tool_startpoint.png"});
 
 	auto brushToggle = tgui::CheckBox::create();
-	bindTranslation<tgui::CheckBox>(brushToggle, "screen.project.roomview.enable_brush", &tgui::CheckBox::setText);
+	bindTranslation<tgui::CheckBox>(brushToggle,
+									"screen.project.roomview.enable_brush",
+									&tgui::CheckBox::setText);
 	brushToggle->onChange(
 		[this](bool toggled) { roomView->setBrush(toggled); });
 	auto brushToggleSize =

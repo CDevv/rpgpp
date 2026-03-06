@@ -4,9 +4,9 @@
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
+#include "bindTranslation.hpp"
 #include "childWindows/popupWindow.hpp"
 #include "editor.hpp"
-#include "bindTranslation.hpp"
 #include <string>
 
 AboutWindow::AboutWindow(const std::string &title) : PopupWindow(title) {
@@ -15,10 +15,11 @@ AboutWindow::AboutWindow(const std::string &title) : PopupWindow(title) {
 
 	EditorGuiService::createLogoCenter(layout);
 
-	auto infoText =
-		tgui::Label::create();
-	bindTranslation(infoText, "menu.about.rpgpp_description", &tgui::Label::setText);
-	bindTranslation<tgui::ChildWindow>(this->currentWindow, "menu.about._label", &tgui::ChildWindow::setTitle);
+	auto infoText = tgui::Label::create();
+	bindTranslation(infoText, "menu.about.rpgpp_description",
+					&tgui::Label::setText);
+	bindTranslation<tgui::ChildWindow>(this->currentWindow, "menu.about._label",
+									   &tgui::ChildWindow::setTitle);
 	infoText->setTextSize(20);
 	infoText->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	layout->add(infoText);
@@ -29,7 +30,7 @@ AboutWindow::AboutWindow(const std::string &title) : PopupWindow(title) {
 	versionText << "tgui: " << TGUI_VERSION_MAJOR << "." << TGUI_VERSION_MINOR;
 
 	auto informationLabel = tgui::Label::create(versionText.str());
-	informationLabel->getRenderer()->setTextSize(15);
+	informationLabel->setTextSize(15);
 	informationLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 
 	layout->add(informationLabel);

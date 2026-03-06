@@ -7,7 +7,7 @@ Tooltip::Tooltip(const std::string &text) : tgui::Label() {
 	this->setText(text);
 	// TODO: should probably not be hard coded.
 	this->getRenderer()->setBackgroundColor(tgui::Color::Black);
-	this->getRenderer()->setTextSize(16);
+	this->setTextSize(16);
 }
 
 Tooltip::Ptr Tooltip::create(const std::string &text) {
