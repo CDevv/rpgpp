@@ -30,7 +30,7 @@ AboutWindow::AboutWindow(const std::string &title) : PopupWindow(title) {
 	versionText << "tgui: " << TGUI_VERSION_MAJOR << "." << TGUI_VERSION_MINOR;
 
 	auto informationLabel = tgui::Label::create(versionText.str());
-	informationLabel->getRenderer()->setTextSize(15);
+	informationLabel->setTextSize(15);
 	informationLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 
 	layout->add(informationLabel);

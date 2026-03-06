@@ -68,7 +68,6 @@ void EditorGuiService::resetUi() {
 		this->childWindowService->createWindows();
 	else
 		this->childWindowService = std::make_unique<ChildWindowSubService>();
-	// tgui::Theme::setDefault(CURRENT_TESTING_THEME);
 
 	initMenuBar();
 
@@ -165,11 +164,9 @@ void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
 		return;
 	}
 	auto group = this->uiChangePreInit(setToScreen.get());
-	// this->prevScreen = this->currentScreen.release();
 	this->screenHistory.push_back(std::move(this->currentScreen));
 	this->currentScreen.swap(setToScreen);
 	this->currentScreen->initItems(group);
-	// gui->add(group);
 }
 
 /**
@@ -179,15 +176,6 @@ void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
  * @return the group that the screen must use to position and add it's widgets.
  */
 tgui::Group::Ptr EditorGuiService::uiChangePreInit(UIScreen *setToScreen) {
-	/*
-	gui->removeAllWidgets();
-	initMenuBar();
-
-	auto group = tgui::Group::create({"100%"});
-	group->setPosition(0, MENUBAR_H);
-	group->setSize({"100%", tgui::Layout("100%") - MENUBAR_H});
-	*/
-
 	if (screenContainer.expired()) {
 		throw std::runtime_error("Screen container's weak pointer is expired");
 	}

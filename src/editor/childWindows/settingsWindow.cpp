@@ -24,7 +24,7 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 
 	const auto topOptionsHeader = tgui::Label::create();
 	topOptionsHeader->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
-	topOptionsHeader->getRenderer()->setTextSize(20);
+	topOptionsHeader->setTextSize(20);
 	bindTranslation(topOptionsHeader, "menu.options.editor",
 					&tgui::Label::setText);
 	layout->add(topOptionsHeader);

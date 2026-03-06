@@ -377,8 +377,6 @@ ResizableContainer::Ptr ProjectScreen::createResourcesList() {
 		tgui::Scrollbar::Policy::Automatic);
 	resourceListPanel->getHorizontalScrollbar()->setPolicy(
 		tgui::Scrollbar::Policy::Never);
-	resourceListPanel->getRenderer()->setBackgroundColor(
-		tgui::Color::applyOpacity(tgui::Color::Black, 0.2));
 
 	resourcesLayout = tgui::GrowVerticalLayout::create();
 	resourceListPanel->add(resourcesLayout);

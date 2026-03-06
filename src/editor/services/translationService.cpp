@@ -79,8 +79,6 @@ void TranslationService::setLanguage(const std::string &language) {
 TranslationService::ListenerID TranslationService::addListener(Callback cb) {
 	ListenerID id = lastID++;
 	listeners[id] = std::move(cb);
-	// std::cout << "Added listener " << id << " (total: " << listeners.size()
-	// << ")\n";
 	purgeDeadListeners();
 	return id;
 }

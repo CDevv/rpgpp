@@ -38,14 +38,14 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	const auto headerLabel = tgui::Label::create("");
 	bindTranslation<tgui::Label>(headerLabel, "screen.starting.get_started",
 								 &tgui::Label::setText);
-	headerLabel->getRenderer()->setTextSize(32);
+	headerLabel->setTextSize(32);
 	headerLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	verticalLayout->add(headerLabel);
 
 	const auto introLabel = tgui::Label::create("");
 	bindTranslation<tgui::Label>(introLabel, "screen.starting.description",
 								 &tgui::Label::setText);
-	introLabel->getRenderer()->setTextSize(16);
+	introLabel->setTextSize(16);
 	introLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	introLabel->setSize({0, 81});
 	verticalLayout->add(introLabel);
@@ -53,11 +53,12 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	const auto newProjButton = tgui::Button::create();
 	bindTranslation<tgui::Button>(newProjButton, "menu.file.new_project",
 								  &tgui::Button::setText);
-	newProjButton->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
+	newProjButton->setTextSize(ACTION_BUTTON_SIZE);
 	const auto openProjButton = tgui::Button::create();
 	bindTranslation<tgui::Button>(openProjButton, "menu.file.open_project",
 								  &tgui::Button::setText);
-	openProjButton->getRenderer()->setTextSize(ACTION_BUTTON_SIZE);
+	openProjButton->setTextSize(ACTION_BUTTON_SIZE);
+
 
 	newProjectDialog = NewProjectWindow::create();
 
