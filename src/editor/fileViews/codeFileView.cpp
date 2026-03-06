@@ -1,6 +1,8 @@
 #include "fileViews/codeFileView.hpp"
 
+#include "editor.hpp"
 #include "scriptFile.h"
+#include "views/codeView.hpp"
 #include "widgets/codeEditor.hpp"
 
 #include "tree_sitter/tree-sitter-lua.h"
@@ -30,9 +32,14 @@ void do_tree_node(TSTreeCursor cursor, TSNode node) {
 */
 
 CodeFileView::CodeFileView() {
-	codeEditor = CodeEditor::create();
+	codeEditor = CodeView::create();
+
+	Editor::instance->getGui().addUpdate(
+		codeEditor->asUpdatable(this->codeEditor));
+
 	codeEditor->setTextSize(24);
 	codeEditor->setSize({"100%", "100%"});
+
 	widgetContainer.push_back(codeEditor);
 }
 
@@ -57,7 +64,7 @@ void CodeFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 		do_tree_node(cursor, root);
 		*/
 
-		codeEditor->setCode(ptr->get()->getFileContents());
+		codeEditor->setCode(ptr->get());
 		addWidgets(layout);
 	}
 }

@@ -1,10 +1,7 @@
 #ifndef _RPGPP_VIEWS_FONTVIEW_H
 #define _RPGPP_VIEWS_FONTVIEW_H
 
-#include "TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp"
-#include "raylib.h"
 #include "saveables/fontWrapper.hpp"
-#include "updatable.hpp"
 #include "views/worldView.hpp"
 #include <memory>
 

@@ -2,10 +2,10 @@
 #ifndef RPGPP_CODEFILEVIEW_H
 #define RPGPP_CODEFILEVIEW_H
 #include "fileView.hpp"
-#include "widgets/codeEditor.hpp"
+#include "views/codeView.hpp"
 
 class CodeFileView : public FileView {
-	CodeEditor::Ptr codeEditor;
+	CodeView::Ptr codeEditor;
 
   public:
 	CodeFileView();
