@@ -57,15 +57,6 @@ void CodeView::setCode(ScriptFile *scriptFile) {
 	*/
 }
 
-void CodeView::drawCanvas() {
-	ClearBackground(BLACK);
-	auto fileContents = this->scriptFile->getFileContents();
-
-	int x = 0, y = 0;
-
-	for (auto m_char : fileContents) {
-		DrawText(std::string(&m_char).c_str(), x, y, 20, WHITE);
-	}
-}
+void CodeView::drawCanvas() { ClearBackground(BLACK); }
 
 void CodeView::mouseMoved(tgui::Vector2f pos) { WorldView::mouseMoved(pos); }
