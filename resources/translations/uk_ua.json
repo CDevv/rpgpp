@@ -1,46 +1,109 @@
 {
 	"language": "Українська",
-
-	"menu.file._label": "Файл",
-	"menu.file.new_project": "Новий проєкт",
-	"menu.file.open_project": "Відкрити проєкт",
-	"menu.file.save_file": "Зберегти файл",
-	"menu.edit._label": "Редагувати",
-	"menu.edit.undo": "Скасувати",
-	"menu.edit.redo": "Повторити",
-	"menu.options._label": "Опції",
-	"menu.options.editor": "Налаштувати Редактор...",
-	"menu.about._label": "Інформація",
-	"menu.about.rpgpp": "Про RPG++...",
-
-	"screen.starting.get_started": "Розпочніть!",
-	"screen.starting.description": "Нажміть на 'Новий проєкт' для створення нового проєкту, або 'Відкрити проєкт' щоб відкрити якийсь з них!",
-
-	"screen.options.language": "Мова",
-	"screen.options.theme": "Тема",
-
-	"screen.project.create_new_resource": "Новий ресурс",
-	"screen.project.tilesetview.tile_width": "Ширина Клітинки",
-	"screen.project.tilesetview.tile_height": "Висота Клітинки",
-	"screen.project.tilesetview.texture": "Текстура",
-	"screen.project.roomview.mapwidth": "Ширина Мапи",
-	"screen.project.roomview.mapheight": "Висота Мапи",
-	"screen.project.roomview.tileset_file": "Файл Клітинкового Атласу",
-	"screen.project.toolbar.play": "Запустити",
-	"screen.project.toolbar.build": "Збудувати",
-
-	"dialog.new_file.title": "Новий Ресурс",
-	"dialog.new_file.name": "Ім'я",
-	"dialog.new_file.file": "Файл",
-	"dialog.new_file.confirm": "Підвердити",
-	"dialog.new_file.cancel": "Скасувати",
-
-	"dialog.new_project.title": "Новий Проєкт",
-	"dialog.new_project.name": "Ім'я Проєкту",
-	"dialog.new_project.folder": "Папка",
-	"dialog.new_project.confirm": "Підвердити",
-	"dialog.new_project.cancel": "Скасувати",
-
-	"widget.filechooser.select_a_file": "Оберіть Файл",
-	"button.go_back": "Повернутися"
+	"menu": {
+		"file": {
+			"_label": "Файл",
+			"new_project": "Новий проєкт",
+			"open_project": "Відкрити проєкт",
+			"save_file": "Зберегти файл"
+		},
+		"edit": {
+			"_label": "Редагувати",
+			"undo": "Скасувати",
+			"redo": "Повторити"
+		},
+		"options": {
+			"_label": "Опції",
+			"editor": "Налаштувати Редактор..."
+		},
+		"about": {
+			"_label": "Інформація",
+			"rpgpp": "Про RPG++...",
+			"rpgpp_description": "RPG рушій."
+		}
+	},
+	"screen": {
+		"starting": {
+			"get_started": "Розпочніть!",
+			"description": "Нажміть на 'Новий проєкт' для створення нового проєкту, або 'Відкрити проєкт' щоб відкрити якийсь з них!"
+		},
+		"options": {
+			"language": "Мова",
+			"theme": "Тема",
+			"theme_notice": "Перезапустіть редактор після зміни теми!"
+		},
+		"project": {
+			"create_new_resource": "Новий ресурс",
+			"emptyview": {
+				"notice": "Ніякий файл ще не огляданий!"
+			},
+			"dialogueview": {
+				"add_new_line": "Добавте нову лінію",
+				"has_a_portrait": "Треба портрет?"
+			},
+			"tilesetview": {
+				"tile_width": "Ширина Клітинки",
+				"tile_height": "Висота Клітинки",
+				"texture": "Текстура"
+			},
+			"roomview": {
+				"enable_brush": "Включити пензлик",
+				"mapwidth": "Ширина Мапи",
+				"mapheight": "Висота Мапи",
+				"tileset_file": "Файл Клітинкового Атласу",
+				"bg_music_file": "Музика на фоні"
+			},
+			"propview": {
+				"atlas": "Розмір атласу",
+				"collision": "Розмір вимірів",
+				"has_interactable": "Чи взаємодіє?",
+				"image": "Зображення",
+				"interactable_type": "Тип взаємодій"
+			},
+			"actorview": {
+				"dir0": "Вниз (простоює)",
+				"dir1": "Вниз",
+				"dir2": "Догори (простоює)",
+				"dir3": "Догори",
+				"dir4": "Наліво (простоює)",
+				"dir5": "Наліво",
+				"dir6": "Направо (простоює)",
+				"dir7": "Направо",
+				"play": "Поглянути",
+				"pause": "Пауза",
+				"delete": "Видалити раму",
+				"edit_anim_data": "Редагуйте дані анімації",
+				"is_non_idle": "Ця анімація для простоювання?"
+			},
+			"toolbar": {
+				"play": "Спробувати",
+				"build": "Збудувати"
+			}
+		}
+	},
+	"dialog": {
+		"new_file": {
+			"title": "Новий ресурс",
+			"name": "Ім'я",
+			"file": "Файл",
+			"confirm": "Підвердити",
+			"cancel": "Скасувати"
+		},
+		"new_project": {
+			"title": "Новий Проєкт",
+			"name": "Ім'я Проєкту",
+			"folder": "Папка",
+			"confirm": "Підвердити",
+			"cancel": "Скасувати"
+		}
+	},
+	"widget": {
+		"filechooser": {
+			"select_a_file": "Оберіть Файл"
+		}
+	},
+	"button": {
+		"go_back": "Повернутися"
+	}
 }
+
