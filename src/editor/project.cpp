@@ -25,15 +25,15 @@
 #ifdef _WIN64
 
 #include "fix_win32_compatibility.h"
-#include <windows.h>
-#include <namedpipeapi.h>
-#include <handleapi.h>
 #include <fileapi.h>
-#include <processthreadsapi.h>
-#include <minwindef.h>
-#include <processenv.h>
+#include <handleapi.h>
 #include <minwinbase.h>
+#include <minwindef.h>
+#include <namedpipeapi.h>
+#include <processenv.h>
+#include <processthreadsapi.h>
 #include <winbase.h>
+#include <windows.h>
 #include <winnt.h>
 
 #else
@@ -454,26 +454,12 @@ void Project::runProject() {
 		"%s -l rpgpplua %s", intepreterPath.c_str(), scriptPath.c_str());
 	printf("%s \n", cmdLine.c_str());
 
-	// popen(cmdLine.c_str(), "r");
-
-	std::string outData;
 	char buffer[256];
 	FILE *stream;
 	stream = popen(TextFormat("%s -l rpgpplua %s", intepreterPath.c_str(),
 							  scriptPath.c_str()),
 				   "r");
 
-	if (stream) {
-		while (!feof(stream)) {
-			if (fgets(buffer, 256, stream) != NULL) {
-				outData.append(buffer);
-			}
-		}
-		pclose(stream);
-	}
-
-	printf("Stream data: \n");
-	printf("%s", outData.c_str());
 #endif
 #ifdef _WIN64
 	intepreterPath /= "luajit.exe";
@@ -487,10 +473,11 @@ void Project::runProject() {
 
 	ChangeDirectory(projectPath.c_str());
 
-
-	// note: compared to linux, you have to add .string() to every single one of these paths.
-	std::string cmdLine = TextFormat(
-		"%s -l rpgpplua %s", intepreterPath.string().c_str(), scriptPath.string().c_str());
+	// note: compared to linux, you have to add .string() to every single one of
+	// these paths.
+	std::string cmdLine =
+		TextFormat("%s -l rpgpplua %s", intepreterPath.string().c_str(),
+				   scriptPath.string().c_str());
 
 	HANDLE outFile = nullptr;
 
@@ -507,11 +494,9 @@ void Project::runProject() {
 	siStartInfo.cb = sizeof(STARTUPINFO);
 	siStartInfo.hStdOutput = outFile;
 	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
-	
 
-	bool success =
-		CreateProcess(NULL, cmdLine.data(), NULL, NULL, true, 0,
-					  NULL, NULL, &siStartInfo, &piProcInfo);
+	bool success = CreateProcess(NULL, cmdLine.data(), NULL, NULL, true, 0,
+								 NULL, NULL, &siStartInfo, &piProcInfo);
 
 	if (!success) {
 		printf("Child process doesn't work. \n");
@@ -522,10 +507,7 @@ void Project::runProject() {
 		CloseHandle(outFile);
 	}
 
-
 #endif
-
-	// ChangeDirectory(editorBasePath.c_str());
 }
 
 void Project::buildProject() {
