@@ -72,7 +72,7 @@ ProjectFileVisitor::roomView(const std::string &path) {
 
 std::unique_ptr<ProjectFile>
 ProjectFileVisitor::codeView(const std::string &path) {
-	std::unique_ptr<FileView> view = std::make_unique<CodeFileView>();
+	std::unique_ptr<EmptyFileView> view = std::make_unique<EmptyFileView>();
 	std::unique_ptr<VariantWrapper> variant =
 		std::make_unique<Variant<ScriptFile>>(new ScriptFile(path));
 	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
