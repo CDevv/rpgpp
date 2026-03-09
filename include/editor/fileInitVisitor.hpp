@@ -17,6 +17,8 @@ class FileInitVisitor {
 	static void empty(NewFileDialog::Ptr dialog);
 	static void tileset(NewFileDialog::Ptr dialog);
 	static void room(NewFileDialog::Ptr dialog);
+	static void actor(NewFileDialog::Ptr dialog);
+	static void prop(NewFileDialog::Ptr dialog);
 };
 
 #endif
