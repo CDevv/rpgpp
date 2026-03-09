@@ -13,10 +13,12 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <iostream>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <raylib.h>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -24,6 +26,14 @@
 
 #include "fix_win32_compatibility.h"
 #include <windows.h>
+#include <namedpipeapi.h>
+#include <handleapi.h>
+#include <fileapi.h>
+#include <processthreadsapi.h>
+#include <minwindef.h>
+#include <processenv.h>
+#include <minwinbase.h>
+#include <winbase.h>
 #include <winnt.h>
 
 #else
@@ -427,7 +437,9 @@ void Project::runProject() {
 	scriptPath /= "resources/scripts/script.lua";
 
 	std::filesystem::path intepreterPath = editorBasePath;
+
 	intepreterPath /= "execs";
+
 #ifdef __linux
 	libPath /= "librpgpplua.so";
 	intepreterPath /= "luajit";
@@ -463,8 +475,54 @@ void Project::runProject() {
 	printf("Stream data: \n");
 	printf("%s", outData.c_str());
 #endif
-#ifdef __WIN64
+#ifdef _WIN64
 	intepreterPath /= "luajit.exe";
+
+	const std::filesystem::path rpgppDllPath = "rpgpplua.dll";
+	libPath /= rpgppDllPath;
+	libDest /= rpgppDllPath;
+
+	std::filesystem::copy_file(
+		libPath, libDest, std::filesystem::copy_options::overwrite_existing);
+
+	ChangeDirectory(projectPath.c_str());
+
+
+	// note: compared to linux, you have to add .string() to every single one of these paths.
+	std::string cmdLine = TextFormat(
+		"%s -l rpgpplua %s", intepreterPath.string().c_str(), scriptPath.string().c_str());
+
+	HANDLE outFile = nullptr;
+
+	outFile = CreateFile("playtest.log", GENERIC_WRITE, FILE_SHARE_WRITE, NULL,
+						 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	PROCESS_INFORMATION piProcInfo;
+	STARTUPINFO siStartInfo;
+
+	SetStdHandle(STD_OUTPUT_HANDLE, outFile);
+	ZeroMemory(&piProcInfo, sizeof(PROCESS_INFORMATION));
+
+	ZeroMemory(&siStartInfo, sizeof(STARTUPINFO));
+	siStartInfo.cb = sizeof(STARTUPINFO);
+	siStartInfo.hStdOutput = outFile;
+	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
+	
+
+	bool success =
+		CreateProcess(NULL, cmdLine.data(), NULL, NULL, true, 0,
+					  NULL, NULL, &siStartInfo, &piProcInfo);
+
+	if (!success) {
+		printf("Child process doesn't work. \n");
+	} else {
+		CloseHandle(piProcInfo.hProcess);
+		CloseHandle(piProcInfo.hThread);
+
+		CloseHandle(outFile);
+	}
+
+
 #endif
 
 	// ChangeDirectory(editorBasePath.c_str());
@@ -499,7 +557,7 @@ void Project::buildProject() {
 
 	HANDLE outFile = nullptr;
 
-	outFile = CreateFile("log.log", GENERIC_WRITE, FILE_SHARE_WRITE, NULL,
+	outFile = CreateFile("build.log", GENERIC_WRITE, FILE_SHARE_WRITE, NULL,
 						 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	PROCESS_INFORMATION piProcInfo;
