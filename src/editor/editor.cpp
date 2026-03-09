@@ -1,57 +1,47 @@
 #include "editor.hpp"
-
+#include "project.hpp"
+#include "raylib.h"
+#include "services/editorGuiService.hpp"
+#include "services/fileSystemService.hpp"
+#include "services/translationService.hpp"
 #include <memory>
 
-#include "resourceService.hpp"
-
-Editor *Editor::instance_ = nullptr;
-std::unique_ptr<EditorInterfaceService> Editor::ui = std::unique_ptr<EditorInterfaceService>{};
-std::unique_ptr<FileSystemService> Editor::fs = std::unique_ptr<FileSystemService>{};
-std::unique_ptr<ResourceService> Editor::resources = std::unique_ptr<ResourceService>{};
+Editor *Editor::instance;
 
 Editor::Editor()
-{
-    if (instance_ != nullptr) {
-
-    } else {
-        instance_ = this;
-    }
+	: configurationService(), translationService(this), themeService(this),
+	  project{nullptr} {
+	instance = this;
 }
 
-void Editor::init()
-{
-    resources = std::make_unique<ResourceService>();
-    ui = std::make_unique<EditorInterfaceService>();
-    fs = std::make_unique<FileSystemService>();
+void Editor::setAppIcon(const std::string &icon_path) {
+	auto img_loader = LoadImage(icon_path.c_str());
+	Editor::instance->appIcon = img_loader;
+	SetWindowIcon(img_loader);
+	// UnloadImage(img_loader);
 }
 
-void Editor::update()
-{
-    ui->update();
+EditorGuiService &Editor::getGui() { return guiService; }
+
+TranslationService &Editor::getTranslations() { return translationService; }
+
+ThemeService &Editor::getThemeService() { return themeService; }
+
+FileSystemService &Editor::getFs() { return fileSystem; }
+
+Project *Editor::getProject() const { return project.get(); }
+
+ConfigurationService &Editor::getConfiguration() {
+	return configurationService;
 }
 
-void Editor::draw()
-{
-    ui->draw();
+void Editor::setProject(const std::string &path) {
+	project = std::make_unique<Project>(path);
 }
 
-void Editor::unload()
-{
-    ui->unload();
-    resources->unload();
-}
-
-EditorInterfaceService& Editor::getUi()
-{
-    return *ui;
-}
-
-FileSystemService& Editor::getFileSystem()
-{
-    return *fs;
-}
-
-ResourceService& Editor::getResources()
-{
-    return *resources;
+void Editor::unload() const {
+	// Unload all the assets currently loaded and close the window.
+	UnloadImage(this->appIcon);
+	CloseWindow();
+	CloseAudioDevice();
 }

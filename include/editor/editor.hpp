@@ -1,26 +1,55 @@
-#ifndef _RPGPP_EDITOR_H
-#define _RPGPP_EDITOR_H
+#ifndef _RGPP_EDITOR_H
+#define _RGPP_EDITOR_H
 
+#include "project.hpp"
+#include "raylib.h"
+#include "services/editorGuiService.hpp"
+#include "services/fileSystemService.hpp"
+#include "services/themeService.hpp"
+#include "services/translationService.hpp"
 #include <memory>
-#include "editorInterfaceService.hpp"
-#include "fileSystemService.hpp"
-#include "resourceService.hpp"
+#include <string>
+
+#include "services/configurationService.hpp"
+
+#define RPGPP_VERSION 0.1
 
 class Editor {
-private:
-    static Editor *instance_;
-    static std::unique_ptr<EditorInterfaceService> ui;
-    static std::unique_ptr<FileSystemService> fs;
-    static std::unique_ptr<ResourceService> resources;
-public:
-    Editor();
-    static EditorInterfaceService& getUi();
-    static FileSystemService& getFileSystem();
-    static ResourceService& getResources();
-    void init();
-    void update();
-    void draw();
-    void unload();
+  private:
+	// NOTE: always initialize the configuration service first.
+	// Otherwise, everything gets screwed over.
+	// NOTE: leave this order of fields,
+	// because constructors would be called in declaration order!
+	ConfigurationService configurationService;
+	// filesystem must be initialized second, as many services depend on it.
+	FileSystemService fileSystem;
+	// dependant on Editor class itself \/
+	// the translation service responsible for all the i18n.
+	TranslationService translationService;
+	// the current editor gui service, responsible for managing the gui.
+	ThemeService themeService;
+	EditorGuiService guiService;
+
+  public:
+	Editor();
+	~Editor() = default;
+	// The opened project
+	std::unique_ptr<Project> project;
+	// The RPG++ editor's current icon image.
+	Image appIcon{};
+	// the current editor instance.
+	static Editor *instance;
+	EditorGuiService &getGui();
+	TranslationService &getTranslations();
+	ThemeService &getThemeService();
+	FileSystemService &getFs();
+	ConfigurationService &getConfiguration();
+	Project *getProject() const;
+	void setProject(const std::string &path);
+	// this sets the icon of the editor.
+	static void setAppIcon(const std::string &icon_path);
+	// unload editor stuff.
+	void unload() const;
 };
 
 #endif

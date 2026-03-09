@@ -1,0 +1,109 @@
+{
+	"language": "Українська",
+	"menu": {
+		"file": {
+			"_label": "Файл",
+			"new_project": "Новий проєкт",
+			"open_project": "Відкрити проєкт",
+			"save_file": "Зберегти файл"
+		},
+		"edit": {
+			"_label": "Редагувати",
+			"undo": "Скасувати",
+			"redo": "Повторити"
+		},
+		"options": {
+			"_label": "Опції",
+			"editor": "Налаштувати Редактор..."
+		},
+		"about": {
+			"_label": "Інформація",
+			"rpgpp": "Про RPG++...",
+			"rpgpp_description": "RPG рушій."
+		}
+	},
+	"screen": {
+		"starting": {
+			"get_started": "Розпочніть!",
+			"description": "Нажміть на 'Новий проєкт' для створення нового проєкту, або 'Відкрити проєкт' щоб відкрити якийсь з них!"
+		},
+		"options": {
+			"language": "Мова",
+			"theme": "Тема",
+			"theme_notice": "Перезапустіть редактор після зміни теми!"
+		},
+		"project": {
+			"create_new_resource": "Новий ресурс",
+			"emptyview": {
+				"notice": "Ніякий файл ще не огляданий!"
+			},
+			"dialogueview": {
+				"add_new_line": "Добавте нову лінію",
+				"has_a_portrait": "Треба портрет?"
+			},
+			"tilesetview": {
+				"tile_width": "Ширина Клітинки",
+				"tile_height": "Висота Клітинки",
+				"texture": "Текстура"
+			},
+			"roomview": {
+				"enable_brush": "Включити пензлик",
+				"mapwidth": "Ширина Мапи",
+				"mapheight": "Висота Мапи",
+				"tileset_file": "Файл Клітинкового Атласу",
+				"bg_music_file": "Музика на фоні"
+			},
+			"propview": {
+				"atlas": "Розмір атласу",
+				"collision": "Розмір вимірів",
+				"has_interactable": "Чи взаємодіє?",
+				"image": "Зображення",
+				"interactable_type": "Тип взаємодій"
+			},
+			"actorview": {
+				"dir0": "Вниз (простоює)",
+				"dir1": "Вниз",
+				"dir2": "Догори (простоює)",
+				"dir3": "Догори",
+				"dir4": "Наліво (простоює)",
+				"dir5": "Наліво",
+				"dir6": "Направо (простоює)",
+				"dir7": "Направо",
+				"play": "Поглянути",
+				"pause": "Пауза",
+				"delete": "Видалити раму",
+				"edit_anim_data": "Редагуйте дані анімації",
+				"is_non_idle": "Ця анімація для простоювання?"
+			},
+			"toolbar": {
+				"play": "Спробувати",
+				"build": "Збудувати"
+			}
+		}
+	},
+	"dialog": {
+		"new_file": {
+			"title": "Новий ресурс",
+			"name": "Ім'я",
+			"file": "Файл",
+			"confirm": "Підвердити",
+			"cancel": "Скасувати"
+		},
+		"new_project": {
+			"title": "Новий Проєкт",
+			"name": "Ім'я Проєкту",
+			"folder": "Папка",
+			"confirm": "Підвердити",
+			"cancel": "Скасувати"
+		}
+	},
+	"widget": {
+		"filechooser": {
+			"select_a_file": "Оберіть Файл"
+		}
+	},
+	"button": {
+		"go_back": "Повернутися"
+	}
+}
+

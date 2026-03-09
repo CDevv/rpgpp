@@ -1,0 +1,119 @@
+{
+	"language": "Tiếng Việt",
+
+	"menu": {
+		"file": {
+			"_label": "Tệp tin",
+			"new_project": "Tạo dự án",
+			"open_project": "Mở dự án",
+			"save_file": "Lưu tệp"
+		},
+		"edit": {
+			"_label": "Chỉnh sửa",
+			"undo": "Hoàn tác",
+			"redo": "Làm lại"
+		},
+		"options": {
+			"_label": "Tùy chọn",
+			"editor": "Tùy chọn chương trình..."
+		},
+		"about": {
+			"_label": "Thông tin",
+			"rpgpp": "Thông tin về RPG++...",
+			"rpgpp_description": "Phần mềm phát triển trò chơi RPG, được lập trình bằng ngôn ngữ C++."
+		}
+	},
+
+	"screen": {
+		"starting": {
+			"get_started": "Bắt đầu!",
+			"description": "Nhấn vào 'Tạo dự án' để tạo dự án mới, hoặc 'Mở dự án' để mở một dự án!"
+		},
+
+		"options": {
+			"language": "Ngôn ngữ",
+			"theme": "Chủ đề",
+			"theme_notice": "Để áp dụng chủ đề mới, vui lòng khởi động lại phần mềm!"
+		},
+		"project": {
+			"create_new_resource": "Tạo tài nguyên",
+			"emptyview": {
+				"notice": "Chưa mở tệp tin nào, hoặc tệp tin chưa được hỗ trợ để mở!"
+			},
+			"dialogueview": {
+				"add_new_line": "Tạo hội thoại mới",
+				"has_a_portrait": "Hiển thị ảnh hội thoại?"
+			},
+			"tilesetview": {
+				"tile_width": "Độ rộng Tile",
+				"tile_height": "Độ cao Tile",
+				"texture": "Tệp Texture"
+			},
+
+			"roomview": {
+				"enable_brush": "Bật chế độ vẽ",
+				"mapwidth": "Độ rộng Map",
+				"mapheight": "Độ cao Map",
+				"tileset_file": "Tệp Tileset",
+				"bg_music_file": "Tệp nhạc nền"
+			},
+
+			"propview": {
+				"atlas": "Kích cỡ Atlas",
+				"collision": "Kích cỡ Collision",
+				"has_interactable": "Có thể tương tác?",
+				"image": "Tệp ảnh",
+				"interactable_type": "Loại tương tác"
+			},
+
+			"actorview": {
+				"dir0": "Xuống (tĩnh)",
+				"dir1": "Xuống",
+				"dir2": "Trên (tĩnh)",
+				"dir3": "Trên",
+				"dir4": "Trái (tĩnh)",
+				"dir5": "Trái",
+				"dir6": "Phải (tĩnh)",
+				"dir7": "Phải",
+				"play": "Chạy",
+				"pause": "Tạm dừng",
+				"delete": "Xóa frame",
+				"edit_anim_data": "Chỉnh sửa dữ liệu animation",
+				"is_non_idle": "Có phải animation?"
+			},
+
+			"toolbar": {
+				"play": "Chạy chương trình",
+				"build": "Dịch và tạo chương trình"
+			}
+		}
+	},
+
+	"dialog": {
+		"new_file": {
+			"title": "Tạo tài nguyên",
+			"name": "Tên",
+			"file": "Tệp tin",
+			"confirm": "Tạo",
+			"cancel": "Hủy"
+		},
+
+		"new_project": {
+			"title": "Tạo dự án",
+			"name": "Tên dự án",
+			"folder": "Thư mục",
+			"confirm": "Tạo",
+			"cancel": "Hủy"
+		}
+	},
+
+	"widget": {
+		"filechooser": {
+			"select_a_file": "Chọn tệp tin"
+		}
+	},
+
+	"button": {
+		"go_back": "Quay lại"
+	}
+}

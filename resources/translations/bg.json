@@ -1,0 +1,108 @@
+{
+	"language": "български",
+	"menu": {
+		"file": {
+			"_label": "Файл",
+			"new_project": "Нов проект",
+			"open_project": "Отвори проект",
+			"save_file": "Запази файл"
+		},
+		"edit": {
+			"_label": "Редакция",
+			"undo": "Върни назад",
+			"redo": "Върни напред"
+		},
+		"options": {
+			"_label": "Опции",
+			"editor": "Опции на редактора..."
+		},
+		"about": {
+			"_label": "Относно",
+			"rpgpp": "Относно RPG++...",
+			"rpgpp_description": "RPG игрови двигател, написан in C++."
+		}
+	},
+	"screen": {
+		"starting": {
+			"get_started": "Започни!",
+			"description": "Натиснете на 'Нов проект', за да създадете нов проект или 'Отвори проект' за да отворите съществуващ проект!"
+		},
+		"options": {
+			"language": "Език",
+			"theme": "Тема",
+			"theme_notice": "Препоръчително е да рестартирате редактора след смяна на темата!"
+		},
+		"project": {
+			"create_new_resource": "Нов ресурс",
+			"emptyview": {
+				"notice": "Няма отворен файл"
+			},
+			"dialogueview": {
+				"add_new_line": "Добавете част",
+				"has_a_portrait": "Има портретно изображение?"
+			},
+			"tilesetview": {
+				"tile_width": "Ширина на плочка",
+				"tile_height": "Височина на плочка",
+				"texture": "Изображение"
+			},
+			"roomview": {
+				"enable_brush": "Четка",
+				"mapwidth": "Ширина на картата",
+				"mapheight": "Височина на картата",
+				"tileset_file": "Плочков набор",
+				"bg_music_file": "Музика"
+			},
+			"propview": {
+				"atlas": "Размер на атласа",
+				"collision": "Размер на колизията",
+				"has_interactable": "Има interactable?",
+				"image": "Изображение на предмета",
+				"interactable_type": "Вид на interactable"
+			},
+			"actorview": {
+				"dir0": "Надолу (стоене)",
+				"dir1": "Надолу",
+				"dir2": "Нагоре (стоене)",
+				"dir3": "Нагове",
+				"dir4": "Наляво (стоене)",
+				"dir5": "Наляво",
+				"dir6": "Надясно (стоене)",
+				"dir7": "Надясно",
+				"play": "Пусни",
+				"pause": "Пауза",
+				"delete": "Изтрий кадър",
+				"edit_anim_data": "Редактирай анимация",
+				"is_non_idle": "е анимация на вървене?"
+			},
+			"toolbar": {
+				"play": "Пусни игра",
+				"build": "Компилирай игра"
+			}
+		}
+	},
+	"dialog": {
+		"new_file": {
+			"title": "Нов ресурс",
+			"name": "Име",
+			"file": "Файл",
+			"confirm": "Потвърди",
+			"cancel": "Отмени"
+		},
+		"new_project": {
+			"title": "Нов проект",
+			"name": "Име на проект",
+			"folder": "Папка",
+			"confirm": "Потвърди",
+			"cancel": "Отмени"
+		}
+	},
+	"widget": {
+		"filechooser": {
+			"select_a_file": "Избери файл"
+		}
+	},
+	"button": {
+		"go_back": "Върни се"
+	}
+}

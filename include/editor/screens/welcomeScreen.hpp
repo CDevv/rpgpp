@@ -1,0 +1,18 @@
+#ifndef _RPGPP_WELCOME_SCREEN_H
+#define _RPGPP_WELCOME_SCREEN_H
+
+#include "TGUI/Widgets/Group.hpp"
+#include "guiScreen.hpp"
+#include "widgets/newProjectWindow.hpp"
+
+namespace screens {
+class WelcomeScreen : public UIScreen {
+  private:
+	NewProjectWindow::Ptr newProjectDialog;
+
+  public:
+	void initItems(tgui::Group::Ptr layout) override;
+	const std::string getNameOfScreen() override { return "Welcome"; }
+};
+} // namespace screens
+#endif

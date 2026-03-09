@@ -1,0 +1,103 @@
+{
+  "language": "Türkçe",
+  "menu": {
+    "file": {
+      "_label": "Dosya",
+      "new_project": "Yeni Proje",
+      "open_project": "Proje Aç",
+      "save_file": "Dosyayı Kaydet"
+    },
+    "edit": {
+      "_label": "Düzenle",
+      "undo": "Geri Al",
+      "redo": "Yinele"
+    },
+    "options": {
+      "_label": "Seçenekler",
+      "editor": "Düzenleyici Seçenekleri..."
+    },
+    "about": {
+      "_label": "Bilgi",
+      "rpgpp": "RPG++ Hakkında...",
+      "rpgpp_description": "C++'da yazılmış, RPG oyun motoru."
+    }
+  },
+  "screen": {
+    "starting": {
+      "get_started": "Başla!",
+      "description": "'Yeni Proje'ye tıklayarak yeni proje oluşturun, ya da 'Proje Aç' ile birini açın!"
+    },
+    "options": {
+      "language": "Dil",
+      "theme": "Tema"
+    },
+    "project": {
+      "create_new_resource": "Yeni Kaynak",
+      "emptyview": {
+        "notice": "Hiç bir dosya ya da görünüş tanımlanmamıştır!"
+      },
+      "dialogueview": {
+        "add_new_line": "Yeni satır ekle",
+        "has_a_portrait": "Portresi olacak mı?"
+      },
+      "tilesetview": {
+        "tile_width": "Kare Genişliği",
+        "tile_height": "Kare Yüksekliği",
+        "texture": "Doku"
+      },
+      "roomview": {
+        "mapwidth": "Harita Genişliği",
+        "mapheight": "Harita Yüksekliği",
+        "tileset_file": "Kare Seti Dosyası"
+      },
+      "propview": {
+        "atlas": "Atlas Büyüklüğü",
+        "collision": "Çarpışma Karesi Büyüklüğü",
+        "has_interactable": "Interaktifi Varmı?",
+        "image": "Obje Fotoğrafı",
+        "interactable_type": "Interaktif Türü"
+      },
+      "actorview": {
+        "dir0": "Aşağı (Boşta)",
+        "dir1": "Aşağı",
+        "dir2": "Yukarı (Boşta)",
+        "dir3": "Yukarı",
+        "dir4": "Sol (Boşta)",
+        "dir5": "Sol",
+        "dir6": "Sağ (Boşta)",
+        "dir7": "Sağ",
+        "play": "Oynat",
+        "pause": "Duraklat",
+        "is_non_idle": "Boşta Olmayan Animasyon Mu?"
+      },
+      "toolbar": {
+        "play": "Oyna",
+        "build": "Derle"
+      }
+    }
+  },
+  "dialog": {
+    "new_file": {
+      "title": "Yeni Kaynak",
+      "name": "Dosya Adı",
+      "file": "Dosya",
+      "confirm": "Kabul Et",
+      "cancel": "İptal"
+    },
+    "new_project": {
+      "title": "Yeni Proje",
+      "name": "Proje Adı",
+      "folder": "Klasör",
+      "confirm": "Kabul Et",
+      "cancel": "İptal"
+    }
+  },
+  "widget": {
+    "filechooser": {
+      "select_a_file": "Dosya Seç"
+    }
+  },
+  "button": {
+    "go_back": "Geri Git"
+  }
+}

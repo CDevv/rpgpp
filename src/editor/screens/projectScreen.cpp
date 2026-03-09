@@ -1,0 +1,402 @@
+#include "screens/projectScreen.hpp"
+#include "TGUI/Color.hpp"
+#include "TGUI/Layout.hpp"
+#include "TGUI/String.hpp"
+#include "TGUI/Texture.hpp"
+#include "TGUI/Vector2.hpp"
+#include "TGUI/Widgets/BitmapButton.hpp"
+#include "TGUI/Widgets/Button.hpp"
+#include "TGUI/Widgets/ComboBox.hpp"
+#include "TGUI/Widgets/Group.hpp"
+#include "TGUI/Widgets/Label.hpp"
+#include "TGUI/Widgets/MenuBar.hpp"
+#include "TGUI/Widgets/MessageBox.hpp"
+#include "TGUI/Widgets/ScrollablePanel.hpp"
+#include "TGUI/Widgets/Scrollbar.hpp"
+#include "TGUI/Widgets/Tabs.hpp"
+#include "bindTranslation.hpp"
+#include "components/resizableContainer.hpp"
+#include "components/tooltip.hpp"
+#include "editor.hpp"
+#include "projectFile.hpp"
+#include "raylib.h"
+#include "services/editorGuiService.hpp"
+#include "services/fileSystemService.hpp"
+#include "services/translationService.hpp"
+#include "widgets/newFileDialog.hpp"
+#include <cassert>
+#include <cstdio>
+#include <filesystem>
+#include <memory>
+#include <vector>
+using namespace screens;
+void ProjectScreen::layoutReload() {
+	resListWBinder->setSize(modifiable_RESLIST_W, "100%");
+}
+
+void ProjectScreen::mouseMove(int x, int y) {
+	resourcesList->manualMouseMoved(
+		{static_cast<float>(x), static_cast<float>(y)});
+	fileTabs->manualMouseMoved(
+		{static_cast<float>(
+			 x // coordinate of the mouse cursor relative to the projectScreen
+			 - tabsContainer->getPosition().x // coordinate of the tabsContainer
+											  // relative to the projectScreen
+			 + tabsContainer->getContentOffset()
+				   .x // coordinate of the widget relative to the tabsContainer
+			 // why all of these calculations? cause the builtin
+			 // leftMousePressed method returns the mouse coordinate relative to
+			 // the current widget
+			 ),
+		 static_cast<float>(y - tabsContainer->getPosition().y)});
+}
+void ProjectScreen::leftMouseReleased(int x, int y) {
+	resourcesList->manualLeftMouseReleased(
+		{static_cast<float>(x), static_cast<float>(y)});
+	fileTabs->manualLeftMouseReleased(
+		{// ditto
+		 static_cast<float>(x - tabsContainer->getPosition().x +
+							tabsContainer->getContentOffset().x),
+		 static_cast<float>(y - tabsContainer->getPosition().y)});
+}
+
+void ProjectScreen::bindMenuBar(tgui::MenuBar::Ptr menuBarPtr) {
+	auto &ts = Editor::instance->getTranslations();
+	std::vector<tgui::String> saveFileHierarchy = {
+		ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")};
+	std::vector<tgui::String> undoHierarchy = {ts.getKey("menu.edit._label"),
+											   ts.getKey("menu.edit.undo")};
+	std::vector<tgui::String> redoHierarchy = {ts.getKey("menu.edit._label"),
+											   ts.getKey("menu.edit.redo")};
+	menuBarPtr->setMenuItemEnabled(saveFileHierarchy, true);
+	menuBarPtr->connectMenuItem(saveFileHierarchy, [this] {
+		if (!openedFiles.empty()) {
+			tgui::String currentFile = fileTabs->getSelectedId();
+			auto &projectFile = openedFiles.at(currentFile);
+			projectFile->saveFile(projectFile->getFilePath());
+		}
+	});
+
+	menuBarPtr->setMenuItemEnabled(undoHierarchy, true);
+	menuBarPtr->connectMenuItem(
+		undoHierarchy, [this] { getCurrentFile().getView().undoAction(); });
+
+	menuBarPtr->setMenuItemEnabled(redoHierarchy, true);
+	menuBarPtr->connectMenuItem(
+		redoHierarchy, [this] { getCurrentFile().getView().redoAction(); });
+}
+
+void ProjectScreen::initItems(tgui::Group::Ptr layout) {
+	if (auto ptr = Editor::instance->getGui().menuBar.lock()) {
+		bindMenuBar(ptr);
+	}
+
+	// Commentary:
+	// So while I was re-designing the project screen, I came across this single
+	// Tabs widget that's not being used anywhere. Not even once. And I thought
+	// to myself: "Well this seems useless". So I deleted it, and for some
+	// reason, the entire theming for Tabs in the screen got fcked. At first, I
+	// thought it could be something related to me changing the order of widgets
+	// being declared. Then I thought that the ThemeService had some bugs, so I
+	// investigated but found nothing. After that, I decided to revert my
+	// progress on this file, at which point, I figured out pretty quickly that
+	// this one variable is the sole reason why the theming got fcked.
+	//
+	// So... yea, for future developers, if you're reading this: Please don't
+	// delete this seemingly extra widget. It's what keeping the project screen
+	// together.
+	auto _tab = tgui::Tabs::create();
+
+	fileContextMenu = tgui::ContextMenu::create();
+	fileContextMenu->addMenuItem("Copy full path");
+	fileContextMenu->addMenuItem("Delete.");
+	Editor::instance->getGui().gui->add(fileContextMenu);
+
+	openedFiles = std::map<tgui::String, std::unique_ptr<ProjectFile>>{};
+	fileVisitor = std::make_unique<ProjectFileVisitor>();
+	fileInitVisitor = std::make_unique<FileInitVisitor>();
+	listedResourcesType = EngineFileType::FILE_MAP;
+
+	// For allowing widgets to hook into the width of the resizable resource
+	// list Must ALWAYS be initialized first
+	resListWBinder = tgui::Group::create({modifiable_RESLIST_W, 0});
+	layout->add(resListWBinder, "resListWBinder");
+
+	// Resource list
+	resourcesList = createResourcesList();
+	layout->add(resourcesList);
+
+	// Tool bar
+	toolBar = createToolBar();
+	layout->add(toolBar);
+
+	// File tabs
+	tabsContainer = tgui::ScrollablePanel::create();
+	tabsContainer->getRenderer()->setBorders({0, 0, 0, 0});
+	tabsContainer->getRenderer()->setRoundedBorderRadius(0);
+	tabsContainer->getRenderer()->setPadding(0);
+	tabsContainer->setSize(
+		tgui::Layout("100%") - tgui::bindWidth(resListWBinder), FILETABS_H);
+	tabsContainer->setPosition(tgui::bindWidth(resListWBinder),
+							   tgui::bindBottom(toolBar));
+	tabsContainer->getVerticalScrollbar()->setPolicy(
+		tgui::Scrollbar::Policy::Never);
+	tabsContainer->getHorizontalScrollbar()->setPolicy(
+		tgui::Scrollbar::Policy::Never);
+
+	fileTabs = FileTab::create();
+	fileTabs->setHeight(FILETABS_H);
+	fileTabs->setPosition({0, 0});
+	fileTabs->useExternalMouseEvent = true;
+	fileTabs->setAutoSize(true);
+	fileTabs->setMinimumTabWidth(MIN_TAB_W_IN_FILETABS);
+	fileTabs->setMaximumTabWidth(MAX_TAB_W_IN_FILETABS);
+
+	fileTabs->onTabClose([this](tgui::String id) {
+		openedFiles.erase(id);
+		if (fileTabs->getTabsCount() == 0) {
+			clearView();
+		}
+	});
+	fileTabs->onTabSelect([this](tgui::String id) {
+		if (fileTabs->getTabsCount() == 0) {
+			clearView();
+		} else {
+			switchView(id);
+		}
+	});
+
+	tabsContainer->add(fileTabs);
+	layout->add(tabsContainer);
+
+	// File view
+	auto fileView = tgui::Group::create(
+		{tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
+		 tgui::Layout("100%") - tgui::bindHeight(toolBar) -
+			 tgui::bindHeight(tabsContainer)});
+	fileView->setPosition(tgui::bindWidth(resListWBinder),
+						  tgui::bindBottom(tabsContainer));
+	this->fileViewGroup = fileView;
+	clearView();
+	layout->add(fileView);
+
+	// Maximize when a project is opened
+	SetWindowState(FLAG_WINDOW_MAXIMIZED);
+}
+
+void ProjectScreen::addFileView(EngineFileType fileType,
+								const std::string &path) {
+
+	Editor::instance->getGui().gui->setTabKeyUsageEnabled(
+		fileType != EngineFileType::FILE_SCRIPT);
+
+	size_t idx = fileTabs->addFileTab(path, GetFileName(path.c_str()));
+	if (idx != -1) {
+		fileViewGroup->removeAllWidgets();
+		std::unique_ptr<ProjectFile> projectFile =
+			fileVisitor->visit(fileType, path);
+		projectFile->initUi(fileViewGroup);
+		projectFile->setFilePath(path);
+		tgui::String id = path;
+		openedFiles.try_emplace(id, std::move(projectFile));
+	}
+}
+
+void ProjectScreen::switchView(tgui::String id) {
+	fileViewGroup->removeAllWidgets();
+	openedFiles.at(id)->addWidgets(fileViewGroup);
+}
+
+void ProjectScreen::clearView() {
+	fileViewGroup->removeAllWidgets();
+	std::unique_ptr<ProjectFile> empty =
+		fileVisitor->visit(EngineFileType::FILE_EMPTY, ".");
+	empty->initUi(fileViewGroup);
+	empty->addWidgets(fileViewGroup);
+}
+
+tgui::Group::Ptr ProjectScreen::createToolBar() {
+	auto toolBar = tgui::Group::create({"100%", TOOLBAR_H});
+	toolBar->setPosition(0, 0);
+	toolBar->getRenderer()->setPadding(8);
+
+	auto barSize = toolBar->getSize().y;
+
+	auto project = Editor::instance->getProject();
+
+	projectLabel = tgui::Label::create("text.");
+	projectLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
+	projectLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
+	projectLabel->setTextSize(16);
+	projectLabel->setPosition({0, 0});
+	projectLabel->setSize({tgui::bindWidth(resListWBinder), "100%"});
+
+	assert(project && "project isn't instanciated (nullptr)");
+
+	projectLabel->setText(project->getTitle());
+
+	toolBar->add(projectLabel, "projectLabel");
+
+	auto &fs = Editor::instance->getFs();
+
+	auto playBtnTooltip = Tooltip::create("");
+	bindTranslation<Tooltip>(playBtnTooltip, "screen.project.toolbar.play",
+							 &Tooltip::setText);
+	auto playBtn = tgui::BitmapButton::create();
+	auto playtestImg = tgui::Texture(fs.getResourcePath("playtest.png"));
+	playBtn->setImage(playtestImg);
+	playBtn->setSize({barSize, "100%"});
+	playBtn->setPosition({tgui::bindRight(projectLabel), 0});
+	playBtn->onPress([] { Editor::instance->getProject()->runProject(); });
+	playBtn->setToolTip(playBtnTooltip);
+	toolBar->add(playBtn, "playBtn");
+
+	auto buildTooltip = Tooltip::create("");
+	bindTranslation<Tooltip>(buildTooltip, "screen.project.toolbar.build",
+							 &Tooltip::setText);
+	auto buildBtn = tgui::BitmapButton::create();
+	auto buildImg = tgui::Texture(fs.getResourcePath("build.png"));
+	buildBtn->setImage(buildImg);
+	buildBtn->setSize({barSize, "100%"});
+	buildBtn->setPosition({tgui::bindRight(playBtn) + 8, 0});
+	buildBtn->onPress([project] { project->buildProject(); });
+	buildBtn->setToolTip(buildTooltip);
+	toolBar->add(buildBtn);
+
+	return toolBar;
+}
+
+void ProjectScreen::addResourceButtons(EngineFileType fileType) {
+	auto project = Editor::instance->getProject();
+
+	this->listedResourcesType = fileType;
+
+	resourcesLayout->removeAllWidgets();
+	resourcesLayout->getRenderer()->setSpaceBetweenWidgets(
+		RESLIST_ITEM_PADDING);
+
+	for (auto filePath : project->getPaths(fileType)) {
+		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
+		fileBtn->setSize("100%", RESLIST_RES_BTN_H);
+		fileBtn->onPress(
+			[this, fileType, filePath] { addFileView(fileType, filePath); });
+		fileBtn->onRightMousePress([this, filePath] {
+			fileContextMenu->getMenuItems().at(0).text = filePath;
+			fileContextMenu->setPosition(GetMousePosition().x,
+										 GetMousePosition().y);
+			fileContextMenu->onMenuItemClick.disconnectAll();
+			fileContextMenu->onMenuItemClick(
+				[this, filePath](const std::vector<tgui::String> &hierarchy) {
+					if (hierarchy[0] == "Copy full path") {
+						SetClipboardText(filePath.c_str());
+					}
+					if (hierarchy[0] == "Delete.") {
+						auto messageBox = tgui::MessageBox::create();
+						messageBox->setText("Are you sure?");
+						messageBox->addButton("Yes");
+						messageBox->addButton("No");
+						messageBox->setButtonAlignment(
+							tgui::HorizontalAlignment::Right);
+						EditorGuiService::centerWidget(messageBox);
+
+						std::weak_ptr<tgui::MessageBox> weakBox = messageBox;
+
+						messageBox->onButtonPress(
+							[this, weakBox,
+							 filePath](const tgui::String &button) {
+								assert(button == "Yes" || button == "No");
+								if (auto box = weakBox.lock()) {
+									if (button == "Yes") {
+										std::error_code ec;
+										std::filesystem::remove(filePath, ec);
+										addResourceButtons(listedResourcesType);
+									}
+
+									if (auto parent = box->getParent())
+										parent->remove(box);
+								}
+							});
+
+						Editor::instance->getGui().gui->add(messageBox);
+					}
+				});
+			fileContextMenu->openMenu();
+		});
+
+		resourcesLayout->add(fileBtn);
+	}
+}
+
+ResizableContainer::Ptr ProjectScreen::createResourcesList() {
+	auto project = Editor::instance->getProject();
+	TranslationService &tService = Editor::instance->getTranslations();
+
+	auto group = ResizableContainer::create(
+		{modifiable_RESLIST_W, tgui::Layout("100%") - TOOLBAR_H},
+		{0, TOOLBAR_H});
+	group->enableResize(ResizeDirection::RIGHT);
+	group->setMinResizeWidth(MIN_RESLIST_W);
+	group->setMaxResizeWidth(MAX_RESLIST_W);
+	group->useExternalMouseEvent = true;
+	group->onResize([this, group] {
+		modifiable_RESLIST_W = group->getSize().x;
+		layoutReload();
+	});
+
+	auto resourceChoose = tgui::ComboBox::create();
+	resourceChoose->setPosition(0, 0);
+	resourceChoose->setSize("100%", RESLIST_RES_CHOOSE_H);
+	for (auto typeName : Editor::instance->getFs().getTypeNames()) {
+		resourceChoose->addItem(typeName);
+	}
+	// resourceChoose->addMultipleItems({"TileSets", "Maps", "Scripts"});
+	resourceChoose->setSelectedItem("Maps");
+	group->add(resourceChoose);
+
+	auto createResourceBtn = tgui::Button::create();
+	bindTranslation<tgui::Button>(createResourceBtn,
+								  "screen.project.create_new_resource",
+								  &tgui::Button::setText);
+	createResourceBtn->setPosition(0, tgui::bindBottom(resourceChoose));
+	createResourceBtn->setSize("100%", RESLIST_CREATE_RES_BTN_H);
+	createResourceBtn->onPress([this] {
+		if (!fileInitVisitor->funcIsEmpty(listedResourcesType)) {
+			auto childDialog = NewFileDialog::create();
+			childDialog->init(Editor::instance->getGui().gui.get());
+			EditorGuiService::centerWidget(childDialog->window);
+			fileInitVisitor->visit(listedResourcesType, childDialog);
+		}
+	});
+	group->add(createResourceBtn);
+
+	auto resourceListPanel = tgui::ScrollablePanel::create(
+		{"100%", tgui::Layout("100%") -
+					 (RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H)});
+	resourceListPanel->setPosition(0, tgui::bindBottom(createResourceBtn));
+	resourceListPanel->getVerticalScrollbar()->setPolicy(
+		tgui::Scrollbar::Policy::Automatic);
+	resourceListPanel->getHorizontalScrollbar()->setPolicy(
+		tgui::Scrollbar::Policy::Never);
+
+	resourcesLayout = tgui::GrowVerticalLayout::create();
+	resourceListPanel->add(resourcesLayout);
+	group->add(resourceListPanel);
+
+	resourceChoose->onItemSelect([this](int index) {
+		EngineFileType currentFileType = static_cast<EngineFileType>(index);
+		addResourceButtons(currentFileType);
+	});
+
+	if (project != nullptr) {
+		EngineFileType currentFileType =
+			static_cast<EngineFileType>(resourceChoose->getSelectedItemIndex());
+		addResourceButtons(currentFileType);
+	}
+
+	return group;
+}
+
+ProjectFile &ProjectScreen::getCurrentFile() {
+	tgui::String currentFile = fileTabs->getSelectedId();
+	return *openedFiles.at(currentFile);
+}

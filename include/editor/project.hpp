@@ -1,45 +1,35 @@
-#ifndef _RPGPP_EDITOR_PROJECT_H
-#define _RPGPP_EDITOR_PROJECT_H
+#ifndef _RPGPP_PROJECT_H
+#define _RPGPP_PROJECT_H
 
+#include "gamedata.hpp"
+#include "services/fileSystemService.hpp"
+#include <map>
+#include <nlohmann/json.hpp>
+#include <nlohmann/json_fwd.hpp>
 #include <string>
 #include <vector>
-#include <array>
-#include "gamedata.hpp"
-#include "projectFile.hpp"
-#include "projectGenerator.hpp"
-#include "projectCompiler.hpp"
-#include <nlohmann/json.hpp>
+
 using json = nlohmann::json;
 
 class Project {
-private:
-    ProjectGenerator projectGenerator;
-    ProjectCompiler projectCompiler;
-    std::string projectBasePath;
-    std::string projectPath;
-    std::string projectTitle;
-    std::string tileSetsPath;
-    std::string mapsPath;
-    std::string actorsPath;
-    std::string dialoguesPath;
-    std::string imagesPath;
-    std::string fontsPath;
-    void generateCmdScript();
-    void callCompiler();
-    std::vector<std::string> makePaths(const std::string &dirPath);
-    std::array<std::vector<std::string>, ENGINEFILETYPE_MAX> pathsList;
-public:
-    Project();
-    Project(const std::string &filePath);
-    void reloadPaths();
-    static void generateNewProj(const std::string &title, const std::string &path);
-    GameData generateStruct();
-    void compileProject();
-    void runProject();
-    void cleanCompilation();
-    std::string getProjectTitle();
-    std::string getProjectBasePath();
-    std::vector<std::string> getTypePaths(EngineFileType type);
+  private:
+	std::string projectPath;
+	std::string projectTitle;
+
+  public:
+	Project(const std::string &path);
+	static void create(const std::string &dirPath, const std::string &title);
+	json toJson();
+	std::string &getTitle();
+	std::string &getBasePath();
+	std::vector<std::string> getPaths(EngineFileType fileType);
+	std::string getResourcePath(EngineFileType fileType,
+								const std::string &fileName);
+	std::map<std::string, std::string> getInteractableNames();
+	std::vector<std::string> getPropsNames();
+	GameData generateStruct();
+	void runProject();
+	void buildProject();
 };
 
 #endif

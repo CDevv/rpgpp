@@ -1,0 +1,30 @@
+#include "services/configurationService.hpp"
+#include "raylib.h"
+
+ConfigurationService::ConfigurationService() {
+	std::filesystem::path baseDir = GetWorkingDirectory();
+	baseDir /= RPGPP_CONFIG_FILE;
+	if (std::filesystem::exists(baseDir)) {
+		this->iniFile = std::make_unique<mINI::INIFile>(baseDir.string());
+		this->iniFile->read(this->iniStructure);
+	} else {
+		throw std::runtime_error("configuration file doesn't exist.");
+	}
+};
+
+std::string ConfigurationService::getStringValue(const std::string &key) {
+	if (this->iniStructure[GENERAL_CONF_FIELD].has(key))
+		return this->iniStructure[GENERAL_CONF_FIELD][key];
+	std::stringstream ss;
+	ss << "configuration key doesn't exist" << key;
+	throw std::runtime_error(ss.str());
+}
+
+void ConfigurationService::setStringValue(const std::string &key,
+										  const std::string &value) {
+	this->iniStructure[GENERAL_CONF_FIELD].set(key, value);
+}
+
+void ConfigurationService::saveConfiguration() {
+	this->iniFile->write(this->iniStructure);
+}

@@ -1,71 +1,51 @@
 #include "projectFile.hpp"
-
-#include <memory>
-#include <raylib.h>
-
-#include "actor.hpp"
-#include "dialogueBalloon.hpp"
-#include "dialogueParser.hpp"
-#include "prop.hpp"
-#include "room.hpp"
+#include "TGUI/Widgets/Group.hpp"
+#include "fileViews/emptyView.hpp"
+#include "fileViews/fileView.hpp"
+#include "raylib.h"
+#include "services/fileSystemService.hpp"
 #include "tileset.hpp"
+#include "variant.hpp"
+#include <memory>
+#include <string>
+#include <utility>
 
-std::array<std::string, ENGINEFILETYPE_MAX> ProjectFile::fileTypeNames =
-std::array<std::string, ENGINEFILETYPE_MAX>{
-    "TileSets", "Maps", "Actors",
-    "Dialogues", "Images", "Fonts",
-    "Sounds", "Music", "Props",
-    "UI Views", "Scripts"
-};
+ProjectFile::ProjectFile() { view = std::make_unique<EmptyFileView>(); }
 
-ProjectFile::ProjectFile() : fileType()
-{
+ProjectFile::ProjectFile(std::unique_ptr<FileView> view,
+						 std::unique_ptr<VariantWrapper> variant,
+						 EngineFileType fileType, bool isSaveable) {
+	this->view = std::move(view);
+	this->variant = std::move(variant);
+	this->fileType = fileType;
+	this->isSaveable = isSaveable;
 }
 
-ProjectFile::ProjectFile(const std::string &relativePath, EngineFileType fileType)
-{
-    this->relativePath = relativePath;
-    this->fileType = fileType;
-
-    this->variant = std::unique_ptr<VariantWrapper>{};
+void ProjectFile::setFilePath(const std::string &filePath) {
+	this->filePath = filePath;
 }
 
-std::array<std::string, ENGINEFILETYPE_MAX> ProjectFile::getTypeNames()
-{
-    return fileTypeNames;
+std::string &ProjectFile::getFilePath() { return filePath; }
+
+void ProjectFile::initUi(tgui::Group::Ptr group) {
+	if (variant.get() == nullptr) {
+		view->init(group, nullptr);
+	} else {
+		view->init(group, variant.get());
+	}
 }
 
-void ProjectFile::setFromPath(const std::string &relativePath)
-{
-    std::string fileExtension = GetFileExtension(relativePath.c_str());
-    if (TextIsEqual(fileExtension.c_str(), ".rtiles")) {
-        setData(new TileSet(relativePath));
-        fileType = FILE_TILESET;
-    } else if (TextIsEqual(fileExtension.c_str(), ".rmap")) {
-        Room* room = new Room(relativePath, 16);
-        setData(room);
-        fileType = FILE_ROOM;
-    } else if (TextIsEqual(fileExtension.c_str(), ".ractor")) {
-        setData(new Actor(relativePath));
-        fileType = FILE_ACTOR;
-    } else if (TextIsEqual(fileExtension.c_str(), ".rdiag")) {
-        std::string fileText = LoadFileText(relativePath.c_str());
-        Dialogue* diag = new Dialogue(parseDialogueText(fileText));
-        diag->title = GetFileNameWithoutExt(relativePath.c_str());
-        setData(diag);
-        fileType = FILE_DIALOGUE;
-    } else if (TextIsEqual(fileExtension.c_str(), ".rprop")) {
-        setData(new Prop(relativePath));
-        fileType = FILE_PROP;
-    }
+void ProjectFile::addWidgets(tgui::Group::Ptr layout) {
+	view->addWidgets(layout);
 }
 
-EngineFileType ProjectFile::getFileType()
-{
-    return fileType;
+void ProjectFile::saveFile(const std::string &path) {
+	if (!isSaveable)
+		return;
+
+	auto saveable = variant->toSaveable();
+	json j = saveable->dumpJson();
+	SaveFileText(path.c_str(), j.dump().c_str());
 }
 
-std::string ProjectFile::getRelativePath()
-{
-    return relativePath;
-}
+FileView &ProjectFile::getView() { return *view; }

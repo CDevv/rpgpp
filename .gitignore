@@ -40,7 +40,6 @@ game-src/*/lib/
 /game
 build/
 bin/
-libs/
 execs/**
 *.bin
 .cache/
@@ -58,3 +57,4 @@ imgui.ini
 clangd/
 game-src/
 compile_commands.json
+xmake-*.exe

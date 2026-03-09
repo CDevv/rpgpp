@@ -1,0 +1,17 @@
+// Project tasks configuration. See https://zed.dev/docs/tasks for documentation.
+//
+// Example:
+[
+	{
+		"label": "Run Editor",
+		"command": "xmake run editor",
+	},
+	{
+		"label": "Run translation checker",
+		"command": "xmake check_translation",
+	},
+	{
+		"label": "Build All",
+		"command": "xmake build --all",
+	},
+]

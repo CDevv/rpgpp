@@ -1,0 +1,108 @@
+{
+	"language": "Deutsch",
+	"menu": {
+		"file": {
+			"_label": "Datei",
+			"new_project": "Neu Projekt",
+			"open_project": "Öffnen Projekt",
+			"save_file": "Speichern Datei"
+		},
+		"edit": {
+			"_label": "Bearbeiten",
+			"undo": "Rückgängig",
+			"redo": "Wiederhohlen"
+		},
+		"options": {
+			"_label": "Einstellungen",
+			"editor": "Editor einstellen..."
+		},
+		"about": {
+			"_label": "Über",
+			"rpgpp": "Über RPG++...",
+			"rpgpp_description": "RPG Engine."
+		}
+	},
+	"screen": {
+		"starting": {
+			"get_started": "Los gehts!",
+			"description": "Drücken Sie auf 'Neu Projekt', um ein neues Projekt zu erstellen, oder 'Projekt Öffnen', um es zu öffnen!"
+		},
+		"options": {
+			"language": "Sprache",
+			"theme": "Thema",
+			"theme_notice": "Sie dürfen das Editor nach der Veränderung des Themas neustarten!"
+		},
+		"project": {
+			"create_new_resource": "Neue Ressource",
+			"emptyview": {
+				"notice": "Es gibt noch kein aussehende Datei!"
+			},
+			"dialogueview": {
+				"add_new_line": "Fügen neue Leitung",
+				"has_a_portrait": "Hat ein Porträt?"
+			},
+			"tilesetview": {
+				"tile_width": "Fliesenbreite",
+				"tile_height": "Fliesenhöhe",
+				"texture": "Textur"
+			},
+			"roomview": {
+				"enable_brush": "Pinselmodus",
+				"mapwidth": "Kartenbreite",
+				"mapheight": "Kartenhöhe",
+				"tileset_file": "Fliesenset Datei",
+				"bg_music_file": "BG Musik"
+			},
+			"propview": {
+				"atlas": "Atlasgroße",
+				"collision": "Kollisionsgroße",
+				"has_interactable": "Hat eine Interaktion?",
+				"image": "Bild",
+				"interactable_type": "Interaktionstyp"
+			},
+			"actorview": {
+				"dir0": "Runter (Leerlauf)",
+				"dir1": "Runter",
+				"dir2": "Oben (Leerlauf)",
+				"dir3": "Oben",
+				"dir4": "Links (Leerlauf)",
+				"dir5": "Links",
+				"dir6": "Rechts (Leerlauf)",
+				"dir7": "Rechts",
+				"play": "Spielen",
+				"pause": "Pausieren",
+				"delete": "Frame löschen",
+				"edit_anim_data": "Bearbeiten Animationsdaten",
+				"is_non_idle": "Ist Animation ohne Leerlauf?"
+			},
+			"toolbar": {
+				"play": "Spielen",
+				"build": "Bauen"
+			}
+		}
+	},
+	"dialog": {
+		"new_file": {
+			"title": "Neue Ressource",
+			"name": "Dateiname",
+			"file": "Datei",
+			"confirm": "Bestätigen",
+			"cancel": "Abbrechen"
+		},
+		"new_project": {
+			"title": "Neu Projekt",
+			"name": "Projektname",
+			"folder": "Ordner",
+			"confirm": "Bestätigen",
+			"cancel": "Abbrechen"
+		}
+	},
+	"widget": {
+		"filechooser": {
+			"select_a_file": "ein Datei auswählen"
+		}
+	},
+	"button": {
+		"go_back": "Zurück"
+	}
+}

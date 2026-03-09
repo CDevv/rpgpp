@@ -1,32 +1,36 @@
-#include <raylib.h>
 #include "game.hpp"
+#include <raylib.h>
 
-int main()
-{
-    InitWindow(640, 480, "RPG++ Game.");
-    InitAudioDevice();
+int main() {
+	const int width = 640;
+	const int height = 480;
 
-    Game game;
-    Game::init();
+	InitWindow(width, height, "Window");
+	InitAudioDevice();
 
-    Game::useBin("game.bin");
+	Game game;
+	game.init();
 
-    //Game::getWorld().setRoom("resources/map.rmap");
+	game.useBin("game.bin");
 
-    SetTargetFPS(60);
+	SetTargetFPS(60);
 
-    while (!WindowShouldClose()) {
-        Game::update();
+	while (!WindowShouldClose()) {
+		game.update();
 
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        Game::draw();
-        EndDrawing();
-    }
+		BeginDrawing();
 
-    Game::unload();
-    CloseWindow();
-    CloseAudioDevice();
+		ClearBackground(RAYWHITE);
 
-    return 0;
+		game.draw();
+
+		EndDrawing();
+	}
+
+	game.unload();
+
+	CloseWindow();
+	CloseAudioDevice();
+
+	return 0;
 }
