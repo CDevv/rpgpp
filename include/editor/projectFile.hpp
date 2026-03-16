@@ -16,6 +16,7 @@ class ProjectFile {
 	bool isSaveable = true;
 
   public:
+	bool isEmpty = false;
 	ProjectFile();
 	ProjectFile(std::unique_ptr<FileView> view,
 				std::unique_ptr<VariantWrapper> variant,

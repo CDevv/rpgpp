@@ -190,11 +190,18 @@ void ProjectScreen::addFileView(EngineFileType fileType,
 	Editor::instance->getGui().gui->setTabKeyUsageEnabled(
 		fileType != EngineFileType::FILE_SCRIPT);
 
+	std::unique_ptr<ProjectFile> projectFile =
+		fileVisitor->visit(fileType, path);
+	if (projectFile->isEmpty) {
+		std::string mutPath = std::string(path);
+		Editor::instance->getFs().openFileInDefaultApp(mutPath);
+		return;
+	}
+
 	size_t idx = fileTabs->addFileTab(path, GetFileName(path.c_str()));
 	if (idx != -1) {
 		fileViewGroup->removeAllWidgets();
-		std::unique_ptr<ProjectFile> projectFile =
-			fileVisitor->visit(fileType, path);
+
 		projectFile->initUi(fileViewGroup);
 		projectFile->setFilePath(path);
 		tgui::String id = path;

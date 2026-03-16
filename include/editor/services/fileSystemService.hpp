@@ -37,6 +37,7 @@ class FileSystemService {
 	std::array<std::string, FILETYPE_MAX> &getTypeNames();
 	const std::string &getEditorBaseDir();
 	std::string getResourcePath(const std::string &path);
+	void openFileInDefaultApp(std::string &path);
 };
 
 #endif

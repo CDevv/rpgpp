@@ -1,9 +1,12 @@
 #include "services/fileSystemService.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
 #include <array>
+#include <cstdio>
+#include <cstdlib>
 #include <nfd.h>
 #include <nfd.hpp>
 #include <string>
+#include <unistd.h>
 
 #include "editor.hpp"
 #include "raylib.h"
@@ -62,4 +65,16 @@ std::string FileSystemService::getResourcePath(const std::string &path) {
 	result /= path;
 
 	return result.string();
+}
+
+void FileSystemService::openFileInDefaultApp(std::string &path) {
+#ifdef __linux__
+	auto proc = fork();
+	if (proc == 0) {
+		printf("%s \n", path.c_str());
+		std::string command = "xdg-open";
+		char *args[] = {command.data(), path.data(), nullptr};
+		execvp(command.data(), args);
+	}
+#endif
 }
