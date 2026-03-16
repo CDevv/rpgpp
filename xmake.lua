@@ -8,8 +8,9 @@ set_license("Zlib")
 if is_plat("mingw", "linux", "macosx") then
 	add_syslinks("raylib")
 end
-
-if is_plat("mingw", "windows") then
+if is_plat("macosx") then
+    add_frameworks("CoreVideo", "CoreGraphics", "AppKit", "IOKit", "CoreFoundation", "Foundation")
+elseif is_plat("mingw", "windows") then
 	add_syslinks("gdi32", "opengl32", "winmm", "shell32", "user32")
 end
 
