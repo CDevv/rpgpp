@@ -16,7 +16,6 @@
 #include <TGUI/AllWidgets.hpp>
 #include <TGUI/Widgets/ChildWindow.hpp>
 #include <cmath>
-#include <cstdio>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -35,6 +34,7 @@ EditorGuiService::EditorGuiService() {
 
 void EditorGuiService::init() {
 	currentCursor = MOUSE_CURSOR_DEFAULT;
+
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT, "RPG++ Editor");
 	InitAudioDevice();

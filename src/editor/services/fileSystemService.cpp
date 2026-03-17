@@ -2,11 +2,17 @@
 #include "TGUI/Widgets/FileDialog.hpp"
 #include <array>
 #include <cstdio>
-#include <cstdlib>
 #include <nfd.h>
 #include <nfd.hpp>
 #include <string>
+
+#ifdef __linux__
 #include <unistd.h>
+#endif
+
+#ifdef _WIN32
+#include <winapi.hpp>
+#endif
 
 #include "editor.hpp"
 #include "raylib.h"
@@ -75,6 +81,12 @@ void FileSystemService::openFileInDefaultApp(std::string &path) {
 		std::string command = "xdg-open";
 		char *args[] = {command.data(), path.data(), nullptr};
 		execvp(command.data(), args);
+	}
+#endif
+
+#ifdef _WIN32
+	if (!WinOpenFileAssociate("", path.c_str())) {
+		printf("failure to open file...\n");
 	}
 #endif
 }

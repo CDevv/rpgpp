@@ -9,6 +9,7 @@ struct VsInfo {
 	std::string auxiliaryPath;
 };
 
+bool WinOpenFileAssociate(std::string operation, std::string file);
 void WinCreateProc(std::string cmdLine);
 VsInfo WinVsWhere(std::string path);
 VsInfo ParseVsWhereData(std::string output);

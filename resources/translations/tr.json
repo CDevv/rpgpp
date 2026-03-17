@@ -29,7 +29,8 @@
     },
     "options": {
       "language": "Dil",
-      "theme": "Tema"
+      "theme": "Tema",
+      "theme_notice": "Tema değiştirdikten sonra düzenleyici yeniden başlatmanız önerilir!"
     },
     "project": {
       "create_new_resource": "Yeni Kaynak",
@@ -48,7 +49,9 @@
       "roomview": {
         "mapwidth": "Harita Genişliği",
         "mapheight": "Harita Yüksekliği",
-        "tileset_file": "Kare Seti Dosyası"
+        "tileset_file": "Kare Seti Dosyası",
+        "enable_brush": "Fırça Modunu Aktifleştir",
+        "bg_music_file": "Arkaplan Müziği"
       },
       "propview": {
         "atlas": "Atlas Büyüklüğü",
@@ -68,7 +71,9 @@
         "dir7": "Sağ",
         "play": "Oynat",
         "pause": "Duraklat",
-        "is_non_idle": "Boşta Olmayan Animasyon Mu?"
+        "is_non_idle": "Boşta Olmayan Animasyon Mu?",
+        "delete": "Kare Sil",
+        "edit_anim_data": "Animasyon Verisini Düzenle"
       },
       "toolbar": {
         "play": "Oyna",

@@ -182,6 +182,8 @@ void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 
 	// Maximize when a project is opened
 	SetWindowState(FLAG_WINDOW_MAXIMIZED);
+
+	// FIXME: fix scaling issue on windows!
 }
 
 void ProjectScreen::addFileView(EngineFileType fileType,

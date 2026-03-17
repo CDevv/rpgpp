@@ -1,7 +1,13 @@
-#include "winapi.hpp"
+
+#include <string>
 
 #ifdef _WIN32
+#include <basetsd.h>
+#include <winapi.hpp>
 #include <windows.h>
+#include <winnt.h>
+#include <winuser.h>
+
 #endif
 
 #include <cstdio>
@@ -25,6 +31,13 @@ char *WinReadFromHandle(HANDLE handle) {
 	return charBuf;
 }
 
+bool WinOpenFileAssociate(std::string operation, std::string file) {
+	printf("opening file with path %s (Win32)", file.c_str());
+	INT_PTR hInstance = (INT_PTR)ShellExecuteA(
+		NULL, operation.c_str(), file.c_str(), NULL, NULL, SW_SHOWNORMAL);
+	return hInstance != SE_ERR_NOASSOC;
+}
+
 void WinWriteToHandle(HANDLE handle, std::string str) {
 	DWORD dwWritten;
 	CHAR charBuf[4096];
@@ -33,7 +46,7 @@ void WinWriteToHandle(HANDLE handle, std::string str) {
 	bSuccess = WriteFile(handle, static_cast<char *>(str.data()), str.size(),
 						 &dwWritten, NULL);
 	if (!bSuccess) {
-		printf("WriteFile Error: %d", GetLastError());
+		printf("WriteFile Error: %lu", GetLastError());
 		return;
 	}
 
@@ -81,7 +94,7 @@ void WinCreateProcEx(std::string cmdLine, HANDLE outHandle, HANDLE inHandle,
 		if (inHandle != NULL)
 			CloseHandle(inHandle);
 	} else {
-		printf("WinCreateProc: CreateProcess failed (%d).\n", GetLastError());
+		printf("WinCreateProc: CreateProcess failed (%lu).\n", GetLastError());
 	}
 #else
 	printf("This is for Windows API only");
