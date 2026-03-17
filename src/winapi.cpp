@@ -1,16 +1,15 @@
 
 #include <string>
 
+#include <winapi.hpp>
+
 #ifdef _WIN32
 #include <basetsd.h>
-#include <winapi.hpp>
 #include <windows.h>
 #include <winnt.h>
 #include <winuser.h>
 
 #endif
-
-#include <cstdio>
 
 #ifdef _WIN32
 
@@ -32,7 +31,7 @@ char *WinReadFromHandle(HANDLE handle) {
 }
 
 bool WinOpenFileAssociate(std::string operation, std::string file) {
-	printf("opening file with path %s (Win32)", file.c_str());
+	printf("opening file with path %s (Win32)\n", file.c_str());
 	INT_PTR hInstance = (INT_PTR)ShellExecuteA(
 		NULL, operation.c_str(), file.c_str(), NULL, NULL, SW_SHOWNORMAL);
 	return hInstance != SE_ERR_NOASSOC;
