@@ -75,8 +75,10 @@ ProjectFileVisitor::codeView(const std::string &path) {
 	std::unique_ptr<EmptyFileView> view = std::make_unique<EmptyFileView>();
 	std::unique_ptr<VariantWrapper> variant =
 		std::make_unique<Variant<ScriptFile>>(new ScriptFile(path));
-	return std::make_unique<ProjectFile>(std::move(view), std::move(variant),
-										 EngineFileType::FILE_SCRIPT);
+	auto res = std::make_unique<ProjectFile>(
+		std::move(view), std::move(variant), EngineFileType::FILE_SCRIPT);
+	res->isEmpty = true;
+	return std::move(res);
 }
 
 std::unique_ptr<ProjectFile>

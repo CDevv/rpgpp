@@ -2,15 +2,9 @@
 #include "TGUI/Vector2.hpp"
 #include "raylib.h"
 #include "scriptFile.h"
-#include "syntaxHighlighter.hpp"
 #include "tree_sitter/api.h"
-#include "tree_sitter/tree-sitter-lua.h"
 #include "views/worldView.hpp"
-#include <cstdio>
-#include <cstring>
 #include <memory>
-#include <string>
-#include <utility>
 
 CodeView::CodeView(ScriptFile *scriptFile) : scriptFile(scriptFile) {}
 

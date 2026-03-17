@@ -98,7 +98,7 @@ void Toolbox<T>::resetToolSelection(std::string groupToReset) {
 	for (const auto &widgets : this->container->getWidgets()) {
 		if (auto btn = std::dynamic_pointer_cast<tgui::BitmapButton>(widgets)) {
 			ToolboxItemIdentifier<T> identifier =
-				btn->getUserData<ToolboxItemIdentifier<T>>();
+				btn->template getUserData<ToolboxItemIdentifier<T>>();
 			if (groupToReset == identifier.group) {
 				tgui::ButtonRenderer *renderer = btn->getRenderer();
 				tgui::ButtonRenderer *defaultRenderer =
@@ -171,7 +171,7 @@ void Toolbox<T>::addWidget(tgui::Widget::Ptr widget, int idx) {
 template <typename T> void Toolbox<T>::removeItemById(const T &id) {
 	for (const auto &widget : this->container->getWidgets()) {
 		ToolboxItemIdentifier<T> identifier =
-			widget->getUserData<ToolboxItemIdentifier<T>>();
+			widget->template getUserData<ToolboxItemIdentifier<T>>();
 		if (identifier.id == id) {
 			this->container->remove(widget);
 			toolGroup[identifier.group].erase(id);
