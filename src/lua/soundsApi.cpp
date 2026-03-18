@@ -9,6 +9,10 @@ void lua_sounds_loadMusic(const std::string &id) {
 
 void lua_sounds_playMusic() { Game::getSounds().playMusic(); }
 
+void lua_sounds_playSound(const std::string &id) {
+	Game::getSounds().playSound(id);
+}
+
 void lua_sounds_set(sol::state_view &lua) {
 	printf("setting sounds api.. \n");
 	auto space = lua["Sounds"].get_or_create<sol::table>();
