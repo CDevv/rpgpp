@@ -109,30 +109,21 @@ void Interactable::setDisplayTitle(const std::string &newTitle) {
 std::string &Interactable::getDisplayTitle() { return displayTitle; }
 
 void Interactable::interact() {
-	sol::state lua;
-	lua.open_libraries(sol::lib::base);
-	for (auto prop : props->items()) {
-		if (prop.value().is_object()) {
-			lua[prop.key()] = prop.value().at("value").get<std::string>();
-		} else if (prop.value().is_string()) {
-			lua[prop.key()] = prop.value().get<std::string>();
-		} else if (prop.value().is_number()) {
-			lua[prop.key()] = prop.value().get<float>();
-		}
-	}
-	Game::setLua(lua);
+	auto &state = Game::getScripts().getState();
+
+	Game::getScripts().addToState(*props);
 
 	auto intBin = Game::getBin().interactables.at(type);
 	if (Game::getBin().scripts.count(intBin.scriptPath) != 0) {
 		auto bc = Game::getBin().scripts[intBin.scriptPath].bytecode;
-		auto result = lua.safe_script(bc);
+		auto result = state.safe_script(bc);
 		if (!result.valid()) {
 			printf("uh oh. \n");
 			return;
 		}
 
-		if (lua["interact"].valid()) {
-			lua["interact"].call<void>();
+		if (state["interact"].valid()) {
+			state["interact"].call<void>();
 		}
 	}
 }

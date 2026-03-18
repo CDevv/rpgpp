@@ -77,8 +77,8 @@ target("rpgpp")
 set_kind("static")
 add_packages("raylib", "nlohmann_json", "luajit")
 set_languages("cxx17")
-add_includedirs("include/") --, "libs/raylib/src")
-add_files("src/*.cpp")
+add_includedirs("include/", "include/lua/")
+add_files("src/*.cpp", "src/lua/*.cpp")
 if is_plat("linux") then
 	add_cxxflags("-fPIC")
 end

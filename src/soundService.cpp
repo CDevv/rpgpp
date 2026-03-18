@@ -15,9 +15,6 @@ bool SoundService::loadMusic(const std::string &id) {
 	if (lastId == id)
 		return true;
 
-	printf("%s \n", id.c_str());
-	printf("%zu", gameData.music.count(id));
-
 	if (gameData.music.count(id) != 0) {
 		if (gameData.music[id].isSound)
 			return musicLoaded;
@@ -36,6 +33,8 @@ bool SoundService::loadMusic(const std::string &id) {
 			this->music = newMusic;
 			musicLoaded = true;
 		}
+	} else {
+		printf("Music with such id does not exist: %s \n", id.c_str());
 	}
 
 	return musicLoaded;
@@ -67,6 +66,7 @@ void SoundService::update() const {
 
 void SoundService::unload() const {
 	if (musicLoaded) {
+		printf("unloaded.. \n");
 		StopMusicStream(music);
 		UnloadMusicStream(music);
 	}
