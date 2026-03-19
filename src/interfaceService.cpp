@@ -1,10 +1,11 @@
 #include "interfaceService.hpp"
 #include "colorRect.hpp"
+#include "game.hpp"
 #include "imageRect.hpp"
 #include "interfaceView.hpp"
-#include "resourceService.hpp"
 #include "textArea.hpp"
 #include <raylib.h>
+#include <stdexcept>
 
 InterfaceService::InterfaceService() {
 	fpsVisible = false;
@@ -51,6 +52,16 @@ InterfaceService::~InterfaceService() {
 Font InterfaceService::getFont() const { return font; }
 
 Texture InterfaceService::getTexture() const { return uiTexture; }
+
+void InterfaceService::showDialogue(const std::string &id) {
+	if (Game::getBin().dialogues.count(id) > 0) {
+		auto diag = Game::getBin().dialogues[id];
+		showDialogue(diag);
+	} else {
+		throw std::runtime_error(
+			TextFormat("This Dialogue does not exist: %s", id.c_str()));
+	}
+}
 
 void InterfaceService::showDialogue(const DialogueBin &dialogue) {
 	this->dialogue.showDialogue(dialogue);

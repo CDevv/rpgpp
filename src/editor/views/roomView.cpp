@@ -403,8 +403,9 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 						 static_cast<float>(newTile.y)};
 			data.worldTile = {static_cast<float>(tileMouse.x),
 							  static_cast<float>(tileMouse.y)};
-			data.interactable = static_cast<InteractableType>(
-				interactableChoose->getSelectedItemIndex() + 1);
+			data.interactable =
+				Editor::instance->getProject()->getInteractableNames()
+					[interactableChoose->getSelectedItemId().toStdString()];
 
 			std::unique_ptr<Action> act =
 				std::make_unique<EditTileAction>(data);

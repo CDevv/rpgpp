@@ -1,7 +1,9 @@
 #include "soundService.hpp"
 #include "game.hpp"
+#include "gamedata.hpp"
 #include <cstdio>
 #include <raylib.h>
+#include <stdexcept>
 
 SoundService::SoundService() {
 	music = {};
@@ -24,8 +26,6 @@ bool SoundService::loadMusic(const std::string &id) {
 		Music newMusic = LoadMusicStreamFromMemory(musicBin.fileExt.c_str(),
 												   musicBin.fileData.data(),
 												   musicBin.fileData.size());
-
-		printf("loaded.. \n");
 
 		if (IsMusicValid(newMusic)) {
 			unload();
@@ -51,10 +51,21 @@ void SoundService::playSound(const std::string &id) const {
 
 	if (gameData.music.count(id) != 0) {
 		if (gameData.music[id].isSound) {
-			Sound sound = LoadSound(gameData.music[id].relativePath.c_str());
+			MusicBin soundBin = gameData.music[id];
+			Wave soundWave = LoadWaveFromMemory(soundBin.fileExt.c_str(),
+												soundBin.fileData.data(),
+												soundBin.fileData.size());
+			Sound sound = LoadSoundFromWave(soundWave);
 
 			PlaySound(sound);
+
+			UnloadWave(soundWave);
+
+			// UnloadSound(sound);
 		}
+	} else {
+		throw std::runtime_error(
+			TextFormat("This Sound does not exist: %s", id.c_str()));
 	}
 }
 
@@ -66,7 +77,6 @@ void SoundService::update() const {
 
 void SoundService::unload() const {
 	if (musicLoaded) {
-		printf("unloaded.. \n");
 		StopMusicStream(music);
 		UnloadMusicStream(music);
 	}

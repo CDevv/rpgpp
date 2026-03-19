@@ -14,6 +14,8 @@ class StateService {
   public:
 	/** Empty constructor */
 	StateService();
+	/** Set a property */
+	void setProp(const std::string &prop, bool value);
 	/** Get a boolean property from the container. */
 	bool getProp(const std::string &prop) const;
 	/** Unload routine. */

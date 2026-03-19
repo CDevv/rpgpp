@@ -324,10 +324,23 @@ GameData Project::generateStruct() {
 	}
 
 	for (auto soundPath : getPaths(EngineFileType::FILE_SOUND)) {
+		MusicBin soundBin;
+
+		int dataSize = 0;
+		auto fileData = LoadFileData(soundPath.c_str(), &dataSize);
+
+		for (int i = 0; i < dataSize; i++) {
+			soundBin.fileData.push_back(fileData[i]);
+		}
+
+		soundBin.fileExt = GetFileExtension(soundPath.c_str());
+		soundBin.isSound = true;
+		data.music[GetFileNameWithoutExt(soundPath.c_str())] = soundBin;
+
+		UnloadFileData(fileData);
 	}
 
 	for (auto musicPath : getPaths(EngineFileType::FILE_MUSIC)) {
-		// TODO: Unsafe memory handling (no Unload function)
 		MusicBin musicBin;
 
 		int dataSize = 0;
@@ -340,6 +353,8 @@ GameData Project::generateStruct() {
 		musicBin.fileExt = GetFileExtension(musicPath.c_str());
 		musicBin.isSound = false;
 		data.music[GetFileNameWithoutExt(musicPath.c_str())] = musicBin;
+
+		UnloadFileData(fileData);
 	}
 
 	for (auto propPath : getPaths(EngineFileType::FILE_PROP)) {

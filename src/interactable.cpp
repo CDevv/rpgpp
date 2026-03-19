@@ -3,17 +3,17 @@
 #include "game.hpp"
 #include "gamedata.hpp"
 #include "interfaceService.hpp"
+#include "sol/forward.hpp"
 #include "sol/state.hpp"
+#include "sol/state_handling.hpp"
 #include "sol/types.hpp"
 #include "tilemap.hpp"
+#include <exception>
 #include <memory>
 #include <nlohmann/json_fwd.hpp>
 #include <raylib.h>
 #include <stdio.h>
 #include <string>
-
-std::array<std::string, INTTYPE_MAX> Interactable::interactableTypeNames = {
-	"Blank", "Dialogue", "Warper"};
 
 Interactable::Interactable()
 	: type(), tilePos(), tileSize(0), absolutePos(), rect() {
@@ -73,10 +73,6 @@ json Interactable::dumpJson() {
 	return j;
 }
 
-std::array<std::string, INTTYPE_MAX> &Interactable::getTypeNames() {
-	return interactableTypeNames;
-}
-
 bool Interactable::isValid() const { return this->valid; }
 
 Rectangle Interactable::getRect() const { return this->rect; }
@@ -116,14 +112,24 @@ void Interactable::interact() {
 	auto intBin = Game::getBin().interactables.at(type);
 	if (Game::getBin().scripts.count(intBin.scriptPath) != 0) {
 		auto bc = Game::getBin().scripts[intBin.scriptPath].bytecode;
-		auto result = state.safe_script(bc);
+		auto result = state.safe_script(bc, &sol::script_pass_on_error);
+		// auto unsafe_result = state.unsafe_script(bc);
+
 		if (!result.valid()) {
-			printf("uh oh. \n");
-			return;
+			sol::error error = result;
+			std::cout << error.what() << std::endl;
+		}
+		if (result.status() != sol::call_status::ok) {
+			printf("uh oh: %i \n", result.status());
 		}
 
 		if (state["interact"].valid()) {
-			state["interact"].call<void>();
+			sol::protected_function f(state["interact"]);
+			auto func_result = f();
+			if (!func_result.valid()) {
+				sol::error error = func_result;
+				std::cout << error.what() << std::endl;
+			}
 		}
 	}
 }

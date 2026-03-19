@@ -79,6 +79,7 @@ add_packages("raylib", "nlohmann_json", "luajit")
 set_languages("cxx17")
 add_includedirs("include/", "include/lua/")
 add_files("src/*.cpp", "src/lua/*.cpp")
+add_defines("SOL_LUAJIT")
 if is_plat("linux") then
 	add_cxxflags("-fPIC")
 end
