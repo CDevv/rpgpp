@@ -271,7 +271,7 @@ void Room::update() {
 }
 
 void Room::updateCamera() {
-	Vector2 playerPos = player->getPosition();
+	Vector2 playerPos = player->getCenterPosition();
 	Vector2 cameraOffset = {0, 0};
 	Vector2 cameraTarget = {0, 0};
 

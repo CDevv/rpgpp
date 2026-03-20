@@ -2,6 +2,7 @@
 #include "interactable.hpp"
 #include <raylib.h>
 #include <raymath.h>
+#include <stdexcept>
 
 Player::Player(std::unique_ptr<Actor> actor, Room &room) : room(room) {
 	this->lock = false;
@@ -187,9 +188,33 @@ Vector2 Player::getPosition() const {
 	if (actor == nullptr)
 		return Vector2{0, 0};
 
+	return actor->getPosition();
+}
+
+void Player::setPosition(Vector2 pos) {
+	actor->setPosition(pos);
+	position = pos;
+}
+
+Vector2 Player::getCenterPosition() const {
+	if (actor == nullptr)
+		return Vector2{0, 0};
+
 	Rectangle actorRect = actor->getRect();
 	return Vector2{actorRect.x + (actorRect.width / 2),
 				   actorRect.y + (actorRect.height / 2)};
+}
+
+Vector2 Player::getTilePosition() const { return actor->getTilePosition(); }
+
+void Player::setTilePosition(Vector2 tilePos) {
+	if (!room.getTileMap()->worldPosIsValid(tilePos)) {
+		throw std::runtime_error(TextFormat(
+			"This world tile position does not exist: %i, %i",
+			static_cast<int>(tilePos.x), static_cast<int>(tilePos.y)));
+	}
+	actor->setTilePosition(tilePos,
+						   room.getTileMap()->getTileSet()->getTileSize());
 }
 
 Vector2 Player::getCollisionPos() const {

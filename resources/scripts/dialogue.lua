@@ -13,4 +13,13 @@ print(vec.y)
 vec2 = Vector2.new()
 print(vec2.x)
 print(vec2.y)
+
+room = World.GetRoom()
+player = room:GetPlayer()
+pos = player:GetPosition()
+
+print(pos.x)
+print(pos.y)
+
+player:SetTilePosition(Vector2.new(2, 1))
 end

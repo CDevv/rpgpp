@@ -3,6 +3,7 @@
 #include "lua/interfaceApi.hpp"
 #include "lua/soundsApi.hpp"
 #include "lua/stateApi.hpp"
+#include "lua/worldApi.hpp"
 #include "sol/state_view.hpp"
 
 #include "sol/table.hpp"
@@ -37,6 +38,7 @@ void ScriptService::setLua(sol::state_view lua) {
 	lua_ui_set(lua);
 	lua_sounds_set(lua);
 	lua_gamestate_set(lua);
+	lua_world_set(lua);
 }
 
 sol::state &ScriptService::getState() { return state; }

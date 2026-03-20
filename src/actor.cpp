@@ -8,6 +8,7 @@
 #include <nlohmann/json.hpp>
 #include <raylib.h>
 #include <raymath.h>
+#include <stdexcept>
 #include <utility>
 using json = nlohmann::json;
 
