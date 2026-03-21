@@ -63,10 +63,12 @@ void Player::update() {
 	if (lock)
 		return;
 
-	if (Vector2Equals(velocity, Vector2{0, 0})) {
-		actor->changeAnimation(idleDirection);
-	} else {
-		actor->changeAnimation(currentDirection);
+	if (!actor->isTempAnimationPlaying()) {
+		if (Vector2Equals(velocity, Vector2{0, 0})) {
+			actor->changeAnimation(idleDirection);
+		} else {
+			actor->changeAnimation(currentDirection);
+		}
 	}
 
 	this->moveByVelocity(velocity);
@@ -176,6 +178,8 @@ void Player::handleInteraction() {
 void Player::setRoom(Room &room) const {
 	// this->room = Room(room);
 }
+
+Actor &Player::getActor() const { return *actor; }
 
 void Player::moveByVelocity(Vector2 velocity) {
 	Vector2 resultVector = Vector2Add(position, velocity);

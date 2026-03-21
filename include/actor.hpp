@@ -53,6 +53,8 @@ class Actor : public ISaveable {
 	std::array<std::vector<Vector2>, 8> animations;
 	/** A Direction enum, showing the current animation that is being played. */
 	Direction currentAnimation;
+	Direction lastAnimation;
+	bool tempAnimIsPlayed = false;
 
   public:
 	/** Empty constructor. */
@@ -125,6 +127,10 @@ class Actor : public ISaveable {
 	/** Add multiple frames to the chosen animation. */
 	void addAnimationFrames(Direction id,
 							const std::vector<std::vector<int>> &frames);
+	/** Temporarily play an animation */
+	void playAnimation(Direction id);
+	/** Check whether a temporary animation is playing */
+	bool isTempAnimationPlaying();
 	/** Change the Actor's current animation and play it. */
 	void changeAnimation(Direction id);
 	/** Get the path of the used TileSet. */

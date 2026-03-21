@@ -42,6 +42,8 @@ class Player {
 	void draw() const;
 	/** Set the Player's current room. */
 	void setRoom(Room &room) const;
+	/** Get the player's actor */
+	Actor &getActor() const;
 	/** Move the player by a certain velocity. */
 	void moveByVelocity(Vector2 velocity);
 	/** Get the player's position. */
@@ -54,6 +56,7 @@ class Player {
 	Vector2 getTilePosition() const;
 	/** Set the player's tile position */
 	void setTilePosition(Vector2 tilePos);
+	/** Get the position of the collision */
 	Vector2 getCollisionPos() const;
 };
 

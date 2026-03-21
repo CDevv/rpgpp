@@ -3,6 +3,7 @@
 #include "gamedata.hpp"
 #include <cassert>
 #include <cstdint>
+#include <cstdio>
 #include <functional>
 #include <memory>
 #include <nlohmann/json.hpp>
@@ -262,8 +263,20 @@ void Actor::update() {
 		frameCounter = 0;
 		currentFrame++;
 
-		if (currentFrame >= this->getAnimationCount())
-			currentFrame = 0;
+		if (tempAnimIsPlayed) {
+			printf("%i \n", currentFrame);
+		}
+
+		if (currentFrame >= this->getAnimationCount()) {
+			if (currentFrame >= this->getAnimationCount()) {
+
+				currentFrame = 0;
+				if (tempAnimIsPlayed) {
+					currentAnimation = lastAnimation;
+					tempAnimIsPlayed = false;
+				}
+			}
+		}
 
 		this->setAnimationFrame(currentFrame);
 	}
@@ -389,6 +402,20 @@ void Actor::addAnimationFrames(const Direction id,
 			Vector2{static_cast<float>(x), static_cast<float>(y)});
 	}
 }
+
+void Actor::playAnimation(Direction id) {
+	printf("playing.. %i\n", static_cast<int>(id));
+
+	this->lastAnimation = currentAnimation;
+	this->tempAnimIsPlayed = true;
+
+	this->currentAnimation = id;
+	this->currentFrame = -1;
+
+	frameCounter = (60 / frameSpeed);
+}
+
+bool Actor::isTempAnimationPlaying() { return tempAnimIsPlayed; }
 
 void Actor::changeAnimation(Direction id) {
 	if (this->currentAnimation != id) {
