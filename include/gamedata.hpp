@@ -15,6 +15,14 @@
 struct IVector {
 	int x;
 	int y;
+
+	bool operator==(const IVector &other) const {
+		return x == other.x && y == other.y;
+	}
+
+	bool operator<(const IVector &other) const {
+		return x < other.x || (x == other.x && y < other.y);
+	}
 };
 
 struct IRect {

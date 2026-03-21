@@ -1,10 +1,12 @@
 #include "actions/placeTileAction.hpp"
 #include "actions/mapAction.hpp"
+#include "conversion.hpp"
 #include "editor.hpp"
 #include "prop.hpp"
 #include "raylib.h"
 #include "room.hpp"
 #include "views/worldView.hpp"
+#include <cstdio>
 #include <nlohmann/json_fwd.hpp>
 
 PlaceTileAction::PlaceTileAction(MapActionData a) : MapAction(a) {}
@@ -19,12 +21,13 @@ void PlaceTileAction::execute() {
 		}
 	} break;
 	case RoomLayer::LAYER_COLLISION: {
-		data.room->getCollisions().addCollisionTile(data.worldTile.x,
-													data.worldTile.y);
+		auto conv = fromVector2(data.worldTile);
+		data.room->getCollisions().pushObject(fromVector2(data.worldTile),
+											  false);
 	} break;
 	case RoomLayer::LAYER_INTERACTABLES: {
 		auto inter = data.room->getInteractables().add(
-			data.worldTile.x, data.worldTile.y, data.interactable);
+			fromVector2(data.worldTile), data.interactable);
 		if (inter != nullptr) {
 			char *txt = LoadFileText(data.interactableFullPath.c_str());
 			nlohmann::json interJson = json::parse(txt);
@@ -69,12 +72,10 @@ void PlaceTileAction::undo() {
 		data.room->getTileMap()->setTile(data.worldTile, data.prevTile);
 	} break;
 	case RoomLayer::LAYER_COLLISION: {
-		data.room->getCollisions().removeCollisionTile(data.worldTile.x,
-													   data.worldTile.y);
+		data.room->getCollisions().removeObject(fromVector2(data.worldTile));
 	} break;
 	case RoomLayer::LAYER_INTERACTABLES: {
-		data.room->getInteractables().removeInteractable(data.worldTile.x,
-														 data.worldTile.y);
+		data.room->getInteractables().removeObject(fromVector2(data.worldTile));
 	} break;
 	case RoomLayer::LAYER_PROPS: {
 		data.room->removeProp({static_cast<float>(data.worldTile.x),

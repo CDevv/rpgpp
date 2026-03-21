@@ -15,6 +15,7 @@ class TileMap;
 
 using json = nlohmann::json;
 #include "actor.hpp"
+#include "actorContainer.hpp"
 #include "collisionsContainer.hpp"
 #include "interactablesContainer.hpp"
 #include "player.hpp"
@@ -39,12 +40,15 @@ class Room : public ISaveable {
 	std::unique_ptr<InteractablesContainer> interactables;
 	/** Container of the collision tiles */
 	std::unique_ptr<CollisionsContainer> collisions;
-	/** A collection of the Props in this Room. */
+	/** A collection of the Props in this Room.
+		FIXME: Change to Container system, due to segmentation issues, couldn't
+	   be changed!
+	*/
 	std::unique_ptr<std::vector<Prop>> props;
 	/** This Room's TileMap, which contains all placed tiles. */
 	std::unique_ptr<TileMap> tileMap;
 	/** A collection of all Actors in this Room */
-	std::unique_ptr<std::vector<Actor>> actors;
+	std::unique_ptr<ActorContainer> actors;
 	/** This Room's only Player. */
 	std::unique_ptr<Player> player;
 	void updateCamera();
@@ -111,16 +115,16 @@ class Room : public ISaveable {
 	/** Remove a prop from this room using a world tile position. */
 	void removeProp(Vector2 worldPos) const;
 	/** Get the Prop at the specified tile position. */
-	Prop *getPropAt(Vector2 worldPos) const;
+	Prop *getPropAt(IVector worldPos) const;
 
 	/** Get a refernece to the collection of Actors. */
-	std::vector<Actor> &getActors() const;
+	std::vector<Actor> &getActors();
 	/** Add an actor to this Room
 	 * @param actor The actor to be added to the Room's collection.
 	 */
 	void addActor(Actor actor) const;
 	/** Remove an Actor using a tilePosition. */
-	void removeActor(Vector2 tilePosition) const;
+	void removeActor(IVector tilePosition) const;
 };
 
 #endif

@@ -146,9 +146,9 @@ void RoomView::drawCanvas() {
 	DrawRectangleLinesEx(startTileDestRect, 2.0f, Fade(GREEN, 0.5f));
 
 	// collisions
-	for (auto collision : room->getCollisions().getVector()) {
-		int tileX = static_cast<int>(collision.x);
-		int tileY = static_cast<int>(collision.y);
+	for (auto &[vect, value] : room->getCollisions().getObjects()) {
+		int tileX = static_cast<int>(vect.x);
+		int tileY = static_cast<int>(vect.y);
 
 		Rectangle destRect = getDestRect(tileMap, tileX, tileY);
 
@@ -417,14 +417,13 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 	case RoomLayer::LAYER_INTERACTABLES: {
 		IVector tileMouse = getTileAtMouse();
 		layerVisitor->inter =
-			room->getInteractables().getInt(tileMouse.x, tileMouse.y);
+			room->getInteractables().getInt({tileMouse.x, tileMouse.y});
 		layerVisitor->group->removeAllWidgets();
 		mj::visit(*layerVisitor, layer);
 	} break;
 	case RoomLayer::LAYER_PROPS: {
 		IVector tileMouse = getTileAtMouse();
-		layerVisitor->prop = room->getPropAt(
-			{static_cast<float>(tileMouse.x), static_cast<float>(tileMouse.y)});
+		layerVisitor->prop = room->getPropAt(tileMouse);
 		layerVisitor->group->removeAllWidgets();
 		mj::visit(*layerVisitor, layer);
 	}
