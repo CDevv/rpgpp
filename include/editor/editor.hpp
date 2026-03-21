@@ -7,6 +7,7 @@
 #include "services/fileSystemService.hpp"
 #include "services/themeService.hpp"
 #include "services/translationService.hpp"
+#include "services/hotkeyService.hpp"
 #include <memory>
 #include <string>
 
@@ -29,6 +30,7 @@ class Editor {
 	// the current editor gui service, responsible for managing the gui.
 	ThemeService themeService;
 	EditorGuiService guiService;
+	HotkeyService hotkeyService;
 
   public:
 	Editor();
@@ -44,6 +46,7 @@ class Editor {
 	ThemeService &getThemeService();
 	FileSystemService &getFs();
 	ConfigurationService &getConfiguration();
+	HotkeyService &getHotkeyService();
 	Project *getProject() const;
 	void setProject(const std::string &path);
 	// this sets the icon of the editor.

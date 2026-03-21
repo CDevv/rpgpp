@@ -46,10 +46,10 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	languageSelector->onItemSelect.connect([&](const tgui::String &item) {
 		ConfigurationService &configService =
 			Editor::instance->getConfiguration();
+		ts.setLanguage(ts.getLanguageIdentifierByKey(item.toStdString()));
 		configService.setStringValue("language", ts.getCurrentLanguage());
 		configService.saveConfiguration();
 
-		ts.setLanguage(ts.getLanguageIdentifierByKey(item.toStdString()));
 		// Can't think of a way to reload the menu bar without recreating it
 		Editor::instance->getGui().initMenuBar();
 		if (auto ptr = Editor::instance->getGui().menuBar.lock()) {

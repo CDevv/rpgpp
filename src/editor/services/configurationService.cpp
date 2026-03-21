@@ -12,19 +12,26 @@ ConfigurationService::ConfigurationService() {
 	}
 };
 
-std::string ConfigurationService::getStringValue(const std::string &key) {
-	if (this->iniStructure[GENERAL_CONF_FIELD].has(key))
-		return this->iniStructure[GENERAL_CONF_FIELD][key];
+std::string ConfigurationService::getStringValue(const std::string& field, const std::string &key) {
+	if (this->iniStructure[field].has(key))
+		return this->iniStructure[field][key];
 	std::stringstream ss;
 	ss << "configuration key doesn't exist" << key;
 	throw std::runtime_error(ss.str());
 }
 
-void ConfigurationService::setStringValue(const std::string &key,
-										  const std::string &value) {
-	this->iniStructure[GENERAL_CONF_FIELD].set(key, value);
+std::string ConfigurationService::getStringValue(const std::string &key) {
+	return this->getStringValue(GENERAL_CONF_FIELD, key);
 }
 
+void ConfigurationService::setStringValue(const std::string& field, const std::string &key, const std::string &value) {
+	this->iniStructure[field].set(key, value);
+}
+
+void ConfigurationService::setStringValue(const std::string &key,
+										  const std::string &value) {
+	this->setStringValue(GENERAL_CONF_FIELD, key, value);
+}
 void ConfigurationService::saveConfiguration() {
 	this->iniFile->write(this->iniStructure);
 }

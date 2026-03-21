@@ -62,6 +62,23 @@ void ProjectScreen::leftMouseReleased(int x, int y) {
 
 void ProjectScreen::bindMenuBar(tgui::MenuBar::Ptr menuBarPtr) {
 	auto &ts = Editor::instance->getTranslations();
+
+	auto saveAction = [this] {
+		if (!openedFiles.empty()) {
+			tgui::String currentFile = fileTabs->getSelectedId();
+			auto &projectFile = openedFiles.at(currentFile);
+			projectFile->saveFile(projectFile->getFilePath());
+		}
+	};
+
+	auto undoAction = [this] {
+		getCurrentFile().getView().undoAction();
+	};
+
+	auto redoAction = [this] {
+		getCurrentFile().getView().redoAction();
+	};
+
 	std::vector<tgui::String> saveFileHierarchy = {
 		ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")};
 	std::vector<tgui::String> undoHierarchy = {ts.getKey("menu.edit._label"),
@@ -69,21 +86,17 @@ void ProjectScreen::bindMenuBar(tgui::MenuBar::Ptr menuBarPtr) {
 	std::vector<tgui::String> redoHierarchy = {ts.getKey("menu.edit._label"),
 											   ts.getKey("menu.edit.redo")};
 	menuBarPtr->setMenuItemEnabled(saveFileHierarchy, true);
-	menuBarPtr->connectMenuItem(saveFileHierarchy, [this] {
-		if (!openedFiles.empty()) {
-			tgui::String currentFile = fileTabs->getSelectedId();
-			auto &projectFile = openedFiles.at(currentFile);
-			projectFile->saveFile(projectFile->getFilePath());
-		}
-	});
+	menuBarPtr->connectMenuItem(saveFileHierarchy, saveAction);
 
 	menuBarPtr->setMenuItemEnabled(undoHierarchy, true);
-	menuBarPtr->connectMenuItem(
-		undoHierarchy, [this] { getCurrentFile().getView().undoAction(); });
+	menuBarPtr->connectMenuItem(undoHierarchy, undoAction);
 
 	menuBarPtr->setMenuItemEnabled(redoHierarchy, true);
-	menuBarPtr->connectMenuItem(
-		redoHierarchy, [this] { getCurrentFile().getView().redoAction(); });
+	menuBarPtr->connectMenuItem(redoHierarchy, redoAction);
+
+	Editor::instance->getHotkeyService().registerHotkeyCallback("save_file", saveAction);
+	Editor::instance->getHotkeyService().registerHotkeyCallback("undo", undoAction);
+	Editor::instance->getHotkeyService().registerHotkeyCallback("redo", redoAction);
 }
 
 void ProjectScreen::initItems(tgui::Group::Ptr layout) {
@@ -165,6 +178,8 @@ void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 			switchView(id);
 		}
 	});
+
+	Editor::instance->getHotkeyService().registerHotkeyCallback("close_tab", [this] { fileTabs->closeCurrentTab(); });
 
 	tabsContainer->add(fileTabs);
 	layout->add(tabsContainer);

@@ -13,7 +13,9 @@ class ConfigurationService {
   public:
 	ConfigurationService();
 	std::string getStringValue(const std::string &key);
+	std::string getStringValue(const std::string& field, const std::string &key);
 	void setStringValue(const std::string &key, const std::string &value);
+	void setStringValue(const std::string& field, const std::string &key, const std::string &value);
 	void saveConfiguration();
 };
 

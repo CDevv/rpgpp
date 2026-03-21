@@ -78,6 +78,10 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 		});
 	});
 
+	Editor::instance->getHotkeyService().registerHotkeyCallback("open_project", [] {
+		Editor::instance->getFs().promptOpenProject();
+	});
+
 	openProjButton->onPress(
 		[] { Editor::instance->getFs().promptOpenProject(); });
 

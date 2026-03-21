@@ -31,6 +31,7 @@ class FileTab : public tgui::Tabs {
 				   tgui::RenderStates &states, int idx, bool roundedCorners,
 				   float borderWidth, float usableHeight,
 				   tgui::Sprite &close) const;
+	void closeAndOpenNextTab(std::size_t idx);
 
   public:
 	bool useExternalMouseEvent = false;
@@ -63,6 +64,7 @@ class FileTab : public tgui::Tabs {
 	bool select(std::size_t i);
 
 	size_t addFileTab(const std::string &path, const std::string &fileName);
+	void closeCurrentTab();
 
   protected:
 	Widget::Ptr clone() const override;

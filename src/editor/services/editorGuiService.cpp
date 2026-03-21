@@ -39,6 +39,8 @@ void EditorGuiService::init() {
 	InitWindow(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT, "RPG++ Editor");
 	InitAudioDevice();
 
+	Editor::instance->getHotkeyService().registerHotkeyCallback("toggle_debug", [this]() { perfOverlay.Toggle(); });
+
 	this->resetUi();
 }
 
@@ -91,8 +93,7 @@ void EditorGuiService::uiLoop() {
 	tgui::Theme::addRendererInheritanceParent("RoomToolbox", "Tabs");
 	// main loop.
 	while (!WindowShouldClose()) {
-		if (IsKeyPressed(KEY_F3))
-			perfOverlay.Toggle();
+		Editor::instance->getHotkeyService().fire();
 		perfOverlay.Update();
 
 		cg->handleEvents();
