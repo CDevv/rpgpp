@@ -548,7 +548,7 @@ void Project::buildProject() {
 #endif
 
 	std::filesystem::copy(baseGamePath, resultPath,
-						  std::filesystem::copy_options::update_existing);
+						  std::filesystem::copy_options::overwrite_existing);
 
 #ifdef _WIN64
 
