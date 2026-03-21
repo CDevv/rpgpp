@@ -31,7 +31,7 @@ class Interactable : public ISaveable {
 	/** Whether this interactable will be interacted with on touch. */
 	bool onTouch;
 	/** A json object describing the properties of an interactable. */
-	std::unique_ptr<nlohmann::json> props;
+	nlohmann::json *props;
 	/** Script file path */
 	std::string scriptPath;
 

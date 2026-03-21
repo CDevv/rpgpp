@@ -1,4 +1,5 @@
 #include "interactablesContainer.hpp"
+#include "conversion.hpp"
 #include "gamedata.hpp"
 #include "interactable.hpp"
 #include "tilemap.hpp"
@@ -11,84 +12,51 @@
 
 InteractablesContainer::InteractablesContainer() {}
 
-bool InteractablesContainer::interactableExists(int x, int y) {
-	for (auto &&i : vec) {
-		auto worldPos = i->getWorldPos();
-		if (worldPos.x == static_cast<int>(x) &&
-			worldPos.y == static_cast<int>(y)) {
-			return true;
-		}
-	}
-	return false;
-}
-
-Interactable *InteractablesContainer::add(int x, int y,
+Interactable *InteractablesContainer::add(IVector pos,
 										  const std::string &type) {
-	if (interactableExists(x, y)) {
+	if (this->objectExistsAtPosition(pos)) {
 		return nullptr;
 	}
 
 	printf("%s \n", type.c_str());
 
-	Vector2 tilePos = {static_cast<float>(x), static_cast<float>(y)};
+	Vector2 tilePos = fromIVector(pos);
+	this->pushObject(pos, std::move(std::make_unique<Interactable>(
+							  type, tilePos, _RPGPP_TILESIZE)));
 
-	std::unique_ptr<Interactable> inter =
-		std::make_unique<Interactable>(type, tilePos, _RPGPP_TILESIZE);
-
-	vec.push_back(std::move(inter));
-
-	return getInt(x, y);
+	return this->getObjectAtPosition(pos).get();
 }
 
 void InteractablesContainer::addBin(InteractableInRoomBin bin) {
-	if (interactableExists(bin.x, bin.y)) {
+	IVector pos = {bin.x, bin.y};
+	if (this->objectExistsAtPosition(pos)) {
 		return;
 	}
 
-	vec.push_back(std::make_unique<Interactable>(bin));
+	this->pushObject(pos, std::move(std::make_unique<Interactable>(bin)));
 }
 
-Interactable *InteractablesContainer::getInt(int x, int y) const {
-	Interactable *res = nullptr;
-	for (auto &&i : vec) {
-		auto worldPos = i->getWorldPos();
-		if (worldPos.x == static_cast<int>(x) &&
-			worldPos.y == static_cast<int>(y)) {
-			res = i.get();
-		}
-	}
-
-	return res;
+Interactable *InteractablesContainer::getInt(IVector pos) {
+	if (!this->objectExistsAtPosition(pos))
+		return nullptr;
+	return this->getObjectAtPosition(pos).get();
 }
 
-void InteractablesContainer::removeInteractable(int x, int y) {
-	int idx = 0;
-	for (auto &&interactable : this->vec) {
-		Interactable *i = interactable.get();
-		if (i != nullptr) {
-			auto worldPos = i->getWorldPos();
-			if (worldPos.x == static_cast<int>(x) &&
-				worldPos.y == static_cast<int>(y)) {
-				vec.erase(vec.begin() + idx);
-			}
-		}
-		idx++;
-	}
-}
-
-void InteractablesContainer::setInteractableType(int x, int y,
+void InteractablesContainer::setInteractableType(IVector pos,
 												 const std::string &type) {
-	if (getInt(x, y)->getType() == type) {
+	auto &obj = this->getObjectAtPosition(pos);
+
+	if (obj->getType() == type) {
 		return;
 	}
 
-	getInt(x, y)->setType(type);
+	obj->setType(type);
 }
 
-std::vector<Interactable *> InteractablesContainer::getList() const {
+std::vector<Interactable *> InteractablesContainer::getList() {
 	std::vector<Interactable *> result;
-	for (auto &&in : this->vec) {
-		result.push_back(in.get());
+	for (auto &[vect, interactb] : this->getObjects()) {
+		result.push_back(interactb.get());
 	}
 	return result;
 }
@@ -114,7 +82,7 @@ void InteractablesContainer::addJsonData(json roomJson) {
 		std::string src = inter.at("src");
 		auto props = inter.at("props");
 
-		auto newInter = add(x, y, src);
+		auto newInter = add({x, y}, src);
 		newInter->setProps(props);
 		newInter->setOnTouch(inter.at("onTouch"));
 	}
@@ -122,19 +90,18 @@ void InteractablesContainer::addJsonData(json roomJson) {
 
 json InteractablesContainer::dumpJson() {
 	json j = json::object();
-	for (auto &&i : vec) {
-		auto *inter = i.get();
-		int tileX = static_cast<int>(inter->getWorldPos().x);
-		int tileY = static_cast<int>(inter->getWorldPos().y);
+	for (auto &[vect, interactible] : this->getObjects()) {
+		int tileX = static_cast<int>(interactible->getWorldPos().x);
+		int tileY = static_cast<int>(interactible->getWorldPos().y);
 
 		auto key = TextFormat("%i;%i", tileX, tileY);
 
-		auto interProps = inter->getProps();
+		auto interProps = interactible->getProps();
 
 		json interJson = json::object();
-		interJson.push_back({"src", inter->getType()});
+		interJson.push_back({"src", interactible->getType()});
 		interJson.push_back({"props", interProps});
-		interJson.push_back({"onTouch", inter->isOnTouch()});
+		interJson.push_back({"onTouch", interactible->isOnTouch()});
 
 		j.push_back({key, interJson});
 	}
