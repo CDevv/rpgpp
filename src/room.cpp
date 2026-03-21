@@ -226,6 +226,8 @@ json Room::dumpJson() {
 
 		if (p.getHasInteractable()) {
 			propJson["props"] = p.getInteractable()->getProps();
+		} else {
+			propJson["props"] = json::object();
 		}
 
 		propsMap[key] = propJson;
