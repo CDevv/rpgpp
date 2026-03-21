@@ -110,6 +110,7 @@ void RoomView::drawCanvas() {
 							 static_cast<float>(tileMap->getAtlasTileSize())};
 	int worldWidth = static_cast<int>(worldSize.x);
 	int worldHeight = static_cast<int>(worldSize.y);
+	Rectangle overlayRect{0, 0, 0, 0};
 	for (int tileX = 0; tileX < worldWidth; tileX++) {
 		for (int tileY = 0; tileY < worldHeight; tileY++) {
 			auto tile = tileMap->getTile(tileX, tileY);
@@ -132,7 +133,7 @@ void RoomView::drawCanvas() {
 			// Draw tile border
 			DrawRectangleLinesEx(destRect, 1.0f, Fade(GRAY, 0.5f));
 			if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
-				DrawRectangleLinesEx(destRect, 2.0f, Fade(GRAY, 0.5f));
+				overlayRect = destRect;
 			}
 		}
 	}
@@ -186,6 +187,7 @@ void RoomView::drawCanvas() {
 		prop.draw();
 	}
 
+	DrawRectangleLinesEx(overlayRect, 2.0f, Fade(GRAY, 0.5f));
 	DrawCircleV(getMouseWorldPos(), 1.0f, MAROON);
 }
 
