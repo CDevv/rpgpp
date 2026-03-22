@@ -4,7 +4,6 @@
 #include "services/editorGuiService.hpp"
 #include "services/fileSystemService.hpp"
 #include "services/translationService.hpp"
-#include "defaultHotkey.hpp"
 #include <memory>
 
 Editor *Editor::instance;
@@ -13,9 +12,6 @@ Editor::Editor()
 	: configurationService(), translationService(this), themeService(this),
 	  hotkeyService(), project{nullptr} {
 	instance = this;
-	for (const auto &[name, keys] : DEFAULT_HOTKEYS) {
-		hotkeyService.addHotkey(name, keys);
-	}
 }
 
 void Editor::setAppIcon(const std::string &icon_path) {

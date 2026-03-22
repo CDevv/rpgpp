@@ -14,9 +14,9 @@ elseif is_plat("mingw", "windows") then
 	add_syslinks("gdi32", "opengl32", "winmm", "shell32", "user32")
 end
 
-on_install("linux", "macosx", "mingw", "windows", function(package)
+on_install("linux", "macosx", "mingw", "windows", function (package)
 	-- os.cd(path.join(os.scriptdir(), "libs/raylib/"))
-	import("package.tools.cmake").install(package, {})
+	import("package.tools.cmake").install(package, { })
 end)
 package_end()
 
@@ -24,8 +24,8 @@ package("noop")
 set_sourcedir(path.join(os.scriptdir(), "libs/noop"))
 add_deps("cmake")
 set_license("MIT")
-on_install("linux", "macosx", "mingw", "windows", function(package)
-	import("package.tools.cmake").install(package, {})
+on_install("linux", "macosx", "mingw", "windows", function (package)
+	import("package.tools.cmake").install(package, { })
 end)
 package_end()
 
@@ -41,9 +41,9 @@ set_license("MIT")
 -- called "noop" so at least you have something to run!
 --
 -- NOTE: This only works because the grammar file has already been generated.
-on_install("mingw", "windows", "linux", "macosx", function(package)
+on_install("mingw", "windows", "linux", "macosx", function (package)
 	local noop = package:dep("noop")
-	local config = {}
+	local config = { }
 	table.insert(config, "-DCMAKE_BUILD_TYPE=" .. (is_mode("debug") and "Debug" or "Release"))
 	table.insert(config, "-DBUILD_SHARED_LIBS=OFF")
 	table.insert(config, "-DTREE_SITTER_CLI=" .. path.join(noop:installdir(), "bin/noop"))
@@ -58,8 +58,8 @@ add_versions("1.12.99", "c6d138509f2aae33cbabb09a91c5857eba990657")
 add_deps("cmake", "raylib")
 set_license("Zlib")
 add_extsources("raylib")
-on_install("linux", "macosx", "mingw", "windows", function(package)
-	local configs = {}
+on_install("linux", "macosx", "mingw", "windows", function (package)
+	local configs = { }
 	table.insert(configs, "-DCMAKE_BUILD_TYPE=" .. (is_mode("debug") and "Debug" or "Release"))
 	table.insert(configs, "-DBUILD_SHARED_LIBS=OFF")
 	table.insert(configs, "-DTGUI_BACKEND=RAYLIB")
@@ -107,7 +107,7 @@ add_includedirs("include/")
 add_files("src/game/main.cpp")
 
 task("check_translation")
-on_run(function()
+on_run( function ()
 	import("tools.translation_checker.checker")
 	checker.Main()
 end)
@@ -140,7 +140,7 @@ add_files("src/editor/**.cpp")
 add_deps("rpgpp")
 add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit", "noop", "tree-sitter",
 	"tree-sitter-lua")
-after_build(function(target)
+after_build( function (target)
 	os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
 	if is_plat("linux", "macosx") then
 		os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpp.a", "$(curdir)/game-src/lib/librpgpp.a", { async = true })
