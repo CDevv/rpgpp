@@ -33,7 +33,8 @@
 		"options": {
 			"language": "Ngôn ngữ",
 			"theme": "Chủ đề",
-			"theme_notice": "Để áp dụng chủ đề mới, vui lòng khởi động lại phần mềm!"
+			"theme_notice": "Để áp dụng chủ đề mới, vui lòng khởi động lại phần mềm!",
+			"hotkey": "Phím tắt"
 		},
 		"project": {
 			"create_new_resource": "Tạo tài nguyên",
@@ -110,6 +111,9 @@
 	"widget": {
 		"filechooser": {
 			"select_a_file": "Chọn tệp tin"
+		},
+		"hotkey_modifier": {
+			"listening": "Đang nhận phím..."
 		}
 	},
 

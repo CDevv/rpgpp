@@ -30,7 +30,8 @@
 		"options": {
 			"language": "Language",
 			"theme": "Theme",
-			"theme_notice": "It is recommended to restart the editor after switching theme!"
+			"theme_notice": "It is recommended to restart the editor after switching theme!",
+			"hotkey": "Hotkey"
 		},
 		"project": {
 			"create_new_resource": "New Resource",
@@ -100,6 +101,9 @@
 	"widget": {
 		"filechooser": {
 			"select_a_file": "Select a File"
+		},
+		"hotkey_modifier": {
+			"listening": "Listening..."
 		}
 	},
 	"button": {

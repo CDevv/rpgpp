@@ -72,13 +72,9 @@ void ProjectScreen::bindMenuBarAndHK(tgui::MenuBar::Ptr menuBarPtr) {
 		}
 	};
 
-	auto undoAction = [this] {
-		getCurrentFile().getView().undoAction();
-	};
+	auto undoAction = [this] { getCurrentFile().getView().undoAction(); };
 
-	auto redoAction = [this] {
-		getCurrentFile().getView().redoAction();
-	};
+	auto redoAction = [this] { getCurrentFile().getView().redoAction(); };
 
 	std::vector<tgui::String> saveFileHierarchy = {
 		ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")};
@@ -180,7 +176,8 @@ void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 		}
 	});
 
-	Editor::instance->getHotkeyService().registerHotkeyCallback("close_tab", [this] { fileTabs->closeCurrentTab(); });
+	Editor::instance->getHotkeyService().registerHotkeyCallback(
+		"close_tab", [this] { fileTabs->closeCurrentTab(); });
 
 	tabsContainer->add(fileTabs);
 	layout->add(tabsContainer);

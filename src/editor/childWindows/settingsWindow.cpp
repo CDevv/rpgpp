@@ -3,23 +3,30 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/HorizontalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
+#include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "bindTranslation.hpp"
 #include "childWindows/popupWindow.hpp"
 #include "editor.hpp"
+#include "widgets/hotkeyModifier.hpp"
 
 SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	TranslationService &ts = Editor::instance->getTranslations();
 	ThemeService &theme = Editor::instance->getThemeService();
+	HotkeyService &hks = Editor::instance->getHotkeyService();
 
 	bindTranslation<tgui::ChildWindow>(this->currentWindow,
 									   "menu.options._label",
 									   &tgui::ChildWindow::setTitle);
 
+	const tgui::ScrollablePanel::Ptr scrollPanel =
+		tgui::ScrollablePanel::create();
+	scrollPanel->setSize("100%", "100%");
+	scrollPanel->getRenderer()->setPadding(4);
 	const auto layout = tgui::GrowVerticalLayout::create();
 
 	layout->setSize("80%", "100%");
-	layout->setPosition({"50%", "50%"});
-	layout->setOrigin({0.5, 0.5});
+	layout->setPosition({"50%", "0%"});
+	layout->setOrigin({0.5, 0});
 	layout->getRenderer()->setSpaceBetweenWidgets(10.0f);
 
 	const auto topOptionsHeader = tgui::Label::create();
@@ -95,11 +102,43 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 	auto warnLabel = tgui::Label::create();
 	bindTranslation(warnLabel, "screen.options.theme_notice",
 					&tgui::Label::setText);
-	warnLabel->setSize({"100%", 100});
+	warnLabel->setSize({"100%", 36});
 
 	layout->add(languageLayout);
 	layout->add(themeLayout);
 	layout->add(warnLabel);
 
-	this->currentWindow->add(layout);
+	// Hotkeys
+	const auto hotkeyLabel = tgui::Label::create();
+	bindTranslation(hotkeyLabel, "screen.options.hotkey",
+					&tgui::Label::setText);
+
+	layout->add(hotkeyLabel);
+
+	for (auto &[k, v] : hks.listHotkeys()) {
+		const auto container = tgui::HorizontalLayout::create();
+		const auto hotkeyLabel = tgui::Label::create();
+		hotkeyLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
+		hotkeyLabel->setText(k);
+
+		const auto hotkeyModifier = HotkeyModifier::create();
+
+		hotkeyModifier->setKey(k, v.key, v.shift, v.ctrl, v.alt, v.super, true);
+		hotkeyModifier->onChange([&](const std::string &id, Hotkey hk) {
+			ConfigurationService &cfgs = Editor::instance->getConfiguration();
+			hks.removeHotkey(id);
+			hks.addHotkey(id, hk);
+			cfgs.setStringValue("hotkeys", id,
+								to_string(HotkeyService::pack(hk)));
+			cfgs.saveConfiguration();
+		});
+
+		container->setSize({"100%", 32});
+		container->add(hotkeyLabel);
+		container->add(hotkeyModifier);
+		layout->add(container);
+	}
+
+	scrollPanel->add(layout);
+	this->currentWindow->add(scrollPanel);
 }

@@ -5,9 +5,9 @@
 #include "raylib.h"
 #include "services/editorGuiService.hpp"
 #include "services/fileSystemService.hpp"
+#include "services/hotkeyService.hpp"
 #include "services/themeService.hpp"
 #include "services/translationService.hpp"
-#include "services/hotkeyService.hpp"
 #include <memory>
 #include <string>
 

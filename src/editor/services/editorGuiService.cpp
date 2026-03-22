@@ -44,18 +44,17 @@ void EditorGuiService::init() {
 
 	hks.deserialize(cfgs.getField("hotkeys"));
 	auto serialized = hks.serialize();
-	for (auto &[keyId, keyStr]: serialized) {
+	for (auto &[keyId, keyStr] : serialized) {
 		std::cout << keyId << ": " << keyStr << std::endl;
 	}
 
 	this->resetUi();
-	hks.registerHotkeyCallback("toggle_debug", [this]() { perfOverlay.Toggle(); });
-	hks.registerHotkeyCallback("new_project", [] {
-		Editor::instance->getFs().promptNewProject();
-	});
-	hks.registerHotkeyCallback("open_project", [] {
-		Editor::instance->getFs().promptOpenProject();
-	});
+	hks.registerHotkeyCallback("toggle_debug",
+							   [this]() { perfOverlay.Toggle(); });
+	hks.registerHotkeyCallback(
+		"new_project", [] { Editor::instance->getFs().promptNewProject(); });
+	hks.registerHotkeyCallback(
+		"open_project", [] { Editor::instance->getFs().promptOpenProject(); });
 }
 
 void EditorGuiService::resetUi() {
@@ -107,14 +106,20 @@ void EditorGuiService::uiLoop() {
 	tgui::Theme::addRendererInheritanceParent("RoomToolbox", "Tabs");
 	// main loop.
 	while (!WindowShouldClose()) {
-		Editor::instance->getHotkeyService().fire();
 		perfOverlay.Update();
 
 		cg->handleEvents();
-		while (const int pressed_char = GetCharPressed())
-			cg->handleCharPressed(pressed_char);
-		while (const int pressedKey = GetKeyPressed())
+		int pressedChar = GetCharPressed();
+		while (pressedChar) {
+			cg->handleCharPressed(pressedChar);
+			pressedChar = GetCharPressed();
+		}
+		int pressedKey = GetKeyPressed();
+		while (pressedKey) {
+			Editor::instance->getHotkeyService().fire();
 			cg->handleKeyPressed(pressedKey);
+			pressedKey = GetKeyPressed();
+		}
 
 		for (const auto &widget : updatableWidgets) {
 			if (!widget.expired()) {
@@ -256,20 +261,19 @@ void EditorGuiService::initMenuBar() {
 	auto &ts = Editor::instance->getTranslations();
 
 	const auto &fileT = ts.getKey("menu.file._label");
-	const auto &fileOpenProjectT =
-		ts.getKey("menu.file.open_project");
+	const auto &fileOpenProjectT = ts.getKey("menu.file.open_project");
 	const auto &fileNewProjectT = ts.getKey("menu.file.new_project");
 
 	menuBarPtr->addMenu(fileT);
 	menuBarPtr->addMenuItem(fileNewProjectT);
-	menuBarPtr->connectMenuItem(
-		{fileT, fileNewProjectT},
-		[] { Editor::instance->getFs().promptNewProject(); });
+	menuBarPtr->connectMenuItem({fileT, fileNewProjectT}, [] {
+		Editor::instance->getFs().promptNewProject();
+	});
 	menuBarPtr->addMenuItem(fileOpenProjectT);
 	menuBarPtr->addMenuItem(ts.getKey("menu.file.save_file"));
-	menuBarPtr->connectMenuItem(
-		{fileT, fileOpenProjectT},
-		[] { Editor::instance->getFs().promptOpenProject(); });
+	menuBarPtr->connectMenuItem({fileT, fileOpenProjectT}, [] {
+		Editor::instance->getFs().promptOpenProject();
+	});
 
 	menuBarPtr->addMenu(ts.getKey("menu.edit._label"));
 	menuBarPtr->addMenuItem(ts.getKey("menu.edit.undo"));

@@ -59,10 +59,8 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 								  &tgui::Button::setText);
 	openProjButton->setTextSize(ACTION_BUTTON_SIZE);
 
-	newProjButton->onPress([this] {
-		Editor::instance->getFs().promptNewProject();
-	});
-
+	newProjButton->onPress(
+		[this] { Editor::instance->getFs().promptNewProject(); });
 
 	openProjButton->onPress(
 		[] { Editor::instance->getFs().promptOpenProject(); });
