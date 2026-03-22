@@ -58,7 +58,7 @@ class ProjectScreen : public UIScreen {
 	void addResourceButtons(EngineFileType fileType);
 	void mouseMove(int x, int y) override;
 	void leftMouseReleased(int x, int y) override;
-	void bindMenuBar(tgui::MenuBar::Ptr menubar) override;
+	void bindMenuBarAndHK(tgui::MenuBar::Ptr menubar) override;
 	void layoutReload();
 	ProjectFile &getCurrentFile();
 	void initItems(tgui::Group::Ptr layout) override;

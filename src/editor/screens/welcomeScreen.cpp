@@ -59,28 +59,10 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 								  &tgui::Button::setText);
 	openProjButton->setTextSize(ACTION_BUTTON_SIZE);
 
-
-	newProjectDialog = NewProjectWindow::create();
-
 	newProjButton->onPress([this] {
-		auto childDialog = tgui::ChildWindow::create();
-
-		newProjectDialog->init(Editor::instance->getGui().gui.get());
-		newProjectDialog->fileField->setSelectingDirectory(true);
-		newProjectDialog->confirmButton->onPress([this] {
-			std::string title =
-				newProjectDialog->titleField->getText().toStdString();
-			std::string dirPath =
-				newProjectDialog->fileField->getChosenPath().toStdString();
-			if (!title.empty() && !dirPath.empty()) {
-				Project::create(dirPath, title);
-			}
-		});
+		Editor::instance->getFs().promptNewProject();
 	});
 
-	Editor::instance->getHotkeyService().registerHotkeyCallback("open_project", [] {
-		Editor::instance->getFs().promptOpenProject();
-	});
 
 	openProjButton->onPress(
 		[] { Editor::instance->getFs().promptOpenProject(); });
