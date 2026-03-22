@@ -89,7 +89,7 @@ jobs:
     runs-on: macos-latest
     env:
       PLATFORM: macos
-      ARCH: arm64
+      ARCH: x86_64
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
