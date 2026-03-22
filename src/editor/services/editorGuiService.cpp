@@ -39,9 +39,15 @@ void EditorGuiService::init() {
 	InitWindow(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT, "RPG++ Editor");
 	InitAudioDevice();
 
-	Editor::instance->getHotkeyService().registerHotkeyCallback("toggle_debug", [this]() { perfOverlay.Toggle(); });
-
+	auto &hks = Editor::instance->getHotkeyService();
 	this->resetUi();
+	hks.registerHotkeyCallback("toggle_debug", [this]() { perfOverlay.Toggle(); });
+	hks.registerHotkeyCallback("new_project", [] {
+		Editor::instance->getFs().promptNewProject();
+	});
+	hks.registerHotkeyCallback("open_project", [] {
+		Editor::instance->getFs().promptOpenProject();
+	});
 }
 
 void EditorGuiService::resetUi() {
@@ -241,16 +247,20 @@ void EditorGuiService::initMenuBar() {
 	this->menuBar = menuBarPtr;
 	auto &ts = Editor::instance->getTranslations();
 
-	const auto &fileOptionsTranslation = ts.getKey("menu.file._label");
-	const auto &fileOpenProjectTranslation =
+	const auto &fileT = ts.getKey("menu.file._label");
+	const auto &fileOpenProjectT =
 		ts.getKey("menu.file.open_project");
+	const auto &fileNewProjectT = ts.getKey("menu.file.new_project");
 
-	menuBarPtr->addMenu(fileOptionsTranslation);
-	menuBarPtr->addMenuItem(ts.getKey("menu.file.new_project"));
-	menuBarPtr->addMenuItem(fileOpenProjectTranslation);
+	menuBarPtr->addMenu(fileT);
+	menuBarPtr->addMenuItem(fileNewProjectT);
+	menuBarPtr->connectMenuItem(
+		{fileT, fileNewProjectT},
+		[] { Editor::instance->getFs().promptNewProject(); });
+	menuBarPtr->addMenuItem(fileOpenProjectT);
 	menuBarPtr->addMenuItem(ts.getKey("menu.file.save_file"));
 	menuBarPtr->connectMenuItem(
-		{fileOptionsTranslation, fileOpenProjectTranslation},
+		{fileT, fileOpenProjectT},
 		[] { Editor::instance->getFs().promptOpenProject(); });
 
 	menuBarPtr->addMenu(ts.getKey("menu.edit._label"));

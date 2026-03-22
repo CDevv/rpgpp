@@ -60,8 +60,9 @@ void ProjectScreen::leftMouseReleased(int x, int y) {
 		 static_cast<float>(y - tabsContainer->getPosition().y)});
 }
 
-void ProjectScreen::bindMenuBar(tgui::MenuBar::Ptr menuBarPtr) {
+void ProjectScreen::bindMenuBarAndHK(tgui::MenuBar::Ptr menuBarPtr) {
 	auto &ts = Editor::instance->getTranslations();
+	auto &hks = Editor::instance->getHotkeyService();
 
 	auto saveAction = [this] {
 		if (!openedFiles.empty()) {
@@ -94,14 +95,14 @@ void ProjectScreen::bindMenuBar(tgui::MenuBar::Ptr menuBarPtr) {
 	menuBarPtr->setMenuItemEnabled(redoHierarchy, true);
 	menuBarPtr->connectMenuItem(redoHierarchy, redoAction);
 
-	Editor::instance->getHotkeyService().registerHotkeyCallback("save_file", saveAction);
-	Editor::instance->getHotkeyService().registerHotkeyCallback("undo", undoAction);
-	Editor::instance->getHotkeyService().registerHotkeyCallback("redo", redoAction);
+	hks.registerHotkeyCallback("save_file", saveAction);
+	hks.registerHotkeyCallback("undo", undoAction);
+	hks.registerHotkeyCallback("redo", redoAction);
 }
 
 void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	if (auto ptr = Editor::instance->getGui().menuBar.lock()) {
-		bindMenuBar(ptr);
+		bindMenuBarAndHK(ptr);
 	}
 
 	// Commentary:

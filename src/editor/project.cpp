@@ -77,7 +77,7 @@ void Project::create(const std::string &dirPath, const std::string &title) {
 
 	Editor::instance->setProject(filePath.u8string());
 	Editor::instance->getGui().setScreen(
-		std::make_unique<screens::ProjectScreen>(), false);
+		std::make_unique<screens::ProjectScreen>(), true);
 }
 
 json Project::toJson() {

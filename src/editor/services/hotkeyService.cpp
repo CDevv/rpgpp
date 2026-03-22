@@ -3,26 +3,31 @@
 
 HotkeyService::HotkeyService() {}
 
-void HotkeyService::registerHotkeyCallback(std::string keyId, std::function<void()> cb) {
+void HotkeyService::registerHotkeyCallback(const std::string& keyId, std::function<void()> cb) {
 	activatedHotkey[keyId] = false;
 	hotkeysCb.insert({keyId, cb});
 }
 
-void HotkeyService::unregisterHotkeyCallback(std::string keyId) {
+void HotkeyService::unregisterHotkeyCallback(const std::string& keyId) {
 	hotkeysCb.erase(keyId);
+	if (hotkeyMap.find(keyId) == hotkeyMap.end())
+        activatedHotkey.erase(keyId);
 }
 
-void HotkeyService::addHotkey(std::string keyId, std::vector<KeyboardKey> keys) {
+void HotkeyService::addHotkey(const std::string& keyId, std::vector<KeyboardKey> keys) {
 	activatedHotkey[keyId] = false;
 	hotkeyMap[keyId] = keys;
 }
 
-void HotkeyService::removeHotkey(std::string keyId) {
+void HotkeyService::removeHotkey(const std::string& keyId) {
 	hotkeyMap.erase(keyId);
+	if (hotkeysCb.find(keyId) == hotkeysCb.end())
+        activatedHotkey.erase(keyId);
 }
 
 void HotkeyService::fire() {
 	for (auto &[keyId, keys] : hotkeyMap) {
+		if (keys.empty()) continue;
 		bool allDown = true;
 		for (KeyboardKey k : keys) {
 			if (!IsKeyDown(k)) {

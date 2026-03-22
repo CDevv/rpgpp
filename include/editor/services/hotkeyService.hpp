@@ -16,10 +16,10 @@ class HotkeyService {
 		std::unordered_map<std::string, bool> activatedHotkey;
 	public:
 		HotkeyService();
-		void registerHotkeyCallback(std::string keyId, std::function<void()> cb);
-		void unregisterHotkeyCallback(std::string keyId);
-		void addHotkey(std::string keyId, std::vector<KeyboardKey> keys);
-		void removeHotkey(std::string keyId);
+		void registerHotkeyCallback(const std::string &keyId, std::function<void()> cb);
+		void unregisterHotkeyCallback(const std::string &keyId);
+		void addHotkey(const std::string &keyId, std::vector<KeyboardKey> keys);
+		void removeHotkey(const std::string &keyId);
 		void fire();
 };
 

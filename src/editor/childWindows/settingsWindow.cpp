@@ -53,7 +53,7 @@ SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
 		// Can't think of a way to reload the menu bar without recreating it
 		Editor::instance->getGui().initMenuBar();
 		if (auto ptr = Editor::instance->getGui().menuBar.lock()) {
-			Editor::instance->getGui().currentScreen->bindMenuBar(ptr);
+			Editor::instance->getGui().currentScreen->bindMenuBarAndHK(ptr);
 		}
 	});
 

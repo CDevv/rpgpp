@@ -32,6 +32,7 @@ class FileSystemService {
   public:
 	FileSystemService();
 	void unload();
+	void promptNewProject();
 	void promptOpenProject();
 	std::string &getTypeName(EngineFileType fileType);
 	std::array<std::string, FILETYPE_MAX> &getTypeNames();

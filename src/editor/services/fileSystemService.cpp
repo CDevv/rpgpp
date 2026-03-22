@@ -1,5 +1,6 @@
 #include "services/fileSystemService.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
+#include "widgets/newProjectWindow.hpp"
 #include <array>
 #include <cstdio>
 #include <nfd.h>
@@ -39,6 +40,23 @@ FileSystemService::FileSystemService() {
 }
 
 void FileSystemService::unload() { NFD_Quit(); }
+
+void FileSystemService::promptNewProject() {
+	auto newProjectDialog = NewProjectWindow::create();
+
+	newProjectDialog->init(Editor::instance->getGui().gui.get());
+	newProjectDialog->fileField->setSelectingDirectory(true);
+	newProjectDialog->confirmButton->onPress([newProjectDialog] {
+		std::string title =
+			newProjectDialog->titleField->getText().toStdString();
+		std::string dirPath =
+			newProjectDialog->fileField->getChosenPath().toStdString();
+		if (!title.empty() && !dirPath.empty()) {
+			Project::create(dirPath, title);
+		}
+		newProjectDialog->window->close();
+	});
+}
 
 void FileSystemService::promptOpenProject() {
 	auto files = tgui::FileDialog::create();
