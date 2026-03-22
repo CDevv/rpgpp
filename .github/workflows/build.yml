@@ -1,0 +1,70 @@
+name: "build: linux"
+
+on:
+  push:
+    branches: ["main", "ci-cd"]
+  pull_request:
+    branches: ["main", "ci-cd"]
+  schedule:
+    - cron: "19 2 * * 1"
+
+jobs:
+  build-linux:
+    name: Build Linux version
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Build
+        shell: bash
+        run: |
+          sudo add-apt-repository ppa:xmake-io/xmake
+          sudo apt-get update
+          sudo apt-get install -y \
+            libx11-dev \
+            libxrandr-dev \
+            libxinerama-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libgl1-mesa-dev \
+            mesa-common-dev \
+            xmake
+          xmake build --all -y
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: build/linux/x86_64/debug/   # adjust to your xmake output path
+          if-no-files-found: error
+          retention-days: 7
+  build-windows:
+    name: Build Windows version
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+
+      - name: Build
+        shell: pwsh
+        run: xmake build --all -y
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: build/windows/x64/release/
+          if-no-files-found: error
+          retention-days: 7
