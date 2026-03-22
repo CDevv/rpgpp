@@ -138,7 +138,7 @@ Room::Room(const RoomBin &bin) : Room() {
 
 	this->tileMap = std::make_unique<TileMap>(bin);
 
-	auto &actorBin = Game::getBin().actors["krisactor"];
+	auto &actorBin = Game::getBin().actors["playerActor"];
 
 	auto actor = std::make_unique<Actor>(actorBin);
 	actor->setTilePosition(Vector2{static_cast<float>(bin.startPoint.x),
