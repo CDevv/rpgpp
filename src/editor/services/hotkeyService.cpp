@@ -3,6 +3,43 @@
 
 HotkeyService::HotkeyService() {}
 
+std::map<std::string, std::string> HotkeyService::serialize() {
+	std::map<std::string, std::string> serialized{};
+	for (auto &[keyId, keys]: hotkeyMap) {
+		std::string keyStr{};
+		for (KeyboardKey k : keys) {
+			keyStr += std::to_string(k) + ",";
+		}
+		serialized[keyId] = keyStr;
+	}
+	return serialized;
+}
+
+void HotkeyService::write(const std::string& keyId, const std::string& keyStr) {
+	std::vector<KeyboardKey> keys{};
+	std::stringstream ss(keyStr);
+	std::string token;
+	while (std::getline(ss, token, ',')) {
+		if (!token.empty())
+			keys.push_back(static_cast<KeyboardKey>(std::stoi(token)));
+	}
+	hotkeyMap[keyId] = keys;
+}
+
+void HotkeyService::deserialize(const std::map<std::string, std::string> &serialized) {
+	hotkeyMap.clear();
+	for (auto &[keyId, keyStr]: serialized) {
+		write(keyId, keyStr);
+	}
+}
+
+void HotkeyService::deserialize(mINI::INIMap<std::basic_string<char>> iniSerialized) {
+	hotkeyMap.clear();
+	for (auto &[keyId, keyStr]: iniSerialized) {
+		write(keyId, keyStr);
+	}
+}
+
 void HotkeyService::registerHotkeyCallback(const std::string& keyId, std::function<void()> cb) {
 	activatedHotkey[keyId] = false;
 	hotkeysCb.insert({keyId, cb});

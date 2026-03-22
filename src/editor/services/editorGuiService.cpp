@@ -39,7 +39,15 @@ void EditorGuiService::init() {
 	InitWindow(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT, "RPG++ Editor");
 	InitAudioDevice();
 
+	auto &cfgs = Editor::instance->getConfiguration();
 	auto &hks = Editor::instance->getHotkeyService();
+
+	hks.deserialize(cfgs.getField("hotkeys"));
+	auto serialized = hks.serialize();
+	for (auto &[keyId, keyStr]: serialized) {
+		std::cout << keyId << ": " << keyStr << std::endl;
+	}
+
 	this->resetUi();
 	hks.registerHotkeyCallback("toggle_debug", [this]() { perfOverlay.Toggle(); });
 	hks.registerHotkeyCallback("new_project", [] {
