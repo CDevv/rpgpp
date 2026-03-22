@@ -1,4 +1,4 @@
-name: "build: linux"
+name: "Build RPG++"
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-linux:
-    name: Build Linux version
+    name: "build: linux"
     runs-on: 'ubuntu-latest'
     steps:
       - name: Checkout repository
@@ -43,7 +43,7 @@ jobs:
           if-no-files-found: error
           retention-days: 7
   build-windows:
-    name: Build Windows version
+    name: "build: windows"
     runs-on: windows-latest
     steps:
       - name: Checkout repository
@@ -66,5 +66,30 @@ jobs:
         with:
           name: windows-build
           path: build/windows/x64/debug/
+          if-no-files-found: error
+          retention-days: 7
+
+  build-macos:
+    name: "build: macos"
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+
+      - name: Build
+        shell: bash
+        run: xmake build --all -y
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: build/macos/x86_64/release/
           if-no-files-found: error
           retention-days: 7
