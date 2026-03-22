@@ -1,5 +1,6 @@
 ![logo](docs/logo.png)
 ---
+[![Build RPG++](https://github.com/rpgppengine/rpgpp/actions/workflows/build.yml/badge.svg)](https://github.com/rpgppengine/rpgpp/actions/workflows/build.yml)
 
 RPG++ is an experimental 2D RPG game engine written in C++. It is currently in early development, but contributions are welcome!
 
