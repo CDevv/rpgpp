@@ -44,7 +44,7 @@ template <class Archive> void serialize(Archive &a, TileSetBin &b) {
 }
 
 template <class Archive> void serialize(Archive &a, ImageBin &b) {
-	a(b.data, b.dataSize);
+	a(b.data, b.dataSize, b.ext);
 }
 
 template <class Archive> void serialize(Archive &a, MusicBin &b) {

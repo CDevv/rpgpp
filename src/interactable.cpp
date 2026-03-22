@@ -18,6 +18,7 @@
 Interactable::Interactable()
 	: type(), tilePos(), tileSize(0), absolutePos(), rect() {
 	this->valid = false;
+	this->onTouch = false;
 }
 
 Interactable::Interactable(const std::string &path) {
@@ -29,6 +30,7 @@ Interactable::Interactable(const std::string &path) {
 	displayTitle = intJson.at("name");
 	props = std::make_unique<nlohmann::json>(intJson.at("props"));
 	scriptPath = intJson.at("script");
+	onTouch = false;
 }
 
 Interactable::Interactable(const std::string &type, Vector2 tilePos,
@@ -37,6 +39,7 @@ Interactable::Interactable(const std::string &type, Vector2 tilePos,
 	this->props = std::make_unique<nlohmann::json>(json::object());
 
 	this->valid = true;
+	this->onTouch = false;
 	this->type = type;
 	this->tilePos = tilePos;
 	this->tileSize = tileSize;
@@ -55,6 +58,7 @@ Interactable::Interactable(InteractableInRoomBin bin) {
 	Vector2 tilePos = {static_cast<float>(bin.x), static_cast<float>(bin.y)};
 
 	this->valid = true;
+	this->onTouch = bin.onTouch;
 	this->tilePos = tilePos;
 	this->tileSize = _RPGPP_TILESIZE;
 	this->absolutePos = Vector2{0, 0};
