@@ -1,9 +1,11 @@
 #include "actions/placeTileAction.hpp"
 #include "actions/mapAction.hpp"
+#include "actor.hpp"
 #include "conversion.hpp"
 #include "editor.hpp"
 #include "prop.hpp"
 #include "raylib.h"
+#include "raymath.h"
 #include "room.hpp"
 #include "views/worldView.hpp"
 #include <memory>
@@ -63,6 +65,13 @@ void PlaceTileAction::execute() {
 		data.room->getProps().pushObject(fromVector2(data.worldTile),
 										 std::move(p));
 	} break;
+	case RoomLayer::LAYER_ACTORS: {
+		auto a = std::make_unique<Actor>(data.interactableFullPath);
+		a->setTilePosition(
+			data.worldTile,
+			data.room->getTileMap()->getTileSet()->getTileSize());
+		data.room->getActors()[data.actorName] = std::move(a);
+	} break;
 	default:
 		break;
 	}
@@ -81,6 +90,14 @@ void PlaceTileAction::undo() {
 	} break;
 	case RoomLayer::LAYER_PROPS: {
 		data.room->getProps().removeObject(fromVector2(data.worldTile));
+	} break;
+	case RoomLayer::LAYER_ACTORS: {
+		for (auto &&a : data.room->getActors()) {
+			if (Vector2Equals(a.second->getTilePosition(), data.worldTile)) {
+				data.room->getActors().erase(a.first);
+				break;
+			}
+		}
 	} break;
 	default:
 		break;

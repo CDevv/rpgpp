@@ -20,7 +20,7 @@ template <class Archive> void serialize(Archive &a, ActorBin &b) {
 }
 
 template <class Archive> void serialize(Archive &a, ActorInRoomBin &b) {
-	a(b.name, b.tilePos);
+	a(b.name, b.source, b.tilePos);
 }
 
 template <class Archive> void serialize(Archive &a, TileBin &b) {

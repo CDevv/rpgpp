@@ -8,6 +8,8 @@
 #include "actions/mapAction.hpp"
 #include "actions/placeTileAction.hpp"
 #include "actions/startPointAction.hpp"
+#include "actor.hpp"
+#include "conversion.hpp"
 #include "editor.hpp"
 #include "enum_visitor/enum_visitor.hpp"
 #include "gamedata.hpp"
@@ -126,10 +128,6 @@ void RoomView::drawCanvas() {
 							   0.0f, WHITE);
 			}
 
-			if (tileSetView != nullptr) {
-				handleMode(tileX, tileY);
-			}
-
 			// Draw tile border
 			DrawRectangleLinesEx(destRect, 1.0f, Fade(GRAY, 0.5f));
 			if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
@@ -185,6 +183,20 @@ void RoomView::drawCanvas() {
 	// props
 	for (auto &[pos, prop] : room->getProps().getObjects()) {
 		prop->draw();
+	}
+
+	// actors
+	for (auto &[name, actor] : room->getActors()) {
+		actor->draw();
+	}
+
+	// handle hovering
+	for (int tileX = 0; tileX < worldWidth; tileX++) {
+		for (int tileY = 0; tileY < worldHeight; tileY++) {
+			if (tileSetView != nullptr) {
+				handleMode(tileX, tileY);
+			}
+		}
 	}
 
 	DrawRectangleLinesEx(overlayRect, 2.0f, Fade(GRAY, 0.5f));
@@ -290,6 +302,29 @@ void RoomView::handlePlaceMode(int x, int y) {
 							   {0.0f, 0.0f}, 0.0f, Fade(WHITE, 0.7f));
 			}
 		} break;
+		case RoomLayer::LAYER_ACTORS: {
+			IVector tileMouse = getTileAtMouse();
+
+			if (IsTextureValid(layerVisitor->actorTexture)) {
+				auto actorTilePos = calcActorTilePos(
+					fromIVector(tileMouse),
+					room->getTileMap()->getTileSet()->getTileSize(),
+					&layerVisitor->chosenActor->getTileSet());
+
+				auto &actorTileSet = layerVisitor->chosenActor->getTileSet();
+				auto actorTileSize = actorTileSet.getTileSize();
+
+				Rectangle source = {0, 0, actorTileSize.x, actorTileSize.y};
+				Rectangle dest = {
+					actorTilePos.x, actorTilePos.y,
+					static_cast<float>(actorTileSize.x * RPGPP_DRAW_MULTIPLIER),
+					static_cast<float>(actorTileSize.y *
+									   RPGPP_DRAW_MULTIPLIER)};
+
+				DrawTexturePro(layerVisitor->actorTexture, source, dest,
+							   Vector2{0.0f, 0.0f}, 0.0f, WHITE);
+			}
+		} break;
 		default:
 			break;
 		}
@@ -337,16 +372,30 @@ void RoomView::handleModePress(tgui::Vector2f pos) {
 				 static_cast<float>(atlasTilePos.y)};
 	data.worldTile = {static_cast<float>(tileMouse.x),
 					  static_cast<float>(tileMouse.y)};
-	if (layer == RoomLayer::LAYER_INTERACTABLES) {
+	switch (layer) {
+	case RoomLayer::LAYER_INTERACTABLES: {
 		data.interactable = GetFileNameWithoutExt(
 			interactableChoose->getSelectedItemId().toStdString().c_str());
 		data.interactableFullPath =
 			interactableChoose->getSelectedItemId().toStdString();
-	} else {
+	} break;
+	case RoomLayer::LAYER_PROPS: {
 		data.interactable = GetFileNameWithoutExt(
 			propChoose->getSelectedItemId().toStdString().c_str());
 		data.interactableFullPath =
 			propChoose->getSelectedItemId().toStdString();
+	} break;
+	case RoomLayer::LAYER_ACTORS: {
+		data.actorName = layerVisitor->actorNameInput->getText().toStdString();
+		data.interactable =
+			GetFileNameWithoutExt(layerVisitor->actorChoose->getSelectedItemId()
+									  .toStdString()
+									  .c_str());
+		data.interactableFullPath =
+			layerVisitor->actorChoose->getSelectedItemId().toStdString();
+	} break;
+	default:
+		break;
 	}
 
 	switch (tool) {

@@ -41,6 +41,7 @@ struct ActorBin {
 
 struct ActorInRoomBin {
 	std::string name;
+	std::string source;
 	IVector tilePos;
 };
 

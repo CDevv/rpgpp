@@ -250,11 +250,13 @@ GameData Project::generateStruct() {
 				nlohmann::json::to_cbor(prop->getInteractable()->getProps());
 			roomBin.props.push_back(pBin);
 		}
-		for (auto &[pos, actor] : room->getActors().getObjects()) {
+		for (auto &[aName, actor] : room->getActors()) {
 			ActorInRoomBin aBin;
-			aBin.name = actor.getSourcePath();
-			aBin.tilePos = IVector{static_cast<int>(actor.getTilePosition().x),
-								   static_cast<int>(actor.getTilePosition().y)};
+			aBin.name = aName;
+			aBin.source = actor->getSourcePath();
+			aBin.tilePos =
+				IVector{static_cast<int>(actor->getTilePosition().x),
+						static_cast<int>(actor->getTilePosition().y)};
 			roomBin.actors.push_back(aBin);
 		}
 		roomBin.musicSource = room->getMusicSource();

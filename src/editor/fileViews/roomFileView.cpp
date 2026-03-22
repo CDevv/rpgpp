@@ -18,6 +18,7 @@
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/toolbox.hpp"
 #include <memory>
+
 RoomFileView::RoomFileView() {
 	RoomTool a;
 	TranslationService &ts = Editor::instance->getTranslations();
@@ -57,6 +58,7 @@ RoomFileView::RoomFileView() {
 	layerChoose->addItem("Collisions");
 	layerChoose->addItem("Interactables");
 	layerChoose->addItem("Props");
+	layerChoose->addItem("Actors");
 	layerChoose->setSelectedItemByIndex(0);
 	widgetContainer.push_back(layerChoose);
 

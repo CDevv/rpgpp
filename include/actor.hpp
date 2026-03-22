@@ -145,4 +145,7 @@ class Actor : public ISaveable {
 	void setCollisionRect(Rectangle rect);
 };
 
+Vector2 calcActorTilePos(Vector2 newPosition, Vector2 worldTileSize,
+						 TileSet *tileSet);
+
 #endif

@@ -2,7 +2,8 @@ enum class RoomLayer {
 	LAYER_TILES,
 	LAYER_COLLISION,
 	LAYER_INTERACTABLES,
-	LAYER_PROPS
+	LAYER_PROPS,
+	LAYER_ACTORS
 };
 enum class RoomTool {
 	TOOL_NONE,

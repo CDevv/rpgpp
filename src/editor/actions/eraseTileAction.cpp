@@ -2,6 +2,7 @@
 #include "actions/eraseTileAction.hpp"
 #include "actions/mapAction.hpp"
 #include "conversion.hpp"
+#include "raymath.h"
 #include "views/worldView.hpp"
 
 EraseTileAction::EraseTileAction(MapActionData a) : MapAction(a) {}
@@ -20,6 +21,14 @@ void EraseTileAction::execute() {
 	} break;
 	case RoomLayer::LAYER_PROPS: {
 		data.room->getProps().removeObject(fromVector2(data.worldTile));
+	} break;
+	case RoomLayer::LAYER_ACTORS: {
+		for (auto &&a : data.room->getActors()) {
+			if (Vector2Equals(a.second->getTilePosition(), data.worldTile)) {
+				data.room->getActors().erase(a.first);
+				break;
+			}
+		}
 	} break;
 	default:
 		break;

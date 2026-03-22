@@ -1,6 +1,7 @@
 #include "actor.hpp"
 #include "game.hpp"
 #include "gamedata.hpp"
+#include "tileset.hpp"
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
@@ -342,8 +343,16 @@ void Actor::setTilePosition(Vector2 newPosition, Vector2 tileSize) {
 		Vector2{newPosition.x * tileSize.x * RPGPP_DRAW_MULTIPLIER,
 				newPosition.y * tileSize.y * RPGPP_DRAW_MULTIPLIER};
 
+	float xDiff = 0;
+	if ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) >
+		(tileSize.x * RPGPP_DRAW_MULTIPLIER)) {
+		xDiff = ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) -
+				 (tileSize.x * RPGPP_DRAW_MULTIPLIER)) /
+				2;
+	}
+
 	auto resultVector =
-		Vector2{absolutePos.x,
+		Vector2{absolutePos.x - xDiff,
 				absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) -
 								 (tileSize.y * RPGPP_DRAW_MULTIPLIER))};
 	this->position = resultVector;
@@ -449,3 +458,25 @@ std::string Actor::getTileSetSource() const { return tileSetSource; }
 Rectangle Actor::getCollisionRect() const { return collisionRect; }
 
 void Actor::setCollisionRect(Rectangle rect) { this->collisionRect = rect; }
+
+Vector2 calcActorTilePos(Vector2 newPosition, Vector2 worldTileSize,
+						 TileSet *tileSet) {
+	Vector2 actorTileSize = tileSet->getTileSize();
+	auto absolutePos =
+		Vector2{newPosition.x * worldTileSize.x * RPGPP_DRAW_MULTIPLIER,
+				newPosition.y * worldTileSize.y * RPGPP_DRAW_MULTIPLIER};
+
+	float xDiff = 0;
+	if ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) >
+		(worldTileSize.x * RPGPP_DRAW_MULTIPLIER)) {
+		xDiff = ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) -
+				 (worldTileSize.x * RPGPP_DRAW_MULTIPLIER)) /
+				2;
+	}
+
+	auto resultVector =
+		Vector2{absolutePos.x - xDiff,
+				absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) -
+								 (worldTileSize.y * RPGPP_DRAW_MULTIPLIER))};
+	return resultVector;
+}
