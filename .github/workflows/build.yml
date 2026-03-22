@@ -8,10 +8,18 @@ on:
   schedule:
     - cron: "19 2 * * 1"
 
+env:
+  BUILD_DIR: build
+  RETENTION_DAYS: 7
+  BUILD_TYPE: debug
+
 jobs:
   build-linux:
     name: "build: linux"
     runs-on: 'ubuntu-latest'
+    env:
+      PLATFORM: linux
+      ARCH: x86_64
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,7 +27,7 @@ jobs:
           fetch-depth: 0
           submodules: recursive
 
-      - name: Build
+      - name: Install packages
         shell: bash
         run: |
           sudo add-apt-repository ppa:xmake-io/xmake
@@ -33,18 +41,25 @@ jobs:
             libgl1-mesa-dev \
             mesa-common-dev \
             xmake
+
+      - name: Build
+        shell: bash
+        run: |
           xmake build --all -y
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: linux-build
-          path: build/linux/x86_64/debug/   # adjust to your xmake output path
+          path: ${{ env.BUILD_DIR }}/${{ env.PLATFORM }}/${{ env.ARCH }}/${{ env.BUILD_TYPE }}/   # adjust to your xmake output path
           if-no-files-found: error
           retention-days: 7
   build-windows:
     name: "build: windows"
     runs-on: windows-latest
+    env:
+      PLATFORM: windows
+      ARCH: x64
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -65,13 +80,16 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-build
-          path: build/windows/x64/debug/
+          path: ${{ env.BUILD_DIR }}/${{ env.PLATFORM }}/${{ env.ARCH }}/${{ env.BUILD_TYPE }}/
           if-no-files-found: error
           retention-days: 7
 
   build-macos:
     name: "build: macos"
     runs-on: macos-latest
+    env:
+      PLATFORM: macos
+      ARCH: arm64
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -90,6 +108,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: macos-build
-          path: build/macos/x86_64/release/
+          path: ${{ env.BUILD_DIR }}/${{ env.PLATFORM }}/${{ env.ARCH }}/${{ env.BUILD_TYPE }}/
           if-no-files-found: error
           retention-days: 7
