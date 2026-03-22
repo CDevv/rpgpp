@@ -1,0 +1,113 @@
+name: "Build RPG++"
+
+on:
+  push:
+    branches: ["main", "ci-cd"]
+  pull_request:
+    branches: ["main", "ci-cd"]
+  schedule:
+    - cron: "19 2 * * 1"
+
+env:
+  BUILD_DIR: build
+  RETENTION_DAYS: 7
+  BUILD_TYPE: debug
+
+jobs:
+  build-linux:
+    name: "build: linux"
+    runs-on: 'ubuntu-latest'
+    env:
+      PLATFORM: linux
+      ARCH: x86_64
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Install packages
+        shell: bash
+        run: |
+          sudo add-apt-repository ppa:xmake-io/xmake
+          sudo apt-get update
+          sudo apt-get install -y \
+            libx11-dev \
+            libxrandr-dev \
+            libxinerama-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libgl1-mesa-dev \
+            mesa-common-dev \
+            xmake
+
+      - name: Build
+        shell: bash
+        run: |
+          xmake build --all -y
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: linux-build
+          path: ${{ env.BUILD_DIR }}/${{ env.PLATFORM }}/${{ env.ARCH }}/${{ env.BUILD_TYPE }}/   # adjust to your xmake output path
+          if-no-files-found: error
+          retention-days: ${{ env.RETENTION_DAYS }}
+  build-windows:
+    name: "build: windows"
+    runs-on: windows-latest
+    env:
+      PLATFORM: windows
+      ARCH: x64
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+
+      - name: Build
+        shell: pwsh
+        run: xmake build --all -y
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: windows-build
+          path: ${{ env.BUILD_DIR }}/${{ env.PLATFORM }}/${{ env.ARCH }}/${{ env.BUILD_TYPE }}/
+          if-no-files-found: error
+          retention-days: ${{ env.RETENTION_DAYS }}
+
+  build-macos:
+    name: "build: macos"
+    runs-on: macos-latest
+    env:
+      PLATFORM: macosx
+      ARCH: arm64
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+
+      - name: Build
+        shell: bash
+        run: xmake build --all -y
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: macos-build
+          path: ${{ env.BUILD_DIR }}/${{ env.PLATFORM }}/${{ env.ARCH }}/${{ env.BUILD_TYPE }}/
+          if-no-files-found: error
+          retention-days: ${{ env.RETENTION_DAYS }}
