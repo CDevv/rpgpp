@@ -66,7 +66,7 @@ class Actor : public ISaveable {
 	Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
 		  std::string tileSetSource);
 	/** Constructor that takes an ActorBin binary structure */
-	Actor(ActorBin bin);
+	Actor(const ActorBin &bin);
 	/** Dump this Actor's data to a nlohmann::json object. */
 	json dumpJson() override;
 	/** Unload routine. The UnloadTexture function will called here. */

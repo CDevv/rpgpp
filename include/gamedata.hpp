@@ -85,6 +85,7 @@ struct TileSetBin {
 struct ImageBin {
 	std::vector<unsigned char> data;
 	int dataSize;
+	std::string ext;
 };
 
 struct MusicBin {
@@ -127,7 +128,7 @@ struct GameData {
 	std::map<std::string, TileSetBin> tilesets;
 	std::map<std::string, InteractableBin> interactables;
 	std::vector<RoomBin> rooms;
-	std::vector<ActorBin> actors;
+	std::map<std::string, ActorBin> actors;
 	std::vector<PropBin> props;
 	std::map<std::string, DialogueBin> dialogues;
 	std::map<std::string, MusicBin> music;

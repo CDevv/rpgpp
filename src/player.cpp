@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include "conversion.hpp"
 #include "interactable.hpp"
 #include <raylib.h>
 #include <raymath.h>
@@ -96,8 +97,8 @@ void Player::handleCollision() {
 	int worldTileSize = tileMap->getWorldTileSize();
 
 	// collision tiles
-	std::vector<Vector2> collisionTiles = this->room.getCollisionTiles();
-	for (Vector2 v : collisionTiles) {
+	for (auto &[pos, obj] : room.getCollisions().getObjects()) {
+		Vector2 v = fromIVector(pos);
 		Rectangle tileRect = Rectangle{v.x * worldTileSize, v.y * worldTileSize,
 									   static_cast<float>(worldTileSize),
 									   static_cast<float>(worldTileSize)};
@@ -109,8 +110,8 @@ void Player::handleCollision() {
 	}
 
 	// props
-	for (auto &&p : room.getProps()) {
-		if (CheckCollisionRecs(playerRect, p.getWorldCollisionRect())) {
+	for (auto &[pos, prop] : room.getProps().getObjects()) {
+		if (CheckCollisionRecs(playerRect, prop->getWorldCollisionRect())) {
 			velocity = Vector2{0, 0};
 			break;
 		}
@@ -164,11 +165,11 @@ void Player::handleInteraction() {
 		}
 	}
 
-	for (auto &&p : room.getProps()) {
-		if (p.getHasInteractable()) {
+	for (auto &[pos, prop] : room.getProps().getObjects()) {
+		if (prop->getHasInteractable()) {
 			if (CheckCollisionRecs(interactableArea,
-								   p.getWorldCollisionRect())) {
-				p.getInteractable()->interact();
+								   prop->getWorldCollisionRect())) {
+				prop->getInteractable()->interact();
 				break;
 			}
 		}

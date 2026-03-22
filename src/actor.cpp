@@ -119,7 +119,7 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
 				  (atlasTileSize.y * RPGPP_DRAW_MULTIPLIER) / 2};
 }
 
-Actor::Actor(ActorBin bin) {
+Actor::Actor(const ActorBin &bin) {
 	this->sourcePath = bin.name;
 	this->position = Vector2{0, 0};
 

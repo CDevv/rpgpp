@@ -183,8 +183,8 @@ void RoomView::drawCanvas() {
 	}
 
 	// props
-	for (auto &&prop : room->getProps()) {
-		prop.draw();
+	for (auto &[pos, prop] : room->getProps().getObjects()) {
+		prop->draw();
 	}
 
 	DrawRectangleLinesEx(overlayRect, 2.0f, Fade(GRAY, 0.5f));
@@ -423,7 +423,13 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 	} break;
 	case RoomLayer::LAYER_PROPS: {
 		IVector tileMouse = getTileAtMouse();
-		layerVisitor->prop = room->getPropAt(tileMouse);
+		if (room->getProps().objectExistsAtPosition(tileMouse)) {
+			layerVisitor->prop =
+				room->getProps().getObjectAtPosition(tileMouse).get();
+		} else {
+			layerVisitor->prop = nullptr;
+		}
+
 		layerVisitor->group->removeAllWidgets();
 		mj::visit(*layerVisitor, layer);
 	}

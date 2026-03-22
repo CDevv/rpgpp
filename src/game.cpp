@@ -53,8 +53,8 @@ void Game::useBin(const std::string &filePath) {
 	usesBin = true;
 
 	for (const auto &[name, data] : gameData->images) {
-		Image image =
-			LoadImageFromMemory(".png", data.data.data(), data.dataSize);
+		Image image = LoadImageFromMemory(data.ext.c_str(), data.data.data(),
+										  data.dataSize);
 		Texture2D texture = LoadTextureFromImage(image);
 		resources->addTexture(name, texture);
 		UnloadImage(image);

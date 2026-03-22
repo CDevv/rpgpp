@@ -19,8 +19,7 @@ void EraseTileAction::execute() {
 		data.room->getInteractables().removeObject(fromVector2(data.worldTile));
 	} break;
 	case RoomLayer::LAYER_PROPS: {
-		data.room->removeProp({static_cast<float>(data.worldTile.x),
-							   static_cast<float>(data.worldTile.y)});
+		data.room->getProps().removeObject(fromVector2(data.worldTile));
 	} break;
 	default:
 		break;

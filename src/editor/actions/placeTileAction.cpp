@@ -6,7 +6,7 @@
 #include "raylib.h"
 #include "room.hpp"
 #include "views/worldView.hpp"
-#include <cstdio>
+#include <memory>
 #include <nlohmann/json_fwd.hpp>
 
 PlaceTileAction::PlaceTileAction(MapActionData a) : MapAction(a) {}
@@ -37,11 +37,11 @@ void PlaceTileAction::execute() {
 		}
 	} break;
 	case RoomLayer::LAYER_PROPS: {
-		Prop p(data.interactableFullPath);
-		p.setWorldTilePos({data.worldTile.x, data.worldTile.y},
-						  data.room->getWorldTileSize());
-		if (p.getInteractable() != nullptr && p.getHasInteractable()) {
-			auto interType = p.getInteractable()->getType();
+		auto p = std::make_unique<Prop>(data.interactableFullPath);
+		p->setWorldTilePos({data.worldTile.x, data.worldTile.y},
+						   data.room->getWorldTileSize());
+		if (p->getInteractable() != nullptr && p->getHasInteractable()) {
+			auto interType = p->getInteractable()->getType();
 			auto interNames =
 				Editor::instance->getProject()->getInteractableNames();
 			std::string interFileName;
@@ -57,9 +57,11 @@ void PlaceTileAction::execute() {
 			char *txt = LoadFileText(interFileName.c_str());
 			nlohmann::json propJson = json::parse(txt);
 			UnloadFileText(txt);
-			p.getInteractable()->setProps(propJson.at("props"));
+			p->getInteractable()->setProps(propJson.at("props"));
 		}
-		data.room->addProp(std::move(p));
+		// data.room->addProp(std::move(p));
+		data.room->getProps().pushObject(fromVector2(data.worldTile),
+										 std::move(p));
 	} break;
 	default:
 		break;
@@ -78,8 +80,7 @@ void PlaceTileAction::undo() {
 		data.room->getInteractables().removeObject(fromVector2(data.worldTile));
 	} break;
 	case RoomLayer::LAYER_PROPS: {
-		data.room->removeProp({static_cast<float>(data.worldTile.x),
-							   static_cast<float>(data.worldTile.y)});
+		data.room->getProps().removeObject(fromVector2(data.worldTile));
 	} break;
 	default:
 		break;

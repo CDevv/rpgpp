@@ -1,4 +1,5 @@
 #include "project.hpp"
+#include "conversion.hpp"
 #include "dialogue.hpp"
 #include "dialogueParser.hpp"
 #include "editor.hpp"
@@ -13,12 +14,10 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
-#include <iostream>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <raylib.h>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -224,10 +223,10 @@ GameData Project::generateStruct() {
 		std::unique_ptr<Room> room = std::make_unique<Room>(roomPath);
 		roomBin.startPoint = IVector{static_cast<int>(room->getStartTile().x),
 									 static_cast<int>(room->getStartTile().y)};
-		for (auto collisionVec : room->getCollisionTiles()) {
+		for (auto [pos, obj] : room->getCollisions().getObjects()) {
 			IVector intVec;
-			intVec.x = static_cast<int>(collisionVec.x);
-			intVec.y = static_cast<int>(collisionVec.y);
+			intVec.x = static_cast<int>(pos.x);
+			intVec.y = static_cast<int>(pos.y);
 			roomBin.collisions.push_back(intVec);
 		}
 		for (auto interactable : room->getInteractables().getList()) {
@@ -242,17 +241,16 @@ GameData Project::generateStruct() {
 
 			roomBin.interactables.push_back(intBin);
 		}
-		for (auto &&prop : room->getProps()) {
+		for (auto &[pos, prop] : room->getProps().getObjects()) {
 			PropInRoomBin pBin;
-			pBin.name = prop.getSourcePath();
-			pBin.tilePos = IVector{static_cast<int>(prop.getWorldTilePos().x),
-								   static_cast<int>(prop.getWorldTilePos().y)};
+			pBin.name = prop->getSourcePath();
+			pBin.tilePos = fromVector2(prop->getWorldTilePos());
 
 			pBin.propsCbor =
-				nlohmann::json::to_cbor(prop.getInteractable()->getProps());
+				nlohmann::json::to_cbor(prop->getInteractable()->getProps());
 			roomBin.props.push_back(pBin);
 		}
-		for (auto &&actor : room->getActors()) {
+		for (auto &[pos, actor] : room->getActors().getObjects()) {
 			ActorInRoomBin aBin;
 			aBin.name = actor.getSourcePath();
 			aBin.tilePos = IVector{static_cast<int>(actor.getTilePosition().x),
@@ -290,7 +288,7 @@ GameData Project::generateStruct() {
 			}
 		}
 
-		data.actors.push_back(actorBin);
+		data.actors[GetFileNameWithoutExt(actorPath.c_str())] = actorBin;
 	}
 
 	for (auto diagPath : getPaths(EngineFileType::FILE_DIALOGUE)) {
@@ -304,6 +302,7 @@ GameData Project::generateStruct() {
 	for (auto imagePath : getPaths(EngineFileType::FILE_IMAGE)) {
 		Image img = LoadImage(imagePath.c_str());
 		ImageBin bin;
+		bin.ext = GetFileExtension(imagePath.c_str());
 
 		int fileSize = 0;
 

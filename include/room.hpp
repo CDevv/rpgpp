@@ -1,6 +1,7 @@
 #ifndef _RPGPP_ROOM_H
 #define _RPGPP_ROOM_H
 
+#include "propsContainer.hpp"
 constexpr const char *DEFAULT_PLAYER_PATH = "actors/playerActor.ractor";
 
 class Player;
@@ -40,11 +41,8 @@ class Room : public ISaveable {
 	std::unique_ptr<InteractablesContainer> interactables;
 	/** Container of the collision tiles */
 	std::unique_ptr<CollisionsContainer> collisions;
-	/** A collection of the Props in this Room.
-		FIXME: Change to Container system, due to segmentation issues, couldn't
-	   be changed!
-	*/
-	std::unique_ptr<std::vector<Prop>> props;
+	/** Container of the props */
+	std::unique_ptr<PropsContainer> props;
 	/** This Room's TileMap, which contains all placed tiles. */
 	std::unique_ptr<TileMap> tileMap;
 	/** A collection of all Actors in this Room */
@@ -102,29 +100,14 @@ class Room : public ISaveable {
 	/** Set the start tile position. */
 	void setStartTile(Vector2 newStartTile);
 
-	std::vector<Vector2> getCollisionTiles() const;
 	/** Get a reference to the CollisionsContainer of this Room. */
 	CollisionsContainer &getCollisions() const;
 	/** Get a reference to the InteractablesContainer of this Room. */
 	InteractablesContainer &getInteractables() const;
-
-	/** Get a reference to the Props container (vector). */
-	std::vector<Prop> &getProps() const;
-	/** Add a Prop to this Room. */
-	void addProp(Prop prop) const;
-	/** Remove a prop from this room using a world tile position. */
-	void removeProp(Vector2 worldPos) const;
-	/** Get the Prop at the specified tile position. */
-	Prop *getPropAt(IVector worldPos) const;
-
+	/** Get a reference to the PropsContainer of this Room. */
+	PropsContainer &getProps() const;
 	/** Get a refernece to the collection of Actors. */
-	std::vector<Actor> &getActors();
-	/** Add an actor to this Room
-	 * @param actor The actor to be added to the Room's collection.
-	 */
-	void addActor(Actor actor) const;
-	/** Remove an Actor using a tilePosition. */
-	void removeActor(IVector tilePosition) const;
+	ActorContainer &getActors() const;
 };
 
 #endif

@@ -27,14 +27,14 @@ Interactable::Interactable(const std::string &path) {
 
 	type = GetFileNameWithoutExt(path.c_str());
 	displayTitle = intJson.at("name");
-	props = new nlohmann::json(intJson.at("props"));
+	props = std::make_unique<nlohmann::json>(intJson.at("props"));
 	scriptPath = intJson.at("script");
 }
 
 Interactable::Interactable(const std::string &type, Vector2 tilePos,
 						   int tileSize) {
 	this->type = type;
-	this->props = new nlohmann::json();
+	this->props = std::make_unique<nlohmann::json>(json::object());
 
 	this->valid = true;
 	this->type = type;
@@ -49,7 +49,8 @@ Interactable::Interactable(const std::string &type, Vector2 tilePos,
 
 Interactable::Interactable(InteractableInRoomBin bin) {
 	this->type = bin.type;
-	this->props = new nlohmann::json(json::from_cbor(bin.propsCbor));
+	this->props =
+		std::make_unique<nlohmann::json>(json::from_cbor(bin.propsCbor));
 
 	Vector2 tilePos = {static_cast<float>(bin.x), static_cast<float>(bin.y)};
 
@@ -86,11 +87,11 @@ const std::string &Interactable::getType() const { return this->type; }
 
 void Interactable::setType(const std::string &type) {
 	this->type = type;
-	this->props = new nlohmann::json();
+	this->props = std::make_unique<nlohmann::json>(json::object());
 }
 
 void Interactable::setProps(nlohmann::json j) {
-	this->props = new nlohmann::json(j);
+	this->props = std::make_unique<nlohmann::json>(j);
 }
 
 nlohmann::json &Interactable::getProps() { return *props; }
