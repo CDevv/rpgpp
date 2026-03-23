@@ -406,6 +406,8 @@ const std::string keyboardKeyToName(KeyboardKey k) {
 		return "Keypad -";
 	case KEY_KP_ADD:
 		return "Keypad +";
+	default:
+		return "Unknown";
 	}
 }
 
