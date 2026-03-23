@@ -1,6 +1,5 @@
 #include "stateService.hpp"
 #include "sol/error.hpp"
-#include <stdexcept>
 
 StateService::StateService() { gameState.emplace("test", false); }
 

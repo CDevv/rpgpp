@@ -3,14 +3,14 @@
 
 #include "sol/table.hpp"
 #include "sol/types.hpp"
-#include <cstdint>
 #include <map>
 #include <string>
 #include <variant>
 
 /** The StateService is responsible for storing gameplay-related variables
  * that make up the state of the game. */
-using Value = std::variant<sol::lua_nil_t, bool, double, std::string, sol::table, sol::function>;
+using Value = std::variant<sol::lua_nil_t, bool, double, std::string,
+						   sol::table, sol::function>;
 class StateService {
   private:
 	/** A pair of string keys and boolean values. */

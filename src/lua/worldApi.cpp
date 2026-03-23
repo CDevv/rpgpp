@@ -1,6 +1,5 @@
 #include "lua/worldApi.hpp"
 #include "game.hpp"
-#include "player.hpp"
 #include "sol/forward.hpp"
 #include "sol/object.hpp"
 #include "sol/table.hpp"

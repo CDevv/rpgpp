@@ -10,7 +10,6 @@
 #include "raylib.h"
 #include "sol/forward.hpp"
 #include "sol/raii.hpp"
-#include "sol/types.hpp"
 #include "tilemap.hpp"
 #include <cstdio>
 #include <string>
