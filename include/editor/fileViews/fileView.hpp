@@ -20,7 +20,7 @@ class FileView {
 	std::stack<std::unique_ptr<Action>> future;
 
   public:
-  	bool fileViewFocused = false;
+	bool fileViewFocused = false;
 
 	FileView();
 	virtual ~FileView();

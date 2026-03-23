@@ -8,21 +8,22 @@ HotkeyService::HotkeyService() {}
 // It's not true UUID, but it will work in this case
 // https://stackoverflow.com/a/58467162
 std::string get_uuid() {
-    static std::random_device dev;
-    static std::mt19937 rng(dev());
+	static std::random_device dev;
+	static std::mt19937 rng(dev());
 
-    std::uniform_int_distribution<int> dist(0, 15);
+	std::uniform_int_distribution<int> dist(0, 15);
 
-    const char *v = "0123456789abcdef";
-    const bool dash[] = { 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0 };
+	const char *v = "0123456789abcdef";
+	const bool dash[] = {0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0};
 
-    std::string res;
-    for (int i = 0; i < 16; i++) {
-        if (dash[i]) res += "-";
-        res += v[dist(rng)];
-        res += v[dist(rng)];
-    }
-    return res;
+	std::string res;
+	for (int i = 0; i < 16; i++) {
+		if (dash[i])
+			res += "-";
+		res += v[dist(rng)];
+		res += v[dist(rng)];
+	}
+	return res;
 }
 
 const int HotkeyService::pack(Hotkey hk) {
@@ -36,13 +37,9 @@ const int HotkeyService::pack(Hotkey hk) {
 }
 
 const Hotkey HotkeyService::unpack(int packed) {
-	return Hotkey{
-		(bool)((packed >> 0) & 1),
-		(bool)((packed >> 1) & 1),
-		(bool)((packed >> 2) & 1),
-		(bool)((packed >> 3) & 1),
-		static_cast<KeyboardKey>(packed >> 4)
-	};
+	return Hotkey{(bool)((packed >> 0) & 1), (bool)((packed >> 1) & 1),
+				  (bool)((packed >> 2) & 1), (bool)((packed >> 3) & 1),
+				  static_cast<KeyboardKey>(packed >> 4)};
 }
 
 std::map<std::string, std::string> HotkeyService::serialize() {
@@ -77,7 +74,7 @@ void HotkeyService::deserialize(
 }
 
 std::string HotkeyService::registerHotkeyCallback(const std::string &keyId,
-										   std::function<void()> cb) {
+												  std::function<void()> cb) {
 	std::string uniqueHkCbId = get_uuid();
 	hotkeysCb[uniqueHkCbId] = {keyId, cb};
 	return uniqueHkCbId;

@@ -116,8 +116,7 @@ void Toolbox<T>::resetToolSelection(std::string groupToReset) {
 	}
 }
 
-template <typename T>
-void Toolbox<T>::selectTool(const ToolboxItem<T> &item) {
+template <typename T> void Toolbox<T>::selectTool(const ToolboxItem<T> &item) {
 	for (const auto &widgets : this->container->getWidgets()) {
 		if (auto btn = std::dynamic_pointer_cast<tgui::BitmapButton>(widgets)) {
 			ToolboxItemIdentifier<T> identifier =

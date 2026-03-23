@@ -136,23 +136,26 @@ RoomFileView::RoomFileView() {
 	toolbox->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), TOOLBOX_H});
 
 	std::vector<std::pair<std::string, ToolboxItem<RoomTool>>> tools = {
-		{"room_tool.mouse", ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_NONE, "Mouse",
-										   "tool_none.png"}},
+		{"room_tool.mouse", ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_NONE,
+												  "Mouse", "tool_none.png"}},
 		{"room_tool.pen", ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_PLACE,
-										   "Place", "tool_place.png"}},
+												"Place", "tool_place.png"}},
 		{"room_tool.eraser", ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_ERASE,
-										   "Erase", "tool_erase.png"}},
-		{"room_tool.edit", ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_EDIT, "Edit",
-										   "tool_edit.png"}},
-		{"room_tool.set_spoint", ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_STARTPOINT,
-										   "Start Point",
-										   "tool_startpoint.png"}}
-	};
+												   "Erase", "tool_erase.png"}},
+		{"room_tool.edit", ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_EDIT,
+												 "Edit", "tool_edit.png"}},
+		{"room_tool.set_spoint",
+		 ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_STARTPOINT, "Start Point",
+							   "tool_startpoint.png"}}};
 
 	for (auto &[k, tool] : tools) {
 		auto capturedTool = tool;
 		toolbox->addTool(tool);
-		hotkeyEntries.push_back(hks.registerHotkeyCallback(k, [this, capturedTool, toolbox](){ if (fileViewFocused) toolbox->selectTool(capturedTool); }));
+		hotkeyEntries.push_back(
+			hks.registerHotkeyCallback(k, [this, capturedTool, toolbox]() {
+				if (fileViewFocused)
+					toolbox->selectTool(capturedTool);
+			}));
 	}
 
 	auto brushToggle = tgui::CheckBox::create();
@@ -165,11 +168,14 @@ RoomFileView::RoomFileView() {
 		TOOLBOX_H - toolbox->getRenderer()->getPadding().getTop();
 	brushToggle->setSize({brushToggleSize, brushToggleSize});
 	toolbox->addWidget(brushToggle);
-	hotkeyEntries.push_back(hks.registerHotkeyCallback("room_tool.toggle_bm", [this, brushToggle](){ if (fileViewFocused) brushToggle->setChecked(!brushToggle->isChecked());}));
+	hotkeyEntries.push_back(hks.registerHotkeyCallback(
+		"room_tool.toggle_bm", [this, brushToggle]() {
+			if (fileViewFocused)
+				brushToggle->setChecked(!brushToggle->isChecked());
+		}));
 
-	toolbox->onItemClicked([this](ToolboxItem<RoomTool> tool) {
-		setRoomTool(tool);
-	});
+	toolbox->onItemClicked(
+		[this](ToolboxItem<RoomTool> tool) { setRoomTool(tool); });
 
 	widgetContainer.push_back(toolbox);
 }
