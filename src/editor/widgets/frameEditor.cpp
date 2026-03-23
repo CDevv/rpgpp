@@ -50,9 +50,15 @@ void FrameEditor::init() {
 			box->setSelectedItemByIndex(0);
 		});
 
-	directionChooser->onItemSelect.connect([this](const size_t &index) {
+	directionChooser->onItemSelect.connect([this, &actor](const size_t &index) {
 		this->changeFrameState(index);
-		this->updateFrameButtons();
+
+		for (auto btn : frameButtons) {
+			frameLayout->remove(btn);
+		}
+		frameButtons.clear();
+		for (int i = 0; i < actor->getAnimationCount(); i++)
+			this->addFrameButton(i);
 	});
 
 	topBarLayout->add(directionChooser);

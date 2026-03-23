@@ -6,8 +6,10 @@
 #include "roomViewModesHandler.hpp"
 #include "views/roomView.hpp"
 #include "views/tileSetView.hpp"
+#include "views/worldView.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/intField.hpp"
+#include "widgets/toolbox.hpp"
 #include <TGUI/Widgets/ComboBox.hpp>
 #include <memory>
 
@@ -28,9 +30,13 @@ class RoomFileView : public FileView {
 	FileField::Ptr tileSetField;
 	FileField::Ptr musicFileField;
 
+	void setRoomTool(ToolboxItem<RoomTool> tool);
+	std::vector<std::string> hotkeyEntries;
+
   public:
 	std::unique_ptr<RoomViewModesHandler> modesHandler;
 	RoomFileView();
+	~RoomFileView();
 	void init(tgui::Group::Ptr layout, VariantWrapper *variant) override;
 };
 

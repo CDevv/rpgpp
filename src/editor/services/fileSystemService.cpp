@@ -1,5 +1,6 @@
 #include "services/fileSystemService.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
+#include "widgets/newProjectWindow.hpp"
 #include <array>
 #include <cstdio>
 #include <nfd.h>
@@ -16,7 +17,6 @@
 
 #include "editor.hpp"
 #include "raylib.h"
-#include "screens/projectScreen.hpp"
 
 FileSystemService::FileSystemService() {
 	editorBaseDir = GetWorkingDirectory();
@@ -40,14 +40,30 @@ FileSystemService::FileSystemService() {
 
 void FileSystemService::unload() { NFD_Quit(); }
 
+void FileSystemService::promptNewProject() {
+	auto newProjectDialog = NewProjectWindow::create();
+
+	newProjectDialog->init(Editor::instance->getGui().gui.get());
+	newProjectDialog->fileField->setSelectingDirectory(true);
+	newProjectDialog->confirmButton->onPress([newProjectDialog] {
+		std::string title =
+			newProjectDialog->titleField->getText().toStdString();
+		std::string dirPath =
+			newProjectDialog->fileField->getChosenPath().toStdString();
+		if (!title.empty() && !dirPath.empty()) {
+			auto path = Project::create(dirPath, title);
+			Project::openProject(path, true);
+		}
+		newProjectDialog->window->close();
+	});
+}
+
 void FileSystemService::promptOpenProject() {
 	auto files = tgui::FileDialog::create();
 	files->setFileTypeFilters({{"RPG++ Project", {"*.rpgpp"}}});
 
 	files->onFileSelect([](const tgui::String &filePath) {
-		Editor::instance->setProject(filePath.toStdString());
-		Editor::instance->getGui().setScreen(
-			std::make_unique<screens::ProjectScreen>(), false);
+		Project::openProject(filePath);
 	});
 
 	Editor::instance->getGui().gui->add(files);

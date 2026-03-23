@@ -1,6 +1,7 @@
 #ifndef _RPGPP_FILESYSTEMSERVICE_H
 #define _RPGPP_FILESYSTEMSERVICE_H
 
+#include "TGUI/String.hpp"
 #include "variant.hpp"
 #include <array>
 #include <memory>
@@ -32,6 +33,7 @@ class FileSystemService {
   public:
 	FileSystemService();
 	void unload();
+	void promptNewProject();
 	void promptOpenProject();
 	std::string &getTypeName(EngineFileType fileType);
 	std::array<std::string, FILETYPE_MAX> &getTypeNames();

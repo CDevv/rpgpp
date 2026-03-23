@@ -1,7 +1,9 @@
 #include "soundService.hpp"
 #include "game.hpp"
+#include "gamedata.hpp"
 #include <cstdio>
 #include <raylib.h>
+#include <stdexcept>
 
 SoundService::SoundService() {
 	music = {};
@@ -15,9 +17,6 @@ bool SoundService::loadMusic(const std::string &id) {
 	if (lastId == id)
 		return true;
 
-	printf("%s \n", id.c_str());
-	printf("%zu", gameData.music.count(id));
-
 	if (gameData.music.count(id) != 0) {
 		if (gameData.music[id].isSound)
 			return musicLoaded;
@@ -28,14 +27,14 @@ bool SoundService::loadMusic(const std::string &id) {
 												   musicBin.fileData.data(),
 												   musicBin.fileData.size());
 
-		printf("loaded.. \n");
-
 		if (IsMusicValid(newMusic)) {
 			unload();
 
 			this->music = newMusic;
 			musicLoaded = true;
 		}
+	} else {
+		printf("Music with such id does not exist: %s \n", id.c_str());
 	}
 
 	return musicLoaded;
@@ -52,10 +51,21 @@ void SoundService::playSound(const std::string &id) const {
 
 	if (gameData.music.count(id) != 0) {
 		if (gameData.music[id].isSound) {
-			Sound sound = LoadSound(gameData.music[id].relativePath.c_str());
+			MusicBin soundBin = gameData.music[id];
+			Wave soundWave = LoadWaveFromMemory(soundBin.fileExt.c_str(),
+												soundBin.fileData.data(),
+												soundBin.fileData.size());
+			Sound sound = LoadSoundFromWave(soundWave);
 
 			PlaySound(sound);
+
+			UnloadWave(soundWave);
+
+			// UnloadSound(sound);
 		}
+	} else {
+		throw std::runtime_error(
+			TextFormat("This Sound does not exist: %s", id.c_str()));
 	}
 }
 

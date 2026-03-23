@@ -1,6 +1,7 @@
 #ifndef _RPGPP_GAME_H
 #define _RPGPP_GAME_H
 
+#include "scriptService.hpp"
 #include "sol/state_view.hpp"
 class WorldService;
 
@@ -25,6 +26,7 @@ class Game {
 	static std::unique_ptr<InterfaceService> ui;
 	static std::unique_ptr<ResourceService> resources;
 	static std::unique_ptr<SoundService> sounds;
+	static std::unique_ptr<ScriptService> scripts;
 
   public:
 	Game();
@@ -36,6 +38,7 @@ class Game {
 	static InterfaceService &getUi();
 	static ResourceService &getResources();
 	static SoundService &getSounds();
+	static ScriptService &getScripts();
 
 	static void init();
 

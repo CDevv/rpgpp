@@ -11,11 +11,6 @@
 #include <string>
 #include <vector>
 
-/** Enum for interactable types */
-enum InteractableType { INT_BLANK, INT_TWO, INT_WARPER };
-
-#define INTTYPE_MAX (3)
-
 /** Defines an object that is interactable in-game by a player's action */
 class Interactable : public ISaveable {
   private:
@@ -40,10 +35,6 @@ class Interactable : public ISaveable {
 	/** Script file path */
 	std::string scriptPath;
 
-  protected:
-	/** Array for descriptive names of interactable types */
-	static std::array<std::string, INTTYPE_MAX> interactableTypeNames;
-
   public:
 	/** Empty constructor */
 	Interactable();
@@ -56,8 +47,6 @@ class Interactable : public ISaveable {
 	virtual ~Interactable() = default;
 	/** Dump JSON data. */
 	nlohmann::json dumpJson();
-	/** Get the array containing names of the Interactable names */
-	static std::array<std::string, INTTYPE_MAX> &getTypeNames();
 	/** Whether this Interactable is valid */
 	bool isValid() const;
 	/** Get the Rectangle of this Interactable */

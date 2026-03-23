@@ -1,8 +1,15 @@
 #include "screens/welcomeScreen.hpp"
+#include "TGUI/Layout.hpp"
+#include "TGUI/String.hpp"
+#include "TGUI/Widgets/BoxLayout.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
+#include "TGUI/Widgets/HorizontalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
+#include "TGUI/Widgets/ListBox.hpp"
+#include "TGUI/Widgets/Picture.hpp"
+#include "TGUI/Widgets/VerticalLayout.hpp"
 #include "bindTranslation.hpp"
 #include "editor.hpp"
 #include "project.hpp"
@@ -47,42 +54,75 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 								 &tgui::Label::setText);
 	introLabel->setTextSize(16);
 	introLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
-	introLabel->setSize({0, 81});
 	verticalLayout->add(introLabel);
+
+	const auto actionsContainer = tgui::BoxLayout::create();
+	actionsContainer->setHeight(240);
+	verticalLayout->add(actionsContainer);
+
+	const auto left = tgui::GrowVerticalLayout::create();
+	left->setAutoLayout(tgui::AutoLayout::Left);
+	left->setWidth(180);
+	actionsContainer->add(left);
+
+	const auto actionsLabel = tgui::Label::create("");
+	actionsLabel->setTextSize(24);
+	left->add(actionsLabel);
+	bindTranslation<tgui::Label>(actionsLabel, "screen.starting.actions",
+								  &tgui::Label::setText);
 
 	const auto newProjButton = tgui::Button::create();
 	bindTranslation<tgui::Button>(newProjButton, "menu.file.new_project",
 								  &tgui::Button::setText);
 	newProjButton->setTextSize(ACTION_BUTTON_SIZE);
+
+	const auto buttonPadding = tgui::BoxLayout::create();
+	buttonPadding->setHeight(10);
+
 	const auto openProjButton = tgui::Button::create();
 	bindTranslation<tgui::Button>(openProjButton, "menu.file.open_project",
 								  &tgui::Button::setText);
 	openProjButton->setTextSize(ACTION_BUTTON_SIZE);
 
-
-	newProjectDialog = NewProjectWindow::create();
-
-	newProjButton->onPress([this] {
-		auto childDialog = tgui::ChildWindow::create();
-
-		newProjectDialog->init(Editor::instance->getGui().gui.get());
-		newProjectDialog->fileField->setSelectingDirectory(true);
-		newProjectDialog->confirmButton->onPress([this] {
-			std::string title =
-				newProjectDialog->titleField->getText().toStdString();
-			std::string dirPath =
-				newProjectDialog->fileField->getChosenPath().toStdString();
-			if (!title.empty() && !dirPath.empty()) {
-				Project::create(dirPath, title);
-			}
-		});
-	});
+	newProjButton->onPress(
+		[this] { Editor::instance->getFs().promptNewProject(); });
 
 	openProjButton->onPress(
 		[] { Editor::instance->getFs().promptOpenProject(); });
 
-	verticalLayout->add(newProjButton);
-	verticalLayout->add(openProjButton);
+	left->add(newProjButton);
+	left->add(buttonPadding);
+	left->add(openProjButton);
+
+	const auto padding = tgui::BoxLayout::create();
+	padding->setWidth(10);
+	padding->setAutoLayout(tgui::AutoLayout::Left);
+	actionsContainer->add(padding);
+
+	const auto right = tgui::BoxLayout::create();
+	right->setAutoLayout(tgui::AutoLayout::Fill);
+
+	const auto recentProjectLabel = tgui::Label::create("");
+	bindTranslation<tgui::Label>(recentProjectLabel, "screen.starting.recent_projects",
+								  &tgui::Label::setText);
+	recentProjectLabel->setTextSize(24);
+	recentProjectLabel->setAutoLayout(tgui::AutoLayout::Top);
+	right->add(recentProjectLabel);
+
+	const auto recentProject = tgui::ListBox::create();
+	recentProject->setAutoLayout(tgui::AutoLayout::Fill);
+
+	for (auto i : Editor::instance->getRecentProjectService().getRecentProjects()) {
+		recentProject->addItem(i);
+	}
+
+	recentProject->onItemSelect([this](const tgui::String& path) {
+		Project::openProject(path);
+	});
+
+	right->add(recentProject);
+
+	actionsContainer->add(right);
 
 	layout->add(verticalLayout);
 }

@@ -33,7 +33,9 @@ class WorldService {
 	void setRoom(const std::string_view &filePath);
 	/** Set the current room using a RoomBin binary structure. */
 	void setRoomBin(RoomBin bin);
-	/** Activate transition effect (warper) */
+	/** Set the current room using a room title in the GameBin. */
+	void setRoomBin(const std::string &roomBin);
+	/** Activate transition effect */
 	void doFadeTransition();
 	/** Get a reference to the Player object. */
 	Player &getPlayer() const;

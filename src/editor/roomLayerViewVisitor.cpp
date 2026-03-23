@@ -1,10 +1,14 @@
 #include "roomLayerViewVisitor.hpp"
 #include "TGUI/Widgets/CheckBox.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
+#include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/Label.hpp"
+#include "actor.hpp"
 #include "editor.hpp"
+#include "services/fileSystemService.hpp"
 #include "views/worldView.hpp"
 #include "widgets/propertiesBox.hpp"
+#include <memory>
 #include <raylib.h>
 #include <string>
 
@@ -25,6 +29,23 @@ RoomLayerViewVisitor::RoomLayerViewVisitor() {
 		}
 
 		propTexture = p.getTexture();
+	});
+
+	actorNameInput = tgui::EditBox::create();
+	actorNameInput->setPosition(0, 32);
+
+	actorChoose = tgui::ComboBox::create();
+	actorChoose->setPosition(0, 64);
+	actorChoose->onItemSelect([this](int index) {
+		auto id = actorChoose->getIdByIndex(index);
+		std::unique_ptr<Actor> a = std::make_unique<Actor>(id.toStdString());
+
+		if (IsTextureValid(actorTexture)) {
+			UnloadTexture(actorTexture);
+		}
+
+		actorTexture = a->getTileSet().getTexture();
+		chosenActor = std::move(a);
 	});
 
 	auto map = Editor::instance->getProject()->getInteractableNames();
@@ -111,5 +132,32 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_PROPS>) {
 					tgui::Label::create("This Prop has no Interactable"));
 			}
 		}
+	}
+}
+
+void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_ACTORS>) {
+	if (tool == RoomTool::TOOL_PLACE) {
+		group->add(tgui::Label::create("Actors"));
+
+		group->add(actorNameInput);
+
+		actorChoose->removeAllItems();
+		auto vec = Editor::instance->getProject()->getPaths(
+			EngineFileType::FILE_ACTOR);
+		for (auto actorPath : vec) {
+			actorChoose->addItem(GetFileNameWithoutExt(actorPath.c_str()),
+								 actorPath);
+		}
+		actorChoose->setSelectedItemByIndex(0);
+
+		std::unique_ptr<Actor> a = std::make_unique<Actor>(
+			actorChoose->getSelectedItemId().toStdString());
+
+		actorTexture = a->getTileSet().getTexture();
+		chosenActor = std::move(a);
+
+		group->add(actorChoose);
+	} else if (tool == RoomTool::TOOL_ERASE) {
+		group->add(tgui::Label::create("Erase an Actor.."));
 	}
 }

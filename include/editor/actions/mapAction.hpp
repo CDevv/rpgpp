@@ -12,11 +12,12 @@ struct MapActionData {
 	RoomView *view;
 	Room *room;
 	RoomLayer layer;
-	std::string interactable;
-	std::string interactableFullPath;
 	Vector2 worldTile;
 	Vector2 tile;
 	Vector2 prevTile;
+	std::string interactable;
+	std::string interactableFullPath;
+	std::string actorName;
 };
 
 class MapAction : public Action {

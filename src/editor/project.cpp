@@ -1,4 +1,5 @@
 #include "project.hpp"
+#include "conversion.hpp"
 #include "dialogue.hpp"
 #include "dialogueParser.hpp"
 #include "editor.hpp"
@@ -13,12 +14,10 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
-#include <iostream>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <raylib.h>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -62,7 +61,8 @@ Project::Project(const std::string &path) {
 	UnloadFileText(jsonContent);
 }
 
-void Project::create(const std::string &dirPath, const std::string &title) {
+std::string Project::create(const std::string &dirPath,
+							const std::string &title) {
 	json j = json::object();
 	j["title"] = title;
 	std::string fileContent = j.dump();
@@ -76,9 +76,14 @@ void Project::create(const std::string &dirPath, const std::string &title) {
 	MakeDirectory(
 		std::filesystem::path(dirPath).append("maps").u8string().c_str());
 
-	Editor::instance->setProject(filePath.u8string());
+	return filePath.u8string();
+}
+
+void Project::openProject(const tgui::String &filePath, bool forceSwitch) {
+	Editor::instance->setProject(filePath.toStdString());
+	Editor::instance->getRecentProjectService().enqueue(filePath.toStdString());
 	Editor::instance->getGui().setScreen(
-		std::make_unique<screens::ProjectScreen>(), false);
+		std::make_unique<screens::ProjectScreen>(), forceSwitch);
 }
 
 json Project::toJson() {
@@ -187,7 +192,7 @@ GameData Project::generateStruct() {
 		std::unique_ptr<TileMap> map = std::make_unique<TileMap>(roomPath);
 
 		RoomBin roomBin;
-		roomBin.name = GetFileName(roomPath.c_str());
+		roomBin.name = GetFileNameWithoutExt(roomPath.c_str());
 		roomBin.tileSetName = GetFileName(map->getTileSetSource().c_str());
 		Vector2 worldSize = map->getMaxWorldSize();
 		roomBin.width = static_cast<int>(worldSize.x);
@@ -224,10 +229,10 @@ GameData Project::generateStruct() {
 		std::unique_ptr<Room> room = std::make_unique<Room>(roomPath);
 		roomBin.startPoint = IVector{static_cast<int>(room->getStartTile().x),
 									 static_cast<int>(room->getStartTile().y)};
-		for (auto collisionVec : room->getCollisionTiles()) {
+		for (auto [pos, obj] : room->getCollisions().getObjects()) {
 			IVector intVec;
-			intVec.x = static_cast<int>(collisionVec.x);
-			intVec.y = static_cast<int>(collisionVec.y);
+			intVec.x = static_cast<int>(pos.x);
+			intVec.y = static_cast<int>(pos.y);
 			roomBin.collisions.push_back(intVec);
 		}
 		for (auto interactable : room->getInteractables().getList()) {
@@ -242,21 +247,22 @@ GameData Project::generateStruct() {
 
 			roomBin.interactables.push_back(intBin);
 		}
-		for (auto &&prop : room->getProps()) {
+		for (auto &[pos, prop] : room->getProps().getObjects()) {
 			PropInRoomBin pBin;
-			pBin.name = prop.getSourcePath();
-			pBin.tilePos = IVector{static_cast<int>(prop.getWorldTilePos().x),
-								   static_cast<int>(prop.getWorldTilePos().y)};
+			pBin.name = prop->getSourcePath();
+			pBin.tilePos = fromVector2(prop->getWorldTilePos());
 
 			pBin.propsCbor =
-				nlohmann::json::to_cbor(prop.getInteractable()->getProps());
+				nlohmann::json::to_cbor(prop->getInteractable()->getProps());
 			roomBin.props.push_back(pBin);
 		}
-		for (auto &&actor : room->getActors()) {
+		for (auto &[aName, actor] : room->getActors().getActors()) {
 			ActorInRoomBin aBin;
-			aBin.name = actor.getSourcePath();
-			aBin.tilePos = IVector{static_cast<int>(actor.getTilePosition().x),
-								   static_cast<int>(actor.getTilePosition().y)};
+			aBin.name = aName;
+			aBin.source = actor->getSourcePath();
+			aBin.tilePos =
+				IVector{static_cast<int>(actor->getTilePosition().x),
+						static_cast<int>(actor->getTilePosition().y)};
 			roomBin.actors.push_back(aBin);
 		}
 		roomBin.musicSource = room->getMusicSource();
@@ -290,7 +296,7 @@ GameData Project::generateStruct() {
 			}
 		}
 
-		data.actors.push_back(actorBin);
+		data.actors[GetFileNameWithoutExt(actorPath.c_str())] = actorBin;
 	}
 
 	for (auto diagPath : getPaths(EngineFileType::FILE_DIALOGUE)) {
@@ -304,6 +310,7 @@ GameData Project::generateStruct() {
 	for (auto imagePath : getPaths(EngineFileType::FILE_IMAGE)) {
 		Image img = LoadImage(imagePath.c_str());
 		ImageBin bin;
+		bin.ext = GetFileExtension(imagePath.c_str());
 
 		int fileSize = 0;
 
@@ -324,10 +331,23 @@ GameData Project::generateStruct() {
 	}
 
 	for (auto soundPath : getPaths(EngineFileType::FILE_SOUND)) {
+		MusicBin soundBin;
+
+		int dataSize = 0;
+		auto fileData = LoadFileData(soundPath.c_str(), &dataSize);
+
+		for (int i = 0; i < dataSize; i++) {
+			soundBin.fileData.push_back(fileData[i]);
+		}
+
+		soundBin.fileExt = GetFileExtension(soundPath.c_str());
+		soundBin.isSound = true;
+		data.music[GetFileNameWithoutExt(soundPath.c_str())] = soundBin;
+
+		UnloadFileData(fileData);
 	}
 
 	for (auto musicPath : getPaths(EngineFileType::FILE_MUSIC)) {
-		// TODO: Unsafe memory handling (no Unload function)
 		MusicBin musicBin;
 
 		int dataSize = 0;
@@ -340,6 +360,8 @@ GameData Project::generateStruct() {
 		musicBin.fileExt = GetFileExtension(musicPath.c_str());
 		musicBin.isSound = false;
 		data.music[GetFileNameWithoutExt(musicPath.c_str())] = musicBin;
+
+		UnloadFileData(fileData);
 	}
 
 	for (auto propPath : getPaths(EngineFileType::FILE_PROP)) {
@@ -358,7 +380,11 @@ GameData Project::generateStruct() {
 				  static_cast<int>(prop.getCollisionRect().height)};
 		bin.imagePath = std::string(prop.getImagePath());
 		bin.hasInteractable = prop.getHasInteractable();
-		bin.intType = prop.getInteractable()->getType();
+		if (prop.getInteractable() == nullptr) {
+			bin.intType = "";
+		} else {
+			bin.intType = prop.getInteractable()->getType();
+		}
 
 		data.props.push_back(bin);
 	}
@@ -532,8 +558,14 @@ void Project::buildProject() {
 	resultPath /= projectTitle;
 #endif
 
-	std::filesystem::copy(baseGamePath, resultPath,
-						  std::filesystem::copy_options::update_existing);
+	try {
+		std::filesystem::copy(
+			baseGamePath, resultPath,
+			std::filesystem::copy_options::overwrite_existing);
+	} catch (const std::exception &) {
+		printf("failed to copy file, aborting...\n");
+		return;
+	}
 
 #ifdef _WIN64
 

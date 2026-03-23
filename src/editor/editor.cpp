@@ -10,7 +10,7 @@ Editor *Editor::instance;
 
 Editor::Editor()
 	: configurationService(), translationService(this), themeService(this),
-	  project{nullptr} {
+	  hotkeyService(), project{nullptr} {
 	instance = this;
 }
 
@@ -29,7 +29,13 @@ ThemeService &Editor::getThemeService() { return themeService; }
 
 FileSystemService &Editor::getFs() { return fileSystem; }
 
+HotkeyService &Editor::getHotkeyService() { return hotkeyService; }
+
 Project *Editor::getProject() const { return project.get(); }
+
+RecentProjectService &Editor::getRecentProjectService() {
+	return recentProjectService;
+}
 
 ConfigurationService &Editor::getConfiguration() {
 	return configurationService;

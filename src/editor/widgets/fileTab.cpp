@@ -44,6 +44,16 @@ FileTab::Ptr FileTab::copy(FileTab::ConstPtr widget) {
 		return nullptr;
 }
 
+void FileTab::closeAndOpenNextTab(std::size_t i) {
+	int prevSelected = m_selectedTab;
+	tgui::String prevId = m_tabs[i].id;
+	remove(i);
+	onTabClose.emit(this, prevId);
+	if (prevSelected == i && m_tabs.size() > 0) {
+		select(std::min(i, m_tabs.size() - 1));
+	}
+}
+
 bool FileTab::leftMousePressed(Vector2f pos) {
 	pos -= getPosition();
 
@@ -68,14 +78,7 @@ bool FileTab::leftMousePressed(Vector2f pos) {
 		} else if (pos.x >= tabStart + (m_tabs[i].width - MARGIN_LR -
 										CLOSE_BUTTON_SIZE) &&
 				   pos.x < tabEnd - MARGIN_LR) {
-			// Handle close button click
-			int prevSelected = m_selectedTab;
-			tgui::String prevId = m_tabs[i].id;
-			remove(i);
-			onTabClose.emit(this, prevId);
-			if (prevSelected == i && m_tabs.size() > 0) {
-				select(std::min(i, m_tabs.size() - 1));
-			}
+			closeAndOpenNextTab(i);
 			break;
 		}
 
@@ -156,6 +159,12 @@ void FileTab::leftMouseReleased(tgui::Vector2f pos) {
 	if (!useExternalMouseEvent) {
 		manualLeftMouseReleased(pos);
 	}
+}
+
+void FileTab::closeCurrentTab() {
+	if (m_selectedTab == -1)
+		return;
+	closeAndOpenNextTab(m_selectedTab);
 }
 
 bool FileTab::select(std::size_t index) {

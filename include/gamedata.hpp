@@ -15,6 +15,24 @@
 struct IVector {
 	int x;
 	int y;
+
+	bool operator==(const IVector &other) const {
+		return x == other.x && y == other.y;
+	}
+
+	bool operator<(const IVector &other) const {
+		return x < other.x || (x == other.x && y < other.y);
+	}
+
+	IVector() = default;
+	IVector(int x, int y) {
+		this->x = x;
+		this->y = y;
+	}
+	IVector(const Vector2 &from) {
+		x = static_cast<int>(from.x);
+		y = static_cast<int>(from.y);
+	}
 };
 
 struct IRect {
@@ -33,6 +51,7 @@ struct ActorBin {
 
 struct ActorInRoomBin {
 	std::string name;
+	std::string source;
 	IVector tilePos;
 };
 
@@ -77,6 +96,7 @@ struct TileSetBin {
 struct ImageBin {
 	std::vector<unsigned char> data;
 	int dataSize;
+	std::string ext;
 };
 
 struct MusicBin {
@@ -119,7 +139,7 @@ struct GameData {
 	std::map<std::string, TileSetBin> tilesets;
 	std::map<std::string, InteractableBin> interactables;
 	std::vector<RoomBin> rooms;
-	std::vector<ActorBin> actors;
+	std::map<std::string, ActorBin> actors;
 	std::vector<PropBin> props;
 	std::map<std::string, DialogueBin> dialogues;
 	std::map<std::string, MusicBin> music;

@@ -1,6 +1,6 @@
 {
     "name": "Diag",
-    "script": "test.lua",
+    "script": "dialogue.lua",
     "onTouch": false,
     "props": {
         "dialogue": {

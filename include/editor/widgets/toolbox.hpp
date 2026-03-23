@@ -1,6 +1,7 @@
 #ifndef _RPGPP_TOOLBOX2_H
 #define _RPGPP_TOOLBOX2_H
 #include "TGUI/Backend/Renderer/BackendRenderTarget.hpp"
+#include "TGUI/Vector2.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/GrowHorizontalLayout.hpp"
@@ -49,6 +50,7 @@ template <typename Type> class Toolbox : public tgui::ScrollablePanel {
 	void addTool(const ToolboxItem<Type> &item, int idx = -1);
 	void addWidget(tgui::Widget::Ptr widget, int idx = -1);
 	void removeItemById(const Type &id);
+	void selectTool(const ToolboxItem<Type> &item);
 
 	tgui::SignalTyped<const ToolboxItem<Type> &> onItemClicked = {
 		"OnItemClicked"};
@@ -109,6 +111,19 @@ void Toolbox<T>::resetToolSelection(std::string groupToReset) {
 					defaultRenderer->getBackgroundColorHover());
 				renderer->setTexture(defaultRenderer->getTexture());
 				renderer->setTextureHover(defaultRenderer->getTextureHover());
+			}
+		}
+	}
+}
+
+template <typename T> void Toolbox<T>::selectTool(const ToolboxItem<T> &item) {
+	for (const auto &widgets : this->container->getWidgets()) {
+		if (auto btn = std::dynamic_pointer_cast<tgui::BitmapButton>(widgets)) {
+			ToolboxItemIdentifier<T> identifier =
+				btn->template getUserData<ToolboxItemIdentifier<T>>();
+			if (identifier.id == item.id) {
+				btn->onClick.emit(btn.get(), tgui::Vector2f{1, 1});
+				return;
 			}
 		}
 	}

@@ -17,7 +17,7 @@ class UIScreen {
 		// to create widgets.
 	}
 
-	virtual void bindMenuBar(tgui::MenuBar::Ptr menubar) {}
+	virtual void bindMenuBarAndHK(tgui::MenuBar::Ptr menubar) {}
 	virtual void mouseMove(int x, int y) {}
 	virtual void leftMouseReleased(int x, int y) {}
 	virtual void unloadScreen() {

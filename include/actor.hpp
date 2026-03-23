@@ -53,6 +53,8 @@ class Actor : public ISaveable {
 	std::array<std::vector<Vector2>, 8> animations;
 	/** A Direction enum, showing the current animation that is being played. */
 	Direction currentAnimation;
+	Direction lastAnimation;
+	bool tempAnimIsPlayed = false;
 
   public:
 	/** Empty constructor. */
@@ -64,7 +66,7 @@ class Actor : public ISaveable {
 	Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
 		  std::string tileSetSource);
 	/** Constructor that takes an ActorBin binary structure */
-	Actor(ActorBin bin);
+	Actor(const ActorBin &bin);
 	/** Dump this Actor's data to a nlohmann::json object. */
 	json dumpJson() override;
 	/** Unload routine. The UnloadTexture function will called here. */
@@ -125,6 +127,10 @@ class Actor : public ISaveable {
 	/** Add multiple frames to the chosen animation. */
 	void addAnimationFrames(Direction id,
 							const std::vector<std::vector<int>> &frames);
+	/** Temporarily play an animation */
+	void playAnimation(Direction id);
+	/** Check whether a temporary animation is playing */
+	bool isTempAnimationPlaying();
 	/** Change the Actor's current animation and play it. */
 	void changeAnimation(Direction id);
 	/** Get the path of the used TileSet. */
@@ -138,5 +144,8 @@ class Actor : public ISaveable {
 	/** Set the Actor's collision Rectangle */
 	void setCollisionRect(Rectangle rect);
 };
+
+Vector2 calcActorTilePos(Vector2 newPosition, Vector2 worldTileSize,
+						 TileSet *tileSet);
 
 #endif

@@ -3,21 +3,22 @@
 #include "game.hpp"
 #include "gamedata.hpp"
 #include "interfaceService.hpp"
+#include "sol/forward.hpp"
 #include "sol/state.hpp"
+#include "sol/state_handling.hpp"
 #include "sol/types.hpp"
 #include "tilemap.hpp"
+#include <exception>
 #include <memory>
 #include <nlohmann/json_fwd.hpp>
 #include <raylib.h>
 #include <stdio.h>
 #include <string>
 
-std::array<std::string, INTTYPE_MAX> Interactable::interactableTypeNames = {
-	"Blank", "Dialogue", "Warper"};
-
 Interactable::Interactable()
 	: type(), tilePos(), tileSize(0), absolutePos(), rect() {
 	this->valid = false;
+	this->onTouch = false;
 }
 
 Interactable::Interactable(const std::string &path) {
@@ -29,14 +30,16 @@ Interactable::Interactable(const std::string &path) {
 	displayTitle = intJson.at("name");
 	props = std::make_unique<nlohmann::json>(intJson.at("props"));
 	scriptPath = intJson.at("script");
+	onTouch = false;
 }
 
 Interactable::Interactable(const std::string &type, Vector2 tilePos,
 						   int tileSize) {
 	this->type = type;
-	this->props = std::make_unique<nlohmann::json>();
+	this->props = std::make_unique<nlohmann::json>(json::object());
 
 	this->valid = true;
+	this->onTouch = false;
 	this->type = type;
 	this->tilePos = tilePos;
 	this->tileSize = tileSize;
@@ -55,6 +58,7 @@ Interactable::Interactable(InteractableInRoomBin bin) {
 	Vector2 tilePos = {static_cast<float>(bin.x), static_cast<float>(bin.y)};
 
 	this->valid = true;
+	this->onTouch = bin.onTouch;
 	this->tilePos = tilePos;
 	this->tileSize = _RPGPP_TILESIZE;
 	this->absolutePos = Vector2{0, 0};
@@ -73,10 +77,6 @@ json Interactable::dumpJson() {
 	return j;
 }
 
-std::array<std::string, INTTYPE_MAX> &Interactable::getTypeNames() {
-	return interactableTypeNames;
-}
-
 bool Interactable::isValid() const { return this->valid; }
 
 Rectangle Interactable::getRect() const { return this->rect; }
@@ -91,7 +91,7 @@ const std::string &Interactable::getType() const { return this->type; }
 
 void Interactable::setType(const std::string &type) {
 	this->type = type;
-	this->props = std::make_unique<nlohmann::json>();
+	this->props = std::make_unique<nlohmann::json>(json::object());
 }
 
 void Interactable::setProps(nlohmann::json j) {
@@ -109,30 +109,32 @@ void Interactable::setDisplayTitle(const std::string &newTitle) {
 std::string &Interactable::getDisplayTitle() { return displayTitle; }
 
 void Interactable::interact() {
-	sol::state lua;
-	lua.open_libraries(sol::lib::base);
-	for (auto prop : props->items()) {
-		if (prop.value().is_object()) {
-			lua[prop.key()] = prop.value().at("value").get<std::string>();
-		} else if (prop.value().is_string()) {
-			lua[prop.key()] = prop.value().get<std::string>();
-		} else if (prop.value().is_number()) {
-			lua[prop.key()] = prop.value().get<float>();
-		}
-	}
-	Game::setLua(lua);
+	auto &state = Game::getScripts().getState();
+
+	Game::getScripts().addToState(*props);
+	state["this"] = this;
 
 	auto intBin = Game::getBin().interactables.at(type);
 	if (Game::getBin().scripts.count(intBin.scriptPath) != 0) {
 		auto bc = Game::getBin().scripts[intBin.scriptPath].bytecode;
-		auto result = lua.safe_script(bc);
+		auto result = state.safe_script(bc, &sol::script_pass_on_error);
+		// auto unsafe_result = state.unsafe_script(bc);
+
 		if (!result.valid()) {
-			printf("uh oh. \n");
-			return;
+			sol::error error = result;
+			std::cout << error.what() << std::endl;
+		}
+		if (result.status() != sol::call_status::ok) {
+			printf("uh oh: %i \n", result.status());
 		}
 
-		if (lua["interact"].valid()) {
-			lua["interact"].call<void>();
+		if (state["interact"].valid()) {
+			sol::protected_function f(state["interact"]);
+			auto func_result = f();
+			if (!func_result.valid()) {
+				sol::error error = func_result;
+				std::cout << error.what() << std::endl;
+			}
 		}
 	}
 }

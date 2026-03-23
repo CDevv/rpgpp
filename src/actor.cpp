@@ -1,13 +1,16 @@
 #include "actor.hpp"
 #include "game.hpp"
 #include "gamedata.hpp"
+#include "tileset.hpp"
 #include <cassert>
 #include <cstdint>
+#include <cstdio>
 #include <functional>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
 #include <raymath.h>
+#include <stdexcept>
 #include <utility>
 using json = nlohmann::json;
 
@@ -117,7 +120,7 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
 				  (atlasTileSize.y * RPGPP_DRAW_MULTIPLIER) / 2};
 }
 
-Actor::Actor(ActorBin bin) {
+Actor::Actor(const ActorBin &bin) {
 	this->sourcePath = bin.name;
 	this->position = Vector2{0, 0};
 
@@ -261,8 +264,20 @@ void Actor::update() {
 		frameCounter = 0;
 		currentFrame++;
 
-		if (currentFrame >= this->getAnimationCount())
-			currentFrame = 0;
+		if (tempAnimIsPlayed) {
+			printf("%i \n", currentFrame);
+		}
+
+		if (currentFrame >= this->getAnimationCount()) {
+			if (currentFrame >= this->getAnimationCount()) {
+
+				currentFrame = 0;
+				if (tempAnimIsPlayed) {
+					currentAnimation = lastAnimation;
+					tempAnimIsPlayed = false;
+				}
+			}
+		}
 
 		this->setAnimationFrame(currentFrame);
 	}
@@ -328,8 +343,16 @@ void Actor::setTilePosition(Vector2 newPosition, Vector2 tileSize) {
 		Vector2{newPosition.x * tileSize.x * RPGPP_DRAW_MULTIPLIER,
 				newPosition.y * tileSize.y * RPGPP_DRAW_MULTIPLIER};
 
+	float xDiff = 0;
+	if ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) >
+		(tileSize.x * RPGPP_DRAW_MULTIPLIER)) {
+		xDiff = ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) -
+				 (tileSize.x * RPGPP_DRAW_MULTIPLIER)) /
+				2;
+	}
+
 	auto resultVector =
-		Vector2{absolutePos.x,
+		Vector2{absolutePos.x - xDiff,
 				absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) -
 								 (tileSize.y * RPGPP_DRAW_MULTIPLIER))};
 	this->position = resultVector;
@@ -389,6 +412,20 @@ void Actor::addAnimationFrames(const Direction id,
 	}
 }
 
+void Actor::playAnimation(Direction id) {
+	printf("playing.. %i\n", static_cast<int>(id));
+
+	this->lastAnimation = currentAnimation;
+	this->tempAnimIsPlayed = true;
+
+	this->currentAnimation = id;
+	this->currentFrame = -1;
+
+	frameCounter = (60 / frameSpeed);
+}
+
+bool Actor::isTempAnimationPlaying() { return tempAnimIsPlayed; }
+
 void Actor::changeAnimation(Direction id) {
 	if (this->currentAnimation != id) {
 		this->currentFrame = 0;
@@ -421,3 +458,25 @@ std::string Actor::getTileSetSource() const { return tileSetSource; }
 Rectangle Actor::getCollisionRect() const { return collisionRect; }
 
 void Actor::setCollisionRect(Rectangle rect) { this->collisionRect = rect; }
+
+Vector2 calcActorTilePos(Vector2 newPosition, Vector2 worldTileSize,
+						 TileSet *tileSet) {
+	Vector2 actorTileSize = tileSet->getTileSize();
+	auto absolutePos =
+		Vector2{newPosition.x * worldTileSize.x * RPGPP_DRAW_MULTIPLIER,
+				newPosition.y * worldTileSize.y * RPGPP_DRAW_MULTIPLIER};
+
+	float xDiff = 0;
+	if ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) >
+		(worldTileSize.x * RPGPP_DRAW_MULTIPLIER)) {
+		xDiff = ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) -
+				 (worldTileSize.x * RPGPP_DRAW_MULTIPLIER)) /
+				2;
+	}
+
+	auto resultVector =
+		Vector2{absolutePos.x - xDiff,
+				absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) -
+								 (worldTileSize.y * RPGPP_DRAW_MULTIPLIER))};
+	return resultVector;
+}

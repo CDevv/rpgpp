@@ -165,7 +165,13 @@ Vector2 Prop::getCollisionCenter() const {
 bool Prop::getHasInteractable() const { return hasInteractable; }
 void Prop::setHasInteractable(bool value) { this->hasInteractable = value; }
 
-Interactable *Prop::getInteractable() const { return interactable.get(); }
+Interactable *Prop::getInteractable() const {
+	if (hasInteractable) {
+		return interactable.get();
+	} else {
+		return nullptr;
+	}
+}
 
 std::string Prop::getInteractableType() const {
 	return interactable->getType();

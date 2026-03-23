@@ -18,9 +18,11 @@
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/toolbox.hpp"
 #include <memory>
+
 RoomFileView::RoomFileView() {
 	RoomTool a;
 	TranslationService &ts = Editor::instance->getTranslations();
+	HotkeyService &hks = Editor::instance->getHotkeyService();
 
 	roomView = RoomView::create();
 	roomView->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W),
@@ -57,6 +59,7 @@ RoomFileView::RoomFileView() {
 	layerChoose->addItem("Collisions");
 	layerChoose->addItem("Interactables");
 	layerChoose->addItem("Props");
+	layerChoose->addItem("Actors");
 	layerChoose->setSelectedItemByIndex(0);
 	widgetContainer.push_back(layerChoose);
 
@@ -131,17 +134,29 @@ RoomFileView::RoomFileView() {
 	toolbox->getHorizontalScrollbar()->setPolicy(
 		tgui::Scrollbar::Policy::Never);
 	toolbox->setSize({TextFormat("100%% - %d", RIGHT_PANEL_W), TOOLBOX_H});
-	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_NONE, "Mouse",
-										   "tool_none.png"});
-	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_PLACE,
-										   "Place", "tool_place.png"});
-	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_ERASE,
-										   "Erase", "tool_erase.png"});
-	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_EDIT, "Edit",
-										   "tool_edit.png"});
-	toolbox->addTool(ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_STARTPOINT,
-										   "Start Point",
-										   "tool_startpoint.png"});
+
+	std::vector<std::pair<std::string, ToolboxItem<RoomTool>>> tools = {
+		{"room_tool.mouse", ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_NONE,
+												  "Mouse", "tool_none.png"}},
+		{"room_tool.pen", ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_PLACE,
+												"Place", "tool_place.png"}},
+		{"room_tool.eraser", ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_ERASE,
+												   "Erase", "tool_erase.png"}},
+		{"room_tool.edit", ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_EDIT,
+												 "Edit", "tool_edit.png"}},
+		{"room_tool.set_spoint",
+		 ToolboxItem<RoomTool>{"tool", RoomTool::TOOL_STARTPOINT, "Start Point",
+							   "tool_startpoint.png"}}};
+
+	for (auto &[k, tool] : tools) {
+		auto capturedTool = tool;
+		toolbox->addTool(tool);
+		hotkeyEntries.push_back(
+			hks.registerHotkeyCallback(k, [this, capturedTool, toolbox]() {
+				if (fileViewFocused)
+					toolbox->selectTool(capturedTool);
+			}));
+	}
 
 	auto brushToggle = tgui::CheckBox::create();
 	bindTranslation<tgui::CheckBox>(brushToggle,
@@ -153,17 +168,32 @@ RoomFileView::RoomFileView() {
 		TOOLBOX_H - toolbox->getRenderer()->getPadding().getTop();
 	brushToggle->setSize({brushToggleSize, brushToggleSize});
 	toolbox->addWidget(brushToggle);
+	hotkeyEntries.push_back(hks.registerHotkeyCallback(
+		"room_tool.toggle_bm", [this, brushToggle]() {
+			if (fileViewFocused)
+				brushToggle->setChecked(!brushToggle->isChecked());
+		}));
 
-	toolbox->onItemClicked([this](ToolboxItem<RoomTool> tool) {
-		tileSetView->setTool(tool.id);
-		roomView->setTool(tool.id);
-		layerVisitor.tool = tool.id;
-		layerVisitor.group->removeAllWidgets();
-		mj::visit(layerVisitor,
-				  static_cast<RoomLayer>(layerChoose->getSelectedItemIndex()));
-		cout << "Selected tool: " << tool.text << endl;
-	});
+	toolbox->onItemClicked(
+		[this](ToolboxItem<RoomTool> tool) { setRoomTool(tool); });
+
 	widgetContainer.push_back(toolbox);
+}
+
+void RoomFileView::setRoomTool(ToolboxItem<RoomTool> tool) {
+	tileSetView->setTool(tool.id);
+	roomView->setTool(tool.id);
+	layerVisitor.tool = tool.id;
+	layerVisitor.group->removeAllWidgets();
+	mj::visit(layerVisitor,
+			  static_cast<RoomLayer>(layerChoose->getSelectedItemIndex()));
+	cout << "Selected tool: " << tool.text << endl;
+}
+RoomFileView::~RoomFileView() {
+	HotkeyService &hks = Editor::instance->getHotkeyService();
+	for (const auto &entry : hotkeyEntries) {
+		hks.unregisterHotkeyCallback(entry);
+	}
 }
 
 void RoomFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {

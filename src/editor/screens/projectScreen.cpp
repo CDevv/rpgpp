@@ -1,5 +1,4 @@
 #include "screens/projectScreen.hpp"
-#include "TGUI/Color.hpp"
 #include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Texture.hpp"
@@ -60,8 +59,22 @@ void ProjectScreen::leftMouseReleased(int x, int y) {
 		 static_cast<float>(y - tabsContainer->getPosition().y)});
 }
 
-void ProjectScreen::bindMenuBar(tgui::MenuBar::Ptr menuBarPtr) {
+void ProjectScreen::bindMenuBarAndHK(tgui::MenuBar::Ptr menuBarPtr) {
 	auto &ts = Editor::instance->getTranslations();
+	auto &hks = Editor::instance->getHotkeyService();
+
+	auto saveAction = [this] {
+		if (!openedFiles.empty()) {
+			tgui::String currentFile = fileTabs->getSelectedId();
+			auto &projectFile = openedFiles.at(currentFile);
+			projectFile->saveFile(projectFile->getFilePath());
+		}
+	};
+
+	auto undoAction = [this] { getCurrentFile().getView().undoAction(); };
+
+	auto redoAction = [this] { getCurrentFile().getView().redoAction(); };
+
 	std::vector<tgui::String> saveFileHierarchy = {
 		ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")};
 	std::vector<tgui::String> undoHierarchy = {ts.getKey("menu.edit._label"),
@@ -69,26 +82,22 @@ void ProjectScreen::bindMenuBar(tgui::MenuBar::Ptr menuBarPtr) {
 	std::vector<tgui::String> redoHierarchy = {ts.getKey("menu.edit._label"),
 											   ts.getKey("menu.edit.redo")};
 	menuBarPtr->setMenuItemEnabled(saveFileHierarchy, true);
-	menuBarPtr->connectMenuItem(saveFileHierarchy, [this] {
-		if (!openedFiles.empty()) {
-			tgui::String currentFile = fileTabs->getSelectedId();
-			auto &projectFile = openedFiles.at(currentFile);
-			projectFile->saveFile(projectFile->getFilePath());
-		}
-	});
+	menuBarPtr->connectMenuItem(saveFileHierarchy, saveAction);
 
 	menuBarPtr->setMenuItemEnabled(undoHierarchy, true);
-	menuBarPtr->connectMenuItem(
-		undoHierarchy, [this] { getCurrentFile().getView().undoAction(); });
+	menuBarPtr->connectMenuItem(undoHierarchy, undoAction);
 
 	menuBarPtr->setMenuItemEnabled(redoHierarchy, true);
-	menuBarPtr->connectMenuItem(
-		redoHierarchy, [this] { getCurrentFile().getView().redoAction(); });
+	menuBarPtr->connectMenuItem(redoHierarchy, redoAction);
+
+	hks.registerHotkeyCallback("save_file", saveAction);
+	hks.registerHotkeyCallback("undo", undoAction);
+	hks.registerHotkeyCallback("redo", redoAction);
 }
 
 void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	if (auto ptr = Editor::instance->getGui().menuBar.lock()) {
-		bindMenuBar(ptr);
+		bindMenuBarAndHK(ptr);
 	}
 
 	// Commentary:
@@ -166,6 +175,9 @@ void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 		}
 	});
 
+	Editor::instance->getHotkeyService().registerHotkeyCallback(
+		"close_tab", [this] { fileTabs->closeCurrentTab(); });
+
 	tabsContainer->add(fileTabs);
 	layout->add(tabsContainer);
 
@@ -207,16 +219,23 @@ void ProjectScreen::addFileView(EngineFileType fileType,
 		projectFile->initUi(fileViewGroup);
 		projectFile->setFilePath(path);
 		tgui::String id = path;
+		focusedFile = id;
+		projectFile->getView().fileViewFocused = true;
 		openedFiles.try_emplace(id, std::move(projectFile));
 	}
 }
 
 void ProjectScreen::switchView(tgui::String id) {
+	if (openedFiles.find(focusedFile) != openedFiles.end())
+		openedFiles.at(focusedFile)->getView().fileViewFocused = false;
+	focusedFile = id;
 	fileViewGroup->removeAllWidgets();
 	openedFiles.at(id)->addWidgets(fileViewGroup);
+	openedFiles.at(id)->getView().fileViewFocused = true;
 }
 
 void ProjectScreen::clearView() {
+	focusedFile = "";
 	fileViewGroup->removeAllWidgets();
 	std::unique_ptr<ProjectFile> empty =
 		fileVisitor->visit(EngineFileType::FILE_EMPTY, ".");

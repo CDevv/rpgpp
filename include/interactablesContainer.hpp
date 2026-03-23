@@ -1,6 +1,7 @@
 #ifndef _RPGPP_INTERACTABLESCONTAINER_H
 #define _RPGPP_INTERACTABLESCONTAINER_H
 
+#include "baseContainer.hpp"
 #include "gamedata.hpp"
 #include "interactable.hpp"
 #include <memory>
@@ -9,27 +10,26 @@
 using json = nlohmann::json;
 
 /** Container of Interactables that is to be used by a [Room](Room.md) */
-class InteractablesContainer {
-  private:
-	/** The vector, containing all Interactables */
-	std::vector<std::unique_ptr<Interactable>> vec;
-	bool interactableExists(int x, int y);
+class InteractablesContainer
+	: public BaseContainer<std::unique_ptr<Interactable>> {
 
   public:
 	/** Empty constructor */
 	InteractablesContainer();
 	/** Add a new Interactable with tile position and type */
-	Interactable *add(int x, int y, const std::string &type);
+	Interactable *add(IVector pos, const std::string &type);
 	/** Add a new Interactable using a bin structure */
 	void addBin(InteractableInRoomBin bin);
+	/** Add a new Interactable using a Vector2 tile position and an interactable
+	 * type in the GameBin */
+	void addBinFromTypename(Vector2 pos, const std::string &type);
 	/** Get an Interactable by its tile position */
-	Interactable *getInt(int x, int y) const;
-	/** Remove an Interactable by its tile position */
-	void removeInteractable(int x, int y);
+	Interactable *getInt(IVector pos);
+	Interactable *getIntVec2(Vector2 pos);
 	/** Change the Interactable's type at the specified tile position */
-	void setInteractableType(int x, int y, const std::string &type);
+	void setInteractableType(IVector pos, const std::string &type);
 	/** Get the vector that contains all Interactables */
-	std::vector<Interactable *> getList() const;
+	std::vector<Interactable *> getList();
 	/** Add interactables from binary structures. */
 	void addBinVector(const std::vector<InteractableInRoomBin> &bin);
 	/** Add interactables from a Room json object. Must contain 'interactables'

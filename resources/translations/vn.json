@@ -27,13 +27,16 @@
 	"screen": {
 		"starting": {
 			"get_started": "Bắt đầu!",
-			"description": "Nhấn vào 'Tạo dự án' để tạo dự án mới, hoặc 'Mở dự án' để mở một dự án!"
+			"description": "Nhấn vào 'Tạo dự án' để tạo dự án mới, hoặc 'Mở dự án' để mở một dự án!",
+			"actions": "Hành động",
+			"recent_projects": "Những dự án gần đây"
 		},
 
 		"options": {
 			"language": "Ngôn ngữ",
 			"theme": "Chủ đề",
-			"theme_notice": "Để áp dụng chủ đề mới, vui lòng khởi động lại phần mềm!"
+			"theme_notice": "Để áp dụng chủ đề mới, vui lòng khởi động lại phần mềm!",
+			"hotkey": "Phím tắt"
 		},
 		"project": {
 			"create_new_resource": "Tạo tài nguyên",
@@ -110,6 +113,9 @@
 	"widget": {
 		"filechooser": {
 			"select_a_file": "Chọn tệp tin"
+		},
+		"hotkey_modifier": {
+			"listening": "Đang nhận phím..."
 		}
 	},
 

@@ -8,6 +8,8 @@
 #include "actions/mapAction.hpp"
 #include "actions/placeTileAction.hpp"
 #include "actions/startPointAction.hpp"
+#include "actor.hpp"
+#include "conversion.hpp"
 #include "editor.hpp"
 #include "enum_visitor/enum_visitor.hpp"
 #include "gamedata.hpp"
@@ -20,6 +22,7 @@
 #include "tileset.hpp"
 #include "views/worldView.hpp"
 #include <cmath>
+#include <cstdlib>
 #include <memory>
 #include <utility>
 
@@ -110,6 +113,7 @@ void RoomView::drawCanvas() {
 							 static_cast<float>(tileMap->getAtlasTileSize())};
 	int worldWidth = static_cast<int>(worldSize.x);
 	int worldHeight = static_cast<int>(worldSize.y);
+	Rectangle overlayRect{0, 0, 0, 0};
 	for (int tileX = 0; tileX < worldWidth; tileX++) {
 		for (int tileY = 0; tileY < worldHeight; tileY++) {
 			auto tile = tileMap->getTile(tileX, tileY);
@@ -125,14 +129,10 @@ void RoomView::drawCanvas() {
 							   0.0f, WHITE);
 			}
 
-			if (tileSetView != nullptr) {
-				handleMode(tileX, tileY);
-			}
-
 			// Draw tile border
 			DrawRectangleLinesEx(destRect, 1.0f, Fade(GRAY, 0.5f));
 			if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
-				DrawRectangleLinesEx(destRect, 2.0f, Fade(GRAY, 0.5f));
+				overlayRect = destRect;
 			}
 		}
 	}
@@ -145,9 +145,9 @@ void RoomView::drawCanvas() {
 	DrawRectangleLinesEx(startTileDestRect, 2.0f, Fade(GREEN, 0.5f));
 
 	// collisions
-	for (auto collision : room->getCollisions().getVector()) {
-		int tileX = static_cast<int>(collision.x);
-		int tileY = static_cast<int>(collision.y);
+	for (auto &[vect, value] : room->getCollisions().getObjects()) {
+		int tileX = static_cast<int>(vect.x);
+		int tileY = static_cast<int>(vect.y);
 
 		Rectangle destRect = getDestRect(tileMap, tileX, tileY);
 
@@ -182,10 +182,30 @@ void RoomView::drawCanvas() {
 	}
 
 	// props
-	for (auto &&prop : room->getProps()) {
-		prop.draw();
+	for (auto &[pos, prop] : room->getProps().getObjects()) {
+		prop->draw();
 	}
 
+	// actors
+	for (auto &[name, actor] : room->getActors().getActors()) {
+		actor->draw();
+		auto actorPos = actor->getPosition();
+		auto tileWidth = actor->getTileSet().getTileWidth();
+		auto textWidth = MeasureText(name.c_str(), 16);
+		int diff = (abs(tileWidth - textWidth) / 2);
+		DrawText(name.c_str(), actorPos.x + diff, actorPos.y, 16, MAROON);
+	}
+
+	// handle hovering
+	for (int tileX = 0; tileX < worldWidth; tileX++) {
+		for (int tileY = 0; tileY < worldHeight; tileY++) {
+			if (tileSetView != nullptr) {
+				handleMode(tileX, tileY);
+			}
+		}
+	}
+
+	DrawRectangleLinesEx(overlayRect, 2.0f, Fade(GRAY, 0.5f));
 	DrawCircleV(getMouseWorldPos(), 1.0f, MAROON);
 }
 
@@ -288,6 +308,29 @@ void RoomView::handlePlaceMode(int x, int y) {
 							   {0.0f, 0.0f}, 0.0f, Fade(WHITE, 0.7f));
 			}
 		} break;
+		case RoomLayer::LAYER_ACTORS: {
+			IVector tileMouse = getTileAtMouse();
+
+			if (IsTextureValid(layerVisitor->actorTexture)) {
+				auto actorTilePos = calcActorTilePos(
+					fromIVector(tileMouse),
+					room->getTileMap()->getTileSet()->getTileSize(),
+					&layerVisitor->chosenActor->getTileSet());
+
+				auto &actorTileSet = layerVisitor->chosenActor->getTileSet();
+				auto actorTileSize = actorTileSet.getTileSize();
+
+				Rectangle source = {0, 0, actorTileSize.x, actorTileSize.y};
+				Rectangle dest = {
+					actorTilePos.x, actorTilePos.y,
+					static_cast<float>(actorTileSize.x * RPGPP_DRAW_MULTIPLIER),
+					static_cast<float>(actorTileSize.y *
+									   RPGPP_DRAW_MULTIPLIER)};
+
+				DrawTexturePro(layerVisitor->actorTexture, source, dest,
+							   Vector2{0.0f, 0.0f}, 0.0f, WHITE);
+			}
+		} break;
 		default:
 			break;
 		}
@@ -335,16 +378,30 @@ void RoomView::handleModePress(tgui::Vector2f pos) {
 				 static_cast<float>(atlasTilePos.y)};
 	data.worldTile = {static_cast<float>(tileMouse.x),
 					  static_cast<float>(tileMouse.y)};
-	if (layer == RoomLayer::LAYER_INTERACTABLES) {
+	switch (layer) {
+	case RoomLayer::LAYER_INTERACTABLES: {
 		data.interactable = GetFileNameWithoutExt(
 			interactableChoose->getSelectedItemId().toStdString().c_str());
 		data.interactableFullPath =
 			interactableChoose->getSelectedItemId().toStdString();
-	} else {
+	} break;
+	case RoomLayer::LAYER_PROPS: {
 		data.interactable = GetFileNameWithoutExt(
 			propChoose->getSelectedItemId().toStdString().c_str());
 		data.interactableFullPath =
 			propChoose->getSelectedItemId().toStdString();
+	} break;
+	case RoomLayer::LAYER_ACTORS: {
+		data.actorName = layerVisitor->actorNameInput->getText().toStdString();
+		data.interactable =
+			GetFileNameWithoutExt(layerVisitor->actorChoose->getSelectedItemId()
+									  .toStdString()
+									  .c_str());
+		data.interactableFullPath =
+			layerVisitor->actorChoose->getSelectedItemId().toStdString();
+	} break;
+	default:
+		break;
 	}
 
 	switch (tool) {
@@ -403,8 +460,9 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 						 static_cast<float>(newTile.y)};
 			data.worldTile = {static_cast<float>(tileMouse.x),
 							  static_cast<float>(tileMouse.y)};
-			data.interactable = static_cast<InteractableType>(
-				interactableChoose->getSelectedItemIndex() + 1);
+			data.interactable =
+				Editor::instance->getProject()->getInteractableNames()
+					[interactableChoose->getSelectedItemId().toStdString()];
 
 			std::unique_ptr<Action> act =
 				std::make_unique<EditTileAction>(data);
@@ -414,14 +472,19 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 	case RoomLayer::LAYER_INTERACTABLES: {
 		IVector tileMouse = getTileAtMouse();
 		layerVisitor->inter =
-			room->getInteractables().getInt(tileMouse.x, tileMouse.y);
+			room->getInteractables().getInt({tileMouse.x, tileMouse.y});
 		layerVisitor->group->removeAllWidgets();
 		mj::visit(*layerVisitor, layer);
 	} break;
 	case RoomLayer::LAYER_PROPS: {
 		IVector tileMouse = getTileAtMouse();
-		layerVisitor->prop = room->getPropAt(
-			{static_cast<float>(tileMouse.x), static_cast<float>(tileMouse.y)});
+		if (room->getProps().objectExistsAtPosition(tileMouse)) {
+			layerVisitor->prop =
+				room->getProps().getObjectAtPosition(tileMouse).get();
+		} else {
+			layerVisitor->prop = nullptr;
+		}
+
 		layerVisitor->group->removeAllWidgets();
 		mj::visit(*layerVisitor, layer);
 	}

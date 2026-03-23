@@ -1,7 +1,7 @@
 #include "game.hpp"
 #include "gamedata.hpp"
+#include "scriptService.hpp"
 #include "soundService.hpp"
-#include <cstdio>
 #include <memory>
 #include <raylib.h>
 #include <sol/forward.hpp>
@@ -18,6 +18,7 @@ std::unique_ptr<InterfaceService> Game::ui =
 std::unique_ptr<ResourceService> Game::resources =
 	std::unique_ptr<ResourceService>{};
 std::unique_ptr<SoundService> Game::sounds = std::unique_ptr<SoundService>{};
+std::unique_ptr<ScriptService> Game::scripts = std::unique_ptr<ScriptService>{};
 
 Game::Game() {
 	if (instance_ == nullptr) {
@@ -43,6 +44,7 @@ void Game::init() {
 	world = std::make_unique<WorldService>();
 	ui = std::make_unique<InterfaceService>();
 	sounds = std::make_unique<SoundService>();
+	scripts = std::make_unique<ScriptService>();
 }
 
 void Game::useBin(const std::string &filePath) {
@@ -50,8 +52,8 @@ void Game::useBin(const std::string &filePath) {
 	usesBin = true;
 
 	for (const auto &[name, data] : gameData->images) {
-		Image image =
-			LoadImageFromMemory(".png", data.data.data(), data.dataSize);
+		Image image = LoadImageFromMemory(data.ext.c_str(), data.data.data(),
+										  data.dataSize);
 		Texture2D texture = LoadTextureFromImage(image);
 		resources->addTexture(name, texture);
 		UnloadImage(image);
@@ -74,6 +76,8 @@ InterfaceService &Game::getUi() { return *ui; }
 
 SoundService &Game::getSounds() { return *sounds; }
 
+ScriptService &Game::getScripts() { return *scripts; }
+
 void Game::update() {
 	sounds->update();
 	world->update();
@@ -89,17 +93,8 @@ void Game::unload() {
 	sounds->unload();
 	world->unload();
 	ui->unload();
+	// NOTE: Without this, we might get segfaults... beware!
+	state.reset();
 }
 
-void lua_opendiag(const std::string &id) {
-	if (Game::getBin().dialogues.count(id) > 0) {
-		auto diag = Game::getBin().dialogues[id];
-		Game::getUi().showDialogue(diag);
-	} else {
-		fprintf(stderr, "This dialogue does not exist: %s \n", id.c_str());
-	}
-}
-
-void Game::setLua(sol::state_view lua) {
-	lua.set_function("opendiag", &lua_opendiag);
-}
+void Game::setLua(sol::state_view lua) { scripts->setLua(lua); }
