@@ -165,6 +165,7 @@ RoomFileView::RoomFileView() {
 		TOOLBOX_H - toolbox->getRenderer()->getPadding().getTop();
 	brushToggle->setSize({brushToggleSize, brushToggleSize});
 	toolbox->addWidget(brushToggle);
+	hotkeyEntries.push_back(hks.registerHotkeyCallback("room_tool.toggle_bm", [this, brushToggle](){brushToggle->setChecked(!brushToggle->isChecked());}));
 
 	toolbox->onItemClicked([this](ToolboxItem<RoomTool> tool) {
 		setRoomTool(tool);
