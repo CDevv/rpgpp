@@ -17,7 +17,6 @@
 
 #include "editor.hpp"
 #include "raylib.h"
-#include "screens/projectScreen.hpp"
 
 FileSystemService::FileSystemService() {
 	editorBaseDir = GetWorkingDirectory();
@@ -52,7 +51,8 @@ void FileSystemService::promptNewProject() {
 		std::string dirPath =
 			newProjectDialog->fileField->getChosenPath().toStdString();
 		if (!title.empty() && !dirPath.empty()) {
-			Project::create(dirPath, title);
+			auto path = Project::create(dirPath, title);
+			Project::openProject(path, true);
 		}
 		newProjectDialog->window->close();
 	});
@@ -63,9 +63,7 @@ void FileSystemService::promptOpenProject() {
 	files->setFileTypeFilters({{"RPG++ Project", {"*.rpgpp"}}});
 
 	files->onFileSelect([](const tgui::String &filePath) {
-		Editor::instance->setProject(filePath.toStdString());
-		Editor::instance->getGui().setScreen(
-			std::make_unique<screens::ProjectScreen>(), false);
+		Project::openProject(filePath);
 	});
 
 	Editor::instance->getGui().gui->add(files);

@@ -1,6 +1,7 @@
 #ifndef _RPGPP_FILESYSTEMSERVICE_H
 #define _RPGPP_FILESYSTEMSERVICE_H
 
+#include "TGUI/String.hpp"
 #include "variant.hpp"
 #include <array>
 #include <memory>

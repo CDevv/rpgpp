@@ -6,6 +6,7 @@
 #include "services/editorGuiService.hpp"
 #include "services/fileSystemService.hpp"
 #include "services/hotkeyService.hpp"
+#include "services/recentProjectService.hpp"
 #include "services/themeService.hpp"
 #include "services/translationService.hpp"
 #include <memory>
@@ -31,6 +32,7 @@ class Editor {
 	ThemeService themeService;
 	EditorGuiService guiService;
 	HotkeyService hotkeyService;
+	RecentProjectService recentProjectService;
 
   public:
 	Editor();
@@ -45,6 +47,7 @@ class Editor {
 	TranslationService &getTranslations();
 	ThemeService &getThemeService();
 	FileSystemService &getFs();
+	RecentProjectService &getRecentProjectService();
 	ConfigurationService &getConfiguration();
 	HotkeyService &getHotkeyService();
 	Project *getProject() const;

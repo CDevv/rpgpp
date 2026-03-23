@@ -33,6 +33,10 @@ HotkeyService &Editor::getHotkeyService() { return hotkeyService; }
 
 Project *Editor::getProject() const { return project.get(); }
 
+RecentProjectService &Editor::getRecentProjectService() {
+	return recentProjectService;
+}
+
 ConfigurationService &Editor::getConfiguration() {
 	return configurationService;
 }

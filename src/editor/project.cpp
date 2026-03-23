@@ -61,7 +61,7 @@ Project::Project(const std::string &path) {
 	UnloadFileText(jsonContent);
 }
 
-void Project::create(const std::string &dirPath, const std::string &title) {
+std::string Project::create(const std::string &dirPath, const std::string &title) {
 	json j = json::object();
 	j["title"] = title;
 	std::string fileContent = j.dump();
@@ -75,9 +75,14 @@ void Project::create(const std::string &dirPath, const std::string &title) {
 	MakeDirectory(
 		std::filesystem::path(dirPath).append("maps").u8string().c_str());
 
-	Editor::instance->setProject(filePath.u8string());
+	return filePath.u8string();
+}
+
+void Project::openProject(const tgui::String &filePath, bool forceSwitch) {
+	Editor::instance->setProject(filePath.toStdString());
+	Editor::instance->getRecentProjectService().enqueue(filePath.toStdString());
 	Editor::instance->getGui().setScreen(
-		std::make_unique<screens::ProjectScreen>(), true);
+		std::make_unique<screens::ProjectScreen>(), forceSwitch);
 }
 
 json Project::toJson() {
