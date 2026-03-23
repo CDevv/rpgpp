@@ -209,6 +209,7 @@ const KeyboardKey tguiToRaylibKey(tguiKey k) {
 	case tguiKey::Unknown:
 		return KEY_NULL;
 	}
+	return KEY_NULL;
 }
 const std::string keyboardKeyToName(KeyboardKey k) {
 	switch (k) {
