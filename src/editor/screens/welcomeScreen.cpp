@@ -66,9 +66,10 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	actionsContainer->add(left);
 
 	const auto actionsLabel = tgui::Label::create("");
-	actionsLabel->setText("Actions");
 	actionsLabel->setTextSize(24);
 	left->add(actionsLabel);
+	bindTranslation<tgui::Label>(actionsLabel, "screen.starting.actions",
+								  &tgui::Label::setText);
 
 	const auto newProjButton = tgui::Button::create();
 	bindTranslation<tgui::Button>(newProjButton, "menu.file.new_project",
@@ -102,7 +103,8 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	right->setAutoLayout(tgui::AutoLayout::Fill);
 
 	const auto recentProjectLabel = tgui::Label::create("");
-	recentProjectLabel->setText("Recent Projects");
+	bindTranslation<tgui::Label>(recentProjectLabel, "screen.starting.recent_projects",
+								  &tgui::Label::setText);
 	recentProjectLabel->setTextSize(24);
 	recentProjectLabel->setAutoLayout(tgui::AutoLayout::Top);
 	right->add(recentProjectLabel);
