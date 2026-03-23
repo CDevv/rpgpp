@@ -558,8 +558,14 @@ void Project::buildProject() {
 	resultPath /= projectTitle;
 #endif
 
-	std::filesystem::copy(baseGamePath, resultPath,
-						  std::filesystem::copy_options::overwrite_existing);
+	try {
+		std::filesystem::copy(
+			baseGamePath, resultPath,
+			std::filesystem::copy_options::overwrite_existing);
+	} catch (const std::exception &) {
+		printf("failed to copy file, aborting...\n");
+		return;
+	}
 
 #ifdef _WIN64
 

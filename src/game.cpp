@@ -2,7 +2,6 @@
 #include "gamedata.hpp"
 #include "scriptService.hpp"
 #include "soundService.hpp"
-#include <cstdio>
 #include <memory>
 #include <raylib.h>
 #include <sol/forward.hpp>
@@ -94,6 +93,8 @@ void Game::unload() {
 	sounds->unload();
 	world->unload();
 	ui->unload();
+	// NOTE: Without this, we might get segfaults... beware!
+	state.reset();
 }
 
 void Game::setLua(sol::state_view lua) { scripts->setLua(lua); }
