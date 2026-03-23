@@ -61,7 +61,8 @@ Project::Project(const std::string &path) {
 	UnloadFileText(jsonContent);
 }
 
-std::string Project::create(const std::string &dirPath, const std::string &title) {
+std::string Project::create(const std::string &dirPath,
+							const std::string &title) {
 	json j = json::object();
 	j["title"] = title;
 	std::string fileContent = j.dump();
@@ -191,7 +192,7 @@ GameData Project::generateStruct() {
 		std::unique_ptr<TileMap> map = std::make_unique<TileMap>(roomPath);
 
 		RoomBin roomBin;
-		roomBin.name = GetFileName(roomPath.c_str());
+		roomBin.name = GetFileNameWithoutExt(roomPath.c_str());
 		roomBin.tileSetName = GetFileName(map->getTileSetSource().c_str());
 		Vector2 worldSize = map->getMaxWorldSize();
 		roomBin.width = static_cast<int>(worldSize.x);
@@ -255,7 +256,7 @@ GameData Project::generateStruct() {
 				nlohmann::json::to_cbor(prop->getInteractable()->getProps());
 			roomBin.props.push_back(pBin);
 		}
-		for (auto &[aName, actor] : room->getActors()) {
+		for (auto &[aName, actor] : room->getActors().getActors()) {
 			ActorInRoomBin aBin;
 			aBin.name = aName;
 			aBin.source = actor->getSourcePath();
@@ -379,7 +380,11 @@ GameData Project::generateStruct() {
 				  static_cast<int>(prop.getCollisionRect().height)};
 		bin.imagePath = std::string(prop.getImagePath());
 		bin.hasInteractable = prop.getHasInteractable();
-		bin.intType = prop.getInteractable()->getType();
+		if (prop.getInteractable() == nullptr) {
+			bin.intType = "";
+		} else {
+			bin.intType = prop.getInteractable()->getType();
+		}
 
 		data.props.push_back(bin);
 	}

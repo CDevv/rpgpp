@@ -1,7 +1,9 @@
 #ifndef _RPGPP_BASECONTAINER_H
 #define _RPGPP_BASECONTAINER_H
 
+#include "conversion.hpp"
 #include "gamedata.hpp"
+#include "raylib.h"
 #include <map>
 #include <stdexcept>
 
@@ -18,6 +20,9 @@ template <typename T> class BaseContainer {
 	void pushObject(IVector pos, T obj) {
 		this->objects.try_emplace(pos, std::move(obj));
 	}
+	void pushObjectVec2(Vector2 pos, T obj) {
+		pushObject(fromVector2(pos), obj);
+	}
 	/** Remove an object existing at a position. */
 	void removeObject(IVector pos) {
 		auto key = this->objects.find(pos);
@@ -25,9 +30,13 @@ template <typename T> class BaseContainer {
 			this->objects.erase(key);
 		}
 	}
+	void removeObjectVec2(Vector2 pos) { removeObject(fromVector2(pos)); }
 	/** Check if an object exists at specified position. */
 	bool objectExistsAtPosition(IVector pos) {
 		return this->objects.find(pos) != this->objects.end();
+	}
+	bool objectExistsAtPositionVec2(Vector2 pos) {
+		return objectExistsAtPosition(fromVector2(pos));
 	}
 	/** Gets the object at a specified IVector Position. */
 	T &getObjectAtPosition(IVector pos) {

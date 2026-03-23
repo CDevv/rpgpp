@@ -20,8 +20,12 @@ class InteractablesContainer
 	Interactable *add(IVector pos, const std::string &type);
 	/** Add a new Interactable using a bin structure */
 	void addBin(InteractableInRoomBin bin);
+	/** Add a new Interactable using a Vector2 tile position and an interactable
+	 * type in the GameBin */
+	void addBinFromTypename(Vector2 pos, const std::string &type);
 	/** Get an Interactable by its tile position */
 	Interactable *getInt(IVector pos);
+	Interactable *getIntVec2(Vector2 pos);
 	/** Change the Interactable's type at the specified tile position */
 	void setInteractableType(IVector pos, const std::string &type);
 	/** Get the vector that contains all Interactables */

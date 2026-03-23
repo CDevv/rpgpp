@@ -8,6 +8,8 @@
 class PropsContainer : public BaseContainer<std::unique_ptr<Prop>> {
   public:
 	PropsContainer() = default;
+	void addProp(Vector2 pos, const std::string &type);
+	Prop *getPropAt(Vector2 pos);
 };
 
 #endif

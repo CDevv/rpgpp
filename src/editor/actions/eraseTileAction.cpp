@@ -23,9 +23,9 @@ void EraseTileAction::execute() {
 		data.room->getProps().removeObject(fromVector2(data.worldTile));
 	} break;
 	case RoomLayer::LAYER_ACTORS: {
-		for (auto &&a : data.room->getActors()) {
+		for (auto &&a : data.room->getActors().getActors()) {
 			if (Vector2Equals(a.second->getTilePosition(), data.worldTile)) {
-				data.room->getActors().erase(a.first);
+				data.room->getActors().getActors().erase(a.first);
 				break;
 			}
 		}

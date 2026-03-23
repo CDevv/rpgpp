@@ -36,7 +36,7 @@ Room::Room() {
 	this->collisions = std::make_unique<CollisionsContainer>();
 	this->props = std::make_unique<PropsContainer>();
 	this->tileMap = std::unique_ptr<TileMap>{};
-	this->actors = std::map<std::string, std::unique_ptr<Actor>>{};
+	this->actors = std::make_unique<ActorContainer>();
 	this->player = std::unique_ptr<Player>{};
 }
 
@@ -63,7 +63,7 @@ Room::Room(const std::string &fileName, int tileSize) {
 
 	this->interactables = std::make_unique<InteractablesContainer>();
 	this->collisions = std::make_unique<CollisionsContainer>();
-	this->actors = std::map<std::string, std::unique_ptr<Actor>>{};
+	this->actors = std::make_unique<ActorContainer>();
 	this->props = std::make_unique<PropsContainer>();
 
 	this->tileMap = std::make_unique<TileMap>(fileName);
@@ -116,7 +116,7 @@ Room::Room(const std::string &fileName, int tileSize) {
 		a->setTilePosition(
 			Vector2{static_cast<float>(x), static_cast<float>(y)},
 			tileMap->getTileSet()->getTileSize());
-		actors[value.at("name")] = std::move(a);
+		actors->getActors()[value.at("name")] = std::move(a);
 	}
 
 	interactables->addJsonData(roomJson.at("interactables"));
@@ -133,7 +133,7 @@ Room::Room(const RoomBin &bin) : Room() {
 
 	this->interactables = std::make_unique<InteractablesContainer>();
 	this->collisions = std::make_unique<CollisionsContainer>();
-	this->actors = std::map<std::string, std::unique_ptr<Actor>>{};
+	this->actors = std::make_unique<ActorContainer>();
 	this->props = std::make_unique<PropsContainer>();
 
 	this->tileMap = std::make_unique<TileMap>(bin);
@@ -188,7 +188,7 @@ Room::Room(const RoomBin &bin) : Room() {
 					Vector2{static_cast<float>(actorSource.tilePos.x),
 							static_cast<float>(actorSource.tilePos.y)},
 					tileMap->getTileSet()->getTileSize());
-				actors[actorSource.name] = std::move(a);
+				actors->getActors()[actorSource.name] = std::move(a);
 				break;
 			}
 		}
@@ -242,7 +242,7 @@ json Room::dumpJson() {
 	}
 
 	auto actorsMap = std::map<std::string, nlohmann::json>{};
-	for (auto &[name, obj] : actors) {
+	for (auto &[name, obj] : actors->getActors()) {
 		std::string key =
 			TextFormat("%i;%i", static_cast<int>(obj->getTilePosition().x),
 					   static_cast<int>(obj->getTilePosition().y));
@@ -269,7 +269,7 @@ json Room::dumpJson() {
 void Room::unload() const {
 	tileMap->unload();
 
-	for (auto &[vect, actor] : actors) {
+	for (auto &[vect, actor] : actors->getActors()) {
 		actor->unload();
 	}
 
@@ -277,7 +277,7 @@ void Room::unload() const {
 }
 
 void Room::update() {
-	for (auto &[vect, actor] : actors) {
+	for (auto &[vect, actor] : actors->getActors()) {
 		actor->update();
 	}
 	player->update();
@@ -328,7 +328,7 @@ void Room::draw() const {
 		}
 	}
 
-	for (auto &[vect, actor] : actors) {
+	for (auto &[vect, actor] : actors->getActors()) {
 		actor->draw();
 	}
 	player->draw();
@@ -378,6 +378,4 @@ InteractablesContainer &Room::getInteractables() const {
 
 PropsContainer &Room::getProps() const { return *this->props; }
 
-std::map<std::string, std::unique_ptr<Actor>> &Room::getActors() {
-	return this->actors;
-}
+ActorContainer &Room::getActors() { return *this->actors; }

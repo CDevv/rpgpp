@@ -112,6 +112,7 @@ void Interactable::interact() {
 	auto &state = Game::getScripts().getState();
 
 	Game::getScripts().addToState(*props);
+	state["this"] = this;
 
 	auto intBin = Game::getBin().interactables.at(type);
 	if (Game::getBin().scripts.count(intBin.scriptPath) != 0) {

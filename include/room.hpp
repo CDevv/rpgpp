@@ -46,7 +46,7 @@ class Room : public ISaveable {
 	/** This Room's TileMap, which contains all placed tiles. */
 	std::unique_ptr<TileMap> tileMap;
 	/** A collection of all Actors in this Room */
-	std::map<std::string, std::unique_ptr<Actor>> actors;
+	std::unique_ptr<ActorContainer> actors;
 	/** This Room's only Player. */
 	std::unique_ptr<Player> player;
 	void updateCamera();
@@ -107,7 +107,7 @@ class Room : public ISaveable {
 	/** Get a reference to the PropsContainer of this Room. */
 	PropsContainer &getProps() const;
 	/** Get a refernece to the collection of Actors. */
-	std::map<std::string, std::unique_ptr<Actor>> &getActors();
+	ActorContainer &getActors();
 };
 
 #endif

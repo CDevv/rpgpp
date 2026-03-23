@@ -70,7 +70,7 @@ void PlaceTileAction::execute() {
 		a->setTilePosition(
 			data.worldTile,
 			data.room->getTileMap()->getTileSet()->getTileSize());
-		data.room->getActors()[data.actorName] = std::move(a);
+		data.room->getActors().getActors()[data.actorName] = std::move(a);
 	} break;
 	default:
 		break;
@@ -92,9 +92,9 @@ void PlaceTileAction::undo() {
 		data.room->getProps().removeObject(fromVector2(data.worldTile));
 	} break;
 	case RoomLayer::LAYER_ACTORS: {
-		for (auto &&a : data.room->getActors()) {
+		for (auto &&a : data.room->getActors().getActors()) {
 			if (Vector2Equals(a.second->getTilePosition(), data.worldTile)) {
-				data.room->getActors().erase(a.first);
+				data.room->getActors().getActors().erase(a.first);
 				break;
 			}
 		}

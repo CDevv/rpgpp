@@ -1,5 +1,7 @@
 #include "worldService.hpp"
 #include "game.hpp"
+#include "room.hpp"
+#include <memory>
 #include <string_view>
 
 WorldService::WorldService() {
@@ -17,17 +19,22 @@ WorldService::WorldService() {
 Room &WorldService::getRoom() const { return *this->room; }
 
 void WorldService::setRoom(const std::string_view &filePath) {
-	for (RoomBin bin : Game::getBin().rooms) {
-		if (bin.name == filePath) {
-			deferRoomChange = true;
-			deferredRoomId = bin.name;
-			break;
-		}
-	}
+	this->room = std::make_unique<Room>(std::string(filePath));
 }
 
 void WorldService::setRoomBin(RoomBin bin) {
 	this->room = std::make_unique<Room>(bin);
+}
+
+void WorldService::setRoomBin(const std::string &roomBin) {
+	for (RoomBin bin : Game::getBin().rooms) {
+		if (bin.name == roomBin) {
+			deferRoomChange = true;
+			deferredRoomId = bin.name;
+			doFadeTransition();
+			break;
+		}
+	}
 }
 
 void WorldService::doFadeTransition() {

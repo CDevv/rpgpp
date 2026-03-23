@@ -23,6 +23,16 @@ struct IVector {
 	bool operator<(const IVector &other) const {
 		return x < other.x || (x == other.x && y < other.y);
 	}
+
+	IVector() = default;
+	IVector(int x, int y) {
+		this->x = x;
+		this->y = y;
+	}
+	IVector(const Vector2 &from) {
+		x = static_cast<int>(from.x);
+		y = static_cast<int>(from.y);
+	}
 };
 
 struct IRect {

@@ -1,5 +1,6 @@
 #include "interactablesContainer.hpp"
 #include "conversion.hpp"
+#include "game.hpp"
 #include "gamedata.hpp"
 #include "interactable.hpp"
 #include "tilemap.hpp"
@@ -7,6 +8,8 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <raylib.h>
+#include <stdexcept>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -36,10 +39,33 @@ void InteractablesContainer::addBin(InteractableInRoomBin bin) {
 	this->pushObject(pos, std::move(std::make_unique<Interactable>(bin)));
 }
 
+void InteractablesContainer::addBinFromTypename(Vector2 pos,
+												const std::string &type) {
+	if (Game::getBin().interactables.count(type) > 0) {
+		auto interactable = Game::getBin().interactables[type];
+		InteractableInRoomBin intBin;
+		intBin.x = static_cast<int>(pos.x);
+		intBin.y = static_cast<int>(pos.y);
+		intBin.type = type;
+		intBin.onTouch = false;
+
+		intBin.propsCbor = interactable.props;
+
+		addBin(intBin);
+	} else {
+		throw std::runtime_error(TextFormat(
+			"This Interactable type does not exist: %s", type.c_str()));
+	}
+}
+
 Interactable *InteractablesContainer::getInt(IVector pos) {
 	if (!this->objectExistsAtPosition(pos))
 		return nullptr;
 	return this->getObjectAtPosition(pos).get();
+}
+
+Interactable *InteractablesContainer::getIntVec2(Vector2 pos) {
+	return getInt(fromVector2(pos));
 }
 
 void InteractablesContainer::setInteractableType(IVector pos,

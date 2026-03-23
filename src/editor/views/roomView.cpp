@@ -22,6 +22,7 @@
 #include "tileset.hpp"
 #include "views/worldView.hpp"
 #include <cmath>
+#include <cstdlib>
 #include <memory>
 #include <utility>
 
@@ -186,8 +187,13 @@ void RoomView::drawCanvas() {
 	}
 
 	// actors
-	for (auto &[name, actor] : room->getActors()) {
+	for (auto &[name, actor] : room->getActors().getActors()) {
 		actor->draw();
+		auto actorPos = actor->getPosition();
+		auto tileWidth = actor->getTileSet().getTileWidth();
+		auto textWidth = MeasureText(name.c_str(), 16);
+		int diff = (abs(tileWidth - textWidth) / 2);
+		DrawText(name.c_str(), actorPos.x + diff, actorPos.y, 16, MAROON);
 	}
 
 	// handle hovering
