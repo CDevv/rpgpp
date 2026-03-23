@@ -25,12 +25,15 @@
   "screen": {
     "starting": {
       "get_started": "Başla!",
-      "description": "'Yeni Proje'ye tıklayarak yeni proje oluşturun, ya da 'Proje Aç' ile birini açın!"
+      "description": "'Yeni Proje'ye tıklayarak yeni proje oluşturun, ya da 'Proje Aç' ile birini açın!",
+      "actions": "Eylemler",
+      "recent_projects": "Son Projeler"
     },
     "options": {
       "language": "Dil",
       "theme": "Tema",
-      "theme_notice": "Tema değiştirdikten sonra düzenleyici yeniden başlatmanız önerilir!"
+      "theme_notice": "Tema değiştirdikten sonra düzenleyici yeniden başlatmanız önerilir!",
+      "hotkey": "Kısayol Tuşu"
     },
     "project": {
       "create_new_resource": "Yeni Kaynak",
@@ -100,6 +103,9 @@
   "widget": {
     "filechooser": {
       "select_a_file": "Dosya Seç"
+    },
+    "hotkey_modifier": {
+      "listening": "Bir tuşa basın..."
     }
   },
   "button": {
