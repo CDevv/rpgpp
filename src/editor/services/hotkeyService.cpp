@@ -36,12 +36,12 @@ const int HotkeyService::pack(Hotkey hk) {
 }
 
 const Hotkey HotkeyService::unpack(int packed) {
-	return {
-		.ctrl = (bool)((packed >> 0) & 1),
-		.shift = (bool)((packed >> 1) & 1),
-		.alt = (bool)((packed >> 2) & 1),
-		.super = (bool)((packed >> 3) & 1),
-		.key = static_cast<KeyboardKey>(packed >> 4),
+	return Hotkey{
+		(bool)((packed >> 0) & 1),
+		(bool)((packed >> 1) & 1),
+		(bool)((packed >> 2) & 1),
+		(bool)((packed >> 3) & 1),
+		static_cast<KeyboardKey>(packed >> 4)
 	};
 }
 

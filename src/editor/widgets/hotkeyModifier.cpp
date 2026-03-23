@@ -1,6 +1,7 @@
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "bindTranslation.hpp"
+#include "editor.hpp"
 #include "raylib.h"
 #include "services/translationService.hpp"
 #include <TGUI/TGUI.hpp>
@@ -465,13 +466,7 @@ void HotkeyModifier::setKey(const std::string &id, KeyboardKey key,
 	}
 	this->button->setText(label);
 
-	hk = {
-		.ctrl = isCtrl,
-		.shift = isShift,
-		.alt = isAlt,
-		.super = isSuper,
-		.key = key,
-	};
+	hk = Hotkey{isCtrl, isShift, isAlt, isSuper, key};
 	this->id = id;
 }
 

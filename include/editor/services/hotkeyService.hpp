@@ -10,11 +10,17 @@
 
 class Editor;
 struct Hotkey {
-	bool ctrl;
-	bool shift;
-	bool alt;
-	bool super;
-	KeyboardKey key;
+	bool ctrl = false;
+	bool shift = false;
+	bool alt = false;
+	bool super = false;
+	KeyboardKey key = KEY_NULL;
+
+	Hotkey& withCtrl(bool is = true) { ctrl = is; return *this; }
+	Hotkey& withShift(bool is = true) { shift = is; return *this; }
+	Hotkey& withAlt(bool is = true) { alt = is; return *this; }
+	Hotkey& withSuper(bool is = true) { super = is; return *this; }
+	Hotkey& withKey(KeyboardKey k) { key = k; return *this; }
 };
 using HotkeyMap = std::unordered_map<std::string, Hotkey>;
 class HotkeyService {
