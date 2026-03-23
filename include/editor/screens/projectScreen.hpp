@@ -47,6 +47,8 @@ class ProjectScreen : public UIScreen {
 	tgui::ContextMenu::Ptr fileContextMenu;
 	tgui::Label::Ptr projectLabel;
 
+	tgui::String focusedFile;
+
   private:
 	void switchView(tgui::String id);
 	void clearView();

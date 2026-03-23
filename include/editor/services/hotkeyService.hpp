@@ -19,15 +19,15 @@ struct Hotkey {
 using HotkeyMap = std::unordered_map<std::string, Hotkey>;
 class HotkeyService {
   private:
-	std::multimap<std::string, std::function<void()>> hotkeysCb;
+	std::map<std::string, std::pair<std::string, std::function<void()>>> hotkeysCb;
 	void write(const std::string &keyId, const std::string &keyStr);
 	HotkeyMap hotkeyMap;
 
   public:
 	HotkeyService();
-	void registerHotkeyCallback(const std::string &keyId,
+	std::string registerHotkeyCallback(const std::string &keyId,
 								std::function<void()> cb);
-	void unregisterHotkeyCallback(const std::string &keyId);
+	void unregisterHotkeyCallback(const std::string &uniqueHkCbId);
 	void addHotkey(const std::string &keyId, const Hotkey &keys);
 	void removeHotkey(const std::string &keyId);
 	const HotkeyMap listHotkeys();

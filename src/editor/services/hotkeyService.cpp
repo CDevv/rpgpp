@@ -1,9 +1,29 @@
 #include "services/hotkeyService.hpp"
 #include "raylib.h"
 #include <iostream>
+#include <random>
 #include <string>
-
 HotkeyService::HotkeyService() {}
+
+// It's not true UUID, but it will work in this case
+// https://stackoverflow.com/a/58467162
+std::string get_uuid() {
+    static std::random_device dev;
+    static std::mt19937 rng(dev());
+
+    std::uniform_int_distribution<int> dist(0, 15);
+
+    const char *v = "0123456789abcdef";
+    const bool dash[] = { 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0 };
+
+    std::string res;
+    for (int i = 0; i < 16; i++) {
+        if (dash[i]) res += "-";
+        res += v[dist(rng)];
+        res += v[dist(rng)];
+    }
+    return res;
+}
 
 const int HotkeyService::pack(Hotkey hk) {
 	int k = 0;
@@ -56,13 +76,15 @@ void HotkeyService::deserialize(
 	}
 }
 
-void HotkeyService::registerHotkeyCallback(const std::string &keyId,
+std::string HotkeyService::registerHotkeyCallback(const std::string &keyId,
 										   std::function<void()> cb) {
-	hotkeysCb.insert({keyId, cb});
+	std::string uniqueHkCbId = get_uuid();
+	hotkeysCb[uniqueHkCbId] = {keyId, cb};
+	return uniqueHkCbId;
 }
 
-void HotkeyService::unregisterHotkeyCallback(const std::string &keyId) {
-	hotkeysCb.erase(keyId);
+void HotkeyService::unregisterHotkeyCallback(const std::string &uniqueHkCbId) {
+	hotkeysCb.erase(uniqueHkCbId);
 }
 
 void HotkeyService::addHotkey(const std::string &keyId, const Hotkey &keys) {
@@ -86,9 +108,10 @@ void HotkeyService::fire() {
 		if ((keys.super ^ IsKeyDown(KEY_LEFT_SUPER)))
 			continue;
 		if (IsKeyDown(keys.key)) {
-			auto range = hotkeysCb.equal_range(keyId);
-			for (auto it = range.first; it != range.second; ++it) {
-				it->second();
+			for (auto [_, data] : hotkeysCb) {
+				if (data.first == keyId) {
+					data.second();
+				}
 			}
 		}
 	}

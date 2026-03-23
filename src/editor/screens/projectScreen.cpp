@@ -1,5 +1,4 @@
 #include "screens/projectScreen.hpp"
-#include "TGUI/Color.hpp"
 #include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Texture.hpp"
@@ -220,16 +219,23 @@ void ProjectScreen::addFileView(EngineFileType fileType,
 		projectFile->initUi(fileViewGroup);
 		projectFile->setFilePath(path);
 		tgui::String id = path;
+		focusedFile = id;
+		projectFile->getView().fileViewFocused = true;
 		openedFiles.try_emplace(id, std::move(projectFile));
 	}
 }
 
 void ProjectScreen::switchView(tgui::String id) {
+	if (openedFiles.find(focusedFile) != openedFiles.end())
+		openedFiles.at(focusedFile)->getView().fileViewFocused = false;
+	focusedFile = id;
 	fileViewGroup->removeAllWidgets();
 	openedFiles.at(id)->addWidgets(fileViewGroup);
+	openedFiles.at(id)->getView().fileViewFocused = true;
 }
 
 void ProjectScreen::clearView() {
+	focusedFile = "";
 	fileViewGroup->removeAllWidgets();
 	std::unique_ptr<ProjectFile> empty =
 		fileVisitor->visit(EngineFileType::FILE_EMPTY, ".");
