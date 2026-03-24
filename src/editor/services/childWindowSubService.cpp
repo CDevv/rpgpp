@@ -27,6 +27,5 @@ void ChildWindowSubService::openWindow(const std::string &windowName) {
 
 void ChildWindowSubService::resetAndOpen(const std::string windowName) {
 	this->createWindows();
-	std::cout << windowName << std::endl;
 	this->openWindow(windowName);
 }

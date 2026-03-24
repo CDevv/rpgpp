@@ -35,7 +35,8 @@ void RecentProjectService::save() {
 
 	std::ofstream file(path);
 	if (!file.is_open()) {
-		std::cerr << "Failed to open recent project file for saving" << std::endl;
+		std::cerr << "Failed to open recent project file for saving"
+				  << std::endl;
 		return;
 	}
 

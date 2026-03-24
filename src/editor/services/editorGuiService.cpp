@@ -43,10 +43,6 @@ void EditorGuiService::init() {
 	auto &hks = Editor::instance->getHotkeyService();
 
 	hks.deserialize(cfgs.getField("hotkeys"));
-	auto serialized = hks.serialize();
-	for (auto &[keyId, keyStr] : serialized) {
-		std::cout << keyId << ": " << keyStr << std::endl;
-	}
 
 	this->resetUi();
 	hks.registerHotkeyCallback("toggle_debug",

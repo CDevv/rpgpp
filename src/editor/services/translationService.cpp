@@ -97,7 +97,6 @@ void TranslationService::purgeDeadListeners() {
 		}
 	}
 	for (auto id : toBePurged) {
-		// std::cout << "Purging listener " << id << "\n";
 		removeListener(id);
 	}
 }

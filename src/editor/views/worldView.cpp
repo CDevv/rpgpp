@@ -22,8 +22,6 @@ WorldView::WorldView(const char *typeName, bool initRenderer)
 
 	tgui::Vector2f size = getSize();
 	widgetSize = size;
-	texture =
-		LoadRenderTexture(static_cast<int>(size.x), static_cast<int>(size.y));
 
 	camera = {};
 	camera.offset = Vector2{0, 0};
@@ -35,9 +33,6 @@ WorldView::WorldView(const char *typeName, bool initRenderer)
 }
 
 WorldView::~WorldView() {
-	if (IsRenderTextureValid(texture)) {
-		UnloadRenderTexture(texture);
-	}
 }
 
 WorldView::Ptr WorldView::create() { return std::make_shared<WorldView>(); }
@@ -55,7 +50,38 @@ tgui::Widget::Ptr WorldView::clone() const {
 }
 
 void WorldView::setSize(const tgui::Layout2d &size) {
-	tgui::CanvasRaylib::setSize(size);
+	CanvasBase::setSize(size);
+    const tgui::Vector2f newSize = getSize();
+
+    if ((newSize.x > 0) && (newSize.y > 0))
+    {
+        const tgui::Vector2u newTextureSize{newSize};
+        // if ((m_textureSize.x < newTextureSize.x) || (m_textureSize.y < newTextureSize.y))
+        {
+            if (m_textureTarget.id > 0)
+            {
+                // The m_backendTexture is using the exact same texture as our render target (due to the call to replaceInternalTexture).
+                // To prevent the texture from being freed twice, we shouldn't let UnloadRenderTexture delete the texture.
+                m_textureTarget.texture.id = 0;
+                UnloadRenderTexture(m_textureTarget);
+            }
+            TGUI_ASSERT(tgui::isBackendSet() && tgui::getBackend()->hasRenderer()
+                            && std::dynamic_pointer_cast<tgui::BackendRendererRaylib>(tgui::getBackend()->getRenderer()),
+                        "CanvasRaylib can only be used when using the Raylib backend renderer");
+
+            m_textureTarget = LoadRenderTexture(static_cast<int>(newTextureSize.x), static_cast<int>(newTextureSize.y));
+
+            // Move the ownership of the texture to our backend texture
+            m_backendTexture->replaceInternalTexture(m_textureTarget.texture);
+
+            if (m_textureTarget.id)
+                m_textureSize = newTextureSize;
+            else
+                m_textureSize = {};
+        }
+
+        m_usedTextureSize = newTextureSize;
+    }
 }
 
 bool WorldView::isMouseOnWidget(tgui::Vector2f pos) const {
@@ -125,26 +151,8 @@ void WorldView::keyPressed(const tgui::Event::KeyEvent &event) {
 
 bool WorldView::canGainFocus() const { return true; }
 
-void WorldView::resetRender() {
-	tgui::Vector2f newSize = getSize();
-	m_textureTarget = LoadRenderTexture(static_cast<int>(newSize.x),
-										static_cast<int>(newSize.y));
-	m_backendTexture->replaceInternalTexture(m_textureTarget.texture);
-	if (m_textureTarget.id) {
-		m_textureSize = tgui::Vector2u{newSize};
-	} else {
-		m_textureSize = {};
-	}
-	m_usedTextureSize = tgui::Vector2u{newSize};
-}
-
 void WorldView::update() {
 	mouseMiddleButton = IsMouseButtonDown(MOUSE_MIDDLE_BUTTON);
-
-	if (widgetSize != getSize()) {
-		widgetSize = getSize();
-		resetRender();
-	}
 
 	BeginTextureMode(m_textureTarget);
 
