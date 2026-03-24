@@ -18,8 +18,10 @@ class Project {
 
   public:
 	Project(const std::string &path);
-	static std::string create(const std::string &dirPath, const std::string &title);
-	static void openProject(const tgui::String &filePath, bool forceSwitch = false);
+	static std::string create(const std::string &dirPath,
+							  const std::string &title);
+	static void openProject(const tgui::String &filePath,
+							bool forceSwitch = false);
 	json toJson();
 	std::string &getTitle();
 	std::string &getBasePath();

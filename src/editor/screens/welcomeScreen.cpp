@@ -69,7 +69,7 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	actionsLabel->setTextSize(24);
 	left->add(actionsLabel);
 	bindTranslation<tgui::Label>(actionsLabel, "screen.starting.actions",
-								  &tgui::Label::setText);
+								 &tgui::Label::setText);
 
 	const auto newProjButton = tgui::Button::create();
 	bindTranslation<tgui::Button>(newProjButton, "menu.file.new_project",
@@ -103,8 +103,9 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	right->setAutoLayout(tgui::AutoLayout::Fill);
 
 	const auto recentProjectLabel = tgui::Label::create("");
-	bindTranslation<tgui::Label>(recentProjectLabel, "screen.starting.recent_projects",
-								  &tgui::Label::setText);
+	bindTranslation<tgui::Label>(recentProjectLabel,
+								 "screen.starting.recent_projects",
+								 &tgui::Label::setText);
 	recentProjectLabel->setTextSize(24);
 	recentProjectLabel->setAutoLayout(tgui::AutoLayout::Top);
 	right->add(recentProjectLabel);
@@ -112,13 +113,13 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	const auto recentProject = tgui::ListBox::create();
 	recentProject->setAutoLayout(tgui::AutoLayout::Fill);
 
-	for (auto i : Editor::instance->getRecentProjectService().getRecentProjects()) {
+	for (auto i :
+		 Editor::instance->getRecentProjectService().getRecentProjects()) {
 		recentProject->addItem(i);
 	}
 
-	recentProject->onItemSelect([this](const tgui::String& path) {
-		Project::openProject(path);
-	});
+	recentProject->onItemSelect(
+		[this](const tgui::String &path) { Project::openProject(path); });
 
 	right->add(recentProject);
 

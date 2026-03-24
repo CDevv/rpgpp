@@ -62,9 +62,8 @@ void FileSystemService::promptOpenProject() {
 	auto files = tgui::FileDialog::create();
 	files->setFileTypeFilters({{"RPG++ Project", {"*.rpgpp"}}});
 
-	files->onFileSelect([](const tgui::String &filePath) {
-		Project::openProject(filePath);
-	});
+	files->onFileSelect(
+		[](const tgui::String &filePath) { Project::openProject(filePath); });
 
 	Editor::instance->getGui().gui->add(files);
 }
