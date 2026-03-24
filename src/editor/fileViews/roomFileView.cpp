@@ -187,7 +187,6 @@ void RoomFileView::setRoomTool(ToolboxItem<RoomTool> tool) {
 	layerVisitor.group->removeAllWidgets();
 	mj::visit(layerVisitor,
 			  static_cast<RoomLayer>(layerChoose->getSelectedItemIndex()));
-	cout << "Selected tool: " << tool.text << endl;
 }
 RoomFileView::~RoomFileView() {
 	HotkeyService &hks = Editor::instance->getHotkeyService();
