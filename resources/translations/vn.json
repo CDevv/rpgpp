@@ -33,10 +33,28 @@
 		},
 
 		"options": {
-			"language": "Ngôn ngữ",
-			"theme": "Chủ đề",
-			"theme_notice": "Để áp dụng chủ đề mới, vui lòng khởi động lại phần mềm!",
-			"hotkey": "Phím tắt"
+			"general": {
+				"_label": "Chung",
+				"language": "Ngôn ngữ",
+				"theme": "Chủ đề",
+				"theme_notice": "Để áp dụng chủ đề mới, vui lòng khởi động lại phần mềm!"
+			},
+			"hotkeys": {
+				"_label": "Phím Tắt",
+				"close_tab": "Đóng Tab",
+				"new_project": "Tạo dự án",
+				"open_project": "Mở dự án",
+				"undo": "Hoàn tác",
+				"redo": "Làm lại",
+				"save_file": "Lưu tệp",
+				"toggle_debug": "Bật/tắt gỡ lỗi",
+				"room_tool.edit": "Công cụ Phòng/Chỉnh sửa",
+				"room_tool.eraser": "Công cụ Phòng/Tẩy",
+				"room_tool.mouse": "Công cụ Phòng/Chuột",
+				"room_tool.pen": "Công cụ Phòng/Bút",
+				"room_tool.set_spoint": "Công cụ Phòng/Đặt điểm bắt đầu",
+				"room_tool.toggle_bm": "Công cụ Phòng/Bật tắt chế độ cọ lông"
+			}
 		},
 		"project": {
 			"create_new_resource": "Tạo tài nguyên",

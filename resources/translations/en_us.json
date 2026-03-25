@@ -30,10 +30,28 @@
 			"recent_projects": "Recent Projects"
 		},
 		"options": {
-			"language": "Language",
-			"theme": "Theme",
-			"theme_notice": "It is recommended to restart the editor after switching theme!",
-			"hotkey": "Hotkey"
+			"general": {
+				"_label": "General",
+				"language": "Language",
+				"theme": "Theme",
+				"theme_notice": "It is recommended to restart the editor after switching theme!"
+			},
+			"hotkeys": {
+				"_label": "Hotkeys",
+				"close_tab": "Close Tab",
+				"new_project": "New Project",
+				"open_project": "Open Project",
+				"undo": "Undo",
+				"redo": "Redo",
+				"save_file": "Save File",
+				"toggle_debug": "Toggle Debug",
+				"room_tool.edit": "Room Tool/Edit",
+				"room_tool.eraser": "Room Tool/Eraser",
+				"room_tool.mouse": "Room Tool/Mouse",
+				"room_tool.pen": "Room Tool/Pen",
+				"room_tool.set_spoint": "Room Tool/Set Start Point",
+				"room_tool.toggle_bm": "Room Tool/Toggle Brush Mode"
+			}
 		},
 		"project": {
 			"create_new_resource": "New Resource",

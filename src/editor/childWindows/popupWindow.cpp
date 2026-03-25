@@ -24,8 +24,8 @@ void PopupWindow::open() {
 
 	Editor::instance->getGui().gui->add(this->currentWindow);
 	// pop-up in the center of the screen.
-	this->currentWindow->setOrigin({0.5, 0.5});
-	this->currentWindow->setPosition({"50%", "50%"});
+	this->currentWindow->setPosition("(parent.innersize - size) / 2");
+	;
 	this->currentWindow->showWithEffect(ANIMATION_TYPE,
 										tgui::Duration(ANIMATION_DURATION));
 	this->windowIsOpen = true;
