@@ -50,38 +50,7 @@ tgui::Widget::Ptr WorldView::clone() const {
 }
 
 void WorldView::setSize(const tgui::Layout2d &size) {
-	CanvasBase::setSize(size);
-    const tgui::Vector2f newSize = getSize();
-
-    if ((newSize.x > 0) && (newSize.y > 0))
-    {
-        const tgui::Vector2u newTextureSize{newSize};
-        // if ((m_textureSize.x < newTextureSize.x) || (m_textureSize.y < newTextureSize.y))
-        {
-            if (m_textureTarget.id > 0)
-            {
-                // The m_backendTexture is using the exact same texture as our render target (due to the call to replaceInternalTexture).
-                // To prevent the texture from being freed twice, we shouldn't let UnloadRenderTexture delete the texture.
-                m_textureTarget.texture.id = 0;
-                UnloadRenderTexture(m_textureTarget);
-            }
-            TGUI_ASSERT(tgui::isBackendSet() && tgui::getBackend()->hasRenderer()
-                            && std::dynamic_pointer_cast<tgui::BackendRendererRaylib>(tgui::getBackend()->getRenderer()),
-                        "CanvasRaylib can only be used when using the Raylib backend renderer");
-
-            m_textureTarget = LoadRenderTexture(static_cast<int>(newTextureSize.x), static_cast<int>(newTextureSize.y));
-
-            // Move the ownership of the texture to our backend texture
-            m_backendTexture->replaceInternalTexture(m_textureTarget.texture);
-
-            if (m_textureTarget.id)
-                m_textureSize = newTextureSize;
-            else
-                m_textureSize = {};
-        }
-
-        m_usedTextureSize = newTextureSize;
-    }
+	tgui::CanvasRaylib::setSize(size);
 }
 
 bool WorldView::isMouseOnWidget(tgui::Vector2f pos) const {
