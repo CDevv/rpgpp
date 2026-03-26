@@ -50,6 +50,7 @@ void FileInitVisitor::tileset(NewFileDialog::Ptr dialog) {
 	dialog->confirmButton->onPress([dialog] {
 		std::string title = dialog->titleField->getText().toStdString();
 		std::string filePath = dialog->fileField->getChosenPath().toStdString();
+		filePath = TextFormat("images/%s", GetFileName(filePath.c_str()));
 		if (!title.empty() && !filePath.empty()) {
 			dialog->window->close();
 
@@ -74,6 +75,7 @@ void FileInitVisitor::room(NewFileDialog::Ptr dialog) {
 	dialog->confirmButton->onPress([dialog] {
 		std::string title = dialog->titleField->getText().toStdString();
 		std::string filePath = dialog->fileField->getChosenPath().toStdString();
+		filePath = TextFormat("tilesets/%s", GetFileName(filePath.c_str()));
 		if (!title.empty() && !filePath.empty()) {
 			std::unique_ptr<TileSet> tileSet =
 				std::make_unique<TileSet>(filePath);
@@ -84,7 +86,7 @@ void FileInitVisitor::room(NewFileDialog::Ptr dialog) {
 				std::make_unique<Room>(std::move(tileMap));
 
 			std::string newFilePath =
-				TextFormat("maps/%s.tiles", title.c_str());
+				TextFormat("maps/%s.rtiles", title.c_str());
 			nlohmann::json fileJson = room->dumpJson();
 			SaveFileText(newFilePath.c_str(), fileJson.dump().c_str());
 
@@ -105,6 +107,7 @@ void FileInitVisitor::actor(NewFileDialog::Ptr dialog) {
 	dialog->confirmButton->onPress([dialog] {
 		std::string title = dialog->titleField->getText().toStdString();
 		std::string filePath = dialog->fileField->getChosenPath().toStdString();
+		filePath = TextFormat("tilesets/%s", GetFileName(filePath.c_str()));
 		if (!title.empty() && !filePath.empty()) {
 			std::unique_ptr<TileSet> tileSet =
 				std::make_unique<TileSet>(filePath);
@@ -135,6 +138,7 @@ void FileInitVisitor::prop(NewFileDialog::Ptr dialog) {
 	dialog->confirmButton->onPress([dialog] {
 		std::string title = dialog->titleField->getText().toStdString();
 		std::string filePath = dialog->fileField->getChosenPath().toStdString();
+		filePath = TextFormat("images/%s", GetFileName(filePath.c_str()));
 		if (!title.empty() && !filePath.empty()) {
 			std::unique_ptr<Prop> prop =
 				std::make_unique<Prop>(Rectangle{0, 0, 16, 16}, Vector2{0, 0});
