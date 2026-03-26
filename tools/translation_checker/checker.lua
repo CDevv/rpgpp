@@ -68,7 +68,7 @@ local function _CompareTranslation(base, target, filename)
 	table.sort(untranslated)
 
 	if #missing ~= 0 then
-		print("\n" .. "Missing keys:")
+		print("\n" .. "Missing keys (should be added):")
 		for _, k in ipairs(missing) do
 			print(" - " .. k)
 		end
@@ -82,7 +82,7 @@ local function _CompareTranslation(base, target, filename)
 	end
 
 	if #extra ~= 0 then
-		print("\n" .. "Extra keys:")
+		print("\n" .. "Extra keys (should be removed):")
 		for _, k in ipairs(extra) do
 			print(" - " .. k)
 		end

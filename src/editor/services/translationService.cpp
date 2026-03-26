@@ -28,48 +28,59 @@ static void flattenJson(const json &j,
 	}
 }
 
+void TranslationService::loadTranslation(const std::string &langKey) {
+	if (translations.find(langKey) != translations.end())
+		return;
+	const auto directory_entry = translationFiles.at(langKey);
+	ifstream file(directory_entry.path());
+	json parsed = json::parse(file);
+
+	std::map<std::string, std::string, std::less<>> translated;
+	flattenJson(parsed, translated);
+	this->translations.try_emplace(langKey,
+								   std::move(translated));
+}
+
+void TranslationService::unloadTranslation(const std::string &langKey) {
+	if (langKey == DEFAULT_LANGUAGE)
+		return;
+	this->translations.erase(langKey);
+}
+
 TranslationService::TranslationService(Editor *editor_ptr) {
+	auto languageInOptions = editor_ptr->getConfiguration().getStringValue("language");
 	for (auto const &directory_entry : filesystem::directory_iterator(
 			 editor_ptr->getFs().getResourcePath(TRANSLATION_FILE_LOCATION))) {
 		// add the translation to the translations map.
 		if (directory_entry.path().extension() != ".json")
 			continue;
+		const std::string langKey = directory_entry.path().stem().string();
+		auto [it, inserted] = translationFiles.try_emplace(langKey, directory_entry);
 
-		ifstream file(directory_entry.path());
-		json parsed = json::parse(file);
+		const auto &entry = it->second;
+		ifstream file(entry.path());
+		json parsedEntry = json::parse(file);
+		langKeyToName.try_emplace(langKey, parsedEntry.at("language").get<std::string>());
 
-		std::map<std::string, std::string, std::less<>> translated;
-		flattenJson(parsed, translated);
-		this->translations.try_emplace(directory_entry.path().stem().string(),
-									   std::move(translated));
-	}
-	this->current_language =
-		editor_ptr->getConfiguration().getStringValue("language");
-}
-
-TranslatedString getKeyWrapper(TranslationService *tr,
-							   const std::string &c_language,
-							   const std::string &key) {
-	if (tr->translations.find(tr->getCurrentLanguage()) !=
-		tr->translations.end()) {
-		map<string, string, less<>> gotten_translations =
-			tr->translations[c_language];
-		if (gotten_translations.find(key) != gotten_translations.end()) {
-			TranslatedString s = TranslatedString{gotten_translations[key]};
-			return s;
+		if (langKey == DEFAULT_LANGUAGE || langKey == languageInOptions) {
+			loadTranslation(langKey);
 		}
-		TranslatedString s =
-			TranslatedString{tr->translations[DEFAULT_LANGUAGE][key]};
-		printf("TRANSLATION WARNING: %s key doesn't exist for language %s\n",
-			   key.c_str(), c_language.c_str());
-		return s;
-	} else {
-		throw std::out_of_range("translation doesn't exist in translations.");
 	}
+	if (translationFiles.find(languageInOptions) != translationFiles.end()) {
+        current_language = languageInOptions;
+    } else {
+        fprintf(stderr, "WARNING: language '%s' not found, falling back to default.\n",
+                languageInOptions.c_str());
+        current_language = DEFAULT_LANGUAGE;
+    }
 }
 
 void TranslationService::setLanguage(const std::string &language) {
+	if (language != current_language) {
+		unloadTranslation(current_language);
+	}
 	current_language = language;
+	loadTranslation(language);
 
 	for (auto &[id, cb] : listeners) {
 		cb(*this, id, false);
@@ -105,27 +116,29 @@ void TranslationService::purgeDeadListeners() {
 // using the provided translation can update itself when translation changes.
 // Otherwise, please use `bindTranslation()` in `bindTranslation.hpp`
 TranslatedString TranslationService::getKey(const std::string &key) {
-	return getKeyWrapper(this, current_language, key);
-}
-
-// @notice Use of getKey is not recommended unless you guarantee that the widget
-// using the provided translation can update itself when translation changes.
-// Otherwise, please use `bindTranslation()` in `bindTranslation.hpp`
-TranslatedString TranslationService::getKey(const std::string &key,
-											const std::string &c_language) {
-	return getKeyWrapper(this, c_language, key);
+	if (translations.find(getCurrentLanguage()) != translations.end()) {
+		const auto& gotten_translations = translations[current_language];
+		if (gotten_translations.find(key) != gotten_translations.end()) {
+			TranslatedString s = TranslatedString{gotten_translations.at(key)};
+			return s;
+		}
+		TranslatedString s =
+			TranslatedString{translations[DEFAULT_LANGUAGE][key]};
+		printf("TRANSLATION WARNING: %s key doesn't exist for language %s\n",
+			   key.c_str(), current_language.c_str());
+		return s;
+	} else {
+		throw std::out_of_range("translation doesn't exist in translations.");
+	}
 }
 
 // NOTE: the whole point of this function, is to retrieve the raw key of a
 // language file like "en_us", from the "language" key in the JSON.
-std::string TranslationService::getLanguageIdentifierByKey(
-	const std::string &language_key) {
+std::string TranslationService::getLanguageIdentifierByKey(const std::string &language_key) {
 	return std::find_if(
-			   this->translations.begin(), this->translations.end(),
-			   [&](std::pair<std::string,
-							 std::map<std::string, std::string, std::less<>>>
-					   entry) {
-				   return entry.second["language"] == language_key;
+			   langKeyToName.begin(), langKeyToName.end(),
+			   [&](std::pair<std::string, std::string> entry) {
+				   return entry.second == language_key;
 			   })
 		->first;
 }

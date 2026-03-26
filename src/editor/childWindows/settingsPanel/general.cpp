@@ -24,22 +24,19 @@ SettingsPanelGeneral::SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer)
 	// Language
 	const auto languageLayout = tgui::HorizontalLayout::create();
 	const auto languageSelector = tgui::ComboBox::create();
-	for (auto [name, key] : ts.translations) {
-		if (auto languageKey = key.find("language"); languageKey != key.end())
-			languageSelector->addItem(languageKey->second);
-		else
-			languageSelector->addItem(name);
+	for (auto [name, key] : ts.langKeyToName) {
+		languageSelector->addItem(key, name);
 	}
 
 	if (const auto langTranslation = ts.getKey("language");
 		languageSelector->contains(langTranslation))
 		languageSelector->setSelectedItem(langTranslation);
 
-	languageSelector->onItemSelect.connect([&](const tgui::String &item) {
+	languageSelector->onItemSelect.connect([&](const tgui::String &item, const tgui::String &id) {
 		ConfigurationService &configService =
 			Editor::instance->getConfiguration();
 		ts.setLanguage(ts.getLanguageIdentifierByKey(item.toStdString()));
-		configService.setStringValue("language", ts.getCurrentLanguage());
+		configService.setStringValue("language", id.toStdString());
 		configService.saveConfiguration();
 
 		// Can't think of a way to reload the menu bar without recreating it

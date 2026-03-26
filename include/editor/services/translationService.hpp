@@ -2,6 +2,7 @@
 #define _RPGPP_TRANSLATION_SERVICE_H
 
 #include <TGUI/String.hpp>
+#include <filesystem>
 #include <functional>
 #include <map>
 #include <string>
@@ -43,23 +44,25 @@ class TranslationService {
 	using Callback = std::function<bool(TranslationService &ts, ListenerID id,
 										bool checkingAlive)>;
 	TranslationService(Editor *editor_ptr);
-	std::map<std::string, std::map<std::string, std::string, std::less<>>,
-			 std::less<>>
-		translations = {};
 	TranslatedString getKey(const std::string &key);
-	TranslatedString getKey(const std::string &key,
-							const std::string &c_language);
 	void setLanguage(const std::string &language);
 	std::string getCurrentLanguage() const { return current_language; }
 	std::string getLanguageIdentifierByKey(const std::string &language_key);
 	ListenerID addListener(Callback cb);
 	void removeListener(ListenerID id);
 	void purgeDeadListeners();
+	std::map<std::string, std::string> langKeyToName = {};
 
   private:
+	std::map<std::string, std::map<std::string, std::string, std::less<>>,
+			 std::less<>>
+		translations = {};
+	std::map<std::string, const filesystem::directory_entry> translationFiles = {};
 	std::string current_language = DEFAULT_LANGUAGE;
 	std::unordered_map<ListenerID, Callback> listeners;
 	ListenerID lastID = 1;
 	void notify();
+	void loadTranslation(const std::string &langKey);
+	void unloadTranslation(const std::string &langKey);
 };
 #endif
