@@ -1,10 +1,7 @@
 #include "services/childWindowSubService.hpp"
-#include "TGUI/Widgets/ChildWindow.hpp"
 #include "childWindows/aboutWindow.hpp"
 #include "childWindows/popupWindow.hpp"
 #include "childWindows/settingsWindow.hpp"
-#include "editor.hpp"
-#include "services/translationService.hpp"
 #include <memory>
 
 ChildWindowSubService::ChildWindowSubService() { this->createWindows(); }
