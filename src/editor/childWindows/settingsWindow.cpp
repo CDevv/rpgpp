@@ -4,7 +4,7 @@
 #include "childWindows/settingsPanel/general.hpp"
 #include "childWindows/settingsPanel/hotkeys.hpp"
 
-SettingsWindow::SettingsWindow(const std::string &title) : PopupWindow(title) {
+SettingsWindow::SettingsWindow() : PopupWindow("SettingsWindow") {
 	this->currentWindow->setSize("540", "360");
 	this->currentWindow->setResizable(true);
 	bindTranslation<tgui::ChildWindow>(this->currentWindow,

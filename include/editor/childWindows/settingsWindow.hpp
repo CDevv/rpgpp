@@ -11,7 +11,7 @@ class SettingsWindow : public PopupWindow {
 	std::shared_ptr<SettingsPanelHotkeys> hotkeys;
 
   public:
-	SettingsWindow(const std::string &title);
+	SettingsWindow();
 };
 
 #endif /* RPGPP_SETTINGSWINDOW_H */
