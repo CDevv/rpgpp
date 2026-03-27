@@ -30,10 +30,28 @@
       "recent_projects": "Son Projeler"
     },
     "options": {
-      "language": "Dil",
-      "theme": "Tema",
-      "theme_notice": "Tema değiştirdikten sonra düzenleyici yeniden başlatmanız önerilir!",
-      "hotkey": "Kısayol Tuşu"
+      "general": {
+        "_label": "Genel",
+        "language": "Dil",
+        "theme": "Tema",
+        "theme_notice": "Tema değiştirdikten sonra düzenleyici yeniden başlatmanız önerilir!"
+      },
+      "hotkeys": {
+        "_label": "Kısayollar",
+        "close_tab": "Sekmeyi Kapat",
+        "new_project": "Yeni Proje",
+        "open_project": "Proje Aç",
+        "undo": "Geri Al",
+        "redo": "Yinele",
+        "save_file": "Dosyayı Kaydet",
+        "toggle_debug": "Hata Ayıklamayı Aç/Kapat",
+        "room_tool.edit": "Harita Araçları/Düzenle",
+        "room_tool.eraser": "Harita Araçları/Sil",
+        "room_tool.mouse": "Harita Araçları/Fare",
+        "room_tool.pen": "Harita Araçları/Kalem",
+        "room_tool.set_spoint": "Harita Araçları/Başlangıç Noktasını Seç",
+        "room_tool.toggle_bm": "Harita Araçları/Fırça Modunu Aç/Kapat"
+      }
     },
     "project": {
       "create_new_resource": "Yeni Kaynak",

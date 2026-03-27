@@ -1,8 +1,11 @@
 #include "childWindows/popupWindow.hpp"
 #include "TGUI/Animation.hpp"
+#include "TGUI/Backend/raylib.hpp"
 #include "TGUI/Duration.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "editor.hpp"
+#include "services/editorGuiService.hpp"
+#include <memory>
 
 constexpr const int ANIMATION_DURATION = 200;
 constexpr const float TITLEBAR_HEIGHT = 30.0f;
@@ -22,10 +25,14 @@ void PopupWindow::open() {
 	if (this->windowIsOpen)
 		return;
 
-	Editor::instance->getGui().gui->add(this->currentWindow);
+	std::unique_ptr<tgui::Gui> &gui = Editor::instance->getGui().gui;
+
+	if (gui->getWidgetIndex(this->currentWindow) == -1)
+		gui->add(this->currentWindow);
+
 	// pop-up in the center of the screen.
-	this->currentWindow->setOrigin({0.5, 0.5});
-	this->currentWindow->setPosition({"50%", "50%"});
+	this->currentWindow->setPosition("(parent.innersize - size) / 2");
+	;
 	this->currentWindow->showWithEffect(ANIMATION_TYPE,
 										tgui::Duration(ANIMATION_DURATION));
 	this->windowIsOpen = true;

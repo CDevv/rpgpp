@@ -30,10 +30,28 @@
 			"recent_projects": "Скорошни проекти"
 		},
 		"options": {
-			"language": "Език",
-			"theme": "Тема",
-			"theme_notice": "Препоръчително е да рестартирате редактора след смяна на темата!",
-			"hotkey": "Бърз клавиш"
+			"general": {
+				"_label": "Общи",
+				"language": "Език",
+				"theme": "Тема",
+				"theme_notice": "Препоръчително е да рестартирате редактора след смяна на темата!"
+			},
+			"hotkeys": {
+				"_label": "Бързи клавиши",
+				"close_tab": "Затвори раздел",
+				"new_project": "Нов проект",
+				"open_project": "Отвори проект",
+				"undo": "Отмени",
+				"redo": "Повтори",
+				"save_file": "Запази файл",
+				"toggle_debug": "Превключи на режим на дебъгване",
+				"room_tool.edit": "Стая/Редактирай",
+				"room_tool.eraser": "Стая/Гума",
+				"room_tool.mouse": "Стая/Показалец",
+				"room_tool.pen": "Стая/Писалка",
+				"room_tool.set_spoint": "Стая/Стартова плочка",
+				"room_tool.toggle_bm": "Стая/Превключи на четка"
+			}
 		},
 		"project": {
 			"create_new_resource": "Нов ресурс",

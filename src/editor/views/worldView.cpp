@@ -32,8 +32,7 @@ WorldView::WorldView(const char *typeName, bool initRenderer)
 	tool = RoomTool::TOOL_NONE;
 }
 
-WorldView::~WorldView() {
-}
+WorldView::~WorldView() {}
 
 WorldView::Ptr WorldView::create() { return std::make_shared<WorldView>(); }
 

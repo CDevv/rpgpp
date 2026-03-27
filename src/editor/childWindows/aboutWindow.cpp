@@ -9,7 +9,7 @@
 #include "editor.hpp"
 #include <string>
 
-AboutWindow::AboutWindow(const std::string &title) : PopupWindow(title) {
+AboutWindow::AboutWindow() : PopupWindow("AboutWindow") {
 	auto layout = tgui::GrowVerticalLayout::create();
 	layout->getRenderer()->setSpaceBetweenWidgets(4.0f);
 
