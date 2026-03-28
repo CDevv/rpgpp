@@ -49,6 +49,7 @@ jobs:
               with:
                   app-id: ${{ secrets.DOC_PUSHER_APP_ID }}
                   private-key: ${{ secrets.DOC_PUSHER_APP_SECRET }}
+                  owner: ${{ github.repository_owner }}
 
             - name: Push to Destination
               run: |
