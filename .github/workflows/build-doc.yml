@@ -50,7 +50,7 @@ jobs:
                   make html
 
             - name: Generate token
-              if: github.repository == ${{ env.REPO }}
+              if: ${{ github.repository == env.REPO }}
               id: generate_token
               uses: actions/create-github-app-token@v3
               with:
@@ -59,8 +59,12 @@ jobs:
                   owner: ${{ github.repository_owner }}
 
             - name: Push to Destination
-              if: github.repository == ${{ env.REPO }}
+              if: ${{ github.repository == env.REPO }}
               run: |
+                  if [[ -z "$(git status -s -uall)" ]]; then
+                      echo "No changes to commit"
+                      exit 0
+                  fi
                   git config --global user.name "github-actions[bot]"
                   git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
