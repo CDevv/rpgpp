@@ -59,5 +59,6 @@ site/
 imgui.ini
 clangd/
 game-src/
+.venv/
 compile_commands.json
 xmake-*.exe
