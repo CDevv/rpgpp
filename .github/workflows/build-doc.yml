@@ -1,0 +1,51 @@
+name: "Build documentations"
+
+on:
+    push:
+        branches: ["main", "docs"]
+    pull_request:
+        branches: ["main", "docs"]
+    workflow_dispatch:
+
+jobs:
+    build-docs:
+        name: "build docs"
+        runs-on: "ubuntu-latest"
+        env:
+            PLATFORM: linux
+            ARCH: x86_64
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+                  submodules: recursive
+
+            - name: Install Python
+              uses: actions/setup-python@v6
+              with:
+                  python-version: "3.13"
+
+            - name: Install packages
+              shell: bash
+              run: |
+                  sudo apt install doxygen
+            - name: Setup Python environment
+              shell: bash
+              run: |
+                  pip install -r requirements.txt
+
+            - name: Build
+              shell: bash
+              run: |
+                  doxygen doxygen.conf
+                  breathe-apidoc -o docs/Dev -m -f build/doxygen/xml
+                  make html
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v6
+              with:
+                  name: linux-build
+                  path: build/html/
+                  if-no-files-found: error
+                  retention-days: ${{ env.RETENTION_DAYS }}
