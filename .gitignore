@@ -58,3 +58,6 @@ clangd/
 game-src/
 compile_commands.json
 xmake-*.exe
+
+# ignore sphinx source
+source/
