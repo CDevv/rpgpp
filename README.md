@@ -1,6 +1,9 @@
 ![logo](readme/logo.png)
 ---
+
 [![Build RPG++](https://github.com/rpgppengine/rpgpp/actions/workflows/build.yml/badge.svg)](https://github.com/rpgppengine/rpgpp/actions/workflows/build.yml)
+[![Build documentations](https://github.com/rpgppengine/rpgpp/actions/workflows/build-doc.yml/badge.svg)](https://github.com/rpgppengine/rpgpp/actions/workflows/build-doc.yml)
+[![CodeQL Advanced](https://github.com/rpgppengine/rpgpp/actions/workflows/codeql.yml/badge.svg)](https://github.com/rpgppengine/rpgpp/actions/workflows/codeql.yml)
 
 RPG++ is an experimental 2D RPG game engine and editor written in C++. It is currently in early development, but contributions are welcome!
 
