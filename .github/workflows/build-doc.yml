@@ -38,6 +38,7 @@ jobs:
             - name: Build
               shell: bash
               run: |
+                  mkdir -p build/
                   doxygen doxygen.conf
                   breathe-apidoc -o docs/Dev -m -f build/doxygen/xml
                   make html
