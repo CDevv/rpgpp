@@ -14,6 +14,7 @@ jobs:
         env:
             PLATFORM: linux
             ARCH: x86_64
+
         steps:
             - name: Checkout repository
               uses: actions/checkout@v6
