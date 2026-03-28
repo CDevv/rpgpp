@@ -72,6 +72,7 @@ doxygen doxygen.conf
 breathe-apidoc -o docs/Dev -m -f build/doxygen/xml
 make html
 ```
+_If the `doxygen` command failed to run, make sure to create an empty `build/` directory in the root of the repo._
 You should see the finalized HTML file at `build/html`
 
 Running the editor
