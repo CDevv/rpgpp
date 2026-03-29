@@ -46,7 +46,7 @@ jobs:
               run: |
                   mkdir -p build/
                   doxygen doxygen.conf
-                  breathe-apidoc -o docs/Dev -m -f build/doxygen/xml
+                  breathe-apidoc -o docs/dev -m -f build/doxygen/xml
                   make html
 
             - name: Generate token
