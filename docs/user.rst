@@ -2,4 +2,4 @@ User Docs
 =========
 
 .. toctree::
-    moduleDirectory/index
+    userapi/index

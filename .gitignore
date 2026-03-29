@@ -36,8 +36,8 @@
 *.ilk
 
 # docs ignores
-docs/Dev
-docs/moduleDirectory
+docs/dev
+docs/userapi
 
 game-src/*/lib/
 /editor

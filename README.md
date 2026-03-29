@@ -33,7 +33,7 @@ Building the RPG++ engine/editor
 1. Clone the project using git with
 
 ```bash
-git clone https://github.com/CDevv/rpgpp
+git clone https://github.com/rpgppengine/rpgpp.git
 ```
 
 2. Build all targets by running and following the instructions if there's one
@@ -72,7 +72,7 @@ pip install -r requirements.txt
 4. Generate and build the docs with
 ```bash
 doxygen doxygen.conf
-breathe-apidoc -o docs/Dev -m -f build/doxygen/xml
+breathe-apidoc -o docs/dev -m -f build/doxygen/xml
 make html
 ```
 _If the `doxygen` command failed to run, make sure to create an empty `build/` directory in the root of the repo._

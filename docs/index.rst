@@ -6,16 +6,41 @@
 RPG++ documentation
 ===================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+Welcome to the RPG++ Engine documentation!
 
+You can see the User Guide here to learn how to make your first RPG++ game:
 
 .. toctree::
-   :maxdepth: 3
-   :caption: Contents:
+    :maxdepth: 2
+    :caption: User Guide:
 
-   dev
+    guide
+
+=============
+Scripting API
+=============
+
+RPG++ utilizes Lua for scripting. You can explore the Lua Scripting API here:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Scripting:
+
    user
+
+============
+Contribution
+============
+
+You can file an issue on the `GitHub repo <https://github.com/rpgppengine/rpgpp/issues>`__
+
+If you want to contribute to the engine, you can fork the repo and make a PR when you're ready! A documentation for developers in available here:
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Developers:
+
+    dev
+
 
 

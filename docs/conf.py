@@ -35,7 +35,7 @@ breathe_default_project = "RPG++"
 lua_ls_project_root = "../luasrc"
 lua_ls_backend = "luals"
 lua_ls_apidoc_roots = {
-   "meow": "moduleDirectory",
+   "meow": "userapi",
 }
 
 

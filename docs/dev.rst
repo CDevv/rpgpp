@@ -2,7 +2,8 @@ Developer Docs
 ==============
 
 .. toctree::
-    Dev/classlist
-    Dev/structlist
-    Dev/filelist
-    Dev/namespacelist
+    dev-additional/compile
+    dev/classlist
+    dev/structlist
+    dev/filelist
+    dev/namespacelist
