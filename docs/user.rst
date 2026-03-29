@@ -2,4 +2,7 @@ User Docs
 =========
 
 .. toctree::
-    userapi/index
+    userapi/state/index
+    userapi/world/index
+    userapi/sounds/index
+    userapi/interface/index

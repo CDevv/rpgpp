@@ -29,7 +29,7 @@ class InterfaceService {
 	Font getFont() const;
 	/** Get the texture, used for UI nine-patch components. */
 	Texture getTexture() const;
-	/** Open a dialogue with a certain name */
+	/** Open a dialogue with a certain title. */
 	void showDialogue(const std::string &id);
 	/** Open the dialogue with a Dialogue structure */
 	void showDialogue(const DialogueBin &dialogue);
