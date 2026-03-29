@@ -72,7 +72,7 @@ pip install -r requirements.txt
 4. Generate and build the docs with
 ```bash
 doxygen doxygen.conf
-breathe-apidoc -o docs/dev -m -f build/doxygen/xml
+breathe-apidoc -o docs/Dev -m -f build/doxygen/xml
 make html
 ```
 _If the `doxygen` command failed to run, make sure to create an empty `build/` directory in the root of the repo._

@@ -36,7 +36,7 @@
 *.ilk
 
 # docs ignores
-docs/dev
+docs/Dev
 docs/userapi
 
 game-src/*/lib/

@@ -3,7 +3,7 @@ Developer Docs
 
 .. toctree::
     dev-additional/compile
-    dev/classlist
-    dev/structlist
-    dev/filelist
-    dev/namespacelist
+    Dev/classlist
+    Dev/structlist
+    Dev/filelist
+    Dev/namespacelist
