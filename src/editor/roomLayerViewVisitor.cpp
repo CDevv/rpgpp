@@ -1,4 +1,10 @@
 #include "roomLayerViewVisitor.hpp"
+
+#include <raylib.h>
+
+#include <memory>
+#include <string>
+
 #include "TGUI/Widgets/CheckBox.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
@@ -8,9 +14,6 @@
 #include "services/fileSystemService.hpp"
 #include "views/worldView.hpp"
 #include "widgets/propertiesBox.hpp"
-#include <memory>
-#include <raylib.h>
-#include <string>
 
 RoomLayerViewVisitor::RoomLayerViewVisitor() {
 	tileSetView = TileSetView::create();
@@ -59,14 +62,18 @@ RoomLayerViewVisitor::~RoomLayerViewVisitor() {
 }
 
 void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_TILES>) {
+	isAvailable = true;
 	group->add(tileSetView);
 }
 
 void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_COLLISION>) {
+	isAvailable = true;
 	group->add(tgui::Label::create("Collision Layer"));
 }
 
 void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>) {
+	isAvailable = true;
+
 	if (tool == RoomTool::TOOL_PLACE) {
 		interactableChoose->removeAllItems();
 		auto map = Editor::instance->getProject()->getInteractableNames();
@@ -86,8 +93,7 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>) {
 			onTouchCheck->setSize(24, 24);
 			onTouchCheck->setPosition(8, 8);
 			onTouchCheck->setChecked(inter->isOnTouch());
-			onTouchCheck->onCheck(
-				[this](bool value) { inter->setOnTouch(value); });
+			onTouchCheck->onCheck([this](bool value) { inter->setOnTouch(value); });
 			group->add(onTouchCheck);
 
 			auto propBox = PropertiesBox::create();
@@ -102,18 +108,24 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>) {
 }
 
 void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_PROPS>) {
+	isAvailable = true;
+
 	if (tool == RoomTool::TOOL_PLACE) {
 		group->add(tgui::Label::create("Props"));
 		propChoose->removeAllItems();
 		auto vec = Editor::instance->getProject()->getPropsNames();
 		for (auto propPath : vec) {
-			propChoose->addItem(GetFileNameWithoutExt(propPath.c_str()),
-								propPath);
+			propChoose->addItem(GetFileNameWithoutExt(propPath.c_str()), propPath);
 		}
+
+		isAvailable = (!vec.empty());
+
 		propChoose->setSelectedItemByIndex(0);
 
-		Prop p(propChoose->getSelectedItemId().toStdString());
-		propTexture = p.getTexture();
+		if (isAvailable) {
+			Prop p(propChoose->getSelectedItemId().toStdString());
+			propTexture = p.getTexture();
+		}
 
 		group->add(propChoose);
 	} else if (tool == RoomTool::TOOL_ERASE) {
@@ -128,8 +140,7 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_PROPS>) {
 				group->add(propBox);
 				propBox->addPropsJson(prop->getInteractable()->getProps());
 			} else {
-				group->add(
-					tgui::Label::create("This Prop has no Interactable"));
+				group->add(tgui::Label::create("This Prop has no Interactable"));
 			}
 		}
 	}
@@ -142,16 +153,13 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_ACTORS>) {
 		group->add(actorNameInput);
 
 		actorChoose->removeAllItems();
-		auto vec = Editor::instance->getProject()->getPaths(
-			EngineFileType::FILE_ACTOR);
+		auto vec = Editor::instance->getProject()->getPaths(EngineFileType::FILE_ACTOR);
 		for (auto actorPath : vec) {
-			actorChoose->addItem(GetFileNameWithoutExt(actorPath.c_str()),
-								 actorPath);
+			actorChoose->addItem(GetFileNameWithoutExt(actorPath.c_str()), actorPath);
 		}
 		actorChoose->setSelectedItemByIndex(0);
 
-		std::unique_ptr<Actor> a = std::make_unique<Actor>(
-			actorChoose->getSelectedItemId().toStdString());
+		std::unique_ptr<Actor> a = std::make_unique<Actor>(actorChoose->getSelectedItemId().toStdString());
 
 		actorTexture = a->getTileSet().getTexture();
 		chosenActor = std::move(a);

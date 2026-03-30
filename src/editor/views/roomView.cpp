@@ -1,4 +1,10 @@
 #include "views/roomView.hpp"
+
+#include <cmath>
+#include <cstdlib>
+#include <memory>
+#include <utility>
+
 #include "TGUI/Event.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
@@ -21,10 +27,6 @@
 #include "tilemap.hpp"
 #include "tileset.hpp"
 #include "views/worldView.hpp"
-#include <cmath>
-#include <cstdlib>
-#include <memory>
-#include <utility>
 
 RoomView::RoomView() { layer = RoomLayer::LAYER_TILES; }
 
@@ -42,25 +44,21 @@ Room *RoomView::getRoom() { return room; }
 
 IVector RoomView::getTileAtMouse() {
 	TileMap *tileMap = room->getTileMap();
-	return {static_cast<int>(
-				std::floor(mouseWorldPos.x / tileMap->getWorldTileSize())),
-			static_cast<int>(
-				std::floor(mouseWorldPos.y / tileMap->getWorldTileSize()))};
+	return {static_cast<int>(std::floor(mouseWorldPos.x / tileMap->getWorldTileSize())),
+			static_cast<int>(std::floor(mouseWorldPos.y / tileMap->getWorldTileSize()))};
 }
 
 Rectangle RoomView::getSourceRect(TileMap *tileMap, int x, int y) {
-	Rectangle sourceRect = {static_cast<float>(x * tileMap->getAtlasTileSize()),
-							static_cast<float>(y * tileMap->getAtlasTileSize()),
-							static_cast<float>(tileMap->getAtlasTileSize()),
-							static_cast<float>(tileMap->getAtlasTileSize())};
+	Rectangle sourceRect = {
+		static_cast<float>(x * tileMap->getAtlasTileSize()), static_cast<float>(y * tileMap->getAtlasTileSize()),
+		static_cast<float>(tileMap->getAtlasTileSize()), static_cast<float>(tileMap->getAtlasTileSize())};
 	return sourceRect;
 }
 
 Rectangle RoomView::getDestRect(TileMap *tileMap, int x, int y) {
-	Rectangle destRect = {static_cast<float>(x * tileMap->getWorldTileSize()),
-						  static_cast<float>(y * tileMap->getWorldTileSize()),
-						  static_cast<float>(tileMap->getWorldTileSize()),
-						  static_cast<float>(tileMap->getWorldTileSize())};
+	Rectangle destRect = {
+		static_cast<float>(x * tileMap->getWorldTileSize()), static_cast<float>(y * tileMap->getWorldTileSize()),
+		static_cast<float>(tileMap->getWorldTileSize()), static_cast<float>(tileMap->getWorldTileSize())};
 	return destRect;
 }
 
@@ -125,8 +123,7 @@ void RoomView::drawCanvas() {
 
 			if (tile.isPlaced()) {
 				// Draw tile itself
-				DrawTexturePro(texture, sourceRect, destRect, {0.0f, 0.0f},
-							   0.0f, WHITE);
+				DrawTexturePro(texture, sourceRect, destRect, {0.0f, 0.0f}, 0.0f, WHITE);
 			}
 
 			// Draw tile border
@@ -140,8 +137,7 @@ void RoomView::drawCanvas() {
 	// start tile
 	auto startTile = room->getStartTile();
 	auto startTileDestRect =
-		getDestRect(room->getTileMap(), static_cast<int>(startTile.x),
-					static_cast<int>(startTile.y));
+		getDestRect(room->getTileMap(), static_cast<int>(startTile.x), static_cast<int>(startTile.y));
 	DrawRectangleLinesEx(startTileDestRect, 2.0f, Fade(GREEN, 0.5f));
 
 	// collisions
@@ -155,8 +151,7 @@ void RoomView::drawCanvas() {
 	}
 
 	// interactables
-	auto interactableNames =
-		Editor::instance->getProject()->getInteractableNames();
+	auto interactableNames = Editor::instance->getProject()->getInteractableNames();
 	for (auto interactable : room->getInteractables().getList()) {
 		int tileX = static_cast<int>(interactable->getWorldPos().x);
 		int tileY = static_cast<int>(interactable->getWorldPos().y);
@@ -172,8 +167,7 @@ void RoomView::drawCanvas() {
 		}
 
 		DrawRectangleRec(destRect, Fade(YELLOW, 0.2f));
-		DrawText(TextFormat("%s", shownTitle.c_str()),
-				 static_cast<int>(destRect.x), static_cast<int>(destRect.y), 16,
+		DrawText(TextFormat("%s", shownTitle.c_str()), static_cast<int>(destRect.x), static_cast<int>(destRect.y), 16,
 				 ORANGE);
 
 		if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
@@ -226,8 +220,7 @@ bool RoomView::leftMousePressed(tgui::Vector2f pos) {
 
 void RoomView::keyPressed(const tgui::Event::KeyEvent &event) {
 	if (event.control) {
-		auto screen = aurora::downcast<screens::ProjectScreen *>(
-			Editor::instance->getGui().currentScreen.get());
+		auto screen = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
 		if (event.code == tgui::Event::KeyboardKey::Z) {
 			screen->getCurrentFile().getView().undoAction();
 		}
@@ -239,24 +232,24 @@ void RoomView::keyPressed(const tgui::Event::KeyEvent &event) {
 
 void RoomView::handleMode(int x, int y) {
 	switch (tool) {
-	case RoomTool::TOOL_PLACE:
-		handlePlaceMode(x, y);
-		break;
-	case RoomTool::TOOL_ERASE:
-		handleEraseMode(x, y);
-		break;
-	case RoomTool::TOOL_EDIT:
-		handleEditMode(x, y);
-		break;
-	case RoomTool::TOOL_STARTPOINT: {
-		auto destRect = getDestRect(room->getTileMap(), x, y);
+		case RoomTool::TOOL_PLACE:
+			handlePlaceMode(x, y);
+			break;
+		case RoomTool::TOOL_ERASE:
+			handleEraseMode(x, y);
+			break;
+		case RoomTool::TOOL_EDIT:
+			handleEditMode(x, y);
+			break;
+		case RoomTool::TOOL_STARTPOINT: {
+			auto destRect = getDestRect(room->getTileMap(), x, y);
 
-		if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
-			DrawRectangleRec(destRect, Fade(GREEN, 0.4f));
-		}
-	} break;
-	default:
-		break;
+			if (CheckCollisionPointRec(mouseWorldPos, destRect)) {
+				DrawRectangleRec(destRect, Fade(GREEN, 0.4f));
+			}
+		} break;
+		default:
+			break;
 	}
 }
 
@@ -271,68 +264,58 @@ void RoomView::handlePlaceMode(int x, int y) {
 		auto atlasTilePos = tileSetView->getSelectedTile();
 
 		switch (layer) {
-		case RoomLayer::LAYER_TILES: {
-			if (tileSet->areAtlasCoordsValid(
-					{static_cast<float>(atlasTilePos.x),
-					 static_cast<float>(atlasTilePos.y)})) {
-				Rectangle atlasSourceRect =
-					getSourceRect(tileMap, atlasTilePos.x, atlasTilePos.y);
+			case RoomLayer::LAYER_TILES: {
+				if (tileSet->areAtlasCoordsValid(
+						{static_cast<float>(atlasTilePos.x), static_cast<float>(atlasTilePos.y)})) {
+					Rectangle atlasSourceRect = getSourceRect(tileMap, atlasTilePos.x, atlasTilePos.y);
 
+					IVector tileMouse = getTileAtMouse();
+					Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
+
+					DrawTexturePro(texture, atlasSourceRect, destRect, {0.0f, 0.0f}, 0.0f, Fade(WHITE, 0.7f));
+				}
+			} break;
+			case RoomLayer::LAYER_COLLISION: {
 				IVector tileMouse = getTileAtMouse();
-				Rectangle destRect =
-					getDestRect(tileMap, tileMouse.x, tileMouse.y);
-
-				DrawTexturePro(texture, atlasSourceRect, destRect, {0.0f, 0.0f},
-							   0.0f, Fade(WHITE, 0.7f));
+				Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
+				DrawRectangleRec(destRect, Fade(RED, 0.7f));
+			} break;
+			case RoomLayer::LAYER_INTERACTABLES: {
+				IVector tileMouse = getTileAtMouse();
+				Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
+				DrawRectangleRec(destRect, Fade(YELLOW, 0.7f));
 			}
-		} break;
-		case RoomLayer::LAYER_COLLISION: {
-			IVector tileMouse = getTileAtMouse();
-			Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
-			DrawRectangleRec(destRect, Fade(RED, 0.7f));
-		} break;
-		case RoomLayer::LAYER_INTERACTABLES: {
-			IVector tileMouse = getTileAtMouse();
-			Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
-			DrawRectangleRec(destRect, Fade(YELLOW, 0.7f));
-		}
-		case RoomLayer::LAYER_PROPS: {
-			IVector tileMouse = getTileAtMouse();
-			Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
+			case RoomLayer::LAYER_PROPS: {
+				IVector tileMouse = getTileAtMouse();
+				Rectangle destRect = getDestRect(tileMap, tileMouse.x, tileMouse.y);
 
-			if (IsTextureValid(layerVisitor->propTexture)) {
-				Rectangle source = {
-					0, 0, static_cast<float>(layerVisitor->propTexture.width),
-					static_cast<float>(layerVisitor->propTexture.height)};
-				DrawTexturePro(layerVisitor->propTexture, source, destRect,
-							   {0.0f, 0.0f}, 0.0f, Fade(WHITE, 0.7f));
-			}
-		} break;
-		case RoomLayer::LAYER_ACTORS: {
-			IVector tileMouse = getTileAtMouse();
+				if (IsTextureValid(layerVisitor->propTexture) && layerVisitor->isAvailable) {
+					Rectangle source = {0, 0, static_cast<float>(layerVisitor->propTexture.width),
+										static_cast<float>(layerVisitor->propTexture.height)};
+					DrawTexturePro(layerVisitor->propTexture, source, destRect, {0.0f, 0.0f}, 0.0f, Fade(WHITE, 0.7f));
+				}
+			} break;
+			case RoomLayer::LAYER_ACTORS: {
+				IVector tileMouse = getTileAtMouse();
 
-			if (IsTextureValid(layerVisitor->actorTexture)) {
-				auto actorTilePos = calcActorTilePos(
-					fromIVector(tileMouse),
-					room->getTileMap()->getTileSet()->getTileSize(),
-					&layerVisitor->chosenActor->getTileSet());
+				if (IsTextureValid(layerVisitor->actorTexture)) {
+					auto actorTilePos =
+						calcActorTilePos(fromIVector(tileMouse), room->getTileMap()->getTileSet()->getTileSize(),
+										 &layerVisitor->chosenActor->getTileSet());
 
-				auto &actorTileSet = layerVisitor->chosenActor->getTileSet();
-				auto actorTileSize = actorTileSet.getTileSize();
+					auto &actorTileSet = layerVisitor->chosenActor->getTileSet();
+					auto actorTileSize = actorTileSet.getTileSize();
 
-				Rectangle source = {0, 0, actorTileSize.x, actorTileSize.y};
-				Rectangle dest = {
-					actorTilePos.x, actorTilePos.y,
-					static_cast<float>(actorTileSize.x * RPGPP_DRAW_MULTIPLIER),
-					static_cast<float>(actorTileSize.y *
-									   RPGPP_DRAW_MULTIPLIER)};
+					Rectangle source = {0, 0, actorTileSize.x, actorTileSize.y};
+					Rectangle dest = {actorTilePos.x, actorTilePos.y,
+									  static_cast<float>(actorTileSize.x * RPGPP_DRAW_MULTIPLIER),
+									  static_cast<float>(actorTileSize.y * RPGPP_DRAW_MULTIPLIER)};
 
-				DrawTexturePro(layerVisitor->actorTexture, source, dest,
-							   Vector2{0.0f, 0.0f}, 0.0f, WHITE);
-			}
-		} break;
-		default:
-			break;
+					DrawTexturePro(layerVisitor->actorTexture, source, dest, Vector2{0.0f, 0.0f}, 0.0f, WHITE);
+				}
+			} break;
+			default:
+				break;
 		}
 	}
 }
@@ -363,132 +346,112 @@ void RoomView::handleEraseMode(int x, int y) {
 void RoomView::handleModePress(tgui::Vector2f pos) {
 	IVector tileMouse = getTileAtMouse();
 	IVector atlasTilePos = tileSetView->getSelectedTile();
-	if (!room->getTileMap()->worldPosIsValid(Vector2{
-			static_cast<float>(tileMouse.x), static_cast<float>(tileMouse.y)}))
+	if (!room->getTileMap()->worldPosIsValid(Vector2{static_cast<float>(tileMouse.x), static_cast<float>(tileMouse.y)}))
 		return;
 
-	auto screen = aurora::downcast<screens::ProjectScreen *>(
-		Editor::instance->getGui().currentScreen.get());
+	auto screen = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
 
 	MapActionData data;
 	data.view = this;
 	data.room = room;
 	data.layer = layer;
-	data.tile = {static_cast<float>(atlasTilePos.x),
-				 static_cast<float>(atlasTilePos.y)};
-	data.worldTile = {static_cast<float>(tileMouse.x),
-					  static_cast<float>(tileMouse.y)};
+	data.tile = {static_cast<float>(atlasTilePos.x), static_cast<float>(atlasTilePos.y)};
+	data.worldTile = {static_cast<float>(tileMouse.x), static_cast<float>(tileMouse.y)};
 	switch (layer) {
-	case RoomLayer::LAYER_INTERACTABLES: {
-		data.interactable = GetFileNameWithoutExt(
-			interactableChoose->getSelectedItemId().toStdString().c_str());
-		data.interactableFullPath =
-			interactableChoose->getSelectedItemId().toStdString();
-	} break;
-	case RoomLayer::LAYER_PROPS: {
-		data.interactable = GetFileNameWithoutExt(
-			propChoose->getSelectedItemId().toStdString().c_str());
-		data.interactableFullPath =
-			propChoose->getSelectedItemId().toStdString();
-	} break;
-	case RoomLayer::LAYER_ACTORS: {
-		data.actorName = layerVisitor->actorNameInput->getText().toStdString();
-		data.interactable =
-			GetFileNameWithoutExt(layerVisitor->actorChoose->getSelectedItemId()
-									  .toStdString()
-									  .c_str());
-		data.interactableFullPath =
-			layerVisitor->actorChoose->getSelectedItemId().toStdString();
-	} break;
-	default:
-		break;
+		case RoomLayer::LAYER_INTERACTABLES: {
+			data.interactable = GetFileNameWithoutExt(interactableChoose->getSelectedItemId().toStdString().c_str());
+			data.interactableFullPath = interactableChoose->getSelectedItemId().toStdString();
+		} break;
+		case RoomLayer::LAYER_PROPS: {
+			data.interactable = GetFileNameWithoutExt(propChoose->getSelectedItemId().toStdString().c_str());
+			data.interactableFullPath = propChoose->getSelectedItemId().toStdString();
+		} break;
+		case RoomLayer::LAYER_ACTORS: {
+			data.actorName = layerVisitor->actorNameInput->getText().toStdString();
+			data.interactable =
+				GetFileNameWithoutExt(layerVisitor->actorChoose->getSelectedItemId().toStdString().c_str());
+			data.interactableFullPath = layerVisitor->actorChoose->getSelectedItemId().toStdString();
+		} break;
+		default:
+			break;
 	}
 
+	if (!layerVisitor->isAvailable) return;
+
 	switch (tool) {
-	case RoomTool::TOOL_PLACE: {
-		std::unique_ptr<Action> act = std::make_unique<PlaceTileAction>(data);
+		case RoomTool::TOOL_PLACE: {
+			std::unique_ptr<Action> act = std::make_unique<PlaceTileAction>(data);
 
-		screen->getCurrentFile().getView().pushAction(std::move(act));
-	} break;
-	case RoomTool::TOOL_ERASE: {
-		std::unique_ptr<Action> act = std::make_unique<EraseTileAction>(data);
+			screen->getCurrentFile().getView().pushAction(std::move(act));
+		} break;
+		case RoomTool::TOOL_ERASE: {
+			std::unique_ptr<Action> act = std::make_unique<EraseTileAction>(data);
 
-		screen->getCurrentFile().getView().pushAction(std::move(act));
-	} break;
-	case RoomTool::TOOL_EDIT:
-		handleEditPress(pos);
-		break;
-	case RoomTool::TOOL_STARTPOINT: {
-		data.prevTile = room->getStartTile();
-		std::unique_ptr<Action> act = std::make_unique<StartPointAction>(data);
+			screen->getCurrentFile().getView().pushAction(std::move(act));
+		} break;
+		case RoomTool::TOOL_EDIT:
+			handleEditPress(pos);
+			break;
+		case RoomTool::TOOL_STARTPOINT: {
+			data.prevTile = room->getStartTile();
+			std::unique_ptr<Action> act = std::make_unique<StartPointAction>(data);
 
-		screen->getCurrentFile().getView().pushAction(std::move(act));
-	} break;
-	default:
-		break;
+			screen->getCurrentFile().getView().pushAction(std::move(act));
+		} break;
+		default:
+			break;
 	}
 }
 
 void RoomView::handleEditPress(tgui::Vector2f pos) {
-	auto screen = aurora::downcast<screens::ProjectScreen *>(
-		Editor::instance->getGui().currentScreen.get());
+	auto screen = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
 
 	TileMap *tileMap = room->getTileMap();
 
 	selectedTile = getTileAtMouse();
-	if (!tileMap->worldPosIsValid({static_cast<float>(selectedTile.x),
-								   static_cast<float>(selectedTile.y)})) {
+	if (!tileMap->worldPosIsValid({static_cast<float>(selectedTile.x), static_cast<float>(selectedTile.y)})) {
 		return;
 	}
-	Vector2 atlasCoords = tileMap->getTile(selectedTile.x, selectedTile.y)
-							  .getAtlasTile()
-							  .getAtlasCoords();
-	IVector atlasCoordsInt = {static_cast<int>(atlasCoords.x),
-							  static_cast<int>(atlasCoords.y)};
+	Vector2 atlasCoords = tileMap->getTile(selectedTile.x, selectedTile.y).getAtlasTile().getAtlasCoords();
+	IVector atlasCoordsInt = {static_cast<int>(atlasCoords.x), static_cast<int>(atlasCoords.y)};
 
 	switch (layer) {
-	case RoomLayer::LAYER_TILES: {
-		tileSetView->setSelectedTile(atlasCoordsInt);
-		tileSetView->onTileSelected.disconnectAll();
-		tileSetView->onTileSelected([this, tileMap, screen](IVector newTile) {
-			IVector tileMouse = selectedTile;
+		case RoomLayer::LAYER_TILES: {
+			tileSetView->setSelectedTile(atlasCoordsInt);
+			tileSetView->onTileSelected.disconnectAll();
+			tileSetView->onTileSelected([this, tileMap, screen](IVector newTile) {
+				IVector tileMouse = selectedTile;
 
-			MapActionData data;
-			data.room = room;
-			data.layer = layer;
-			data.tile = {static_cast<float>(newTile.x),
-						 static_cast<float>(newTile.y)};
-			data.worldTile = {static_cast<float>(tileMouse.x),
-							  static_cast<float>(tileMouse.y)};
-			data.interactable =
-				Editor::instance->getProject()->getInteractableNames()
-					[interactableChoose->getSelectedItemId().toStdString()];
+				MapActionData data;
+				data.room = room;
+				data.layer = layer;
+				data.tile = {static_cast<float>(newTile.x), static_cast<float>(newTile.y)};
+				data.worldTile = {static_cast<float>(tileMouse.x), static_cast<float>(tileMouse.y)};
+				data.interactable = Editor::instance->getProject()
+										->getInteractableNames()[interactableChoose->getSelectedItemId().toStdString()];
 
-			std::unique_ptr<Action> act =
-				std::make_unique<EditTileAction>(data);
-			screen->getCurrentFile().getView().pushAction(std::move(act));
-		});
-	} break;
-	case RoomLayer::LAYER_INTERACTABLES: {
-		IVector tileMouse = getTileAtMouse();
-		layerVisitor->inter =
-			room->getInteractables().getInt({tileMouse.x, tileMouse.y});
-		layerVisitor->group->removeAllWidgets();
-		mj::visit(*layerVisitor, layer);
-	} break;
-	case RoomLayer::LAYER_PROPS: {
-		IVector tileMouse = getTileAtMouse();
-		if (room->getProps().objectExistsAtPosition(tileMouse)) {
-			layerVisitor->prop =
-				room->getProps().getObjectAtPosition(tileMouse).get();
-		} else {
-			layerVisitor->prop = nullptr;
+				std::unique_ptr<Action> act = std::make_unique<EditTileAction>(data);
+				screen->getCurrentFile().getView().pushAction(std::move(act));
+			});
+		} break;
+		case RoomLayer::LAYER_INTERACTABLES: {
+			IVector tileMouse = getTileAtMouse();
+			layerVisitor->inter = room->getInteractables().getInt({tileMouse.x, tileMouse.y});
+			layerVisitor->group->removeAllWidgets();
+			mj::visit(*layerVisitor, layer);
+		} break;
+		case RoomLayer::LAYER_PROPS: {
+			IVector tileMouse = getTileAtMouse();
+			if (room->getProps().objectExistsAtPosition(tileMouse)) {
+				layerVisitor->prop = room->getProps().getObjectAtPosition(tileMouse).get();
+			} else {
+				layerVisitor->prop = nullptr;
+			}
+
+			layerVisitor->group->removeAllWidgets();
+			mj::visit(*layerVisitor, layer);
 		}
-
-		layerVisitor->group->removeAllWidgets();
-		mj::visit(*layerVisitor, layer);
-	}
-	default:
-		break;
+		default:
+			break;
 	}
 }
