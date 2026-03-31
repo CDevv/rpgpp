@@ -6,6 +6,7 @@
 
 #include "TGUI/Widget.hpp"
 #include "actor.hpp"
+#include "dialogue.hpp"
 #include "editor.hpp"
 #include "gamedata.hpp"
 #include "prop.hpp"
@@ -22,6 +23,7 @@ FileInitVisitor::FileInitVisitor() {
 	funcs[static_cast<int>(EngineFileType::FILE_MAP)] = room;
 	funcs[static_cast<int>(EngineFileType::FILE_ACTOR)] = actor;
 	funcs[static_cast<int>(EngineFileType::FILE_PROP)] = prop;
+	funcs[static_cast<int>(EngineFileType::FILE_DIALOGUE)] = dialogue;
 }
 
 bool FileInitVisitor::funcIsEmpty(EngineFileType fileType) { return funcs[static_cast<int>(fileType)] == nullptr; }
@@ -136,6 +138,29 @@ void FileInitVisitor::prop(NewFileDialog::Ptr dialog) {
 			auto ptr = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
 			ptr->addFileView(EngineFileType::FILE_PROP, newFilePath);
 			ptr->addResourceButtons(EngineFileType::FILE_PROP);
+
+			dialog->window->close();
+		}
+	});
+}
+
+void FileInitVisitor::dialogue(NewFileDialog::Ptr dialog) {
+	dialog->hideFileField();
+
+	dialog->confirmButton->onPress([dialog] {
+		std::string title = dialog->titleField->getText().toStdString();
+		std::string filePath = dialog->fileField->getChosenPath().toStdString();
+		filePath = TextFormat("images/%s", GetFileName(filePath.c_str()));
+		if (!title.empty()) {
+			std::unique_ptr<Dialogue> diag = std::make_unique<Dialogue>();
+
+			std::string newFilePath = TextFormat("dialogues/%s.rdiag", title.c_str());
+			nlohmann::json fileJson = diag->dumpJson();
+			SaveFileText(newFilePath.c_str(), fileJson.dump().c_str());
+
+			auto ptr = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
+			ptr->addFileView(EngineFileType::FILE_DIALOGUE, newFilePath);
+			ptr->addResourceButtons(EngineFileType::FILE_DIALOGUE);
 
 			dialog->window->close();
 		}

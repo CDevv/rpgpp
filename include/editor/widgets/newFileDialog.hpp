@@ -10,7 +10,7 @@
 #include "widgets/fileChooser.hpp"
 
 class NewFileDialog {
-  public:
+public:
 	tgui::ChildWindow::Ptr window;
 	tgui::EditBox::Ptr titleField;
 	FileChooser::Ptr fileField;
@@ -21,8 +21,7 @@ class NewFileDialog {
 	typedef std::shared_ptr<NewFileDialog> Ptr;
 	typedef std::shared_ptr<const NewFileDialog> ConstPtr;
 
-	NewFileDialog(const char *typeName = "NewFileDialog",
-				  bool initRenderer = true);
+	NewFileDialog(const char *typeName = "NewFileDialog", bool initRenderer = true);
 
 	static NewFileDialog::Ptr create();
 	static NewFileDialog::Ptr create(const tgui::String &title);
@@ -33,11 +32,10 @@ class NewFileDialog {
 	void updateSize(const tgui::Layout2d &size);
 	void setFieldTitle(const tgui::String &title);
 	void setFileFieldTitle(const tgui::String &title);
-	void setPathFilters(
-		std::vector<std::pair<tgui::String, std::vector<tgui::String>>>
-			pathFilters);
+	void setPathFilters(std::vector<std::pair<tgui::String, std::vector<tgui::String>>> pathFilters);
+	void hideFileField();
 
-  private:
+private:
 	static const int FIELD_H = 24;
 	static const int BUTTON_W = 100;
 	static const int BUTTON_H = 24;

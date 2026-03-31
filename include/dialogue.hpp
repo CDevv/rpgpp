@@ -1,14 +1,16 @@
 #ifndef _RPGPP_DIALOGUE
 #define _RPGPP_DIALOGUE
 
+#include <nlohmann/json_fwd.hpp>
+
 #include "dialogueBalloon.hpp"
 #include "saveable.hpp"
-#include <nlohmann/json_fwd.hpp>
+
 class Dialogue : public ISaveable {
-  private:
+private:
 	DialogueBin dialogueBin;
 
-  public:
+public:
 	Dialogue() = default;
 	Dialogue(const std::string &filePath);
 	DialogueLine addNewLine();
