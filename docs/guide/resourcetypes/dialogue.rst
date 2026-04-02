@@ -7,7 +7,7 @@ What is a Dialogue?
 
 A dialogue is a set of dialogue lines. Dialogue liens themselves contain a text content, an optional portrait and a character name.
 
-Example of a Dialogue file:
+Example of a Dialogue file (.rdiag):
 
 .. code:: json
 

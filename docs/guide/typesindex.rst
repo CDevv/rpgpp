@@ -6,3 +6,4 @@ Resource Types
     resourcetypes/room
     resourcetypes/actor
     resourcetypes/dialogue
+    resourcetypes/prop
