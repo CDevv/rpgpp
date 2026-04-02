@@ -88,11 +88,11 @@ xmake build_doc
 ```
 or optionally, run each of the commands below __if the command above fails__:
 ```bash
+mkdir -p build/
 doxygen doxygen.conf
 breathe-apidoc -o docs/Dev -m -f build/doxygen/xml
 make html
 ```
-_If the `doxygen` command failed to run, make sure to create an empty `build/` directory in the root of the repo._
 
 You should see the docs output at `build/html`.
 

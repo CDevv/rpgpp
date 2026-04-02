@@ -121,6 +121,7 @@ set_menu {
 
 task("build_doc")
 on_run( function ()
+	os.mkdir("build/")
 	os.execv("doxygen", { "doxygen.conf" })
 	os.execv("breathe-apidoc", { "-o", "docs/Dev", "-m", "-f", "build/doxygen/xml" })
 	os.execv("make", { "html" })
