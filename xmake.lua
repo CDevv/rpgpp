@@ -113,9 +113,22 @@ on_run( function ()
 	import("tools.translation_checker.checker")
 	checker.Main()
 end)
+
 set_menu {
 	usage = "xmake check_translation",
 	description = "Check the project's translation status."
+}
+
+task("build_doc")
+on_run( function ()
+	os.execv("doxygen", { "doxygen.conf" })
+	os.execv("breathe-apidoc", { "-o", "docs/Dev", "-m", "-f", "build/doxygen/xml" })
+	os.execv("make", { "html" })
+end)
+
+set_menu {
+	usage = "xmake build_doc",
+	description = "Build the project's documentation."
 }
 
 target("editor")

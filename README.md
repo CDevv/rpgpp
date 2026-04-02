@@ -84,6 +84,10 @@ pip install -r requirements.txt
 ```
 4. Generate and build the docs with
 ```bash
+xmake build_doc
+```
+or optionally, run each of the commands below __if the command above fails__:
+```bash
 doxygen doxygen.conf
 breathe-apidoc -o docs/Dev -m -f build/doxygen/xml
 make html
