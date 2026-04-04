@@ -284,11 +284,6 @@ function Interface.OpenDialogue(dialogue: string)
 
 ---
 
-## LuaLS
-
-
----
-
 ## Player
 
 ### GetActor
