@@ -1,15 +1,17 @@
 #ifndef _RPGPP_TILEMAP_H
 #define _RPGPP_TILEMAP_H
 
+#include <raylib.h>
+
+#include <memory>
+#include <nlohmann/json.hpp>
+#include <string>
+#include <vector>
+
 #include "atlasTile.hpp"
 #include "gamedata.hpp"
 #include "tile.hpp"
 #include "tileset.hpp"
-#include <memory>
-#include <nlohmann/json.hpp>
-#include <raylib.h>
-#include <string>
-#include <vector>
 
 #define _RPGPP_TILESIZE (16)
 
@@ -17,7 +19,7 @@ using json = nlohmann::json;
 
 /** A TileMap represents a map of the placed tiles in a Room. */
 class TileMap {
-  private:
+private:
 	/** Base position of this TileMap. */
 	Vector2 basePos{};
 	/** File path to the source of the used TileSet. */
@@ -35,18 +37,15 @@ class TileMap {
 	/** A collection representing the tiles in this map */
 	std::vector<std::vector<Tile>> tiles;
 
-  public:
+public:
 	/** Construct from a file name/path */
 	TileMap(const std::string &fileName);
 	/** Construct using a TileSet path, width, height */
-	TileMap(const std::string &tileSetSource, int width, int height,
-			int atlasTileSize, int worldTileSize);
+	TileMap(const std::string &tileSetSource, int width, int height, int atlasTileSize, int worldTileSize);
 	/** Constructor using a TileSet object */
-	TileMap(const TileSet &tileSet, int width, int height, int atlasTileSize,
-			int worldTileSize);
+	TileMap(const TileSet &tileSet, int width, int height, int atlasTileSize, int worldTileSize);
 	/** Constructor using a unique_ptr of a TileSet */
-	TileMap(std::unique_ptr<TileSet> tileSetPtr, int width, int height,
-			int atlasTileSize, int worldTileSize);
+	TileMap(std::unique_ptr<TileSet> tileSetPtr, int width, int height, int atlasTileSize, int worldTileSize);
 	/** Constructor using a RoomBin binary structure */
 	TileMap(const RoomBin &bin);
 	/** Dump the TileMap's data into a nlohmann::json object */
@@ -70,11 +69,11 @@ class TileMap {
 	/** Get the Tile at the specified x and y position */
 	Tile getTile(int x, int y) const;
 	/** Set the tile at the specified world position to be a tile at the
-	 * specified atlas position from the TileSet */
+	 * specified atlas position from the TileSet. */
 	void setTile(Vector2 worldPos, Vector2 atlasPos);
-	/** Set the tile at the specified world position to be empty (not drawn) */
+	/** Set the tile at the specified world position to be empty (not drawn). */
 	void setEmptyTile(Vector2 worldPos);
-	/** Draw the tile at the specified world x and y coordinates */
+	/** Draw the tile at the specified world x and y coordinates. */
 	void drawTile(int x, int y) const;
 	void drawTile(Vector2 worldPos, Vector2 atlasPos) const;
 	void drawTile(Vector2 worldPos, AtlasTile tile) const;

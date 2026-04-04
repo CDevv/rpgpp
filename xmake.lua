@@ -56,6 +56,7 @@ package("tgui")
 add_urls("https://github.com/texus/TGUI.git")
 add_versions("1.12.99", "c6d138509f2aae33cbabb09a91c5857eba990657")
 add_versions("1.12.100", "9adfbabe2615a7617d86594a37bfb956ad907670")
+add_versions("1.12.101", "f70ad91e61843aa8c5f94478fc845b2921b3e4aa")
 add_deps("cmake", "raylib")
 set_license("Zlib")
 add_extsources("raylib")
@@ -69,7 +70,7 @@ on_install("linux", "macosx", "mingw", "windows", function (package)
 end)
 package_end()
 
-add_requires("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit", "noop", "tree-sitter",
+add_requires("raylib", "tgui", "nlohmann_json", "luajit", "noop", "tree-sitter",
 	"tree-sitter-lua")
 add_rules("mode.debug", "mode.release")
 set_defaultmode("debug")
@@ -112,9 +113,23 @@ on_run( function ()
 	import("tools.translation_checker.checker")
 	checker.Main()
 end)
+
 set_menu {
 	usage = "xmake check_translation",
 	description = "Check the project's translation status."
+}
+
+task("build_doc")
+on_run( function ()
+	os.mkdir("build/")
+	os.execv("doxygen", { "doxygen.conf" })
+	os.execv("breathe-apidoc", { "-o", "docs/Dev", "-m", "-f", "build/doxygen/xml" })
+	os.execv("make", { "html" })
+end)
+
+set_menu {
+	usage = "xmake build_doc",
+	description = "Build the project's documentation."
 }
 
 target("editor")
@@ -139,7 +154,7 @@ set_languages("cxx17")
 add_includedirs("include/", "include/editor/", os.dirs(path.join(os.scriptdir())))
 add_files("src/editor/**.cpp")
 add_deps("rpgpp")
-add_packages("raylib", "tgui", "nlohmann_json", "nativefiledialog-extended", "reproc", "luajit", "noop", "tree-sitter",
+add_packages("raylib", "tgui", "nlohmann_json", "luajit", "noop", "tree-sitter",
 	"tree-sitter-lua")
 after_build( function (target)
 	os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })

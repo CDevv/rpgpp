@@ -1,0 +1,3910 @@
+[
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "file": "types.lua",
+                "finish": [
+                    22,
+                    16
+                ],
+                "start": [
+                    22,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "Actor",
+                "visible": "public"
+            }
+        ],
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Change the Actor's current animation and play it.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                47,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                47,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Actor"
+                        },
+                        {
+                            "finish": [
+                                47,
+                                34
+                            ],
+                            "name": "dir",
+                            "start": [
+                                47,
+                                31
+                            ],
+                            "type": "local",
+                            "view": "Direction"
+                        }
+                    ],
+                    "desc": " Change the Actor's current animation and play it.",
+                    "finish": [
+                        47,
+                        39
+                    ],
+                    "rawdesc": " Change the Actor's current animation and play it.",
+                    "start": [
+                        47,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Actor:ChangeAnimation(dir: Direction)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    47,
+                    30
+                ],
+                "name": "ChangeAnimation",
+                "rawdesc": " Change the Actor's current animation and play it.",
+                "start": [
+                    47,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get the Actor's position",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                27,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                27,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Actor"
+                        }
+                    ],
+                    "desc": " Get the Actor's position",
+                    "finish": [
+                        27,
+                        32
+                    ],
+                    "rawdesc": " Get the Actor's position",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "start": [
+                        27,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Actor:GetPosition()\n  -> Vector2"
+                },
+                "file": "types.lua",
+                "finish": [
+                    27,
+                    26
+                ],
+                "name": "GetPosition",
+                "rawdesc": " Get the Actor's position",
+                "start": [
+                    27,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get this Actor's tile position.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                34,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                34,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Actor"
+                        }
+                    ],
+                    "desc": " Get this Actor's tile position.",
+                    "finish": [
+                        34,
+                        36
+                    ],
+                    "rawdesc": " Get this Actor's tile position.",
+                    "start": [
+                        34,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Actor:GetTilePosition()"
+                },
+                "file": "types.lua",
+                "finish": [
+                    34,
+                    30
+                ],
+                "name": "GetTilePosition",
+                "rawdesc": " Get this Actor's tile position.",
+                "start": [
+                    34,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Move the Actor using a velocity vector.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                43,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                43,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Actor"
+                        },
+                        {
+                            "finish": [
+                                43,
+                                38
+                            ],
+                            "name": "velocity",
+                            "start": [
+                                43,
+                                30
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "desc": " Move the Actor using a velocity vector.",
+                    "finish": [
+                        43,
+                        43
+                    ],
+                    "rawdesc": " Move the Actor using a velocity vector.",
+                    "start": [
+                        43,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Actor:MoveByVelocity(velocity: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    43,
+                    29
+                ],
+                "name": "MoveByVelocity",
+                "rawdesc": " Move the Actor using a velocity vector.",
+                "start": [
+                    43,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Temporarily play an animation.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                51,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                51,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Actor"
+                        },
+                        {
+                            "finish": [
+                                51,
+                                32
+                            ],
+                            "name": "dir",
+                            "start": [
+                                51,
+                                29
+                            ],
+                            "type": "local",
+                            "view": "Direction"
+                        }
+                    ],
+                    "desc": " Temporarily play an animation.",
+                    "finish": [
+                        51,
+                        37
+                    ],
+                    "rawdesc": " Temporarily play an animation.",
+                    "start": [
+                        51,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Actor:PlayAnimation(dir: Direction)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    51,
+                    28
+                ],
+                "name": "PlayAnimation",
+                "rawdesc": " Temporarily play an animation.",
+                "start": [
+                    51,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set this Actor's position.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                31,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                31,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Actor"
+                        },
+                        {
+                            "finish": [
+                                31,
+                                38
+                            ],
+                            "name": "newPosition",
+                            "start": [
+                                31,
+                                27
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "desc": " Set this Actor's position.",
+                    "finish": [
+                        31,
+                        43
+                    ],
+                    "rawdesc": " Set this Actor's position.",
+                    "start": [
+                        31,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Actor:SetPosition(newPosition: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    31,
+                    26
+                ],
+                "name": "SetPosition",
+                "rawdesc": " Set this Actor's position.",
+                "start": [
+                    31,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set Actor position relative to a tile in the world.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                39,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                39,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Actor"
+                        },
+                        {
+                            "finish": [
+                                39,
+                                42
+                            ],
+                            "name": "newPosition",
+                            "start": [
+                                39,
+                                31
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        },
+                        {
+                            "finish": [
+                                39,
+                                52
+                            ],
+                            "name": "tileSize",
+                            "start": [
+                                39,
+                                44
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "desc": " Set Actor position relative to a tile in the world.",
+                    "finish": [
+                        39,
+                        57
+                    ],
+                    "rawdesc": " Set Actor position relative to a tile in the world.",
+                    "start": [
+                        39,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Actor:SetTilePosition(newPosition: Vector2, tileSize: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    39,
+                    30
+                ],
+                "name": "SetTilePosition",
+                "rawdesc": " Set Actor position relative to a tile in the world.",
+                "start": [
+                    39,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "Actor",
+        "type": "type",
+        "view": "Actor"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "file": "types.lua",
+                "finish": [
+                    193,
+                    25
+                ],
+                "start": [
+                    193,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "ActorContainer",
+                "visible": "public"
+            }
+        ],
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Whether an Actor with such a name exists in the current room.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                209,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                209,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "ActorContainer"
+                        },
+                        {
+                            "finish": [
+                                209,
+                                39
+                            ],
+                            "name": "roomName",
+                            "start": [
+                                209,
+                                31
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        }
+                    ],
+                    "desc": " Whether an Actor with such a name exists in the current room.",
+                    "finish": [
+                        209,
+                        44
+                    ],
+                    "rawdesc": " Whether an Actor with such a name exists in the current room.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "boolean"
+                        }
+                    ],
+                    "start": [
+                        209,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) ActorContainer:Exists(roomName: string)\n  -> boolean"
+                },
+                "file": "types.lua",
+                "finish": [
+                    209,
+                    30
+                ],
+                "name": "Exists",
+                "rawdesc": " Whether an Actor with such a name exists in the current room.",
+                "start": [
+                    209,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get an Actor by its in-room name.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                213,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                213,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "ActorContainer"
+                        },
+                        {
+                            "finish": [
+                                213,
+                                36
+                            ],
+                            "name": "roomName",
+                            "start": [
+                                213,
+                                28
+                            ],
+                            "type": "local",
+                            "view": "any"
+                        }
+                    ],
+                    "desc": " Get an Actor by its in-room name.",
+                    "finish": [
+                        213,
+                        41
+                    ],
+                    "rawdesc": " Get an Actor by its in-room name.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Actor"
+                        }
+                    ],
+                    "start": [
+                        213,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) ActorContainer:Get(roomName: any)\n  -> Actor"
+                },
+                "file": "types.lua",
+                "finish": [
+                    213,
+                    27
+                ],
+                "name": "Get",
+                "rawdesc": " Get an Actor by its in-room name.",
+                "start": [
+                    213,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Add a new Actor at this tile position of this type. It will have this in-room name.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                200,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                200,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "ActorContainer"
+                        },
+                        {
+                            "finish": [
+                                200,
+                                32
+                            ],
+                            "name": "pos",
+                            "start": [
+                                200,
+                                29
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        },
+                        {
+                            "finish": [
+                                200,
+                                42
+                            ],
+                            "name": "typeName",
+                            "start": [
+                                200,
+                                34
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        },
+                        {
+                            "finish": [
+                                200,
+                                52
+                            ],
+                            "name": "roomName",
+                            "start": [
+                                200,
+                                44
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        }
+                    ],
+                    "desc": " Add a new Actor at this tile position of this type. It will have this in-room name.",
+                    "finish": [
+                        200,
+                        57
+                    ],
+                    "rawdesc": " Add a new Actor at this tile position of this type. It will have this in-room name.",
+                    "start": [
+                        200,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) ActorContainer:Push(pos: Vector2, typeName: string, roomName: string)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    200,
+                    28
+                ],
+                "name": "Push",
+                "rawdesc": " Add a new Actor at this tile position of this type. It will have this in-room name.",
+                "start": [
+                    200,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Remove an Actor with this in-room name.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                204,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                204,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "ActorContainer"
+                        },
+                        {
+                            "finish": [
+                                204,
+                                39
+                            ],
+                            "name": "roomName",
+                            "start": [
+                                204,
+                                31
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        }
+                    ],
+                    "desc": " Remove an Actor with this in-room name.",
+                    "finish": [
+                        204,
+                        44
+                    ],
+                    "rawdesc": " Remove an Actor with this in-room name.",
+                    "start": [
+                        204,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) ActorContainer:Remove(roomName: string)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    204,
+                    30
+                ],
+                "name": "Remove",
+                "rawdesc": " Remove an Actor with this in-room name.",
+                "start": [
+                    204,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "ActorContainer",
+        "type": "type",
+        "view": "ActorContainer"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "file": "types.lua",
+                "finish": [
+                    147,
+                    30
+                ],
+                "start": [
+                    147,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "CollisionsContainer",
+                "visible": "public"
+            }
+        ],
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                157,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                157,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "CollisionsContainer"
+                        },
+                        {
+                            "finish": [
+                                157,
+                                40
+                            ],
+                            "name": "item",
+                            "start": [
+                                157,
+                                36
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "finish": [
+                        157,
+                        45
+                    ],
+                    "start": [
+                        157,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) CollisionsContainer:Exists(item: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    157,
+                    35
+                ],
+                "name": "Exists",
+                "start": [
+                    157,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                151,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                151,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "CollisionsContainer"
+                        },
+                        {
+                            "finish": [
+                                151,
+                                38
+                            ],
+                            "name": "item",
+                            "start": [
+                                151,
+                                34
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "finish": [
+                        151,
+                        43
+                    ],
+                    "start": [
+                        151,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) CollisionsContainer:Push(item: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    151,
+                    33
+                ],
+                "name": "Push",
+                "start": [
+                    151,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                154,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                154,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "CollisionsContainer"
+                        },
+                        {
+                            "finish": [
+                                154,
+                                40
+                            ],
+                            "name": "item",
+                            "start": [
+                                154,
+                                36
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "finish": [
+                        154,
+                        45
+                    ],
+                    "start": [
+                        154,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) CollisionsContainer:Remove(item: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    154,
+                    35
+                ],
+                "name": "Remove",
+                "start": [
+                    154,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "CollisionsContainer",
+        "type": "type",
+        "view": "CollisionsContainer"
+    },
+    {
+        "defines": [
+            {
+                "desc": "```lua\n{\n    DOWN_IDLE: integer = 0,\n    DOWN: integer = 1,\n    UP_IDLE: integer = 2,\n    UP: integer = 3,\n    LEFT_IDLE: integer = 4,\n    LEFT: integer = 5,\n    RIGHT_IDLE: integer = 6,\n    RIGHT: integer = 7,\n}\n```",
+                "file": "types.lua",
+                "finish": [
+                    10,
+                    19
+                ],
+                "rawdesc": "```lua\n{\n    DOWN_IDLE: integer = 0,\n    DOWN: integer = 1,\n    UP_IDLE: integer = 2,\n    UP: integer = 3,\n    LEFT_IDLE: integer = 4,\n    LEFT: integer = 5,\n    RIGHT_IDLE: integer = 6,\n    RIGHT: integer = 7,\n}\n```",
+                "start": [
+                    10,
+                    10
+                ],
+                "type": "doc.enum",
+                "view": "Direction"
+            }
+        ],
+        "fields": [],
+        "name": "Direction",
+        "type": "type",
+        "view": "Direction"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " The StateService is responsible for storing gameplay-related variables\n that make up the state of the game.\n",
+                "file": "stateService.lua",
+                "finish": [
+                    3,
+                    20
+                ],
+                "rawdesc": " The StateService is responsible for storing gameplay-related variables\n that make up the state of the game.\n",
+                "start": [
+                    3,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "GameState",
+                "visible": "public"
+            }
+        ],
+        "desc": " The StateService is responsible for storing gameplay-related variables\n that make up the state of the game.\n",
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get a property",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                9,
+                                27
+                            ],
+                            "name": "prop",
+                            "start": [
+                                9,
+                                23
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        }
+                    ],
+                    "desc": " Get a property",
+                    "finish": [
+                        9,
+                        32
+                    ],
+                    "rawdesc": " Get a property",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "any"
+                        }
+                    ],
+                    "start": [
+                        9,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "function GameState.Get(prop: string)\n  -> any"
+                },
+                "file": "stateService.lua",
+                "finish": [
+                    9,
+                    22
+                ],
+                "name": "Get",
+                "rawdesc": " Get a property",
+                "start": [
+                    9,
+                    9
+                ],
+                "type": "setfield",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set the property with the chosen value.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                14,
+                                27
+                            ],
+                            "name": "prop",
+                            "start": [
+                                14,
+                                23
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        },
+                        {
+                            "finish": [
+                                14,
+                                34
+                            ],
+                            "name": "value",
+                            "start": [
+                                14,
+                                29
+                            ],
+                            "type": "local",
+                            "view": "any"
+                        }
+                    ],
+                    "desc": " Set the property with the chosen value.",
+                    "finish": [
+                        14,
+                        39
+                    ],
+                    "rawdesc": " Set the property with the chosen value.",
+                    "start": [
+                        14,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "function GameState.Set(prop: string, value: any)"
+                },
+                "file": "stateService.lua",
+                "finish": [
+                    14,
+                    22
+                ],
+                "name": "Set",
+                "rawdesc": " Set the property with the chosen value.",
+                "start": [
+                    14,
+                    9
+                ],
+                "type": "setfield",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "GameState",
+        "rawdesc": " The StateService is responsible for storing gameplay-related variables\n that make up the state of the game.\n",
+        "type": "type",
+        "view": "GameState"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "file": "types.lua",
+                "finish": [
+                    96,
+                    23
+                ],
+                "start": [
+                    96,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "Interactable",
+                "visible": "public"
+            }
+        ],
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get the World position of this Interactable",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                114,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                114,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Interactable"
+                        }
+                    ],
+                    "desc": " Get the World position of this Interactable",
+                    "finish": [
+                        114,
+                        39
+                    ],
+                    "rawdesc": " Get the World position of this Interactable",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "start": [
+                        114,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Interactable:GetPosition()\n  -> Vector2"
+                },
+                "file": "types.lua",
+                "finish": [
+                    114,
+                    33
+                ],
+                "name": "GetPosition",
+                "rawdesc": " Get the World position of this Interactable",
+                "start": [
+                    114,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get this Interactable's type",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                118,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                118,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Interactable"
+                        }
+                    ],
+                    "desc": " Get this Interactable's type",
+                    "finish": [
+                        118,
+                        35
+                    ],
+                    "rawdesc": " Get this Interactable's type",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "string"
+                        }
+                    ],
+                    "start": [
+                        118,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Interactable:GetType()\n  -> string"
+                },
+                "file": "types.lua",
+                "finish": [
+                    118,
+                    29
+                ],
+                "name": "GetType",
+                "rawdesc": " Get this Interactable's type",
+                "start": [
+                    118,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Whether this Interactable is set to be interacted with on player collision or not.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                106,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                106,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Interactable"
+                        }
+                    ],
+                    "desc": " Whether this Interactable is set to be interacted with on player collision or not.",
+                    "finish": [
+                        106,
+                        37
+                    ],
+                    "rawdesc": " Whether this Interactable is set to be interacted with on player collision or not.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "boolean"
+                        }
+                    ],
+                    "start": [
+                        106,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Interactable:IsOnTouch()\n  -> boolean"
+                },
+                "file": "types.lua",
+                "finish": [
+                    106,
+                    31
+                ],
+                "name": "IsOnTouch",
+                "rawdesc": " Whether this Interactable is set to be interacted with on player collision or not.",
+                "start": [
+                    106,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set whether this interactable will be invoked when player touches it. ",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                110,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                110,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Interactable"
+                        },
+                        {
+                            "finish": [
+                                110,
+                                38
+                            ],
+                            "name": "value",
+                            "start": [
+                                110,
+                                33
+                            ],
+                            "type": "local",
+                            "view": "boolean"
+                        }
+                    ],
+                    "desc": " Set whether this interactable will be invoked when player touches it. ",
+                    "finish": [
+                        110,
+                        43
+                    ],
+                    "rawdesc": " Set whether this interactable will be invoked when player touches it. ",
+                    "start": [
+                        110,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Interactable:SetOnTouch(value: boolean)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    110,
+                    32
+                ],
+                "name": "SetOnTouch",
+                "rawdesc": " Set whether this interactable will be invoked when player touches it. ",
+                "start": [
+                    110,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set an Interactable's property",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                102,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                102,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Interactable"
+                        },
+                        {
+                            "finish": [
+                                102,
+                                33
+                            ],
+                            "name": "key",
+                            "start": [
+                                102,
+                                30
+                            ],
+                            "type": "local",
+                            "view": "any"
+                        },
+                        {
+                            "finish": [
+                                102,
+                                40
+                            ],
+                            "name": "value",
+                            "start": [
+                                102,
+                                35
+                            ],
+                            "type": "local",
+                            "view": "any"
+                        }
+                    ],
+                    "desc": " Set an Interactable's property",
+                    "finish": [
+                        102,
+                        45
+                    ],
+                    "rawdesc": " Set an Interactable's property",
+                    "start": [
+                        102,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Interactable:SetProp(key: any, value: any)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    102,
+                    29
+                ],
+                "name": "SetProp",
+                "rawdesc": " Set an Interactable's property",
+                "start": [
+                    102,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Change the interactable's type.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                122,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                122,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Interactable"
+                        },
+                        {
+                            "finish": [
+                                122,
+                                34
+                            ],
+                            "name": "type",
+                            "start": [
+                                122,
+                                30
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        }
+                    ],
+                    "desc": " Change the interactable's type.",
+                    "finish": [
+                        122,
+                        39
+                    ],
+                    "rawdesc": " Change the interactable's type.",
+                    "start": [
+                        122,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Interactable:SetType(type: string)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    122,
+                    29
+                ],
+                "name": "SetType",
+                "rawdesc": " Change the interactable's type.",
+                "start": [
+                    122,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "Interactable",
+        "type": "type",
+        "view": "Interactable"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "file": "types.lua",
+                "finish": [
+                    159,
+                    33
+                ],
+                "start": [
+                    159,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "InteractablesContainer",
+                "visible": "public"
+            }
+        ],
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                170,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                170,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "InteractablesContainer"
+                        },
+                        {
+                            "finish": [
+                                170,
+                                42
+                            ],
+                            "name": "pos",
+                            "start": [
+                                170,
+                                39
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "finish": [
+                        170,
+                        47
+                    ],
+                    "start": [
+                        170,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) InteractablesContainer:Exists(pos: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    170,
+                    38
+                ],
+                "name": "Exists",
+                "start": [
+                    170,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                174,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                174,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "InteractablesContainer"
+                        },
+                        {
+                            "finish": [
+                                174,
+                                41
+                            ],
+                            "name": "pos",
+                            "start": [
+                                174,
+                                38
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "finish": [
+                        174,
+                        46
+                    ],
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Interactable"
+                        }
+                    ],
+                    "start": [
+                        174,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) InteractablesContainer:GetAt(pos: Vector2)\n  -> Interactable"
+                },
+                "file": "types.lua",
+                "finish": [
+                    174,
+                    37
+                ],
+                "name": "GetAt",
+                "start": [
+                    174,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                164,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                164,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "InteractablesContainer"
+                        },
+                        {
+                            "finish": [
+                                164,
+                                40
+                            ],
+                            "name": "pos",
+                            "start": [
+                                164,
+                                37
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        },
+                        {
+                            "finish": [
+                                164,
+                                46
+                            ],
+                            "name": "type",
+                            "start": [
+                                164,
+                                42
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        }
+                    ],
+                    "finish": [
+                        164,
+                        51
+                    ],
+                    "start": [
+                        164,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) InteractablesContainer:Push(pos: Vector2, type: string)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    164,
+                    36
+                ],
+                "name": "Push",
+                "start": [
+                    164,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                167,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                167,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "InteractablesContainer"
+                        },
+                        {
+                            "finish": [
+                                167,
+                                42
+                            ],
+                            "name": "pos",
+                            "start": [
+                                167,
+                                39
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "finish": [
+                        167,
+                        47
+                    ],
+                    "start": [
+                        167,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) InteractablesContainer:Remove(pos: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    167,
+                    38
+                ],
+                "name": "Remove",
+                "start": [
+                    167,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "InteractablesContainer",
+        "type": "type",
+        "view": "InteractablesContainer"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " The InterfaceService acts for the User Interface (UI).\n",
+                "file": "interfaceService.lua",
+                "finish": [
+                    2,
+                    20
+                ],
+                "rawdesc": " The InterfaceService acts for the User Interface (UI).\n",
+                "start": [
+                    2,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "Interface",
+                "visible": "public"
+            }
+        ],
+        "desc": " The InterfaceService acts for the User Interface (UI).\n",
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Open a dialogue with a certain title.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                7,
+                                40
+                            ],
+                            "name": "dialogue",
+                            "start": [
+                                7,
+                                32
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        }
+                    ],
+                    "desc": " Open a dialogue with a certain title.",
+                    "finish": [
+                        7,
+                        45
+                    ],
+                    "rawdesc": " Open a dialogue with a certain title.",
+                    "start": [
+                        7,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "function Interface.OpenDialogue(dialogue: string)"
+                },
+                "file": "interfaceService.lua",
+                "finish": [
+                    7,
+                    31
+                ],
+                "name": "OpenDialogue",
+                "rawdesc": " Open a dialogue with a certain title.",
+                "start": [
+                    7,
+                    9
+                ],
+                "type": "setfield",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "Interface",
+        "rawdesc": " The InterfaceService acts for the User Interface (UI).\n",
+        "type": "type",
+        "view": "Interface"
+    },
+    {
+        "DOC": "/home/nikodev/Документи/Projects/rpgpp/luasrc",
+        "defines": [],
+        "fields": [],
+        "name": "LuaLS",
+        "type": "luals.config"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "file": "types.lua",
+                "finish": [
+                    53,
+                    17
+                ],
+                "start": [
+                    53,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "Player",
+                "visible": "public"
+            }
+        ],
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get the player's actor.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                77,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                77,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Player"
+                        }
+                    ],
+                    "desc": " Get the player's actor.",
+                    "finish": [
+                        77,
+                        30
+                    ],
+                    "rawdesc": " Get the player's actor.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Actor"
+                        }
+                    ],
+                    "start": [
+                        77,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Player:GetActor()\n  -> Actor"
+                },
+                "file": "types.lua",
+                "finish": [
+                    77,
+                    24
+                ],
+                "name": "GetActor",
+                "rawdesc": " Get the player's actor.",
+                "start": [
+                    77,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get the player's position",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                58,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                58,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Player"
+                        }
+                    ],
+                    "desc": " Get the player's position",
+                    "finish": [
+                        58,
+                        33
+                    ],
+                    "rawdesc": " Get the player's position",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "start": [
+                        58,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Player:GetPosition()\n  -> Vector2"
+                },
+                "file": "types.lua",
+                "finish": [
+                    58,
+                    27
+                ],
+                "name": "GetPosition",
+                "rawdesc": " Get the player's position",
+                "start": [
+                    58,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get this player's tile position.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                65,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                65,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Player"
+                        }
+                    ],
+                    "desc": " Get this player's tile position.",
+                    "finish": [
+                        65,
+                        37
+                    ],
+                    "rawdesc": " Get this player's tile position.",
+                    "start": [
+                        65,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Player:GetTilePosition()"
+                },
+                "file": "types.lua",
+                "finish": [
+                    65,
+                    31
+                ],
+                "name": "GetTilePosition",
+                "rawdesc": " Get this player's tile position.",
+                "start": [
+                    65,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Move the Actor using a velocity vector.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                73,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                73,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Player"
+                        },
+                        {
+                            "finish": [
+                                73,
+                                39
+                            ],
+                            "name": "velocity",
+                            "start": [
+                                73,
+                                31
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "desc": " Move the Actor using a velocity vector.",
+                    "finish": [
+                        73,
+                        44
+                    ],
+                    "rawdesc": " Move the Actor using a velocity vector.",
+                    "start": [
+                        73,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Player:MoveByVelocity(velocity: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    73,
+                    30
+                ],
+                "name": "MoveByVelocity",
+                "rawdesc": " Move the Actor using a velocity vector.",
+                "start": [
+                    73,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set this player's position.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                62,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                62,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Player"
+                        },
+                        {
+                            "finish": [
+                                62,
+                                39
+                            ],
+                            "name": "newPosition",
+                            "start": [
+                                62,
+                                28
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "desc": " Set this player's position.",
+                    "finish": [
+                        62,
+                        44
+                    ],
+                    "rawdesc": " Set this player's position.",
+                    "start": [
+                        62,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Player:SetPosition(newPosition: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    62,
+                    27
+                ],
+                "name": "SetPosition",
+                "rawdesc": " Set this player's position.",
+                "start": [
+                    62,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set the player's tile position.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                69,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                69,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Player"
+                        },
+                        {
+                            "finish": [
+                                69,
+                                43
+                            ],
+                            "name": "newPosition",
+                            "start": [
+                                69,
+                                32
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "desc": " Set the player's tile position.",
+                    "finish": [
+                        69,
+                        48
+                    ],
+                    "rawdesc": " Set the player's tile position.",
+                    "start": [
+                        69,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Player:SetTilePosition(newPosition: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    69,
+                    31
+                ],
+                "name": "SetTilePosition",
+                "rawdesc": " Set the player's tile position.",
+                "start": [
+                    69,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "Player",
+        "type": "type",
+        "view": "Player"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "file": "types.lua",
+                "finish": [
+                    124,
+                    15
+                ],
+                "start": [
+                    124,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "Prop",
+                "visible": "public"
+            }
+        ],
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get the Interactable of this Prop.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                145,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                145,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Prop"
+                        }
+                    ],
+                    "desc": " Get the Interactable of this Prop.",
+                    "finish": [
+                        145,
+                        35
+                    ],
+                    "rawdesc": " Get the Interactable of this Prop.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Interactable"
+                        }
+                    ],
+                    "start": [
+                        145,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Prop:GetInteractable()\n  -> Interactable"
+                },
+                "file": "types.lua",
+                "finish": [
+                    145,
+                    29
+                ],
+                "name": "GetInteractable",
+                "rawdesc": " Get the Interactable of this Prop.",
+                "start": [
+                    145,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get the absolute world position of this Prop.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                129,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                129,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Prop"
+                        }
+                    ],
+                    "desc": " Get the absolute world position of this Prop.",
+                    "finish": [
+                        129,
+                        31
+                    ],
+                    "rawdesc": " Get the absolute world position of this Prop.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "start": [
+                        129,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Prop:GetPosition()\n  -> Vector2"
+                },
+                "file": "types.lua",
+                "finish": [
+                    129,
+                    25
+                ],
+                "name": "GetPosition",
+                "rawdesc": " Get the absolute world position of this Prop.",
+                "start": [
+                    129,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get the tile position of this Prop.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                137,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                137,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Prop"
+                        }
+                    ],
+                    "desc": " Get the tile position of this Prop.",
+                    "finish": [
+                        137,
+                        35
+                    ],
+                    "rawdesc": " Get the tile position of this Prop.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "start": [
+                        137,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Prop:GetTilePosition()\n  -> Vector2"
+                },
+                "file": "types.lua",
+                "finish": [
+                    137,
+                    29
+                ],
+                "name": "GetTilePosition",
+                "rawdesc": " Get the tile position of this Prop.",
+                "start": [
+                    137,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set the absolute world position of this Prop.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                133,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                133,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Prop"
+                        },
+                        {
+                            "finish": [
+                                133,
+                                29
+                            ],
+                            "name": "pos",
+                            "start": [
+                                133,
+                                26
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "desc": " Set the absolute world position of this Prop.",
+                    "finish": [
+                        133,
+                        34
+                    ],
+                    "rawdesc": " Set the absolute world position of this Prop.",
+                    "start": [
+                        133,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Prop:SetPosition(pos: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    133,
+                    25
+                ],
+                "name": "SetPosition",
+                "rawdesc": " Set the absolute world position of this Prop.",
+                "start": [
+                    133,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set the tile position of this Prop.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                141,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                141,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Prop"
+                        },
+                        {
+                            "finish": [
+                                141,
+                                33
+                            ],
+                            "name": "pos",
+                            "start": [
+                                141,
+                                30
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "desc": " Set the tile position of this Prop.",
+                    "finish": [
+                        141,
+                        38
+                    ],
+                    "rawdesc": " Set the tile position of this Prop.",
+                    "start": [
+                        141,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Prop:SetTilePosition(pos: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    141,
+                    29
+                ],
+                "name": "SetTilePosition",
+                "rawdesc": " Set the tile position of this Prop.",
+                "start": [
+                    141,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "Prop",
+        "type": "type",
+        "view": "Prop"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "file": "types.lua",
+                "finish": [
+                    176,
+                    25
+                ],
+                "start": [
+                    176,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "PropsContainer",
+                "visible": "public"
+            }
+        ],
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                187,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                187,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "PropsContainer"
+                        },
+                        {
+                            "finish": [
+                                187,
+                                34
+                            ],
+                            "name": "pos",
+                            "start": [
+                                187,
+                                31
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "finish": [
+                        187,
+                        39
+                    ],
+                    "start": [
+                        187,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) PropsContainer:Exists(pos: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    187,
+                    30
+                ],
+                "name": "Exists",
+                "start": [
+                    187,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                191,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                191,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "PropsContainer"
+                        },
+                        {
+                            "finish": [
+                                191,
+                                33
+                            ],
+                            "name": "pos",
+                            "start": [
+                                191,
+                                30
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "finish": [
+                        191,
+                        38
+                    ],
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Prop"
+                        }
+                    ],
+                    "start": [
+                        191,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) PropsContainer:GetAt(pos: Vector2)\n  -> Prop"
+                },
+                "file": "types.lua",
+                "finish": [
+                    191,
+                    29
+                ],
+                "name": "GetAt",
+                "start": [
+                    191,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                181,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                181,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "PropsContainer"
+                        },
+                        {
+                            "finish": [
+                                181,
+                                32
+                            ],
+                            "name": "pos",
+                            "start": [
+                                181,
+                                29
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        },
+                        {
+                            "finish": [
+                                181,
+                                38
+                            ],
+                            "name": "type",
+                            "start": [
+                                181,
+                                34
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        }
+                    ],
+                    "finish": [
+                        181,
+                        43
+                    ],
+                    "start": [
+                        181,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) PropsContainer:Push(pos: Vector2, type: string)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    181,
+                    28
+                ],
+                "name": "Push",
+                "start": [
+                    181,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                184,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                184,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "PropsContainer"
+                        },
+                        {
+                            "finish": [
+                                184,
+                                34
+                            ],
+                            "name": "pos",
+                            "start": [
+                                184,
+                                31
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "finish": [
+                        184,
+                        39
+                    ],
+                    "start": [
+                        184,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) PropsContainer:Remove(pos: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    184,
+                    30
+                ],
+                "name": "Remove",
+                "start": [
+                    184,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "PropsContainer",
+        "type": "type",
+        "view": "PropsContainer"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "file": "types.lua",
+                "finish": [
+                    215,
+                    15
+                ],
+                "start": [
+                    215,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "Room",
+                "visible": "public"
+            }
+        ],
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get a refernece to the collection of Actors.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                244,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                244,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Room"
+                        }
+                    ],
+                    "desc": " Get a refernece to the collection of Actors.",
+                    "finish": [
+                        244,
+                        29
+                    ],
+                    "rawdesc": " Get a refernece to the collection of Actors.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "ActorContainer"
+                        }
+                    ],
+                    "start": [
+                        244,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Room:GetActors()\n  -> ActorContainer"
+                },
+                "file": "types.lua",
+                "finish": [
+                    244,
+                    23
+                ],
+                "name": "GetActors",
+                "rawdesc": " Get a refernece to the collection of Actors.",
+                "start": [
+                    244,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get a reference to the CollisionsContainer of this Room.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                232,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                232,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Room"
+                        }
+                    ],
+                    "desc": " Get a reference to the CollisionsContainer of this Room.",
+                    "finish": [
+                        232,
+                        33
+                    ],
+                    "rawdesc": " Get a reference to the CollisionsContainer of this Room.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "CollisionsContainer"
+                        }
+                    ],
+                    "start": [
+                        232,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Room:GetCollisions()\n  -> CollisionsContainer"
+                },
+                "file": "types.lua",
+                "finish": [
+                    232,
+                    27
+                ],
+                "name": "GetCollisions",
+                "rawdesc": " Get a reference to the CollisionsContainer of this Room.",
+                "start": [
+                    232,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get a reference to the InteractablesContainer of this Room.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                236,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                236,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Room"
+                        }
+                    ],
+                    "desc": " Get a reference to the InteractablesContainer of this Room.",
+                    "finish": [
+                        236,
+                        36
+                    ],
+                    "rawdesc": " Get a reference to the InteractablesContainer of this Room.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "InteractablesContainer"
+                        }
+                    ],
+                    "start": [
+                        236,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Room:GetInteractables()\n  -> InteractablesContainer"
+                },
+                "file": "types.lua",
+                "finish": [
+                    236,
+                    30
+                ],
+                "name": "GetInteractables",
+                "rawdesc": " Get a reference to the InteractablesContainer of this Room.",
+                "start": [
+                    236,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get a reference to the Player object.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                220,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                220,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Room"
+                        }
+                    ],
+                    "desc": " Get a reference to the Player object.",
+                    "finish": [
+                        220,
+                        29
+                    ],
+                    "rawdesc": " Get a reference to the Player object.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Player"
+                        }
+                    ],
+                    "start": [
+                        220,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Room:GetPlayer()\n  -> Player"
+                },
+                "file": "types.lua",
+                "finish": [
+                    220,
+                    23
+                ],
+                "name": "GetPlayer",
+                "rawdesc": " Get a reference to the Player object.",
+                "start": [
+                    220,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get a reference to the PropsContainer of this Room.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                240,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                240,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Room"
+                        }
+                    ],
+                    "desc": " Get a reference to the PropsContainer of this Room.",
+                    "finish": [
+                        240,
+                        28
+                    ],
+                    "rawdesc": " Get a reference to the PropsContainer of this Room.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "PropsContainer"
+                        }
+                    ],
+                    "start": [
+                        240,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Room:GetProps()\n  -> PropsContainer"
+                },
+                "file": "types.lua",
+                "finish": [
+                    240,
+                    22
+                ],
+                "name": "GetProps",
+                "rawdesc": " Get a reference to the PropsContainer of this Room.",
+                "start": [
+                    240,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set the start tile position.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                224,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                224,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Room"
+                        }
+                    ],
+                    "desc": " Set the start tile position.",
+                    "finish": [
+                        224,
+                        32
+                    ],
+                    "rawdesc": " Set the start tile position.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "start": [
+                        224,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Room:GetStartTile()\n  -> Vector2"
+                },
+                "file": "types.lua",
+                "finish": [
+                    224,
+                    26
+                ],
+                "name": "GetStartTile",
+                "rawdesc": " Set the start tile position.",
+                "start": [
+                    224,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get a pointer to this Room's TileMap.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                228,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                228,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "Room"
+                        }
+                    ],
+                    "desc": " Get a pointer to this Room's TileMap.",
+                    "finish": [
+                        228,
+                        30
+                    ],
+                    "rawdesc": " Get a pointer to this Room's TileMap.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "TileMap"
+                        }
+                    ],
+                    "start": [
+                        228,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) Room:GetTileMap()\n  -> TileMap"
+                },
+                "file": "types.lua",
+                "finish": [
+                    228,
+                    24
+                ],
+                "name": "GetTileMap",
+                "rawdesc": " Get a pointer to this Room's TileMap.",
+                "start": [
+                    228,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "Room",
+        "type": "type",
+        "view": "Room"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " The SoundService is responsible for playing sounds and managing the current background music\n",
+                "file": "soundsService.lua",
+                "finish": [
+                    2,
+                    17
+                ],
+                "rawdesc": " The SoundService is responsible for playing sounds and managing the current background music\n",
+                "start": [
+                    2,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "Sounds",
+                "visible": "public"
+            }
+        ],
+        "desc": " The SoundService is responsible for playing sounds and managing the current background music\n",
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Load the music with the specified id.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                11,
+                                31
+                            ],
+                            "name": "music",
+                            "start": [
+                                11,
+                                26
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        }
+                    ],
+                    "desc": " Load the music with the specified id.",
+                    "finish": [
+                        11,
+                        36
+                    ],
+                    "rawdesc": " Load the music with the specified id.",
+                    "start": [
+                        11,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "function Sounds.LoadMusic(music: string)"
+                },
+                "file": "soundsService.lua",
+                "finish": [
+                    11,
+                    25
+                ],
+                "name": "LoadMusic",
+                "rawdesc": " Load the music with the specified id.",
+                "start": [
+                    11,
+                    9
+                ],
+                "type": "setfield",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Play the loaded music.",
+                "extends": {
+                    "args": [],
+                    "desc": " Play the loaded music.",
+                    "finish": [
+                        14,
+                        31
+                    ],
+                    "rawdesc": " Play the loaded music.",
+                    "start": [
+                        14,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "function Sounds.PlayMusic()"
+                },
+                "file": "soundsService.lua",
+                "finish": [
+                    14,
+                    25
+                ],
+                "name": "PlayMusic",
+                "rawdesc": " Play the loaded music.",
+                "start": [
+                    14,
+                    9
+                ],
+                "type": "setfield",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Play the sound with the specified id.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                7,
+                                31
+                            ],
+                            "name": "sound",
+                            "start": [
+                                7,
+                                26
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        }
+                    ],
+                    "desc": " Play the sound with the specified id.",
+                    "finish": [
+                        7,
+                        36
+                    ],
+                    "rawdesc": " Play the sound with the specified id.",
+                    "start": [
+                        7,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "function Sounds.PlaySound(sound: string)"
+                },
+                "file": "soundsService.lua",
+                "finish": [
+                    7,
+                    25
+                ],
+                "name": "PlaySound",
+                "rawdesc": " Play the sound with the specified id.",
+                "start": [
+                    7,
+                    9
+                ],
+                "type": "setfield",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "Sounds",
+        "rawdesc": " The SoundService is responsible for playing sounds and managing the current background music\n",
+        "type": "type",
+        "view": "Sounds"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "file": "types.lua",
+                "finish": [
+                    79,
+                    18
+                ],
+                "start": [
+                    79,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "TileMap",
+                "visible": "public"
+            }
+        ],
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get the size of this TileMap in tiles.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                94,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                94,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "TileMap"
+                        }
+                    ],
+                    "desc": " Get the size of this TileMap in tiles.",
+                    "finish": [
+                        94,
+                        42
+                    ],
+                    "rawdesc": " Get the size of this TileMap in tiles.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "start": [
+                        94,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) TileMap:GetWorldSizeInTiles()\n  -> Vector2"
+                },
+                "file": "types.lua",
+                "finish": [
+                    94,
+                    36
+                ],
+                "name": "GetWorldSizeInTiles",
+                "rawdesc": " Get the size of this TileMap in tiles.",
+                "start": [
+                    94,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set the tile at the specified world position to be empty (not drawn).",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                90,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                90,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "TileMap"
+                        },
+                        {
+                            "finish": [
+                                90,
+                                38
+                            ],
+                            "name": "worldPos",
+                            "start": [
+                                90,
+                                30
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "desc": " Set the tile at the specified world position to be empty (not drawn).",
+                    "finish": [
+                        90,
+                        43
+                    ],
+                    "rawdesc": " Set the tile at the specified world position to be empty (not drawn).",
+                    "start": [
+                        90,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) TileMap:SetEmptyTile(worldPos: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    90,
+                    29
+                ],
+                "name": "SetEmptyTile",
+                "rawdesc": " Set the tile at the specified world position to be empty (not drawn).",
+                "start": [
+                    90,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set the tile at the specified world position to be a tile at the\n specified atlas position from the TileSet",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                86,
+                                8
+                            ],
+                            "name": "self",
+                            "start": [
+                                86,
+                                8
+                            ],
+                            "type": "self",
+                            "view": "TileMap"
+                        },
+                        {
+                            "finish": [
+                                86,
+                                33
+                            ],
+                            "name": "worldPos",
+                            "start": [
+                                86,
+                                25
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        },
+                        {
+                            "finish": [
+                                86,
+                                43
+                            ],
+                            "name": "atlasPos",
+                            "start": [
+                                86,
+                                35
+                            ],
+                            "type": "local",
+                            "view": "Vector2"
+                        }
+                    ],
+                    "desc": " Set the tile at the specified world position to be a tile at the\n specified atlas position from the TileSet",
+                    "finish": [
+                        86,
+                        48
+                    ],
+                    "rawdesc": " Set the tile at the specified world position to be a tile at the\n specified atlas position from the TileSet",
+                    "start": [
+                        86,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "(method) TileMap:SetTile(worldPos: Vector2, atlasPos: Vector2)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    86,
+                    24
+                ],
+                "name": "SetTile",
+                "rawdesc": " Set the tile at the specified world position to be a tile at the\n specified atlas position from the TileSet",
+                "start": [
+                    86,
+                    9
+                ],
+                "type": "setmethod",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "TileMap",
+        "type": "type",
+        "view": "TileMap"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "file": "types.lua",
+                "finish": [
+                    0,
+                    18
+                ],
+                "start": [
+                    0,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "Vector2",
+                "visible": "public"
+            }
+        ],
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Construct a new `Vector2`",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                8,
+                                22
+                            ],
+                            "name": "x",
+                            "start": [
+                                8,
+                                21
+                            ],
+                            "type": "local",
+                            "view": "number"
+                        },
+                        {
+                            "finish": [
+                                8,
+                                25
+                            ],
+                            "name": "y",
+                            "start": [
+                                8,
+                                24
+                            ],
+                            "type": "local",
+                            "view": "number"
+                        }
+                    ],
+                    "desc": " Construct a new `Vector2`",
+                    "finish": [
+                        8,
+                        30
+                    ],
+                    "rawdesc": " Construct a new `Vector2`",
+                    "start": [
+                        8,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "function Vector2.new(x: number, y: number)"
+                },
+                "file": "types.lua",
+                "finish": [
+                    8,
+                    20
+                ],
+                "name": "new",
+                "rawdesc": " Construct a new `Vector2`",
+                "start": [
+                    8,
+                    9
+                ],
+                "type": "setfield",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": "The x coordinate",
+                "extends": {
+                    "finish": [
+                        1,
+                        19
+                    ],
+                    "start": [
+                        1,
+                        13
+                    ],
+                    "type": "doc.type",
+                    "types": [
+                        {
+                            "finish": [
+                                1,
+                                19
+                            ],
+                            "start": [
+                                1,
+                                13
+                            ],
+                            "type": "doc.type.name",
+                            "view": "number"
+                        }
+                    ],
+                    "view": "number"
+                },
+                "file": "types.lua",
+                "finish": [
+                    1,
+                    19
+                ],
+                "name": "x",
+                "rawdesc": "The x coordinate",
+                "start": [
+                    1,
+                    11
+                ],
+                "type": "doc.field",
+                "view": "number",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": "The y coordinate",
+                "extends": {
+                    "finish": [
+                        2,
+                        19
+                    ],
+                    "start": [
+                        2,
+                        13
+                    ],
+                    "type": "doc.type",
+                    "types": [
+                        {
+                            "finish": [
+                                2,
+                                19
+                            ],
+                            "start": [
+                                2,
+                                13
+                            ],
+                            "type": "doc.type.name",
+                            "view": "number"
+                        }
+                    ],
+                    "view": "number"
+                },
+                "file": "types.lua",
+                "finish": [
+                    2,
+                    19
+                ],
+                "name": "y",
+                "rawdesc": "The y coordinate",
+                "start": [
+                    2,
+                    11
+                ],
+                "type": "doc.field",
+                "view": "number",
+                "visible": "public"
+            }
+        ],
+        "name": "Vector2",
+        "type": "type",
+        "view": "Vector2"
+    },
+    {
+        "defines": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " The WorldService is responsible for containing and drawing the Room.\n",
+                "file": "worldService.lua",
+                "finish": [
+                    2,
+                    23
+                ],
+                "rawdesc": " The WorldService is responsible for containing and drawing the Room.\n",
+                "start": [
+                    2,
+                    11
+                ],
+                "type": "doc.class",
+                "view": "WorldService",
+                "visible": "public"
+            }
+        ],
+        "desc": " The WorldService is responsible for containing and drawing the Room.\n",
+        "fields": [
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get the Player.",
+                "extends": {
+                    "args": [],
+                    "desc": " Get the Player.",
+                    "finish": [
+                        7,
+                        37
+                    ],
+                    "rawdesc": " Get the Player.",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Player"
+                        }
+                    ],
+                    "start": [
+                        7,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "function WorldService.GetPlayer()\n  -> Player"
+                },
+                "file": "worldService.lua",
+                "finish": [
+                    7,
+                    31
+                ],
+                "name": "GetPlayer",
+                "rawdesc": " Get the Player.",
+                "start": [
+                    7,
+                    9
+                ],
+                "type": "setfield",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Get the current Room",
+                "extends": {
+                    "args": [],
+                    "desc": " Get the current Room",
+                    "finish": [
+                        15,
+                        35
+                    ],
+                    "rawdesc": " Get the current Room",
+                    "returns": [
+                        {
+                            "type": "function.return",
+                            "view": "Room"
+                        }
+                    ],
+                    "start": [
+                        15,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "function WorldService.GetRoom()\n  -> Room"
+                },
+                "file": "worldService.lua",
+                "finish": [
+                    15,
+                    29
+                ],
+                "name": "GetRoom",
+                "rawdesc": " Get the current Room",
+                "start": [
+                    15,
+                    9
+                ],
+                "type": "setfield",
+                "view": "function",
+                "visible": "public"
+            },
+            {
+                "async": false,
+                "deprecated": false,
+                "desc": " Set the current room using a room title in the game.",
+                "extends": {
+                    "args": [
+                        {
+                            "finish": [
+                                11,
+                                34
+                            ],
+                            "name": "room",
+                            "start": [
+                                11,
+                                30
+                            ],
+                            "type": "local",
+                            "view": "string"
+                        }
+                    ],
+                    "desc": " Set the current room using a room title in the game.",
+                    "finish": [
+                        11,
+                        39
+                    ],
+                    "rawdesc": " Set the current room using a room title in the game.",
+                    "start": [
+                        11,
+                        0
+                    ],
+                    "type": "function",
+                    "view": "function WorldService.SetRoom(room: string)"
+                },
+                "file": "worldService.lua",
+                "finish": [
+                    11,
+                    29
+                ],
+                "name": "SetRoom",
+                "rawdesc": " Set the current room using a room title in the game.",
+                "start": [
+                    11,
+                    9
+                ],
+                "type": "setfield",
+                "view": "function",
+                "visible": "public"
+            }
+        ],
+        "name": "WorldService",
+        "rawdesc": " The WorldService is responsible for containing and drawing the Room.\n",
+        "type": "type",
+        "view": "WorldService"
+    }
+]

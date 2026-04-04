@@ -35,6 +35,9 @@
 *.pdb
 *.ilk
 
+# docs ignores
+docs/Dev
+
 game-src/*/lib/
 /editor
 /game
@@ -51,10 +54,10 @@ execs/**
 .vs/
 .vscode/
 .idea/
-docs/C++ API
 site/
 imgui.ini
 clangd/
 game-src/
+.venv/
 compile_commands.json
 xmake-*.exe

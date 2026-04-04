@@ -1,11 +1,13 @@
 #ifndef _RPGPP_TILESET_H
 #define _RPGPP_TILESET_H
 
+#include <raylib.h>
+
+#include <nlohmann/json.hpp>
+#include <string>
+
 #include "gamedata.hpp"
 #include "saveable.hpp"
-#include <nlohmann/json.hpp>
-#include <raylib.h>
-#include <string>
 using json = nlohmann::json;
 #include "atlasTile.hpp"
 
@@ -14,7 +16,7 @@ using json = nlohmann::json;
  * @see [TileMap](TileMap.md)
  */
 class TileSet : public ISaveable {
-  private:
+private:
 	/** The used Texture for this TileSet. A raylib Texture is used. */
 	Texture texture;
 	/** The size of a single file. TIles can have different widths and heights,
@@ -23,8 +25,10 @@ class TileSet : public ISaveable {
 	/** The path to the used texture. May be a .png file or other image format.
 	 */
 	std::string textureSource;
+	/** The path to the file that represents this TileSet. */
+	std::string source;
 
-  public:
+public:
 	/** Empty constructor. */
 	TileSet();
 	/** Constructor that takes the path to the .rtiles file */
@@ -68,6 +72,8 @@ class TileSet : public ISaveable {
 	std::string getTextureSource();
 	/** Set the TileSet's texture source image. */
 	void setTextureSource(const std::string &source);
+	/** Get the path to the file that represents this TileSet. */
+	std::string getSource();
 	/** Check whether the given coordinates are valid */
 	bool areAtlasCoordsValid(Vector2 atlasCoords) const;
 	/** Get a tile from this TileSet as an AtlasTile. */

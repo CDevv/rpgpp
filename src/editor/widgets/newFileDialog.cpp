@@ -1,4 +1,7 @@
 #include "widgets/newFileDialog.hpp"
+
+#include <memory>
+
 #include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widget.hpp"
@@ -12,14 +15,13 @@
 #include "editor.hpp"
 #include "services/translationService.hpp"
 #include "widgets/fileChooser.hpp"
-#include <memory>
+
 NewFileDialog::NewFileDialog(const char *typeName, bool initRenderer) {}
 
 void NewFileDialog::init(tgui::Gui *gui) {
 	TranslationService &tService = Editor::instance->getTranslations();
 	window = tgui::ChildWindow::create();
-	bindTranslation<tgui::ChildWindow>(window, "dialog.new_file.title",
-									   &tgui::ChildWindow::setTitle);
+	bindTranslation<tgui::ChildWindow>(window, "dialog.new_file.title", &tgui::ChildWindow::setTitle);
 	window->setSize(320, 220);
 
 	auto panel = tgui::Panel::create();
@@ -30,8 +32,7 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	panel->add(vertLayout);
 
 	auto titleLabel = tgui::Label::create();
-	bindTranslation<tgui::Label>(titleLabel, "dialog.new_file.name",
-								 &tgui::Label::setText);
+	bindTranslation<tgui::Label>(titleLabel, "dialog.new_file.name", &tgui::Label::setText);
 	vertLayout->add(titleLabel);
 
 	titleField = tgui::EditBox::create();
@@ -44,8 +45,7 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	vertLayout->add(gap);
 
 	fileLabel = tgui::Label::create();
-	bindTranslation<tgui::Label>(fileLabel, "dialog.new_file.file",
-								 &tgui::Label::setText);
+	bindTranslation<tgui::Label>(fileLabel, "dialog.new_file.file", &tgui::Label::setText);
 	vertLayout->add(fileLabel);
 
 	fileField = FileChooser::create();
@@ -53,20 +53,16 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	vertLayout->add(fileField);
 
 	confirmButton = tgui::Button::create();
-	bindTranslation<tgui::Button>(confirmButton, "dialog.new_file.confirm",
-								  &tgui::Button::setText);
+	bindTranslation<tgui::Button>(confirmButton, "dialog.new_file.confirm", &tgui::Button::setText);
 	confirmButton->setSize(BUTTON_W, BUTTON_H);
-	confirmButton->setPosition(tgui::Layout("100%") - BUTTON_W - PADDING,
-							   tgui::Layout("100%") - BUTTON_H - PADDING);
+	confirmButton->setPosition(tgui::Layout("100%") - BUTTON_W - PADDING, tgui::Layout("100%") - BUTTON_H - PADDING);
 
 	window->add(confirmButton);
 
 	cancelButton = tgui::Button::create();
-	bindTranslation<tgui::Button>(cancelButton, "dialog.new_file.cancel",
-								  &tgui::Button::setText);
+	bindTranslation<tgui::Button>(cancelButton, "dialog.new_file.cancel", &tgui::Button::setText);
 	cancelButton->setSize(BUTTON_W, BUTTON_H);
-	cancelButton->setPosition(tgui::bindLeft(confirmButton) - BUTTON_W -
-								  PADDING,
+	cancelButton->setPosition(tgui::bindLeft(confirmButton) - BUTTON_W - PADDING,
 							  tgui::Layout("100%") - BUTTON_H - PADDING);
 
 	cancelButton->onPress([this] { window->close(); });
@@ -75,9 +71,7 @@ void NewFileDialog::init(tgui::Gui *gui) {
 	gui->add(window);
 }
 
-NewFileDialog::Ptr NewFileDialog::create() {
-	return std::make_shared<NewFileDialog>();
-}
+NewFileDialog::Ptr NewFileDialog::create() { return std::make_shared<NewFileDialog>(); }
 
 NewFileDialog::Ptr NewFileDialog::create(const tgui::String &title) {
 	auto ptr = std::make_shared<NewFileDialog>();
@@ -85,20 +79,17 @@ NewFileDialog::Ptr NewFileDialog::create(const tgui::String &title) {
 	return ptr;
 }
 
-void NewFileDialog::setFieldTitle(const tgui::String &title) {
-	titleField->setDefaultText(title);
-}
+void NewFileDialog::setFieldTitle(const tgui::String &title) { titleField->setDefaultText(title); }
 
-void NewFileDialog::setFileFieldTitle(const tgui::String &title) {
-	fileField->chosenPathLabel->setText(title);
-}
+void NewFileDialog::setFileFieldTitle(const tgui::String &title) { fileField->chosenPathLabel->setText(title); }
 
-void NewFileDialog::setPathFilters(
-	std::vector<std::pair<tgui::String, std::vector<tgui::String>>>
-		pathFilters) {
+void NewFileDialog::setPathFilters(std::vector<std::pair<tgui::String, std::vector<tgui::String>>> pathFilters) {
 	fileField->pathFilters = pathFilters;
 }
 
-void NewFileDialog::updateSize(const tgui::Layout2d &size) {
-	window->setSize(size.x, size.y);
+void NewFileDialog::hideFileField() {
+	fileLabel->setVisible(false);
+	fileField->setVisible(false);
 }
+
+void NewFileDialog::updateSize(const tgui::Layout2d &size) { window->setSize(size.x, size.y); }

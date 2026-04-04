@@ -1,6 +1,12 @@
 #include "fileInitVisitor.hpp"
+
+#include <memory>
+#include <nlohmann/json_fwd.hpp>
+#include <utility>
+
 #include "TGUI/Widget.hpp"
 #include "actor.hpp"
+#include "dialogue.hpp"
 #include "editor.hpp"
 #include "gamedata.hpp"
 #include "prop.hpp"
@@ -11,23 +17,18 @@
 #include "tilemap.hpp"
 #include "tileset.hpp"
 #include "widgets/newFileDialog.hpp"
-#include <memory>
-#include <nlohmann/json_fwd.hpp>
-#include <utility>
 
 FileInitVisitor::FileInitVisitor() {
 	funcs[static_cast<int>(EngineFileType::FILE_TILESET)] = tileset;
 	funcs[static_cast<int>(EngineFileType::FILE_MAP)] = room;
 	funcs[static_cast<int>(EngineFileType::FILE_ACTOR)] = actor;
 	funcs[static_cast<int>(EngineFileType::FILE_PROP)] = prop;
+	funcs[static_cast<int>(EngineFileType::FILE_DIALOGUE)] = dialogue;
 }
 
-bool FileInitVisitor::funcIsEmpty(EngineFileType fileType) {
-	return funcs[static_cast<int>(fileType)] == nullptr;
-}
+bool FileInitVisitor::funcIsEmpty(EngineFileType fileType) { return funcs[static_cast<int>(fileType)] == nullptr; }
 
-void FileInitVisitor::visit(EngineFileType fileType,
-							NewFileDialog::Ptr dialog) {
+void FileInitVisitor::visit(EngineFileType fileType, NewFileDialog::Ptr dialog) {
 	if (funcIsEmpty(fileType)) {
 		empty(dialog);
 	} else {
@@ -38,8 +39,7 @@ void FileInitVisitor::visit(EngineFileType fileType,
 void FileInitVisitor::empty(NewFileDialog::Ptr dialog) {
 	dialog->confirmButton->onPress([dialog] {
 		printf("%s \n", dialog->titleField->getText().toStdString().c_str());
-		printf("%s \n",
-			   dialog->fileField->getChosenPath().toStdString().c_str());
+		printf("%s \n", dialog->fileField->getChosenPath().toStdString().c_str());
 		dialog->window->close();
 	});
 }
@@ -54,15 +54,12 @@ void FileInitVisitor::tileset(NewFileDialog::Ptr dialog) {
 		if (!title.empty() && !filePath.empty()) {
 			dialog->window->close();
 
-			std::unique_ptr<TileSet> tileSet =
-				std::make_unique<TileSet>(filePath, 16);
+			std::unique_ptr<TileSet> tileSet = std::make_unique<TileSet>(filePath, 16);
 			nlohmann::json fileJson = tileSet->dumpJson();
-			std::string newFilePath =
-				TextFormat("tilesets/%s.tiles", title.c_str());
+			std::string newFilePath = TextFormat("tilesets/%s.rtiles", title.c_str());
 			SaveFileText(newFilePath.c_str(), fileJson.dump().c_str());
 
-			auto ptr = aurora::downcast<screens::ProjectScreen *>(
-				Editor::instance->getGui().currentScreen.get());
+			auto ptr = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
 			ptr->addFileView(EngineFileType::FILE_TILESET, newFilePath);
 			ptr->addResourceButtons(EngineFileType::FILE_TILESET);
 		}
@@ -75,25 +72,20 @@ void FileInitVisitor::room(NewFileDialog::Ptr dialog) {
 	dialog->confirmButton->onPress([dialog] {
 		std::string title = dialog->titleField->getText().toStdString();
 		std::string filePath = dialog->fileField->getChosenPath().toStdString();
-		filePath = TextFormat("tilesets/%s", GetFileName(filePath.c_str()));
+		std::string shortFilePath = TextFormat("tilesets/%s", GetFileName(filePath.c_str()));
 		if (!title.empty() && !filePath.empty()) {
-			std::unique_ptr<TileSet> tileSet =
-				std::make_unique<TileSet>(filePath);
-			std::unique_ptr<TileMap> tileMap = std::make_unique<TileMap>(
-				std::move(tileSet), 20, 20, _RPGPP_TILESIZE,
-				_RPGPP_TILESIZE * RPGPP_DRAW_MULTIPLIER);
-			std::unique_ptr<Room> room =
-				std::make_unique<Room>(std::move(tileMap));
+			std::unique_ptr<TileSet> tileSet = std::make_unique<TileSet>(shortFilePath);
+			std::unique_ptr<TileMap> tileMap = std::make_unique<TileMap>(std::move(tileSet), 20, 20, _RPGPP_TILESIZE,
+																		 _RPGPP_TILESIZE * RPGPP_DRAW_MULTIPLIER);
+			std::unique_ptr<Room> room = std::make_unique<Room>(std::move(tileMap));
 
-			std::string newFilePath =
-				TextFormat("maps/%s.rtiles", title.c_str());
+			std::string newFilePath = TextFormat("maps/%s.rmap", title.c_str());
 			nlohmann::json fileJson = room->dumpJson();
 			SaveFileText(newFilePath.c_str(), fileJson.dump().c_str());
 
-			auto ptr = aurora::downcast<screens::ProjectScreen *>(
-				Editor::instance->getGui().currentScreen.get());
-			ptr->addFileView(EngineFileType::FILE_TILESET, newFilePath);
-			ptr->addResourceButtons(EngineFileType::FILE_TILESET);
+			auto ptr = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
+			ptr->addFileView(EngineFileType::FILE_MAP, newFilePath);
+			ptr->addResourceButtons(EngineFileType::FILE_MAP);
 
 			dialog->window->close();
 		}
@@ -109,20 +101,16 @@ void FileInitVisitor::actor(NewFileDialog::Ptr dialog) {
 		std::string filePath = dialog->fileField->getChosenPath().toStdString();
 		filePath = TextFormat("tilesets/%s", GetFileName(filePath.c_str()));
 		if (!title.empty() && !filePath.empty()) {
-			std::unique_ptr<TileSet> tileSet =
-				std::make_unique<TileSet>(filePath);
-			std::string relativeTileSetSource =
-				TextFormat("tilesets/%s", GetFileName(filePath.c_str()));
-			std::unique_ptr<Actor> actor = std::make_unique<Actor>(
-				std::move(tileSet), Vector2{0, 0}, relativeTileSetSource);
+			std::unique_ptr<TileSet> tileSet = std::make_unique<TileSet>(filePath);
+			std::string relativeTileSetSource = TextFormat("tilesets/%s", GetFileName(filePath.c_str()));
+			std::unique_ptr<Actor> actor =
+				std::make_unique<Actor>(std::move(tileSet), Vector2{0, 0}, relativeTileSetSource);
 
-			std::string newFilePath =
-				TextFormat("actors/%s.ractor", title.c_str());
+			std::string newFilePath = TextFormat("actors/%s.ractor", title.c_str());
 			nlohmann::json fileJson = actor->dumpJson();
 			SaveFileText(newFilePath.c_str(), fileJson.dump().c_str());
 
-			auto ptr = aurora::downcast<screens::ProjectScreen *>(
-				Editor::instance->getGui().currentScreen.get());
+			auto ptr = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
 			ptr->addFileView(EngineFileType::FILE_ACTOR, newFilePath);
 			ptr->addResourceButtons(EngineFileType::FILE_ACTOR);
 
@@ -140,20 +128,39 @@ void FileInitVisitor::prop(NewFileDialog::Ptr dialog) {
 		std::string filePath = dialog->fileField->getChosenPath().toStdString();
 		filePath = TextFormat("images/%s", GetFileName(filePath.c_str()));
 		if (!title.empty() && !filePath.empty()) {
-			std::unique_ptr<Prop> prop =
-				std::make_unique<Prop>(Rectangle{0, 0, 16, 16}, Vector2{0, 0});
-			prop->setTextureFromPath(
-				TextFormat("images/%s", GetFileName(filePath.c_str())));
+			std::unique_ptr<Prop> prop = std::make_unique<Prop>(Rectangle{0, 0, 16, 16}, Vector2{0, 0});
+			prop->setTextureFromPath(TextFormat("images/%s", GetFileName(filePath.c_str())));
 
-			std::string newFilePath =
-				TextFormat("props/%s.rprop", title.c_str());
+			std::string newFilePath = TextFormat("props/%s.rprop", title.c_str());
 			nlohmann::json fileJson = prop->dumpJson();
 			SaveFileText(newFilePath.c_str(), fileJson.dump().c_str());
 
-			auto ptr = aurora::downcast<screens::ProjectScreen *>(
-				Editor::instance->getGui().currentScreen.get());
+			auto ptr = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
 			ptr->addFileView(EngineFileType::FILE_PROP, newFilePath);
 			ptr->addResourceButtons(EngineFileType::FILE_PROP);
+
+			dialog->window->close();
+		}
+	});
+}
+
+void FileInitVisitor::dialogue(NewFileDialog::Ptr dialog) {
+	dialog->hideFileField();
+
+	dialog->confirmButton->onPress([dialog] {
+		std::string title = dialog->titleField->getText().toStdString();
+		std::string filePath = dialog->fileField->getChosenPath().toStdString();
+		filePath = TextFormat("images/%s", GetFileName(filePath.c_str()));
+		if (!title.empty()) {
+			std::unique_ptr<Dialogue> diag = std::make_unique<Dialogue>();
+
+			std::string newFilePath = TextFormat("dialogues/%s.rdiag", title.c_str());
+			nlohmann::json fileJson = diag->dumpJson();
+			SaveFileText(newFilePath.c_str(), fileJson.dump().c_str());
+
+			auto ptr = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
+			ptr->addFileView(EngineFileType::FILE_DIALOGUE, newFilePath);
+			ptr->addResourceButtons(EngineFileType::FILE_DIALOGUE);
 
 			dialog->window->close();
 		}

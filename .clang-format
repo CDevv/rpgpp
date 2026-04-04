@@ -1,3 +1,22 @@
+BasedOnStyle: Google
 UseTab: Always
 IndentWidth: 4
 TabWidth: 4
+ColumnLimit: 120
+
+Cpp11BracedListStyle: true
+SortIncludes: true
+IncludeBlocks: Regroup
+
+PointerAlignment: Right
+ReferenceAlignment: Right
+
+SpaceAfterCStyleCast: false
+SpaceBeforeParens: ControlStatements
+SpacesInAngles: Never
+SpaceInEmptyBlock: false
+AccessModifierOffset: -4
+
+AlignTrailingComments:
+    Kind: Always
+    OverEmptyLines: 1

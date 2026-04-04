@@ -1,0 +1,84 @@
+name: "Build documentations"
+
+on:
+    push:
+        branches: ["main", "docs"]
+    pull_request:
+        branches: ["main", "docs"]
+    workflow_dispatch:
+
+env:
+    REPO: "rpgppengine/rpgpp"
+    RETENTION_DAYS: 7
+    DOCS_DIR: "build/html/"
+
+jobs:
+    build-docs:
+        name: "build docs"
+        runs-on: "ubuntu-latest"
+        env:
+            PLATFORM: linux
+            ARCH: x86_64
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+                  submodules: recursive
+
+            - name: Install Python
+              uses: actions/setup-python@v6
+              with:
+                  python-version: "3.13"
+
+            - name: Install packages
+              shell: bash
+              run: |
+                  sudo apt install doxygen
+            - name: Setup Python environment
+              shell: bash
+              run: |
+                  pip install -r requirements.txt
+
+            - name: Build
+              shell: bash
+              run: |
+                  mkdir -p build/
+                  doxygen doxygen.conf
+                  breathe-apidoc -o docs/Dev -m -f build/doxygen/xml
+                  make html
+
+            - name: Generate token
+              if: ${{ github.repository == env.REPO }}
+              id: generate_token
+              uses: actions/create-github-app-token@v3
+              with:
+                  app-id: ${{ secrets.DOC_PUSHER_APP_ID }}
+                  private-key: ${{ secrets.DOC_PUSHER_APP_SECRET }}
+                  owner: ${{ github.repository_owner }}
+
+            - name: Push to Destination
+              if: ${{ github.repository == env.REPO }}
+              run: |
+                  git config --global user.name "github-actions[bot]"
+                  git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                  git clone https://x-access-token:${{ steps.generate_token.outputs.token }}@github.com/${{ github.repository_owner }}/docs.git dest
+
+                  cp -rf ${{ env.DOCS_DIR }}/* dest/
+                  cd dest
+                  if [[ -z "$(git status -s -uall)" ]]; then
+                      echo "No changes to commit"
+                      exit 0
+                  fi
+                  git add .
+                  git commit -m "Update documentation for ${{ github.repository }} at ${{ github.sha }}"
+                  git push origin main
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v6
+              with:
+                  name: docs
+                  path: ${{ env.DOCS_DIR }}
+                  if-no-files-found: error
+                  retention-days: ${{ env.RETENTION_DAYS }}

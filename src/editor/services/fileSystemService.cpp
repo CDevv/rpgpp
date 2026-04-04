@@ -3,8 +3,6 @@
 #include "widgets/newProjectWindow.hpp"
 #include <array>
 #include <cstdio>
-#include <nfd.h>
-#include <nfd.hpp>
 #include <string>
 
 #ifdef __linux__
@@ -34,11 +32,9 @@ FileSystemService::FileSystemService() {
 
 	typeNames[static_cast<int>(EngineFileType::FILE_EMPTY)] =
 		"Project Directory";
-
-	NFD_Init();
 }
 
-void FileSystemService::unload() { NFD_Quit(); }
+void FileSystemService::unload() { }
 
 void FileSystemService::promptNewProject() {
 	auto newProjectDialog = NewProjectWindow::create();
