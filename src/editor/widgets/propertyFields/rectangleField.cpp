@@ -20,28 +20,28 @@ RectangleField::RectangleField(const char *typeName, bool initRenderer)
 	value_x = tgui::SpinControl::create();
 	value_x->setMinimum(INT_MIN);
 	value_x->setMaximum(INT_MAX);
-	value_x->onValueChange([this](int _) { onChange.emit(this, getValue()); });
+	value_x->onValueChange([this](const float& _) { onChange.emit(this, getValue()); });
 
 	l_y = tgui::Label::create("Y");
 	setAlign(l_y);
 	value_y = tgui::SpinControl::create();
 	value_y->setMinimum(INT_MIN);
 	value_y->setMaximum(INT_MAX);
-	value_y->onValueChange([this](int _) { onChange.emit(this, getValue()); });
+	value_y->onValueChange([this](const float& _) { onChange.emit(this, getValue()); });
 
 	l_width = tgui::Label::create("W");
 	setAlign(l_width);
 	value_width = tgui::SpinControl::create();
 	value_width->setMaximum(INT_MAX);
 	value_width->onValueChange(
-		[this](int _) { onChange.emit(this, getValue()); });
+		[this](const float& _) { onChange.emit(this, getValue()); });
 
 	l_height = tgui::Label::create("H");
 	setAlign(l_height);
 	value_height = tgui::SpinControl::create();
 	value_height->setMaximum(INT_MAX);
 	value_height->onValueChange(
-		[this](int _) { onChange.emit(this, getValue()); });
+		[this](const float& _) { onChange.emit(this, getValue()); });
 
 	m_container->add(label);
 

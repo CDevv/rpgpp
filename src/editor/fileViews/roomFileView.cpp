@@ -79,10 +79,10 @@ RoomFileView::RoomFileView() {
 	widthField = IntField::create();
 	bindTranslation(widthField->label, "screen.project.roomview.mapwidth",
 					&tgui::Label::setText);
-	widthField->value->onValueChange([this](int value) {
+	widthField->value->onValueChange([this](const auto& value) {
 		Vector2 worldSize =
 			this->roomView->getRoom()->getTileMap()->getMaxWorldSize();
-		worldSize.x = value;
+		worldSize.x = static_cast<int>(value);
 		this->roomView->getRoom()->getTileMap()->setWorldSize(worldSize);
 	});
 	props->addIntField(widthField);
@@ -90,10 +90,10 @@ RoomFileView::RoomFileView() {
 	heightField = IntField::create();
 	bindTranslation(heightField->label, "screen.project.roomview.mapheight",
 					&tgui::Label::setText);
-	heightField->value->onValueChange([this](int value) {
+	heightField->value->onValueChange([this](const float& value) {
 		Vector2 worldSize =
 			this->roomView->getRoom()->getTileMap()->getMaxWorldSize();
-		worldSize.y = value;
+		worldSize.y = static_cast<int>(value);
 		this->roomView->getRoom()->getTileMap()->setWorldSize(worldSize);
 	});
 	props->addIntField(heightField);

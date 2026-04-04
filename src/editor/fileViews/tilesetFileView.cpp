@@ -29,8 +29,8 @@ TileSetFileView::TileSetFileView() {
 	widthField = IntField::create();
 	bindTranslation(widthField->label, "screen.project.tilesetview.tile_width",
 					&tgui::Label::setText);
-	widthField->value->onValueChange([this](int value) {
-		this->worldView->getTileSet()->setTileWidth(value);
+	widthField->value->onValueChange([this](const float& value) {
+		this->worldView->getTileSet()->setTileWidth(static_cast<int>(value));
 	});
 	props->addIntField(widthField);
 
@@ -38,8 +38,8 @@ TileSetFileView::TileSetFileView() {
 	bindTranslation(heightField->label,
 					"screen.project.tilesetview.tile_height",
 					&tgui::Label::setText);
-	heightField->value->onValueChange([this](int value) {
-		this->worldView->getTileSet()->setTileHeight(value);
+	heightField->value->onValueChange([this](const float& value) {
+		this->worldView->getTileSet()->setTileHeight(static_cast<int>(value));
 	});
 
 	props->addButton("Square Tiles", [this] {

@@ -1,19 +1,19 @@
+
 #include "childWindows/settingsPanel/general.hpp"
 
 #include <TGUI/Widgets/MessageBox.hpp>
-#include <utility>
+#include <cstdio>
+#include <cstdlib>
 
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/HorizontalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
+#include "raylib.h"
+#include "winapi.hpp"
 
 constexpr const int ANIMATION_DURATION = 200;
-
-#ifdef _WIN32
-	#include "winapi.hpp"
-#endif
 
 
 SettingsPanelGeneral::SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer)
@@ -105,9 +105,15 @@ SettingsPanelGeneral::SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer)
 						fprintf(stderr, "failed to relaunch editor..\n");
 						return;
 					}
-				#elif _WIN32
-					// TODO
 				#endif
+
+				#ifdef _WIN32
+					if (!WinCreateDetachedExecutable("editor.exe")) {
+						fprintf(stderr, "failed to relaunch editor..\n");
+						return;
+					}
+				#endif
+
 				exit(0);
 			}
 			// Hide with an effect if nothing else is selected.

@@ -1,21 +1,19 @@
 
+#include <cstddef>
 #include <string>
+
 
 #include <winapi.hpp>
 
 #ifdef _WIN32
-#include <basetsd.h>
 #include <windows.h>
-#include <winnt.h>
-#include <winuser.h>
-
 #endif
 
 #ifdef _WIN32
 
-char *WinReadFromHandle(HANDLE handle) {
+char* WinReadFromHandle(HANDLE handle) {
 	DWORD dwRead;
-	CHAR charBuf[4096];
+	char* charBuf = new char[4096];
 	BOOL bSuccess = FALSE;
 
 	for (;;) {
@@ -29,6 +27,37 @@ char *WinReadFromHandle(HANDLE handle) {
 
 	return charBuf;
 }
+
+bool WinCreateDetachedExecutable(std::string path) {
+	BOOL creationResult;
+    STARTUPINFO startupInfo;
+	PROCESS_INFORMATION processInformation;
+
+	ZeroMemory( &startupInfo, sizeof(startupInfo) );
+    startupInfo.cb = sizeof(startupInfo);
+    ZeroMemory( &processInformation, sizeof(processInformation) );
+
+    creationResult = CreateProcess(
+        NULL,
+        path.data(),
+        NULL,
+        NULL,
+        FALSE,
+         CREATE_NEW_CONSOLE | CREATE_NEW_PROCESS_GROUP | CREATE_BREAKAWAY_FROM_JOB, 
+        NULL,
+        NULL,
+        &startupInfo,
+        &processInformation
+	);
+
+	if (creationResult) {
+		CloseHandle(processInformation.hProcess);
+		CloseHandle(processInformation.hThread);
+	}
+
+	return creationResult;
+}
+
 
 bool WinOpenFileAssociate(std::string operation, std::string file) {
 	printf("opening file with path %s (Win32)\n", file.c_str());
