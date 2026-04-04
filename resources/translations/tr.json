@@ -34,7 +34,7 @@
         "_label": "Genel",
         "language": "Dil",
         "theme": "Tema",
-        "theme_notice": "Tema değiştirdikten sonra düzenleyici yeniden başlatmanız önerilir!"
+        "theme_notice": "Tema değiştirdikten sonra etkili olması için düzenleyiciyi yeniden başlatın.\nKaydedilmiş değişiklikler silinecektir!"
       },
       "hotkeys": {
         "_label": "Kısayollar",
@@ -127,6 +127,8 @@
     }
   },
   "button": {
-    "go_back": "Geri Git"
+    "go_back": "Geri Git",
+    "restart": "Yeniden Başlat",
+    "restart_later": "Sonra Yeniden Başlat"
   }
 }

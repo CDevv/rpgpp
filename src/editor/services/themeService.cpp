@@ -1,18 +1,15 @@
-#include "TGUI/Loading/Theme.hpp"
-#include "TGUI/Renderers/ButtonRenderer.hpp"
-#include "editor.hpp"
-#include "screens/projectScreen.hpp"
-#include "services/fileSystemService.hpp"
-#include <cstdio>
 #include <filesystem>
 #include <memory>
 #include <utility>
+
+#include "TGUI/Loading/Theme.hpp"
+#include "editor.hpp"
+#include "services/fileSystemService.hpp"
 using namespace std;
 namespace fs = std::filesystem;
 
 ThemeService::ThemeService(Editor *editor_ptr) {
-	for (const auto &theme : fs::directory_iterator(
-			 editor_ptr->getFs().getResourcePath(THEME_DIR))) {
+	for (const auto &theme : fs::directory_iterator(editor_ptr->getFs().getResourcePath(THEME_DIR))) {
 		// each theme is a folder, where the theme name is the folder name
 		// itself in each folder should always have a file called "theme.txt"
 		if (theme.is_directory()) {
@@ -23,14 +20,12 @@ ThemeService::ThemeService(Editor *editor_ptr) {
 			}
 		}
 	}
-	this->current_theme =
-		std::make_shared<tgui::Theme>(this->themes[this->current_theme_name]);
+	this->current_theme = std::make_shared<tgui::Theme>(this->themes[this->current_theme_name]);
 	tgui::Theme::setDefault(this->current_theme);
 }
 
 void ThemeService::setTheme(const string &themeName) {
 	if (this->themes.find(themeName) != this->themes.end()) {
-
 		this->current_theme_name = themeName;
 		this->current_theme->load(this->themes[this->current_theme_name]);
 		// this->current_theme = std::make_shared<tgui::Theme>(

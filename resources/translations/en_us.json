@@ -34,7 +34,7 @@
 				"_label": "General",
 				"language": "Language",
 				"theme": "Theme",
-				"theme_notice": "It is recommended to restart the editor after switching theme!"
+				"theme_notice": "You need to restart the editor for the theme to take effect.\nUnsaved progress will be lost!"
 			},
 			"hotkeys": {
 				"_label": "Hotkeys",
@@ -127,6 +127,8 @@
 		}
 	},
 	"button": {
-		"go_back": "Go Back"
+		"go_back": "Go Back",
+		"restart": "Restart",
+		"restart_later": "Restart Later"
 	}
 }
