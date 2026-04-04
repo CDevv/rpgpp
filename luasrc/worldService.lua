@@ -1,6 +1,5 @@
 --- The WorldService is responsible for containing and drawing the Room.
 ---
---- !doctype module
 --- @class WorldService
 local WorldService = {}
 

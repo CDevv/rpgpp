@@ -1,19 +1,21 @@
 #ifndef _RPGPP_INTERACTABLE_H
 #define _RPGPP_INTERACTABLE_H
 
-#include "gamedata.hpp"
-#include "saveable.hpp"
+#include <raylib.h>
+
 #include <array>
 #include <map>
 #include <memory>
 #include <nlohmann/json_fwd.hpp>
-#include <raylib.h>
 #include <string>
 #include <vector>
 
+#include "gamedata.hpp"
+#include "saveable.hpp"
+
 /** Defines an object that is interactable in-game by a player's action */
 class Interactable : public ISaveable {
-  private:
+private:
 	/** Whether this Interactable is valid */
 	bool valid;
 	/** The type of this Interactable */
@@ -35,7 +37,7 @@ class Interactable : public ISaveable {
 	/** Script file path */
 	std::string scriptPath;
 
-  public:
+public:
 	/** Empty constructor */
 	Interactable();
 	/** COnstructor using a JSON file. */
@@ -51,9 +53,9 @@ class Interactable : public ISaveable {
 	bool isValid() const;
 	/** Get the Rectangle of this Interactable */
 	Rectangle getRect() const;
-	/** Get this Interactable's type */
+	/** Get this Interactable's type. */
 	const std::string &getType() const;
-	/** Get the World position of this Interactable */
+	/** Get the World position of this Interactable. */
 	Vector2 getWorldPos() const;
 	/** Get the onTouch member. */
 	bool isOnTouch() const;
@@ -62,7 +64,7 @@ class Interactable : public ISaveable {
 	/** Invoke the interact method. Each interactable has a script with an
 	 * 'interact' function. */
 	void interact();
-	/** Change the interactable's type */
+	/** Change the interactable's type .*/
 	void setType(const std::string &type);
 	/** Set a property of this interactable. */
 	void setProp(std::string key, std::string value);

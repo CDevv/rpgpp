@@ -1,55 +1,93 @@
 #ifndef _RPGPP_PROP_H
 #define _RPGPP_PROP_H
 
+#include <raylib.h>
+
+#include <memory>
+#include <nlohmann/json.hpp>
+#include <string>
+
 #include "gamedata.hpp"
 #include "interactable.hpp"
 #include "saveable.hpp"
-#include <memory>
-#include <nlohmann/json.hpp>
-#include <raylib.h>
-#include <string>
 
 using json = nlohmann::json;
 
+/** A Prop is an object in the world that has an image and optionally has an Interactable. */
 class Prop : public ISaveable {
-  private:
+private:
+	/** Path to the file, used for instantiating this Prop. */
 	std::string sourcePath;
+	/** Absolute world position of this Prop. */
 	Vector2 worldPos;
+	/** Position of this Prop, defined in tiles. */
 	Vector2 tilePos;
+	/** Atlas Rectangle which defines which part of the image is used for drawing this Prop. */
 	Rectangle atlasRect;
+	/** Texture instance which is used for drawing this Prop. */
 	Texture2D texture;
+	/** Collision Rectangle which defines where exactly is the collision. */
 	Rectangle collisionRect;
+	/** Path to the image used for this Prop. */
 	std::string imagePath;
+	/** Whether this Prop has an Interactable. */
 	bool hasInteractable = false;
+	/** Smart pointer that owns the Interactable */
 	std::unique_ptr<Interactable> interactable;
 
-  public:
+public:
+	/** Empty constructor */
 	Prop();
+	/** Construct from a file. */
 	Prop(const std::string &filePath);
+	/** Construct from an atlas rect and an absolute world position. */
 	Prop(Rectangle atlasRect, Vector2 worldPos);
+	/** Construct from a binary structure. */
 	explicit Prop(PropBin bin);
+	/** Dump the JSON of this Prop. */
 	json dumpJson();
 	void applyJson(json j);
+	/** Get the source file, used for instantiating this Prop. */
 	std::string getSourcePath() const;
+	/** Set the Texture for this Prop. */
 	void setTexture(Texture2D texture);
+	/** Get the Texture for this Prop. */
 	Texture2D getTexture() const;
+	/** Set the Texture, using an image path. */
 	void setTextureFromPath(const std::string &imagePath);
+	/** Get the path to the image used for this Prop. */
 	const char *getImagePath() const;
+	/** Set the collision rectangle. */
 	void setCollisionRect(Rectangle collisionRect);
+	/** Set the tile position of this Prop. */
 	void setWorldTilePos(Vector2 worldPos, int tileSize);
+	/** Set the absolute world position of this Prop. */
 	void setWorldPos(Vector2 worldPos);
+	/** Get the absolute world position of this Prop. */
 	Vector2 getWorldPos() const;
+	/** Get the tile position of this Prop. */
 	Vector2 getWorldTilePos() const;
+	/** Set the Atlas rectangle of this Prop. (which part of the image is used for drawing) */
 	void setAtlasRect(Rectangle atlasRect);
+	/** Get the Atlas rectangle of this Prop. */
 	Rectangle getAtlasRect() const;
+	/** Get the collision rectangle of this Prop, relative to the Prop itself. */
 	Rectangle getCollisionRect() const;
+	/** Get the collision rectangle with position relative to the World. (absolute) */
 	Rectangle getWorldCollisionRect() const;
+	/** Get the position of the center of the collision rectangle. */
 	Vector2 getCollisionCenter() const;
+	/** Whether this Prop has an Interactangle or not. */
 	bool getHasInteractable() const;
+	/** Set the 'hasInteractable' flag. */
 	void setHasInteractable(bool value);
+	/** Get a pointer to the Interactable of this Prop. */
 	Interactable *getInteractable() const;
+	/** Set the type of this Prop's Interactable. */
 	void setInteractableType(const std::string &type);
+	/** Get the type of this Prop's Interactable. */
 	std::string getInteractableType() const;
+	/** Draw routine. */
 	void draw() const;
 };
 

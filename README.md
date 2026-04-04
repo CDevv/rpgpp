@@ -94,6 +94,11 @@ breathe-apidoc -o docs/Dev -m -f build/doxygen/xml
 make html
 ```
 
+If you want to build documentation for the Lua API, you can run the following (you need to have [LuaLS](https://luals.github.io/)):
+```bash
+lua-language-server --doc=luasrc/ --doc_out_path=docs/userapi/
+```
+
 You should see the docs output at `build/html`.
 
 Running the editor

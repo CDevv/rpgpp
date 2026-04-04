@@ -37,7 +37,6 @@
 
 # docs ignores
 docs/Dev
-docs/userapi
 
 game-src/*/lib/
 /editor

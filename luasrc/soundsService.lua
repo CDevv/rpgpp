@@ -1,6 +1,5 @@
 --- The SoundService is responsible for playing sounds and managing the current background music
 ---
---- !doctype module
 --- @class Sounds
 local Sounds = {}
 

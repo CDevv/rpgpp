@@ -18,7 +18,7 @@ author = 'RPG++ Contributors'
 
 sys.path.append('.venv/lib/python3.14/site-packages/breathe/')
 
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'breathe', 'sphinx_lua_ls']
+extensions = ['myst_parser', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'breathe', 'sphinx_lua_ls']
 
 templates_path = ['_templates']
 exclude_patterns = []
@@ -34,12 +34,3 @@ breathe_default_project = "RPG++"
 
 lua_ls_project_root = "../luasrc"
 lua_ls_backend = "luals"
-lua_ls_apidoc_roots = {
-   "WorldService": "userapi/world",
-   "GameState": "userapi/state",
-   "Sounds": "userapi/sounds",
-   "Interface": "userapi/interface"
-}
-
-
-

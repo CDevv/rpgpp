@@ -3,14 +3,15 @@
 
 class Room;
 
+#include <raylib.h>
+
 #include "actor.hpp"
 #include "room.hpp"
-#include <raylib.h>
 
 /** THe Player class represents the player character that the player controls.
  */
 class Player {
-  private:
+private:
 	bool lock;
 	/** Reference to the Room that the Player is currently in. */
 	Room &room;
@@ -30,7 +31,7 @@ class Player {
 	/** Handle the interactions for this Player. */
 	void handleInteraction();
 
-  public:
+public:
 	/** Construct from an Actor and the Room where the Player shall be
 	 * contained. */
 	Player(std::unique_ptr<Actor> actor, Room &room);
@@ -48,15 +49,15 @@ class Player {
 	void moveByVelocity(Vector2 velocity);
 	/** Get the player's position. */
 	Vector2 getPosition() const;
-	/** Set the player's position */
+	/** Set the player's position. */
 	void setPosition(Vector2 pos);
-	/** Get the player's position with an 'anchor' in the center */
+	/** Get the player's position with an 'anchor' in the center. */
 	Vector2 getCenterPosition() const;
-	/** Get the player's tile position */
+	/** Get the player's tile position. */
 	Vector2 getTilePosition() const;
-	/** Set the player's tile position */
+	/** Set the player's tile position. */
 	void setTilePosition(Vector2 tilePos);
-	/** Get the position of the collision */
+	/** Get the position of the collision. */
 	Vector2 getCollisionPos() const;
 };
 
