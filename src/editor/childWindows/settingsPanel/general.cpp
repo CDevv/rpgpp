@@ -98,8 +98,8 @@ SettingsPanelGeneral::SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer)
 
 		promptUserBox->onButtonPress.connect([&](const tgui::String& text) {
 			if (text == ts.getKey("button.restart")) {
+				ChangeDirectory(GetApplicationDirectory());
 				#ifdef __linux__
-					ChangeDirectory(GetApplicationDirectory());
 
 					if (const FILE *handle = popen("./editor", "r"); handle == nullptr) {
 						fprintf(stderr, "failed to relaunch editor..\n");

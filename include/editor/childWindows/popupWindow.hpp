@@ -8,11 +8,11 @@ class PopupWindow {
 	bool windowIsOpen = false;
 
 	tgui::ChildWindow::Ptr currentWindow;
-	PopupWindow(const std::string &title);
-	~PopupWindow() { close(); };
+	explicit PopupWindow(const std::string &title);
+	virtual ~PopupWindow() { PopupWindow::close(); };
 
-	void open();
-	void close();
+	virtual void open();
+	virtual void close();
 };
 
 #endif /* RPGPP_POPUPWINDOW_H */
