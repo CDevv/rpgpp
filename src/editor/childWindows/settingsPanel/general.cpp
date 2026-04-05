@@ -5,11 +5,13 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include "TGUI/String.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/HorizontalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
+#include "childWindows/settingsPanel/base.hpp"
 #include "raylib.h"
 #include "winapi.hpp"
 
@@ -80,53 +82,51 @@ SettingsPanelGeneral::SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer)
 
 	themeSelector->setSelectedItem(theme.current_theme_name);
 
+	this->promptUserBox = tgui::MessageBox::create("");
+	bindTranslation<tgui::MessageBox>(this->promptUserBox, "screen.options.general.theme", &tgui::MessageBox::setTitle);
+	bindTranslation(promptUserBox, "screen.options.general.theme_notice", &tgui::MessageBox::setText);
+	bindCustomTranslation<tgui::MessageBox>(this->promptUserBox, [&](std::shared_ptr<tgui::MessageBox> box, TranslationService &ts) {
+		box->changeButtons(std::vector<tgui::String>{ts.getKey("button.restart"), ts.getKey("button.restart_later")});
+	});
+
+	this->promptUserBox->onButtonPress.connect([&](const tgui::String& text) {
+		if (text == ts.getKey("button.restart")) {
+			ChangeDirectory(GetApplicationDirectory());
+			#ifdef __linux__
+
+				if (const FILE *handle = popen("./editor", "r"); handle == nullptr) {
+					fprintf(stderr, "failed to relaunch editor..\n");
+					return;
+				}
+			#endif
+
+			#ifdef _WIN32
+				if (!WinCreateDetachedExecutable("editor.exe")) {
+					fprintf(stderr, "failed to relaunch editor..\n");
+					return;
+				}
+			#endif
+
+			exit(0);
+		}
+		Editor::instance->getGui().gui->remove(promptUserBox);
+	});
+
+
 	themeSelector->onItemSelect.connect([&](const tgui::String &item) {
 		ConfigurationService &configService =
 			Editor::instance->getConfiguration();
 		configService.setStringValue("theme", item.toStdString());
 		configService.saveConfiguration();
 
-		if (this->promptUserBox == nullptr) {
-			this->promptUserBox = tgui::MessageBox::create(ts.getKey("screen.options.general.theme"));
-			bindTranslation(promptUserBox, "button.restart", &tgui::MessageBox::addButton);
-			bindTranslation(promptUserBox, "button.restart_later", &tgui::MessageBox::addButton);
-		}
-
-		bindTranslation(promptUserBox, "screen.options.general.theme_notice", &tgui::MessageBox::setText);
 		promptUserBox->setOrigin({0.5, 0.5});
 		promptUserBox->setPosition({"50%", "50%"});
 
-		promptUserBox->onButtonPress.connect([&](const tgui::String& text) {
-			if (text == ts.getKey("button.restart")) {
-				ChangeDirectory(GetApplicationDirectory());
-				#ifdef __linux__
-
-					if (const FILE *handle = popen("./editor", "r"); handle == nullptr) {
-						fprintf(stderr, "failed to relaunch editor..\n");
-						return;
-					}
-				#endif
-
-				#ifdef _WIN32
-					if (!WinCreateDetachedExecutable("editor.exe")) {
-						fprintf(stderr, "failed to relaunch editor..\n");
-						return;
-					}
-				#endif
-
-				exit(0);
-			}
-			// Hide with an effect if nothing else is selected.
-			promptUserBox->hideWithEffect(tgui::ShowEffectType::Scale, ANIMATION_DURATION);
-		});
-
 		Editor::instance->getGui().gui->add(promptUserBox);
-		promptUserBox->showWithEffect(tgui::ShowEffectType::Scale, ANIMATION_DURATION);
 	});
 
 	themeLayout->add(themeLabel);
 	themeLayout->add(themeSelector);
-
 
 	layout->add(languageLayout);
 	layout->add(themeLayout);

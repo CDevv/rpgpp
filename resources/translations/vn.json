@@ -37,7 +37,7 @@
 				"_label": "Chung",
 				"language": "Ngôn ngữ",
 				"theme": "Chủ đề",
-				"theme_notice": "Để áp dụng chủ đề mới, vui lòng khởi động lại phần mềm!"
+				"theme_notice": "Để áp dụng chủ đề, vui lòng khởi động lại phần mềm.\n Lưu ý rằng tiến trình chưa lưu sẽ bị mất nếu khởi động lại!"
 			},
 			"hotkeys": {
 				"_label": "Phím Tắt",
@@ -138,6 +138,8 @@
 	},
 
 	"button": {
-		"go_back": "Quay lại"
+		"go_back": "Quay lại",
+		"restart": "Khởi động lại",
+		"restart_later": "Khởi động lại sau"
 	}
 }
