@@ -11,6 +11,7 @@
 #include "TGUI/Widgets/Label.hpp"
 #include "actor.hpp"
 #include "editor.hpp"
+#include "interactable.hpp"
 #include "services/fileSystemService.hpp"
 #include "views/worldView.hpp"
 #include "widgets/propertiesBox.hpp"
@@ -20,6 +21,7 @@ RoomLayerViewVisitor::RoomLayerViewVisitor() {
 	tileSetView->setSize({"100%", "100%"});
 
 	interactableChoose = tgui::ComboBox::create();
+	interactableChoose->setPosition(8, 32);
 	interactableChoose->setDefaultText("Dialogue");
 
 	propChoose = tgui::ComboBox::create();
@@ -61,6 +63,16 @@ RoomLayerViewVisitor::~RoomLayerViewVisitor() {
 	}
 }
 
+void RoomLayerViewVisitor::updateInteractableChoose() {
+	interactableChoose->onItemSelect.disconnectAll();
+	interactableChoose->removeAllItems();
+	auto map = Editor::instance->getProject()->getInteractableNames();
+	for (auto &[key, val] : map) {
+		interactableChoose->addItem(val, key.c_str());
+	}
+	interactableChoose->setSelectedItemByIndex(0);
+}
+
 void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_TILES>) {
 	isAvailable = true;
 	group->add(tileSetView);
@@ -73,15 +85,9 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_COLLISION>) {
 
 void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>) {
 	isAvailable = true;
+	updateInteractableChoose();
 
 	if (tool == RoomTool::TOOL_PLACE) {
-		interactableChoose->removeAllItems();
-		auto map = Editor::instance->getProject()->getInteractableNames();
-		for (auto &[key, val] : map) {
-			interactableChoose->addItem(val, key.c_str());
-		}
-		interactableChoose->setSelectedItemByIndex(0);
-
 		group->add(tgui::Label::create("Interactables"));
 
 		group->add(interactableChoose);
@@ -109,6 +115,7 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>) {
 
 void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_PROPS>) {
 	isAvailable = true;
+	updateInteractableChoose();
 
 	if (tool == RoomTool::TOOL_PLACE) {
 		group->add(tgui::Label::create("Props"));
@@ -147,6 +154,8 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_PROPS>) {
 }
 
 void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_ACTORS>) {
+	updateInteractableChoose();
+
 	if (tool == RoomTool::TOOL_PLACE) {
 		group->add(tgui::Label::create("Actors"));
 
@@ -167,5 +176,68 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_ACTORS>) {
 		group->add(actorChoose);
 	} else if (tool == RoomTool::TOOL_ERASE) {
 		group->add(tgui::Label::create("Erase an Actor.."));
+	} else if (tool == RoomTool::TOOL_EDIT) {
+		if (actor == nullptr) {
+			group->add(tgui::Label::create("Actor does not exist at this position."));
+		} else {
+			interactableChoose->setPosition(8, 64);
+
+			interactableChoose->onItemSelect([this](const tgui::String &item) {
+				auto id = interactableChoose->getSelectedItemId();
+				printf("%s: %s \n", item.toStdString().c_str(), id.toStdString().c_str());
+
+				actor->setInteractableFromPath(id.toStdString());
+			});
+
+			group->add(tgui::Label::create(TextFormat("Editing \"%s\"", actorName.c_str())));
+
+			group->add(interactableChoose);
+
+			interactableChoose->setDefaultText("");
+
+			auto hasInteractableCheck = tgui::CheckBox::create("Has Interactable?");
+			hasInteractableCheck->setSize(16, 16);
+			hasInteractableCheck->setPosition(8, 32);
+
+			auto propBox = PropertiesBox::create();
+			propBox->setPosition(0, 84);
+			propBox->setSize("100%", "100% - 84");
+			group->add(propBox);
+
+			if (actor->hasInteractable()) {
+				auto intsMap = Editor::instance->getProject()->getInteractableNames();
+				for (auto &[key, val] : intsMap) {
+					std::string lowerTypeName = TextToLower(val.c_str());
+					if (lowerTypeName == actor->getInteractable()->getType()) {
+						interactableChoose->setSelectedItemById(key);
+					}
+				}
+				propBox->addPropsJson(actor->getInteractable()->getProps());
+				interactableChoose->setVisible(true);
+				hasInteractableCheck->setChecked(true);
+			} else {
+				interactableChoose->setVisible(false);
+				hasInteractableCheck->setChecked(false);
+			}
+
+			std::weak_ptr<PropertiesBox> weakPropsBox = propBox;
+			hasInteractableCheck->onChange([this, weakPropsBox](bool value) {
+				interactableChoose->setVisible(value);
+				if (!weakPropsBox.expired()) {
+					weakPropsBox.lock()->setVisible(value);
+				}
+				if (value) {
+					interactableChoose->setSelectedItemByIndex(0);
+					actor->setInteractableFromPath(interactableChoose->getSelectedItemId().toStdString());
+					if (!weakPropsBox.expired()) {
+						weakPropsBox.lock()->addPropsJson(actor->getInteractable()->getProps());
+					}
+				} else {
+					actor->setHasInteractable(false);
+				}
+			});
+
+			group->add(hasInteractableCheck);
+		}
 	}
 }

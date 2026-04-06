@@ -71,10 +71,33 @@ std::string Project::create(const std::string &dirPath,
 	filePath /= "proj.rpgpp";
 	SaveFileText(filePath.u8string().c_str(), fileContent.c_str());
 
+	/*
 	MakeDirectory(
 		std::filesystem::path(dirPath).append("tilesets").u8string().c_str());
 	MakeDirectory(
 		std::filesystem::path(dirPath).append("maps").u8string().c_str());
+	MakeDirectory(
+		std::filesystem::path(dirPath).append("actors").u8string().c_str());
+	MakeDirectory(
+		std::filesystem::path(dirPath).append("dialogue").u8string().c_str());
+	MakeDirectory(
+		std::filesystem::path(dirPath).append("scripts").u8string().c_str());
+	MakeDirectory(
+		std::filesystem::path(dirPath).append("props").u8string().c_str());
+	MakeDirectory(
+		std::filesystem::path(dirPath).append("images").u8string().c_str());
+	MakeDirectory(
+		std::filesystem::path(dirPath).append("fonts").u8string().c_str());
+		*/
+
+	for (int i = 0; i < FILETYPE_MAX; i++) {
+		EngineFileType fileType = static_cast<EngineFileType>(i);
+
+		std::string dirName = TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
+
+		MakeDirectory(
+		std::filesystem::path(dirPath).append(dirPath).u8string().c_str());
+	}
 
 	return filePath.u8string();
 }
@@ -263,6 +286,13 @@ GameData Project::generateStruct() {
 			aBin.tilePos =
 				IVector{static_cast<int>(actor->getTilePosition().x),
 						static_cast<int>(actor->getTilePosition().y)};
+			
+			if (actor->hasInteractable()) {
+				aBin.intType = actor->getInteractable()->getType();
+				aBin.propsCbor = nlohmann::json::to_cbor(actor->getInteractable()->getProps());
+			} else {
+				aBin.intType = "";
+			}
 			roomBin.actors.push_back(aBin);
 		}
 		roomBin.musicSource = room->getMusicSource();
@@ -328,6 +358,20 @@ GameData Project::generateStruct() {
 	}
 
 	for (auto fontPath : getPaths(EngineFileType::FILE_FONT)) {
+		FontBin fontBin;
+
+		int dataSize = 0;
+		auto fileData = LoadFileData(fontPath.c_str(), &dataSize);
+
+		for (int i = 0; i < dataSize; i++) {
+			fontBin.data.push_back(fileData[i]);
+		}
+
+		fontBin.ext = GetFileExtension(fontPath.c_str());
+
+		data.fonts[GetFileNameWithoutExt(fontPath.c_str())] = fontBin;
+
+		UnloadFileData(fileData);
 	}
 
 	for (auto soundPath : getPaths(EngineFileType::FILE_SOUND)) {

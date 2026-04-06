@@ -20,7 +20,7 @@ template <class Archive> void serialize(Archive &a, ActorBin &b) {
 }
 
 template <class Archive> void serialize(Archive &a, ActorInRoomBin &b) {
-	a(b.name, b.source, b.tilePos);
+	a(b.name, b.source, b.tilePos, b.intType, b.propsCbor);
 }
 
 template <class Archive> void serialize(Archive &a, TileBin &b) {
@@ -41,6 +41,10 @@ template <class Archive> void serialize(Archive &a, PropInRoomBin &b) {
 
 template <class Archive> void serialize(Archive &a, TileSetBin &b) {
 	a(b.name, b.extension, b.tileSize, b.image, b.dataSize);
+}
+
+template <class Archive> void serialize(Archive &a, FontBin &b) {
+	a(b.data, b.dataSize, b.ext);
 }
 
 template <class Archive> void serialize(Archive &a, ImageBin &b) {

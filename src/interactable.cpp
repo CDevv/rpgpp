@@ -1,4 +1,13 @@
 #include "interactable.hpp"
+
+#include <raylib.h>
+#include <stdio.h>
+
+#include <exception>
+#include <memory>
+#include <nlohmann/json_fwd.hpp>
+#include <string>
+
 #include "actor.hpp"
 #include "game.hpp"
 #include "gamedata.hpp"
@@ -8,15 +17,8 @@
 #include "sol/state_handling.hpp"
 #include "sol/types.hpp"
 #include "tilemap.hpp"
-#include <exception>
-#include <memory>
-#include <nlohmann/json_fwd.hpp>
-#include <raylib.h>
-#include <stdio.h>
-#include <string>
 
-Interactable::Interactable()
-	: type(), tilePos(), tileSize(0), absolutePos(), rect() {
+Interactable::Interactable() : type(), tilePos(), tileSize(0), absolutePos(), rect() {
 	this->valid = false;
 	this->onTouch = false;
 }
@@ -33,8 +35,7 @@ Interactable::Interactable(const std::string &path) {
 	onTouch = false;
 }
 
-Interactable::Interactable(const std::string &type, Vector2 tilePos,
-						   int tileSize) {
+Interactable::Interactable(const std::string &type, Vector2 tilePos, int tileSize) {
 	this->type = type;
 	this->props = std::make_unique<nlohmann::json>(json::object());
 
@@ -45,15 +46,13 @@ Interactable::Interactable(const std::string &type, Vector2 tilePos,
 	this->tileSize = tileSize;
 	this->absolutePos = Vector2{0, 0};
 
-	rect =
-		Rectangle{tilePos.x * tileSize, tilePos.y * tileSize,
-				  static_cast<float>(tileSize), static_cast<float>(tileSize)};
+	rect = Rectangle{tilePos.x * tileSize, tilePos.y * tileSize, static_cast<float>(tileSize),
+					 static_cast<float>(tileSize)};
 }
 
 Interactable::Interactable(InteractableInRoomBin bin) {
 	this->type = bin.type;
-	this->props =
-		std::make_unique<nlohmann::json>(json::from_cbor(bin.propsCbor));
+	this->props = std::make_unique<nlohmann::json>(json::from_cbor(bin.propsCbor));
 
 	Vector2 tilePos = {static_cast<float>(bin.x), static_cast<float>(bin.y)};
 
@@ -63,9 +62,8 @@ Interactable::Interactable(InteractableInRoomBin bin) {
 	this->tileSize = _RPGPP_TILESIZE;
 	this->absolutePos = Vector2{0, 0};
 
-	rect =
-		Rectangle{tilePos.x * tileSize, tilePos.y * tileSize,
-				  static_cast<float>(tileSize), static_cast<float>(tileSize)};
+	rect = Rectangle{tilePos.x * tileSize, tilePos.y * tileSize, static_cast<float>(tileSize),
+					 static_cast<float>(tileSize)};
 }
 
 json Interactable::dumpJson() {
@@ -94,21 +92,22 @@ void Interactable::setType(const std::string &type) {
 	this->props = std::make_unique<nlohmann::json>(json::object());
 }
 
-void Interactable::setProps(nlohmann::json j) {
-	this->props = std::make_unique<nlohmann::json>(j);
-}
+void Interactable::setProps(nlohmann::json j) { this->props = std::make_unique<nlohmann::json>(j); }
 
 nlohmann::json &Interactable::getProps() { return *props; }
 
 const std::string &Interactable::getScriptSourcePath() { return scriptPath; }
 
-void Interactable::setDisplayTitle(const std::string &newTitle) {
-	displayTitle = newTitle;
-}
+void Interactable::setDisplayTitle(const std::string &newTitle) { displayTitle = newTitle; }
 
 std::string &Interactable::getDisplayTitle() { return displayTitle; }
 
 void Interactable::interact() {
+	if (type.empty()) {
+		printf("%s \n", "Warning: This Interactable's type is empty.");
+		return;
+	}
+
 	auto &state = Game::getScripts().getState();
 
 	Game::getScripts().addToState(*props);

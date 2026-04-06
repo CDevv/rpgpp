@@ -53,6 +53,8 @@ struct ActorInRoomBin {
 	std::string name;
 	std::string source;
 	IVector tilePos;
+	std::string intType;
+	std::vector<std::uint8_t> propsCbor;
 };
 
 struct TileBin {
@@ -91,6 +93,12 @@ struct TileSetBin {
 	IVector tileSize;
 	std::vector<unsigned char> image;
 	int dataSize;
+};
+
+struct FontBin {
+	std::vector<unsigned char> data;
+	int dataSize;
+	std::string ext;
 };
 
 struct ImageBin {
@@ -135,6 +143,7 @@ struct GameBinSettings {
 
 struct GameData {
 	std::string title;
+	std::map<std::string, FontBin> fonts;
 	std::map<std::string, ImageBin> images;
 	std::map<std::string, TileSetBin> tilesets;
 	std::map<std::string, InteractableBin> interactables;

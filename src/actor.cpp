@@ -1,6 +1,7 @@
 #include "actor.hpp"
 #include "game.hpp"
 #include "gamedata.hpp"
+#include "interactable.hpp"
 #include "tileset.hpp"
 #include <cassert>
 #include <cstdint>
@@ -39,6 +40,8 @@ Actor::Actor(const std::string &fileName) {
 
 	this->tileSetSource = j.at("tileset");
 	this->tileSet = std::make_unique<TileSet>(tileSetSource);
+
+	this->interactable = std::make_unique<Interactable>();
 
 	for (int i = 0; i < 8; i++) {
 		animations[i] = std::vector<Vector2>();
@@ -87,6 +90,8 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
 	this->frameSpeed = 2;
 	this->currentFrame = 0;
 	this->currentAnimation = RPGPP_DOWN_IDLE;
+
+	this->interactable = std::make_unique<Interactable>();
 
 	for (int i = 0; i < 8; i++) {
 		animations[i] = std::vector<Vector2>();
@@ -138,6 +143,9 @@ Actor::Actor(const ActorBin &bin) {
 									static_cast<float>(bin.collision.y),
 									static_cast<float>(bin.collision.width),
 									static_cast<float>(bin.collision.height)};
+
+	// interactable
+	this->interactable = std::make_unique<Interactable>();
 
 	// animations
 	for (int i = 0; i < 8; i++) {
@@ -479,4 +487,21 @@ Vector2 calcActorTilePos(Vector2 newPosition, Vector2 worldTileSize,
 				absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) -
 								 (worldTileSize.y * RPGPP_DRAW_MULTIPLIER))};
 	return resultVector;
+}
+
+bool Actor::hasInteractable() {
+	return ownsInteractable;
+}
+
+void Actor::setHasInteractable(bool value) {
+	ownsInteractable = value;
+}
+
+Interactable *Actor::getInteractable() {
+	return interactable.get();
+}
+
+void Actor::setInteractableFromPath(const std::string& path) {
+	interactable = std::make_unique<Interactable>(path);
+	ownsInteractable = true;
 }

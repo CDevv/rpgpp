@@ -40,7 +40,7 @@ private:
 public:
 	/** Empty constructor */
 	Interactable();
-	/** COnstructor using a JSON file. */
+	/** Constructor using a JSON file. */
 	Interactable(const std::string &path);
 	/** Construct from type name */
 	Interactable(const std::string &type, Vector2 tilePos, int tileSize);

@@ -157,10 +157,10 @@ add_deps("rpgpp")
 add_packages("raylib", "tgui", "nlohmann_json", "luajit", "noop", "tree-sitter",
 	"tree-sitter-lua")
 after_build( function (target)
-	os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
+	os.cp("$(curdir)/resources", "./build/$(plat)/$(arch)/$(mode)/", { async = true })
 	if is_plat("linux", "macosx") then
-		os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpp.a", "$(curdir)/game-src/lib/librpgpp.a", { async = true })
-		os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpplua.so", "$(curdir)/game-src/lib/librpgpplua.so",
+		os.cp("./build/$(plat)/$(arch)/$(mode)/librpgpp.a", "$(curdir)/game-src/lib/librpgpp.a", { async = true })
+		os.cp("./build/$(plat)/$(arch)/$(mode)/librpgpplua.so", "$(curdir)/game-src/lib/librpgpplua.so",
 			{ async = true })
 		os.cp(path.join(target:pkg("luajit"):installdir(), "bin/luajit*"), "$(curdir)/execs/luajit", { async = true })
 	end
@@ -170,13 +170,13 @@ after_build( function (target)
 		os.cp(path.join(target:pkg("luajit"):installdir(), "bin/luajit.exe"), "$(curdir)/execs/luajit.exe",
 			{ async = true })
 	end
-	os.cp("$(curdir)/game-src", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
-	os.cp("$(curdir)/execs", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
+	os.cp("$(curdir)/game-src", "./build/$(plat)/$(arch)/$(mode)/", { async = true })
+	os.cp("$(curdir)/execs", "./build/$(plat)/$(arch)/$(mode)/", { async = true })
 
 	os.rm("$(curdir)/game-src", { async = true })
 	os.rm("$(curdir)/execs", { async = true })
 	-- remove this line to test if the configuration file changes
-	os.cp("$(curdir)/rpgpp.ini", "$(builddir)/$(plat)/$(arch)/$(mode)/", { copy_if_different = true })
+	os.cp("$(curdir)/rpgpp.ini", "./build/$(plat)/$(arch)/$(mode)/", { copy_if_different = true })
 	print("Pro tip: Check whether translations are up to date with `xmake check_translation`!")
 	print("Environment:")
 	print("  builddir: " .. "$(builddir)")

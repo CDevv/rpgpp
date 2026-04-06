@@ -3,6 +3,7 @@
 
 #include "atlasTile.hpp"
 #include "gamedata.hpp"
+#include "interactable.hpp"
 #include "saveable.hpp"
 #include "tileset.hpp"
 #include <array>
@@ -55,6 +56,10 @@ class Actor : public ISaveable {
 	Direction currentAnimation;
 	Direction lastAnimation;
 	bool tempAnimIsPlayed = false;
+	/** Whether this Actor has an Interactable. */
+	bool ownsInteractable = false;
+	/** A smart pointer, owning an Interactable. */
+	std::unique_ptr<Interactable> interactable;
 
   public:
 	/** Empty constructor. */
@@ -114,6 +119,8 @@ class Actor : public ISaveable {
 	/** Get the collision rectangle of this Actor if it was moved by the
 	 * velocity vector */
 	Rectangle getCollisionRect(Vector2 velocity) const;
+	/** Get the collision Rectangle of this Actor */
+	Rectangle getCollisionRect() const;
 	/** Get collision center point. */
 	Vector2 getCollisionCenter() const;
 	/** Add a frame in the chosen animation. The frame represents an atlas tile
@@ -139,10 +146,16 @@ class Actor : public ISaveable {
 	std::array<std::vector<Vector2>, 8> getAnimationsRaw() const;
 	/** Get a specific animation */
 	std::vector<Vector2> getAnimationRaw(Direction id) const;
-	/** Get the collision Rectangle of this Actor */
-	Rectangle getCollisionRect() const;
 	/** Set the Actor's collision Rectangle */
 	void setCollisionRect(Rectangle rect);
+	/** Whether this Actor has an Interactable. */
+	bool hasInteractable();
+	/** Set the 'ownsInteractable' flag. */
+	void setHasInteractable(bool value);
+	/** Get a pointer to this Actor's Interactable. */
+	Interactable *getInteractable();
+	/** Add an Interactable using an interactable file. */
+	void setInteractableFromPath(const std::string& interPath);
 };
 
 Vector2 calcActorTilePos(Vector2 newPosition, Vector2 worldTileSize,

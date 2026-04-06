@@ -1,4 +1,10 @@
 #include "widgets/propertiesBox.hpp"
+
+#include <raylib.h>
+
+#include <memory>
+#include <nlohmann/json.hpp>
+
 #include "TGUI/String.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Button.hpp"
@@ -13,12 +19,8 @@
 #include "widgets/propertyFields/rectangleField.hpp"
 #include "widgets/propertyFields/selectField.hpp"
 #include "widgets/propertyFields/textField.hpp"
-#include <memory>
-#include <nlohmann/json.hpp>
-#include <raylib.h>
 
-PropertiesBox::PropertiesBox(const char *typeName, bool initRenderer)
-	: tgui::ChildWindow(typeName, initRenderer) {
+PropertiesBox::PropertiesBox(const char *typeName, bool initRenderer) : tgui::ChildWindow(typeName, initRenderer) {
 	this->setTitle("Props");
 	this->setTitleButtons(tgui::ChildWindow::TitleButton::None);
 	auto vertLayout = tgui::GrowVerticalLayout::create();
@@ -27,9 +29,7 @@ PropertiesBox::PropertiesBox(const char *typeName, bool initRenderer)
 	this->layout = vertLayout;
 }
 
-PropertiesBox::Ptr PropertiesBox::create() {
-	return std::make_shared<PropertiesBox>();
-}
+PropertiesBox::Ptr PropertiesBox::create() { return std::make_shared<PropertiesBox>(); }
 
 PropertiesBox::Ptr PropertiesBox::copy(PropertiesBox::ConstPtr widget) {
 	if (widget) {
@@ -39,16 +39,17 @@ PropertiesBox::Ptr PropertiesBox::copy(PropertiesBox::ConstPtr widget) {
 	}
 }
 
-tgui::Widget::Ptr PropertiesBox::clone() const {
-	return std::make_shared<PropertiesBox>(*this);
-}
+tgui::Widget::Ptr PropertiesBox::clone() const { return std::make_shared<PropertiesBox>(*this); }
 
-void PropertiesBox::draw(tgui::BackendRenderTarget &target,
-						 tgui::RenderStates states) const {
+void PropertiesBox::draw(tgui::BackendRenderTarget &target, tgui::RenderStates states) const {
 	tgui::ChildWindow::draw(target, states);
 }
 
-void PropertiesBox::addPropsJson(nlohmann::json &j) {
+void PropertiesBox::addPropsJson(nlohmann::json &j, bool clear) {
+	if (clear) {
+		layout->removeAllWidgets();
+	}
+
 	for (auto item : j.items()) {
 		printf("%s \n", item.key().c_str());
 		if (item.value().is_string()) {
@@ -57,27 +58,24 @@ void PropertiesBox::addPropsJson(nlohmann::json &j) {
 			auto textField = TextField::create();
 			textField->label->setText(item.key());
 			textField->value->setText(item.value().get<std::string>());
-			textField->value->onTextChange(
-				[&j, item](const tgui::String &text) {
-					std::string st = text.toStdString();
-					j.at(item.key()) = st;
-				});
+			textField->value->onTextChange([&j, item](const tgui::String &text) {
+				std::string st = text.toStdString();
+				j.at(item.key()) = st;
+			});
 			addTextField(textField);
 		}
 		if (item.value().is_number()) {
 			auto intField = IntField::create();
 			intField->label->setText(item.key());
 			intField->value->setValue(item.value().get<float>());
-			intField->value->onValueChange(
-				[&j, item](float value) { j.at(item.key()) = value; });
+			intField->value->onValueChange([&j, item](float value) { j.at(item.key()) = value; });
 			addIntField(intField);
 		}
 		if (item.value().is_boolean()) {
 			auto boolField = BoolField::create();
 			boolField->label->setText(item.key());
 			boolField->value->setChecked(item.value().get<bool>());
-			boolField->value->onChange(
-				[&j, item](bool checked) { j.at(item.key()) = checked; });
+			boolField->value->onChange([&j, item](bool checked) { j.at(item.key()) = checked; });
 			addBooleanField(boolField);
 		}
 		if (item.value().is_object()) {
@@ -86,17 +84,13 @@ void PropertiesBox::addPropsJson(nlohmann::json &j) {
 
 				auto fileField = FileField::create();
 				fileField->label->setText(item.key());
-				fileField->value->setText(
-					item.value().at("value").get<std::string>());
-				fileField->callback = [&j, item,
-									   this](const tgui::String &filePath) {
+				fileField->value->setText(item.value().at("value").get<std::string>());
+				fileField->callback = [&j, item, this](const tgui::String &filePath) {
 					printf("%s \n", filePath.toStdString().c_str());
-					printf("%s \n", GetFileNameWithoutExt(
-										filePath.toStdString().c_str()));
+					printf("%s \n", GetFileNameWithoutExt(filePath.toStdString().c_str()));
 					auto &ref = j.at(item.key());
 
-					ref.at("value") =
-						GetFileNameWithoutExt(filePath.toStdString().c_str());
+					ref.at("value") = GetFileNameWithoutExt(filePath.toStdString().c_str());
 				};
 
 				if (propType == "dialogue") {
@@ -109,9 +103,7 @@ void PropertiesBox::addPropsJson(nlohmann::json &j) {
 	}
 }
 
-tgui::Button::Ptr
-PropertiesBox::constructButton(const tgui::String &title,
-							   std::function<void()> callback) {
+tgui::Button::Ptr PropertiesBox::constructButton(const tgui::String &title, std::function<void()> callback) {
 	auto button = tgui::Button::create(title);
 	button->setSize(TextFormat("100%% - %d", PADDING * 2), 24);
 	button->setPosition({PADDING, 0});
@@ -122,13 +114,11 @@ PropertiesBox::constructButton(const tgui::String &title,
 	return button;
 }
 
-void PropertiesBox::addButton(const tgui::String &title,
-							  std::function<void()> callback) {
+void PropertiesBox::addButton(const tgui::String &title, std::function<void()> callback) {
 	this->constructButton(title, callback);
 }
 
-void PropertiesBox::addIntField(const tgui::String &title, int initialValue,
-								std::function<void(float)> callback) {
+void PropertiesBox::addIntField(const tgui::String &title, int initialValue, std::function<void(float)> callback) {
 	auto group = tgui::Group::create({"100%", 24});
 
 	auto label = tgui::Label::create(title);
