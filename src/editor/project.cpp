@@ -1,4 +1,18 @@
 #include "project.hpp"
+
+#include <raylib.h>
+
+#include <cassert>
+#include <cstddef>
+#include <cstdio>
+#include <cstdlib>
+#include <filesystem>
+#include <memory>
+#include <nlohmann/json.hpp>
+#include <nlohmann/json_fwd.hpp>
+#include <string>
+#include <vector>
+
 #include "conversion.hpp"
 #include "dialogue.hpp"
 #include "dialogueParser.hpp"
@@ -9,21 +23,9 @@
 #include "screens/projectScreen.hpp"
 #include "services/fileSystemService.hpp"
 #include "tileset.hpp"
-#include <cassert>
-#include <cstddef>
-#include <cstdio>
-#include <cstdlib>
-#include <filesystem>
-#include <memory>
-#include <nlohmann/json.hpp>
-#include <nlohmann/json_fwd.hpp>
-#include <raylib.h>
-#include <string>
-#include <vector>
 
 #ifdef _WIN64
 
-#include "fix_win32_compatibility.h"
 #include <fileapi.h>
 #include <handleapi.h>
 #include <minwinbase.h>
@@ -34,6 +36,8 @@
 #include <winbase.h>
 #include <windows.h>
 #include <winnt.h>
+
+#include "fix_win32_compatibility.h"
 
 #else
 
@@ -61,8 +65,7 @@ Project::Project(const std::string &path) {
 	UnloadFileText(jsonContent);
 }
 
-std::string Project::create(const std::string &dirPath,
-							const std::string &title) {
+std::string Project::create(const std::string &dirPath, const std::string &title) {
 	json j = json::object();
 	j["title"] = title;
 	std::string fileContent = j.dump();
@@ -95,8 +98,7 @@ std::string Project::create(const std::string &dirPath,
 
 		std::string dirName = TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
 
-		MakeDirectory(
-		std::filesystem::path(dirPath).append(dirPath).u8string().c_str());
+		MakeDirectory(std::filesystem::path(dirPath).append(dirName).u8string().c_str());
 	}
 
 	return filePath.u8string();
@@ -105,8 +107,7 @@ std::string Project::create(const std::string &dirPath,
 void Project::openProject(const tgui::String &filePath, bool forceSwitch) {
 	Editor::instance->setProject(filePath.toStdString());
 	Editor::instance->getRecentProjectService().enqueue(filePath.toStdString());
-	Editor::instance->getGui().setScreen(
-		std::make_unique<screens::ProjectScreen>(), forceSwitch);
+	Editor::instance->getGui().setScreen(std::make_unique<screens::ProjectScreen>(), forceSwitch);
 }
 
 json Project::toJson() {
@@ -122,8 +123,7 @@ std::string &Project::getBasePath() { return projectPath; }
 
 std::vector<std::string> Project::getPaths(EngineFileType fileType) {
 	std::filesystem::path subdir = projectPath;
-	subdir /=
-		TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
+	subdir /= TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
 
 	assert(subdir.string().empty() == false && "directory path is empty");
 
@@ -139,11 +139,9 @@ std::vector<std::string> Project::getPaths(EngineFileType fileType) {
 	return vec;
 }
 
-std::string Project::getResourcePath(EngineFileType fileType,
-									 const std::string &fileName) {
+std::string Project::getResourcePath(EngineFileType fileType, const std::string &fileName) {
 	std::filesystem::path subdir = projectPath;
-	subdir /=
-		TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
+	subdir /= TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
 	subdir /= fileName;
 
 	return subdir.string();
@@ -153,8 +151,7 @@ std::map<std::string, std::string> Project::getInteractableNames() {
 	std::map<std::string, std::string> map{};
 
 	// built-in interactables
-	std::filesystem::path interactablesDir =
-		Editor::instance->getFs().getEditorBaseDir();
+	std::filesystem::path interactablesDir = Editor::instance->getFs().getEditorBaseDir();
 	interactablesDir /= "resources";
 	interactablesDir /= "interactables";
 
@@ -188,22 +185,18 @@ GameData Project::generateStruct() {
 		Image image = LoadImageFromTexture(texture);
 
 		int fileSize = 0;
-		std::string fileType =
-			GetFileExtension(tileSet.getTextureSource().c_str());
-		unsigned char *imageData =
-			ExportImageToMemory(image, fileType.c_str(), &fileSize);
+		std::string fileType = GetFileExtension(tileSet.getTextureSource().c_str());
+		unsigned char *imageData = ExportImageToMemory(image, fileType.c_str(), &fileSize);
 
 		TileSetBin tileSetBin;
 		tileSetBin.name = GetFileName(tileSetPath.c_str());
-		tileSetBin.extension =
-			GetFileExtension(tileSet.getTextureSource().c_str());
+		tileSetBin.extension = GetFileExtension(tileSet.getTextureSource().c_str());
 		for (int i = 0; i < fileSize; i++) {
 			tileSetBin.image.push_back(*imageData);
 			imageData++;
 		}
 		tileSetBin.tileSize =
-			IVector{static_cast<int>(tileSet.getTileSize().x),
-					static_cast<int>(tileSet.getTileSize().y)};
+			IVector{static_cast<int>(tileSet.getTileSize().x), static_cast<int>(tileSet.getTileSize().y)};
 		tileSetBin.dataSize = fileSize;
 
 		data.tilesets[GetFileName(tileSetPath.c_str())] = tileSetBin;
@@ -235,10 +228,8 @@ GameData Project::generateStruct() {
 				Vector2 atlasPos = tile.getAtlasTile().getAtlasCoords();
 				Vector2 worldPos = tile.getWorldCoords();
 
-				IVector intAtlas = IVector{static_cast<int>(atlasPos.x),
-										   static_cast<int>(atlasPos.y)};
-				IVector intWorld = IVector{static_cast<int>(worldPos.x),
-										   static_cast<int>(worldPos.y)};
+				IVector intAtlas = IVector{static_cast<int>(atlasPos.x), static_cast<int>(atlasPos.y)};
+				IVector intWorld = IVector{static_cast<int>(worldPos.x), static_cast<int>(worldPos.y)};
 
 				TileBin tileBin;
 				tileBin.atlasPos = intAtlas;
@@ -250,8 +241,8 @@ GameData Project::generateStruct() {
 		map.reset();
 
 		std::unique_ptr<Room> room = std::make_unique<Room>(roomPath);
-		roomBin.startPoint = IVector{static_cast<int>(room->getStartTile().x),
-									 static_cast<int>(room->getStartTile().y)};
+		roomBin.startPoint =
+			IVector{static_cast<int>(room->getStartTile().x), static_cast<int>(room->getStartTile().y)};
 		for (auto [pos, obj] : room->getCollisions().getObjects()) {
 			IVector intVec;
 			intVec.x = static_cast<int>(pos.x);
@@ -265,8 +256,7 @@ GameData Project::generateStruct() {
 			intBin.type = interactable->getType();
 			intBin.onTouch = interactable->isOnTouch();
 
-			intBin.propsCbor =
-				nlohmann::json::to_cbor(interactable->getProps());
+			intBin.propsCbor = nlohmann::json::to_cbor(interactable->getProps());
 
 			roomBin.interactables.push_back(intBin);
 		}
@@ -275,8 +265,7 @@ GameData Project::generateStruct() {
 			pBin.name = prop->getSourcePath();
 			pBin.tilePos = fromVector2(prop->getWorldTilePos());
 
-			pBin.propsCbor =
-				nlohmann::json::to_cbor(prop->getInteractable()->getProps());
+			pBin.propsCbor = nlohmann::json::to_cbor(prop->getInteractable()->getProps());
 			roomBin.props.push_back(pBin);
 		}
 		for (auto &[aName, actor] : room->getActors().getActors()) {
@@ -284,9 +273,8 @@ GameData Project::generateStruct() {
 			aBin.name = aName;
 			aBin.source = actor->getSourcePath();
 			aBin.tilePos =
-				IVector{static_cast<int>(actor->getTilePosition().x),
-						static_cast<int>(actor->getTilePosition().y)};
-			
+				IVector{static_cast<int>(actor->getTilePosition().x), static_cast<int>(actor->getTilePosition().y)};
+
 			if (actor->hasInteractable()) {
 				aBin.intType = actor->getInteractable()->getType();
 				aBin.propsCbor = nlohmann::json::to_cbor(actor->getInteractable()->getProps());
@@ -309,18 +297,13 @@ GameData Project::generateStruct() {
 		actorBin.tileSetName = GetFileName(actor->getTileSetSource().c_str());
 
 		Rectangle collisionRect = actor->getCollisionRect();
-		actorBin.collision = IRect{static_cast<int>(collisionRect.x),
-								   static_cast<int>(collisionRect.y),
-								   static_cast<int>(collisionRect.width),
-								   static_cast<int>(collisionRect.height)};
-		std::array<std::vector<Vector2>, 8> animations =
-			actor->getAnimationsRaw();
+		actorBin.collision = IRect{static_cast<int>(collisionRect.x), static_cast<int>(collisionRect.y),
+								   static_cast<int>(collisionRect.width), static_cast<int>(collisionRect.height)};
+		std::array<std::vector<Vector2>, 8> animations = actor->getAnimationsRaw();
 		for (int i = 0; i < 8; i++) {
-			for (int frameIndex = 0; frameIndex < animations[i].size();
-				 frameIndex++) {
+			for (int frameIndex = 0; frameIndex < animations[i].size(); frameIndex++) {
 				Vector2 vec = animations[i][frameIndex];
-				IVector intVec =
-					IVector{static_cast<int>(vec.x), static_cast<int>(vec.y)};
+				IVector intVec = IVector{static_cast<int>(vec.x), static_cast<int>(vec.y)};
 
 				actorBin.animations[i].push_back(intVec);
 			}
@@ -344,8 +327,7 @@ GameData Project::generateStruct() {
 
 		int fileSize = 0;
 
-		unsigned char *imgData = ExportImageToMemory(
-			img, GetFileExtension(imagePath.c_str()), &fileSize);
+		unsigned char *imgData = ExportImageToMemory(img, GetFileExtension(imagePath.c_str()), &fileSize);
 		for (int i = 0; i < fileSize; i++) {
 			bin.data.push_back(*imgData);
 			imgData++;
@@ -413,15 +395,12 @@ GameData Project::generateStruct() {
 
 		PropBin bin;
 		bin.name = GetFileNameWithoutExt(propPath.c_str());
-		bin.atlasRect = IRect{static_cast<int>(prop.getAtlasRect().x),
-							  static_cast<int>(prop.getAtlasRect().y),
-							  static_cast<int>(prop.getAtlasRect().width),
-							  static_cast<int>(prop.getAtlasRect().height)};
+		bin.atlasRect =
+			IRect{static_cast<int>(prop.getAtlasRect().x), static_cast<int>(prop.getAtlasRect().y),
+				  static_cast<int>(prop.getAtlasRect().width), static_cast<int>(prop.getAtlasRect().height)};
 		bin.collisionRect =
-			IRect{static_cast<int>(prop.getCollisionRect().x),
-				  static_cast<int>(prop.getCollisionRect().y),
-				  static_cast<int>(prop.getCollisionRect().width),
-				  static_cast<int>(prop.getCollisionRect().height)};
+			IRect{static_cast<int>(prop.getCollisionRect().x), static_cast<int>(prop.getCollisionRect().y),
+				  static_cast<int>(prop.getCollisionRect().width), static_cast<int>(prop.getCollisionRect().height)};
 		bin.imagePath = std::string(prop.getImagePath());
 		bin.hasInteractable = prop.getHasInteractable();
 		if (prop.getInteractable() == nullptr) {
@@ -434,8 +413,7 @@ GameData Project::generateStruct() {
 	}
 
 	// built in insteractables
-	std::filesystem::path interactablesDir =
-		Editor::instance->getFs().getEditorBaseDir();
+	std::filesystem::path interactablesDir = Editor::instance->getFs().getEditorBaseDir();
 	interactablesDir /= "resources";
 	interactablesDir /= "interactables";
 
@@ -456,8 +434,7 @@ GameData Project::generateStruct() {
 	UnloadDirectoryFiles(list);
 
 	// scripts
-	std::filesystem::path scriptsDir =
-		Editor::instance->getFs().getEditorBaseDir();
+	std::filesystem::path scriptsDir = Editor::instance->getFs().getEditorBaseDir();
 	scriptsDir /= "resources";
 	scriptsDir /= "scripts";
 	auto scriptsList = LoadDirectoryFiles(scriptsDir.u8string().c_str());
@@ -515,20 +492,16 @@ void Project::runProject() {
 	intepreterPath /= "luajit";
 	libDest /= "rpgpplua.so";
 
-	std::filesystem::copy_file(
-		libPath, libDest, std::filesystem::copy_options::overwrite_existing);
+	std::filesystem::copy_file(libPath, libDest, std::filesystem::copy_options::overwrite_existing);
 
 	ChangeDirectory(projectPath.c_str());
 
-	std::string cmdLine = TextFormat(
-		"%s -l rpgpplua %s", intepreterPath.c_str(), scriptPath.c_str());
+	std::string cmdLine = TextFormat("%s -l rpgpplua %s", intepreterPath.c_str(), scriptPath.c_str());
 	printf("%s \n", cmdLine.c_str());
 
 	char buffer[256];
 	FILE *stream;
-	stream = popen(TextFormat("%s -l rpgpplua %s", intepreterPath.c_str(),
-							  scriptPath.c_str()),
-				   "r");
+	stream = popen(TextFormat("%s -l rpgpplua %s", intepreterPath.c_str(), scriptPath.c_str()), "r");
 
 #endif
 #ifdef _WIN64
@@ -538,21 +511,18 @@ void Project::runProject() {
 	libPath /= rpgppDllPath;
 	libDest /= rpgppDllPath;
 
-	std::filesystem::copy_file(
-		libPath, libDest, std::filesystem::copy_options::overwrite_existing);
+	std::filesystem::copy_file(libPath, libDest, std::filesystem::copy_options::overwrite_existing);
 
 	ChangeDirectory(projectPath.c_str());
 
 	// note: compared to linux, you have to add .string() to every single one of
 	// these paths.
-	std::string cmdLine =
-		TextFormat("%s -l rpgpplua %s", intepreterPath.string().c_str(),
-				   scriptPath.string().c_str());
+	std::string cmdLine = TextFormat("%s -l rpgpplua %s", intepreterPath.string().c_str(), scriptPath.string().c_str());
 
 	HANDLE outFile = nullptr;
 
-	outFile = CreateFile("playtest.log", GENERIC_WRITE, FILE_SHARE_WRITE, NULL,
-						 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	outFile =
+		CreateFile("playtest.log", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	PROCESS_INFORMATION piProcInfo;
 	STARTUPINFO siStartInfo;
@@ -565,8 +535,7 @@ void Project::runProject() {
 	siStartInfo.hStdOutput = outFile;
 	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
 
-	bool success = CreateProcess(NULL, cmdLine.data(), NULL, NULL, true, 0,
-								 NULL, NULL, &siStartInfo, &piProcInfo);
+	bool success = CreateProcess(NULL, cmdLine.data(), NULL, NULL, true, 0, NULL, NULL, &siStartInfo, &piProcInfo);
 
 	if (!success) {
 		printf("Child process doesn't work. \n");
@@ -589,8 +558,7 @@ void Project::buildProject() {
 	serializeDataToFile(binPath.u8string(), bin);
 
 	// Copy base game file
-	std::filesystem::path baseGamePath =
-		Editor::instance->getFs().getEditorBaseDir();
+	std::filesystem::path baseGamePath = Editor::instance->getFs().getEditorBaseDir();
 
 	std::filesystem::path resultPath = projectPath;
 
@@ -603,9 +571,7 @@ void Project::buildProject() {
 #endif
 
 	try {
-		std::filesystem::copy(
-			baseGamePath, resultPath,
-			std::filesystem::copy_options::overwrite_existing);
+		std::filesystem::copy(baseGamePath, resultPath, std::filesystem::copy_options::overwrite_existing);
 	} catch (const std::exception &) {
 		printf("failed to copy file, aborting...\n");
 		return;
@@ -615,8 +581,7 @@ void Project::buildProject() {
 
 	HANDLE outFile = nullptr;
 
-	outFile = CreateFile("build.log", GENERIC_WRITE, FILE_SHARE_WRITE, NULL,
-						 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	outFile = CreateFile("build.log", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	PROCESS_INFORMATION piProcInfo;
 	STARTUPINFO siStartInfo;
@@ -629,8 +594,7 @@ void Project::buildProject() {
 	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
 
 	bool success =
-		CreateProcess(NULL, resultPath.string().data(), NULL, NULL, true, 0,
-					  NULL, NULL, &siStartInfo, &piProcInfo);
+		CreateProcess(NULL, resultPath.string().data(), NULL, NULL, true, 0, NULL, NULL, &siStartInfo, &piProcInfo);
 
 	if (!success) {
 		printf("Child process could not be created.. \n");
