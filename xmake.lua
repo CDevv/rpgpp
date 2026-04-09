@@ -70,8 +70,7 @@ on_install("linux", "macosx", "mingw", "windows", function (package)
 end)
 package_end()
 
-add_requires("raylib", "tgui", "nlohmann_json", "luajit", "noop", "tree-sitter",
-	"tree-sitter-lua")
+add_requires("raylib", "tgui", "nlohmann_json", "luajit")
 add_rules("mode.debug", "mode.release")
 set_defaultmode("debug")
 
@@ -154,8 +153,7 @@ set_languages("cxx17")
 add_includedirs("include/", "include/editor/", os.dirs(path.join(os.scriptdir())))
 add_files("src/editor/**.cpp")
 add_deps("rpgpp")
-add_packages("raylib", "tgui", "nlohmann_json", "luajit", "noop", "tree-sitter",
-	"tree-sitter-lua")
+add_packages("raylib", "tgui", "nlohmann_json", "luajit")
 after_build( function (target)
 	os.cp("$(curdir)/resources", "./build/$(plat)/$(arch)/$(mode)/", { async = true })
 	if is_plat("linux", "macosx") then
