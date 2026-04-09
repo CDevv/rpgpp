@@ -1,4 +1,11 @@
 #include "screens/projectScreen.hpp"
+
+#include <cassert>
+#include <cstdio>
+#include <filesystem>
+#include <memory>
+#include <vector>
+
 #include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Texture.hpp"
@@ -23,26 +30,17 @@
 #include "services/fileSystemService.hpp"
 #include "services/translationService.hpp"
 #include "widgets/newFileDialog.hpp"
-#include <cassert>
-#include <cstdio>
-#include <filesystem>
-#include <memory>
-#include <vector>
 using namespace screens;
-void ProjectScreen::layoutReload() {
-	resListWBinder->setSize(modifiable_RESLIST_W, "100%");
-}
+void ProjectScreen::layoutReload() { resListWBinder->setSize(modifiable_RESLIST_W, "100%"); }
 
 void ProjectScreen::mouseMove(int x, int y) {
-	resourcesList->manualMouseMoved(
-		{static_cast<float>(x), static_cast<float>(y)});
+	resourcesList->manualMouseMoved({static_cast<float>(x), static_cast<float>(y)});
 	fileTabs->manualMouseMoved(
 		{static_cast<float>(
-			 x // coordinate of the mouse cursor relative to the projectScreen
-			 - tabsContainer->getPosition().x // coordinate of the tabsContainer
-											  // relative to the projectScreen
-			 + tabsContainer->getContentOffset()
-				   .x // coordinate of the widget relative to the tabsContainer
+			 x										// coordinate of the mouse cursor relative to the projectScreen
+			 - tabsContainer->getPosition().x		// coordinate of the tabsContainer
+													// relative to the projectScreen
+			 + tabsContainer->getContentOffset().x	// coordinate of the widget relative to the tabsContainer
 			 // why all of these calculations? cause the builtin
 			 // leftMousePressed method returns the mouse coordinate relative to
 			 // the current widget
@@ -50,12 +48,10 @@ void ProjectScreen::mouseMove(int x, int y) {
 		 static_cast<float>(y - tabsContainer->getPosition().y)});
 }
 void ProjectScreen::leftMouseReleased(int x, int y) {
-	resourcesList->manualLeftMouseReleased(
-		{static_cast<float>(x), static_cast<float>(y)});
+	resourcesList->manualLeftMouseReleased({static_cast<float>(x), static_cast<float>(y)});
 	fileTabs->manualLeftMouseReleased(
 		{// ditto
-		 static_cast<float>(x - tabsContainer->getPosition().x +
-							tabsContainer->getContentOffset().x),
+		 static_cast<float>(x - tabsContainer->getPosition().x + tabsContainer->getContentOffset().x),
 		 static_cast<float>(y - tabsContainer->getPosition().y)});
 }
 
@@ -75,12 +71,9 @@ void ProjectScreen::bindMenuBarAndHK(tgui::MenuBar::Ptr menuBarPtr) {
 
 	auto redoAction = [this] { getCurrentFile().getView().redoAction(); };
 
-	std::vector<tgui::String> saveFileHierarchy = {
-		ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")};
-	std::vector<tgui::String> undoHierarchy = {ts.getKey("menu.edit._label"),
-											   ts.getKey("menu.edit.undo")};
-	std::vector<tgui::String> redoHierarchy = {ts.getKey("menu.edit._label"),
-											   ts.getKey("menu.edit.redo")};
+	std::vector<tgui::String> saveFileHierarchy = {ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")};
+	std::vector<tgui::String> undoHierarchy = {ts.getKey("menu.edit._label"), ts.getKey("menu.edit.undo")};
+	std::vector<tgui::String> redoHierarchy = {ts.getKey("menu.edit._label"), ts.getKey("menu.edit.redo")};
 	menuBarPtr->setMenuItemEnabled(saveFileHierarchy, true);
 	menuBarPtr->connectMenuItem(saveFileHierarchy, saveAction);
 
@@ -144,14 +137,10 @@ void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	tabsContainer->getRenderer()->setBorders({0, 0, 0, 0});
 	tabsContainer->getRenderer()->setRoundedBorderRadius(0);
 	tabsContainer->getRenderer()->setPadding(0);
-	tabsContainer->setSize(
-		tgui::Layout("100%") - tgui::bindWidth(resListWBinder), FILETABS_H);
-	tabsContainer->setPosition(tgui::bindWidth(resListWBinder),
-							   tgui::bindBottom(toolBar));
-	tabsContainer->getVerticalScrollbar()->setPolicy(
-		tgui::Scrollbar::Policy::Never);
-	tabsContainer->getHorizontalScrollbar()->setPolicy(
-		tgui::Scrollbar::Policy::Never);
+	tabsContainer->setSize(tgui::Layout("100%") - tgui::bindWidth(resListWBinder), FILETABS_H);
+	tabsContainer->setPosition(tgui::bindWidth(resListWBinder), tgui::bindBottom(toolBar));
+	tabsContainer->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
+	tabsContainer->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
 
 	fileTabs = FileTab::create();
 	fileTabs->setHeight(FILETABS_H);
@@ -175,19 +164,16 @@ void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 		}
 	});
 
-	Editor::instance->getHotkeyService().registerHotkeyCallback(
-		"close_tab", [this] { fileTabs->closeCurrentTab(); });
+	Editor::instance->getHotkeyService().registerHotkeyCallback("close_tab", [this] { fileTabs->closeCurrentTab(); });
 
 	tabsContainer->add(fileTabs);
 	layout->add(tabsContainer);
 
 	// File view
-	auto fileView = tgui::Group::create(
-		{tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
-		 tgui::Layout("100%") - tgui::bindHeight(toolBar) -
-			 tgui::bindHeight(tabsContainer)});
-	fileView->setPosition(tgui::bindWidth(resListWBinder),
-						  tgui::bindBottom(tabsContainer));
+	auto fileView =
+		tgui::Group::create({tgui::Layout("100%") - tgui::bindWidth(resListWBinder),
+							 tgui::Layout("100%") - tgui::bindHeight(toolBar) - tgui::bindHeight(tabsContainer)});
+	fileView->setPosition(tgui::bindWidth(resListWBinder), tgui::bindBottom(tabsContainer));
 	this->fileViewGroup = fileView;
 	clearView();
 	layout->add(fileView);
@@ -198,14 +184,10 @@ void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	// FIXME: fix scaling issue on windows!
 }
 
-void ProjectScreen::addFileView(EngineFileType fileType,
-								const std::string &path) {
+void ProjectScreen::addFileView(EngineFileType fileType, const std::string &path) {
+	Editor::instance->getGui().gui->setTabKeyUsageEnabled(fileType != EngineFileType::FILE_SCRIPT);
 
-	Editor::instance->getGui().gui->setTabKeyUsageEnabled(
-		fileType != EngineFileType::FILE_SCRIPT);
-
-	std::unique_ptr<ProjectFile> projectFile =
-		fileVisitor->visit(fileType, path);
+	std::unique_ptr<ProjectFile> projectFile = fileVisitor->visit(fileType, path);
 	if (projectFile->isEmpty) {
 		std::string mutPath = std::string(path);
 		Editor::instance->getFs().openFileInDefaultApp(mutPath);
@@ -237,8 +219,7 @@ void ProjectScreen::switchView(tgui::String id) {
 void ProjectScreen::clearView() {
 	focusedFile = "";
 	fileViewGroup->removeAllWidgets();
-	std::unique_ptr<ProjectFile> empty =
-		fileVisitor->visit(EngineFileType::FILE_EMPTY, ".");
+	std::unique_ptr<ProjectFile> empty = fileVisitor->visit(EngineFileType::FILE_EMPTY, ".");
 	empty->initUi(fileViewGroup);
 	empty->addWidgets(fileViewGroup);
 }
@@ -267,21 +248,27 @@ tgui::Group::Ptr ProjectScreen::createToolBar() {
 
 	auto &fs = Editor::instance->getFs();
 
+	auto settingsBtn = tgui::BitmapButton::create();
+	auto settingsImage = tgui::Texture(fs.getResourcePath("projectsettings.png"));
+	settingsBtn->setImage(settingsImage);
+	settingsBtn->setSize({barSize, "100%"});
+	settingsBtn->setPosition({tgui::bindRight(projectLabel), 0});
+	settingsBtn->onPress([] { Editor::instance->getGui().getChildWindowSubService()->openWindow("project_settings"); });
+	toolBar->add(settingsBtn);
+
 	auto playBtnTooltip = Tooltip::create("");
-	bindTranslation<Tooltip>(playBtnTooltip, "screen.project.toolbar.play",
-							 &Tooltip::setText);
+	bindTranslation<Tooltip>(playBtnTooltip, "screen.project.toolbar.play", &Tooltip::setText);
 	auto playBtn = tgui::BitmapButton::create();
 	auto playtestImg = tgui::Texture(fs.getResourcePath("playtest.png"));
 	playBtn->setImage(playtestImg);
 	playBtn->setSize({barSize, "100%"});
-	playBtn->setPosition({tgui::bindRight(projectLabel), 0});
+	playBtn->setPosition({tgui::bindRight(settingsBtn) + 8, 0});
 	playBtn->onPress([] { Editor::instance->getProject()->runProject(); });
 	playBtn->setToolTip(playBtnTooltip);
 	toolBar->add(playBtn, "playBtn");
 
 	auto buildTooltip = Tooltip::create("");
-	bindTranslation<Tooltip>(buildTooltip, "screen.project.toolbar.build",
-							 &Tooltip::setText);
+	bindTranslation<Tooltip>(buildTooltip, "screen.project.toolbar.build", &Tooltip::setText);
 	auto buildBtn = tgui::BitmapButton::create();
 	auto buildImg = tgui::Texture(fs.getResourcePath("build.png"));
 	buildBtn->setImage(buildImg);
@@ -300,54 +287,46 @@ void ProjectScreen::addResourceButtons(EngineFileType fileType) {
 	this->listedResourcesType = fileType;
 
 	resourcesLayout->removeAllWidgets();
-	resourcesLayout->getRenderer()->setSpaceBetweenWidgets(
-		RESLIST_ITEM_PADDING);
+	resourcesLayout->getRenderer()->setSpaceBetweenWidgets(RESLIST_ITEM_PADDING);
 
 	for (auto filePath : project->getPaths(fileType)) {
 		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
 		fileBtn->setSize("100%", RESLIST_RES_BTN_H);
-		fileBtn->onPress(
-			[this, fileType, filePath] { addFileView(fileType, filePath); });
+		fileBtn->onPress([this, fileType, filePath] { addFileView(fileType, filePath); });
 		fileBtn->onRightMousePress([this, filePath] {
 			fileContextMenu->getMenuItems().at(0).text = filePath;
-			fileContextMenu->setPosition(GetMousePosition().x,
-										 GetMousePosition().y);
+			fileContextMenu->setPosition(GetMousePosition().x, GetMousePosition().y);
 			fileContextMenu->onMenuItemClick.disconnectAll();
-			fileContextMenu->onMenuItemClick(
-				[this, filePath](const std::vector<tgui::String> &hierarchy) {
-					if (hierarchy[0] == "Copy full path") {
-						SetClipboardText(filePath.c_str());
-					}
-					if (hierarchy[0] == "Delete.") {
-						auto messageBox = tgui::MessageBox::create();
-						messageBox->setText("Are you sure?");
-						messageBox->addButton("Yes");
-						messageBox->addButton("No");
-						messageBox->setButtonAlignment(
-							tgui::HorizontalAlignment::Right);
-						EditorGuiService::centerWidget(messageBox);
+			fileContextMenu->onMenuItemClick([this, filePath](const std::vector<tgui::String> &hierarchy) {
+				if (hierarchy[0] == "Copy full path") {
+					SetClipboardText(filePath.c_str());
+				}
+				if (hierarchy[0] == "Delete.") {
+					auto messageBox = tgui::MessageBox::create();
+					messageBox->setText("Are you sure?");
+					messageBox->addButton("Yes");
+					messageBox->addButton("No");
+					messageBox->setButtonAlignment(tgui::HorizontalAlignment::Right);
+					EditorGuiService::centerWidget(messageBox);
 
-						std::weak_ptr<tgui::MessageBox> weakBox = messageBox;
+					std::weak_ptr<tgui::MessageBox> weakBox = messageBox;
 
-						messageBox->onButtonPress(
-							[this, weakBox,
-							 filePath](const tgui::String &button) {
-								assert(button == "Yes" || button == "No");
-								if (auto box = weakBox.lock()) {
-									if (button == "Yes") {
-										std::error_code ec;
-										std::filesystem::remove(filePath, ec);
-										addResourceButtons(listedResourcesType);
-									}
+					messageBox->onButtonPress([this, weakBox, filePath](const tgui::String &button) {
+						assert(button == "Yes" || button == "No");
+						if (auto box = weakBox.lock()) {
+							if (button == "Yes") {
+								std::error_code ec;
+								std::filesystem::remove(filePath, ec);
+								addResourceButtons(listedResourcesType);
+							}
 
-									if (auto parent = box->getParent())
-										parent->remove(box);
-								}
-							});
+							if (auto parent = box->getParent()) parent->remove(box);
+						}
+					});
 
-						Editor::instance->getGui().gui->add(messageBox);
-					}
-				});
+					Editor::instance->getGui().gui->add(messageBox);
+				}
+			});
 			fileContextMenu->openMenu();
 		});
 
@@ -359,9 +338,7 @@ ResizableContainer::Ptr ProjectScreen::createResourcesList() {
 	auto project = Editor::instance->getProject();
 	TranslationService &tService = Editor::instance->getTranslations();
 
-	auto group = ResizableContainer::create(
-		{modifiable_RESLIST_W, tgui::Layout("100%") - TOOLBAR_H},
-		{0, TOOLBAR_H});
+	auto group = ResizableContainer::create({modifiable_RESLIST_W, tgui::Layout("100%") - TOOLBAR_H}, {0, TOOLBAR_H});
 	group->enableResize(ResizeDirection::RIGHT);
 	group->setMinResizeWidth(MIN_RESLIST_W);
 	group->setMaxResizeWidth(MAX_RESLIST_W);
@@ -382,9 +359,7 @@ ResizableContainer::Ptr ProjectScreen::createResourcesList() {
 	group->add(resourceChoose);
 
 	auto createResourceBtn = tgui::Button::create();
-	bindTranslation<tgui::Button>(createResourceBtn,
-								  "screen.project.create_new_resource",
-								  &tgui::Button::setText);
+	bindTranslation<tgui::Button>(createResourceBtn, "screen.project.create_new_resource", &tgui::Button::setText);
 	createResourceBtn->setPosition(0, tgui::bindBottom(resourceChoose));
 	createResourceBtn->setSize("100%", RESLIST_CREATE_RES_BTN_H);
 	createResourceBtn->onPress([this] {
@@ -398,13 +373,10 @@ ResizableContainer::Ptr ProjectScreen::createResourcesList() {
 	group->add(createResourceBtn);
 
 	auto resourceListPanel = tgui::ScrollablePanel::create(
-		{"100%", tgui::Layout("100%") -
-					 (RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H)});
+		{"100%", tgui::Layout("100%") - (RESLIST_RES_CHOOSE_H + RESLIST_CREATE_RES_BTN_H)});
 	resourceListPanel->setPosition(0, tgui::bindBottom(createResourceBtn));
-	resourceListPanel->getVerticalScrollbar()->setPolicy(
-		tgui::Scrollbar::Policy::Automatic);
-	resourceListPanel->getHorizontalScrollbar()->setPolicy(
-		tgui::Scrollbar::Policy::Never);
+	resourceListPanel->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Automatic);
+	resourceListPanel->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
 
 	resourcesLayout = tgui::GrowVerticalLayout::create();
 	resourceListPanel->add(resourcesLayout);
@@ -416,8 +388,7 @@ ResizableContainer::Ptr ProjectScreen::createResourcesList() {
 	});
 
 	if (project != nullptr) {
-		EngineFileType currentFileType =
-			static_cast<EngineFileType>(resourceChoose->getSelectedItemIndex());
+		EngineFileType currentFileType = static_cast<EngineFileType>(resourceChoose->getSelectedItemIndex());
 		addResourceButtons(currentFileType);
 	}
 

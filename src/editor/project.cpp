@@ -74,25 +74,6 @@ std::string Project::create(const std::string &dirPath, const std::string &title
 	filePath /= "proj.rpgpp";
 	SaveFileText(filePath.u8string().c_str(), fileContent.c_str());
 
-	/*
-	MakeDirectory(
-		std::filesystem::path(dirPath).append("tilesets").u8string().c_str());
-	MakeDirectory(
-		std::filesystem::path(dirPath).append("maps").u8string().c_str());
-	MakeDirectory(
-		std::filesystem::path(dirPath).append("actors").u8string().c_str());
-	MakeDirectory(
-		std::filesystem::path(dirPath).append("dialogue").u8string().c_str());
-	MakeDirectory(
-		std::filesystem::path(dirPath).append("scripts").u8string().c_str());
-	MakeDirectory(
-		std::filesystem::path(dirPath).append("props").u8string().c_str());
-	MakeDirectory(
-		std::filesystem::path(dirPath).append("images").u8string().c_str());
-	MakeDirectory(
-		std::filesystem::path(dirPath).append("fonts").u8string().c_str());
-		*/
-
 	for (int i = 0; i < FILETYPE_MAX; i++) {
 		EngineFileType fileType = static_cast<EngineFileType>(i);
 
@@ -118,6 +99,8 @@ json Project::toJson() {
 }
 
 std::string &Project::getTitle() { return projectTitle; }
+
+void Project::setTitle(const std::string &newTitle) { projectTitle = newTitle; }
 
 std::string &Project::getBasePath() { return projectPath; }
 

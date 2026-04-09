@@ -1,17 +1,18 @@
 #ifndef RPGPP_POPUPWINDOW_H
 #define RPGPP_POPUPWINDOW_H
 
-#include "TGUI/Widgets/ChildWindow.hpp"
 #include <string>
+
+#include "TGUI/Widgets/ChildWindow.hpp"
 class PopupWindow {
-  public:
+public:
 	bool windowIsOpen = false;
 
 	tgui::ChildWindow::Ptr currentWindow;
 	explicit PopupWindow(const std::string &title);
 	~PopupWindow() { close(); };
 
-	void open();
+	virtual void open();
 	void close();
 };
 
