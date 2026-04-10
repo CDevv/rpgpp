@@ -70,6 +70,8 @@ public:
 	void setProp(std::string key, std::string value);
 	/** Set properties using a nlohmann::json object. */
 	void setProps(nlohmann::json j);
+	/** Set the source script file path. */
+	void setScriptSourcePath(const std::string &newPath);
 	/** Get source script file. */
 	const std::string &getScriptSourcePath();
 	/** Get the properties json object. */

@@ -32,7 +32,7 @@ Interactable::Interactable(const std::string &path) {
 	displayTitle = intJson.at("name");
 	props = std::make_unique<nlohmann::json>(intJson.at("props"));
 	scriptPath = intJson.at("script");
-	onTouch = false;
+	onTouch = intJson.at("onTouch");
 }
 
 Interactable::Interactable(const std::string &type, Vector2 tilePos, int tileSize) {
@@ -70,6 +70,7 @@ json Interactable::dumpJson() {
 	json j = json::object();
 	j.push_back({"name", displayTitle});
 	j.push_back({"props", *props});
+	j.push_back({"onTouch", onTouch});
 	j.push_back({"script", scriptPath});
 
 	return j;
@@ -96,6 +97,8 @@ void Interactable::setProps(nlohmann::json j) { this->props = std::make_unique<n
 
 nlohmann::json &Interactable::getProps() { return *props; }
 
+void Interactable::setScriptSourcePath(const std::string &newPath) { scriptPath = newPath; }
+
 const std::string &Interactable::getScriptSourcePath() { return scriptPath; }
 
 void Interactable::setDisplayTitle(const std::string &newTitle) { displayTitle = newTitle; }
@@ -112,6 +115,7 @@ void Interactable::interact() {
 
 	Game::getScripts().addToState(*props);
 	state["this"] = this;
+	state["self"] = this;
 
 	auto intBin = Game::getBin().interactables.at(type);
 	if (Game::getBin().scripts.count(intBin.scriptPath) != 0) {

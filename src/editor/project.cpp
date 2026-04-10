@@ -77,9 +77,11 @@ std::string Project::create(const std::string &dirPath, const std::string &title
 	for (int i = 0; i < FILETYPE_MAX; i++) {
 		EngineFileType fileType = static_cast<EngineFileType>(i);
 
-		std::string dirName = TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
+		if (fileType == EngineFileType::FILE_INTERACTABLE) {
+			std::string dirName = TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
 
-		MakeDirectory(std::filesystem::path(dirPath).append(dirName).u8string().c_str());
+			MakeDirectory(std::filesystem::path(dirPath).append(dirName).u8string().c_str());
+		}
 	}
 
 	return filePath.u8string();

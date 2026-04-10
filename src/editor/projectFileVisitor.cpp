@@ -11,10 +11,12 @@
 #include "fileViews/fileView.hpp"
 #include "fileViews/fontFileView.hpp"
 #include "fileViews/imageFileView.hpp"
+#include "fileViews/interactableFileView.hpp"
 #include "fileViews/propFileView.hpp"
 #include "fileViews/roomFileView.hpp"
 #include "fileViews/soundFileView.hpp"
 #include "fileViews/tilesetFileView.hpp"
+#include "interactable.hpp"
 #include "projectFile.hpp"
 #include "room.hpp"
 #include "saveables/fontWrapper.hpp"
@@ -37,6 +39,7 @@ ProjectFileVisitor::ProjectFileVisitor() {
 	funcs[static_cast<int>(EngineFileType::FILE_FONT)] = fontView;
 	funcs[static_cast<int>(EngineFileType::FILE_SOUND)] = soundView;
 	funcs[static_cast<int>(EngineFileType::FILE_MUSIC)] = musicView;
+	funcs[static_cast<int>(EngineFileType::FILE_INTERACTABLE)] = interactableView;
 }
 
 std::unique_ptr<ProjectFile> ProjectFileVisitor::visit(EngineFileType fileType, const std::string &path) {
@@ -110,4 +113,11 @@ std::unique_ptr<ProjectFile> ProjectFileVisitor::musicView(const std::string &pa
 	std::unique_ptr<SoundFileView> view = std::make_unique<SoundFileView>();
 	std::unique_ptr<VariantWrapper> variant = std::make_unique<Variant<SoundWrapper>>(new SoundWrapper(path));
 	return std::make_unique<ProjectFile>(std::move(view), std::move(variant), EngineFileType::FILE_MUSIC, false);
+}
+
+std::unique_ptr<ProjectFile> ProjectFileVisitor::interactableView(const std::string &path) {
+	std::unique_ptr<InteractableFileView> view = std::make_unique<InteractableFileView>();
+	std::unique_ptr<VariantWrapper> variant = std::make_unique<Variant<Interactable>>(new Interactable(path));
+	auto res = std::make_unique<ProjectFile>(std::move(view), std::move(variant), EngineFileType::FILE_INTERACTABLE);
+	return std::move(res);
 }
