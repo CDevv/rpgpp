@@ -6,4 +6,4 @@
 Vector2 fromIVector(const IVector &other);
 IVector fromVector2(const Vector2 &other);
 
-#endif // !_RPGPP_CONVERSION_H
+#endif	// !_RPGPP_CONVERSION_H

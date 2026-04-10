@@ -1,6 +1,8 @@
 #include "collisionsContainer.hpp"
-#include "gamedata.hpp"
+
 #include <raylib.h>
+
+#include "gamedata.hpp"
 
 CollisionsContainer::CollisionsContainer() = default;
 

@@ -1,14 +1,16 @@
 #ifndef _RPGPP_SAVEABLES_SOUNDWRAPPER_H
 #define _RPGPP_SAVEABLES_SOUNDWRAPPER_H
 
-#include "saveable.hpp"
+#include <raylib.h>
+
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
-#include <raylib.h>
 #include <string>
 
+#include "saveable.hpp"
+
 class SoundWrapper : public ISaveable {
-  public:
+public:
 	Music sound{};
 	std::string source;
 	SoundWrapper() = default;

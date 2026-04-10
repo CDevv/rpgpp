@@ -1,6 +1,8 @@
 #include "timeFormat.hpp"
-#include <cmath>
+
 #include <raylib.h>
+
+#include <cmath>
 #include <string>
 
 std::string formatTime(float duration) {

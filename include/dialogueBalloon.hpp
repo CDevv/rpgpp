@@ -2,6 +2,7 @@
 #define _RPGPP_DIALOGUEBALLOON_H
 
 #include <raylib.h>
+
 #include <string>
 #include <vector>
 
@@ -24,7 +25,7 @@ struct DialogueBin {
 };
 
 class DialogueBalloon {
-  private:
+private:
 	Rectangle rect;
 	Rectangle textRect;
 	Rectangle textPortraitRect;
@@ -42,7 +43,7 @@ class DialogueBalloon {
 	Vector2 textPos;
 	void drawPortrait() const;
 
-  public:
+public:
 	DialogueBalloon();
 	DialogueBalloon(Rectangle rect);
 	void update();

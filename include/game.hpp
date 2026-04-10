@@ -5,19 +5,20 @@
 #include "sol/state_view.hpp"
 class WorldService;
 
+#include <memory>
+#include <string>
+
 #include "gamedata.hpp"
 #include "interfaceService.hpp"
 #include "resourceService.hpp"
 #include "soundService.hpp"
 #include "stateService.hpp"
 #include "worldService.hpp"
-#include <memory>
-#include <string>
 
 #define RPGPP_VER "0.1"
 
 class Game {
-  private:
+private:
 	static Game *instance_;
 	static std::unique_ptr<GameData> gameData;
 	static bool usesBin;
@@ -28,7 +29,7 @@ class Game {
 	static std::unique_ptr<SoundService> sounds;
 	static std::unique_ptr<ScriptService> scripts;
 
-  public:
+public:
 	Game();
 	static Game &instance();
 	static void useBin(const std::string &filePath);

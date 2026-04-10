@@ -1,4 +1,5 @@
 #include "atlasTile.hpp"
+
 #include <raylib.h>
 
 AtlasTile::AtlasTile() {

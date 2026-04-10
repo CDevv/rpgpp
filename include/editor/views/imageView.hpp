@@ -1,13 +1,14 @@
 #ifndef _RPGPP_VIEWS_IMAGEVIEW_H
 #define _RPGPP_VIEWS_IMAGEVIEW_H
 
+#include <memory>
+
 #include "raylib.h"
 #include "saveables/imageWrapper.hpp"
 #include "views/worldView.hpp"
-#include <memory>
 
 class ImageView : public WorldView {
-  public:
+public:
 	typedef std::shared_ptr<ImageView> Ptr;
 
 	ImageView();

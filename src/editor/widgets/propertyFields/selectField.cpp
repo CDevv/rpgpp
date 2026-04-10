@@ -1,13 +1,14 @@
 
 #include "widgets/propertyFields/selectField.hpp"
+
+#include <memory>
+
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "widgets/propertyFields/fieldConfig.hpp"
-#include <memory>
-SelectField::SelectField(const char *typeName, bool initRenderer)
-	: tgui::Group(typeName, initRenderer) {
+SelectField::SelectField(const char *typeName, bool initRenderer) : tgui::Group(typeName, initRenderer) {
 	label = tgui::Label::create("Label");
 	label->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
 	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
@@ -19,9 +20,7 @@ SelectField::SelectField(const char *typeName, bool initRenderer)
 	updateSize();
 }
 
-SelectField::Ptr SelectField::create() {
-	return std::make_shared<SelectField>();
-}
+SelectField::Ptr SelectField::create() { return std::make_shared<SelectField>(); }
 
 SelectField::Ptr SelectField::copy(SelectField::ConstPtr widget) {
 	if (widget) {
@@ -31,9 +30,7 @@ SelectField::Ptr SelectField::copy(SelectField::ConstPtr widget) {
 	}
 }
 
-tgui::Widget::Ptr SelectField::clone() const {
-	return std::make_shared<SelectField>(*this);
-}
+tgui::Widget::Ptr SelectField::clone() const { return std::make_shared<SelectField>(*this); }
 
 void SelectField::setSize(const tgui::Layout2d &size) {
 	tgui::Group::setSize(size);

@@ -116,6 +116,10 @@
 			"folder": "Folder",
 			"confirm": "Confirm",
 			"cancel": "Cancel"
+		},
+		"project_settings": {
+			"_label": "Project Settings",
+			"title": "Title"
 		}
 	},
 	"widget": {

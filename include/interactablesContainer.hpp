@@ -1,19 +1,18 @@
 #ifndef _RPGPP_INTERACTABLESCONTAINER_H
 #define _RPGPP_INTERACTABLESCONTAINER_H
 
-#include "baseContainer.hpp"
-#include "gamedata.hpp"
-#include "interactable.hpp"
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <vector>
+
+#include "baseContainer.hpp"
+#include "gamedata.hpp"
+#include "interactable.hpp"
 using json = nlohmann::json;
 
 /** Container of Interactables that is to be used by a [Room](Room.md) */
-class InteractablesContainer
-	: public BaseContainer<std::unique_ptr<Interactable>> {
-
-  public:
+class InteractablesContainer : public BaseContainer<std::unique_ptr<Interactable>> {
+public:
 	/** Empty constructor */
 	InteractablesContainer();
 	/** Add a new Interactable with tile position and type */

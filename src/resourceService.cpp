@@ -1,6 +1,8 @@
 #include "resourceService.hpp"
-#include <cstdio>
+
 #include <raylib.h>
+
+#include <cstdio>
 
 ResourceService::ResourceService() {
 	addTextureFromFile("resources/logo.png");
@@ -29,6 +31,4 @@ void ResourceService::unload() const {
 	}
 }
 
-Texture2D ResourceService::getTexture(const std::string &id) {
-	return textures[id];
-}
+Texture2D ResourceService::getTexture(const std::string &id) { return textures[id]; }

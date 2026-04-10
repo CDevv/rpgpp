@@ -1,4 +1,7 @@
 #include "fileViews/tilesetFileView.hpp"
+
+#include <algorithm>
+
 #include "TGUI/Widgets/Group.hpp"
 #include "bindTranslation.hpp"
 #include "editor.hpp"
@@ -11,7 +14,6 @@
 #include "widgets/propertiesBox.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/intField.hpp"
-#include <algorithm>
 TileSetFileView::TileSetFileView() {
 	TranslationService &ts = Editor::instance->getTranslations();
 
@@ -27,20 +29,15 @@ TileSetFileView::TileSetFileView() {
 	props->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W), 0});
 
 	widthField = IntField::create();
-	bindTranslation(widthField->label, "screen.project.tilesetview.tile_width",
-					&tgui::Label::setText);
-	widthField->value->onValueChange([this](const float& value) {
-		this->worldView->getTileSet()->setTileWidth(static_cast<int>(value));
-	});
+	bindTranslation(widthField->label, "screen.project.tilesetview.tile_width", &tgui::Label::setText);
+	widthField->value->onValueChange(
+		[this](const float &value) { this->worldView->getTileSet()->setTileWidth(static_cast<int>(value)); });
 	props->addIntField(widthField);
 
 	heightField = IntField::create();
-	bindTranslation(heightField->label,
-					"screen.project.tilesetview.tile_height",
-					&tgui::Label::setText);
-	heightField->value->onValueChange([this](const float& value) {
-		this->worldView->getTileSet()->setTileHeight(static_cast<int>(value));
-	});
+	bindTranslation(heightField->label, "screen.project.tilesetview.tile_height", &tgui::Label::setText);
+	heightField->value->onValueChange(
+		[this](const float &value) { this->worldView->getTileSet()->setTileHeight(static_cast<int>(value)); });
 
 	props->addButton("Square Tiles", [this] {
 		auto tileset = this->worldView->getTileSet();
@@ -56,8 +53,7 @@ TileSetFileView::TileSetFileView() {
 	props->addIntField(heightField);
 
 	textureFile = FileField::create("", "...");
-	bindTranslation(textureFile->label, "screen.project.tilesetview.texture",
-					&tgui::Label::setText);
+	bindTranslation(textureFile->label, "screen.project.tilesetview.texture", &tgui::Label::setText);
 	textureFile->pathFilters = {{
 		{"Images", {"*.png", "*.jpg"}},
 	}};

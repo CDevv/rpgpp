@@ -1,17 +1,18 @@
 #ifndef _RPGPP_PROPVIEWER_H
 #define _RPGPP_PROPVIEWER_H
+#include <list>
+#include <memory>
+
 #include "TGUI/Signal.hpp"
 #include "components/resizableCanvasBox.hpp"
 #include "prop.hpp"
 #include "raylib.h"
 #include "views/worldView.hpp"
-#include <list>
-#include <memory>
 
 enum RectType { ATLAS_RECT, COLLISION_RECT };
 
 class PropView : public WorldView {
-  public:
+public:
 	PropView();
 	typedef std::shared_ptr<PropView> Ptr;
 	Prop *p{nullptr};
@@ -33,10 +34,9 @@ class PropView : public WorldView {
 	void updateCollisionRect(Rectangle r);
 
 	tgui::SignalTyped<Rectangle> onUpdatedAtlasRect = {"onUpdatedAtlasRect"};
-	tgui::SignalTyped<Rectangle> onUpdatedCollisionRect = {
-		"onUpdatedCollisionRect"};
+	tgui::SignalTyped<Rectangle> onUpdatedCollisionRect = {"onUpdatedCollisionRect"};
 
-  private:
+private:
 	std::list<ResizableCanvasBox> boxes;
 	ResizableCanvasBox *focusedBox = nullptr;
 };

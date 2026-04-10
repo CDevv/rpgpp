@@ -7,12 +7,12 @@
 
 namespace screens {
 class WelcomeScreen : public UIScreen {
-  private:
+private:
 	NewProjectWindow::Ptr newProjectDialog;
 
-  public:
+public:
 	void initItems(tgui::Group::Ptr layout) override;
 	const std::string getNameOfScreen() override { return "Welcome"; }
 };
-} // namespace screens
+}  // namespace screens
 #endif

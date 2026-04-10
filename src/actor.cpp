@@ -1,18 +1,21 @@
 #include "actor.hpp"
-#include "game.hpp"
-#include "gamedata.hpp"
-#include "interactable.hpp"
-#include "tileset.hpp"
+
+#include <raylib.h>
+#include <raymath.h>
+
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
 #include <functional>
 #include <memory>
 #include <nlohmann/json.hpp>
-#include <raylib.h>
-#include <raymath.h>
 #include <stdexcept>
 #include <utility>
+
+#include "game.hpp"
+#include "gamedata.hpp"
+#include "interactable.hpp"
+#include "tileset.hpp"
 using json = nlohmann::json;
 
 Actor::Actor(const std::string &fileName) {
@@ -35,8 +38,7 @@ Actor::Actor(const std::string &fileName) {
 	int height = collisionInfo.at(3);
 
 	this->collisionRect =
-		Rectangle{static_cast<float>(x), static_cast<float>(y),
-				  static_cast<float>(width), static_cast<float>(height)};
+		Rectangle{static_cast<float>(x), static_cast<float>(y), static_cast<float>(width), static_cast<float>(height)};
 
 	this->tileSetSource = j.at("tileset");
 	this->tileSet = std::make_unique<TileSet>(tileSetSource);
@@ -68,16 +70,14 @@ Actor::Actor(const std::string &fileName) {
 	std::vector<std::vector<int>> right = j.at("animations").at("right");
 	addAnimationFrames(RPGPP_RIGHT, right);
 
-	std::vector<std::vector<int>> rightIdle =
-		j.at("animations").at("right-idle");
+	std::vector<std::vector<int>> rightIdle = j.at("animations").at("right-idle");
 	addAnimationFrames(RPGPP_RIGHT_IDLE, rightIdle);
 
 	Vector2 defaultTileAtlasPos = animations[currentAnimation].at(0);
 	this->tile = tileSet->getTile(defaultTileAtlasPos);
 }
 
-Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
-			 std::string tileSetSource) {
+Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos, std::string tileSetSource) {
 	this->sourcePath = "";
 	this->tilePosition = Vector2{-1, -1};
 	this->position = Vector2{0, 0};
@@ -120,8 +120,7 @@ Actor::Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
 	// Default collision box..
 	Vector2 atlasTileSize = this->tileSet->getTileSize();
 	this->collisionRect =
-		Rectangle{0, (atlasTileSize.y * RPGPP_DRAW_MULTIPLIER) / 2,
-				  (atlasTileSize.x * RPGPP_DRAW_MULTIPLIER),
+		Rectangle{0, (atlasTileSize.y * RPGPP_DRAW_MULTIPLIER) / 2, (atlasTileSize.x * RPGPP_DRAW_MULTIPLIER),
 				  (atlasTileSize.y * RPGPP_DRAW_MULTIPLIER) / 2};
 }
 
@@ -135,14 +134,11 @@ Actor::Actor(const ActorBin &bin) {
 	this->currentAnimation = RPGPP_DOWN_IDLE;
 
 	// tileset
-	this->tileSet =
-		std::make_unique<TileSet>(Game::getBin().tilesets.at(bin.tileSetName));
+	this->tileSet = std::make_unique<TileSet>(Game::getBin().tilesets.at(bin.tileSetName));
 
 	// collision
-	this->collisionRect = Rectangle{static_cast<float>(bin.collision.x),
-									static_cast<float>(bin.collision.y),
-									static_cast<float>(bin.collision.width),
-									static_cast<float>(bin.collision.height)};
+	this->collisionRect = Rectangle{static_cast<float>(bin.collision.x), static_cast<float>(bin.collision.y),
+									static_cast<float>(bin.collision.width), static_cast<float>(bin.collision.height)};
 
 	// interactable
 	this->interactable = std::make_unique<Interactable>();
@@ -188,38 +184,36 @@ json Actor::dumpJson() {
 		auto direction = static_cast<Direction>(i);
 		std::string keyName = "untitled";
 		switch (direction) {
-		case RPGPP_DOWN_IDLE:
-			keyName = "down-idle";
-			break;
-		case RPGPP_DOWN:
-			keyName = "down";
-			break;
-		case RPGPP_UP_IDLE:
-			keyName = "up-idle";
-			break;
-		case RPGPP_UP:
-			keyName = "up";
-			break;
-		case RPGPP_LEFT_IDLE:
-			keyName = "left-idle";
-			break;
-		case RPGPP_LEFT:
-			keyName = "left";
-			break;
-		case RPGPP_RIGHT_IDLE:
-			keyName = "right-idle";
-			break;
-		case RPGPP_RIGHT:
-			keyName = "right";
-			break;
+			case RPGPP_DOWN_IDLE:
+				keyName = "down-idle";
+				break;
+			case RPGPP_DOWN:
+				keyName = "down";
+				break;
+			case RPGPP_UP_IDLE:
+				keyName = "up-idle";
+				break;
+			case RPGPP_UP:
+				keyName = "up";
+				break;
+			case RPGPP_LEFT_IDLE:
+				keyName = "left-idle";
+				break;
+			case RPGPP_LEFT:
+				keyName = "left";
+				break;
+			case RPGPP_RIGHT_IDLE:
+				keyName = "right-idle";
+				break;
+			case RPGPP_RIGHT:
+				keyName = "right";
+				break;
 		}
 
 		animsVec[keyName] = framesVec;
 	}
 
-	json j = {{"tileset", tileSetSource},
-			  {"collision", collisionVec},
-			  {"animations", animsVec}};
+	json j = {{"tileset", tileSetSource}, {"collision", collisionVec}, {"animations", animsVec}};
 
 	return j;
 }
@@ -228,13 +222,9 @@ void Actor::unload() const { tileSet->unload(); }
 
 int Actor::getCurrentFrame() const { return this->currentFrame; }
 
-int Actor::getAnimationCount() const {
-	return this->getAnimationRaw(this->currentAnimation).size();
-}
+int Actor::getAnimationCount() const { return this->getAnimationRaw(this->currentAnimation).size(); }
 
-Direction Actor::getAnimationDirection() const {
-	return this->currentAnimation;
-}
+Direction Actor::getAnimationDirection() const { return this->currentAnimation; }
 
 Vector2 Actor::getCurrentAnimationAtlas() const {
 	return this->getAnimationRaw(this->currentAnimation).at(currentFrame);
@@ -249,11 +239,9 @@ void Actor::setAnimationFrame(int frameIndex) {
 
 	Vector2 atlasTileSize = tileSet->getTileSize();
 	Vector2 atlasPos = animations[currentAnimation].at(currentFrame);
-	atlasPos =
-		Vector2{atlasPos.x * atlasTileSize.x, atlasPos.y * atlasTileSize.y};
+	atlasPos = Vector2{atlasPos.x * atlasTileSize.x, atlasPos.y * atlasTileSize.y};
 
-	if (this->onFrameChanged != nullptr)
-		this->onFrameChanged(this->currentFrame);
+	if (this->onFrameChanged != nullptr) this->onFrameChanged(this->currentFrame);
 
 	this->tile = tileSet->getTile(atlasPos);
 }
@@ -261,8 +249,7 @@ void Actor::setAnimationFrame(int frameIndex) {
 Rectangle Actor::getCurrentAnimationRectangle() const {
 	const auto &atlasPos = this->getCurrentAnimationAtlas();
 	const auto &atlasSize = this->getTileSet().getTileSize();
-	return {atlasPos.x * atlasSize.x, atlasPos.y * atlasSize.y, atlasSize.x,
-			atlasSize.y};
+	return {atlasPos.x * atlasSize.x, atlasPos.y * atlasSize.y, atlasSize.x, atlasSize.y};
 }
 
 void Actor::update() {
@@ -278,7 +265,6 @@ void Actor::update() {
 
 		if (currentFrame >= this->getAnimationCount()) {
 			if (currentFrame >= this->getAnimationCount()) {
-
 				currentFrame = 0;
 				if (tempAnimIsPlayed) {
 					currentAnimation = lastAnimation;
@@ -296,8 +282,7 @@ void Actor::draw() const {
 	constexpr auto origin = Vector2{0.0f, 0.0f};
 	constexpr float rotation = 0.0f;
 	const Vector2 atlasTileSize = tileSet->getTileSize();
-	auto worldTileSize = Vector2{atlasTileSize.x * RPGPP_DRAW_MULTIPLIER,
-								 atlasTileSize.y * RPGPP_DRAW_MULTIPLIER};
+	auto worldTileSize = Vector2{atlasTileSize.x * RPGPP_DRAW_MULTIPLIER, atlasTileSize.y * RPGPP_DRAW_MULTIPLIER};
 
 	// texture
 	Texture texture = this->tileSet->getTexture();
@@ -306,10 +291,8 @@ void Actor::draw() const {
 	Vector2 atlasCoords = this->tile.getAtlasCoords();
 
 	// build rects
-	auto atlasRect = Rectangle{atlasCoords.x, atlasCoords.y, atlasTileSize.x,
-							   atlasTileSize.y};
-	auto worldRect =
-		Rectangle{position.x, position.y, worldTileSize.x, worldTileSize.y};
+	auto atlasRect = Rectangle{atlasCoords.x, atlasCoords.y, atlasTileSize.x, atlasTileSize.y};
+	auto worldRect = Rectangle{position.x, position.y, worldTileSize.x, worldTileSize.y};
 	// draw it
 	DrawTexturePro(texture, atlasRect, worldRect, origin, rotation, WHITE);
 
@@ -324,12 +307,10 @@ void Actor::draw() const {
 std::string Actor::getSourcePath() const { return sourcePath; }
 
 Rectangle Actor::getRect() const {
-	if (tileSet == nullptr)
-		return Rectangle{0, 0, 0, 0};
+	if (tileSet == nullptr) return Rectangle{0, 0, 0, 0};
 
 	Vector2 atlasTileSize = tileSet->getTileSize();
-	auto result = Rectangle{position.x, position.y,
-							atlasTileSize.x * RPGPP_DRAW_MULTIPLIER,
+	auto result = Rectangle{position.x, position.y, atlasTileSize.x * RPGPP_DRAW_MULTIPLIER,
 							atlasTileSize.y * RPGPP_DRAW_MULTIPLIER};
 	return result;
 }
@@ -348,21 +329,15 @@ Vector2 Actor::getPosition() const { return position; }
 void Actor::setTilePosition(Vector2 newPosition, Vector2 tileSize) {
 	Vector2 actorTileSize = tileSet->getTileSize();
 	auto absolutePos =
-		Vector2{newPosition.x * tileSize.x * RPGPP_DRAW_MULTIPLIER,
-				newPosition.y * tileSize.y * RPGPP_DRAW_MULTIPLIER};
+		Vector2{newPosition.x * tileSize.x * RPGPP_DRAW_MULTIPLIER, newPosition.y * tileSize.y * RPGPP_DRAW_MULTIPLIER};
 
 	float xDiff = 0;
-	if ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) >
-		(tileSize.x * RPGPP_DRAW_MULTIPLIER)) {
-		xDiff = ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) -
-				 (tileSize.x * RPGPP_DRAW_MULTIPLIER)) /
-				2;
+	if ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) > (tileSize.x * RPGPP_DRAW_MULTIPLIER)) {
+		xDiff = ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) - (tileSize.x * RPGPP_DRAW_MULTIPLIER)) / 2;
 	}
 
-	auto resultVector =
-		Vector2{absolutePos.x - xDiff,
-				absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) -
-								 (tileSize.y * RPGPP_DRAW_MULTIPLIER))};
+	auto resultVector = Vector2{absolutePos.x - xDiff, absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) -
+																		(tileSize.y * RPGPP_DRAW_MULTIPLIER))};
 	this->position = resultVector;
 	this->tilePosition = newPosition;
 }
@@ -378,31 +353,25 @@ void Actor::moveByVelocity(Vector2 velocity) {
 Rectangle Actor::getCollisionRect(Vector2 velocity) const {
 	Vector2 newPos = Vector2Add(position, velocity);
 	auto result =
-		Rectangle{newPos.x + collisionRect.x, newPos.y + collisionRect.y,
-				  collisionRect.width, collisionRect.height};
+		Rectangle{newPos.x + collisionRect.x, newPos.y + collisionRect.y, collisionRect.width, collisionRect.height};
 
 	return result;
 }
 
 Vector2 Actor::getCollisionCenter() const {
-	Vector2 result = {position.x + (collisionRect.width / 2),
-					  position.y + (collisionRect.height / 2)};
+	Vector2 result = {position.x + (collisionRect.width / 2), position.y + (collisionRect.height / 2)};
 	return result;
 }
 
-void Actor::addAnimationFrame(Direction id, Vector2 atlasPos) {
-	animations[id].push_back(atlasPos);
-}
+void Actor::addAnimationFrame(Direction id, Vector2 atlasPos) { animations[id].push_back(atlasPos); }
 
 void Actor::removeAnimationFrame(Direction id, int frameIndex) {
 	if (currentFrame == frameIndex) {
 		currentFrame = 0;
 	}
-	if (frameIndex == 0)
-		return;
+	if (frameIndex == 0) return;
 	// how do we know the frame was valid on index side?
-	assert(frameIndex < animations[id].size() &&
-		   "requested animation index is invalid");
+	assert(frameIndex < animations[id].size() && "requested animation index is invalid");
 	animations[id].erase(animations[id].begin() + frameIndex);
 }
 
@@ -410,13 +379,11 @@ void Actor::setAnimationFrame(Direction id, int frameIndex, Vector2 atlasTile) {
 	animations[id][frameIndex] = atlasTile;
 }
 
-void Actor::addAnimationFrames(const Direction id,
-							   const std::vector<std::vector<int>> &frames) {
+void Actor::addAnimationFrames(const Direction id, const std::vector<std::vector<int>> &frames) {
 	for (int i = 0; i < frames.size(); i++) {
 		int x = frames.at(i).at(0);
 		int y = frames.at(i).at(1);
-		animations[id].push_back(
-			Vector2{static_cast<float>(x), static_cast<float>(y)});
+		animations[id].push_back(Vector2{static_cast<float>(x), static_cast<float>(y)});
 	}
 }
 
@@ -467,41 +434,28 @@ Rectangle Actor::getCollisionRect() const { return collisionRect; }
 
 void Actor::setCollisionRect(Rectangle rect) { this->collisionRect = rect; }
 
-Vector2 calcActorTilePos(Vector2 newPosition, Vector2 worldTileSize,
-						 TileSet *tileSet) {
+Vector2 calcActorTilePos(Vector2 newPosition, Vector2 worldTileSize, TileSet *tileSet) {
 	Vector2 actorTileSize = tileSet->getTileSize();
-	auto absolutePos =
-		Vector2{newPosition.x * worldTileSize.x * RPGPP_DRAW_MULTIPLIER,
-				newPosition.y * worldTileSize.y * RPGPP_DRAW_MULTIPLIER};
+	auto absolutePos = Vector2{newPosition.x * worldTileSize.x * RPGPP_DRAW_MULTIPLIER,
+							   newPosition.y * worldTileSize.y * RPGPP_DRAW_MULTIPLIER};
 
 	float xDiff = 0;
-	if ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) >
-		(worldTileSize.x * RPGPP_DRAW_MULTIPLIER)) {
-		xDiff = ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) -
-				 (worldTileSize.x * RPGPP_DRAW_MULTIPLIER)) /
-				2;
+	if ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) > (worldTileSize.x * RPGPP_DRAW_MULTIPLIER)) {
+		xDiff = ((tileSet->getTileWidth() * RPGPP_DRAW_MULTIPLIER) - (worldTileSize.x * RPGPP_DRAW_MULTIPLIER)) / 2;
 	}
 
-	auto resultVector =
-		Vector2{absolutePos.x - xDiff,
-				absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) -
-								 (worldTileSize.y * RPGPP_DRAW_MULTIPLIER))};
+	auto resultVector = Vector2{absolutePos.x - xDiff, absolutePos.y - ((actorTileSize.y * RPGPP_DRAW_MULTIPLIER) -
+																		(worldTileSize.y * RPGPP_DRAW_MULTIPLIER))};
 	return resultVector;
 }
 
-bool Actor::hasInteractable() {
-	return ownsInteractable;
-}
+bool Actor::hasInteractable() { return ownsInteractable; }
 
-void Actor::setHasInteractable(bool value) {
-	ownsInteractable = value;
-}
+void Actor::setHasInteractable(bool value) { ownsInteractable = value; }
 
-Interactable *Actor::getInteractable() {
-	return interactable.get();
-}
+Interactable *Actor::getInteractable() { return interactable.get(); }
 
-void Actor::setInteractableFromPath(const std::string& path) {
+void Actor::setInteractableFromPath(const std::string &path) {
 	interactable = std::make_unique<Interactable>(path);
 	ownsInteractable = true;
 }

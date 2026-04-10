@@ -1,22 +1,24 @@
 #include "interactablesContainer.hpp"
-#include "conversion.hpp"
-#include "game.hpp"
-#include "gamedata.hpp"
-#include "interactable.hpp"
-#include "tilemap.hpp"
+
+#include <raylib.h>
+
 #include <cstdio>
 #include <memory>
 #include <nlohmann/json.hpp>
-#include <raylib.h>
 #include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "conversion.hpp"
+#include "game.hpp"
+#include "gamedata.hpp"
+#include "interactable.hpp"
+#include "tilemap.hpp"
+
 InteractablesContainer::InteractablesContainer() {}
 
-Interactable *InteractablesContainer::add(IVector pos,
-										  const std::string &type) {
+Interactable *InteractablesContainer::add(IVector pos, const std::string &type) {
 	if (this->objectExistsAtPosition(pos)) {
 		return nullptr;
 	}
@@ -24,8 +26,7 @@ Interactable *InteractablesContainer::add(IVector pos,
 	printf("%s \n", type.c_str());
 
 	Vector2 tilePos = fromIVector(pos);
-	this->pushObject(pos, std::move(std::make_unique<Interactable>(
-							  type, tilePos, _RPGPP_TILESIZE)));
+	this->pushObject(pos, std::move(std::make_unique<Interactable>(type, tilePos, _RPGPP_TILESIZE)));
 
 	return this->getObjectAtPosition(pos).get();
 }
@@ -39,8 +40,7 @@ void InteractablesContainer::addBin(InteractableInRoomBin bin) {
 	this->pushObject(pos, std::move(std::make_unique<Interactable>(bin)));
 }
 
-void InteractablesContainer::addBinFromTypename(Vector2 pos,
-												const std::string &type) {
+void InteractablesContainer::addBinFromTypename(Vector2 pos, const std::string &type) {
 	if (Game::getBin().interactables.count(type) > 0) {
 		auto interactable = Game::getBin().interactables[type];
 		InteractableInRoomBin intBin;
@@ -53,23 +53,18 @@ void InteractablesContainer::addBinFromTypename(Vector2 pos,
 
 		addBin(intBin);
 	} else {
-		throw std::runtime_error(TextFormat(
-			"This Interactable type does not exist: %s", type.c_str()));
+		throw std::runtime_error(TextFormat("This Interactable type does not exist: %s", type.c_str()));
 	}
 }
 
 Interactable *InteractablesContainer::getInt(IVector pos) {
-	if (!this->objectExistsAtPosition(pos))
-		return nullptr;
+	if (!this->objectExistsAtPosition(pos)) return nullptr;
 	return this->getObjectAtPosition(pos).get();
 }
 
-Interactable *InteractablesContainer::getIntVec2(Vector2 pos) {
-	return getInt(fromVector2(pos));
-}
+Interactable *InteractablesContainer::getIntVec2(Vector2 pos) { return getInt(fromVector2(pos)); }
 
-void InteractablesContainer::setInteractableType(IVector pos,
-												 const std::string &type) {
+void InteractablesContainer::setInteractableType(IVector pos, const std::string &type) {
 	auto &obj = this->getObjectAtPosition(pos);
 
 	if (obj->getType() == type) {
@@ -87,8 +82,7 @@ std::vector<Interactable *> InteractablesContainer::getList() {
 	return result;
 }
 
-void InteractablesContainer::addBinVector(
-	const std::vector<InteractableInRoomBin> &bin) {
+void InteractablesContainer::addBinVector(const std::vector<InteractableInRoomBin> &bin) {
 	for (auto intBin : bin) {
 		addBin(intBin);
 	}
@@ -100,8 +94,7 @@ void InteractablesContainer::addJsonData(json roomJson) {
 	for (auto const [key, inter] : map) {
 		int count = 0;
 		char **textSplit = TextSplit(key.c_str(), ';', &count);
-		if (count != 2)
-			return;
+		if (count != 2) return;
 		int x = std::stoi(std::string(textSplit[0]));
 		int y = std::stoi(std::string(textSplit[1]));
 

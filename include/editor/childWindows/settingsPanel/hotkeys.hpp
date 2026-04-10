@@ -4,7 +4,7 @@
 #define RPGPP_SETTINGSPANEL_HOTKEYS_H
 
 class SettingsPanelHotkeys : public SettingsPanelBase {
-  public:
+public:
 	SettingsPanelHotkeys(tgui::TabContainer::Ptr tabContainer);
 };
 

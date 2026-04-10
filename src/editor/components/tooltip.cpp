@@ -1,7 +1,9 @@
 #include "components/tooltip.hpp"
+
+#include <memory>
+
 #include "TGUI/Color.hpp"
 #include "TGUI/Widgets/Label.hpp"
-#include <memory>
 
 Tooltip::Tooltip(const std::string &text) : tgui::Label() {
 	this->setText(text);
@@ -10,9 +12,7 @@ Tooltip::Tooltip(const std::string &text) : tgui::Label() {
 	this->setTextSize(16);
 }
 
-Tooltip::Ptr Tooltip::create(const std::string &text) {
-	return std::make_shared<Tooltip>(text);
-}
+Tooltip::Ptr Tooltip::create(const std::string &text) { return std::make_shared<Tooltip>(text); }
 
 Tooltip::Ptr Tooltip::copy(ConstPtr widget) {
 	if (widget) {
@@ -21,6 +21,4 @@ Tooltip::Ptr Tooltip::copy(ConstPtr widget) {
 	return nullptr;
 }
 
-tgui::Widget::Ptr Tooltip::clone() const {
-	return std::make_shared<Tooltip>(*this);
-}
+tgui::Widget::Ptr Tooltip::clone() const { return std::make_shared<Tooltip>(*this); }

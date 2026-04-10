@@ -7,13 +7,13 @@
  * Represents a source atlas tile from a TileSet.
  */
 class AtlasTile {
-  private:
+private:
 	/** Pointer to the used Texture */
 	Texture *texture;
 	/** The atlas (source) coordinates from the TileSet. */
 	Vector2 atlasCoords;
 
-  public:
+public:
 	/**
 	 * Empty constructor
 	 */

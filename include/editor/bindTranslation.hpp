@@ -1,14 +1,15 @@
-#include "editor.hpp"
-#include "services/translationService.hpp"
 #include <functional>
 #include <memory>
 
+#include "editor.hpp"
+#include "services/translationService.hpp"
+
 class TSConnection {
-  public:
+public:
 	TSConnection(TranslationService::ListenerID id) : id(id) {}
 	~TSConnection() { Editor::instance->getTranslations().removeListener(id); }
 
-  private:
+private:
 	TranslationService::ListenerID id;
 };
 
@@ -22,12 +23,9 @@ void bindTranslation(std::shared_ptr<WidgetType> widget, const std::string &key,
 	(widget.get()->*setter)(ts.getKey(key));
 
 	auto id = ts.addListener(
-		[weakWidget, key, setter](TranslationService &ts,
-								  TranslationService::ListenerID id,
-								  bool checkingAlive) {
+		[weakWidget, key, setter](TranslationService &ts, TranslationService::ListenerID id, bool checkingAlive) {
 			if (auto w = weakWidget.lock()) {
-				if (!checkingAlive)
-					(w.get()->*setter)(ts.getKey(key));
+				if (!checkingAlive) (w.get()->*setter)(ts.getKey(key));
 				return true;
 			} else {
 				return false;
@@ -42,24 +40,19 @@ void bindTranslation(std::shared_ptr<WidgetType> widget, const std::string &key,
 }
 
 template <typename WidgetType>
-void bindCustomTranslation(
-	std::shared_ptr<WidgetType> widget,
-	std::function<void(std::shared_ptr<WidgetType> widget,
-					   TranslationService &)>
-		cb) {
+void bindCustomTranslation(std::shared_ptr<WidgetType> widget,
+						   std::function<void(std::shared_ptr<WidgetType> widget, TranslationService &)> cb) {
 	auto &ts = Editor::instance->getTranslations();
 	std::weak_ptr<WidgetType> weakWidget = widget;
 
 	cb(widget, ts);
-	auto id = ts.addListener([weakWidget, cb](TranslationService &ts,
-											  TranslationService::ListenerID id,
-											  bool checkingAlive) {
-		if (auto w = weakWidget.lock()) {
-			if (!checkingAlive)
-				cb(w, ts);
-			return true;
-		} else {
-			return false;
-		}
-	});
+	auto id =
+		ts.addListener([weakWidget, cb](TranslationService &ts, TranslationService::ListenerID id, bool checkingAlive) {
+			if (auto w = weakWidget.lock()) {
+				if (!checkingAlive) cb(w, ts);
+				return true;
+			} else {
+				return false;
+			}
+		});
 }

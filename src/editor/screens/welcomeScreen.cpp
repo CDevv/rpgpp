@@ -1,4 +1,7 @@
 #include "screens/welcomeScreen.hpp"
+
+#include <memory>
+
 #include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/BoxLayout.hpp"
@@ -16,22 +19,15 @@
 #include "services/editorGuiService.hpp"
 #include "services/translationService.hpp"
 #include "widgets/newProjectWindow.hpp"
-#include <memory>
 
 void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	auto &ts = Editor::instance->getTranslations();
 
 	if (!Editor::instance->getGui().menuBar.expired()) {
 		auto menuBarPtr = Editor::instance->getGui().menuBar.lock();
-		menuBarPtr->setMenuItemEnabled(
-			{ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")},
-			false);
-		menuBarPtr->setMenuItemEnabled(
-			{ts.getKey("menu.edit._label"), ts.getKey("menu.edit.undo")},
-			false);
-		menuBarPtr->setMenuItemEnabled(
-			{ts.getKey("menu.edit._label"), ts.getKey("menu.edit.redo")},
-			false);
+		menuBarPtr->setMenuItemEnabled({ts.getKey("menu.file._label"), ts.getKey("menu.file.save_file")}, false);
+		menuBarPtr->setMenuItemEnabled({ts.getKey("menu.edit._label"), ts.getKey("menu.edit.undo")}, false);
+		menuBarPtr->setMenuItemEnabled({ts.getKey("menu.edit._label"), ts.getKey("menu.edit.redo")}, false);
 	}
 
 	const auto verticalLayout = tgui::GrowVerticalLayout::create();
@@ -43,15 +39,13 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	EditorGuiService::createLogoCenter(verticalLayout);
 
 	const auto headerLabel = tgui::Label::create("");
-	bindTranslation<tgui::Label>(headerLabel, "screen.starting.get_started",
-								 &tgui::Label::setText);
+	bindTranslation<tgui::Label>(headerLabel, "screen.starting.get_started", &tgui::Label::setText);
 	headerLabel->setTextSize(32);
 	headerLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	verticalLayout->add(headerLabel);
 
 	const auto introLabel = tgui::Label::create("");
-	bindTranslation<tgui::Label>(introLabel, "screen.starting.description",
-								 &tgui::Label::setText);
+	bindTranslation<tgui::Label>(introLabel, "screen.starting.description", &tgui::Label::setText);
 	introLabel->setTextSize(16);
 	introLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	verticalLayout->add(introLabel);
@@ -68,27 +62,22 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	const auto actionsLabel = tgui::Label::create("");
 	actionsLabel->setTextSize(24);
 	left->add(actionsLabel);
-	bindTranslation<tgui::Label>(actionsLabel, "screen.starting.actions",
-								 &tgui::Label::setText);
+	bindTranslation<tgui::Label>(actionsLabel, "screen.starting.actions", &tgui::Label::setText);
 
 	const auto newProjButton = tgui::Button::create();
-	bindTranslation<tgui::Button>(newProjButton, "menu.file.new_project",
-								  &tgui::Button::setText);
+	bindTranslation<tgui::Button>(newProjButton, "menu.file.new_project", &tgui::Button::setText);
 	newProjButton->setTextSize(ACTION_BUTTON_SIZE);
 
 	const auto buttonPadding = tgui::BoxLayout::create();
 	buttonPadding->setHeight(10);
 
 	const auto openProjButton = tgui::Button::create();
-	bindTranslation<tgui::Button>(openProjButton, "menu.file.open_project",
-								  &tgui::Button::setText);
+	bindTranslation<tgui::Button>(openProjButton, "menu.file.open_project", &tgui::Button::setText);
 	openProjButton->setTextSize(ACTION_BUTTON_SIZE);
 
-	newProjButton->onPress(
-		[this] { Editor::instance->getFs().promptNewProject(); });
+	newProjButton->onPress([this] { Editor::instance->getFs().promptNewProject(); });
 
-	openProjButton->onPress(
-		[] { Editor::instance->getFs().promptOpenProject(); });
+	openProjButton->onPress([] { Editor::instance->getFs().promptOpenProject(); });
 
 	left->add(newProjButton);
 	left->add(buttonPadding);
@@ -103,9 +92,7 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	right->setAutoLayout(tgui::AutoLayout::Fill);
 
 	const auto recentProjectLabel = tgui::Label::create("");
-	bindTranslation<tgui::Label>(recentProjectLabel,
-								 "screen.starting.recent_projects",
-								 &tgui::Label::setText);
+	bindTranslation<tgui::Label>(recentProjectLabel, "screen.starting.recent_projects", &tgui::Label::setText);
 	recentProjectLabel->setTextSize(24);
 	recentProjectLabel->setAutoLayout(tgui::AutoLayout::Top);
 	right->add(recentProjectLabel);
@@ -113,13 +100,11 @@ void screens::WelcomeScreen::initItems(tgui::Group::Ptr layout) {
 	const auto recentProject = tgui::ListBox::create();
 	recentProject->setAutoLayout(tgui::AutoLayout::Fill);
 
-	for (auto i :
-		 Editor::instance->getRecentProjectService().getRecentProjects()) {
+	for (auto i : Editor::instance->getRecentProjectService().getRecentProjects()) {
 		recentProject->addItem(i);
 	}
 
-	recentProject->onItemSelect(
-		[this](const tgui::String &path) { Project::openProject(path); });
+	recentProject->onItemSelect([this](const tgui::String &path) { Project::openProject(path); });
 
 	right->add(recentProject);
 

@@ -1,15 +1,16 @@
 #ifndef _RPGPP_COLORRECT_H
 #define _RPGPP_COLORRECT_H
 
-#include "uiElement.hpp"
 #include <raylib.h>
 
+#include "uiElement.hpp"
+
 class ColorRect : public UIElement {
-  private:
+private:
 	Rectangle rect;
 	Color color;
 
-  public:
+public:
 	ColorRect();
 
 	explicit ColorRect(Rectangle rect);

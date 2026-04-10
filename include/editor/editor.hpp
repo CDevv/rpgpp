@@ -1,23 +1,23 @@
 #ifndef _RGPP_EDITOR_H
 #define _RGPP_EDITOR_H
 
+#include <memory>
+#include <string>
+
 #include "project.hpp"
 #include "raylib.h"
+#include "services/configurationService.hpp"
 #include "services/editorGuiService.hpp"
 #include "services/fileSystemService.hpp"
 #include "services/hotkeyService.hpp"
 #include "services/recentProjectService.hpp"
 #include "services/themeService.hpp"
 #include "services/translationService.hpp"
-#include <memory>
-#include <string>
-
-#include "services/configurationService.hpp"
 
 #define RPGPP_VERSION 0.1
 
 class Editor {
-  private:
+private:
 	// NOTE: always initialize the configuration service first.
 	// Otherwise, everything gets screwed over.
 	// NOTE: leave this order of fields,
@@ -34,7 +34,7 @@ class Editor {
 	HotkeyService hotkeyService;
 	RecentProjectService recentProjectService;
 
-  public:
+public:
 	Editor();
 	~Editor() = default;
 	// The opened project

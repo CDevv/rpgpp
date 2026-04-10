@@ -125,6 +125,10 @@
 			"folder": "Thư mục",
 			"confirm": "Tạo",
 			"cancel": "Hủy"
+		},
+		"project_settings": {
+			"_label": "Cấu hình dự án",
+			"title": "Tên dự án"
 		}
 	},
 

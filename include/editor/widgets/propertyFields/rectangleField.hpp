@@ -7,7 +7,7 @@
 #include "TGUI/Widgets/SpinControl.hpp"
 #include "raylib.h"
 class RectangleField : public tgui::SubwidgetContainer {
-  private:
+private:
 	void updateSize();
 	tgui::Label::Ptr l_x;
 	tgui::Label::Ptr l_y;
@@ -18,10 +18,10 @@ class RectangleField : public tgui::SubwidgetContainer {
 	tgui::SpinControl::Ptr value_width;
 	tgui::SpinControl::Ptr value_height;
 
-  protected:
+protected:
 	tgui::Widget::Ptr clone() const override;
 
-  public:
+public:
 	tgui::Label::Ptr label;
 	void setValue(Rectangle value);
 	Rectangle getValue();
@@ -30,8 +30,7 @@ class RectangleField : public tgui::SubwidgetContainer {
 	typedef std::shared_ptr<RectangleField> Ptr;
 	typedef std::shared_ptr<const RectangleField> ConstPtr;
 
-	RectangleField(const char *typeName = "RectangleField",
-				   bool initRenderer = true);
+	RectangleField(const char *typeName = "RectangleField", bool initRenderer = true);
 
 	static Ptr create();
 	static Ptr copy(ConstPtr widget);

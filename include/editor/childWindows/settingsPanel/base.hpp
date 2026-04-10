@@ -7,15 +7,14 @@
 #include "services/translationService.hpp"
 
 class SettingsPanelBase {
-  protected:
+protected:
 	tgui::Panel::Ptr panel;
 
-  public:
+public:
 	SettingsPanelBase(tgui::TabContainer::Ptr tabContainer, std::string name) {
 		panel = tabContainer->addTab(name);
 		bindCustomTranslation<tgui::TabContainer>(
-			tabContainer, [this, name](tgui::TabContainer::Ptr tabContainer,
-									   TranslationService &ts) {
+			tabContainer, [this, name](tgui::TabContainer::Ptr tabContainer, TranslationService &ts) {
 				int idx = tabContainer->getIndex(panel);
 				tabContainer->changeTabText(idx, ts.getKey(name));
 			});

@@ -1,16 +1,18 @@
 #include "dialogueBalloon.hpp"
-#include "game.hpp"
-#include "interfaceService.hpp"
-#include <nlohmann/json.hpp>
+
 #include <raylib.h>
 #include <raymath.h>
+
+#include <nlohmann/json.hpp>
+
+#include "game.hpp"
+#include "interfaceService.hpp"
 
 DialogueBalloon::DialogueBalloon() = default;
 
 DialogueBalloon::DialogueBalloon(Rectangle rect) {
 	this->rect = rect;
-	this->textRect = Rectangle{rect.x + 9, rect.y + 9, rect.width - (9 * 2),
-							   rect.height - (9 * 2)};
+	this->textRect = Rectangle{rect.x + 9, rect.y + 9, rect.width - (9 * 2), rect.height - (9 * 2)};
 	this->textPortraitRect = this->textRect;
 	this->textPortraitRect.width -= this->textRect.height;
 	this->textPortraitRect.x += this->textRect.height;
@@ -88,12 +90,9 @@ void DialogueBalloon::update() {
 }
 
 void DialogueBalloon::drawPortrait() const {
-	Texture2D texture =
-		Game::getResources().getTexture(dialogue.lines.at(lineIndex).imageId);
-	Rectangle source = Rectangle{0.0f, 0.0f, static_cast<float>(texture.width),
-								 static_cast<float>(texture.height)};
-	Rectangle dest = Rectangle{rect.x + 9, rect.y + 9, rect.height - (9 * 2),
-							   rect.height - (9 * 2)};
+	Texture2D texture = Game::getResources().getTexture(dialogue.lines.at(lineIndex).imageId);
+	Rectangle source = Rectangle{0.0f, 0.0f, static_cast<float>(texture.width), static_cast<float>(texture.height)};
+	Rectangle dest = Rectangle{rect.x + 9, rect.y + 9, rect.height - (9 * 2), rect.height - (9 * 2)};
 	DrawTexturePro(texture, source, dest, Vector2{0, 0}, 0.0f, WHITE);
 }
 
@@ -104,10 +103,8 @@ void DialogueBalloon::draw() {
 
 		Vector2 origin = {0.0f, 0.0f};
 		NPatchInfo info =
-			NPatchInfo{Rectangle{0, 0, static_cast<float>(uiTexture.width),
-								 static_cast<float>(uiTexture.height)},
-					   3 * 3, 3 * 3, uiTexture.width - (3 * 3),
-					   uiTexture.height - (3 * 3)};
+			NPatchInfo{Rectangle{0, 0, static_cast<float>(uiTexture.width), static_cast<float>(uiTexture.height)},
+					   3 * 3, 3 * 3, uiTexture.width - (3 * 3), uiTexture.height - (3 * 3)};
 
 		DrawTextureNPatch(uiTexture, info, rect, origin, 0.0f, WHITE);
 
@@ -143,8 +140,7 @@ void DialogueBalloon::draw() {
 			const char *subText = TextSubtext(text.c_str(), i, 1);
 			charP(charMeasure, subText, newTextColor);
 
-			Vector2 newMeasure = MeasureTextEx(
-				font, TextSubtext(text.c_str(), i, 1), 13 * 3, 1.0f);
+			Vector2 newMeasure = MeasureTextEx(font, TextSubtext(text.c_str(), i, 1), 13 * 3, 1.0f);
 			charMeasure = newMeasure;
 		}
 	}
@@ -175,8 +171,7 @@ void DialogueBalloon::charP(Vector2 charMeasure, const char *c, Color color) {
 }
 
 void DialogueBalloon::showDialogue(const DialogueBin &newDialogue) {
-	if (active)
-		return;
+	if (active) return;
 
 	this->dialogue = newDialogue;
 	this->lineIndex = 0;

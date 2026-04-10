@@ -1,16 +1,17 @@
 #include "editor.hpp"
+
+#include <memory>
+
 #include "project.hpp"
 #include "raylib.h"
 #include "services/editorGuiService.hpp"
 #include "services/fileSystemService.hpp"
 #include "services/translationService.hpp"
-#include <memory>
 
 Editor *Editor::instance;
 
 Editor::Editor()
-	: configurationService(), translationService(this), themeService(this),
-	  hotkeyService(), project{nullptr} {
+	: configurationService(), translationService(this), themeService(this), hotkeyService(), project{nullptr} {
 	instance = this;
 }
 
@@ -33,17 +34,11 @@ HotkeyService &Editor::getHotkeyService() { return hotkeyService; }
 
 Project *Editor::getProject() const { return project.get(); }
 
-RecentProjectService &Editor::getRecentProjectService() {
-	return recentProjectService;
-}
+RecentProjectService &Editor::getRecentProjectService() { return recentProjectService; }
 
-ConfigurationService &Editor::getConfiguration() {
-	return configurationService;
-}
+ConfigurationService &Editor::getConfiguration() { return configurationService; }
 
-void Editor::setProject(const std::string &path) {
-	project = std::make_unique<Project>(path);
-}
+void Editor::setProject(const std::string &path) { project = std::make_unique<Project>(path); }
 
 void Editor::unload() const {
 	// Unload all the assets currently loaded and close the window.

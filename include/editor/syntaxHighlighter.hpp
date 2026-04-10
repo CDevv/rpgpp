@@ -12,7 +12,7 @@
 namespace EditorHighlighting {
 
 struct HighlighterStruct {
-  public:
+public:
 	std::string type;
 	uint32_t start;
 	uint32_t end;
@@ -20,7 +20,7 @@ struct HighlighterStruct {
 };
 
 struct TextStyling {
-  public:
+public:
 	tgui::Color color;
 	tgui::TextStyle textStyle;
 };
@@ -32,6 +32,6 @@ struct TextPiece {
 	std::size_t nodeEnd;
 };
 
-} // namespace EditorHighlighting
+}  // namespace EditorHighlighting
 
 #endif /* RPGPP_SYNTAX_HIGHLIGHTER */

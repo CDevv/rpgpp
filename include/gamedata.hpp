@@ -1,10 +1,11 @@
 #ifndef _RPGPP_GAMEDATA_H
 #define _RPGPP_GAMEDATA_H
 
+#include <raylib.h>
+
 #include <array>
 #include <cstdint>
 #include <map>
-#include <raylib.h>
 #include <string>
 #include <vector>
 
@@ -16,13 +17,9 @@ struct IVector {
 	int x;
 	int y;
 
-	bool operator==(const IVector &other) const {
-		return x == other.x && y == other.y;
-	}
+	bool operator==(const IVector &other) const { return x == other.x && y == other.y; }
 
-	bool operator<(const IVector &other) const {
-		return x < other.x || (x == other.x && y < other.y);
-	}
+	bool operator<(const IVector &other) const { return x < other.x || (x == other.x && y < other.y); }
 
 	IVector() = default;
 	IVector(int x, int y) {

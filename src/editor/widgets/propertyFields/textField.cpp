@@ -1,12 +1,13 @@
 #include "widgets/propertyFields/textField.hpp"
-#include "TGUI/Widget.hpp"
-#include "TGUI/Widgets/Label.hpp"
-#include "widgets/propertyFields/fieldConfig.hpp"
+
 #include <TGUI/Widgets/EditBox.hpp>
 #include <memory>
 
-TextField::TextField(const char *typeName, bool initRenderer)
-	: tgui::SubwidgetContainer(typeName, initRenderer) {
+#include "TGUI/Widget.hpp"
+#include "TGUI/Widgets/Label.hpp"
+#include "widgets/propertyFields/fieldConfig.hpp"
+
+TextField::TextField(const char *typeName, bool initRenderer) : tgui::SubwidgetContainer(typeName, initRenderer) {
 	label = tgui::Label::create("Label");
 	label->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
 	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
@@ -28,9 +29,7 @@ TextField::Ptr TextField::copy(TextField::ConstPtr widget) {
 	}
 }
 
-tgui::Widget::Ptr TextField::clone() const {
-	return std::make_shared<TextField>(*this);
-}
+tgui::Widget::Ptr TextField::clone() const { return std::make_shared<TextField>(*this); }
 
 void TextField::setSize(const tgui::Layout2d &size) {
 	tgui::SubwidgetContainer::setSize(size);

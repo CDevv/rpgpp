@@ -7,12 +7,12 @@
 #include "TGUI/Widgets/EditBox.hpp"
 
 class FileChooser : public tgui::SubwidgetContainer {
-  private:
+private:
 	tgui::String chosenPath;
 	bool selectingDirectory = false;
 	static const int PADDING = 4;
 
-  public:
+public:
 	tgui::EditBox::Ptr chosenPathLabel;
 	tgui::BitmapButton::Ptr iconButton;
 	std::vector<std::pair<tgui::String, std::vector<tgui::String>>> pathFilters;
@@ -32,10 +32,10 @@ class FileChooser : public tgui::SubwidgetContainer {
 
 	void setSelectingDirectory(bool selectingDirectory);
 
-  private:
+private:
 	void updateSize();
 
-  protected:
+protected:
 	Widget::Ptr clone() const override;
 };
 

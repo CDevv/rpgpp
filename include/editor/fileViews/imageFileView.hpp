@@ -6,11 +6,11 @@
 #include "views/imageView.hpp"
 
 class ImageFileView : public FileView {
-  public:
+public:
 	ImageFileView();
 	void init(tgui::Group::Ptr layout, VariantWrapper *variant) override;
 
-  private:
+private:
 	ImageView::Ptr imageView;
 	tgui::Label::Ptr infoLabel;
 };

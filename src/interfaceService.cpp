@@ -1,11 +1,14 @@
 #include "interfaceService.hpp"
+
+#include <raylib.h>
+
+#include <stdexcept>
+
 #include "colorRect.hpp"
 #include "game.hpp"
 #include "imageRect.hpp"
 #include "interfaceView.hpp"
 #include "textArea.hpp"
-#include <raylib.h>
-#include <stdexcept>
 
 InterfaceService::InterfaceService() {
 	fpsVisible = false;
@@ -17,16 +20,14 @@ InterfaceService::InterfaceService() {
 
 	this->uiTexture = LoadTextureFromImage(img);
 
-	Rectangle destRec =
-		Rectangle{0, 0, static_cast<float>(GetScreenWidth() - 20), 140};
+	Rectangle destRec = Rectangle{0, 0, static_cast<float>(GetScreenWidth() - 20), 140};
 	destRec.x = (GetScreenWidth() - destRec.width) / 2;
 	destRec.y = (GetScreenHeight() - destRec.height) - 20;
 	this->dialogue = DialogueBalloon(destRec);
 
 	this->views = std::make_unique<std::map<std::string, InterfaceView>>();
 
-	Rectangle screenRect = Rectangle{0, 0, static_cast<float>(GetScreenWidth()),
-									 static_cast<float>(GetScreenHeight())};
+	Rectangle screenRect = Rectangle{0, 0, static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight())};
 	InterfaceView view = InterfaceView(screenRect);
 
 	TextArea *tArea = new TextArea(Rectangle{0, 0, 300, 200});
@@ -58,14 +59,11 @@ void InterfaceService::showDialogue(const std::string &id) {
 		auto diag = Game::getBin().dialogues[id];
 		showDialogue(diag);
 	} else {
-		throw std::runtime_error(
-			TextFormat("This Dialogue does not exist: %s", id.c_str()));
+		throw std::runtime_error(TextFormat("This Dialogue does not exist: %s", id.c_str()));
 	}
 }
 
-void InterfaceService::showDialogue(const DialogueBin &dialogue) {
-	this->dialogue.showDialogue(dialogue);
-}
+void InterfaceService::showDialogue(const DialogueBin &dialogue) { this->dialogue.showDialogue(dialogue); }
 
 void InterfaceService::update() {
 	if (IsKeyPressed(KEY_Q)) {
@@ -82,8 +80,7 @@ void InterfaceService::update() {
 void InterfaceService::draw() {
 	if (fpsVisible) {
 		DrawFPS(10, 10);
-		DrawTextEx(font, "rpgpp", Vector2{10, 36},
-				   static_cast<float>(font.baseSize), 2, RED);
+		DrawTextEx(font, "rpgpp", Vector2{10, 36}, static_cast<float>(font.baseSize), 2, RED);
 	}
 
 	dialogue.draw();

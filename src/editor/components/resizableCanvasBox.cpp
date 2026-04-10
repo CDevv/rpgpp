@@ -1,21 +1,17 @@
 #include "components/resizableCanvasBox.hpp"
-#include "raylib.h"
+
 #include <cmath>
 
-bool bounded(float value, float min, float max) {
-	return value >= min && value <= max;
-}
+#include "raylib.h"
 
-ResizableCanvasBox::ResizableCanvasBox(std::string id, float x, float y,
-									   float width, float height, Color color,
+bool bounded(float value, float min, float max) { return value >= min && value <= max; }
+
+ResizableCanvasBox::ResizableCanvasBox(std::string id, float x, float y, float width, float height, Color color,
 									   bool isResizable)
-	: id(id), x(x), y(y), width(width), height(height), color(color),
-	  isResizable(isResizable) {}
+	: id(id), x(x), y(y), width(width), height(height), color(color), isResizable(isResizable) {}
 
-ResizableCanvasBox::ResizableCanvasBox(std::string id, Rectangle rec,
-									   Color color, bool isResizable)
-	: id(id), x(rec.x), y(rec.y), width(rec.width), height(rec.height),
-	  color(color), isResizable(isResizable) {}
+ResizableCanvasBox::ResizableCanvasBox(std::string id, Rectangle rec, Color color, bool isResizable)
+	: id(id), x(rec.x), y(rec.y), width(rec.width), height(rec.height), color(color), isResizable(isResizable) {}
 
 void ResizableCanvasBox::updateSize(float width, float height) {
 	this->width = width;
@@ -39,16 +35,13 @@ void ResizableCanvasBox::updateRec(Rectangle rec) {
 bool ResizableCanvasBox::leftMousePressed(Vector2 mousePos) {
 	resizeDirection = NONE;
 
-	if (mousePos.x >= x && mousePos.x <= x + width && mousePos.y >= y &&
-		mousePos.y <= y + height) {
-
+	if (mousePos.x >= x && mousePos.x <= x + width && mousePos.y >= y && mousePos.y <= y + height) {
 		if (isResizable) {
 			if (mousePos.x >= x && mousePos.x <= x + RESIZE_MARGIN) {
 				resizeDirection |= LEFT;
 			}
 
-			if (mousePos.x >= x + width - RESIZE_MARGIN &&
-				mousePos.x <= x + width) {
+			if (mousePos.x >= x + width - RESIZE_MARGIN && mousePos.x <= x + width) {
 				resizeDirection |= RIGHT;
 			}
 
@@ -56,8 +49,7 @@ bool ResizableCanvasBox::leftMousePressed(Vector2 mousePos) {
 				resizeDirection |= TOP;
 			}
 
-			if (mousePos.y >= y + height - RESIZE_MARGIN &&
-				mousePos.y <= y + height) {
+			if (mousePos.y >= y + height - RESIZE_MARGIN && mousePos.y <= y + height) {
 				resizeDirection |= BOTTOM;
 			}
 		}
@@ -78,20 +70,15 @@ bool ResizableCanvasBox::leftMousePressed(Vector2 mousePos) {
 	return false;
 }
 
-void ResizableCanvasBox::mouseMoved(Vector2 mousePos, int snapWidth,
-									int snapHeight) {
-	if (!isResizing || !focused)
-		return;
+void ResizableCanvasBox::mouseMoved(Vector2 mousePos, int snapWidth, int snapHeight) {
+	if (!isResizing || !focused) return;
 
 	int dx = std::round((mousePos.x - startMousePos.x) / snapWidth) * snapWidth;
-	int dy =
-		std::round((mousePos.y - startMousePos.y) / snapHeight) * snapHeight;
+	int dy = std::round((mousePos.y - startMousePos.y) / snapHeight) * snapHeight;
 
-	if ((resizeDirection & LEFT) && prevWidth - dx < minSize)
-		dx = prevWidth - minSize;
+	if ((resizeDirection & LEFT) && prevWidth - dx < minSize) dx = prevWidth - minSize;
 
-	if ((resizeDirection & TOP) && prevHeight - dy < minSize)
-		dy = prevHeight - minSize;
+	if ((resizeDirection & TOP) && prevHeight - dy < minSize) dy = prevHeight - minSize;
 
 	if (resizeDirection & LEFT) {
 		x = prevX + dx;
@@ -129,8 +116,7 @@ void ResizableCanvasBox::draw() {
 	if (focused) {
 		opacity = 0.5;
 	}
-	DrawRectangleLinesEx(Rectangle{x, y, width, height}, 1,
-						 Fade(BLACK, opacity));
+	DrawRectangleLinesEx(Rectangle{x, y, width, height}, 1, Fade(BLACK, opacity));
 	DrawRectangleRec(Rectangle{x, y, width, height}, Fade(color, opacity));
 	// Implement draw logic here
 }

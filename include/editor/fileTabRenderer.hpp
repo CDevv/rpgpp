@@ -3,7 +3,7 @@
 
 #include "TGUI/Renderers/TabsRenderer.hpp"
 class FileTabRenderer : public tgui::TabsRenderer {
-  public:
+public:
 	using tgui::TabsRenderer::TabsRenderer;
 };
 

@@ -1,4 +1,12 @@
 #include "services/editorGuiService.hpp"
+
+#include <TGUI/AllWidgets.hpp>
+#include <TGUI/Widgets/ChildWindow.hpp>
+#include <cmath>
+#include <memory>
+#include <stdexcept>
+#include <string>
+
 #include "TGUI/Backend/raylib.hpp"
 #include "TGUI/Loading/Theme.hpp"
 #include "TGUI/ObjectConverter.hpp"
@@ -13,12 +21,6 @@
 #include "services/childWindowSubService.hpp"
 #include "services/translationService.hpp"
 #include "updatable.hpp"
-#include <TGUI/AllWidgets.hpp>
-#include <TGUI/Widgets/ChildWindow.hpp>
-#include <cmath>
-#include <memory>
-#include <stdexcept>
-#include <string>
 
 constexpr int BASE_WINDOW_WIDTH = 800;
 constexpr int BASE_WINDOW_HEIGHT = 600;
@@ -45,12 +47,9 @@ void EditorGuiService::init() {
 	hks.deserialize(cfgs.getField("hotkeys"));
 
 	this->resetUi();
-	hks.registerHotkeyCallback("toggle_debug",
-							   [this]() { perfOverlay.Toggle(); });
-	hks.registerHotkeyCallback(
-		"new_project", [] { Editor::instance->getFs().promptNewProject(); });
-	hks.registerHotkeyCallback(
-		"open_project", [] { Editor::instance->getFs().promptOpenProject(); });
+	hks.registerHotkeyCallback("toggle_debug", [this]() { perfOverlay.Toggle(); });
+	hks.registerHotkeyCallback("new_project", [] { Editor::instance->getFs().promptNewProject(); });
+	hks.registerHotkeyCallback("open_project", [] { Editor::instance->getFs().promptOpenProject(); });
 }
 
 void EditorGuiService::resetUi() {
@@ -97,8 +96,7 @@ void EditorGuiService::uiLoop() {
 	auto const &cg = this->gui;
 	SetTraceLogLevel(LOG_WARNING);
 
-	tgui::Theme::addRendererInheritanceParent("NewProjectWindow",
-											  "ChildWindow");
+	tgui::Theme::addRendererInheritanceParent("NewProjectWindow", "ChildWindow");
 	tgui::Theme::addRendererInheritanceParent("RoomToolbox", "Tabs");
 	// main loop.
 	while (!WindowShouldClose()) {
@@ -128,8 +126,7 @@ void EditorGuiService::uiLoop() {
 			leftMouseHeld = true;
 		} else {
 			if (leftMouseHeld) {
-				currentScreen->leftMouseReleased(GetMouseX(),
-												 GetMouseY() - MENUBAR_H);
+				currentScreen->leftMouseReleased(GetMouseX(), GetMouseY() - MENUBAR_H);
 				leftMouseHeld = false;
 			}
 		}
@@ -137,19 +134,15 @@ void EditorGuiService::uiLoop() {
 		BeginDrawing();
 		ClearBackground(DARKGRAY);
 
-		auto bgProp = tgui::Theme::getDefault()->getGlobalProperty(
-			"BackgroundColorDisabled");
+		auto bgProp = tgui::Theme::getDefault()->getGlobalProperty("BackgroundColorDisabled");
 		if (bgProp.getType() == tgui::ObjectConverter::Type::None) {
-			bgProp =
-				tgui::Theme::getDefault()->getGlobalProperty("BackgroundColor");
+			bgProp = tgui::Theme::getDefault()->getGlobalProperty("BackgroundColor");
 		}
 		auto bgColor = bgProp.getColor();
-		auto topGradientColor = static_cast<unsigned char>(
-			abs(sin(GetTime() * GRADIENT_SPEED_MUTLIPLIER)) *
-			GRADIENT_COLOR_MULTIPLIER);
-		DrawRectangle(
-			0, 0, GetRenderWidth(), GetRenderHeight(),
-			{bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), 255});
+		auto topGradientColor =
+			static_cast<unsigned char>(abs(sin(GetTime() * GRADIENT_SPEED_MUTLIPLIER)) * GRADIENT_COLOR_MULTIPLIER);
+		DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(),
+					  {bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), 255});
 		cg->draw();
 		// Due to many reasons, one time... Thefirey33 decided to talk
 		// to the C++ MSVC Compiler if he can reset the current state of
@@ -171,11 +164,8 @@ void EditorGuiService::uiLoop() {
 	gui.reset();
 }
 
-void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen,
-								 bool forceSwitch) {
-	if (this->currentScreen != nullptr &&
-		setToScreen->getNameOfScreen() ==
-			this->currentScreen->getNameOfScreen() &&
+void EditorGuiService::setScreen(std::unique_ptr<UIScreen> setToScreen, bool forceSwitch) {
+	if (this->currentScreen != nullptr && setToScreen->getNameOfScreen() == this->currentScreen->getNameOfScreen() &&
 		!forceSwitch) {
 		return;
 	}
@@ -198,22 +188,17 @@ tgui::Group::Ptr EditorGuiService::uiChangePreInit(UIScreen *setToScreen) {
 
 	screenContainer.lock()->removeAllWidgets();
 
-	if (this->currentScreen != nullptr)
-		this->currentScreen->unloadScreen();
+	if (this->currentScreen != nullptr) this->currentScreen->unloadScreen();
 	std::string title = "RPG++ Editor - ";
 	title.append(setToScreen->getNameOfScreen());
 	SetWindowTitle(title.c_str());
 	return screenContainer.lock();
 }
 
-void EditorGuiService::addUpdate(std::shared_ptr<IUpdatable> widget) {
-	updatableWidgets.push_back(widget);
-}
+void EditorGuiService::addUpdate(std::shared_ptr<IUpdatable> widget) { updatableWidgets.push_back(widget); }
 
 void EditorGuiService::setScreen(UIScreen *setToScreen, bool forceSwitch) {
-	if (this->currentScreen != nullptr &&
-		setToScreen->getNameOfScreen() ==
-			this->currentScreen->getNameOfScreen() &&
+	if (this->currentScreen != nullptr && setToScreen->getNameOfScreen() == this->currentScreen->getNameOfScreen() &&
 		!forceSwitch) {
 		return;
 	}
@@ -224,12 +209,9 @@ void EditorGuiService::setScreen(UIScreen *setToScreen, bool forceSwitch) {
 	gui->add(group);
 }
 
-void EditorGuiService::createLogoCenter(
-	const tgui::GrowVerticalLayout::Ptr &layout) {
-
+void EditorGuiService::createLogoCenter(const tgui::GrowVerticalLayout::Ptr &layout) {
 	const auto boxLayout = tgui::BoxLayout::create({"100%", 96});
-	std::string logoPath =
-		Editor::instance->getFs().getResourcePath("logo-ups.png");
+	std::string logoPath = Editor::instance->getFs().getResourcePath("logo-ups.png");
 	const auto welcomePic = tgui::Picture::create(logoPath.c_str());
 	welcomePic->setOrigin({0.5, 0.5});
 	welcomePic->setPosition({"50%", "50%"});
@@ -247,9 +229,7 @@ void EditorGuiService::reloadUi() {
 	*/
 }
 
-ChildWindowSubService *EditorGuiService::getChildWindowSubService() {
-	return this->childWindowService.get();
-}
+ChildWindowSubService *EditorGuiService::getChildWindowSubService() { return this->childWindowService.get(); }
 
 void EditorGuiService::initMenuBar() {
 	auto menuBarPtr = tgui::MenuBar::create();
@@ -262,14 +242,10 @@ void EditorGuiService::initMenuBar() {
 
 	menuBarPtr->addMenu(fileT);
 	menuBarPtr->addMenuItem(fileNewProjectT);
-	menuBarPtr->connectMenuItem({fileT, fileNewProjectT}, [] {
-		Editor::instance->getFs().promptNewProject();
-	});
+	menuBarPtr->connectMenuItem({fileT, fileNewProjectT}, [] { Editor::instance->getFs().promptNewProject(); });
 	menuBarPtr->addMenuItem(fileOpenProjectT);
 	menuBarPtr->addMenuItem(ts.getKey("menu.file.save_file"));
-	menuBarPtr->connectMenuItem({fileT, fileOpenProjectT}, [] {
-		Editor::instance->getFs().promptOpenProject();
-	});
+	menuBarPtr->connectMenuItem({fileT, fileOpenProjectT}, [] { Editor::instance->getFs().promptOpenProject(); });
 
 	menuBarPtr->addMenu(ts.getKey("menu.edit._label"));
 	menuBarPtr->addMenuItem(ts.getKey("menu.edit.undo"));
@@ -279,26 +255,21 @@ void EditorGuiService::initMenuBar() {
 	const auto editorOptionsTranslation = ts.getKey("menu.options.editor");
 	menuBarPtr->addMenu(optionsTranslation);
 	menuBarPtr->addMenuItem(editorOptionsTranslation);
-	menuBarPtr->connectMenuItem(
-		{optionsTranslation, editorOptionsTranslation},
-		[&] { this->childWindowService->openWindow("options"); });
+	menuBarPtr->connectMenuItem({optionsTranslation, editorOptionsTranslation},
+								[&] { this->childWindowService->openWindow("options"); });
 
-	const auto &aboutOptions = ts.getKey("menu.about._label"),
-			   &aboutRpgpp = ts.getKey("menu.about.rpgpp");
+	const auto &aboutOptions = ts.getKey("menu.about._label"), &aboutRpgpp = ts.getKey("menu.about.rpgpp");
 	menuBarPtr->addMenu(aboutOptions);
 	menuBarPtr->addMenuItem(aboutRpgpp);
 
-	menuBarPtr->connectMenuItem({aboutOptions, aboutRpgpp}, [&] {
-		this->childWindowService->openWindow("about");
-	});
+	menuBarPtr->connectMenuItem({aboutOptions, aboutRpgpp}, [&] { this->childWindowService->openWindow("about"); });
 	menuBarPtr->setSize({"100%", MENUBAR_H});
 	this->gui->add(menuBarPtr);
 }
 
 void EditorGuiService::gotoPreviousScreen() {
 	if (!this->screenHistory.empty()) {
-		std::unique_ptr<UIScreen> lastScreen =
-			std::move(this->screenHistory.back());
+		std::unique_ptr<UIScreen> lastScreen = std::move(this->screenHistory.back());
 		this->screenHistory.pop_back();
 
 		auto group = this->uiChangePreInit(lastScreen.get());
@@ -309,9 +280,8 @@ void EditorGuiService::gotoPreviousScreen() {
 }
 
 void EditorGuiService::centerWidget(tgui::Widget::Ptr widget) {
-	widget->setPosition(
-		(GetScreenWidth() / 2.0f) - (widget->getSize().x / 2.0f),
-		(GetScreenHeight() / 2.0f) - (widget->getSize().y / 2.0f));
+	widget->setPosition((GetScreenWidth() / 2.0f) - (widget->getSize().x / 2.0f),
+						(GetScreenHeight() / 2.0f) - (widget->getSize().y / 2.0f));
 }
 
 void EditorGuiService::alert(tgui::String title, tgui::String content) {

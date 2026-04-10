@@ -1,17 +1,17 @@
-#include "game.hpp"
-#include "gamedata.hpp"
-#include <cstdio>
 #include <raylib.h>
+
+#include <cstdio>
 #include <sol/forward.hpp>
 #include <sol/sol.hpp>
 #include <sol/state_view.hpp>
 #include <sol/types.hpp>
 
+#include "game.hpp"
+#include "gamedata.hpp"
+
 void printer() { printf("man\n"); }
 
-void draw_text_lua(const char *text, int posX, int posY, int fontSize) {
-	DrawText(text, posX, posY, fontSize, BLACK);
-}
+void draw_text_lua(const char *text, int posX, int posY, int fontSize) { DrawText(text, posX, posY, fontSize, BLACK); }
 
 void clear_bg_lua() { ClearBackground(RAYWHITE); }
 
@@ -35,8 +35,7 @@ extern "C"
 	lua.set_function("clear_background", &clear_bg_lua);
 	lua.set_function("draw_text", draw_text_lua);
 
-	sol::usertype<Game> game_type =
-		lua.new_usertype<Game>("game", sol::constructors<Game()>());
+	sol::usertype<Game> game_type = lua.new_usertype<Game>("game", sol::constructors<Game()>());
 
 	game_type["init"] = &Game::init;
 	game_type["use_bin"] = &Game::useBin;

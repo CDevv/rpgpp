@@ -1,12 +1,13 @@
 #ifndef _RPGPP_VIEWS_FONTVIEW_H
 #define _RPGPP_VIEWS_FONTVIEW_H
 
-#include "saveables/fontWrapper.hpp"
-#include "views/worldView.hpp"
 #include <memory>
 
+#include "saveables/fontWrapper.hpp"
+#include "views/worldView.hpp"
+
 class FontView : public WorldView {
-  public:
+public:
 	typedef std::shared_ptr<FontView> Ptr;
 
 	FontView();

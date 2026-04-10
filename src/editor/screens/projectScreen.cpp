@@ -248,21 +248,13 @@ tgui::Group::Ptr ProjectScreen::createToolBar() {
 
 	auto &fs = Editor::instance->getFs();
 
-	auto settingsBtn = tgui::BitmapButton::create();
-	auto settingsImage = tgui::Texture(fs.getResourcePath("projectsettings.png"));
-	settingsBtn->setImage(settingsImage);
-	settingsBtn->setSize({barSize, "100%"});
-	settingsBtn->setPosition({tgui::bindRight(projectLabel), 0});
-	settingsBtn->onPress([] { Editor::instance->getGui().getChildWindowSubService()->openWindow("project_settings"); });
-	toolBar->add(settingsBtn);
-
 	auto playBtnTooltip = Tooltip::create("");
 	bindTranslation<Tooltip>(playBtnTooltip, "screen.project.toolbar.play", &Tooltip::setText);
 	auto playBtn = tgui::BitmapButton::create();
 	auto playtestImg = tgui::Texture(fs.getResourcePath("playtest.png"));
 	playBtn->setImage(playtestImg);
 	playBtn->setSize({barSize, "100%"});
-	playBtn->setPosition({tgui::bindRight(settingsBtn) + 8, 0});
+	playBtn->setPosition({tgui::bindRight(projectLabel), 0});
 	playBtn->onPress([] { Editor::instance->getProject()->runProject(); });
 	playBtn->setToolTip(playBtnTooltip);
 	toolBar->add(playBtn, "playBtn");
@@ -277,6 +269,14 @@ tgui::Group::Ptr ProjectScreen::createToolBar() {
 	buildBtn->onPress([project] { project->buildProject(); });
 	buildBtn->setToolTip(buildTooltip);
 	toolBar->add(buildBtn);
+
+	auto settingsBtn = tgui::BitmapButton::create();
+	auto settingsImage = tgui::Texture(fs.getResourcePath("projectsettings.png"));
+	settingsBtn->setImage(settingsImage);
+	settingsBtn->setSize({barSize, "100%"});
+	settingsBtn->setPosition({tgui::bindRight(buildBtn) + 8, 0});
+	settingsBtn->onPress([] { Editor::instance->getGui().getChildWindowSubService()->openWindow("project_settings"); });
+	toolBar->add(settingsBtn);
 
 	return toolBar;
 }
