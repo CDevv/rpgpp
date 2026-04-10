@@ -1,6 +1,9 @@
 #ifndef RPGPP_FRAMEEDITOR_H
 #define RPGPP_FRAMEEDITOR_H
 
+#include <memory>
+#include <vector>
+
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Button.hpp"
@@ -11,13 +14,10 @@
 #include "TGUI/Widgets/ToggleButton.hpp"
 #include "components/frameButton.hpp"
 #include "views/actorView.hpp"
-#include <memory>
-#include <vector>
 
 class ActorFileView;
 class FrameEditor : public tgui::ScrollablePanel {
-
-  private:
+private:
 	ActorFileView *fileView;
 	ActorView::Ptr actorView;
 
@@ -27,9 +27,8 @@ class FrameEditor : public tgui::ScrollablePanel {
 	tgui::GrowHorizontalLayout::Ptr frameLayout;
 	std::vector<FrameButton::Ptr> frameButtons;
 
-  public:
-	FrameEditor(ActorFileView *fileView, const char *typeName = "FileChooser",
-				bool initRenderer = true);
+public:
+	FrameEditor(ActorFileView *fileView, const char *typeName = "FileChooser", bool initRenderer = true);
 
 	typedef std::shared_ptr<FrameEditor> Ptr;
 	static FrameEditor::Ptr create(ActorFileView *fileView);
@@ -43,7 +42,7 @@ class FrameEditor : public tgui::ScrollablePanel {
 
 	void addFrameButton(int index);
 
-  protected:
+protected:
 	tgui::Widget::Ptr clone() const override;
 };
 

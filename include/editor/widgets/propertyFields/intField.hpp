@@ -1,20 +1,21 @@
 #ifndef _RPGPP_INTFIELD_H
 #define _RPGPP_INTFIELD_H
 
+#include <memory>
+
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"
-#include <memory>
 
 class IntField : public tgui::SubwidgetContainer {
-  private:
+private:
 	void updateSize();
 
-  protected:
+protected:
 	tgui::Widget::Ptr clone() const override;
 
-  public:
+public:
 	tgui::Label::Ptr label;
 	tgui::SpinControl::Ptr value;
 

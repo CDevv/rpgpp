@@ -1,12 +1,13 @@
 #ifndef _RPGPP_ROOMVIEWMODESHANDLER_H
 #define _RPGPP_ROOMVIEWMODESHANDLER_H
 
+#include <memory>
+
 #include "TGUI/Vector2.hpp"
 #include "gamedata.hpp"
 #include "room.hpp"
 #include "views/roomView.hpp"
 #include "views/tileSetView.hpp"
-#include <memory>
 
 struct RoomViewState {
 	RoomTool tool;
@@ -18,7 +19,7 @@ struct RoomViewState {
 };
 
 class RoomViewModesHandler {
-  public:
+public:
 	RoomViewState state;
 	std::weak_ptr<RoomView> view;
 	RoomViewModesHandler();

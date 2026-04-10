@@ -1,4 +1,5 @@
 #include "widgets/fileChooser.hpp"
+
 #include "TGUI/String.hpp"
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
@@ -6,19 +7,14 @@
 #include "bindTranslation.hpp"
 #include "editor.hpp"
 #include "raylib.h"
-FileChooser::FileChooser(const char *typeName, bool initRenderer)
-	: tgui::SubwidgetContainer(typeName, initRenderer) {
-
+FileChooser::FileChooser(const char *typeName, bool initRenderer) : tgui::SubwidgetContainer(typeName, initRenderer) {
 	TranslationService &tService = Editor::instance->getTranslations();
 	chosenPathLabel = tgui::EditBox::create();
-	bindTranslation<tgui::EditBox>(chosenPathLabel,
-								   "widget.filechooser.select_a_file",
-								   &tgui::EditBox::setText);
+	bindTranslation<tgui::EditBox>(chosenPathLabel, "widget.filechooser.select_a_file", &tgui::EditBox::setText);
 	chosenPathLabel->setReadOnly(true);
 	chosenPathLabel->setEnabled(false);
 	iconButton = tgui::BitmapButton::create();
-	auto iconTexture = tgui::Texture(
-		Editor::instance->getFs().getResourcePath("open_folder.png"));
+	auto iconTexture = tgui::Texture(Editor::instance->getFs().getResourcePath("open_folder.png"));
 	iconButton->setImageScaling(0.95);
 	iconButton->setImage(iconTexture);
 
@@ -32,8 +28,7 @@ FileChooser::FileChooser(const char *typeName, bool initRenderer)
 		fileDialog->setFileTypeFilters(pathFilters);
 		fileDialog->setSelectingDirectory(selectingDirectory);
 		fileDialog->onFileSelect([this](const tgui::String &path) {
-			chosenPathLabel->setText(
-				std::string(GetFileName(path.toStdString().c_str())));
+			chosenPathLabel->setText(std::string(GetFileName(path.toStdString().c_str())));
 			chosenPath = path;
 		});
 
@@ -46,9 +41,7 @@ FileChooser::FileChooser(const char *typeName, bool initRenderer)
 	updateSize();
 }
 
-FileChooser::Ptr FileChooser::create() {
-	return std::make_shared<FileChooser>();
-}
+FileChooser::Ptr FileChooser::create() { return std::make_shared<FileChooser>(); }
 
 FileChooser::Ptr FileChooser::copy(FileChooser::ConstPtr widget) {
 	if (widget)
@@ -57,9 +50,7 @@ FileChooser::Ptr FileChooser::copy(FileChooser::ConstPtr widget) {
 		return nullptr;
 }
 
-tgui::Widget::Ptr FileChooser::clone() const {
-	return std::make_shared<FileChooser>(*this);
-}
+tgui::Widget::Ptr FileChooser::clone() const { return std::make_shared<FileChooser>(*this); }
 
 void FileChooser::setSize(const tgui::Layout2d &size) {
 	tgui::SubwidgetContainer::setSize(size);
@@ -76,6 +67,4 @@ void FileChooser::updateSize() {
 
 tgui::String &FileChooser::getChosenPath() { return chosenPath; }
 
-void FileChooser::setSelectingDirectory(bool selectingDirectory) {
-	this->selectingDirectory = selectingDirectory;
-}
+void FileChooser::setSelectingDirectory(bool selectingDirectory) { this->selectingDirectory = selectingDirectory; }

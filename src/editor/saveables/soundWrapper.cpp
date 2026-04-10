@@ -1,6 +1,8 @@
 #include "saveables/soundWrapper.hpp"
-#include "raylib.h"
+
 #include <string>
+
+#include "raylib.h"
 
 SoundWrapper::SoundWrapper(const std::string &filePath) {
 	sound = LoadMusicStream(filePath.c_str());

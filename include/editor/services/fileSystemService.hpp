@@ -1,13 +1,14 @@
 #ifndef _RPGPP_FILESYSTEMSERVICE_H
 #define _RPGPP_FILESYSTEMSERVICE_H
 
-#include "TGUI/String.hpp"
-#include "variant.hpp"
 #include <array>
 #include <memory>
 #include <string>
 #include <typeindex>
 #include <unordered_map>
+
+#include "TGUI/String.hpp"
+#include "variant.hpp"
 
 #define FILETYPE_MAX 11
 
@@ -26,11 +27,11 @@ enum class EngineFileType {
 };
 
 class FileSystemService {
-  private:
+private:
 	std::array<std::string, FILETYPE_MAX> typeNames;
 	std::string editorBaseDir;
 
-  public:
+public:
 	FileSystemService();
 	void unload();
 	void promptNewProject();

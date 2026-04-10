@@ -8,14 +8,14 @@
 #include "widgets/propertyFields/intField.hpp"
 
 class TileSetFileView : public FileView {
-  private:
+private:
 	static const int RIGHT_PANEL_W = 300;
 	TileSetView::Ptr worldView;
 	IntField::Ptr widthField;
 	IntField::Ptr heightField;
 	FileField::Ptr textureFile;
 
-  public:
+public:
 	TileSetFileView();
 	void init(tgui::Group::Ptr layout, VariantWrapper *variant) override;
 };

@@ -1,14 +1,15 @@
 #ifndef RPGPP_CHILDWINDOWSERVICE_H
 #define RPGPP_CHILDWINDOWSERVICE_H
-#include "childWindows/popupWindow.hpp"
 #include <map>
 #include <string>
 
+#include "childWindows/popupWindow.hpp"
+
 class ChildWindowSubService {
-  private:
+private:
 	std::map<std::string, std::unique_ptr<PopupWindow>> childWindows = {};
 
-  public:
+public:
 	ChildWindowSubService();
 	void createWindows();
 	void openWindow(const std::string &windowName);

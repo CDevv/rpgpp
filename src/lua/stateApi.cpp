@@ -1,4 +1,5 @@
 #include "lua/stateApi.hpp"
+
 #include "game.hpp"
 #include "sol/forward.hpp"
 #include "sol/table.hpp"
@@ -21,9 +22,7 @@ void lua_gamestate_setval(const std::string &prop, sol::object value) {
 	}
 }
 
-Value lua_gamestate_getval(const std::string &prop) {
-	return Game::getState().getProp(prop);
-}
+Value lua_gamestate_getval(const std::string &prop) { return Game::getState().getProp(prop); }
 
 void lua_gamestate_set(sol::state_view lua) {
 	auto space = lua["GameState"].get_or_create<sol::table>();

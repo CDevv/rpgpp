@@ -1,22 +1,23 @@
 #ifndef _RPGPP_FILEFIELD_H
 #define _RPGPP_FILEFIELD_H
 
+#include <functional>
+#include <memory>
+
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/Label.hpp"
-#include <functional>
-#include <memory>
 
 class FileField : public tgui::SubwidgetContainer {
-  private:
+private:
 	tgui::String chosenPath;
 	void updateSize();
 
-  protected:
+protected:
 	tgui::Widget::Ptr clone() const override;
 
-  public:
+public:
 	tgui::Label::Ptr label;
 	tgui::Button::Ptr value;
 	std::vector<std::pair<tgui::String, std::vector<tgui::String>>> pathFilters;
@@ -28,8 +29,7 @@ class FileField : public tgui::SubwidgetContainer {
 	FileField(const char *typeName = "FileField", bool initRenderer = true);
 
 	static FileField::Ptr create();
-	static FileField::Ptr create(const tgui::String &label,
-								 const tgui::String &value);
+	static FileField::Ptr create(const tgui::String &label, const tgui::String &value);
 	static FileField::Ptr copy(FileField::ConstPtr widget);
 
 	void setValue(const tgui::String &value);

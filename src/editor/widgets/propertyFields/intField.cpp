@@ -1,11 +1,12 @@
 #include "widgets/propertyFields/intField.hpp"
+
+#include <memory>
+
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"
 #include "widgets/propertyFields/fieldConfig.hpp"
-#include <memory>
-IntField::IntField(const char *typeName, bool initRenderer)
-	: tgui::SubwidgetContainer(typeName, initRenderer) {
+IntField::IntField(const char *typeName, bool initRenderer) : tgui::SubwidgetContainer(typeName, initRenderer) {
 	label = tgui::Label::create("Label");
 	label->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
 	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
@@ -27,9 +28,7 @@ IntField::Ptr IntField::copy(IntField::ConstPtr widget) {
 	}
 }
 
-tgui::Widget::Ptr IntField::clone() const {
-	return std::make_shared<IntField>(*this);
-}
+tgui::Widget::Ptr IntField::clone() const { return std::make_shared<IntField>(*this); }
 
 void IntField::setSize(const tgui::Layout2d &size) {
 	tgui::SubwidgetContainer::setSize(size);

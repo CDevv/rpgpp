@@ -1,12 +1,13 @@
 #ifndef _RPGPP_BASE_GUI_WIDGET_H
 #define _RPGPP_BASE_GUI_WIDGET_H
 
-#include "TGUI/Widgets/MenuBar.hpp"
 #include <TGUI/Widgets/Group.hpp>
 #include <string>
 
+#include "TGUI/Widgets/MenuBar.hpp"
+
 class UIScreen {
-  public:
+public:
 	virtual ~UIScreen() = default;
 	UIScreen() = default;
 

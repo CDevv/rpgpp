@@ -1,9 +1,10 @@
 #include "components/perfOverlay.hpp"
-#include "raylib.h"
+
 #include <algorithm>
+
+#include "raylib.h"
 PerformanceOverlay::PerformanceOverlay() {
-	for (int i = 0; i < SAMPLE_COUNT; i++)
-		samples[i] = 0;
+	for (int i = 0; i < SAMPLE_COUNT; i++) samples[i] = 0;
 
 	index = 0;
 
@@ -39,10 +40,8 @@ void PerformanceOverlay::UpdateScaling() {
 	graphMax = graphMax * 0.9f + target * 0.1f;
 }
 
-void PerformanceOverlay::DrawFPSLine(float ms, int x, int y, int w, int h,
-									 Color color) {
-	if (ms > graphMax)
-		return;
+void PerformanceOverlay::DrawFPSLine(float ms, int x, int y, int w, int h, Color color) {
+	if (ms > graphMax) return;
 
 	float norm = ms / graphMax;
 	float py = y + h - norm * h;
@@ -61,8 +60,7 @@ void PerformanceOverlay::Update() {
 }
 
 void PerformanceOverlay::Draw(int x, int y, int w, int h) {
-	if (!enabled)
-		return;
+	if (!enabled) return;
 	DrawRectangle(x, y, w, h, Fade(BLACK, 0.7f));
 	DrawRectangleLines(x, y, w, h, GRAY);
 
@@ -74,8 +72,7 @@ void PerformanceOverlay::Draw(int x, int y, int w, int h) {
 		float value = samples[idx];
 		float norm = value / graphMax;
 
-		if (norm > 1.0f)
-			norm = 1.0f;
+		if (norm > 1.0f) norm = 1.0f;
 
 		float px = x + ((float)i / (SAMPLE_COUNT - 1)) * w;
 		float py = y + h - norm * h;
@@ -84,24 +81,21 @@ void PerformanceOverlay::Draw(int x, int y, int w, int h) {
 
 		Color color = GREEN;
 
-		if (value > avgTime * spikeThreshold)
-			color = RED;
+		if (value > avgTime * spikeThreshold) color = RED;
 
 		if (i > 0) {
 			DrawLineV(prev, cur, color);
 
-			DrawTriangle({prev.x, y * 1.f + h}, {prev.x, prev.y},
-						 {cur.x, cur.y}, Fade(color, 0.15f));
+			DrawTriangle({prev.x, y * 1.f + h}, {prev.x, prev.y}, {cur.x, cur.y}, Fade(color, 0.15f));
 
-			DrawTriangle({prev.x, y * 1.f + h}, {cur.x, cur.y},
-						 {cur.x, y * 1.f + h}, Fade(color, 0.15f));
+			DrawTriangle({prev.x, y * 1.f + h}, {cur.x, cur.y}, {cur.x, y * 1.f + h}, Fade(color, 0.15f));
 		}
 
 		prev = cur;
 	}
 
-	DrawFPSLine(16.67f, x, y, w, h, RED);	// 60 FPS
-	DrawFPSLine(8.33f, x, y, w, h, ORANGE); // 120 FPS
+	DrawFPSLine(16.67f, x, y, w, h, RED);	 // 60 FPS
+	DrawFPSLine(8.33f, x, y, w, h, ORANGE);	 // 120 FPS
 
 	DrawText(TextFormat("FPS: %d", GetFPS()), x, y - 18, 20, WHITE);
 

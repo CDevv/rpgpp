@@ -1,4 +1,8 @@
 #include "widgets/frameEditor.hpp"
+
+#include <cstddef>
+#include <memory>
+
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Button.hpp"
@@ -13,16 +17,12 @@
 #include "fileViews/actorFileView.hpp"
 #include "raylib.h"
 #include "services/translationService.hpp"
-#include <cstddef>
-#include <memory>
 
 constexpr int MAX_TOP_BAR_HEIGHT = 30;
 constexpr int MAX_ANI_BAR_HEIGHT = 50;
 
-FrameEditor::FrameEditor(ActorFileView *fileView, const char *typeName,
-						 bool initRenderer)
-	: tgui::ScrollablePanel(typeName, initRenderer), fileView(fileView),
-	  actorView(fileView->getActorView()) {}
+FrameEditor::FrameEditor(ActorFileView *fileView, const char *typeName, bool initRenderer)
+	: tgui::ScrollablePanel(typeName, initRenderer), fileView(fileView), actorView(fileView->getActorView()) {}
 
 void FrameEditor::onFrameChange(int currentFrame) {}
 
@@ -41,14 +41,12 @@ void FrameEditor::init() {
 
 	this->directionChooser = tgui::ComboBox::create();
 
-	bindCustomTranslation<tgui::ComboBox>(
-		directionChooser, [](tgui::ComboBox::Ptr box, TranslationService &ts) {
-			box->removeAllItems();
-			for (int i = 0; i <= RPGPP_MAX_DIRECTION; i++)
-				box->addItem(
-					ts.getKey(TextFormat("screen.project.actorview.dir%d", i)));
-			box->setSelectedItemByIndex(0);
-		});
+	bindCustomTranslation<tgui::ComboBox>(directionChooser, [](tgui::ComboBox::Ptr box, TranslationService &ts) {
+		box->removeAllItems();
+		for (int i = 0; i <= RPGPP_MAX_DIRECTION; i++)
+			box->addItem(ts.getKey(TextFormat("screen.project.actorview.dir%d", i)));
+		box->setSelectedItemByIndex(0);
+	});
 
 	directionChooser->onItemSelect.connect([this, &actor](const size_t &index) {
 		this->changeFrameState(index);
@@ -57,8 +55,7 @@ void FrameEditor::init() {
 			frameLayout->remove(btn);
 		}
 		frameButtons.clear();
-		for (int i = 0; i < actor->getAnimationCount(); i++)
-			this->addFrameButton(i);
+		for (int i = 0; i < actor->getAnimationCount(); i++) this->addFrameButton(i);
 	});
 
 	topBarLayout->add(directionChooser);
@@ -66,8 +63,7 @@ void FrameEditor::init() {
 	playPauseButton = tgui::ToggleButton::create();
 
 	bindCustomTranslation<tgui::ToggleButton>(
-		playPauseButton,
-		[this](tgui::ToggleButton::Ptr button, TranslationService &ts) {
+		playPauseButton, [this](tgui::ToggleButton::Ptr button, TranslationService &ts) {
 			if (button->isDown()) {
 				button->setText(ts.getKey("screen.project.actorview.pause"));
 			} else {
@@ -75,9 +71,8 @@ void FrameEditor::init() {
 			}
 			button->onToggle.disconnectAll();
 			button->onToggle.connect([&, button](const bool &checked) {
-				button->setText(
-					checked ? ts.getKey("screen.project.actorview.pause")
-							: ts.getKey("screen.project.actorview.play"));
+				button->setText(checked ? ts.getKey("screen.project.actorview.pause")
+										: ts.getKey("screen.project.actorview.play"));
 				actorView->isPlaying = checked;
 			});
 		});
@@ -85,22 +80,18 @@ void FrameEditor::init() {
 	topBarLayout->add(playPauseButton);
 
 	auto editingAtlasData = tgui::ToggleButton::create();
-	bindTranslation<tgui::ToggleButton>(
-		editingAtlasData, "screen.project.actorview.edit_anim_data",
-		&tgui::ToggleButton::setText);
+	bindTranslation<tgui::ToggleButton>(editingAtlasData, "screen.project.actorview.edit_anim_data",
+										&tgui::ToggleButton::setText);
 	editingAtlasData->setSize({200, "100%"});
-	editingAtlasData->onToggle.connect(
-		[this](const bool isChecked) { actorView->editData = isChecked; });
+	editingAtlasData->onToggle.connect([this](const bool isChecked) { actorView->editData = isChecked; });
 	topBarLayout->add(editingAtlasData);
 
 	auto delFrame = tgui::Button::create();
-	bindTranslation<tgui::Button>(delFrame, "screen.project.actorview.delete",
-								  &tgui::Button::setText);
+	bindTranslation<tgui::Button>(delFrame, "screen.project.actorview.delete", &tgui::Button::setText);
 	delFrame->onPress.connect([&] {
 		if (actor->getAnimationCount() > 1) {
 			// Remove the last frame button.
-			actor->removeAnimationFrame(actor->getAnimationDirection(),
-										actor->getCurrentFrame());
+			actor->removeAnimationFrame(actor->getAnimationDirection(), actor->getCurrentFrame());
 
 			const auto &lastButton = this->frameButtons.back();
 
@@ -117,8 +108,7 @@ void FrameEditor::init() {
 	this->frameLayout = tgui::GrowHorizontalLayout::create();
 	frameLayout->getRenderer()->setSpaceBetweenWidgets(3.0f);
 
-	for (int i = 0; i < actor->getAnimationCount(); i++)
-		this->addFrameButton(i);
+	for (int i = 0; i < actor->getAnimationCount(); i++) this->addFrameButton(i);
 
 	auto encaserLayout = tgui::GrowHorizontalLayout::create();
 	encaserLayout->add(frameLayout);
@@ -139,20 +129,15 @@ void FrameEditor::init() {
 void FrameEditor::addFrameButton(int index) {
 	const auto &actor = actorView->actor;
 	auto frameButton = FrameButton::create(index, actor);
-	frameButton->onFrameChange.connect(
-		[&](const int &index) { actor->setAnimationFrame(index); });
+	frameButton->onFrameChange.connect([&](const int &index) { actor->setAnimationFrame(index); });
 
 	this->frameButtons.push_back(frameButton);
 	this->frameLayout->add(frameButton);
 }
 
-FrameEditor::Ptr FrameEditor::create(ActorFileView *fileView) {
-	return std::make_shared<FrameEditor>(fileView);
-}
+FrameEditor::Ptr FrameEditor::create(ActorFileView *fileView) { return std::make_shared<FrameEditor>(fileView); }
 
-tgui::Widget::Ptr FrameEditor::clone() const {
-	return std::make_shared<FrameEditor>(*this);
-}
+tgui::Widget::Ptr FrameEditor::clone() const { return std::make_shared<FrameEditor>(*this); }
 
 void FrameEditor::changeFrameState(int index) {
 	const auto &actor = actorView->actor;

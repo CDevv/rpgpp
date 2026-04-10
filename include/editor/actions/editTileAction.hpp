@@ -5,7 +5,7 @@
 #include "views/tileSetView.hpp"
 
 class EditTileAction : public MapAction {
-  public:
+public:
 	EditTileAction(MapActionData a);
 	void execute() override;
 	void undo() override;

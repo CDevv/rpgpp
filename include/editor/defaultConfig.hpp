@@ -1,19 +1,18 @@
-#include "editor.hpp"
-#include "raylib.h"
-#include "services/hotkeyService.hpp"
 #include <map>
 #include <string>
 #include <utility>
 #include <vector>
+
+#include "editor.hpp"
+#include "raylib.h"
+#include "services/hotkeyService.hpp"
 
 // key-value
 using ConfigEntry = std::map<std::string, std::string>;
 // [field]
 using Config = std::map<std::string, ConfigEntry>;
 
-const std::string h(Hotkey hk) {
-	return std::to_string(HotkeyService::pack(hk));
-}
+const std::string h(Hotkey hk) { return std::to_string(HotkeyService::pack(hk)); }
 
 const Config BASE_CONFIG = {
 	{"rpgpp",

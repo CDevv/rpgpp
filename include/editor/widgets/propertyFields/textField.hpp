@@ -6,13 +6,13 @@
 #include <TGUI/Widgets/Label.hpp>
 
 class TextField : public tgui::SubwidgetContainer {
-  private:
+private:
 	void updateSize();
 
-  protected:
+protected:
 	tgui::Widget::Ptr clone() const override;
 
-  public:
+public:
 	tgui::Label::Ptr label;
 	tgui::EditBox::Ptr value;
 

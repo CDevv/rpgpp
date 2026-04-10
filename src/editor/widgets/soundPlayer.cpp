@@ -1,4 +1,7 @@
 #include "widgets/soundPlayer.hpp"
+
+#include <cstdio>
+
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Texture.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
@@ -9,14 +12,10 @@
 #include "raylib.h"
 #include "saveables/soundWrapper.hpp"
 #include "timeFormat.hpp"
-#include <cstdio>
 
-SoundPlayer::SoundPlayer(const char *typeName, bool initRenderer)
-	: tgui::SubwidgetContainer(typeName, initRenderer) {
-	playTexture =
-		tgui::Texture(Editor::instance->getFs().getResourcePath("play.png"));
-	pauseTexture =
-		tgui::Texture(Editor::instance->getFs().getResourcePath("pause.png"));
+SoundPlayer::SoundPlayer(const char *typeName, bool initRenderer) : tgui::SubwidgetContainer(typeName, initRenderer) {
+	playTexture = tgui::Texture(Editor::instance->getFs().getResourcePath("play.png"));
+	pauseTexture = tgui::Texture(Editor::instance->getFs().getResourcePath("pause.png"));
 
 	panel = tgui::Panel::create();
 	panel->getRenderer()->setPadding({4, 4});
@@ -88,15 +87,12 @@ void SoundPlayer::setSound(SoundWrapper *sound) {
 	slider->setStep(1.0f);
 	slider->setValue(0.0f);
 
-	timeLabel->setText(TextFormat(
-		"0:00 | %s", formatTime(GetMusicTimeLength(sound->sound)).c_str()));
+	timeLabel->setText(TextFormat("0:00 | %s", formatTime(GetMusicTimeLength(sound->sound)).c_str()));
 }
 
 SoundWrapper *SoundPlayer::getSound() { return sound; }
 
-SoundPlayer::Ptr SoundPlayer::create() {
-	return std::make_shared<SoundPlayer>();
-}
+SoundPlayer::Ptr SoundPlayer::create() { return std::make_shared<SoundPlayer>(); }
 
 SoundPlayer::Ptr SoundPlayer::copy(SoundPlayer::ConstPtr widget) {
 	if (widget)
@@ -111,15 +107,12 @@ void SoundPlayer::update() {
 
 		slider->setValue(GetMusicTimePlayed(sound->sound));
 
-		timeLabel->setText(TextFormat(
-			"%s | %s", formatTime(GetMusicTimePlayed(sound->sound)).c_str(),
-			formatTime(GetMusicTimeLength(sound->sound)).c_str()));
+		timeLabel->setText(TextFormat("%s | %s", formatTime(GetMusicTimePlayed(sound->sound)).c_str(),
+									  formatTime(GetMusicTimeLength(sound->sound)).c_str()));
 	}
 }
 
-tgui::Widget::Ptr SoundPlayer::clone() const {
-	return std::make_shared<SoundPlayer>(*this);
-}
+tgui::Widget::Ptr SoundPlayer::clone() const { return std::make_shared<SoundPlayer>(*this); }
 
 void SoundPlayer::setSize(const tgui::Layout2d &size) {
 	tgui::SubwidgetContainer::setSize(size);

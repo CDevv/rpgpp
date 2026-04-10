@@ -1,6 +1,10 @@
 #ifndef _RGPP_EDITOR_GUI_CONTAINER_H
 #define _RGPP_EDITOR_GUI_CONTAINER_H
 
+#include <map>
+#include <memory>
+#include <vector>
+
 #include "TGUI/Backend/raylib.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Group.hpp"
@@ -11,14 +15,11 @@
 #include "screens/guiScreen.hpp"
 #include "services/childWindowSubService.hpp"
 #include "updatable.hpp"
-#include <map>
-#include <memory>
-#include <vector>
 constexpr auto RPGPP_EXECUTABLE_LOGO = "resources/app-icon.png";
 constexpr int ACTION_BUTTON_SIZE = 16;
 
 class EditorGuiService {
-  private:
+private:
 	std::vector<std::weak_ptr<IUpdatable>> updatableWidgets;
 	std::unique_ptr<ChildWindowSubService> childWindowService;
 	PerformanceOverlay perfOverlay;
@@ -29,7 +30,7 @@ class EditorGuiService {
 
 	std::weak_ptr<tgui::Group> screenContainer{};
 
-  public:
+public:
 	bool isResettingUI = false;
 	EditorGuiService();
 	~EditorGuiService() = default;

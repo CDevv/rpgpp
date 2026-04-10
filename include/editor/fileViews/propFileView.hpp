@@ -10,12 +10,12 @@
 #include "widgets/propertyFields/selectField.hpp"
 
 class PropFileView : public FileView {
-  public:
+public:
 	PropFileView();
 	// ~PropFileView();
 	void init(tgui::Group::Ptr layout, VariantWrapper *variant) override;
 
-  private:
+private:
 	void handleModePress(tgui::Vector2f pos);
 	PropView::Ptr propView;
 	static const int RIGHT_PANEL_W = 300;

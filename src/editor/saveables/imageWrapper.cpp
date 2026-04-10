@@ -1,7 +1,9 @@
 #include "saveables/imageWrapper.hpp"
-#include "raylib.h"
+
 #include <cstdio>
 #include <string>
+
+#include "raylib.h"
 
 ImageWrapper::ImageWrapper(const std::string &filePath) {
 	printf("%s \n", filePath.c_str());

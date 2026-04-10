@@ -1,9 +1,10 @@
 
-#include "ini.h"
-#include "raylib.h"
 #include <functional>
 #include <nlohmann/json.hpp>
 #include <unordered_map>
+
+#include "ini.h"
+#include "raylib.h"
 
 #ifndef RPGPP_HOTKEYSERVICE_H
 #define RPGPP_HOTKEYSERVICE_H
@@ -39,16 +40,14 @@ struct Hotkey {
 };
 using HotkeyMap = std::unordered_map<std::string, Hotkey>;
 class HotkeyService {
-  private:
-	std::map<std::string, std::pair<std::string, std::function<void()>>>
-		hotkeysCb;
+private:
+	std::map<std::string, std::pair<std::string, std::function<void()>>> hotkeysCb;
 	void write(const std::string &keyId, const std::string &keyStr);
 	HotkeyMap hotkeyMap;
 
-  public:
+public:
 	HotkeyService();
-	std::string registerHotkeyCallback(const std::string &keyId,
-									   std::function<void()> cb);
+	std::string registerHotkeyCallback(const std::string &keyId, std::function<void()> cb);
 	void unregisterHotkeyCallback(const std::string &uniqueHkCbId);
 	void addHotkey(const std::string &keyId, const Hotkey &keys);
 	void removeHotkey(const std::string &keyId);

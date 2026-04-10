@@ -6,11 +6,11 @@
 #include "widgets/soundPlayer.hpp"
 
 class SoundFileView : public FileView {
-  public:
+public:
 	SoundFileView();
 	void init(tgui::Group::Ptr layout, VariantWrapper *variant) override;
 
-  private:
+private:
 	tgui::Label::Ptr infoLabel;
 	SoundPlayer::Ptr soundPlayer;
 };

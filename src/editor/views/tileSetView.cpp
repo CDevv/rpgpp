@@ -1,4 +1,5 @@
 #include "views/tileSetView.hpp"
+
 #include "TGUI/Vector2.hpp"
 #include "gamedata.hpp"
 #include "raylib.h"
@@ -22,17 +23,13 @@ TileSetView::Ptr TileSetView::create(TileSet *tileSet) {
 	return tileSetView;
 }
 
-void TileSetView::setTileSet(TileSet *newTileSet) {
-	this->tileSet = newTileSet;
-}
+void TileSetView::setTileSet(TileSet *newTileSet) { this->tileSet = newTileSet; }
 
 TileSet *TileSetView::getTileSet() { return tileSet; }
 
 IVector TileSetView::getTileAtMouse() {
-	return {static_cast<int>((mouseWorldPos.x / (RPGPP_DRAW_MULTIPLIER *
-												 tileSet->getTileWidth()))),
-			static_cast<int>((mouseWorldPos.y / (RPGPP_DRAW_MULTIPLIER *
-												 tileSet->getTileHeight())))};
+	return {static_cast<int>((mouseWorldPos.x / (RPGPP_DRAW_MULTIPLIER * tileSet->getTileWidth()))),
+			static_cast<int>((mouseWorldPos.y / (RPGPP_DRAW_MULTIPLIER * tileSet->getTileHeight())))};
 }
 
 IVector TileSetView::getSelectedTile() { return selectedTile; }
@@ -46,17 +43,15 @@ void TileSetView::drawOverlay() {
 
 	const Texture2D &texture = this->tileSet->getTexture();
 
-	Rectangle textureRect = {
-		0, 0, static_cast<float>(texture.width * RPGPP_DRAW_MULTIPLIER),
-		static_cast<float>(texture.height * RPGPP_DRAW_MULTIPLIER)};
+	Rectangle textureRect = {0, 0, static_cast<float>(texture.width * RPGPP_DRAW_MULTIPLIER),
+							 static_cast<float>(texture.height * RPGPP_DRAW_MULTIPLIER)};
 
 	if (CheckCollisionPointRec(mouseWorldPos, textureRect)) {
 		auto tilePos = getTileAtMouse();
 		int atlasPosX = tilePos.x;
 		int atlasPosY = tilePos.y;
 
-		DrawText(TextFormat("Tile [%i, %i]", atlasPosX, atlasPosY), 8, 8, 32,
-				 BLACK);
+		DrawText(TextFormat("Tile [%i, %i]", atlasPosX, atlasPosY), 8, 8, 32, BLACK);
 	}
 }
 
@@ -77,16 +72,13 @@ void TileSetView::drawCanvas() {
 		};
 
 		// Draw texture itself
-		DrawTextureEx(this->tileSet->getTexture(), origin, 0.0f,
-					  RPGPP_DRAW_MULTIPLIER, WHITE);
+		DrawTextureEx(this->tileSet->getTexture(), origin, 0.0f, RPGPP_DRAW_MULTIPLIER, WHITE);
 
 		// Draw a grid
 		for (int x = 0; x < atlasSizeInTiles.x; x++) {
 			for (int y = 0; y < atlasSizeInTiles.y; y++) {
-				Rectangle tileRect = {tileSize.x * x * RPGPP_DRAW_MULTIPLIER,
-									  tileSize.y * y * RPGPP_DRAW_MULTIPLIER,
-									  tileSize.x * RPGPP_DRAW_MULTIPLIER,
-									  tileSize.y * RPGPP_DRAW_MULTIPLIER};
+				Rectangle tileRect = {tileSize.x * x * RPGPP_DRAW_MULTIPLIER, tileSize.y * y * RPGPP_DRAW_MULTIPLIER,
+									  tileSize.x * RPGPP_DRAW_MULTIPLIER, tileSize.y * RPGPP_DRAW_MULTIPLIER};
 				DrawRectangleLinesEx(tileRect, 1.0f, Fade(GRAY, 0.5f));
 
 				if (tool != RoomTool::TOOL_NONE) {

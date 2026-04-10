@@ -1,4 +1,11 @@
 #include "fileViews/dialogueFileView.hpp"
+
+#include <TGUI/Widgets/BitmapButton.hpp>
+#include <TGUI/Widgets/CheckBox.hpp>
+#include <TGUI/Widgets/Picture.hpp>
+#include <TGUI/Widgets/ScrollablePanel.hpp>
+#include <memory>
+
 #include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Texture.hpp"
@@ -15,27 +22,18 @@
 #include "services/fileSystemService.hpp"
 #include "services/translationService.hpp"
 #include "variant.hpp"
-#include <TGUI/Widgets/BitmapButton.hpp>
-#include <TGUI/Widgets/CheckBox.hpp>
-#include <TGUI/Widgets/Picture.hpp>
-#include <TGUI/Widgets/ScrollablePanel.hpp>
-#include <memory>
 
 DialogueFileView::DialogueFileView() {
 	TranslationService &ts = Editor::instance->getTranslations();
-	noImageTexture = tgui::Texture(
-		Editor::instance->getFs().getResourcePath("no-image.png"));
+	noImageTexture = tgui::Texture(Editor::instance->getFs().getResourcePath("no-image.png"));
 
-	deleteTexture =
-		tgui::Texture(Editor::instance->getFs().getResourcePath("delete.png"));
+	deleteTexture = tgui::Texture(Editor::instance->getFs().getResourcePath("delete.png"));
 
 	auto toolsPanel = tgui::Panel::create({"100%", 32});
 	toolsPanel->getRenderer()->setPadding({4, 4});
 	newLineButton = tgui::Button::create();
 
-	bindTranslation<tgui::Button>(newLineButton,
-								  "screen.project.dialogueview.add_new_line",
-								  &tgui::Button::setText);
+	bindTranslation<tgui::Button>(newLineButton, "screen.project.dialogueview.add_new_line", &tgui::Button::setText);
 	newLineButton->setSize("20%", "100%");
 	toolsPanel->add(newLineButton);
 
@@ -45,10 +43,8 @@ DialogueFileView::DialogueFileView() {
 	mainPanel->setPosition(0, 32);
 	mainPanel->getRenderer()->setPadding({16, 16});
 
-	mainPanel->getVerticalScrollbar()->setPolicy(
-		tgui::Scrollbar::Policy::Automatic);
-	mainPanel->getHorizontalScrollbar()->setPolicy(
-		tgui::Scrollbar::Policy::Never);
+	mainPanel->getVerticalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Automatic);
+	mainPanel->getHorizontalScrollbar()->setPolicy(tgui::Scrollbar::Policy::Never);
 
 	vertLayout = tgui::GrowVerticalLayout::create();
 	vertLayout->getRenderer()->setSpaceBetweenWidgets(20.0f);
@@ -56,8 +52,7 @@ DialogueFileView::DialogueFileView() {
 	widgetContainer.push_back(mainPanel);
 }
 
-tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data,
-												 DialogueLine line, size_t i) {
+tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine line, size_t i) {
 	TranslationService &ts = Editor::instance->getTranslations();
 	auto panel = tgui::Panel::create({"100%", DIALOGUE_PANEL_HEIGHT});
 	panel->getRenderer()->setPadding({16, 16});
@@ -68,8 +63,7 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data,
 	portraitPic->setPosition(0, 40);
 	portraitPic->setSize("height", "100% - 40");
 	if (line.hasPortrait) {
-		auto filePath = Editor::instance->getProject()->getResourcePath(
-			EngineFileType::FILE_IMAGE, line.imageId);
+		auto filePath = Editor::instance->getProject()->getResourcePath(EngineFileType::FILE_IMAGE, line.imageId);
 		if (FileExists(filePath.c_str())) {
 			tgui::Texture texture(filePath);
 			portraitPic->getRenderer()->setTexture(texture);
@@ -83,13 +77,11 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data,
 		if (data.lines.at(i).hasPortrait) {
 			auto fileDialog = tgui::FileDialog::create();
 			fileDialog->setFileTypeFilters({{"Images", {"*.png", "*.jpg"}}});
-			fileDialog->onFileSelect(
-				[&data, i, portraitWeak](const tgui::String &path) {
-					data.lines.at(i).imageId =
-						GetFileName(path.toStdString().c_str());
-					tgui::Texture texture(path);
-					portraitWeak.lock()->getRenderer()->setTexture(texture);
-				});
+			fileDialog->onFileSelect([&data, i, portraitWeak](const tgui::String &path) {
+				data.lines.at(i).imageId = GetFileName(path.toStdString().c_str());
+				tgui::Texture texture(path);
+				portraitWeak.lock()->getRenderer()->setTexture(texture);
+			});
 
 			Editor::instance->getGui().gui->add(fileDialog);
 		}
@@ -110,21 +102,17 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data,
 	diagTextEdit->setPosition(210, 32 + 8);
 	diagTextEdit->setSize({"100% - 210 - 40", "100% - 40"});
 	diagTextEdit->setText(line.text);
-	diagTextEdit->onTextChange([&data, i](const tgui::String &text) {
-		data.lines.at(i).text = text.toStdString();
-	});
+	diagTextEdit->onTextChange([&data, i](const tgui::String &text) { data.lines.at(i).text = text.toStdString(); });
 	panel->add(diagTextEdit);
 
 	auto hasImageCheck = tgui::CheckBox::create();
-	bindTranslation<tgui::CheckBox>(
-		hasImageCheck, "screen.project.dialogueview.has_a_portrait",
-		&tgui::CheckBox::setText);
+	bindTranslation<tgui::CheckBox>(hasImageCheck, "screen.project.dialogueview.has_a_portrait",
+									&tgui::CheckBox::setText);
 	hasImageCheck->setSize(32, 32);
 	hasImageCheck->setChecked(line.hasPortrait);
 
 	std::weak_ptr<tgui::TextArea> weakDiagText = diagTextEdit;
-	hasImageCheck->onCheck([this, &data, i, portraitPic,
-							weakDiagText](bool value) {
+	hasImageCheck->onCheck([this, &data, i, portraitPic, weakDiagText](bool value) {
 		data.lines.at(i).hasPortrait = value;
 		if (!value) {
 			data.lines.at(i).imageId = "";
@@ -148,9 +136,7 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data,
 	deleteButton->setPosition("100% - 32", 0);
 	deleteButton->setImage(deleteTexture);
 	deleteButton->onClick([this, &data, i] {
-		mainPanel->setContentSize(
-			{0, static_cast<float>((DIALOGUE_PANEL_HEIGHT + 8) *
-								   (data.lines.size()))});
+		mainPanel->setContentSize({0, static_cast<float>((DIALOGUE_PANEL_HEIGHT + 8) * (data.lines.size()))});
 
 		data.lines.erase(data.lines.begin() + i);
 		vertLayout->remove(linePanels.at(i));
@@ -184,14 +170,10 @@ void DialogueFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 			vertLayout->add(panel);
 			linePanels.push_back(panel);
 
-			mainPanel->setContentSize(
-				{0, static_cast<float>((DIALOGUE_PANEL_HEIGHT + 8) *
-									   (data.lines.size() + 1))});
+			mainPanel->setContentSize({0, static_cast<float>((DIALOGUE_PANEL_HEIGHT + 8) * (data.lines.size() + 1))});
 		});
 
-		mainPanel->setContentSize(
-			{0, static_cast<float>((DIALOGUE_PANEL_HEIGHT + 8) *
-								   (data.lines.size() + 1))});
+		mainPanel->setContentSize({0, static_cast<float>((DIALOGUE_PANEL_HEIGHT + 8) * (data.lines.size() + 1))});
 
 		int i = 0;
 		for (auto line : dialogue->getData().lines) {

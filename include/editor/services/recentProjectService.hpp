@@ -8,16 +8,16 @@
 #define RPGPP_RECENT_FILE ".rpgpp_recent_project"
 
 class RecentProjectService {
-  private:
+private:
 	int limit = 10;
 	std::deque<std::string> recentProjects;
 	std::filesystem::path path;
 	void save();
 
-  public:
+public:
 	RecentProjectService();
 	void enqueue(const std::string &projectPath);
 	const std::deque<std::string> &getRecentProjects() const;
 };
 
-#endif // RPGPP_RECENTPROJECTSERVICE_H
+#endif	// RPGPP_RECENTPROJECTSERVICE_H

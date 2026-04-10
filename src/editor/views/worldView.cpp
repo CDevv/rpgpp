@@ -1,12 +1,5 @@
 #include "views/worldView.hpp"
-#include "TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp"
-#include "TGUI/Event.hpp"
-#include "TGUI/Vector2.hpp"
-#include "TGUI/Widget.hpp"
 
-#include "raylib.h"
-#include "raymath.h"
-#include "updatable.hpp"
 #include <TGUI/Backend/Renderer/Raylib/BackendRendererRaylib.hpp>
 #include <TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp>
 #include <TGUI/Backend/Window/Backend.hpp>
@@ -14,9 +7,16 @@
 #include <cstdio>
 #include <memory>
 
+#include "TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp"
+#include "TGUI/Event.hpp"
+#include "TGUI/Vector2.hpp"
+#include "TGUI/Widget.hpp"
+#include "raylib.h"
+#include "raymath.h"
+#include "updatable.hpp"
+
 // TODO: Possible memory leak (Load with no Unload visible)
-WorldView::WorldView(const char *typeName, bool initRenderer)
-	: tgui::CanvasRaylib(typeName, initRenderer) {
+WorldView::WorldView(const char *typeName, bool initRenderer) : tgui::CanvasRaylib(typeName, initRenderer) {
 	mouseMiddleButton = false;
 	mouseWorldPos = {0, 0};
 
@@ -44,18 +44,12 @@ WorldView::Ptr WorldView::copy(const ConstPtr &widget) {
 	}
 }
 
-tgui::Widget::Ptr WorldView::clone() const {
-	return std::make_shared<WorldView>(*this);
-}
+tgui::Widget::Ptr WorldView::clone() const { return std::make_shared<WorldView>(*this); }
 
-void WorldView::setSize(const tgui::Layout2d &size) {
-	tgui::CanvasRaylib::setSize(size);
-}
+void WorldView::setSize(const tgui::Layout2d &size) { tgui::CanvasRaylib::setSize(size); }
 
 bool WorldView::isMouseOnWidget(tgui::Vector2f pos) const {
-	return tgui::FloatRect{getPosition().x, getPosition().y, getSize().x,
-						   getSize().y}
-		.contains(pos);
+	return tgui::FloatRect{getPosition().x, getPosition().y, getSize().x, getSize().y}.contains(pos);
 }
 
 void WorldView::mouseMoved(tgui::Vector2f pos) {
@@ -107,9 +101,7 @@ bool WorldView::leftMousePressed(tgui::Vector2f pos) {
 	return tgui::CanvasRaylib::leftMousePressed(pos);
 }
 
-void WorldView::leftMouseReleased(tgui::Vector2f pos) {
-	mouseLeftButton = false;
-}
+void WorldView::leftMouseReleased(tgui::Vector2f pos) { mouseLeftButton = false; }
 
 void WorldView::keyPressed(const tgui::Event::KeyEvent &event) {
 	if (event.control && event.code == tgui::Event::KeyboardKey::Z) {
@@ -137,20 +129,16 @@ void WorldView::drawCanvas() { ClearBackground(RAYWHITE); }
 
 void WorldView::drawOverlay() {}
 
-void WorldView::draw(tgui::BackendRenderTarget &target,
-					 const tgui::RenderStates states) const {
-	constexpr tgui::Borders borders{
-		2}; // Borders are 2 pixels thick on any side
+void WorldView::draw(tgui::BackendRenderTarget &target, const tgui::RenderStates states) const {
+	constexpr tgui::Borders borders{2};	 // Borders are 2 pixels thick on any side
 
 	CanvasRaylib::draw(target, states);
-	target.drawBorders(states, borders, getSize(),
-					   tgui::Color::applyOpacity(tgui::Color::Black, 0.5f));
+	target.drawBorders(states, borders, getSize(), tgui::Color::applyOpacity(tgui::Color::Black, 0.5f));
 }
 
 Vector2 WorldView::getMouseWorldPos() { return mouseWorldPos; }
 
-std::shared_ptr<IUpdatable>
-WorldView::asUpdatable(const std::shared_ptr<WorldView> &ptr) {
+std::shared_ptr<IUpdatable> WorldView::asUpdatable(const std::shared_ptr<WorldView> &ptr) {
 	return std::dynamic_pointer_cast<IUpdatable>(ptr);
 }
 
@@ -158,7 +146,5 @@ void WorldView::setTool(RoomTool newTool) { this->tool = newTool; }
 
 bool WorldView::isInView() {
 	// return isMouseOnWidget({GetMousePosition().x, GetMousePosition().y});
-	return CheckCollisionPointRec(
-		GetMousePosition(),
-		{getPosition().x, getPosition().y, getSize().x, getSize().y});
+	return CheckCollisionPointRec(GetMousePosition(), {getPosition().x, getPosition().y, getSize().x, getSize().y});
 }

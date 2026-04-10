@@ -15,9 +15,7 @@ ProjectSettingsWindow::ProjectSettingsWindow() : PopupWindow("ProjectSettings") 
 	layout->getRenderer()->setPadding(4);
 	layout->getRenderer()->setSpaceBetweenWidgets(4.0f);
 
-	bindTranslation(this->currentWindow,
-									   "dialog.project_settings._label",
-									   &tgui::ChildWindow::setTitle);
+	bindTranslation(this->currentWindow, "dialog.project_settings._label", &tgui::ChildWindow::setTitle);
 
 	titleField = TextField::create();
 	bindTranslation(titleField->label, "dialog.project_settings.title", &tgui::Label::setText);

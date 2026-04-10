@@ -1,8 +1,10 @@
 #include "views/fontView.hpp"
-#include "raylib.h"
-#include "saveables/fontWrapper.hpp"
+
 #include <cstdio>
 #include <memory>
+
+#include "raylib.h"
+#include "saveables/fontWrapper.hpp"
 
 FontView::FontView() {}
 

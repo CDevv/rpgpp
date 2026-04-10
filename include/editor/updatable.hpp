@@ -2,7 +2,7 @@
 #define _RPGPP_UPDATABLE_H
 
 class IUpdatable {
-  public:
+public:
 	virtual ~IUpdatable() = default;
 
 	virtual void update() = 0;

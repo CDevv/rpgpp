@@ -7,8 +7,8 @@
 class SettingsPanelGeneral : public SettingsPanelBase {
 	tgui::MessageBox::Ptr promptUserBox;
 
-	public:
-		explicit SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer);
+public:
+	explicit SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer);
 };
 
 #endif

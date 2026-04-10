@@ -1,8 +1,10 @@
 #include "fileViews/fileView.hpp"
-#include "actions/action.hpp"
+
 #include <cstdio>
 #include <memory>
 #include <utility>
+
+#include "actions/action.hpp"
 
 FileView::FileView() {}
 

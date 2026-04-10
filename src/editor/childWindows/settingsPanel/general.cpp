@@ -17,14 +17,12 @@
 
 constexpr const int ANIMATION_DURATION = 200;
 
-
 SettingsPanelGeneral::SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer)
 	: SettingsPanelBase(std::move(tabContainer), "screen.options.general._label") {
 	TranslationService &ts = Editor::instance->getTranslations();
 	ThemeService &theme = Editor::instance->getThemeService();
 
-	const tgui::ScrollablePanel::Ptr scrollPanel =
-		tgui::ScrollablePanel::create();
+	const tgui::ScrollablePanel::Ptr scrollPanel = tgui::ScrollablePanel::create();
 	scrollPanel->setSize("100%", "100%");
 	scrollPanel->getRenderer()->setPadding(4);
 
@@ -37,17 +35,15 @@ SettingsPanelGeneral::SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer)
 	// Language
 	const auto languageLayout = tgui::HorizontalLayout::create();
 	const auto languageSelector = tgui::ComboBox::create();
-	for (const auto& [name, key] : ts.langKeyToName) {
+	for (const auto &[name, key] : ts.langKeyToName) {
 		languageSelector->addItem(key, name);
 	}
 
-	if (const auto langTranslation = ts.getKey("language");
-		languageSelector->contains(langTranslation))
+	if (const auto langTranslation = ts.getKey("language"); languageSelector->contains(langTranslation))
 		languageSelector->setSelectedItem(langTranslation);
 
 	languageSelector->onItemSelect.connect([&](const tgui::String &item, const tgui::String &id) {
-		ConfigurationService &configService =
-			Editor::instance->getConfiguration();
+		ConfigurationService &configService = Editor::instance->getConfiguration();
 		ts.setLanguage(ts.getLanguageIdentifierByKey(item.toStdString()));
 		configService.setStringValue("language", id.toStdString());
 		configService.saveConfiguration();
@@ -62,8 +58,7 @@ SettingsPanelGeneral::SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer)
 	languageLayout->setSize({"100%", 30});
 	const auto languageLabel = tgui::Label::create();
 	languageLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
-	bindTranslation(languageLabel, "screen.options.general.language",
-					&tgui::Label::setText);
+	bindTranslation(languageLabel, "screen.options.general.language", &tgui::Label::setText);
 
 	languageLayout->add(languageLabel);
 	languageLayout->add(languageSelector);
@@ -77,45 +72,43 @@ SettingsPanelGeneral::SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer)
 	themeLabel->setVerticalAlignment(tgui::VerticalAlignment::Center);
 	bindTranslation(themeLabel, "screen.options.general.theme", &tgui::Label::setText);
 
-	for (const auto &themeName : theme.getThemes())
-		themeSelector->addItem(themeName);
+	for (const auto &themeName : theme.getThemes()) themeSelector->addItem(themeName);
 
 	themeSelector->setSelectedItem(theme.current_theme_name);
 
 	this->promptUserBox = tgui::MessageBox::create("");
 	bindTranslation<tgui::MessageBox>(this->promptUserBox, "screen.options.general.theme", &tgui::MessageBox::setTitle);
 	bindTranslation(promptUserBox, "screen.options.general.theme_notice", &tgui::MessageBox::setText);
-	bindCustomTranslation<tgui::MessageBox>(this->promptUserBox, [&](std::shared_ptr<tgui::MessageBox> box, TranslationService &ts) {
+	bindCustomTranslation<tgui::MessageBox>(this->promptUserBox, [&](std::shared_ptr<tgui::MessageBox> box,
+																	 TranslationService &ts) {
 		box->changeButtons(std::vector<tgui::String>{ts.getKey("button.restart"), ts.getKey("button.restart_later")});
 	});
 
-	this->promptUserBox->onButtonPress.connect([&](const tgui::String& text) {
+	this->promptUserBox->onButtonPress.connect([&](const tgui::String &text) {
 		if (text == ts.getKey("button.restart")) {
 			ChangeDirectory(GetApplicationDirectory());
-			#ifdef __linux__
+#ifdef __linux__
 
-				if (const FILE *handle = popen("./editor", "r"); handle == nullptr) {
-					fprintf(stderr, "failed to relaunch editor..\n");
-					return;
-				}
-			#endif
+			if (const FILE *handle = popen("./editor", "r"); handle == nullptr) {
+				fprintf(stderr, "failed to relaunch editor..\n");
+				return;
+			}
+#endif
 
-			#ifdef _WIN32
-				if (!WinCreateDetachedExecutable("editor.exe")) {
-					fprintf(stderr, "failed to relaunch editor..\n");
-					return;
-				}
-			#endif
+#ifdef _WIN32
+			if (!WinCreateDetachedExecutable("editor.exe")) {
+				fprintf(stderr, "failed to relaunch editor..\n");
+				return;
+			}
+#endif
 
 			exit(0);
 		}
 		Editor::instance->getGui().gui->remove(promptUserBox);
 	});
 
-
 	themeSelector->onItemSelect.connect([&](const tgui::String &item) {
-		ConfigurationService &configService =
-			Editor::instance->getConfiguration();
+		ConfigurationService &configService = Editor::instance->getConfiguration();
 		configService.setStringValue("theme", item.toStdString());
 		configService.saveConfiguration();
 

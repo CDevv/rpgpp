@@ -1,11 +1,13 @@
 #include "services/configurationService.hpp"
-#include "defaultConfig.hpp"
-#include "ini.h"
-#include "raylib.h"
+
 #include <cassert>
 #include <iostream>
 #include <memory>
 #include <stdexcept>
+
+#include "defaultConfig.hpp"
+#include "ini.h"
+#include "raylib.h"
 
 void ConfigurationService::regenerate() {
 	assert(this->iniFile && "iniFile is not initialized");
@@ -14,8 +16,7 @@ void ConfigurationService::regenerate() {
 			if (!this->iniStructure.has(field)) {
 				this->iniStructure.set(field, mINI::INIMap<std::string>());
 			}
-			if (this->iniStructure[field].has(k))
-				continue;
+			if (this->iniStructure[field].has(k)) continue;
 			this->iniStructure[field].set(k, v);
 		}
 	}
@@ -35,13 +36,11 @@ ConfigurationService::ConfigurationService() {
 	this->regenerate();
 };
 
-mINI::INIMap<std::basic_string<char>>
-ConfigurationService::getField(const std::string &field) {
+mINI::INIMap<std::basic_string<char>> ConfigurationService::getField(const std::string &field) {
 	return this->iniStructure[field];
 }
 
-std::string ConfigurationService::getStringValue(const std::string &field,
-												 const std::string &key) {
+std::string ConfigurationService::getStringValue(const std::string &field, const std::string &key) {
 	return this->iniStructure[field][key];
 }
 
@@ -49,16 +48,11 @@ std::string ConfigurationService::getStringValue(const std::string &key) {
 	return this->getStringValue(GENERAL_CONF_FIELD, key);
 }
 
-void ConfigurationService::setStringValue(const std::string &field,
-										  const std::string &key,
-										  const std::string &value) {
+void ConfigurationService::setStringValue(const std::string &field, const std::string &key, const std::string &value) {
 	this->iniStructure[field].set(key, value);
 }
 
-void ConfigurationService::setStringValue(const std::string &key,
-										  const std::string &value) {
+void ConfigurationService::setStringValue(const std::string &key, const std::string &value) {
 	this->setStringValue(GENERAL_CONF_FIELD, key, value);
 }
-void ConfigurationService::saveConfiguration() {
-	this->iniFile->write(this->iniStructure);
-}
+void ConfigurationService::saveConfiguration() { this->iniFile->write(this->iniStructure); }
