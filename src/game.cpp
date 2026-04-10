@@ -1,22 +1,23 @@
 #include "game.hpp"
+
+#include <raylib.h>
+
+#include <memory>
+#include <sol/forward.hpp>
+#include <sol/sol.hpp>	// FIXME : lua.h not found
+#include <stdexcept>
+
 #include "gamedata.hpp"
 #include "scriptService.hpp"
 #include "soundService.hpp"
-#include <memory>
-#include <raylib.h>
-#include <sol/forward.hpp>
-#include <sol/sol.hpp> // FIXME : lua.h not found
-#include <stdexcept>
 
 Game *Game::instance_ = nullptr;
 std::unique_ptr<GameData> Game::gameData = std::unique_ptr<GameData>{};
 bool Game::usesBin = false;
 std::unique_ptr<StateService> Game::state = std::unique_ptr<StateService>{};
 std::unique_ptr<WorldService> Game::world = std::unique_ptr<WorldService>{};
-std::unique_ptr<InterfaceService> Game::ui =
-	std::unique_ptr<InterfaceService>{};
-std::unique_ptr<ResourceService> Game::resources =
-	std::unique_ptr<ResourceService>{};
+std::unique_ptr<InterfaceService> Game::ui = std::unique_ptr<InterfaceService>{};
+std::unique_ptr<ResourceService> Game::resources = std::unique_ptr<ResourceService>{};
 std::unique_ptr<SoundService> Game::sounds = std::unique_ptr<SoundService>{};
 std::unique_ptr<ScriptService> Game::scripts = std::unique_ptr<ScriptService>{};
 
@@ -52,8 +53,7 @@ void Game::useBin(const std::string &filePath) {
 	usesBin = true;
 
 	for (const auto &[name, data] : gameData->images) {
-		Image image = LoadImageFromMemory(data.ext.c_str(), data.data.data(),
-										  data.dataSize);
+		Image image = LoadImageFromMemory(data.ext.c_str(), data.data.data(), data.dataSize);
 		Texture2D texture = LoadTextureFromImage(image);
 		resources->addTexture(name, texture);
 		UnloadImage(image);

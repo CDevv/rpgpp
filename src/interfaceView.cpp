@@ -1,6 +1,8 @@
 #include "interfaceView.hpp"
-#include "uiElement.hpp"
+
 #include <memory>
+
+#include "uiElement.hpp"
 
 InterfaceView::InterfaceView() : rect(Rectangle{}) {}
 

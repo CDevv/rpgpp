@@ -1,8 +1,10 @@
 #include "worldService.hpp"
-#include "game.hpp"
-#include "room.hpp"
+
 #include <memory>
 #include <string_view>
+
+#include "game.hpp"
+#include "room.hpp"
 
 WorldService::WorldService() {
 	this->lock = false;
@@ -22,9 +24,7 @@ void WorldService::setRoom(const std::string_view &filePath) {
 	this->room = std::make_unique<Room>(std::string(filePath));
 }
 
-void WorldService::setRoomBin(RoomBin bin) {
-	this->room = std::make_unique<Room>(bin);
-}
+void WorldService::setRoomBin(RoomBin bin) { this->room = std::make_unique<Room>(bin); }
 
 void WorldService::setRoomBin(const std::string &roomBin) {
 	for (RoomBin bin : Game::getBin().rooms) {
@@ -89,8 +89,7 @@ void WorldService::draw() const {
 	room->draw();
 
 	if (transitionActive) {
-		DrawRectangleRec(Rectangle{0, 0, static_cast<float>(GetScreenWidth()),
-								   static_cast<float>(GetScreenHeight())},
+		DrawRectangleRec(Rectangle{0, 0, static_cast<float>(GetScreenWidth()), static_cast<float>(GetScreenHeight())},
 						 transitionColor);
 	}
 }

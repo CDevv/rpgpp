@@ -1,6 +1,8 @@
 #include "tile.hpp"
-#include "atlasTile.hpp"
+
 #include <raylib.h>
+
+#include "atlasTile.hpp"
 
 Tile::Tile() {
 	this->worldCoords = Vector2{-1, -1};

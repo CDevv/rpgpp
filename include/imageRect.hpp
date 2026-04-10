@@ -1,17 +1,19 @@
 #ifndef _RPGPP_IMAGERECT_H
 #define _RPGPP_IMAGERECT_H
 
-#include "uiElement.hpp"
 #include <raylib.h>
+
 #include <string>
 
+#include "uiElement.hpp"
+
 class ImageRect : public UIElement {
-  private:
+private:
 	Rectangle rect;
 	std::string source;
 	Texture2D texture;
 
-  public:
+public:
 	ImageRect();
 	ImageRect(Rectangle rect);
 	void setSource(const std::string &source);

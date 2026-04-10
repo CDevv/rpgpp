@@ -1,15 +1,16 @@
 #ifndef _RPGPP_EDITOR_RESOURCESERVICE_H
 #define _RPGPP_EDITOR_RESOURCESERVICE_H
 
-#include <map>
 #include <raylib.h>
+
+#include <map>
 #include <string>
 
 class ResourceService {
-  private:
+private:
 	std::map<std::string, Texture2D> textures;
 
-  public:
+public:
 	ResourceService();
 	~ResourceService();
 	void addTextureFromFile(const std::string &filePath);

@@ -1,38 +1,40 @@
 #ifndef _RPGPP_ACTOR_H
 #define _RPGPP_ACTOR_H
 
+#include <raylib.h>
+
+#include <array>
+#include <functional>
+#include <memory>
+#include <nlohmann/json.hpp>
+#include <vector>
+
 #include "atlasTile.hpp"
 #include "gamedata.hpp"
 #include "interactable.hpp"
 #include "saveable.hpp"
 #include "tileset.hpp"
-#include <array>
-#include <functional>
-#include <memory>
-#include <nlohmann/json.hpp>
-#include <raylib.h>
-#include <vector>
 
 using json = nlohmann::json;
 
 #define RPGPP_MAX_DIRECTION 7
 /** Direction enum, representing an animation state. */
 enum Direction : short {
-	RPGPP_DOWN_IDLE = 0,  ///< Down Idle state.
-	RPGPP_DOWN = 1,		  ///< Down state.
-	RPGPP_UP_IDLE = 2,	  ///< Up Idle state.
-	RPGPP_UP = 3,		  ///< Up state.
-	RPGPP_LEFT_IDLE = 4,  ///< Left Idle state.
-	RPGPP_LEFT = 5,		  ///< Left state.
-	RPGPP_RIGHT_IDLE = 6, ///< Right Idle state.
-	RPGPP_RIGHT = 7		  ///< Right state.
+	RPGPP_DOWN_IDLE = 0,   ///< Down Idle state.
+	RPGPP_DOWN = 1,		   ///< Down state.
+	RPGPP_UP_IDLE = 2,	   ///< Up Idle state.
+	RPGPP_UP = 3,		   ///< Up state.
+	RPGPP_LEFT_IDLE = 4,   ///< Left Idle state.
+	RPGPP_LEFT = 5,		   ///< Left state.
+	RPGPP_RIGHT_IDLE = 6,  ///< Right Idle state.
+	RPGPP_RIGHT = 7		   ///< Right state.
 };
 
 /** The Actor class represents an Actor in the game's world.
  * @see [Direction](Direction.md)
  */
 class Actor : public ISaveable {
-  private:
+private:
 	std::string sourcePath;
 	/** The used TileSet for this Actor's sprites. */
 	std::unique_ptr<TileSet> tileSet;
@@ -61,15 +63,14 @@ class Actor : public ISaveable {
 	/** A smart pointer, owning an Interactable. */
 	std::unique_ptr<Interactable> interactable;
 
-  public:
+public:
 	/** Empty constructor. */
 	Actor() = default;
 	/** Constructor that takes a path to the .ractor file. */
 	Actor(const std::string &fileName);
 	/** Constructor that takes a TileSet, the atlas position of the tile to use,
 	 * and the path to the TileSet. */
-	Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos,
-		  std::string tileSetSource);
+	Actor(std::unique_ptr<TileSet> tileSet, Vector2 atlasPos, std::string tileSetSource);
 	/** Constructor that takes an ActorBin binary structure */
 	Actor(const ActorBin &bin);
 	/** Dump this Actor's data to a nlohmann::json object. */
@@ -132,8 +133,7 @@ class Actor : public ISaveable {
 	 * TileSet. */
 	void setAnimationFrame(Direction id, int frameIndex, Vector2 atlasTile);
 	/** Add multiple frames to the chosen animation. */
-	void addAnimationFrames(Direction id,
-							const std::vector<std::vector<int>> &frames);
+	void addAnimationFrames(Direction id, const std::vector<std::vector<int>> &frames);
 	/** Temporarily play an animation */
 	void playAnimation(Direction id);
 	/** Check whether a temporary animation is playing */
@@ -155,10 +155,9 @@ class Actor : public ISaveable {
 	/** Get a pointer to this Actor's Interactable. */
 	Interactable *getInteractable();
 	/** Add an Interactable using an interactable file. */
-	void setInteractableFromPath(const std::string& interPath);
+	void setInteractableFromPath(const std::string &interPath);
 };
 
-Vector2 calcActorTilePos(Vector2 newPosition, Vector2 worldTileSize,
-						 TileSet *tileSet);
+Vector2 calcActorTilePos(Vector2 newPosition, Vector2 worldTileSize, TileSet *tileSet);
 
 #endif

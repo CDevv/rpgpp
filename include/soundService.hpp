@@ -2,6 +2,7 @@
 #define _RPGPP_SOUNDSERVICE_H
 
 #include <raylib.h>
+
 #include <string>
 
 //** The SoundService is responsible for playing sounds and managing the current background music */
@@ -13,7 +14,7 @@ class SoundService {
 	//** The id of the last played music */
 	std::string lastId;
 
-  public:
+public:
 	//** Default constructor */
 	SoundService();
 	//** Load music with the specified id. */

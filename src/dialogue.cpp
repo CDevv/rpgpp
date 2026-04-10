@@ -1,9 +1,11 @@
 #include "dialogue.hpp"
+
+#include <nlohmann/json_fwd.hpp>
+#include <string>
+
 #include "dialogueBalloon.hpp"
 #include "dialogueParser.hpp"
 #include "raylib.h"
-#include <nlohmann/json_fwd.hpp>
-#include <string>
 
 Dialogue::Dialogue(const std::string &filePath) {
 	DialogueBin result;

@@ -1,14 +1,15 @@
 #ifndef _RPGPP_TILE_H
 #define _RPGPP_TILE_H
 
-#include "atlasTile.hpp"
 #include <raylib.h>
+
+#include "atlasTile.hpp"
 
 /**
  * A tile that may be placed in the world.
  */
 class Tile {
-  private:
+private:
 	/** The Tile's source AtlasTile. */
 	AtlasTile atlasTile;
 	/** The Tile's World coordinates. */
@@ -16,7 +17,7 @@ class Tile {
 	/** Whether this Tile is placed and will be drawn or not. */
 	bool placed;
 
-  public:
+public:
 	Tile();
 
 	/**
