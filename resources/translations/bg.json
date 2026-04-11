@@ -96,6 +96,11 @@
 				"edit_anim_data": "Редактирай анимация",
 				"is_non_idle": "е анимация на вървене?"
 			},
+			"interactableview": {
+				"display_name": "Име",
+				"script": "Скрипт",
+				"on_touch": "Извикай при допир?"
+			},
 			"toolbar": {
 				"play": "Пусни игра",
 				"build": "Компилирай игра"
@@ -116,6 +121,22 @@
 			"folder": "Папка",
 			"confirm": "Потвърди",
 			"cancel": "Отмени"
+		},
+		"project_settings": {
+			"_label": "Настройки на проекта",
+			"title": "Име"
+		},
+		"new_prop": {
+			"title": "Нов обект",
+			"name": "Име",
+			"type": "Тип",
+			"submit": "Създай"
+		},
+		"edit_prop": {
+			"title": "Редактирай обект",
+			"type": "Тип",
+			"submit": "Потвърди",
+			"remove": "Премахни"
 		}
 	},
 	"widget": {
@@ -127,6 +148,8 @@
 		}
 	},
 	"button": {
-		"go_back": "Върни се"
+		"go_back": "Върни се",
+		"restart": "Рестартирай",
+		"restart_later": "Рестартирай по-късно"
 	}
 }
