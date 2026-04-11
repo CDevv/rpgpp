@@ -96,6 +96,11 @@
         "delete": "Kare Sil",
         "edit_anim_data": "Animasyon Verisini Düzenle"
       },
+      "interactableview": {
+        "display_name": "Görünüş Adı",
+        "script": "Betik",
+        "on_touch": "Dokunulduğunda?"
+      },
       "toolbar": {
         "play": "Oyna",
         "build": "Derle"
@@ -116,6 +121,22 @@
       "folder": "Klasör",
       "confirm": "Kabul Et",
       "cancel": "İptal"
+    },
+    "project_settings": {
+      "_label": "Proje Ayarları",
+      "title": "Başlık"
+    },
+    "new_prop": {
+      "title": "Yeni Obje",
+      "name": "Adı",
+      "type": "Tür",
+      "submit": "Oluştur"
+    },
+    "edit_prop": {
+      "title": "Objeyi Düzenle",
+      "type": "Tür",
+      "submit": "Kabul Et",
+      "remove": "Sil"
     }
   },
   "widget": {
