@@ -1,6 +1,8 @@
 #include "fileViews/interactableFileView.hpp"
 
 #include "TGUI/String.hpp"
+#include "TGUI/Widgets/Label.hpp"
+#include "bindTranslation.hpp"
 #include "childWindows/newPropWindow.hpp"
 #include "editor.hpp"
 #include "interactable.hpp"
@@ -16,7 +18,8 @@ InteractableFileView::InteractableFileView() {
 	props->setPosition({TextFormat("100%% - %d", RIGHT_PANEL_W), 0});
 
 	nameField = TextField::create();
-	nameField->label->setText("Display Name");
+	bindTranslation<tgui::Label>(nameField->label, "screen.project.interactableview.display_name",
+								 &tgui::Label::setText);
 	nameField->value->onTextChange([this](const tgui::String &text) {
 		if (variant != nullptr) {
 			const auto ptr = dynamic_cast<Variant<Interactable> *>(variant);
@@ -29,7 +32,7 @@ InteractableFileView::InteractableFileView() {
 
 	scriptField = FileField::create();
 	scriptField->pathFilters = {{"Script", {"*.lua"}}};
-	scriptField->label->setText("Script");
+	bindTranslation<tgui::Label>(scriptField->label, "screen.project.interactableview.script", &tgui::Label::setText);
 	scriptField->callback = [this](const tgui::String &path) {
 		if (variant != nullptr) {
 			const auto ptr = dynamic_cast<Variant<Interactable> *>(variant);
@@ -41,7 +44,8 @@ InteractableFileView::InteractableFileView() {
 	props->addFileField(scriptField);
 
 	onTouchField = BoolField::create();
-	onTouchField->label->setText("On Touch?");
+	bindTranslation<tgui::Label>(onTouchField->label, "screen.project.interactableview.on_touch",
+								 &tgui::Label::setText);
 	onTouchField->value->onChange([this](bool value) {
 		if (variant != nullptr) {
 			const auto ptr = dynamic_cast<Variant<Interactable> *>(variant);
@@ -53,10 +57,6 @@ InteractableFileView::InteractableFileView() {
 	props->addBooleanField(onTouchField);
 
 	interProps = PropertiesBox::create();
-
-	auto test1 = IntField::create();
-	test1->label->setText("test1");
-	interProps->addIntField(test1);
 
 	props->addPropertiesBox(interProps);
 

@@ -96,6 +96,11 @@
 				"edit_anim_data": "Edit Animation Data",
 				"is_non_idle": "Is Non-Idle Animation?"
 			},
+			"interactableview": {
+				"display_name": "Display Name",
+				"script": "Script",
+				"on_touch": "On Touch?"
+			},
 			"toolbar": {
 				"play": "Play",
 				"build": "Build"
@@ -120,6 +125,18 @@
 		"project_settings": {
 			"_label": "Project Settings",
 			"title": "Title"
+		},
+		"new_prop": {
+			"title": "New Prop",
+			"name": "Name",
+			"type": "Type",
+			"submit": "Create"
+		},
+		"edit_prop": {
+			"title": "Edit Prop",
+			"type": "Type",
+			"submit": "Submit",
+			"remove": "Remove"
 		}
 	},
 	"widget": {

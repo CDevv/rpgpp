@@ -16,7 +16,7 @@ public:
 	std::string propName;
 
 	tgui::Label::Ptr nameLabel;
-	tgui::ComboBox::Ptr dropdown;
+	SelectField::Ptr dropdown;
 
 	EditPropWindow();
 };

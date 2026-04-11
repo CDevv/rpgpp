@@ -102,7 +102,11 @@
 				"edit_anim_data": "Chỉnh sửa dữ liệu animation",
 				"is_non_idle": "Có phải animation?"
 			},
-
+			"interactableview": {
+				"display_name": "Tên hiển thị",
+				"script": "Tệp Script",
+				"on_touch": "Kích hoạt khi chạm?"
+			},
 			"toolbar": {
 				"play": "Chạy chương trình",
 				"build": "Dịch và tạo chương trình"
@@ -129,6 +133,18 @@
 		"project_settings": {
 			"_label": "Cấu hình dự án",
 			"title": "Tên dự án"
+		},
+		"new_prop": {
+			"title": "Tạo Prop mới",
+			"name": "Tên",
+			"type": "Loại",
+			"submit": "Tạo"
+		},
+		"edit_prop": {
+			"title": "Chỉnh sửa Prop",
+			"type": "Loại",
+			"submit": "Sửa",
+			"remove": "Xóa"
 		}
 	},
 

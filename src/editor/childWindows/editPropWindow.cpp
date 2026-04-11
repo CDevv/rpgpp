@@ -7,12 +7,15 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/Panel.hpp"
+#include "bindTranslation.hpp"
 #include "childWindows/newPropWindow.hpp"
 #include "childWindows/popupWindow.hpp"
 #include "nlohmann/json.hpp"
 #include "nlohmann/json_fwd.hpp"
+#include "widgets/propertyFields/selectField.hpp"
 
 EditPropWindow::EditPropWindow() : PopupWindow("Edit Prop..") {
+	bindTranslation(this->currentWindow, "dialog.edit_prop.title", &tgui::ChildWindow::setTitle);
 	props = nullptr;
 	currentWindow->setSize(280, 180);
 
@@ -28,16 +31,18 @@ EditPropWindow::EditPropWindow() : PopupWindow("Edit Prop..") {
 	nameLabel->setText(propName);
 	layout->add(nameLabel);
 
-	dropdown = tgui::ComboBox::create();
+	dropdown = SelectField::create();
 	dropdown->setSize({"100%", 24});
-	dropdown->addMultipleItems({"integer", "string", "boolean", "dialogue"});
-	dropdown->setSelectedItemByIndex(0);
+	bindTranslation<tgui::Label>(dropdown->label, "dialog.edit_prop.type", &tgui::Label::setText);
+	dropdown->value->addMultipleItems({"integer", "string", "boolean", "dialogue"});
+	dropdown->value->setSelectedItemByIndex(0);
 	layout->add(dropdown);
 
-	auto confirmButton = tgui::Button::create("Submit");
+	auto confirmButton = tgui::Button::create();
+	bindTranslation<tgui::Button>(confirmButton, "dialog.edit_prop.submit", &tgui::Button::setText);
 	confirmButton->setSize({"100%", 24});
 
-	std::weak_ptr<tgui::ComboBox> weakDropdown = dropdown;
+	std::weak_ptr<SelectField> weakDropdown = dropdown;
 	confirmButton->onClick([this, weakDropdown] {
 		if (weakDropdown.expired()) {
 			return;
@@ -48,7 +53,7 @@ EditPropWindow::EditPropWindow() : PopupWindow("Edit Prop..") {
 		std::string nameText = propName;
 
 		if (interactable != nullptr) {
-			int idx = dropdownShared->getSelectedItemIndex();
+			int idx = dropdownShared->value->getSelectedItemIndex();
 			PropType propType = static_cast<PropType>(idx);
 
 			interactable->getProps().erase(nameText);
@@ -61,7 +66,8 @@ EditPropWindow::EditPropWindow() : PopupWindow("Edit Prop..") {
 	});
 	layout->add(confirmButton);
 
-	auto removeButton = tgui::Button::create("Remove");
+	auto removeButton = tgui::Button::create();
+	bindTranslation<tgui::Button>(removeButton, "dialog.edit_prop.remove", &tgui::Button::setText);
 	removeButton->setSize({"100%", 24});
 	removeButton->onClick([this] {
 		if (interactable != nullptr) {
