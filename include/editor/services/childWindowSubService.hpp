@@ -14,6 +14,7 @@ public:
 	void createWindows();
 	void openWindow(const std::string &windowName);
 	void resetAndOpen(const std::string windowName);
+	PopupWindow *getWindow(const std::string &windowName);
 };
 
 #endif /* RPGPP_CHILDWINDOWSERVICE_H */

@@ -95,6 +95,31 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_INTERACTABLES>) {
 		if (inter == nullptr) {
 			group->add(tgui::Label::create("Interactables"));
 		} else {
+			auto interactableNames = Editor::instance->getProject()->getInteractableNames();
+			std::unique_ptr<Interactable> typeInter;
+			for (auto &[key, val] : interactableNames) {
+				if (std::string(GetFileNameWithoutExt(key.c_str())) == inter->getType()) {
+					typeInter = std::make_unique<Interactable>(key);
+
+					// Add missing props.
+					for (auto item : typeInter->getProps().items()) {
+						if (!inter->getProps().contains(item.key())) {
+							inter->getProps().push_back({item.key(), item.value()});
+						}
+					}
+
+					// Remove non-existent props.
+					auto *ptr = inter->getPropsPtr();
+					for (auto item : inter->getPropsPtr()->items()) {
+						if (!typeInter->getProps().contains(item.key())) {
+							inter->getProps().erase(item.key());
+						}
+					}
+
+					break;
+				}
+			}
+
 			auto onTouchCheck = tgui::CheckBox::create("Interact on touch?");
 			onTouchCheck->setSize(24, 24);
 			onTouchCheck->setPosition(8, 8);

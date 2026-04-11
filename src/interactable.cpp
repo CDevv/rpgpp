@@ -95,7 +95,28 @@ void Interactable::setType(const std::string &type) {
 
 void Interactable::setProps(nlohmann::json j) { this->props = std::make_unique<nlohmann::json>(j); }
 
+void Interactable::addProp(PropType propType, const std::string &name) {
+	switch (propType) {
+		case INT:
+			props->push_back({name, 0});
+			break;
+		case STRING:
+			props->push_back({name, ""});
+			break;
+		case BOOLEAN:
+			props->push_back({name, false});
+			break;
+		case DIALOGUE:
+			props->push_back({name, {{"propType", "dialogue"}, {"value", ""}}});
+			break;
+		default:
+			break;
+	}
+}
+
 nlohmann::json &Interactable::getProps() { return *props; }
+
+nlohmann::json *Interactable::getPropsPtr() { return props.get(); }
 
 void Interactable::setScriptSourcePath(const std::string &newPath) { scriptPath = newPath; }
 

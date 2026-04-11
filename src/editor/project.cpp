@@ -136,18 +136,28 @@ std::map<std::string, std::string> Project::getInteractableNames() {
 	std::map<std::string, std::string> map{};
 
 	// built-in interactables
-	std::filesystem::path interactablesDir = Editor::instance->getFs().getEditorBaseDir();
-	interactablesDir /= "resources";
-	interactablesDir /= "interactables";
+	std::filesystem::path builtinInteractablesDir = Editor::instance->getFs().getEditorBaseDir();
+	builtinInteractablesDir /= "resources";
+	builtinInteractablesDir /= "interactables";
 
-	auto list = LoadDirectoryFiles(interactablesDir.u8string().c_str());
-	for (int i = 0; i < list.count; i++) {
-		std::string intPath = list.paths[i];
+	auto builtinList = LoadDirectoryFiles(builtinInteractablesDir.u8string().c_str());
+	for (int i = 0; i < builtinList.count; i++) {
+		std::string intPath = builtinList.paths[i];
 		Interactable inter(intPath);
 
 		map[intPath.c_str()] = inter.getDisplayTitle();
 	}
-	UnloadDirectoryFiles(list);
+	UnloadDirectoryFiles(builtinList);
+
+	auto userList = LoadDirectoryFiles("interactables/");
+	for (int i = 0; i < userList.count; i++) {
+		std::string intPath = userList.paths[i];
+		Interactable inter(intPath);
+
+		map[intPath.c_str()] = inter.getDisplayTitle();
+	}
+
+	UnloadDirectoryFiles(userList);
 
 	return map;
 }
@@ -397,7 +407,7 @@ GameData Project::generateStruct() {
 		data.props.push_back(bin);
 	}
 
-	// built in insteractables
+	// built in interactables
 	std::filesystem::path interactablesDir = Editor::instance->getFs().getEditorBaseDir();
 	interactablesDir /= "resources";
 	interactablesDir /= "interactables";
@@ -412,13 +422,27 @@ GameData Project::generateStruct() {
 		bin.scriptPath = inter.getScriptSourcePath();
 		bin.props = nlohmann::json::to_cbor(inter.getProps());
 
-		printf("%s \n", bin.typeName.c_str());
-
 		data.interactables[inter.getType()] = bin;
 	}
 	UnloadDirectoryFiles(list);
 
-	// scripts
+	// user interactables
+	auto userList = LoadDirectoryFiles("interactables/");
+	for (int i = 0; i < userList.count; i++) {
+		std::string intPath = userList.paths[i];
+		Interactable inter(intPath);
+
+		InteractableBin bin;
+		bin.typeName = inter.getType();
+		bin.scriptPath = inter.getScriptSourcePath();
+		bin.props = nlohmann::json::to_cbor(inter.getProps());
+
+		data.interactables[inter.getType()] = bin;
+	}
+
+	UnloadDirectoryFiles(userList);
+
+	// built-in scripts
 	std::filesystem::path scriptsDir = Editor::instance->getFs().getEditorBaseDir();
 	scriptsDir /= "resources";
 	scriptsDir /= "scripts";
@@ -446,6 +470,18 @@ GameData Project::generateStruct() {
 		UnloadFileText(scriptText);
 	}
 	UnloadDirectoryFiles(scriptsList);
+
+	auto userScriptsList = LoadDirectoryFiles("scripts/");
+	for (int i = 0; i < userScriptsList.count; i++) {
+		std::string scriptPath = userScriptsList.paths[i];
+		auto scriptText = LoadFileText(scriptPath.c_str());
+
+		ScriptBin bin;
+		bin.bytecode = scriptText;
+
+		data.scripts[TextFormat("scripts/%s", GetFileName(scriptPath.c_str()))] = bin;
+		UnloadFileText(scriptText);
+	}
 
 	return data;
 }

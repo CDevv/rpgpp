@@ -6,11 +6,14 @@
 
 #include "TGUI/String.hpp"
 #include "TGUI/Widget.hpp"
+#include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
+#include "interactable.hpp"
 #include "widgets/propertyFields/boolField.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/intField.hpp"
+#include "widgets/propertyFields/interPropField.hpp"
 #include "widgets/propertyFields/rectangleField.hpp"
 #include "widgets/propertyFields/selectField.hpp"
 #include "widgets/propertyFields/textField.hpp"
@@ -19,12 +22,15 @@ class PropertiesBox : public tgui::ChildWindow {
 protected:
 	static const int GAP = 4;
 
+	tgui::Button::Ptr newPropButton;
 	tgui::GrowVerticalLayout::Ptr layout;
 	tgui::Widget::Ptr clone() const override;
 
 public:
 	typedef std::shared_ptr<PropertiesBox> Ptr;
 	typedef std::shared_ptr<const PropertiesBox> ConstPtr;
+
+	Interactable *interactable = nullptr;
 
 	PropertiesBox(const char *typeName = "PropertiesBox", bool initRenderer = true);
 
@@ -33,8 +39,7 @@ public:
 
 	void draw(tgui::BackendRenderTarget &target, tgui::RenderStates states) const override;
 
-	void addPropsJson(nlohmann::json &j, bool clear = true);
-	// void addToggleField(const tgui::String &title);
+	void addPropsJson(nlohmann::json &j, bool clear = true, bool editable = false);
 	void addIntField(const tgui::String &title, int initialValue, std::function<void(float)> callback);
 	void addIntField(IntField::Ptr field);
 	void addFileField(FileField::Ptr field);
@@ -43,6 +48,8 @@ public:
 	void addRectangleField(RectangleField::Ptr field);
 	void addSelectField(SelectField::Ptr field);
 	void addButton(const tgui::String &title, std::function<void()> callback);
+	void addInterPropField(InterPropField::Ptr field);
+	void addPropertiesBox(PropertiesBox::Ptr box);
 	tgui::Button::Ptr constructButton(const tgui::String &title, std::function<void()> callback);
 };
 

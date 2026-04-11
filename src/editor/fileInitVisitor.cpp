@@ -9,6 +9,7 @@
 #include "dialogue.hpp"
 #include "editor.hpp"
 #include "gamedata.hpp"
+#include "interactable.hpp"
 #include "prop.hpp"
 #include "raylib.h"
 #include "room.hpp"
@@ -24,6 +25,7 @@ FileInitVisitor::FileInitVisitor() {
 	funcs[static_cast<int>(EngineFileType::FILE_ACTOR)] = actor;
 	funcs[static_cast<int>(EngineFileType::FILE_PROP)] = prop;
 	funcs[static_cast<int>(EngineFileType::FILE_DIALOGUE)] = dialogue;
+	funcs[static_cast<int>(EngineFileType::FILE_INTERACTABLE)] = interactable;
 }
 
 bool FileInitVisitor::funcIsEmpty(EngineFileType fileType) { return funcs[static_cast<int>(fileType)] == nullptr; }
@@ -161,6 +163,40 @@ void FileInitVisitor::dialogue(NewFileDialog::Ptr dialog) {
 			auto ptr = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
 			ptr->addFileView(EngineFileType::FILE_DIALOGUE, newFilePath);
 			ptr->addResourceButtons(EngineFileType::FILE_DIALOGUE);
+
+			dialog->window->close();
+		}
+	});
+}
+
+void FileInitVisitor::interactable(NewFileDialog::Ptr dialog) {
+	dialog->hideFileField();
+
+	dialog->confirmButton->onPress([dialog] {
+		std::string title = dialog->titleField->getText().toStdString();
+
+		bool found = false;
+		for (auto &[key, val] : Editor::instance->getProject()->getInteractableNames()) {
+			std::string type = GetFileNameWithoutExt(key.c_str());
+
+			if (type == std::string(TextToLower(title.c_str()))) {
+				found = true;
+				break;
+			}
+		}
+
+		if (!title.empty() && !found) {
+			std::unique_ptr<Interactable> interactable =
+				std::make_unique<Interactable>(title, Vector2{-1, -1}, _RPGPP_TILESIZE);
+			interactable->setDisplayTitle(title);
+
+			std::string newFilePath = TextFormat("interactables/%s.rinter", TextToLower(title.c_str()));
+			nlohmann::json fileJson = interactable->dumpJson();
+			SaveFileText(newFilePath.c_str(), fileJson.dump().c_str());
+
+			auto ptr = aurora::downcast<screens::ProjectScreen *>(Editor::instance->getGui().currentScreen.get());
+			ptr->addFileView(EngineFileType::FILE_INTERACTABLE, newFilePath);
+			ptr->addResourceButtons(EngineFileType::FILE_INTERACTABLE);
 
 			dialog->window->close();
 		}

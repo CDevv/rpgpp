@@ -21,6 +21,7 @@ public:
 	static void actor(NewFileDialog::Ptr dialog);
 	static void prop(NewFileDialog::Ptr dialog);
 	static void dialogue(NewFileDialog::Ptr dialog);
+	static void interactable(NewFileDialog::Ptr dialog);
 };
 
 #endif

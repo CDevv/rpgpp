@@ -1,10 +1,13 @@
 #include "fileViews/interactableFileView.hpp"
 
 #include "TGUI/String.hpp"
+#include "childWindows/newPropWindow.hpp"
+#include "editor.hpp"
 #include "interactable.hpp"
 #include "raylib.h"
 #include "widgets/propertiesBox.hpp"
 #include "widgets/propertyFields/boolField.hpp"
+#include "widgets/propertyFields/intField.hpp"
 #include "widgets/propertyFields/textField.hpp"
 
 InteractableFileView::InteractableFileView() {
@@ -49,6 +52,14 @@ InteractableFileView::InteractableFileView() {
 	});
 	props->addBooleanField(onTouchField);
 
+	interProps = PropertiesBox::create();
+
+	auto test1 = IntField::create();
+	test1->label->setText("test1");
+	interProps->addIntField(test1);
+
+	props->addPropertiesBox(interProps);
+
 	widgetContainer.push_back(props);
 }
 
@@ -62,6 +73,9 @@ void InteractableFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant
 		nameField->value->setText(interactable->getDisplayTitle());
 		scriptField->value->setText(GetFileName(interactable->getScriptSourcePath().c_str()));
 		onTouchField->value->setChecked(interactable->isOnTouch());
+
+		interProps->interactable = interactable;
+		interProps->addPropsJson(interactable->getProps(), true, true);
 
 		addWidgets(layout);
 	}

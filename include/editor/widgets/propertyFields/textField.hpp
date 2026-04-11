@@ -5,6 +5,8 @@
 #include <TGUI/Widgets/EditBox.hpp>
 #include <TGUI/Widgets/Label.hpp>
 
+#include "TGUI/Widgets/BitmapButton.hpp"
+
 class TextField : public tgui::SubwidgetContainer {
 private:
 	void updateSize();

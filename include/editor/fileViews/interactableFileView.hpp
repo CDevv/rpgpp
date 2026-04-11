@@ -3,6 +3,7 @@
 
 #include "fileView.hpp"
 #include "variant.hpp"
+#include "widgets/propertiesBox.hpp"
 #include "widgets/propertyFields/boolField.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/textField.hpp"
@@ -13,6 +14,7 @@ private:
 	TextField::Ptr nameField;
 	FileField::Ptr scriptField;
 	BoolField::Ptr onTouchField;
+	PropertiesBox::Ptr interProps;
 
 public:
 	InteractableFileView();

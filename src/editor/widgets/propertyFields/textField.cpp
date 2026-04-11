@@ -3,8 +3,11 @@
 #include <TGUI/Widgets/EditBox.hpp>
 #include <memory>
 
+#include "TGUI/Texture.hpp"
 #include "TGUI/Widget.hpp"
+#include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Label.hpp"
+#include "editor.hpp"
 #include "widgets/propertyFields/fieldConfig.hpp"
 
 TextField::TextField(const char *typeName, bool initRenderer) : tgui::SubwidgetContainer(typeName, initRenderer) {
@@ -40,6 +43,5 @@ void TextField::updateSize() {
 	label->setPosition({PADDING, 0});
 	label->setSize({getSize().x * 0.5f - PADDING, getSize().y});
 	value->setSize({getSize().x * 0.5f - PADDING, getSize().y});
-
 	value->setPosition({getSize().x * 0.5, 0});
 }

@@ -13,6 +13,8 @@
 #include "gamedata.hpp"
 #include "saveable.hpp"
 
+enum PropType { INT, STRING, BOOLEAN, DIALOGUE };
+
 /** Defines an object that is interactable in-game by a player's action */
 class Interactable : public ISaveable {
 private:
@@ -70,12 +72,16 @@ public:
 	void setProp(std::string key, std::string value);
 	/** Set properties using a nlohmann::json object. */
 	void setProps(nlohmann::json j);
+	/** Add a property based on the chosen property type. */
+	void addProp(PropType propType, const std::string &name);
 	/** Set the source script file path. */
 	void setScriptSourcePath(const std::string &newPath);
 	/** Get source script file. */
 	const std::string &getScriptSourcePath();
 	/** Get the properties json object. */
 	nlohmann::json &getProps();
+	/** Get a pointer to the properties. */
+	nlohmann::json *getPropsPtr();
 	/** Set the Interactable's display title (shown in Editor) */
 	void setDisplayTitle(const std::string &newTitle);
 	/** Get the Interactable's display title. */
