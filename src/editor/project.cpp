@@ -656,7 +656,7 @@ void Project::buildProject() {
 
 		dup2(fd, STDOUT_FILENO);
 
-		execl(resultPath.c_str(), NULL);
+		execl(resultPath.c_str(), "");
 	} else if (pid > 0) {
 		printf("Started the game.. \n");
 		wait(0);

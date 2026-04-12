@@ -105,6 +105,14 @@
         "play": "Oyna",
         "build": "Derle"
       }
+    },
+    "project_options": {
+      "program": {
+        "_label": "Uygulama"
+      },
+      "game": {
+        "_label": "Oyun"
+      }
     }
   },
   "dialog": {
