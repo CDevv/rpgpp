@@ -105,6 +105,14 @@
 				"play": "Play",
 				"build": "Build"
 			}
+		},
+		"project_options": {
+			"program": {
+				"_label": "Program"
+			},
+			"game": {
+				"_label": "Game"
+			}
 		}
 	},
 	"dialog": {

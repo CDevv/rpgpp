@@ -2,6 +2,7 @@
 
 #include <raylib.h>
 
+#include <array>
 #include <cassert>
 #include <cstddef>
 #include <cstdio>
@@ -60,6 +61,9 @@ Project::Project(const std::string &path) {
 	json j = json::parse(jsonContent);
 
 	this->projectTitle = j.at("title");
+	this->windowSize = {j.at("windowSize")[0], j.at("windowSize")[1]};
+	this->programIconPath = j.at("programIcon");
+	this->windowResizeableFlag = j.at("windowResizeable");
 
 	ChangeDirectory(projectPath.c_str());
 	UnloadFileText(jsonContent);
@@ -68,6 +72,8 @@ Project::Project(const std::string &path) {
 std::string Project::create(const std::string &dirPath, const std::string &title) {
 	json j = json::object();
 	j["title"] = title;
+	j["windowSize"] = std::array<int, 2>({640, 480});
+	j["programIcon"] = "";
 	std::string fileContent = j.dump();
 
 	std::filesystem::path filePath = dirPath;
@@ -96,6 +102,9 @@ void Project::openProject(const tgui::String &filePath, bool forceSwitch) {
 json Project::toJson() {
 	json j = json::object();
 	j["title"] = projectTitle;
+	j["windowSize"] = {windowSize.x, windowSize.y};
+	j["programIcon"] = programIconPath;
+	j["windowResizeable"] = windowResizeableFlag;
 
 	return j;
 }
@@ -103,6 +112,18 @@ json Project::toJson() {
 std::string &Project::getTitle() { return projectTitle; }
 
 void Project::setTitle(const std::string &newTitle) { projectTitle = newTitle; }
+
+IVector Project::getWindowSize() { return windowSize; }
+
+void Project::setWindowSize(IVector newWindowSize) { windowSize = newWindowSize; }
+
+std::string &Project::getProgramIconPath() { return programIconPath; }
+
+void Project::setProgramIconPath(const std::string &newProgramIconPath) { programIconPath = newProgramIconPath; }
+
+bool Project::isWindowResizeable() { return windowResizeableFlag; }
+
+void Project::setIsWindowResizeable(bool value) { windowResizeableFlag = value; }
 
 std::string &Project::getBasePath() { return projectPath; }
 
