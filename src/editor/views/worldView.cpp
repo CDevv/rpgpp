@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp"
+#include "TGUI/Cursor.hpp"
 #include "TGUI/Event.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
@@ -68,7 +69,7 @@ void WorldView::mouseMoved(tgui::Vector2f pos) {
 	tgui::Widget::mouseMoved(pos);
 }
 
-constexpr int MAXIMUM_LINE = 10000;
+constexpr int MAXIMUM_LINE = 100;
 
 void WorldView::drawOrigin() {
 	// since this function is used to draw the origin x-y axis, it's been moved
@@ -113,6 +114,8 @@ bool WorldView::canGainFocus() const { return true; }
 
 void WorldView::update() {
 	mouseMiddleButton = IsMouseButtonDown(MOUSE_MIDDLE_BUTTON);
+
+	setMouseCursor(mouseMiddleButton ? tgui::Cursor::Type::Move : tgui::Cursor::Type::Arrow);
 
 	BeginTextureMode(m_textureTarget);
 

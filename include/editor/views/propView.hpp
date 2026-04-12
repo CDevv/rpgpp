@@ -2,6 +2,7 @@
 #define _RPGPP_PROPVIEWER_H
 #include <list>
 #include <memory>
+#include <optional>
 
 #include "TGUI/Signal.hpp"
 #include "components/resizableCanvasBox.hpp"
@@ -29,6 +30,8 @@ public:
 	bool leftMousePressed(tgui::Vector2f pos) override;
 	void mouseMoved(tgui::Vector2f pos) override;
 	void leftMouseReleased(tgui::Vector2f pos) override;
+
+	std::optional<ResizableCanvasBox *> getAtlasRect();
 
 	void updateAtlasRect(Rectangle r);
 	void updateCollisionRect(Rectangle r);

@@ -1,5 +1,3 @@
-// TODO: Timeline, where the user can add frames and remove them.
-
 #include "fileViews/actorFileView.hpp"
 
 #include "TGUI/String.hpp"
@@ -10,6 +8,7 @@
 #include "raylib.h"
 #include "services/translationService.hpp"
 #include "views/actorView.hpp"
+#include "views/propPreview.hpp"
 #include "widgets/frameEditor.hpp"
 #include "widgets/propertiesBox.hpp"
 #include "widgets/propertyFields/fileField.hpp"

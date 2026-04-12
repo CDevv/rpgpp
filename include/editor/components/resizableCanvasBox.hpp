@@ -19,6 +19,8 @@ public:
 	// @returns the new rectangle after the mouse is released
 	Rectangle leftMouseReleased(Vector2 mousePos);
 
+	Rectangle getRectangle();
+
 	void updatePosition(float x, float y);
 	void updateSize(float width, float height);
 	void updateColor(Color color);

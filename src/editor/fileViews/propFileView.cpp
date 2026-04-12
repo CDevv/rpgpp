@@ -7,7 +7,9 @@
 #include "prop.hpp"
 #include "raylib.h"
 #include "variant.hpp"
+#include "views/propPreview.hpp"
 #include "views/propView.hpp"
+#include "views/worldView.hpp"
 #include "widgets/propertiesBox.hpp"
 #include "widgets/propertyFields/boolField.hpp"
 #include "widgets/propertyFields/fileField.hpp"
@@ -63,6 +65,13 @@ PropFileView::PropFileView() {
 	collisionsField->onChange([this](Rectangle r) { propView->updateCollisionRect(r); });
 	propBox->addRectangleField(collisionsField);
 
+	propPreview = PropPreview::create();
+	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(propPreview));
+	propPreview->setSize({"100%", "30%"});
+	propPreview->setPosition({"0%", "50%"});
+	propPreview->setOrigin({0, 0.5});
+	propBox->add(propPreview);
+
 	propView->onUpdatedAtlasRect([this](Rectangle r) { atlasRectField->setValue(r); });
 	propView->onUpdatedCollisionRect([this](Rectangle r) { collisionsField->setValue(r); });
 	widgetContainer.push_back(propBox);
@@ -86,5 +95,12 @@ void PropFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 	collisionsField->setValue(prop->getCollisionRect());
 	interactableTypeField->value->setSelectedItem(prop->getInteractableType());
 	interactableTypeField->setEnabled(prop->getHasInteractable());
+
+	propPreview->setProp(prop);
+	auto val = propView->getAtlasRect();
+	if (val.has_value()) {
+		propPreview->setBox(val.value());
+	}
+
 	addWidgets(layout);
 }

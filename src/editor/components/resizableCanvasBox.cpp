@@ -32,6 +32,8 @@ void ResizableCanvasBox::updateRec(Rectangle rec) {
 	this->height = rec.height;
 }
 
+Rectangle ResizableCanvasBox::getRectangle() { return {this->x, this->y, this->width, this->height}; }
+
 bool ResizableCanvasBox::leftMousePressed(Vector2 mousePos) {
 	resizeDirection = NONE;
 

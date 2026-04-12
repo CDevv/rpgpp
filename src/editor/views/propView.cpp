@@ -1,6 +1,7 @@
 #include "views/propView.hpp"
 
 #include <memory>
+#include <optional>
 
 #include "components/resizableCanvasBox.hpp"
 #include "prop.hpp"
@@ -110,6 +111,20 @@ void PropView::updateAtlasRect(Rectangle r) {
 		if (box.id == rectTypeToStr(RectType::ATLAS_RECT)) box.updateRec(r);
 	}
 	p->setAtlasRect(r);
+}
+
+std::optional<ResizableCanvasBox *> PropView::getAtlasRect() {
+	// NOTE: Can we please switch to an std::map based system?
+
+	// please?
+
+	if (this->p == nullptr) return std::nullopt;
+	for (auto &box : boxes) {
+		if (box.id == rectTypeToStr(RectType::ATLAS_RECT)) {
+			return &box;
+		}
+	}
+	return std::nullopt;
 }
 
 void PropView::updateCollisionRect(Rectangle r) {
