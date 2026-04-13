@@ -21,7 +21,8 @@ ProjectSettingsWindow::ProjectSettingsWindow() : PopupWindow("ProjectSettings") 
 	tabContainer->setPosition(0, 0);
 	tabContainer->setSize({"100%", "100% - 36"});
 
-	auto saveButton = tgui::Button::create("Save");
+	auto saveButton = tgui::Button::create();
+	bindTranslation<tgui::Button>(saveButton, "dialog.project_settings.save", &tgui::Button::setText);
 	saveButton->setPosition(2, "100% - 32");
 	saveButton->setSize("100% - 4", 30);
 	saveButton->onClick([] {

@@ -132,7 +132,12 @@
 		},
 		"project_settings": {
 			"_label": "Project Settings",
-			"title": "Title"
+			"title": "Title",
+			"program_icon": "Program Icon",
+			"window_width": "Window Width",
+			"window_height": "Window Height",
+			"is_resizable": "Is window Resizable?",
+			"save": "Save"
 		},
 		"new_prop": {
 			"title": "New Prop",

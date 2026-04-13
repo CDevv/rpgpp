@@ -34,7 +34,7 @@ void PropPreview::drawCanvas() {
 }
 
 void PropPreview::drawOverlay() {
-	if (this->isOverBounds) DrawText("Over bounds!", 0, 0, FONT_SIZE, RED);
+	if (this->isOverBounds) DrawText("Out of bounds!", 0, 0, FONT_SIZE, RED);
 
 	DrawText("Preview", 0, this->getSize().y - FONT_SIZE, FONT_SIZE, BLACK);
 }

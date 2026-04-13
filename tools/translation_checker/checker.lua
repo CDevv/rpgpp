@@ -60,36 +60,36 @@ local function _CompareTranslation(base, target, filename)
 	local translatedCnt = tableLength(base) - tableLength(missing) - tableLength(untranslated)
 	local percent = translatedCnt / tableLength(base) * 100
 
-	print("\n" .. "===" .. filename .. "===")
-	print("Completion: " .. percent .. "%")
+	print("\n" .. target["language"] .. " (" .. filename .. ")\n" .. "--------")
+	print("Completion: " .. string.format("%.2f", percent) .. "%")
 
 	table.sort(missing)
 	table.sort(extra)
 	table.sort(untranslated)
 
 	if #missing ~= 0 then
-		print("\n" .. "Missing keys (should be added):")
+		print("Missing keys (should be added):")
 		for _, k in ipairs(missing) do
 			print(" - " .. k)
 		end
 	end
 
 	if #untranslated ~= 0 then
-		print("\n" .. "Untranslated keys (same as base):")
+		print("Untranslated keys (same as base):")
 		for _, k in ipairs(untranslated) do
 			print(" - " .. k)
 		end
 	end
 
 	if #extra ~= 0 then
-		print("\n" .. "Extra keys (should be removed):")
+		print("Extra keys (should be removed):")
 		for _, k in ipairs(extra) do
 			print(" - " .. k)
 		end
 	end
 
 	if #missing == 0 and #untranslated == 0 and #extra == 0 then
-		print("\n" .. "Translation is up to date!")
+		print("Translation is up to date!")
 	end
 end
 

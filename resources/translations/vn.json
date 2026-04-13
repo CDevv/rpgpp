@@ -111,6 +111,14 @@
 				"play": "Chạy chương trình",
 				"build": "Dịch và tạo chương trình"
 			}
+		},
+		"project_options": {
+			"program": {
+				"_label": "Phần mềm"
+			},
+			"game": {
+				"_label": "Trò chơi"
+			}
 		}
 	},
 
@@ -132,7 +140,12 @@
 		},
 		"project_settings": {
 			"_label": "Cấu hình dự án",
-			"title": "Tên dự án"
+			"title": "Tên dự án",
+			"program_icon": "Biểu tượng",
+			"window_width": "Chiều rộng cửa sổ",
+			"window_height": "Chiều cao cửa sổ",
+			"is_resizable": "Cửa sổ có thể thay đổi kích cỡ?",
+			"save": "Lưu"
 		},
 		"new_prop": {
 			"title": "Tạo Prop mới",
