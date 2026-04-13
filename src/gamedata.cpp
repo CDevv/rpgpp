@@ -96,8 +96,19 @@ void serialize(Archive &a, DialogueBin &b) {
 }
 
 template <class Archive>
+void serialize(Archive &a, ProjectProgramSettings &b) {
+	a(b.projectTitle, b.windowSize, b.programIconPath, b.windowResizeableFlag);
+}
+
+template <class Archive>
+void serialize(Archive &a, ProjectGameSettings &b) {
+	a(b.defaultRoomPath, b.playerActorPath, b.tileSize);
+}
+
+template <class Archive>
 void serialize(Archive &a, GameData &b) {
-	a(b.title, b.images, b.tilesets, b.rooms, b.actors, b.props, b.dialogues, b.music, b.interactables, b.scripts);
+	a(b.title, b.programSet, b.gameSet, b.images, b.tilesets, b.rooms, b.actors, b.props, b.dialogues, b.music,
+	  b.interactables, b.scripts);
 }
 
 template <class Archive>

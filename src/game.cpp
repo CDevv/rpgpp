@@ -59,9 +59,35 @@ void Game::useBin(const std::string &filePath) {
 		UnloadImage(image);
 	}
 
+	/// Setup program
 	SetWindowTitle(gameData->title.c_str());
+	SetWindowSize(gameData->programSet.windowSize.x, gameData->programSet.windowSize.y);
+	if (gameData->programSet.windowResizeableFlag) {
+		SetWindowState(FLAG_WINDOW_RESIZABLE);
+	} else {
+		ClearWindowState(FLAG_WINDOW_RESIZABLE);
+	}
 
-	world->setRoomBin(gameData->rooms.at(0));
+	auto iconTexture = resources->getTexture(GetFileName(gameData->programSet.programIconPath.c_str()));
+	Image iconImage = LoadImageFromTexture(iconTexture);
+
+	SetWindowIcon(iconImage);
+
+	UnloadImage(iconImage);
+	///
+
+	/// Select the default room from the settings
+	if (gameData->gameSet.defaultRoomPath.empty()) {
+		world->setRoomBin(gameData->rooms.at(0));
+	} else {
+		std::string chosenName = GetFileNameWithoutExt(gameData->gameSet.defaultRoomPath.c_str());
+		for (auto &room : gameData->rooms) {
+			if (room.name == chosenName) {
+				world->setRoomBin(room);
+				break;
+			}
+		}
+	}
 }
 
 GameData &Game::getBin() { return *gameData; }

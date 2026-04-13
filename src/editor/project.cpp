@@ -60,20 +60,21 @@ Project::Project(const std::string &path) {
 	char *jsonContent = LoadFileText(path.c_str());
 	json j = json::parse(jsonContent);
 
-	this->projectTitle = j.at("title");
-	this->windowSize = {j.at("windowSize")[0], j.at("windowSize")[1]};
-	this->programIconPath = j.at("programIcon");
-	this->windowResizeableFlag = j.at("windowResizeable");
+	programSet.projectTitle = j.at("title");
+	programSet.windowSize = {j.at("windowSize")[0], j.at("windowSize")[1]};
+	programSet.programIconPath = j.at("programIcon");
+	programSet.windowResizeableFlag = j.at("windowResizeable");
+
+	gameSet.defaultRoomPath = j.at("defaultRoom");
+	gameSet.playerActorPath = j.at("playerActor");
+	gameSet.tileSize = j.at("tileSize");
 
 	ChangeDirectory(projectPath.c_str());
 	UnloadFileText(jsonContent);
 }
 
 std::string Project::create(const std::string &dirPath, const std::string &title) {
-	json j = json::object();
-	j["title"] = title;
-	j["windowSize"] = std::array<int, 2>({640, 480});
-	j["programIcon"] = "";
+	json j = Project().toJson();
 	std::string fileContent = j.dump();
 
 	std::filesystem::path filePath = dirPath;
@@ -101,29 +102,22 @@ void Project::openProject(const tgui::String &filePath, bool forceSwitch) {
 
 json Project::toJson() {
 	json j = json::object();
-	j["title"] = projectTitle;
-	j["windowSize"] = {windowSize.x, windowSize.y};
-	j["programIcon"] = programIconPath;
-	j["windowResizeable"] = windowResizeableFlag;
+
+	j["title"] = programSet.projectTitle;
+	j["windowSize"] = {programSet.windowSize.x, programSet.windowSize.y};
+	j["programIcon"] = programSet.programIconPath;
+	j["windowResizeable"] = programSet.windowResizeableFlag;
+
+	j["defaultRoom"] = gameSet.defaultRoomPath;
+	j["tileSize"] = gameSet.tileSize;
+	j["playerActor"] = gameSet.playerActorPath;
 
 	return j;
 }
 
-std::string &Project::getTitle() { return projectTitle; }
+ProjectProgramSettings &Project::getProgramSettings() { return programSet; }
 
-void Project::setTitle(const std::string &newTitle) { projectTitle = newTitle; }
-
-IVector Project::getWindowSize() { return windowSize; }
-
-void Project::setWindowSize(IVector newWindowSize) { windowSize = newWindowSize; }
-
-std::string &Project::getProgramIconPath() { return programIconPath; }
-
-void Project::setProgramIconPath(const std::string &newProgramIconPath) { programIconPath = newProgramIconPath; }
-
-bool Project::isWindowResizeable() { return windowResizeableFlag; }
-
-void Project::setIsWindowResizeable(bool value) { windowResizeableFlag = value; }
+ProjectGameSettings &Project::getGameSettings() { return gameSet; }
 
 std::string &Project::getBasePath() { return projectPath; }
 
@@ -193,7 +187,9 @@ std::vector<std::string> Project::getPropsNames() {
 
 GameData Project::generateStruct() {
 	GameData data;
-	data.title = projectTitle;
+	data.title = programSet.projectTitle;
+	data.programSet = programSet;
+	data.gameSet = gameSet;
 
 	for (auto tileSetPath : getPaths(EngineFileType::FILE_TILESET)) {
 		TileSet tileSet(tileSetPath);
@@ -606,10 +602,10 @@ void Project::buildProject() {
 
 #ifdef _WIN64
 	baseGamePath /= "game.exe";
-	resultPath /= TextFormat("%s.exe", projectTitle.c_str());
+	resultPath /= TextFormat("%s.exe", programSet.projectTitle.c_str());
 #else
 	baseGamePath /= "game";
-	resultPath /= projectTitle;
+	resultPath /= programSet.projectTitle;
 #endif
 
 	try {

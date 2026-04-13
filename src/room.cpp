@@ -141,7 +141,14 @@ Room::Room(const RoomBin &bin) : Room() {
 
 	this->tileMap = std::make_unique<TileMap>(bin);
 
-	auto &actorBin = Game::getBin().actors["playerActor"];
+	ActorBin actorBin;
+
+	if (Game::getBin().gameSet.playerActorPath.empty()) {
+		actorBin = Game::getBin().actors["playerActor"];
+	} else {
+		std::string playerActorName = GetFileNameWithoutExt(Game::getBin().gameSet.playerActorPath.c_str());
+		actorBin = Game::getBin().actors[playerActorName];
+	}
 
 	auto actor = std::make_unique<Actor>(actorBin);
 	actor->setTilePosition(Vector2{static_cast<float>(bin.startPoint.x), static_cast<float>(bin.startPoint.y)},

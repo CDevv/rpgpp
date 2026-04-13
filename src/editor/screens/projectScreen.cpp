@@ -242,7 +242,7 @@ tgui::Group::Ptr ProjectScreen::createToolBar() {
 
 	assert(project && "project isn't instanciated (nullptr)");
 
-	projectLabel->setText(project->getTitle());
+	projectLabel->setText(project->getProgramSettings().projectTitle);
 
 	toolBar->add(projectLabel, "projectLabel");
 

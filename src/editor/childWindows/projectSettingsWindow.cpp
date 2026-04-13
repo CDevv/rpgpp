@@ -48,6 +48,7 @@ void ProjectSettingsWindow::open() {
 	Project *project = Editor::instance->getProject();
 
 	program->setup(project);
+	game->setup(project);
 
 	PopupWindow::open();
 }

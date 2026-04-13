@@ -29,7 +29,7 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 	titleField->value->onTextChange([](const tgui::String &text) {
 		Project *project = Editor::instance->getProject();
 		if (project != nullptr) {
-			project->setTitle(text.toStdString());
+			project->getProgramSettings().projectTitle = text.toStdString();
 		}
 	});
 
@@ -40,7 +40,8 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 	programIcon->callback = [](const tgui::String &path) {
 		Project *project = Editor::instance->getProject();
 		if (project != nullptr) {
-			project->setProgramIconPath(TextFormat("images/%s", GetFileName(path.toStdString().c_str())));
+			project->getProgramSettings().programIconPath =
+				TextFormat("images/%s", GetFileName(path.toStdString().c_str()));
 		}
 	};
 
@@ -52,9 +53,9 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 	windowSizeX->value->onValueChange([](int value) {
 		Project *project = Editor::instance->getProject();
 		if (project != nullptr) {
-			auto windowSize = project->getWindowSize();
+			auto windowSize = project->getProgramSettings().windowSize;
 			windowSize.x = value;
-			project->setWindowSize(windowSize);
+			project->getProgramSettings().windowSize = windowSize;
 		}
 	});
 
@@ -66,9 +67,9 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 	windowSizeY->value->onValueChange([](int value) {
 		Project *project = Editor::instance->getProject();
 		if (project != nullptr) {
-			auto windowSize = project->getWindowSize();
+			auto windowSize = project->getProgramSettings().windowSize;
 			windowSize.y = value;
-			project->setWindowSize(windowSize);
+			project->getProgramSettings().windowSize = windowSize;
 		}
 	});
 
@@ -77,7 +78,7 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 	resizeable->label->setText("Window Resizeable?");
 	resizeable->value->onChange([](bool value) {
 		Project *project = Editor::instance->getProject();
-		project->setIsWindowResizeable(value);
+		project->getProgramSettings().windowResizeableFlag = value;
 	});
 
 	layout->add(titleField);
@@ -93,11 +94,15 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 void ProjectSettingsPanelProgram::setup(Project *project) {
 	if (project == nullptr) return;
 
-	titleField->value->setText(project->getTitle());
-	if (!project->getProgramIconPath().empty()) {
-		programIcon->value->setText(GetFileName(project->getProgramIconPath().c_str()));
+	auto &programSet = project->getProgramSettings();
+
+	titleField->value->setText(programSet.projectTitle);
+	if (!programSet.programIconPath.empty()) {
+		programIcon->value->setText(GetFileName(programSet.programIconPath.c_str()));
 	}
 
-	windowSizeX->value->setValue(project->getWindowSize().x);
-	windowSizeY->value->setValue(project->getWindowSize().y);
+	windowSizeX->value->setValue(programSet.windowSize.x);
+	windowSizeY->value->setValue(programSet.windowSize.y);
+
+	resizeable->value->setChecked(programSet.windowResizeableFlag);
 }

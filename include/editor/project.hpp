@@ -15,24 +15,19 @@ using json = nlohmann::json;
 class Project {
 private:
 	std::string projectPath;
-	std::string projectTitle;
-	IVector windowSize = {640, 480};
-	std::string programIconPath = "";
-	bool windowResizeableFlag = false;
+	ProjectProgramSettings programSet;
+	ProjectGameSettings gameSet;
 
 public:
+	Project() = default;
 	Project(const std::string &path);
 	static std::string create(const std::string &dirPath, const std::string &title);
 	static void openProject(const tgui::String &filePath, bool forceSwitch = false);
 	json toJson();
-	std::string &getTitle();
-	void setTitle(const std::string &newTitle);
-	IVector getWindowSize();
-	void setWindowSize(IVector newWindowSize);
-	std::string &getProgramIconPath();
-	void setProgramIconPath(const std::string &newProgramIconPath);
-	bool isWindowResizeable();
-	void setIsWindowResizeable(bool value);
+
+	ProjectProgramSettings &getProgramSettings();
+	ProjectGameSettings &getGameSettings();
+
 	std::string &getBasePath();
 	std::vector<std::string> getPaths(EngineFileType fileType);
 	std::string getResourcePath(EngineFileType fileType, const std::string &fileName);

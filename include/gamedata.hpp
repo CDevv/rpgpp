@@ -138,8 +138,23 @@ struct GameBinSettings {
 	std::string playerActor;
 };
 
+struct ProjectProgramSettings {
+	std::string projectTitle;
+	IVector windowSize = {640, 480};
+	std::string programIconPath = "";
+	bool windowResizeableFlag = false;
+};
+
+struct ProjectGameSettings {
+	std::string defaultRoomPath;
+	std::string playerActorPath;
+	int tileSize = 16;
+};
+
 struct GameData {
 	std::string title;
+	ProjectProgramSettings programSet;
+	ProjectGameSettings gameSet;
 	std::map<std::string, FontBin> fonts;
 	std::map<std::string, ImageBin> images;
 	std::map<std::string, TileSetBin> tilesets;
