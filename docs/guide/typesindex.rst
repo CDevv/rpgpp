@@ -7,3 +7,4 @@ Resource Types
     resourcetypes/actor
     resourcetypes/dialogue
     resourcetypes/prop
+    resourcetypes/interactable

@@ -105,14 +105,6 @@
 				"play": "Play",
 				"build": "Build"
 			}
-		},
-		"project_options": {
-			"program": {
-				"_label": "Program"
-			},
-			"game": {
-				"_label": "Game"
-			}
 		}
 	},
 	"dialog": {
@@ -133,11 +125,21 @@
 		"project_settings": {
 			"_label": "Project Settings",
 			"title": "Title",
-			"program_icon": "Program Icon",
-			"window_width": "Window Width",
-			"window_height": "Window Height",
-			"is_resizable": "Is window Resizable?",
-			"save": "Save"
+			"save": "Save",
+			"program": {
+				"_label": "Program",
+				"title": "Title",
+				"program_icon": "Program Icon",
+				"window_width": "Window Width",
+				"window_height": "Window Height",
+				"is_resizable": "Is window Resizable?"
+			},
+			"game": {
+				"_label": "Game",
+				"default_room": "Default Room",
+				"player_actor": "Player Actor",
+				"tile_size": "Tile Size"
+			}
 		},
 		"new_prop": {
 			"title": "New Prop",

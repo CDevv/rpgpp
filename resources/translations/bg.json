@@ -124,7 +124,22 @@
 		},
 		"project_settings": {
 			"_label": "Настройки на проекта",
-			"title": "Име"
+			"title": "Име",
+			"save": "Запази",
+			"program": {
+				"_label": "Програма",
+				"title": "Име",
+				"program_icon": "Икона на програма",
+				"window_width": "Ширина на прозореца",
+				"window_height": "Височина на прозореца",
+				"is_resizable": "Позволи оразмеряване?"
+			},
+			"game": {
+				"_label": "Игра",
+				"default_room": "Първоначална стая",
+				"player_actor": "Актьор на играча",
+				"tile_size": "Размер на плочка"
+			}
 		},
 		"new_prop": {
 			"title": "Нов обект",

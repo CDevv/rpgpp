@@ -2,6 +2,7 @@
 
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
+#include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "childWindows/settingsPanel/base.hpp"
 #include "project.hpp"
@@ -10,7 +11,7 @@
 #include "widgets/propertyFields/intField.hpp"
 
 ProjectSettingsPanelGame::ProjectSettingsPanelGame(tgui::TabContainer::Ptr tabContainer)
-	: SettingsPanelBase(tabContainer, "screen.project_options.game._label") {
+	: SettingsPanelBase(tabContainer, "dialog.project_settings.game._label") {
 	const tgui::ScrollablePanel::Ptr scrollPanel = tgui::ScrollablePanel::create();
 	scrollPanel->setSize("100%", "100%");
 	scrollPanel->getRenderer()->setPadding(4);
@@ -22,9 +23,9 @@ ProjectSettingsPanelGame::ProjectSettingsPanelGame(tgui::TabContainer::Ptr tabCo
 	layout->getRenderer()->setSpaceBetweenWidgets(10.0f);
 
 	defaultRoom = FileField::create();
+	bindTranslation(defaultRoom->label, "dialog.project_settings.game.default_room", &tgui::Label::setText);
 	defaultRoom->setSize({"100%", 24});
 	defaultRoom->pathFilters = {{"RPG++ Room", {"*.rmap"}}};
-	defaultRoom->label->setText("Default Room");
 	defaultRoom->callback = [](const tgui::String &path) {
 		Project *project = Editor::instance->getProject();
 		if (project != nullptr) {
@@ -34,6 +35,7 @@ ProjectSettingsPanelGame::ProjectSettingsPanelGame(tgui::TabContainer::Ptr tabCo
 	};
 
 	playerActor = FileField::create();
+	bindTranslation(playerActor->label, "dialog.project_settings.game.player_actor", &tgui::Label::setText);
 	playerActor->setSize({"100%", 24});
 	playerActor->pathFilters = {{"RPG++ Actor", {"*.ractor"}}};
 	playerActor->label->setText("Player Actor");
@@ -46,7 +48,9 @@ ProjectSettingsPanelGame::ProjectSettingsPanelGame(tgui::TabContainer::Ptr tabCo
 	};
 
 	tileSize = IntField::create();
+	bindTranslation(tileSize->label, "dialog.project_settings.game.tile_size", &tgui::Label::setText);
 	tileSize->setSize({"100%", 24});
+	tileSize->label->setText("Tile Size");
 	tileSize->value->setMinimum(16);
 	tileSize->value->setMaximum(64);
 	tileSize->value->onValueChange([](int value) {

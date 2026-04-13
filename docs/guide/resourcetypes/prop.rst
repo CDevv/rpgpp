@@ -52,3 +52,5 @@ You can also change the image for this Prop.
 Atlas Rect refers to the portion of the Prop Image, that will be shown.
 Collision Rect refers to the position and size of the collision, relative to the top left corner of the Prop.
 Both properties have X and Y for position and W and H for size.
+
+You can also see a preview of your Prop under the properties. It will show how the Prop will actually look like in-game.
