@@ -36,7 +36,7 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 	programIcon = FileField::create();
 	programIcon->setSize({"100%", 24});
 	programIcon->pathFilters = {{"Image", {"*.png", "*.jpg"}}};
-	programIcon->label->setText("Program Icon");
+	bindTranslation(programIcon->label, "dialog.project_settings.program_icon", &tgui::Label::setText);
 	programIcon->callback = [](const tgui::String &path) {
 		Project *project = Editor::instance->getProject();
 		if (project != nullptr) {
@@ -46,7 +46,7 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 
 	windowSizeX = IntField::create();
 	windowSizeX->setSize({"100%", 24});
-	windowSizeX->label->setText("Window Width");
+	bindTranslation(windowSizeX->label, "dialog.project_settings.window_width", &tgui::Label::setText);
 	windowSizeX->value->setMinimum(640);
 	windowSizeX->value->setMaximum(1920);
 	windowSizeX->value->onValueChange([](int value) {
@@ -60,7 +60,7 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 
 	windowSizeY = IntField::create();
 	windowSizeY->setSize({"100%", 24});
-	windowSizeY->label->setText("Window Height");
+	bindTranslation(windowSizeY->label, "dialog.project_settings.window_height", &tgui::Label::setText);
 	windowSizeY->value->setMinimum(480);
 	windowSizeY->value->setMaximum(1080);
 	windowSizeY->value->onValueChange([](int value) {
@@ -74,7 +74,7 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 
 	resizeable = BoolField::create();
 	resizeable->setSize({"100%", 24});
-	resizeable->label->setText("Window Resizeable?");
+	bindTranslation(resizeable->label, "dialog.project_settings.is_resizable", &tgui::Label::setText);
 	resizeable->value->onChange([](bool value) {
 		Project *project = Editor::instance->getProject();
 		project->setIsWindowResizeable(value);
