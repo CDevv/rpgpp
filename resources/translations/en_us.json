@@ -132,7 +132,9 @@
 				"program_icon": "Program Icon",
 				"window_width": "Window Width",
 				"window_height": "Window Height",
-				"is_resizable": "Is window Resizable?"
+				"is_resizable": "Is window Resizable?",
+				"window_mode": "Window Mode",
+				"target_fps": "Target FPS"
 			},
 			"game": {
 				"_label": "Game",

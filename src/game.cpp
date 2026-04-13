@@ -67,6 +67,10 @@ void Game::useBin(const std::string &filePath) {
 	} else {
 		ClearWindowState(FLAG_WINDOW_RESIZABLE);
 	}
+	SetWindowState(gameData->programSet.windowStateFlag);
+	if (gameData->programSet.targetFPS > 0) {
+		SetTargetFPS(gameData->programSet.targetFPS);
+	}
 
 	auto iconTexture = resources->getTexture(GetFileName(gameData->programSet.programIconPath.c_str()));
 	Image iconImage = LoadImageFromTexture(iconTexture);

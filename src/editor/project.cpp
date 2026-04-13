@@ -60,14 +60,17 @@ Project::Project(const std::string &path) {
 	char *jsonContent = LoadFileText(path.c_str());
 	json j = json::parse(jsonContent);
 
-	programSet.projectTitle = j.at("title");
-	programSet.windowSize = {j.at("windowSize")[0], j.at("windowSize")[1]};
-	programSet.programIconPath = j.at("programIcon");
-	programSet.windowResizeableFlag = j.at("windowResizeable");
+	programSet.projectTitle = j.value("title", "");
+	programSet.windowSize = {j.value("windowSize", json::array({640, 480}))[0],
+							 j.value("windowSize", json::array({640, 480}))[1]};
+	programSet.programIconPath = j.value("programIcon", "");
+	programSet.windowResizeableFlag = j.value("windowResizeable", false);
+	programSet.windowStateFlag = j.value("windowState", 0);
+	programSet.targetFPS = j.value("targetFPS", 60);
 
-	gameSet.defaultRoomPath = j.at("defaultRoom");
-	gameSet.playerActorPath = j.at("playerActor");
-	gameSet.tileSize = j.at("tileSize");
+	gameSet.defaultRoomPath = j.value("defaultRoom", "");
+	gameSet.playerActorPath = j.value("playerActor", "");
+	gameSet.tileSize = j.value("tileSize", 16);
 
 	ChangeDirectory(projectPath.c_str());
 	UnloadFileText(jsonContent);
@@ -107,6 +110,8 @@ json Project::toJson() {
 	j["windowSize"] = {programSet.windowSize.x, programSet.windowSize.y};
 	j["programIcon"] = programSet.programIconPath;
 	j["windowResizeable"] = programSet.windowResizeableFlag;
+	j["windowState"] = programSet.windowStateFlag;
+	j["targetFPS"] = programSet.targetFPS;
 
 	j["defaultRoom"] = gameSet.defaultRoomPath;
 	j["tileSize"] = gameSet.tileSize;

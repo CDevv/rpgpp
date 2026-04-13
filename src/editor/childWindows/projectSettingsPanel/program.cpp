@@ -81,11 +81,43 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 		project->getProgramSettings().windowResizeableFlag = value;
 	});
 
+	windowStateFlag = SelectField::create();
+	windowStateFlag->setSize({"100%", 24});
+	bindTranslation(windowStateFlag->label, "dialog.project_settings.program.window_mode", &tgui::Label::setText);
+	for (auto &[k, v] : WindowStateToName) {
+		windowStateFlag->value->addItem(v);
+	}
+	windowStateFlag->value->onItemSelect([](const tgui::String &text) {
+		Project *project = Editor::instance->getProject();
+		if (project != nullptr) {
+			for (auto &[k, v] : WindowStateToName) {
+				if (v == text) {
+					project->getProgramSettings().windowStateFlag = k;
+					break;
+				}
+			}
+		}
+	});
+
+	targetFPS = IntField::create();
+	targetFPS->setSize({"100%", 24});
+	bindTranslation(targetFPS->label, "dialog.project_settings.program.target_fps", &tgui::Label::setText);
+	targetFPS->value->setMinimum(0);
+	targetFPS->value->setMaximum(1000);
+	targetFPS->value->onValueChange([](int value) {
+		Project *project = Editor::instance->getProject();
+		if (project != nullptr) {
+			project->getProgramSettings().targetFPS = value;
+		}
+	});
+
 	layout->add(titleField);
 	layout->add(programIcon);
 	layout->add(windowSizeX);
 	layout->add(windowSizeY);
 	layout->add(resizeable);
+	layout->add(windowStateFlag);
+	layout->add(targetFPS);
 
 	scrollPanel->add(layout);
 	panel->add(scrollPanel);
@@ -105,4 +137,6 @@ void ProjectSettingsPanelProgram::setup(Project *project) {
 	windowSizeY->value->setValue(programSet.windowSize.y);
 
 	resizeable->value->setChecked(programSet.windowResizeableFlag);
+	windowStateFlag->value->setSelectedItem(WindowStateToName.at(programSet.windowStateFlag));
+	targetFPS->value->setValue(programSet.targetFPS);
 }

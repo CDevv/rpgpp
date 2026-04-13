@@ -143,6 +143,8 @@ struct ProjectProgramSettings {
 	IVector windowSize = {640, 480};
 	std::string programIconPath = "";
 	bool windowResizeableFlag = false;
+	int targetFPS = 60;
+	int windowStateFlag = 0;
 };
 
 struct ProjectGameSettings {
