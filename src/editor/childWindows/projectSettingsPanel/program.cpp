@@ -123,6 +123,7 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 
 	layout->add(titleField);
 	layout->add(programIcon);
+	layout->add(versionField);
 	layout->add(windowSizeX);
 	layout->add(windowSizeY);
 	layout->add(resizeable);
