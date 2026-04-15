@@ -11,6 +11,7 @@
 class ProjectSettingsPanelProgram : public SettingsPanelBase {
 public:
 	TextField::Ptr titleField;
+	TextField::Ptr versionField;
 	FileField::Ptr programIcon;
 	IntField::Ptr windowSizeX;
 	IntField::Ptr windowSizeY;

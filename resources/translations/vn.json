@@ -137,6 +137,7 @@
 			"program": {
 				"_label": "Phần mềm",
 				"title": "Tên",
+				"version": "Phiên bản",
 				"program_icon": "Biểu tượng",
 				"window_width": "Chiều rộng cửa sổ",
 				"window_height": "Chiều cao cửa sổ",

@@ -140,6 +140,7 @@ struct GameBinSettings {
 
 struct ProjectProgramSettings {
 	std::string projectTitle;
+	std::string projectVersion;
 	IVector windowSize = {640, 480};
 	std::string programIconPath = "";
 	bool windowResizeableFlag = false;

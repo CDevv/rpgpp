@@ -63,6 +63,7 @@ Project::Project(const std::string &path) {
 	programSet.projectTitle = j.value("title", "");
 	programSet.windowSize = {j.value("windowSize", json::array({640, 480}))[0],
 							 j.value("windowSize", json::array({640, 480}))[1]};
+	programSet.projectVersion = j.value("version", "");
 	programSet.programIconPath = j.value("programIcon", "");
 	programSet.windowResizeableFlag = j.value("windowResizeable", false);
 	programSet.windowStateFlag = j.value("windowState", 0);
@@ -108,6 +109,7 @@ json Project::toJson() {
 
 	j["title"] = programSet.projectTitle;
 	j["windowSize"] = {programSet.windowSize.x, programSet.windowSize.y};
+	j["version"] = programSet.projectVersion;
 	j["programIcon"] = programSet.programIconPath;
 	j["windowResizeable"] = programSet.windowResizeableFlag;
 	j["windowState"] = programSet.windowStateFlag;

@@ -33,6 +33,16 @@ ProjectSettingsPanelProgram::ProjectSettingsPanelProgram(tgui::TabContainer::Ptr
 		}
 	});
 
+	versionField = TextField::create();
+	bindTranslation(versionField->label, "dialog.project_settings.program.version", &tgui::Label::setText);
+	versionField->setSize({"100%", 24});
+	versionField->value->onTextChange([](const tgui::String &text) {
+		Project *project = Editor::instance->getProject();
+		if (project != nullptr) {
+			project->getProgramSettings().projectVersion = text.toStdString();
+		}
+	});
+
 	programIcon = FileField::create();
 	programIcon->setSize({"100%", 24});
 	programIcon->pathFilters = {{"Image", {"*.png", "*.jpg"}}};
@@ -133,6 +143,7 @@ void ProjectSettingsPanelProgram::setup(Project *project) {
 		programIcon->value->setText(GetFileName(programSet.programIconPath.c_str()));
 	}
 
+	versionField->value->setText(programSet.projectVersion);
 	windowSizeX->value->setValue(programSet.windowSize.x);
 	windowSizeY->value->setValue(programSet.windowSize.y);
 

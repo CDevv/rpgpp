@@ -129,6 +129,7 @@
 			"program": {
 				"_label": "Program",
 				"title": "Title",
+				"version": "Version",
 				"program_icon": "Program Icon",
 				"window_width": "Window Width",
 				"window_height": "Window Height",
