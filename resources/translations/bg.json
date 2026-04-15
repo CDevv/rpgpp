@@ -129,10 +129,13 @@
 			"program": {
 				"_label": "Програма",
 				"title": "Име",
+				"version": "Версия",
 				"program_icon": "Икона на програма",
 				"window_width": "Ширина на прозореца",
 				"window_height": "Височина на прозореца",
-				"is_resizable": "Позволи оразмеряване?"
+				"is_resizable": "Позволи оразмеряване?",
+				"window_mode": "Режим на прозореца",
+				"target_fps": "Кадри в секунда"
 			},
 			"game": {
 				"_label": "Игра",

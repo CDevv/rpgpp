@@ -14,6 +14,8 @@ There are two categories in Project Settings:
 
     * **Title** - The Window's title.
 
+    * **Version** - Version of the game.
+
     * **Program Icon** - The icon of the window.
 
     * **Window Width** - Width of the window.
@@ -21,6 +23,8 @@ There are two categories in Project Settings:
     * **Window Height** - Height of the window.
 
     * **Is Window Resizeable** - Whether the window will be resizeable.
+
+    * **Target FPS** - The frames per second that will be targeted.
 
 * **Game**:
 
