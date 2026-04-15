@@ -105,14 +105,6 @@
         "play": "Oyna",
         "build": "Derle"
       }
-    },
-    "project_options": {
-      "program": {
-        "_label": "Uygulama"
-      },
-      "game": {
-        "_label": "Oyun"
-      }
     }
   },
   "dialog": {
@@ -132,7 +124,25 @@
     },
     "project_settings": {
       "_label": "Proje Ayarları",
-      "title": "Başlık"
+      "title": "Başlık",
+      "save": "Kaydet",
+      "program": {
+        "_label": "Uygulama",
+        "title": "Başlık",
+        "version": "Versiyon",
+        "program_icon": "Uygulama Simgesi",
+        "window_width": "Pencere Genişliği",
+        "window_height": "Pencere Uzunluğu",
+        "is_resizable": "Pencerenin Boyutu Değiştirilebilir mi?",
+        "window_mode": "Pencere Modu",
+        "target_fps": "Hedef FPS"
+      },
+      "game": {
+        "_label": "Oyun",
+        "default_room": "Öntanımlı Oda",
+        "player_actor": "Oyuncunun Aktörü",
+        "tile_size": "Kare Boyutu"
+      }
     },
     "new_prop": {
       "title": "Yeni Obje",
