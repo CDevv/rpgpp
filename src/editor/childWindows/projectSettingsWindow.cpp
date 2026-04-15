@@ -43,6 +43,8 @@ ProjectSettingsWindow::ProjectSettingsWindow() : PopupWindow("ProjectSettings") 
 
 	this->currentWindow->add(tabContainer);
 	this->currentWindow->add(saveButton);
+
+	this->currentWindow->setSize({"40%", "40%"});
 }
 
 void ProjectSettingsWindow::open() {
