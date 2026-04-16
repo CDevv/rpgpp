@@ -16,6 +16,7 @@
 #include "fileViews/roomFileView.hpp"
 #include "fileViews/soundFileView.hpp"
 #include "fileViews/tilesetFileView.hpp"
+#include "gamedata.hpp"
 #include "interactable.hpp"
 #include "projectFile.hpp"
 #include "room.hpp"
@@ -24,6 +25,7 @@
 #include "saveables/soundWrapper.hpp"
 #include "scriptFile.h"
 #include "services/fileSystemService.hpp"
+#include "tilemap.hpp"
 #include "tileset.hpp"
 #include "variant.hpp"
 
@@ -61,7 +63,8 @@ std::unique_ptr<ProjectFile> ProjectFileVisitor::tilesetView(const std::string &
 
 std::unique_ptr<ProjectFile> ProjectFileVisitor::roomView(const std::string &path) {
 	std::unique_ptr<FileView> view = std::make_unique<RoomFileView>();
-	std::unique_ptr<VariantWrapper> variant = std::make_unique<Variant<Room>>(new Room(path));
+	std::unique_ptr<VariantWrapper> variant =
+		std::make_unique<Variant<Room>>(new Room(path, _RPGPP_TILESIZE * RPGPP_DRAW_MULTIPLIER, false));
 	return std::make_unique<ProjectFile>(std::move(view), std::move(variant), EngineFileType::FILE_MAP);
 }
 

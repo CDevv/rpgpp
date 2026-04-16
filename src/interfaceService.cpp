@@ -13,9 +13,9 @@
 InterfaceService::InterfaceService() {
 	fpsVisible = false;
 
-	this->font = LoadFontEx("LanaPixel.ttf", 13, nullptr, 250);
+	this->font = LoadFontEx("fonts/LanaPixel.ttf", 13, nullptr, 250);
 
-	Image img = LoadImage("ui-npatch.png");
+	Image img = LoadImage("images/ui-npatch.png");
 	ImageResizeNN(&img, img.width * 3, img.height * 3);
 
 	this->uiTexture = LoadTextureFromImage(img);

@@ -1,0 +1,17 @@
+{
+    "atlas_rect": [
+        0,
+        0,
+        16,
+        16
+    ],
+    "collision_rect": [
+        0,
+        8,
+        16,
+        8
+    ],
+    "has_interactable": true,
+    "image": "images/prop.png",
+    "interactable_type": "dialogue"
+}

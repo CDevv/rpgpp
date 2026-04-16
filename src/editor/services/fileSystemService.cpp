@@ -46,6 +46,13 @@ void FileSystemService::promptNewProject() {
 	newProjectDialog->confirmButton->onPress([newProjectDialog] {
 		std::string title = newProjectDialog->titleField->getText().toStdString();
 		std::string dirPath = newProjectDialog->fileField->getChosenPath().toStdString();
+
+		if (newProjectDialog->makeDirCheck->isChecked()) {
+			std::string newDirPath = TextFormat("%s/%s", dirPath.c_str(), title.c_str());
+			MakeDirectory(newDirPath.c_str());
+			dirPath = newDirPath;
+		}
+
 		if (!title.empty() && !dirPath.empty()) {
 			auto path = Project::create(dirPath, title);
 			Project::openProject(path, true);

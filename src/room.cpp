@@ -43,7 +43,7 @@ Room::Room() {
 	this->player = std::unique_ptr<Player>{};
 }
 
-Room::Room(const std::string &fileName, int tileSize) {
+Room::Room(const std::string &fileName, int tileSize, bool createPlayer) {
 	this->lock = false;
 
 	Camera2D initialCamera;
@@ -67,13 +67,15 @@ Room::Room(const std::string &fileName, int tileSize) {
 	this->collisions = std::make_unique<CollisionsContainer>();
 	this->actors = std::make_unique<ActorContainer>();
 	this->props = std::make_unique<PropsContainer>();
-
 	this->tileMap = std::make_unique<TileMap>(fileName);
-	auto actor = std::make_unique<Actor>(DEFAULT_PLAYER_PATH);
-	actor->setTilePosition(Vector2{startTile.x, startTile.y}, tileMap->getTileSet()->getTileSize());
-	auto initialPlayer = std::make_unique<Player>(std::move(actor), *this);
 
-	this->addPlayer(std::move(initialPlayer));
+	if (createPlayer) {
+		auto actor = std::make_unique<Actor>(DEFAULT_PLAYER_PATH);
+		actor->setTilePosition(Vector2{startTile.x, startTile.y}, tileMap->getTileSet()->getTileSize());
+		auto initialPlayer = std::make_unique<Player>(std::move(actor), *this);
+
+		this->addPlayer(std::move(initialPlayer));
+	}
 
 	std::vector<std::vector<int>> collisionsVec = roomJson.at("collision");
 	for (auto v : collisionsVec) {

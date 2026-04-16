@@ -92,10 +92,8 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	charNameEdit->setSize({"100% - 210 - 40", 32});
 	charNameEdit->setPosition(210, 0);
 	charNameEdit->setText(line.characterName);
-	charNameEdit->onTextChange([&line, &data, i](const tgui::String &text) {
-		line.characterName = text.toStdString();
-		data.lines.at(i).characterName = text.toStdString();
-	});
+	charNameEdit->onTextChange(
+		[&data, i](const tgui::String &text) { data.lines.at(i).characterName = text.toStdString(); });
 	panel->add(charNameEdit);
 
 	auto diagTextEdit = tgui::TextArea::create();

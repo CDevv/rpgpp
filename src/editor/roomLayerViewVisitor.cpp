@@ -182,12 +182,14 @@ void RoomLayerViewVisitor::operator()(enum_v<RoomLayer::LAYER_ACTORS>) {
 	updateInteractableChoose();
 
 	if (tool == RoomTool::TOOL_PLACE) {
+		auto vec = Editor::instance->getProject()->getPaths(EngineFileType::FILE_ACTOR);
+		if (vec.size() == 0) return;
+
 		group->add(tgui::Label::create("Actors"));
 
 		group->add(actorNameInput);
-
 		actorChoose->removeAllItems();
-		auto vec = Editor::instance->getProject()->getPaths(EngineFileType::FILE_ACTOR);
+
 		for (auto actorPath : vec) {
 			actorChoose->addItem(GetFileNameWithoutExt(actorPath.c_str()), actorPath);
 		}

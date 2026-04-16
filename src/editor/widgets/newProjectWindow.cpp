@@ -4,8 +4,10 @@
 
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/Button.hpp"
+#include "TGUI/Widgets/CheckBox.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
+#include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/Panel.hpp"
@@ -20,7 +22,7 @@ void NewProjectWindow::init(tgui::Gui *gui) {
 
 	window = tgui::ChildWindow::create();
 	bindTranslation<tgui::ChildWindow>(window, "dialog.new_project.title", &tgui::ChildWindow::setTitle);
-	window->setSize(320, 220);
+	window->setSize(320, 250);
 
 	auto panel = tgui::Panel::create();
 	panel->getRenderer()->setPadding({PADDING});
@@ -48,6 +50,18 @@ void NewProjectWindow::init(tgui::Gui *gui) {
 	fileField = FileChooser::create();
 	fileField->setSize({"100%", FIELD_H});
 	vertLayout->add(fileField);
+
+	auto gap2 = tgui::Label::copy(gap);
+
+	vertLayout->add(gap2);
+
+	auto makeDirPanel = tgui::Group::create({"100%", FIELD_H});
+	vertLayout->add(makeDirPanel);
+
+	makeDirCheck = tgui::CheckBox::create();
+	makeDirCheck->setSize({FIELD_H, FIELD_H});
+	makeDirCheck->setText("Make Directory?");
+	makeDirPanel->add(makeDirCheck);
 
 	confirmButton = tgui::Button::create();
 	bindTranslation<tgui::Button>(confirmButton, "dialog.new_project.confirm", &tgui::Button::setText);

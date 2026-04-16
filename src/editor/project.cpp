@@ -78,7 +78,9 @@ Project::Project(const std::string &path) {
 }
 
 std::string Project::create(const std::string &dirPath, const std::string &title) {
-	json j = Project().toJson();
+	Project p;
+	p.getProgramSettings().projectTitle = title;
+	json j = p.toJson();
 	std::string fileContent = j.dump();
 
 	std::filesystem::path filePath = dirPath;
@@ -88,10 +90,19 @@ std::string Project::create(const std::string &dirPath, const std::string &title
 	for (int i = 0; i < FILETYPE_MAX; i++) {
 		EngineFileType fileType = static_cast<EngineFileType>(i);
 
-		if (fileType == EngineFileType::FILE_INTERACTABLE) {
+		if (fileType != EngineFileType::FILE_EMPTY) {
 			std::string dirName = TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
 
-			MakeDirectory(std::filesystem::path(dirPath).append(dirName).u8string().c_str());
+			std::string typeDirPath = TextFormat("%s/%s", dirPath.c_str(), dirName.c_str());
+
+			std::string defaultDirName = TextFormat(
+				"%s/resources/defaults/%s", Editor::instance->getFs().getEditorBaseDir().c_str(), dirName.c_str());
+
+			if (DirectoryExists(defaultDirName.c_str())) {
+				std::filesystem::copy(defaultDirName, typeDirPath, std::filesystem::copy_options::recursive);
+			} else {
+				MakeDirectory(std::filesystem::path(dirPath).append(dirName).u8string().c_str());
+			}
 		}
 	}
 

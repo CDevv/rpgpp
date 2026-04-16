@@ -57,7 +57,7 @@ public:
 	/** Empty constructor */
 	Room();
 	/** Construct a Room from an .rmap file */
-	Room(const std::string &fileName, int tileSize = 48);
+	Room(const std::string &fileName, int tileSize = 48, bool createPlayer = true);
 	/** Construct a Room by using a TileMap pointer */
 	Room(std::unique_ptr<TileMap> tileMap);
 	/** Construct a Room by using the RoomBin binary structure

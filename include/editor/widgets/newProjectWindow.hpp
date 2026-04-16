@@ -4,6 +4,7 @@
 #include "TGUI/Backend/raylib.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/Button.hpp"
+#include "TGUI/Widgets/CheckBox.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/Label.hpp"
@@ -19,6 +20,7 @@ public:
 	tgui::Button::Ptr confirmButton;
 	tgui::Button::Ptr cancelButton;
 	tgui::Label::Ptr fileLabel;
+	tgui::CheckBox::Ptr makeDirCheck;
 
 	typedef std::shared_ptr<NewProjectWindow> Ptr;
 	typedef std::shared_ptr<const NewProjectWindow> ConstPtr;
