@@ -79,7 +79,7 @@ SettingsPanelGeneral::SettingsPanelGeneral(tgui::TabContainer::Ptr tabContainer)
 	this->promptUserBox = tgui::MessageBox::create("");
 	bindTranslation<tgui::MessageBox>(this->promptUserBox, "screen.options.general.theme", &tgui::MessageBox::setTitle);
 	bindTranslation(promptUserBox, "screen.options.general.theme_notice", &tgui::MessageBox::setText);
-	bindCustomTranslation<tgui::MessageBox>(this->promptUserBox, [&](std::shared_ptr<tgui::MessageBox> box,
+	bindTranslationWithCallback<tgui::MessageBox>(this->promptUserBox, [&](std::shared_ptr<tgui::MessageBox> box,
 																	 TranslationService &ts) {
 		box->changeButtons(std::vector<tgui::String>{ts.getKey("button.restart"), ts.getKey("button.restart_later")});
 	});

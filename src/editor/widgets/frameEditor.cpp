@@ -41,7 +41,7 @@ void FrameEditor::init() {
 
 	this->directionChooser = tgui::ComboBox::create();
 
-	bindCustomTranslation<tgui::ComboBox>(directionChooser, [](tgui::ComboBox::Ptr box, TranslationService &ts) {
+	bindTranslationWithCallback<tgui::ComboBox>(directionChooser, [](tgui::ComboBox::Ptr box, TranslationService &ts) {
 		box->removeAllItems();
 		for (int i = 0; i <= RPGPP_MAX_DIRECTION; i++)
 			box->addItem(ts.getKey(TextFormat("screen.project.actorview.dir%d", i)));
@@ -62,7 +62,7 @@ void FrameEditor::init() {
 
 	playPauseButton = tgui::ToggleButton::create();
 
-	bindCustomTranslation<tgui::ToggleButton>(
+	bindTranslationWithCallback<tgui::ToggleButton>(
 		playPauseButton, [this](tgui::ToggleButton::Ptr button, TranslationService &ts) {
 			if (button->isDown()) {
 				button->setText(ts.getKey("screen.project.actorview.pause"));

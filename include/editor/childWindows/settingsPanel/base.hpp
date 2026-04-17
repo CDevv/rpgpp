@@ -13,7 +13,7 @@ protected:
 public:
 	SettingsPanelBase(tgui::TabContainer::Ptr tabContainer, std::string name) {
 		panel = tabContainer->addTab(name);
-		bindCustomTranslation<tgui::TabContainer>(
+		bindTranslationWithCallback<tgui::TabContainer>(
 			tabContainer, [this, name](tgui::TabContainer::Ptr tabContainer, TranslationService &ts) {
 				int idx = tabContainer->getIndex(panel);
 				tabContainer->changeTabText(idx, ts.getKey(name));

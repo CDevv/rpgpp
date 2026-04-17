@@ -107,9 +107,9 @@ void TranslationService::purgeDeadListeners() {
 	}
 }
 
-// @notice Use of getKey is not recommended unless you guarantee that the widget
-// using the provided translation can update itself when translation changes.
-// Otherwise, please use `bindTranslation()` in `bindTranslation.hpp`
+// @notice Use of getKey is not recommended outside of the `bindTranslationWithCallback()`'s callbacks
+// unless you guarantee that the widget using `getKey()` can update itself when text translation changes.
+// Otherwise, please use `bindTranslation()` or `bindTranslationWithCallback()` in `bindTranslation.hpp`
 TranslatedString TranslationService::getKey(const std::string &key) {
 	if (translations.find(getCurrentLanguage()) != translations.end()) {
 		const auto &gotten_translations = translations[current_language];

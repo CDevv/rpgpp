@@ -14,6 +14,7 @@
 #include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
+#include "TGUI/Widgets/ContextMenu.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/MenuBar.hpp"
@@ -113,8 +114,11 @@ void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	auto &ts = Editor::instance->getTranslations();
 
 	fileContextMenu = tgui::ContextMenu::create();
-	fileContextMenu->addMenuItem(ts.getKey("context_menu.copy_full_path"));
-	fileContextMenu->addMenuItem(ts.getKey("context_menu.delete"));
+	bindTranslationWithCallback<tgui::ContextMenu>(fileContextMenu, [](std::shared_ptr<tgui::ContextMenu> menu, TranslationService &ts) {
+		menu->removeAllMenuItems();
+		menu->addMenuItem(ts.getKey("context_menu.copy_full_path"));
+		menu->addMenuItem(ts.getKey("context_menu.delete"));
+	});
 	Editor::instance->getGui().gui->add(fileContextMenu);
 
 	openedFiles = std::map<tgui::String, std::unique_ptr<ProjectFile>>{};
