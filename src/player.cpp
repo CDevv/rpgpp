@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include "conversion.hpp"
+#include "game.hpp"
 #include "interactable.hpp"
 
 Player::Player(std::unique_ptr<Actor> actor, Room &room) : room(room) {
@@ -79,11 +80,19 @@ void Player::update() {
 void Player::draw() const {
 	actor->draw();
 
-	// debug draw interactable area..
-	Color interactableAreaDebugColor = ORANGE;
-	interactableAreaDebugColor.a = (255 / 4);
+	bool debugDraw = true;
 
-	DrawRectangleRec(interactableArea, interactableAreaDebugColor);
+	if (Game::isUsingBin()) {
+		debugDraw = Game::getBin().gameSet.debugDraw;
+	}
+
+	if (debugDraw) {
+		// debug draw interactable area..
+		Color interactableAreaDebugColor = ORANGE;
+		interactableAreaDebugColor.a = (255 / 4);
+
+		DrawRectangleRec(interactableArea, interactableAreaDebugColor);
+	}
 }
 
 void Player::handleCollision() {
@@ -227,6 +236,12 @@ void Player::setTilePosition(Vector2 tilePos) {
 }
 
 Vector2 Player::getCollisionPos() const {
+	if (actor == nullptr) return Vector2{0, 0};
+
+	return actor->getCollisionCenter();
+}
+
+Vector2 Player::getCollisionCenterPos() const {
 	if (actor == nullptr) return Vector2{0, 0};
 
 	return actor->getCollisionCenter();

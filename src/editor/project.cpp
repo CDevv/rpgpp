@@ -72,6 +72,7 @@ Project::Project(const std::string &path) {
 	gameSet.defaultRoomPath = j.value("defaultRoom", "");
 	gameSet.playerActorPath = j.value("playerActor", "");
 	gameSet.tileSize = j.value("tileSize", 16);
+	gameSet.debugDraw = j.value("debugDraw", false);
 
 	ChangeDirectory(projectPath.c_str());
 	UnloadFileText(jsonContent);
@@ -129,6 +130,7 @@ json Project::toJson() {
 	j["defaultRoom"] = gameSet.defaultRoomPath;
 	j["tileSize"] = gameSet.tileSize;
 	j["playerActor"] = gameSet.playerActorPath;
+	j["debugDraw"] = gameSet.debugDraw;
 
 	return j;
 }
@@ -285,6 +287,22 @@ GameData Project::generateStruct() {
 			intBin.y = static_cast<int>(interactable->getWorldPos().y);
 			intBin.type = interactable->getType();
 			intBin.onTouch = interactable->isOnTouch();
+
+			// add missing props to the interactable in the map
+			for (auto &item : getInteractableNames()) {
+				std::string itemType = GetFileNameWithoutExt(item.first.c_str());
+				if (itemType == interactable->getType()) {
+					Interactable itemInteractable(item.first);
+
+					for (auto prop : itemInteractable.getProps().items()) {
+						if (!interactable->getProps().contains(prop.key())) {
+							interactable->getProps().push_back({prop.key(), prop.value()});
+						}
+					}
+
+					break;
+				}
+			}
 
 			intBin.propsCbor = nlohmann::json::to_cbor(interactable->getProps());
 

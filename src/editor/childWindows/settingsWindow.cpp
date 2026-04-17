@@ -17,4 +17,6 @@ SettingsWindow::SettingsWindow() : PopupWindow("SettingsWindow") {
 	general = std::make_shared<SettingsPanelGeneral>(tabContainer);
 	hotkeys = std::make_shared<SettingsPanelHotkeys>(tabContainer);
 	this->currentWindow->add(tabContainer);
+
+	tabContainer->getTabs()->select(0);
 }

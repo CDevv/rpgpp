@@ -141,7 +141,8 @@
 				"_label": "Игра",
 				"default_room": "Първоначална стая",
 				"player_actor": "Актьор на играча",
-				"tile_size": "Размер на плочка"
+				"tile_size": "Размер на плочка",
+				"debug_draw": "Дебъгерно рисуване"
 			}
 		},
 		"new_prop": {
@@ -155,6 +156,16 @@
 			"type": "Тип",
 			"submit": "Потвърди",
 			"remove": "Премахни"
+		},
+		"delete_file": {
+			"title": "Сигурни ли сте?",
+			"yes": "Да",
+			"no": "Не",
+			"ok": "Ок",
+			"room_must_exist": "Трябва да имате поне една стая..",
+			"room_cannot_be_deleted": "Не може да изтриете стаята, зададена по подразбиране.",
+			"player_actor_must_exist": "Трябва да имате playerActor файл.",
+			"player_actor_cannot_be_deleted": "Не може да изтриете актьора на играча."
 		}
 	},
 	"widget": {
@@ -169,5 +180,9 @@
 		"go_back": "Върни се",
 		"restart": "Рестартирай",
 		"restart_later": "Рестартирай по-късно"
+	},
+	"context_menu": {
+		"copy_full_path": "Копирай пълен път",
+		"delete": "Изтрий"
 	}
 }

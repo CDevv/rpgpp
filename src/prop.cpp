@@ -164,5 +164,13 @@ void Prop::draw() const {
 					  atlasRect.height * RPGPP_DRAW_MULTIPLIER};
 	DrawTexturePro(texture, atlasRect, dest, Vector2{0, 0}, 0.0f, WHITE);
 
-	DrawRectangleRec(getWorldCollisionRect(), Fade(RED, 0.5f));
+	bool debugDraw = true;
+
+	if (Game::isUsingBin()) {
+		debugDraw = Game::getBin().gameSet.debugDraw;
+	}
+
+	if (debugDraw) {
+		DrawRectangleRec(getWorldCollisionRect(), Fade(RED, 0.5f));
+	}
 }

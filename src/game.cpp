@@ -48,6 +48,8 @@ void Game::init() {
 	scripts = std::make_unique<ScriptService>();
 }
 
+bool Game::isUsingBin() { return usesBin; }
+
 void Game::useBin(const std::string &filePath) {
 	gameData = std::make_unique<GameData>(deserializeFile(filePath));
 	usesBin = true;

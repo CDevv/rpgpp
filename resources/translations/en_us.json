@@ -141,7 +141,8 @@
 				"_label": "Game",
 				"default_room": "Default Room",
 				"player_actor": "Player Actor",
-				"tile_size": "Tile Size"
+				"tile_size": "Tile Size",
+				"debug_draw": "Debug Draw"
 			}
 		},
 		"new_prop": {
@@ -155,6 +156,16 @@
 			"type": "Type",
 			"submit": "Submit",
 			"remove": "Remove"
+		},
+		"delete_file": {
+			"title": "Are you sure?",
+			"yes": "Yes",
+			"no": "No",
+			"ok": "Ok",
+			"room_must_exist": "You must have at least one Room.",
+			"room_cannot_be_deleted": "You cannot delete the default Room.",
+			"player_actor_must_exist": "You must have a playerActor file.",
+			"player_actor_cannot_be_deleted": "You cannot delete the Player's Actor."
 		}
 	},
 	"widget": {
@@ -169,5 +180,9 @@
 		"go_back": "Go Back",
 		"restart": "Restart",
 		"restart_later": "Restart Later"
+	},
+	"context_menu": {
+		"copy_full_path": "Copy full path",
+		"delete": "Delete"
 	}
 }

@@ -33,8 +33,6 @@ PropertiesBox::PropertiesBox(const char *typeName, bool initRenderer) : tgui::Ch
 
 	newPropButton = tgui::Button::create("New Prop..");
 	newPropButton->setSize("100%", 24);
-	vertLayout->add(newPropButton);
-	newPropButton->setVisible(false);
 
 	add(vertLayout);
 	this->layout = vertLayout;
@@ -67,7 +65,8 @@ void PropertiesBox::addPropsJson(nlohmann::json &j, bool clear, bool editable) {
 		}
 
 		// configure the 'New Prop' button
-		newPropButton->setVisible(true);
+		// newPropButton->setVisible(true);
+		layout->add(newPropButton);
 		newPropButton->onClick.disconnectAll();
 		newPropButton->onClick([this] {
 			auto windowPtr = Editor::instance->getGui().getChildWindowSubService()->getWindow("new_prop");

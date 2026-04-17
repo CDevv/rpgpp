@@ -169,16 +169,12 @@ Room::Room(const RoomBin &bin) : Room() {
 	for (auto const &propSource : bin.props) {
 		for (auto const &propBin : Game::getBin().props) {
 			std::string actualSource = GetFileNameWithoutExt(propSource.name.c_str());
-			printf("%s ; %s \n", propBin.name.c_str(), actualSource.c_str());
 			if (propBin.name == actualSource) {
-				printf("c \n");
 				auto p = std::make_unique<Prop>(propBin);
 				p->setWorldTilePos(
 					Vector2{static_cast<float>(propSource.tilePos.x), static_cast<float>(propSource.tilePos.y)},
 					worldTileSize);
 				p->getInteractable()->setProps(nlohmann::json::from_cbor(propSource.propsCbor));
-
-				// addProp(std::move(*p));
 
 				props->pushObject(propSource.tilePos, std::move(p));
 				break;
@@ -317,25 +313,35 @@ void Room::draw() const {
 	BeginMode2D(camera);
 
 	this->tileMap->draw();
-	for (auto i : interactables->getList()) {
-		auto rect = Rectangle{i->getWorldPos().x * static_cast<float>(getWorldTileSize()),
-							  i->getWorldPos().y * static_cast<float>(getWorldTileSize()),
-							  static_cast<float>(getWorldTileSize()), static_cast<float>(getWorldTileSize())};
-		DrawRectangleRec(rect, Fade(YELLOW, 0.5f));
+
+	bool debugDraw = true;
+
+	if (Game::isUsingBin()) {
+		debugDraw = Game::getBin().gameSet.debugDraw;
 	}
-	for (auto &[vect, value] : collisions->getObjects()) {
-		auto rect = Rectangle{vect.x * static_cast<float>(worldTileSize), vect.y * static_cast<float>(worldTileSize),
-							  static_cast<float>(worldTileSize), static_cast<float>(worldTileSize)};
-		DrawRectangleRec(rect, Fade(RED, 0.5f));
+
+	if (debugDraw) {
+		for (auto i : interactables->getList()) {
+			auto rect = Rectangle{i->getWorldPos().x * static_cast<float>(getWorldTileSize()),
+								  i->getWorldPos().y * static_cast<float>(getWorldTileSize()),
+								  static_cast<float>(getWorldTileSize()), static_cast<float>(getWorldTileSize())};
+			DrawRectangleRec(rect, Fade(YELLOW, 0.5f));
+		}
+		for (auto &[vect, value] : collisions->getObjects()) {
+			auto rect =
+				Rectangle{vect.x * static_cast<float>(worldTileSize), vect.y * static_cast<float>(worldTileSize),
+						  static_cast<float>(worldTileSize), static_cast<float>(worldTileSize)};
+			DrawRectangleRec(rect, Fade(RED, 0.5f));
+		}
 	}
 
 	for (auto &[pos, prop] : props->getObjects()) {
-		if (prop->getCollisionCenter().y <= player->getCollisionPos().y) {
+		if (prop->getCollisionCenter().y <= player->getCollisionCenterPos().y) {
 			prop->draw();
 		}
 	}
 	for (auto &[name, actor] : actors->getActors()) {
-		if (actor->getCollisionCenter().y <= player->getCollisionPos().y) {
+		if (actor->getCollisionCenter().y <= player->getCollisionCenterPos().y) {
 			actor->draw();
 		}
 	}
@@ -343,12 +349,12 @@ void Room::draw() const {
 	player->draw();
 
 	for (auto &[pos, prop] : props->getObjects()) {
-		if (prop->getCollisionCenter().y > player->getCollisionPos().y) {
+		if (prop->getCollisionCenter().y > player->getCollisionCenterPos().y) {
 			prop->draw();
 		}
 	}
 	for (auto &[name, actor] : actors->getActors()) {
-		if (actor->getCollisionCenter().y > player->getCollisionPos().y) {
+		if (actor->getCollisionCenter().y > player->getCollisionCenterPos().y) {
 			actor->draw();
 		}
 	}

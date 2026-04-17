@@ -97,12 +97,13 @@ void serialize(Archive &a, DialogueBin &b) {
 
 template <class Archive>
 void serialize(Archive &a, ProjectProgramSettings &b) {
-	a(b.projectTitle, b.projectVersion, b.windowSize, b.programIconPath, b.windowResizeableFlag, b.windowStateFlag, b.targetFPS);
+	a(b.projectTitle, b.projectVersion, b.windowSize, b.programIconPath, b.windowResizeableFlag, b.windowStateFlag,
+	  b.targetFPS);
 }
 
 template <class Archive>
 void serialize(Archive &a, ProjectGameSettings &b) {
-	a(b.defaultRoomPath, b.playerActorPath, b.tileSize);
+	a(b.defaultRoomPath, b.playerActorPath, b.tileSize, b.debugDraw);
 }
 
 template <class Archive>

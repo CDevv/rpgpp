@@ -152,6 +152,7 @@ struct ProjectGameSettings {
 	std::string defaultRoomPath;
 	std::string playerActorPath;
 	int tileSize = 16;
+	bool debugDraw = false;
 };
 
 struct GameData {

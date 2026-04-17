@@ -7,6 +7,7 @@
 #include "childWindows/settingsPanel/base.hpp"
 #include "project.hpp"
 #include "raylib.h"
+#include "widgets/propertyFields/boolField.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/intField.hpp"
 
@@ -29,8 +30,7 @@ ProjectSettingsPanelGame::ProjectSettingsPanelGame(tgui::TabContainer::Ptr tabCo
 	defaultRoom->callback = [](const tgui::String &path) {
 		Project *project = Editor::instance->getProject();
 		if (project != nullptr) {
-			project->getGameSettings().defaultRoomPath =
-				TextFormat("rooms/%s", GetFileName(path.toStdString().c_str()));
+			project->getGameSettings().defaultRoomPath = TextFormat("maps/%s", GetFileName(path.toStdString().c_str()));
 		}
 	};
 
@@ -60,9 +60,21 @@ ProjectSettingsPanelGame::ProjectSettingsPanelGame(tgui::TabContainer::Ptr tabCo
 		}
 	});
 
+	debugDraw = BoolField::create();
+	bindTranslation(debugDraw->label, "dialog.project_settings.game.debug_draw", &tgui::Label::setText);
+	debugDraw->label->setText("Debug Draw");
+	debugDraw->setSize({"100%", 24});
+	debugDraw->value->onCheck([](bool value) {
+		Project *project = Editor::instance->getProject();
+		if (project != nullptr) {
+			project->getGameSettings().debugDraw = value;
+		}
+	});
+
 	layout->add(defaultRoom);
 	layout->add(playerActor);
 	layout->add(tileSize);
+	layout->add(debugDraw);
 
 	scrollPanel->add(layout);
 	panel->add(scrollPanel);

@@ -59,6 +59,8 @@ public:
 	void setTilePosition(Vector2 tilePos);
 	/** Get the position of the collision. */
 	Vector2 getCollisionPos() const;
+	/** Get the center position of the player's collision. */
+	Vector2 getCollisionCenterPos() const;
 };
 
 #endif

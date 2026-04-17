@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cstdio>
 #include <filesystem>
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -109,9 +110,11 @@ void ProjectScreen::initItems(tgui::Group::Ptr layout) {
 	// together.
 	auto _tab = tgui::Tabs::create();
 
+	auto &ts = Editor::instance->getTranslations();
+
 	fileContextMenu = tgui::ContextMenu::create();
-	fileContextMenu->addMenuItem("Copy full path");
-	fileContextMenu->addMenuItem("Delete.");
+	fileContextMenu->addMenuItem(ts.getKey("context_menu.copy_full_path"));
+	fileContextMenu->addMenuItem(ts.getKey("context_menu.delete"));
 	Editor::instance->getGui().gui->add(fileContextMenu);
 
 	openedFiles = std::map<tgui::String, std::unique_ptr<ProjectFile>>{};
@@ -282,6 +285,7 @@ tgui::Group::Ptr ProjectScreen::createToolBar() {
 }
 
 void ProjectScreen::addResourceButtons(EngineFileType fileType) {
+	auto &ts = Editor::instance->getTranslations();
 	auto project = Editor::instance->getProject();
 
 	this->listedResourcesType = fileType;
@@ -290,43 +294,90 @@ void ProjectScreen::addResourceButtons(EngineFileType fileType) {
 	resourcesLayout->getRenderer()->setSpaceBetweenWidgets(RESLIST_ITEM_PADDING);
 
 	for (auto filePath : project->getPaths(fileType)) {
+		std::string fileName = GetFileName(filePath.c_str());
+
 		auto fileBtn = tgui::Button::create(GetFileName(filePath.c_str()));
 		fileBtn->setSize("100%", RESLIST_RES_BTN_H);
 		fileBtn->onPress([this, fileType, filePath] { addFileView(fileType, filePath); });
-		fileBtn->onRightMousePress([this, filePath] {
+		fileBtn->onRightMousePress([this, filePath, project, fileName, &ts] {
 			fileContextMenu->getMenuItems().at(0).text = filePath;
 			fileContextMenu->setPosition(GetMousePosition().x, GetMousePosition().y);
 			fileContextMenu->onMenuItemClick.disconnectAll();
-			fileContextMenu->onMenuItemClick([this, filePath](const std::vector<tgui::String> &hierarchy) {
-				if (hierarchy[0] == "Copy full path") {
-					SetClipboardText(filePath.c_str());
-				}
-				if (hierarchy[0] == "Delete.") {
-					auto messageBox = tgui::MessageBox::create();
-					messageBox->setText("Are you sure?");
-					messageBox->addButton("Yes");
-					messageBox->addButton("No");
-					messageBox->setButtonAlignment(tgui::HorizontalAlignment::Right);
-					EditorGuiService::centerWidget(messageBox);
+			fileContextMenu->onMenuItemClick(
+				[this, filePath, project, fileName, &ts](const std::vector<tgui::String> &hierarchy) {
+					if (hierarchy[0] == ts.getKey("context_menu.copy_full_path")) {
+						SetClipboardText(filePath.c_str());
+					}
+					if (hierarchy[0] == ts.getKey("context_menu.delete")) {
+						bool allowedDeletion = true;
+						auto messageBox = tgui::MessageBox::create();
 
-					std::weak_ptr<tgui::MessageBox> weakBox = messageBox;
-
-					messageBox->onButtonPress([this, weakBox, filePath](const tgui::String &button) {
-						assert(button == "Yes" || button == "No");
-						if (auto box = weakBox.lock()) {
-							if (button == "Yes") {
-								std::error_code ec;
-								std::filesystem::remove(filePath, ec);
-								addResourceButtons(listedResourcesType);
+						if (listedResourcesType == EngineFileType::FILE_MAP) {
+							auto defaultRoomPath = project->getGameSettings().defaultRoomPath;
+							if (defaultRoomPath.empty() && project->getPaths(EngineFileType::FILE_MAP).size() <= 1) {
+								bindTranslation(messageBox, "dialog.delete_file.room_must_exist",
+												&tgui::MessageBox::setText);
+								allowedDeletion = false;
 							}
 
-							if (auto parent = box->getParent()) parent->remove(box);
+							std::string checkedFilePath = TextFormat("maps/%s", fileName.c_str());
+							if (defaultRoomPath == checkedFilePath) {
+								bindTranslation(messageBox, "dialog.delete_file.room_cannot_be_deleted",
+												&tgui::MessageBox::setText);
+								allowedDeletion = false;
+							}
 						}
-					});
 
-					Editor::instance->getGui().gui->add(messageBox);
-				}
-			});
+						if (listedResourcesType == EngineFileType::FILE_ACTOR) {
+							auto playerActorPath = project->getGameSettings().playerActorPath;
+
+							if (playerActorPath.empty() && fileName == "playerActor.ractor") {
+								bindTranslation(messageBox, "dialog.delete_file.player_actor_must_exist",
+												&tgui::MessageBox::setText);
+								allowedDeletion = false;
+							}
+
+							std::string checkedFilePath = TextFormat("actors/%s", fileName.c_str());
+							if (playerActorPath == checkedFilePath) {
+								bindTranslation(messageBox, "dialog.delete_file.player_actor_cannot_be_deleted",
+												&tgui::MessageBox::setText);
+								allowedDeletion = false;
+							}
+						}
+
+						if (allowedDeletion) {
+							messageBox->setText("Are you sure?");
+							bindTranslation(messageBox, "dialog.delete_file.title", &tgui::MessageBox::setText);
+							messageBox->addButton(ts.getKey("dialog.delete_file.yes"));
+							messageBox->addButton(ts.getKey("dialog.delete_file.no"));
+						} else {
+							messageBox->addButton(ts.getKey("dialog.delete_file.ok"));
+						}
+
+						EditorGuiService::centerWidget(messageBox);
+						messageBox->setButtonAlignment(tgui::HorizontalAlignment::Right);
+
+						std::weak_ptr<tgui::MessageBox> weakBox = messageBox;
+
+						messageBox->onButtonPress([this, weakBox, filePath, &ts](const tgui::String &button) {
+							assert(button == ts.getKey("dialog.delete_file.yes") ||
+								   button == ts.getKey("dialog.delete_file.no") ||
+								   button == ts.getKey("dialog.delete_file.ok"));
+
+							if (auto box = weakBox.lock()) {
+								if (button == ts.getKey("dialog.delete_file.yes")) {
+									std::error_code ec;
+									std::filesystem::remove(filePath, ec);
+									addResourceButtons(listedResourcesType);
+								}
+
+								if (auto parent = box->getParent()) parent->remove(box);
+							}
+						});
+
+						Editor::instance->getGui().gui->add(messageBox);
+					}
+				});
 			fileContextMenu->openMenu();
 		});
 

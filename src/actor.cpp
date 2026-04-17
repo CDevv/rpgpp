@@ -296,12 +296,23 @@ void Actor::draw() const {
 	// draw it
 	DrawTexturePro(texture, atlasRect, worldRect, origin, rotation, WHITE);
 
-	// draw collision rect..
-	auto collisionDebugColor = GRAY;
-	collisionDebugColor.a = (255 / 2);
+	bool debugDraw = true;
 
-	Rectangle drawnCollisionRect = getCollisionRect(Vector2{0, 0});
-	DrawRectanglePro(drawnCollisionRect, origin, rotation, collisionDebugColor);
+	if (Game::isUsingBin()) {
+		debugDraw = Game::getBin().gameSet.debugDraw;
+	}
+
+	if (debugDraw) {
+		// draw collision rect..
+		auto collisionDebugColor = GRAY;
+		collisionDebugColor.a = (255 / 2);
+
+		Rectangle drawnCollisionRect = getCollisionRect(Vector2{0, 0});
+		DrawRectanglePro(drawnCollisionRect, origin, rotation, collisionDebugColor);
+
+		// let me draw the collision center
+		DrawCircleV(getCollisionCenter(), 2.5f, MAROON);
+	}
 }
 
 std::string Actor::getSourcePath() const { return sourcePath; }
@@ -359,7 +370,8 @@ Rectangle Actor::getCollisionRect(Vector2 velocity) const {
 }
 
 Vector2 Actor::getCollisionCenter() const {
-	Vector2 result = {position.x + (collisionRect.width / 2), position.y + (collisionRect.height / 2)};
+	Vector2 result = {position.x + collisionRect.x + (collisionRect.width / 2),
+					  position.y + collisionRect.y + (collisionRect.height / 2)};
 	return result;
 }
 
