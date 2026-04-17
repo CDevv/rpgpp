@@ -1,10 +1,10 @@
-#include "project.hpp"
+#include "childWindows/projectSettingsPanel/program.hpp"
 
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
-#include "childWindows/projectSettingsPanel/program.hpp"
 #include "childWindows/settingsPanel/base.hpp"
+#include "project.hpp"
 #include "raylib.h"
 #include "widgets/propertyFields/boolField.hpp"
 #include "widgets/propertyFields/fileField.hpp"

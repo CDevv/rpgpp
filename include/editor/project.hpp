@@ -13,13 +13,11 @@
 
 using json = nlohmann::json;
 
-const std::map<int, std::string> WindowStateToName = {
-	{0, "windowed"},
-	{FLAG_FULLSCREEN_MODE, "exclusive"},
-	{FLAG_BORDERLESS_WINDOWED_MODE, "fullscreen"},
-	{FLAG_WINDOW_MINIMIZED, "minimized"},
-	{FLAG_WINDOW_MAXIMIZED, "maximized"}
-};
+const std::map<int, std::string> WindowStateToName = {{0, "windowed"},
+													  {FLAG_FULLSCREEN_MODE, "exclusive"},
+													  {FLAG_BORDERLESS_WINDOWED_MODE, "fullscreen"},
+													  {FLAG_WINDOW_MINIMIZED, "minimized"},
+													  {FLAG_WINDOW_MAXIMIZED, "maximized"}};
 
 class Project {
 private:
