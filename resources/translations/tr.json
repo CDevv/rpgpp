@@ -141,8 +141,19 @@
         "_label": "Oyun",
         "default_room": "Öntanımlı Oda",
         "player_actor": "Oyuncunun Aktörü",
-        "tile_size": "Kare Boyutu"
+        "tile_size": "Kare Boyutu",
+        "debug_draw": "Hata Ayıklamayı Çiz"
       }
+    },
+    "delete_file": {
+      "title": "Gerçekten Sil?",
+      "yes": "Evet",
+      "no": "Hayır",
+      "ok": "Tamam",
+      "room_must_exist": "En az bir odanız olması lazımdır.",
+      "room_cannot_be_deleted": "Öntanımlı odayı silemezsiniz.",
+      "player_actor_must_exist": "playerActor dosyanızın olması lazımdır.",
+      "player_actor_cannot_be_deleted": "Oyuncunun Aktörünü silemezsiniz."
     },
     "new_prop": {
       "title": "Yeni Obje",
@@ -169,5 +180,9 @@
     "go_back": "Geri Git",
     "restart": "Yeniden Başlat",
     "restart_later": "Sonra Yeniden Başlat"
+  },
+  "context_menu": {
+    "copy_full_path": "Full yolunu kopyala",
+    "delete": "Sil"
   }
 }
