@@ -149,7 +149,8 @@
 				"_label": "Trò chơi",
 				"default_room": "Room mặc định",
 				"player_actor": "Actor người chơi",
-				"tile_size": "Kích cỡ Tile"
+				"tile_size": "Kích cỡ Tile",
+				"debug_draw": "Vẽ gỡ lỗi"
 			}
 		},
 		"new_prop": {
@@ -163,6 +164,16 @@
 			"type": "Loại",
 			"submit": "Sửa",
 			"remove": "Xóa"
+		},
+		"delete_file": {
+			"title": "Bạn chắc có muốn xóa không?",
+			"yes": "Có",
+			"no": "Không",
+			"ok": "Okay",
+			"room_must_exist": "Lỗi: Dự án phải có ít nhất một phòng.",
+			"room_cannot_be_deleted": "Lỗi: Bạn không thể xóa phòng mặc định.",
+			"player_actor_must_exist": "Lỗi: Bạn phải có tệp tin playerActor.",
+			"player_actor_cannot_be_deleted": "Lỗi: Bạn không thể xóa Actor người chơi."
 		}
 	},
 
@@ -179,5 +190,9 @@
 		"go_back": "Quay lại",
 		"restart": "Khởi động lại",
 		"restart_later": "Khởi động lại sau"
+	},
+	"context_menu": {
+		"copy_full_path": "Sao chép đường dẫn",
+		"delete": "Xóa"
 	}
 }
