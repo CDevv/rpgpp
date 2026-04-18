@@ -6,24 +6,22 @@
 
 #include "game.hpp"
 
-ResourceService::ResourceService() {
-	addTextureFromFile("resources/logo.png");
-	addTextureFromFile("resources/close.png");
-	addTextureFromFile("resources/cross.png");
-	addTextureFromFile("resources/dialog.png");
-	addTextureFromFile("resources/figurine.png");
-
-	init();
-}
+ResourceService::ResourceService() { init(); }
 
 void ResourceService::init() {
 	unload();
 
-	/*
 	if (Game::isUsingBin()) {
 		for (auto &[id, fontBin] : Game::getBin().fonts) {
 			Font font = LoadFontFromMemory(fontBin.ext.c_str(), fontBin.data.data(), fontBin.dataSize, 13, nullptr, 0);
 			addFont(id, font);
+		}
+
+		for (const auto &[name, data] : Game::getBin().images) {
+			Image image = LoadImageFromMemory(data.ext.c_str(), data.data.data(), data.dataSize);
+			Texture2D texture = LoadTextureFromImage(image);
+			addTexture(name, texture);
+			UnloadImage(image);
 		}
 	} else {
 		auto dirList = LoadDirectoryFiles("fonts/");
@@ -31,13 +29,6 @@ void ResourceService::init() {
 			auto path = dirList.paths[i];
 			addFontFromFile(path, 13);
 		}
-	}
-		*/
-
-	auto dirList = LoadDirectoryFiles("fonts/");
-	for (int i = 0; i < dirList.count; i++) {
-		auto path = dirList.paths[i];
-		addFontFromFile(path, 13);
 	}
 }
 

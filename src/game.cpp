@@ -57,13 +57,6 @@ void Game::useBin(const std::string &filePath) {
 	// resources
 	resources->init();
 
-	for (const auto &[name, data] : gameData->images) {
-		Image image = LoadImageFromMemory(data.ext.c_str(), data.data.data(), data.dataSize);
-		Texture2D texture = LoadTextureFromImage(image);
-		resources->addTexture(name, texture);
-		UnloadImage(image);
-	}
-
 	/// Setup program
 	SetWindowTitle(gameData->title.c_str());
 	SetWindowSize(gameData->programSet.windowSize.x, gameData->programSet.windowSize.y);

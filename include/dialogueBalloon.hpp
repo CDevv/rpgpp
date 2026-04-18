@@ -12,6 +12,12 @@ struct DialogueTextSection {
 	Color textColor = WHITE;
 	int textSize = 13;
 	std::string font = "LanaPixel";
+	float delay = 0.0f;
+};
+
+struct DialogueOption {
+	std::string title;
+	std::string nextDialogue;
 };
 
 struct DialogueLine {
@@ -20,6 +26,8 @@ struct DialogueLine {
 	bool hasPortrait;
 	std::string imageId;
 	std::vector<DialogueTextSection> sections;
+	bool hasOptions = false;
+	std::vector<DialogueOption> options;
 };
 
 struct DialogueBin {
@@ -34,10 +42,12 @@ private:
 	Rectangle rect;
 	Rectangle textRect;
 	Rectangle textPortraitRect;
+	Rectangle optionsRect;
 	DialogueBin dialogue;
 	std::string text;
 	DialogueTextSection sectionText;
 	bool firstCharTyped;
+	bool finishedTyping = false;
 	bool active;
 	int frameCounter;
 	int charIndex;
@@ -46,6 +56,9 @@ private:
 	Color textColor;
 	int lastSectionLen;
 	Vector2 textPos;
+	bool delay = false;
+	float delayDuration = 0.0f;
+	int hoveredOption = 0;
 	void drawPortrait() const;
 
 public:

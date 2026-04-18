@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include <raymath.h>
 
+#include <cstdio>
 #include <nlohmann/json.hpp>
 
 #include "game.hpp"
@@ -17,6 +18,7 @@ DialogueBalloon::DialogueBalloon(Rectangle rect) {
 	this->textPortraitRect = this->textRect;
 	this->textPortraitRect.width -= this->textRect.height;
 	this->textPortraitRect.x += this->textRect.height;
+	this->optionsRect = {rect.x + (rect.width - 180), rect.y - 8 - 180, 180, 180};
 
 	this->lineIndex = 0;
 	this->sectionIndex = 0;
@@ -50,8 +52,17 @@ void DialogueBalloon::update() {
 			finished = true;
 		}
 
+		this->finishedTyping = finished;
+
 		if (IsKeyPressed(KEY_Z)) {
 			if (finished) {
+				if (dialogue.lines.at(lineIndex).hasOptions) {
+					std::string newDialogue = dialogue.lines.at(lineIndex).options.at(hoveredOption).nextDialogue;
+					hideDialogue();
+					showDialogue(Game::getBin().dialogues[newDialogue]);
+					return;
+				}
+
 				if (lineIndex == (dialogue.lines.size() - 1)) {
 					hideDialogue();
 				} else {
@@ -73,8 +84,24 @@ void DialogueBalloon::update() {
 			}
 		}
 
+		if (dialogue.lines.at(lineIndex).hasOptions) {
+			if (IsKeyPressed(KEY_UP) && hoveredOption != 0) {
+				hoveredOption--;
+			}
+			if (IsKeyPressed(KEY_DOWN) && hoveredOption < (dialogue.lines.at(lineIndex).options.size() - 1)) {
+				hoveredOption++;
+			}
+		}
+
+		if (delay) {
+			delayDuration -= (GetFrameTime() * static_cast<float>(60.0f / 20.0f));
+			if (delayDuration <= 0.0f) {
+				delay = false;
+			}
+		}
+
 		frameCounter++;
-		if (frameCounter > (60 / 20)) {
+		if (frameCounter > (60 / 20) && !delay) {
 			frameCounter = 0;
 			if (charIndex < text.size()) {
 				charIndex++;
@@ -99,7 +126,6 @@ void DialogueBalloon::drawPortrait() const {
 
 void DialogueBalloon::draw() {
 	if (active) {
-		Font font = Game::getUi().getFont();
 		Texture uiTexture = Game::getUi().getTexture();
 
 		Vector2 origin = {0.0f, 0.0f};
@@ -108,6 +134,28 @@ void DialogueBalloon::draw() {
 					   3 * 3, 3 * 3, uiTexture.width - (3 * 3), uiTexture.height - (3 * 3)};
 
 		DrawTextureNPatch(uiTexture, info, rect, origin, 0.0f, WHITE);
+
+		if (finishedTyping && dialogue.lines.at(lineIndex).hasOptions) {
+			auto &line = dialogue.lines.at(lineIndex);
+
+			DrawTextureNPatch(uiTexture, info, optionsRect, origin, 0.0f, WHITE);
+
+			Vector2 optionTextPos = {optionsRect.x + 20, optionsRect.y + 20};
+			int i = 0;
+
+			for (auto &option : line.options) {
+				optionTextPos.y += (13 * 3) * i + (4 * i);
+
+				Color optionTextColor = WHITE;
+
+				if (hoveredOption == i) optionTextColor = YELLOW;
+
+				DrawTextEx(Game::getResources().getFont("LanaPixel"), option.title.c_str(), optionTextPos, 13 * 3, 1.0,
+						   optionTextColor);
+
+				i++;
+			}
+		}
 
 		if (dialogue.lines.at(lineIndex).hasPortrait) {
 			drawPortrait();
@@ -122,6 +170,7 @@ void DialogueBalloon::draw() {
 			for (auto section : dialogue.lines.at(lineIndex).sections) {
 				if (i < (size + TextLength(section.text.c_str()))) {
 					sectionIndex = idx;
+
 					break;
 				} else {
 					size += TextLength(section.text.c_str());
@@ -135,6 +184,13 @@ void DialogueBalloon::draw() {
 			if (fontName != section.font) {
 				font = Game::getResources().getFont(section.font);
 				fontName = section.font;
+			}
+
+			if (section.key == "delay" || section.delay > 0) {
+				if (!delay) {
+					delay = true;
+					delayDuration = section.delay;
+				}
 			}
 
 			const char *subText = TextSubtext(text.c_str(), i, 1);
@@ -176,11 +232,25 @@ void DialogueBalloon::showDialogue(const DialogueBin &newDialogue) {
 	if (active) return;
 
 	this->dialogue = newDialogue;
+
+	// test
+	DialogueLine testLine;
+	testLine.hasOptions = true;
+	testLine.text = "";
+	testLine.sections.push_back({"", "Hello!"});
+	testLine.options.push_back({"Option 1", "mydiag"});
+	testLine.options.push_back({"Option 2", "diag"});
+	dialogue.lines.push_back(testLine);
+
 	this->lineIndex = 0;
 
 	firstCharTyped = false;
 	active = true;
-	this->text = newDialogue.lines.at(0).text;
+	text = "";
+
+	for (auto k : dialogue.lines.at(lineIndex).sections) {
+		text = text.append(k.text);
+	}
 
 	this->frameCounter = 0;
 	this->charIndex = 0;

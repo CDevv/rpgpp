@@ -24,6 +24,8 @@ DialogueTextSection parseSection(pugi::xml_node node, DialogueTextSection base) 
 	base.key = node.name();
 	base.text = node.text().as_string();
 
+	printf("%s : %s \n", base.key.c_str(), base.text.c_str());
+
 	if (textColors.count(base.key) > 0) {
 		base.textColor = textColors[base.key];
 	}
@@ -34,6 +36,10 @@ DialogueTextSection parseSection(pugi::xml_node node, DialogueTextSection base) 
 
 	if (base.key == "font") {
 		base.font = node.attribute("font").as_string("LanaPixel");
+	}
+
+	if (base.key == "delay") {
+		base.delay = node.attribute("delay").as_float(1.0f);
 	}
 
 	return base;
