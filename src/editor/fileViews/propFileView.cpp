@@ -67,10 +67,8 @@ PropFileView::PropFileView() {
 
 	propPreview = PropPreview::create();
 	Editor::instance->getGui().addUpdate(WorldView::asUpdatable(propPreview));
-	propPreview->setSize({"100%", "30%"});
-	propPreview->setPosition({"0%", "50%"});
-	propPreview->setOrigin({0, 0.5});
-	propBox->add(propPreview);
+	propPreview->setSize({"100%", 200});
+	propBox->addWidget(propPreview);
 
 	propView->onUpdatedAtlasRect([this](Rectangle r) { atlasRectField->setValue(r); });
 	propView->onUpdatedCollisionRect([this](Rectangle r) { collisionsField->setValue(r); });

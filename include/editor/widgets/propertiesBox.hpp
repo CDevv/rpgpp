@@ -50,6 +50,7 @@ public:
 	void addButton(const tgui::String &title, std::function<void()> callback);
 	void addInterPropField(InterPropField::Ptr field);
 	void addPropertiesBox(PropertiesBox::Ptr box);
+	void addWidget(tgui::Widget::Ptr widget);
 	tgui::Button::Ptr constructButton(const tgui::String &title, std::function<void()> callback);
 };
 

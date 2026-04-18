@@ -248,3 +248,5 @@ void PropertiesBox::addPropertiesBox(PropertiesBox::Ptr box) {
 	box->setWidth("80%");
 	layout->add(box);
 }
+
+void PropertiesBox::addWidget(tgui::Widget::Ptr widget) { layout->add(widget); }
