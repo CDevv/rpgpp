@@ -9,9 +9,10 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Panel.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
+#include "TGUI/Widgets/TextArea.hpp"
 #include "dialogueBalloon.hpp"
 #include "fileViews/fileView.hpp"
-#include "services/translationService.hpp"
+#include "widgets/dialogueEditor.hpp"
 
 class DialogueFileView : public FileView {
 	const float DIALOGUE_PANEL_HEIGHT = 200.0f;
@@ -23,6 +24,7 @@ private:
 	tgui::Texture noImageTexture;
 	tgui::Texture deleteTexture;
 	std::vector<tgui::Panel::Ptr> linePanels;
+	std::vector<DialogueEditor::Ptr> dialogueBoxes;
 
 	tgui::Panel::Ptr makeLinePanel(DialogueBin &data, DialogueLine line, size_t i);
 

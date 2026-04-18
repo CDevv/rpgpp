@@ -1,7 +1,6 @@
 #include "dialogueParser.hpp"
 
 #include <cstdio>
-#include <iostream>
 #include <nlohmann/json.hpp>
 #include <pugixml.hpp>
 #include <string>
@@ -17,7 +16,7 @@ std::map<std::string, Color> textColors = {{"lightgray", LIGHTGRAY}, {"gray", GR
 										   {"green", GREEN},		 {"lime", LIME},	 {"darkgreen", DARKGREEN},
 										   {"skyblue", SKYBLUE},	 {"blue", BLUE},	 {"darkblue", DARKBLUE},
 										   {"purple", PURPLE},		 {"violet", VIOLET}, {"darkpurple", DARKPURPLE},
-										   {"beige", BEIGE},		 {"brown", BROWN},	 {"DARKBROWN", DARKBROWN},
+										   {"beige", BEIGE},		 {"brown", BROWN},	 {"darkbrown", DARKBROWN},
 										   {"magenta", MAGENTA},	 {"white", WHITE},	 {"black", BLACK}};
 
 DialogueTextSection parseSection(pugi::xml_node node, DialogueTextSection base) {

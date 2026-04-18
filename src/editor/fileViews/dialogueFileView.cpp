@@ -5,13 +5,18 @@
 #include <TGUI/Widgets/Picture.hpp>
 #include <TGUI/Widgets/ScrollablePanel.hpp>
 #include <memory>
+#include <string>
+#include <vector>
 
+#include "TGUI/Cursor.hpp"
 #include "TGUI/Layout.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Texture.hpp"
 #include "TGUI/Widgets/Button.hpp"
+#include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
+#include "TGUI/Widgets/GrowHorizontalLayout.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Panel.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
@@ -88,19 +93,41 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	});
 	panel->add(portraitPic);
 
+	auto topControlsLayout = tgui::GrowHorizontalLayout::create();
+	topControlsLayout->getRenderer()->setSpaceBetweenWidgets(5.0f);
+	topControlsLayout->setSize({"100% - 210 - 40", 32});
+	topControlsLayout->setPosition(210, 0);
+
 	auto charNameEdit = tgui::EditBox::create();
-	charNameEdit->setSize({"100% - 210 - 40", 32});
-	charNameEdit->setPosition(210, 0);
 	charNameEdit->setText(line.characterName);
 	charNameEdit->onTextChange(
 		[&data, i](const tgui::String &text) { data.lines.at(i).characterName = text.toStdString(); });
-	panel->add(charNameEdit);
+	topControlsLayout->add(charNameEdit);
 
-	auto diagTextEdit = tgui::TextArea::create();
+	// TODO: Finish the text formatting.
+
+	auto colorSelectDropdown = tgui::ComboBox::create();
+
+	colorSelectDropdown->setDefaultText("Select a color...");
+
+	colorSelectDropdown->onItemSelect.connect([colorSelectDropdown, i, this](const tgui::String &text) {
+		auto ref = dialogueBoxes.at(i);
+		ref->addXmlTag(text.toStdString());
+		colorSelectDropdown->deselectItem();
+	});
+
+	topControlsLayout->add(colorSelectDropdown);
+
+	panel->add(topControlsLayout);
+
+	auto diagTextEdit = DialogueEditor::create();
 	diagTextEdit->setPosition(210, 32 + 8);
+	diagTextEdit->setMouseCursor(tgui::Cursor::Type::Text);
 	diagTextEdit->setSize({"100% - 210 - 40", "100% - 40"});
 	diagTextEdit->setText(line.text);
 	diagTextEdit->onTextChange([&data, i](const tgui::String &text) { data.lines.at(i).text = text.toStdString(); });
+	dialogueBoxes.push_back(diagTextEdit);
+
 	panel->add(diagTextEdit);
 
 	auto hasImageCheck = tgui::CheckBox::create();
