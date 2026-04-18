@@ -11,6 +11,7 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
+#include <pugixml.hpp>
 #include <string>
 #include <vector>
 
@@ -206,6 +207,16 @@ std::vector<std::string> Project::getPropsNames() {
 }
 
 GameData Project::generateStruct() {
+	pugi::xml_document xmlDoc;
+	auto result = xmlDoc.load_string("<text>Hello <red>RED!</red></text>");
+	if (result) {
+		for (auto item : xmlDoc.child("text").children()) {
+			std::cout << item.name() << " : ";
+			std::cout << item.text().as_string();
+			std::cout << std::endl;
+		}
+	}
+
 	GameData data;
 	data.title = programSet.projectTitle;
 	data.programSet = programSet;
@@ -398,7 +409,7 @@ GameData Project::generateStruct() {
 		}
 
 		fontBin.ext = GetFileExtension(fontPath.c_str());
-
+		fontBin.dataSize = dataSize;
 		data.fonts[GetFileNameWithoutExt(fontPath.c_str())] = fontBin;
 
 		UnloadFileData(fileData);

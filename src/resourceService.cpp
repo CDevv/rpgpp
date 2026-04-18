@@ -4,12 +4,41 @@
 
 #include <cstdio>
 
+#include "game.hpp"
+
 ResourceService::ResourceService() {
 	addTextureFromFile("resources/logo.png");
 	addTextureFromFile("resources/close.png");
 	addTextureFromFile("resources/cross.png");
 	addTextureFromFile("resources/dialog.png");
 	addTextureFromFile("resources/figurine.png");
+
+	init();
+}
+
+void ResourceService::init() {
+	unload();
+
+	/*
+	if (Game::isUsingBin()) {
+		for (auto &[id, fontBin] : Game::getBin().fonts) {
+			Font font = LoadFontFromMemory(fontBin.ext.c_str(), fontBin.data.data(), fontBin.dataSize, 13, nullptr, 0);
+			addFont(id, font);
+		}
+	} else {
+		auto dirList = LoadDirectoryFiles("fonts/");
+		for (int i = 0; i < dirList.count; i++) {
+			auto path = dirList.paths[i];
+			addFontFromFile(path, 13);
+		}
+	}
+		*/
+
+	auto dirList = LoadDirectoryFiles("fonts/");
+	for (int i = 0; i < dirList.count; i++) {
+		auto path = dirList.paths[i];
+		addFontFromFile(path, 13);
+	}
 }
 
 ResourceService::~ResourceService() = default;
@@ -25,10 +54,27 @@ void ResourceService::addTextureFromFile(const std::string &filePath) {
 	addTexture(newId, text);
 }
 
-void ResourceService::unload() const {
-	for (const auto &[name, texture] : textures) {
-		UnloadTexture(texture);
-	}
+Texture2D ResourceService::getTexture(const std::string &id) { return textures[id]; }
+
+void ResourceService::addFont(const std::string &id, Font font) { fonts[id] = font; }
+
+void ResourceService::addFontFromFile(const std::string &filePath, int fontSize) {
+	Font font = LoadFontEx(filePath.c_str(), fontSize, nullptr, 250);
+	addFont(GetFileNameWithoutExt(filePath.c_str()), font);
 }
 
-Texture2D ResourceService::getTexture(const std::string &id) { return textures[id]; }
+Font ResourceService::getFont(const std::string &id) { return fonts.at(id); }
+
+void ResourceService::unload() const {
+	for (const auto &[name, texture] : textures) {
+		if (IsTextureValid(texture)) {
+			UnloadTexture(texture);
+		}
+	}
+
+	for (const auto &[id, font] : fonts) {
+		if (IsFontValid(font)) {
+			UnloadFont(font);
+		}
+	}
+}

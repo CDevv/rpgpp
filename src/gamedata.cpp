@@ -8,6 +8,7 @@
 #include <fstream>
 
 #include "interactable.hpp"
+#include "raylib.h"
 
 template <class Archive>
 void serialize(Archive &a, IRect &b) {
@@ -17,6 +18,11 @@ void serialize(Archive &a, IRect &b) {
 template <class Archive>
 void serialize(Archive &a, IVector &b) {
 	a(b.x, b.y);
+}
+
+template <class Archive>
+void serialize(Archive &a, Color &b) {
+	a(b.a, b.r, b.g, b.b);
 }
 
 template <class Archive>
@@ -82,7 +88,7 @@ void serialize(Archive &a, RoomBin &b) {
 
 template <class Archive>
 void serialize(Archive &a, DialogueTextSection &b) {
-	a(b.key, b.text);
+	a(b.key, b.text, b.textColor, b.textSize, b.font);
 }
 
 template <class Archive>
@@ -108,7 +114,7 @@ void serialize(Archive &a, ProjectGameSettings &b) {
 
 template <class Archive>
 void serialize(Archive &a, GameData &b) {
-	a(b.title, b.programSet, b.gameSet, b.images, b.tilesets, b.rooms, b.actors, b.props, b.dialogues, b.music,
+	a(b.title, b.programSet, b.gameSet, b.images, b.fonts, b.tilesets, b.rooms, b.actors, b.props, b.dialogues, b.music,
 	  b.interactables, b.scripts);
 }
 

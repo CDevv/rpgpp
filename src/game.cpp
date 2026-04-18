@@ -54,6 +54,9 @@ void Game::useBin(const std::string &filePath) {
 	gameData = std::make_unique<GameData>(deserializeFile(filePath));
 	usesBin = true;
 
+	// resources
+	resources->init();
+
 	for (const auto &[name, data] : gameData->images) {
 		Image image = LoadImageFromMemory(data.ext.c_str(), data.data.data(), data.dataSize);
 		Texture2D texture = LoadTextureFromImage(image);

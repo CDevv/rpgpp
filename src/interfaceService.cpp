@@ -13,7 +13,8 @@
 InterfaceService::InterfaceService() {
 	fpsVisible = false;
 
-	this->font = LoadFontEx("fonts/LanaPixel.ttf", 13, nullptr, 250);
+	// this->font = LoadFontEx("fonts/LanaPixel.ttf", 13, nullptr, 250);
+	this->font = Game::getResources().getFont("LanaPixel");
 
 	Image img = LoadImage("images/ui-npatch.png");
 	ImageResizeNN(&img, img.width * 3, img.height * 3);
@@ -90,7 +91,4 @@ void InterfaceService::draw() {
 	}
 }
 
-void InterfaceService::unload() const {
-	UnloadFont(font);
-	UnloadTexture(this->uiTexture);
-}
+void InterfaceService::unload() const { UnloadTexture(this->uiTexture); }

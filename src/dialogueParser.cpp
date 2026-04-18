@@ -1,84 +1,64 @@
 #include "dialogueParser.hpp"
 
 #include <cstdio>
+#include <iostream>
 #include <nlohmann/json.hpp>
+#include <pugixml.hpp>
 #include <string>
 #include <vector>
 
 #include "dialogueBalloon.hpp"
+#include "raylib.h"
 using json = nlohmann::json;
 
-std::vector<DialogueTextSection> parseDialogueContent(const std::string &t) {
-	std::string tagName = "";
-	std::string tagContent = "";
-	std::string tagClose = "";
-	bool parseTag = false;
-	bool parseTagContent = true;
-	bool parseTagEnd = false;
-	bool parseTagClose = false;
+std::map<std::string, Color> textColors = {{"lightgray", LIGHTGRAY}, {"gray", GRAY},	 {"darkgray", DARKGRAY},
+										   {"gold", GOLD},			 {"yellow", YELLOW}, {"orange", ORANGE},
+										   {"pink", PINK},			 {"red", RED},		 {"maroon", MAROON},
+										   {"green", GREEN},		 {"lime", LIME},	 {"darkgreen", DARKGREEN},
+										   {"skyblue", SKYBLUE},	 {"blue", BLUE},	 {"darkblue", DARKBLUE},
+										   {"purple", PURPLE},		 {"violet", VIOLET}, {"darkpurple", DARKPURPLE},
+										   {"beige", BEIGE},		 {"brown", BROWN},	 {"DARKBROWN", DARKBROWN},
+										   {"magenta", MAGENTA},	 {"white", WHITE},	 {"black", BLACK}};
 
-	std::vector<DialogueTextSection> v;
-	int idx = 0;
-	for (auto c : t) {
-		if (c == '<' && !parseTag) {
-			if (tagName == "") {
-				v.push_back({"", tagContent});
-				tagContent = "";
-			}
+DialogueTextSection parseSection(pugi::xml_node node, DialogueTextSection base) {
+	base.key = node.name();
+	base.text = node.text().as_string();
 
-			parseTagContent = false;
-			parseTag = true;
-		} else if (c == '>') {
-			parseTagEnd = true;
-			parseTag = false;
-
-			if (parseTagClose) {
-				parseTagClose = false;
-
-				if (tagName == tagClose) {
-					v.push_back({tagName, tagContent});
-
-					tagName = "";
-					tagContent = "";
-					tagClose = "";
-					parseTag = false;
-					parseTagContent = true;
-					parseTagEnd = false;
-					parseTagClose = false;
-				}
-			}
-		}
-
-		if (c == '/') {
-			parseTag = false;
-			parseTagClose = true;
-		}
-
-		if (parseTag && c != '<') {
-			tagName.push_back(c);
-		} else if (parseTagClose && c != '/') {
-			tagClose.push_back(c);
-		}
-
-		if (parseTagEnd) {
-			parseTagContent = true;
-			parseTagEnd = false;
-		}
-
-		if (parseTagContent && c != '>') {
-			tagContent.push_back(c);
-		}
-
-		idx++;
-
-		if (idx == (t.length())) {
-			v.push_back({"", tagContent});
-			tagContent = "";
-		}
+	if (textColors.count(base.key) > 0) {
+		base.textColor = textColors[base.key];
 	}
 
-	for (auto item : v) {
-		printf("%s : %s \n", item.key.c_str(), item.text.c_str());
+	if (base.key == "textSize") {
+		base.textSize = node.attribute("size").as_int(16);
+	}
+
+	if (base.key == "font") {
+		base.font = node.attribute("font").as_string("LanaPixel");
+	}
+
+	return base;
+}
+
+std::vector<DialogueTextSection> parseDialogueContent(const std::string &t) {
+	std::vector<DialogueTextSection> v;
+
+	pugi::xml_document xmlDoc;
+	auto result = xmlDoc.load_string(TextFormat("<text>%s</text>", t.c_str()));
+	if (result && !xmlDoc.child("text").empty()) {
+		for (auto item : xmlDoc.child("text").children()) {
+			DialogueTextSection textSection;
+			textSection = parseSection(item, textSection);
+
+			if (!item.children().empty()) {
+				for (auto &subitem : item.children()) {
+					DialogueTextSection subTextSection;
+					subTextSection = parseSection(subitem, textSection);
+					v.push_back(subTextSection);
+				}
+			} else {
+				v.push_back(textSection);
+			}
+		}
 	}
 
 	return v;

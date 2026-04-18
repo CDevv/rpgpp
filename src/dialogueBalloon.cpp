@@ -11,6 +11,7 @@
 DialogueBalloon::DialogueBalloon() = default;
 
 DialogueBalloon::DialogueBalloon(Rectangle rect) {
+	this->font = Game::getResources().getFont("LanaPixel");
 	this->rect = rect;
 	this->textRect = Rectangle{rect.x + 9, rect.y + 9, rect.width - (9 * 2), rect.height - (9 * 2)};
 	this->textPortraitRect = this->textRect;
@@ -116,20 +117,11 @@ void DialogueBalloon::draw() {
 		sectionIndex = 0;
 		Vector2 charMeasure = Vector2{0, 0};
 		for (int i = 0; i < charIndex; i++) {
-			Color newTextColor = WHITE;
-
 			int size = 0;
 			int idx = 0;
 			for (auto section : dialogue.lines.at(lineIndex).sections) {
 				if (i < (size + TextLength(section.text.c_str()))) {
 					sectionIndex = idx;
-					if (section.key == "red") {
-						newTextColor = RED;
-					} else if (section.key == "blue") {
-						newTextColor = BLUE;
-					} else if (section.key == "green") {
-						newTextColor = GREEN;
-					}
 					break;
 				} else {
 					size += TextLength(section.text.c_str());
@@ -137,19 +129,28 @@ void DialogueBalloon::draw() {
 				idx++;
 			}
 
-			const char *subText = TextSubtext(text.c_str(), i, 1);
-			charP(charMeasure, subText, newTextColor);
+			auto &line = dialogue.lines.at(lineIndex);
+			auto &section = dialogue.lines.at(lineIndex).sections.at(sectionIndex);
 
-			Vector2 newMeasure = MeasureTextEx(font, TextSubtext(text.c_str(), i, 1), 13 * 3, 1.0f);
+			if (fontName != section.font) {
+				font = Game::getResources().getFont(section.font);
+				fontName = section.font;
+			}
+
+			const char *subText = TextSubtext(text.c_str(), i, 1);
+			charP(charMeasure, subText, line, section);
+
+			Vector2 newMeasure = MeasureTextEx(Game::getResources().getFont(section.font),
+											   TextSubtext(text.c_str(), i, 1), section.textSize * 3, 1.0f);
 			charMeasure = newMeasure;
 		}
 	}
 }
 
-void DialogueBalloon::charP(Vector2 charMeasure, const char *c, Color color) {
-	Font font = Game::getUi().getFont();
+void DialogueBalloon::charP(Vector2 charMeasure, const char *c, DialogueLine &textLine,
+							DialogueTextSection &textSection) {
 	Rectangle resRect = this->textRect;
-	if (dialogue.lines.at(lineIndex).hasPortrait) {
+	if (textLine.hasPortrait) {
 		resRect = textPortraitRect;
 	}
 
@@ -167,7 +168,8 @@ void DialogueBalloon::charP(Vector2 charMeasure, const char *c, Color color) {
 		textPos.x += charMeasure.x;
 	}
 
-	DrawTextEx(font, c, finalCharPos, 13 * 3, 1, color);
+	DrawTextEx(Game::getResources().getFont(textSection.font), c, finalCharPos, textSection.textSize * 3, 1,
+			   textSection.textColor);
 }
 
 void DialogueBalloon::showDialogue(const DialogueBin &newDialogue) {

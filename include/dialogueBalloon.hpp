@@ -9,6 +9,9 @@
 struct DialogueTextSection {
 	std::string key;
 	std::string text;
+	Color textColor = WHITE;
+	int textSize = 13;
+	std::string font = "LanaPixel";
 };
 
 struct DialogueLine {
@@ -26,6 +29,8 @@ struct DialogueBin {
 
 class DialogueBalloon {
 private:
+	std::string fontName = "LanaPixel";
+	Font font;
 	Rectangle rect;
 	Rectangle textRect;
 	Rectangle textPortraitRect;
@@ -50,7 +55,7 @@ public:
 	void draw();
 	void showDialogue(const DialogueBin &newDialogue);
 	void hideDialogue();
-	void charP(Vector2 charMeasure, const char *c, Color color);
+	void charP(Vector2 charMeasure, const char *c, DialogueLine &textLine, DialogueTextSection &textSection);
 };
 
 #endif
