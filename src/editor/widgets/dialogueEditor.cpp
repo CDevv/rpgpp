@@ -18,12 +18,14 @@ DialogueEditor::DialogueEditor() {
 	});
 }
 
-bool DialogueEditor::isSelectedTextEmpty() { return this->selectedText.empty(); }
+bool DialogueEditor::isTextNonEditable() {
+	return this->selectedText.contains("<") || this->selectedText.contains(">") || this->selectedText.empty();
+}
 
 void DialogueEditor::addXmlTag(std::string tagName) {
 	auto text = this->getText();
 
-	if (this->selectedText.contains("<") || this->selectedText.contains(">") || this->isSelectedTextEmpty()) {
+	if (this->isTextNonEditable()) {
 		return;
 	}
 

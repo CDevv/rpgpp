@@ -1,6 +1,5 @@
 #include "childWindows/colorSelectWindow.hpp"
 
-#include <algorithm>
 #include <map>
 #include <memory>
 #include <string>
@@ -9,7 +8,6 @@
 #include "TGUI/Color.hpp"
 #include "TGUI/Cursor.hpp"
 #include "TGUI/Layout.hpp"
-#include "TGUI/Widgets/BoxLayout.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
@@ -20,7 +18,7 @@
 #include "raylib.h"
 #include "widgets/dialogueEditor.hpp"
 
-std::uint8_t inverseColor(float value) { return fmax(0, 255 - value); }
+constexpr int BLACK_WHITE_THRESHOLD = 100;
 
 ColorSelectWindow::ColorSelectWindow() : PopupWindow("Select a Color") {
 	bindTranslation<tgui::ChildWindow>(this->currentWindow, "screen.project.dialogueview.select_a_color",
@@ -39,15 +37,21 @@ ColorSelectWindow::ColorSelectWindow() : PopupWindow("Select a Color") {
 		bindTranslation<tgui::Button>(colorButton, TextFormat("screen.project.dialogueview.color.%s", type.c_str()),
 									  &tgui::Button::setText);
 
-		colorButton->setSize({"100%", 32});
+		colorButton->setSize({"100%", 20});
 
 		Color color = colors[types[i]];
-		tgui::Color tguiColor = tgui::Color{color.r, color.g, color.b, color.a};
+		tgui::Color btnBackColor = {color.r, color.g, color.b, color.a};
 
 		// Set the color of the background of the color picker.
 		auto btnRenderer = colorButton->getRenderer();
-		btnRenderer->setBackgroundColor(tguiColor);
-		btnRenderer->setBackgroundColorHover(tguiColor);
+		btnRenderer->setBackgroundColor(btnBackColor);
+		btnRenderer->setBackgroundColorHover(btnBackColor);
+
+		bool displayAsBlack = ((color.r + color.g + color.b) / 3.0f) > BLACK_WHITE_THRESHOLD;
+		auto textColor = displayAsBlack ? tgui::Color::Black : tgui::Color::White;
+
+		btnRenderer->setTextColor(textColor);
+		btnRenderer->setTextColorHover(textColor);
 
 		colorButton->onPress.connect([this, type] {
 			this->editor->addXmlTag(type);

@@ -20,7 +20,7 @@ public:
 	static DialogueEditor::Ptr create();
 
 	void addXmlTag(std::string tagName);
-	bool isSelectedTextEmpty();
+	bool isTextNonEditable();
 };
 
 #endif /* _RPGPP_DIALOGUEEDITOR_HPP */

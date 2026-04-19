@@ -125,7 +125,7 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	std::weak_ptr<DialogueEditor> weakEditor = diagTextEdit;
 	selectColorButton->onPress.connect([weakEditor] {
 		if (auto capture = weakEditor.lock()) {
-			if (capture->isSelectedTextEmpty()) {
+			if (capture->isTextNonEditable()) {
 				return;
 			}
 
