@@ -63,7 +63,34 @@
 			},
 			"dialogueview": {
 				"add_new_line": "Tạo hội thoại mới",
-				"has_a_portrait": "Hiển thị ảnh hội thoại?"
+				"has_a_portrait": "Hiển thị ảnh hội thoại?",
+				"select_a_color": "Chọn màu",
+				"color": {
+					"lightgray": "Xám nhạt",
+					"gold": "Vàng",
+					"pink": "Hồng",
+					"green": "Xanh lá",
+					"skyblue": "Xanh da trời đậm",
+					"purple": "Đỏ tía",
+					"beige": "Be",
+					"magenta": "Hồng sẫm",
+					"gray": "Xám",
+					"yellow": "Vàng",
+					"red": "Đỏ",
+					"lime": "Vàng chanh",
+					"blue": "Xanh",
+					"violet": "Tím",
+					"brown": "Nâu",
+					"white": "Trắng",
+					"darkgray": "Xám đậm",
+					"orange": "Cam",
+					"maroon": "Nâu sẫm",
+					"darkgreen": "Xanh lá đậm",
+					"darkblue": "Xanh đậm",
+					"darkpurple": "Tía đậm",
+					"darkbrown": "Nâu đậm",
+					"black": "Đen"
+				}
 			},
 			"tilesetview": {
 				"tile_width": "Độ rộng Tile",
@@ -174,7 +201,21 @@
 			"room_cannot_be_deleted": "Lỗi: Bạn không thể xóa phòng mặc định.",
 			"player_actor_must_exist": "Lỗi: Bạn phải có tệp tin playerActor.",
 			"player_actor_cannot_be_deleted": "Lỗi: Bạn không thể xóa Actor người chơi."
+		},
+		"add_dialogue_option": {
+			"title": "Tạo tùy chọn hội thoại",
+			"name": "Tên tùy chọn",
+			"dialogue": "Hội thoại",
+			"submit": "Tạo"
+		},
+		"edit_dialogue_option": {
+			"title": "Chỉnh sửa tùy chọn hội thoại",
+			"name": "Tên tùy chọn",
+			"dialogue": "Hội thoại",
+			"submit": "Sửa",
+			"remove": "Xóa"
 		}
+
 	},
 
 	"widget": {
