@@ -39,6 +39,7 @@ public:
 	 */
 	void addXmlTagWithProperties(std::string tagName, std::vector<XMLTagProperties> properties);
 	void setTextAndReset(std::string text);
+	void alignSelection();
 	bool isTextNonEditable(std::string& tagName);
 };
 
