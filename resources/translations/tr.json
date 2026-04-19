@@ -193,6 +193,19 @@
       "type": "Tür",
       "submit": "Kabul Et",
       "remove": "Sil"
+    },
+    "add_dialogue_option": {
+      "title": "Bir diyalog seçeneği ekleyin",
+      "name": "Seçenek İsmi",
+      "dialogue": "Diyalog",
+      "submit": "Ekle"
+    },
+    "edit_dialogue_option": {
+      "title": "Diyalog Seçeneğini Düzenleyin",
+      "name": "Seçenek İsmi",
+      "dialogue": "Diyalog",
+      "submit": "Kabul Et",
+      "remove": "Sil"
     }
   },
   "widget": {
