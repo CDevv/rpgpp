@@ -16,12 +16,15 @@
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
+#include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowHorizontalLayout.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Panel.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
 #include "bindTranslation.hpp"
+#include "childWindows/addDialogueOptionWindow.hpp"
 #include "childWindows/colorSelectWindow.hpp"
+#include "childWindows/editDialogueOptionWindow.hpp"
 #include "dialogue.hpp"
 #include "editor.hpp"
 #include "raylib.h"
@@ -29,8 +32,11 @@
 #include "services/translationService.hpp"
 #include "variant.hpp"
 #include "widgets/dialogueEditor.hpp"
+#include "widgets/propertyFields/interPropField.hpp"
 
 DialogueFileView::DialogueFileView() {
+	dialogue = nullptr;
+
 	TranslationService &ts = Editor::instance->getTranslations();
 	noImageTexture = tgui::Texture(Editor::instance->getFs().getResourcePath("no-image.png"));
 
@@ -64,6 +70,10 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	auto panel = tgui::Panel::create({"100%", DIALOGUE_PANEL_HEIGHT});
 	panel->getRenderer()->setPadding({16, 16});
 
+	/// left group
+	auto leftGroup = tgui::Group::create({"10%", "100%"});
+	panel->add(leftGroup);
+
 	tgui::Layout2d portraitLayout = {"100% - 40", "100% - 40"};
 
 	auto portraitPic = tgui::Picture::create();
@@ -93,28 +103,34 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 			Editor::instance->getGui().gui->add(fileDialog);
 		}
 	});
-	panel->add(portraitPic);
+	leftGroup->add(portraitPic);
 
-	auto topControlsLayout = tgui::GrowHorizontalLayout::create();
-	topControlsLayout->getRenderer()->setSpaceBetweenWidgets(5.0f);
-	topControlsLayout->setSize({"100% - 210 - 40", 32});
-	topControlsLayout->setPosition(210, 0);
+	/// center group
+	auto centerGroup = tgui::Group::create({"80%", "100%"});
+	centerGroup->setPosition({"10%", 0});
+	panel->add(centerGroup);
 
 	auto charNameEdit = tgui::EditBox::create();
+	charNameEdit->setPosition({0, 0});
+	charNameEdit->setSize({"25%", 36});
 	charNameEdit->setText(line.characterName);
 	charNameEdit->onTextChange(
 		[&data, i](const tgui::String &text) { data.lines.at(i).characterName = text.toStdString(); });
-	topControlsLayout->add(charNameEdit);
+	centerGroup->add(charNameEdit);
 
 	auto diagTextEdit = DialogueEditor::create();
-	diagTextEdit->setPosition(210, 32 + 8);
 	diagTextEdit->setMouseCursor(tgui::Cursor::Type::Text);
-	diagTextEdit->setSize({"100% - 210 - 40", "100% - 40"});
+	diagTextEdit->setPosition({0, 40});
+	diagTextEdit->setSize("50%", "100% - 40");
 	diagTextEdit->setText(line.text);
 	diagTextEdit->onTextChange([&data, i](const tgui::String &text) { data.lines.at(i).text = text.toStdString(); });
 	dialogueBoxes.push_back(diagTextEdit);
 
+	centerGroup->add(diagTextEdit);
+
 	auto selectColorButton = tgui::Button::create();
+	selectColorButton->setPosition({"25% + 4", 0});
+	selectColorButton->setSize(220, 36);
 	bindTranslation<tgui::Button>(selectColorButton, "screen.project.dialogueview.select_a_color",
 								  &tgui::Button::setText);
 
@@ -132,14 +148,42 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 		}
 	});
 
-	topControlsLayout->add(selectColorButton);
+	centerGroup->add(selectColorButton);
 
-	panel->add(topControlsLayout);
-	panel->add(diagTextEdit);
+	auto addOptionButton = tgui::Button::create("Add Option");
+	addOptionButton->setPosition("50% + 4", 0);
+	addOptionButton->setSize(220, 36);
+	addOptionButton->onClick([this, i] {
+		auto *popupPtr = Editor::instance->getGui().getChildWindowSubService()->getWindow("add_dialogue_option");
+		auto *addDialogueOptionWindow = static_cast<AddDialogueOptionWindow *>(popupPtr);
+
+		addDialogueOptionWindow->dialogue = this->dialogue;
+		addDialogueOptionWindow->lineIndex = i;
+		addDialogueOptionWindow->fileView = this;
+
+		addDialogueOptionWindow->open();
+	});
+	centerGroup->add(addOptionButton);
+
+	auto optionsPanel = tgui::ScrollablePanel::create();
+	optionsPanel->setPosition({"50% + 4", 32 + 8});
+	optionsPanel->setSize("50% - 4", "100% - 40");
+
+	auto optionsLayout = tgui::GrowVerticalLayout::create();
+	optionsPanel->add(optionsLayout);
+
+	optionPanels.push_back(optionsLayout);
+
+	initOptionPanel(i);
+
+	centerGroup->add(optionsPanel);
+
+	///
 
 	auto hasImageCheck = tgui::CheckBox::create();
 	bindTranslation<tgui::CheckBox>(hasImageCheck, "screen.project.dialogueview.has_a_portrait",
 									&tgui::CheckBox::setText);
+	hasImageCheck->setPosition({0, 0});
 	hasImageCheck->setSize(32, 32);
 	hasImageCheck->setChecked(line.hasPortrait);
 
@@ -161,7 +205,7 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 			}
 		}
 	});
-	panel->add(hasImageCheck);
+	leftGroup->add(hasImageCheck);
 
 	auto deleteButton = tgui::BitmapButton::create();
 	deleteButton->setSize({32, 32});
@@ -179,12 +223,48 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	return panel;
 }
 
+void DialogueFileView::initOptionPanel(int lineIndex) {
+	auto &line = dialogue->getData().lines[lineIndex];
+	auto &panel = optionPanels.at(lineIndex);
+	panel->removeAllWidgets();
+
+	if (line.hasOptions) {
+		int i = 0;
+		for (auto &option : line.options) {
+			auto optionItem = InterPropField::create();
+			optionItem->setSize({"100%", 32});
+			optionItem->label->setText(option.title);
+			optionItem->value->setText(option.nextDialogue);
+
+			optionItem->value->onClick([this, lineIndex, i] {
+				auto *popupPtr =
+					Editor::instance->getGui().getChildWindowSubService()->getWindow("edit_dialogue_option");
+				auto *editDialogueOptionWindow = static_cast<EditDialogueOptionWindow *>(popupPtr);
+
+				editDialogueOptionWindow->setup(dialogue, lineIndex, i);
+				editDialogueOptionWindow->fileView = this;
+				editDialogueOptionWindow->open();
+			});
+
+			optionItem->remove->onClick([this, i, lineIndex, &line] {
+				line.options.erase(line.options.begin() + i);
+				initOptionPanel(lineIndex);
+			});
+
+			panel->add(optionItem);
+			i++;
+		}
+	}
+}
+
 void DialogueFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 	this->variant = variant;
 
 	if (variant != nullptr) {
 		const auto ptr = dynamic_cast<Variant<Dialogue> *>(variant);
 		const auto dialogue = ptr->get();
+
+		this->dialogue = dialogue;
 
 		auto &data = dialogue->getData();
 

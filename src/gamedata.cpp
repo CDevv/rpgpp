@@ -7,6 +7,7 @@
 #include <cereal/types/vector.hpp>
 #include <fstream>
 
+#include "dialogueBalloon.hpp"
 #include "interactable.hpp"
 #include "raylib.h"
 
@@ -92,8 +93,13 @@ void serialize(Archive &a, DialogueTextSection &b) {
 }
 
 template <class Archive>
+void serialize(Archive &a, DialogueOption &b) {
+	a(b.title, b.nextDialogue);
+}
+
+template <class Archive>
 void serialize(Archive &a, DialogueLine &b) {
-	a(b.text, b.sections, b.imageId, b.hasPortrait, b.characterName);
+	a(b.text, b.sections, b.imageId, b.hasPortrait, b.characterName, b.hasOptions, b.options);
 }
 
 template <class Archive>

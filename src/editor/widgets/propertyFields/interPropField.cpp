@@ -45,9 +45,9 @@ void InterPropField::setSize(const tgui::Layout2d &size) {
 
 void InterPropField::updateSize() {
 	label->setPosition({PADDING, 0});
-	label->setSize({getSize().x * 0.3f - PADDING, getSize().y});
-	value->setPosition({getSize().x * 0.3f, 0});
-	value->setSize({getSize().x * 0.3f, getSize().y});
-	remove->setPosition({getSize().x * 0.6f, getSize().y});
-	remove->setSize({getSize().x * 0.3f, getSize().y});
+	label->setSize({getSize().x * 0.33f - PADDING, getSize().y});
+	value->setPosition({getSize().x * 0.33f, 0});
+	value->setSize({getSize().x * 0.33f, getSize().y});
+	remove->setPosition({getSize().x * 0.67f, 0});
+	remove->setSize({getSize().x * 0.33f - PADDING, getSize().y});
 }

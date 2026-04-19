@@ -232,15 +232,6 @@ void DialogueBalloon::showDialogue(const DialogueBin &newDialogue) {
 
 	this->dialogue = newDialogue;
 
-	// test
-	DialogueLine testLine;
-	testLine.hasOptions = true;
-	testLine.text = "";
-	testLine.sections.push_back({"", "Hello!"});
-	testLine.options.push_back({"Option 1", "mydiag"});
-	testLine.options.push_back({"Option 2", "diag"});
-	dialogue.lines.push_back(testLine);
-
 	this->lineIndex = 0;
 
 	firstCharTyped = false;

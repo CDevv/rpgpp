@@ -2,6 +2,7 @@
 
 #include <nlohmann/json_fwd.hpp>
 #include <string>
+#include <vector>
 
 #include "dialogueBalloon.hpp"
 #include "dialogueParser.hpp"
@@ -13,19 +14,22 @@ Dialogue::Dialogue(const std::string &filePath) {
 
 	try {
 		json jsonObj = json::parse(fileTxt);
-		std::vector<std::vector<std::string>> diagVector = jsonObj.at("diag");
+		std::vector<nlohmann::json> diagVector = jsonObj.at("diag");
 		for (auto lineVec : diagVector) {
-			if (lineVec.size() == 4) {
-				DialogueLine line;
-				line.characterName = lineVec.at(0);
-				line.text = lineVec.at(1);
-				line.hasPortrait = std::stoi(lineVec.at(2));
-				line.imageId = lineVec.at(3);
+			DialogueLine line;
+			line.characterName = lineVec.value("characterName", "Character");
+			line.text = lineVec.value("text", "No text available!");
+			line.hasPortrait = lineVec.value("hasPortrait", false);
+			line.imageId = lineVec.value("imageId", "");
 
-				line.sections = parseDialogueContent(line.text);
+			line.sections = parseDialogueContent(line.text);
 
-				result.lines.push_back(line);
+			line.hasOptions = lineVec.value("hasOptions", false);
+			for (auto &jOption : lineVec.at("options")) {
+				line.options.push_back({jOption.at("name"), jOption.at("nextDialogue")});
 			}
+
+			result.lines.push_back(line);
 		}
 
 		dialogueBin = result;
@@ -37,13 +41,24 @@ Dialogue::Dialogue(const std::string &filePath) {
 }
 
 nlohmann::json Dialogue::dumpJson() {
-	std::vector<std::vector<std::string>> diagVec;
+	std::vector<nlohmann::json> diagVec;
 	for (DialogueLine line : dialogueBin.lines) {
-		std::vector<std::string> lineVec;
-		lineVec.push_back(line.characterName);
-		lineVec.push_back(line.text);
-		lineVec.push_back((line.hasPortrait ? "1" : "0"));
-		lineVec.push_back(line.imageId);
+		auto lineVec = nlohmann::json::object();
+		lineVec.push_back({"characterName", line.characterName});
+		lineVec.push_back({"text", line.text});
+		lineVec.push_back({"hasPortrait", line.hasPortrait});
+		lineVec.push_back({"imageId", line.imageId});
+		lineVec.push_back({"hasOptions", line.hasOptions});
+
+		auto optionsVec = std::vector<nlohmann::json>{};
+
+		for (auto &option : line.options) {
+			auto optionsObj = nlohmann::json::object();
+			optionsObj["name"] = option.title;
+			optionsObj["nextDialogue"] = option.nextDialogue;
+			optionsVec.push_back(optionsObj);
+		}
+		lineVec.push_back({"options", optionsVec});
 
 		diagVec.push_back(lineVec);
 	}

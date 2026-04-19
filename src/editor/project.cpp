@@ -376,6 +376,11 @@ GameData Project::generateStruct() {
 		DialogueBin diag = dialogue.getData();
 
 		diag.title = GetFileNameWithoutExt(diagPath.c_str());
+		for (auto &line : diag.lines) {
+			for (auto &option : line.options) {
+				option.nextDialogue = GetFileNameWithoutExt(option.nextDialogue.c_str());
+			}
+		}
 		data.dialogues[GetFileNameWithoutExt(diagPath.c_str())] = diag;
 	}
 

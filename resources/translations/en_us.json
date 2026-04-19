@@ -193,6 +193,19 @@
 			"room_cannot_be_deleted": "You cannot delete the default Room.",
 			"player_actor_must_exist": "You must have a playerActor file.",
 			"player_actor_cannot_be_deleted": "You cannot delete the Player's Actor."
+		},
+		"add_dialogue_option": {
+			"title": "Add a Dialogue Option",
+			"name": "Option Name",
+			"dialogue": "Dialogue",
+			"submit": "Add"
+		},
+		"edit_dialogue_option": {
+			"title": "Edit a Dialogue Option",
+			"name": "Option Name",
+			"dialogue": "Dialogue",
+			"submit": "Submit",
+			"remove": "Remove"
 		}
 	},
 	"widget": {

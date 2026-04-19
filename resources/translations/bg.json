@@ -166,6 +166,19 @@
 			"room_cannot_be_deleted": "Не може да изтриете стаята, зададена по подразбиране.",
 			"player_actor_must_exist": "Трябва да имате playerActor файл.",
 			"player_actor_cannot_be_deleted": "Не може да изтриете актьора на играча."
+		},
+		"add_dialogue_option": {
+			"title": "Добавяне на опция",
+			"name": "Текст",
+			"dialogue": "Диалог",
+			"submit": "Добави"
+		},
+		"edit_dialogue_option": {
+			"title": "Редактиране на опция",
+			"name": "Текст",
+			"dialogue": "Диалог",
+			"submit": "Потвърди",
+			"remove": "Премахни"
 		}
 	},
 	"widget": {
