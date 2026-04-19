@@ -9,7 +9,6 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Panel.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
-#include "TGUI/Widgets/TextArea.hpp"
 #include "dialogueBalloon.hpp"
 #include "fileViews/fileView.hpp"
 #include "widgets/dialogueEditor.hpp"

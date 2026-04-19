@@ -3,12 +3,10 @@
 #include <cstddef>
 #include <memory>
 
-#include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/GrowHorizontalLayout.hpp"
-#include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/ToggleButton.hpp"
 #include "actor.hpp"
 #include "bindTranslation.hpp"

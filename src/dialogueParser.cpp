@@ -19,6 +19,16 @@ std::map<std::string, Color> textColors = {{"lightgray", LIGHTGRAY}, {"gray", GR
 										   {"beige", BEIGE},		 {"brown", BROWN},	 {"darkbrown", DARKBROWN},
 										   {"magenta", MAGENTA},	 {"white", WHITE},	 {"black", BLACK}};
 
+std::map<std::string, Color> &getColors() { return textColors; }
+
+std::vector<std::string> getColorTypes() {
+	std::vector<std::string> colorTypes{};
+	for (auto const &[key, value] : textColors) {
+		colorTypes.push_back(key);
+	}
+	return colorTypes;
+}
+
 DialogueTextSection parseSection(pugi::xml_node node, DialogueTextSection base) {
 	base.key = node.name();
 	base.text = node.text().as_string();

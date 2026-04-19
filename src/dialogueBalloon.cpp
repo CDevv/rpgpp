@@ -3,7 +3,6 @@
 #include <raylib.h>
 #include <raymath.h>
 
-#include <cstdio>
 #include <nlohmann/json.hpp>
 
 #include "game.hpp"

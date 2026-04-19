@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 
-#include "TGUI/Text.hpp"
+#include "TGUI/String.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
 class DialogueEditor : public tgui::TextArea {
 private:
@@ -20,6 +20,7 @@ public:
 	static DialogueEditor::Ptr create();
 
 	void addXmlTag(std::string tagName);
+	bool isSelectedTextEmpty();
 };
 
 #endif /* _RPGPP_DIALOGUEEDITOR_HPP */

@@ -60,7 +60,34 @@
 			},
 			"dialogueview": {
 				"add_new_line": "Add a new line",
-				"has_a_portrait": "Has a portrait?"
+				"has_a_portrait": "Has a portrait?",
+				"select_a_color": "Select a color...",
+				"color": {
+					"lightgray": "Light Gray",
+					"gold": "Gold",
+					"pink": "Pink",
+					"green": "Green",
+					"skyblue": "Sky Blue",
+					"purple": "Purple",
+					"beige": "Beige",
+					"magenta": "Magenta",
+					"gray": "Gray",
+					"yellow": "Yellow",
+					"red": "Red",
+					"lime": "Lime",
+					"blue": "Blue",
+					"violet": "Violet",
+					"brown": "Brown",
+					"white": "White",
+					"darkgray": "Dark Gray",
+					"orange": "Orange",
+					"maroon": "Maroon",
+					"darkgreen": "Dark Green",
+					"darkblue": "Dark Blue",
+					"darkpurple": "Dark Purple",
+					"darkbrown": "Dark Brown",
+					"black": "Black"
+				}
 			},
 			"tilesetview": {
 				"tile_width": "Tile Width",

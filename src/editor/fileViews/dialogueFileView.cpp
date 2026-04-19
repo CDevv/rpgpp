@@ -4,7 +4,10 @@
 #include <TGUI/Widgets/CheckBox.hpp>
 #include <TGUI/Widgets/Picture.hpp>
 #include <TGUI/Widgets/ScrollablePanel.hpp>
+#include <algorithm>
+#include <cstddef>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -21,12 +24,15 @@
 #include "TGUI/Widgets/Panel.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
 #include "bindTranslation.hpp"
+#include "childWindows/colorSelectWindow.hpp"
 #include "dialogue.hpp"
+#include "dialogueParser.hpp"
 #include "editor.hpp"
 #include "raylib.h"
 #include "services/fileSystemService.hpp"
 #include "services/translationService.hpp"
 #include "variant.hpp"
+#include "widgets/dialogueEditor.hpp"
 
 DialogueFileView::DialogueFileView() {
 	TranslationService &ts = Editor::instance->getTranslations();
@@ -104,22 +110,6 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 		[&data, i](const tgui::String &text) { data.lines.at(i).characterName = text.toStdString(); });
 	topControlsLayout->add(charNameEdit);
 
-	// TODO: Finish the text formatting.
-
-	auto colorSelectDropdown = tgui::ComboBox::create();
-
-	colorSelectDropdown->setDefaultText("Select a color...");
-
-	colorSelectDropdown->onItemSelect.connect([colorSelectDropdown, i, this](const tgui::String &text) {
-		auto ref = dialogueBoxes.at(i);
-		ref->addXmlTag(text.toStdString());
-		colorSelectDropdown->deselectItem();
-	});
-
-	topControlsLayout->add(colorSelectDropdown);
-
-	panel->add(topControlsLayout);
-
 	auto diagTextEdit = DialogueEditor::create();
 	diagTextEdit->setPosition(210, 32 + 8);
 	diagTextEdit->setMouseCursor(tgui::Cursor::Type::Text);
@@ -128,6 +118,27 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	diagTextEdit->onTextChange([&data, i](const tgui::String &text) { data.lines.at(i).text = text.toStdString(); });
 	dialogueBoxes.push_back(diagTextEdit);
 
+	auto selectColorButton = tgui::Button::create();
+	bindTranslation<tgui::Button>(selectColorButton, "screen.project.dialogueview.select_a_color",
+								  &tgui::Button::setText);
+
+	std::weak_ptr<DialogueEditor> weakEditor = diagTextEdit;
+	selectColorButton->onPress.connect([weakEditor] {
+		if (auto capture = weakEditor.lock()) {
+			if (capture->isSelectedTextEmpty()) {
+				return;
+			}
+
+			auto selectColorWindow = reinterpret_cast<ColorSelectWindow *>(
+				Editor::instance->getGui().getChildWindowSubService()->getWindow("select_a_color"));
+
+			selectColorWindow->open(capture);
+		}
+	});
+
+	topControlsLayout->add(selectColorButton);
+
+	panel->add(topControlsLayout);
 	panel->add(diagTextEdit);
 
 	auto hasImageCheck = tgui::CheckBox::create();

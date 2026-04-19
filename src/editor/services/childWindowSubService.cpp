@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "childWindows/aboutWindow.hpp"
+#include "childWindows/colorSelectWindow.hpp"
 #include "childWindows/editPropWindow.hpp"
 #include "childWindows/newPropWindow.hpp"
 #include "childWindows/popupWindow.hpp"
@@ -23,6 +24,8 @@ void ChildWindowSubService::createWindows() {
 	this->childWindows.try_emplace("new_prop", std::make_unique<NewPropWindow>());
 
 	this->childWindows.try_emplace("edit_prop", std::make_unique<EditPropWindow>());
+
+	this->childWindows.try_emplace("select_a_color", std::make_unique<ColorSelectWindow>());
 }
 
 void ChildWindowSubService::openWindow(const std::string &windowName) {

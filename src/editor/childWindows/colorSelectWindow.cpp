@@ -1,0 +1,67 @@
+#include "childWindows/colorSelectWindow.hpp"
+
+#include <algorithm>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "TGUI/Color.hpp"
+#include "TGUI/Cursor.hpp"
+#include "TGUI/Layout.hpp"
+#include "TGUI/Widgets/BoxLayout.hpp"
+#include "TGUI/Widgets/Button.hpp"
+#include "TGUI/Widgets/ChildWindow.hpp"
+#include "TGUI/Widgets/GrowVerticalLayout.hpp"
+#include "TGUI/Widgets/ScrollablePanel.hpp"
+#include "childWindows/popupWindow.hpp"
+#include "childWindows/settingsPanel/base.hpp"
+#include "dialogueParser.hpp"
+#include "raylib.h"
+#include "widgets/dialogueEditor.hpp"
+
+std::uint8_t inverseColor(float value) { return fmax(0, 255 - value); }
+
+ColorSelectWindow::ColorSelectWindow() : PopupWindow("Select a Color") {
+	bindTranslation<tgui::ChildWindow>(this->currentWindow, "screen.project.dialogueview.select_a_color",
+									   &tgui::ChildWindow::setTitle);
+	auto scrollablePanel = tgui::ScrollablePanel::create();
+	auto verticalLayout = tgui::GrowVerticalLayout::create();
+
+	std::vector<std::string> types = getColorTypes();
+	std::map<std::string, Color> colors = getColors();
+	for (int i = 0; i < types.size(); i++) {
+		auto type = types[i];
+
+		auto colorButton = tgui::Button::create();
+		colorButton->setMouseCursor(tgui::Cursor::Type::Hand);
+
+		bindTranslation<tgui::Button>(colorButton, TextFormat("screen.project.dialogueview.color.%s", type.c_str()),
+									  &tgui::Button::setText);
+
+		colorButton->setSize({"100%", 32});
+
+		Color color = colors[types[i]];
+		tgui::Color tguiColor = tgui::Color{color.r, color.g, color.b, color.a};
+
+		// Set the color of the background of the color picker.
+		auto btnRenderer = colorButton->getRenderer();
+		btnRenderer->setBackgroundColor(tguiColor);
+		btnRenderer->setBackgroundColorHover(tguiColor);
+
+		colorButton->onPress.connect([this, type] {
+			this->editor->addXmlTag(type);
+			this->close();
+		});
+
+		verticalLayout->add(colorButton);
+	}
+
+	scrollablePanel->add(verticalLayout);
+	this->currentWindow->add(scrollablePanel);
+}
+
+void ColorSelectWindow::open(std::shared_ptr<DialogueEditor> editor) {
+	PopupWindow::open();
+	this->editor = editor;
+}
