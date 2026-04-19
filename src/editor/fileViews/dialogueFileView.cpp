@@ -17,7 +17,6 @@
 #include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
 #include "TGUI/Widgets/Group.hpp"
-#include "TGUI/Widgets/GrowHorizontalLayout.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Panel.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
@@ -130,7 +129,7 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 
 	auto selectColorButton = tgui::Button::create();
 	selectColorButton->setPosition({"25% + 4", 0});
-	selectColorButton->setSize(220, 36);
+	selectColorButton->setSize("20%", 36);
 	bindTranslation<tgui::Button>(selectColorButton, "screen.project.dialogueview.select_a_color",
 								  &tgui::Button::setText);
 
@@ -177,8 +176,6 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	initOptionPanel(i);
 
 	centerGroup->add(optionsPanel);
-
-	///
 
 	auto hasImageCheck = tgui::CheckBox::create();
 	bindTranslation<tgui::CheckBox>(hasImageCheck, "screen.project.dialogueview.has_a_portrait",

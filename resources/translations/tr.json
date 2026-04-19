@@ -60,7 +60,7 @@
       },
       "dialogueview": {
         "add_new_line": "Yeni satır ekle",
-        "has_a_portrait": "Portresi olacak mı?",
+        "has_a_portrait": "Portresi Varmı?",
         "select_a_color": "Renk seçiniz...",
         "color": {
           "lightgray": "Açık Grey",
