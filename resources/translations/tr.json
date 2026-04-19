@@ -63,11 +63,8 @@
 				"has_a_portrait": "Portresi Varmı?",
 				"select_a_color": "Renk seçiniz...",
 				"select_a_text_size": "Yazı Boyutu...",
-				"delaywindow": {
-					"add_a_delay": "Gecikme Ekleyin...",
-					"description": "Saniye olarak eklenecek gecikme.",
-					"confirm": "Kabul Et"
-				},
+				"select_a_font": "Yazıtipi Seçin...",
+				"add_a_delay": "Gecikme Ekleyin...",
 				"color": {
 					"lightgray": "Açık Grey",
 					"gold": "Altın",
@@ -194,10 +191,15 @@
 			"type": "Tür",
 			"submit": "Oluştur"
 		},
+		"delaywindow": {
+			"add_a_delay": "Gecikme Ekleyin...",
+			"description": "Saniye olarak eklenecek gecikme.",
+			"confirm": "Ekle"
+		},
 		"edit_prop": {
 			"title": "Objeyi Düzenle",
 			"type": "Tür",
-			"submit": "Kabul Et",
+			"submit": "Düzenle",
 			"remove": "Sil"
 		},
 		"add_dialogue_option": {
@@ -210,7 +212,7 @@
 			"title": "Diyalog Seçeneğini Düzenleyin",
 			"name": "Seçenek İsmi",
 			"dialogue": "Diyalog",
-			"submit": "Kabul Et",
+			"submit": "Düzenle",
 			"remove": "Sil"
 		}
 	},

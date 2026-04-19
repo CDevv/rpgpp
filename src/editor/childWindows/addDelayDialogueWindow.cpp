@@ -1,6 +1,8 @@
 #include "childWindows/addDelayDialogueWindow.hpp"
+
 #include <memory>
 #include <string>
+
 #include "TGUI/Layout.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
@@ -10,9 +12,10 @@
 #include "bindTranslation.hpp"
 #include "childWindows/popupWindow.hpp"
 
-AddDelayDialogueWindow::AddDelayDialogueWindow(): PopupWindow("Add Delay...") {
+AddDelayDialogueWindow::AddDelayDialogueWindow() : PopupWindow("Add Delay...") {
 	this->editor = nullptr;
-	bindTranslation<tgui::ChildWindow>(this->currentWindow, "screen.project.dialogueview.delaywindow.add_a_delay", &tgui::ChildWindow::setTitle);
+	bindTranslation<tgui::ChildWindow>(this->currentWindow, "dialog.delaywindow.add_a_delay",
+									   &tgui::ChildWindow::setTitle);
 
 	this->currentWindow->setSize(400, 150);
 
@@ -23,7 +26,7 @@ AddDelayDialogueWindow::AddDelayDialogueWindow(): PopupWindow("Add Delay...") {
 
 	auto descriptionLabel = tgui::Label::create();
 	descriptionLabel->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
-	bindTranslation<tgui::Label>(descriptionLabel, "screen.project.dialogueview.delaywindow.description", &tgui::Label::setText);
+	bindTranslation<tgui::Label>(descriptionLabel, "dialog.delaywindow.description", &tgui::Label::setText);
 	verticalLayout->add(descriptionLabel);
 
 	// Allow for more precise second editing.
@@ -34,8 +37,8 @@ AddDelayDialogueWindow::AddDelayDialogueWindow(): PopupWindow("Add Delay...") {
 	verticalLayout->add(this->delaySpin);
 
 	auto confirmButton = tgui::Button::create();
-	bindTranslation<tgui::Button>(confirmButton, "screen.project.dialogueview.delaywindow.confirm", &tgui::Button::setText);
-	confirmButton->onPress.connect([this]{
+	bindTranslation<tgui::Button>(confirmButton, "dialog.delaywindow.confirm", &tgui::Button::setText);
+	confirmButton->onPress.connect([this] {
 		this->editor->addXmlTagWithProperties("delay", {{"delay", std::to_string(delaySpin->getValue())}});
 		this->currentWindow->close();
 	});

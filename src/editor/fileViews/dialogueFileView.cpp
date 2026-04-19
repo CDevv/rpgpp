@@ -152,8 +152,8 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	auto addDelayButton = tgui::Button::create();
 	addDelayButton->setPosition({"20% + 8", 0});
 	addDelayButton->setSize("10%", 36);
-	bindTranslation<tgui::Button>(addDelayButton, "screen.project.dialogueview.delaywindow.add_a_delay", &tgui::Button::setText);
-	addDelayButton->onPress.connect([weakEditor]{
+	bindTranslation<tgui::Button>(addDelayButton, "screen.project.dialogueview.add_a_delay", &tgui::Button::setText);
+	addDelayButton->onPress.connect([weakEditor] {
 		if (auto capture = weakEditor.lock()) {
 			auto delayWindow = reinterpret_cast<AddDelayDialogueWindow *>(
 				Editor::instance->getGui().getChildWindowSubService()->getWindow("add_a_delay"));
@@ -166,18 +166,19 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	auto selectFontComboBox = tgui::ComboBox::create();
 	selectFontComboBox->setPosition({"30% + 12", 0});
 	selectFontComboBox->setSize("10%", 36);
-	bindTranslation<tgui::ComboBox>(selectFontComboBox, "screen.project.dialogueview.select_a_font", &tgui::ComboBox::setDefaultText);
+	bindTranslation<tgui::ComboBox>(selectFontComboBox, "screen.project.dialogueview.select_a_font",
+									&tgui::ComboBox::setDefaultText);
 
-	Project* project = Editor::instance->getProject();
+	Project *project = Editor::instance->getProject();
 	auto fontPaths = project->getPaths(EngineFileType::FILE_FONT);
 
-	std::for_each(fontPaths.begin(), fontPaths.end(), [&selectFontComboBox](const std::string& fontPath) {
+	std::for_each(fontPaths.begin(), fontPaths.end(), [&selectFontComboBox](const std::string &fontPath) {
 		auto filename = GetFileNameWithoutExt(fontPath.c_str());
 		selectFontComboBox->addItem(filename);
 	});
 
 	std::weak_ptr<tgui::ComboBox> weakFontBox = selectFontComboBox;
-	selectFontComboBox->onItemSelect.connect([weakEditor, weakFontBox](const tgui::String& selectedIndex){
+	selectFontComboBox->onItemSelect.connect([weakEditor, weakFontBox](const tgui::String &selectedIndex) {
 		if (weakEditor.expired() || weakFontBox.expired()) {
 			return;
 		}
@@ -185,7 +186,7 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 		auto editor = weakEditor.lock();
 		auto box = weakFontBox.lock();
 
-		editor->addXmlTagWithProperties("font", {{ "font", selectedIndex.toStdString() }});
+		editor->addXmlTagWithProperties("font", {{"font", selectedIndex.toStdString()}});
 		box->deselectItem();
 	});
 	centerGroup->add(selectFontComboBox);
@@ -200,10 +201,11 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 		textSizeComboBox->addItem(std::to_string(i));
 	}
 
-	bindTranslation<tgui::ComboBox>(textSizeComboBox, "screen.project.dialogueview.select_a_text_size", &tgui::ComboBox::setDefaultText);
+	bindTranslation<tgui::ComboBox>(textSizeComboBox, "screen.project.dialogueview.select_a_text_size",
+									&tgui::ComboBox::setDefaultText);
 
 	std::weak_ptr<tgui::ComboBox> weakTextSizeBox = textSizeComboBox;
-	textSizeComboBox->onItemSelect.connect([weakEditor, weakTextSizeBox](const tgui::String& selectedIndex){
+	textSizeComboBox->onItemSelect.connect([weakEditor, weakTextSizeBox](const tgui::String &selectedIndex) {
 		if (weakEditor.expired() || weakTextSizeBox.expired()) {
 			return;
 		}
@@ -211,7 +213,7 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 		auto editor = weakEditor.lock();
 		auto box = weakTextSizeBox.lock();
 
-		editor->addXmlTagWithProperties("textSize", {{ "size", selectedIndex.toStdString() }});
+		editor->addXmlTagWithProperties("textSize", {{"size", selectedIndex.toStdString()}});
 		box->deselectItem();
 	});
 	centerGroup->add(textSizeComboBox);

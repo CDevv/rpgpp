@@ -63,12 +63,8 @@
 				"has_a_portrait": "Has a portrait?",
 				"select_a_font": "Select a font...",
 				"select_a_color": "Select a color...",
-				"delaywindow": {
-					"add_a_delay": "Add delay...",
-					"description": "Amount of delay to add in seconds.",
-					"confirm": "Confirm"
-				},
 				"select_a_text_size": "Text Size...",
+				"add_a_delay": "Add delay...",
 				"color": {
 					"lightgray": "Light Gray",
 					"gold": "Gold",
@@ -184,6 +180,11 @@
 			"name": "Name",
 			"type": "Type",
 			"submit": "Create"
+		},
+		"delaywindow": {
+			"add_a_delay": "Add delay...",
+			"description": "Amount of delay to add in seconds.",
+			"confirm": "Confirm"
 		},
 		"edit_prop": {
 			"title": "Edit Prop",
