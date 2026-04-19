@@ -31,7 +31,7 @@ void DialogueEditor::setTextAndReset(std::string text) {
 	this->setText(text);
 }
 
-void DialogueEditor::alignSelection() {
+void DialogueEditor::fixSelectionRange() {
 	// This fixes an interesting TGUI issue where the formattingSelectionStart can sometimes be the end of the selection.
 	// Thanks TGUI for being an awesome GUI library.
 	// .w. - thefirey33, 2026
@@ -45,7 +45,7 @@ void DialogueEditor::alignSelection() {
 }
 
 void DialogueEditor::addXmlTag(std::string tagName) {
-	this->alignSelection();
+	this->fixSelectionRange();
 
 	if (this->isTextNonEditable(tagName))
 		return;
@@ -62,7 +62,7 @@ void DialogueEditor::addXmlTag(std::string tagName) {
 }
 
 void DialogueEditor::addXmlTagWithProperties(std::string tagName, std::vector<XMLTagProperties> properties) {
-	this->alignSelection();
+	this->fixSelectionRange();
 
 	if (this->isTextNonEditable(tagName))
 		return;

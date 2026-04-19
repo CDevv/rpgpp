@@ -38,8 +38,15 @@ public:
 	 * @param properties The properties to add to the XML tag.
 	 */
 	void addXmlTagWithProperties(std::string tagName, std::vector<XMLTagProperties> properties);
+	/**
+	 * This sets a text and resets the current selection.
+	 * @param text Text to set.
+	 */
 	void setTextAndReset(std::string text);
-	void alignSelection();
+	/**
+	 * This fixes an interesting case with TGUI .w.
+	 */
+	void fixSelectionRange();
 	bool isTextNonEditable(std::string& tagName);
 };
 

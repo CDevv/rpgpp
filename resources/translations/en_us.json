@@ -63,6 +63,11 @@
 				"has_a_portrait": "Has a portrait?",
 				"select_a_font": "Select a font...",
 				"select_a_color": "Select a color...",
+				"delaywindow": {
+					"add_a_delay": "Add delay...",
+					"description": "Amount of delay to add in seconds.",
+					"confirm": "Confirm"
+				},
 				"select_a_text_size": "Text Size...",
 				"color": {
 					"lightgray": "Light Gray",

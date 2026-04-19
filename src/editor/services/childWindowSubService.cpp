@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "childWindows/aboutWindow.hpp"
+#include "childWindows/addDelayDialogueWindow.hpp"
 #include "childWindows/addDialogueOptionWindow.hpp"
 #include "childWindows/colorSelectWindow.hpp"
 #include "childWindows/editDialogueOptionWindow.hpp"
@@ -28,6 +29,8 @@ void ChildWindowSubService::createWindows() {
 	this->childWindows.try_emplace("edit_prop", std::make_unique<EditPropWindow>());
 
 	this->childWindows.try_emplace("select_a_color", std::make_unique<ColorSelectWindow>());
+
+	this->childWindows.try_emplace("add_a_delay", std::make_unique<AddDelayDialogueWindow>());
 
 	this->childWindows.try_emplace("add_dialogue_option", std::make_unique<AddDialogueOptionWindow>());
 

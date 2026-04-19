@@ -23,6 +23,7 @@
 #include "TGUI/Widgets/Panel.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
 #include "bindTranslation.hpp"
+#include "childWindows/addDelayDialogueWindow.hpp"
 #include "childWindows/addDialogueOptionWindow.hpp"
 #include "childWindows/colorSelectWindow.hpp"
 #include "childWindows/editDialogueOptionWindow.hpp"
@@ -137,9 +138,33 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	selectColorButton->setSize("10%", 36);
 	bindTranslation<tgui::Button>(selectColorButton, "screen.project.dialogueview.select_a_color",
 								  &tgui::Button::setText);
+	std::weak_ptr<DialogueEditor> weakEditor = diagTextEdit;
+	selectColorButton->onPress.connect([weakEditor] {
+		if (auto capture = weakEditor.lock()) {
+			auto selectColorWindow = reinterpret_cast<ColorSelectWindow *>(
+				Editor::instance->getGui().getChildWindowSubService()->getWindow("select_a_color"));
+
+			selectColorWindow->open(capture);
+		}
+	});
+	centerGroup->add(selectColorButton);
+
+	auto addDelayButton = tgui::Button::create();
+	addDelayButton->setPosition({"20% + 8", 0});
+	addDelayButton->setSize("10%", 36);
+	bindTranslation<tgui::Button>(addDelayButton, "screen.project.dialogueview.delaywindow.add_a_delay", &tgui::Button::setText);
+	addDelayButton->onPress.connect([weakEditor]{
+		if (auto capture = weakEditor.lock()) {
+			auto delayWindow = reinterpret_cast<AddDelayDialogueWindow *>(
+				Editor::instance->getGui().getChildWindowSubService()->getWindow("add_a_delay"));
+
+			delayWindow->open(capture);
+		}
+	});
+	centerGroup->add(addDelayButton);
 
 	auto selectFontComboBox = tgui::ComboBox::create();
-	selectFontComboBox->setPosition({"20% + 8", 0});
+	selectFontComboBox->setPosition({"30% + 12", 0});
 	selectFontComboBox->setSize("10%", 36);
 	bindTranslation<tgui::ComboBox>(selectFontComboBox, "screen.project.dialogueview.select_a_font", &tgui::ComboBox::setDefaultText);
 
@@ -151,7 +176,6 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 		selectFontComboBox->addItem(filename);
 	});
 
-	std::weak_ptr<DialogueEditor> weakEditor = diagTextEdit;
 	std::weak_ptr<tgui::ComboBox> weakFontBox = selectFontComboBox;
 	selectFontComboBox->onItemSelect.connect([weakEditor, weakFontBox](const tgui::String& selectedIndex){
 		if (weakEditor.expired() || weakFontBox.expired()) {
@@ -164,12 +188,10 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 		editor->addXmlTagWithProperties("font", {{ "font", selectedIndex.toStdString() }});
 		box->deselectItem();
 	});
-
-
 	centerGroup->add(selectFontComboBox);
 
 	auto textSizeComboBox = tgui::ComboBox::create();
-	textSizeComboBox->setPosition({"30% + 12", 0});
+	textSizeComboBox->setPosition({"40% + 16", 0});
 	textSizeComboBox->setSize("10%", 36);
 
 	// For convenience, this code calculates the wanted text sizes automatically.
@@ -192,22 +214,10 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 		editor->addXmlTagWithProperties("textSize", {{ "size", selectedIndex.toStdString() }});
 		box->deselectItem();
 	});
-
-
 	centerGroup->add(textSizeComboBox);
-	selectColorButton->onPress.connect([weakEditor] {
-		if (auto capture = weakEditor.lock()) {
-			auto selectColorWindow = reinterpret_cast<ColorSelectWindow *>(
-				Editor::instance->getGui().getChildWindowSubService()->getWindow("select_a_color"));
-
-			selectColorWindow->open(capture);
-		}
-	});
-
-	centerGroup->add(selectColorButton);
 
 	auto addOptionButton = tgui::Button::create("Add Option");
-	addOptionButton->setPosition("50% + 4", 0);
+	addOptionButton->setPosition("80% + 20", 0);
 	addOptionButton->setSize(220, 36);
 	addOptionButton->onClick([this, i] {
 		auto *popupPtr = Editor::instance->getGui().getChildWindowSubService()->getWindow("add_dialogue_option");

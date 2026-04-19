@@ -27,6 +27,7 @@ ColorSelectWindow::ColorSelectWindow() : PopupWindow("Select a Color") {
 									   &tgui::ChildWindow::setTitle);
 	auto scrollablePanel = tgui::ScrollablePanel::create();
 	auto verticalLayout = tgui::GrowVerticalLayout::create();
+	verticalLayout->getRenderer()->setPadding(5.0f);
 
 	std::vector<std::string> types = getColorTypes();
 	std::map<std::string, Color> colors = getColors();
