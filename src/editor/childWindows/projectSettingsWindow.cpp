@@ -2,11 +2,7 @@
 
 #include <memory>
 
-#include "TGUI/String.hpp"
 #include "TGUI/Widgets/Button.hpp"
-#include "TGUI/Widgets/EditBox.hpp"
-#include "TGUI/Widgets/GrowVerticalLayout.hpp"
-#include "TGUI/Widgets/Label.hpp"
 #include "childWindows/popupWindow.hpp"
 #include "childWindows/projectSettingsPanel/game.hpp"
 #include "childWindows/projectSettingsPanel/program.hpp"
@@ -14,7 +10,6 @@
 #include "editor.hpp"
 #include "project.hpp"
 #include "raylib.h"
-#include "widgets/propertyFields/textField.hpp"
 
 ProjectSettingsWindow::ProjectSettingsWindow() : PopupWindow("ProjectSettings") {
 	tgui::TabContainer::Ptr tabContainer = tgui::TabContainer::create();
