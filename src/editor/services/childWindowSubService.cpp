@@ -32,6 +32,7 @@ void ChildWindowSubService::createWindows() {
 	this->childWindows.try_emplace("add_dialogue_option", std::make_unique<AddDialogueOptionWindow>());
 
 	this->childWindows.try_emplace("edit_dialogue_option", std::make_unique<EditDialogueOptionWindow>());
+
 }
 
 void ChildWindowSubService::openWindow(const std::string &windowName) {

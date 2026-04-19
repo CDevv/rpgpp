@@ -3,11 +3,9 @@
 
 #include <memory>
 
-#include "TGUI/Widgets/EditBox.hpp"
 #include "childWindows/popupWindow.hpp"
 #include "childWindows/projectSettingsPanel/game.hpp"
 #include "childWindows/projectSettingsPanel/program.hpp"
-#include "widgets/propertyFields/textField.hpp"
 
 class ProjectSettingsWindow : public PopupWindow {
 private:

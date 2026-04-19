@@ -4,6 +4,7 @@
 #include <TGUI/Widgets/CheckBox.hpp>
 #include <TGUI/Widgets/Picture.hpp>
 #include <TGUI/Widgets/ScrollablePanel.hpp>
+#include <algorithm>
 #include <cstddef>
 #include <memory>
 #include <string>
@@ -137,9 +138,38 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	bindTranslation<tgui::Button>(selectColorButton, "screen.project.dialogueview.select_a_color",
 								  &tgui::Button::setText);
 
+	auto selectFontComboBox = tgui::ComboBox::create();
+	selectFontComboBox->setPosition({"20% + 8", 0});
+	selectFontComboBox->setSize("10%", 36);
+	bindTranslation<tgui::ComboBox>(selectFontComboBox, "screen.project.dialogueview.select_a_font", &tgui::ComboBox::setDefaultText);
+
+	Project* project = Editor::instance->getProject();
+	auto fontPaths = project->getPaths(EngineFileType::FILE_FONT);
+
+	std::for_each(fontPaths.begin(), fontPaths.end(), [&selectFontComboBox](const std::string& fontPath) {
+		auto filename = GetFileNameWithoutExt(fontPath.c_str());
+		selectFontComboBox->addItem(filename);
+	});
+
+	std::weak_ptr<DialogueEditor> weakEditor = diagTextEdit;
+	std::weak_ptr<tgui::ComboBox> weakFontBox = selectFontComboBox;
+	selectFontComboBox->onItemSelect.connect([weakEditor, weakFontBox](const tgui::String& selectedIndex){
+		if (weakEditor.expired() || weakFontBox.expired()) {
+			return;
+		}
+
+		auto editor = weakEditor.lock();
+		auto box = weakFontBox.lock();
+
+		editor->addXmlTagWithProperties("font", {{ "font", selectedIndex.toStdString() }});
+		box->deselectItem();
+	});
+
+
+	centerGroup->add(selectFontComboBox);
 
 	auto textSizeComboBox = tgui::ComboBox::create();
-	textSizeComboBox->setPosition({"20% + 8", 0});
+	textSizeComboBox->setPosition({"30% + 12", 0});
 	textSizeComboBox->setSize("10%", 36);
 
 	// For convenience, this code calculates the wanted text sizes automatically.
@@ -150,15 +180,14 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 
 	bindTranslation<tgui::ComboBox>(textSizeComboBox, "screen.project.dialogueview.select_a_text_size", &tgui::ComboBox::setDefaultText);
 
-	std::weak_ptr<DialogueEditor> weakEditor = diagTextEdit;
-	std::weak_ptr<tgui::ComboBox> weakBox = textSizeComboBox;
-	textSizeComboBox->onItemSelect.connect([weakEditor, weakBox](const tgui::String& selectedIndex){
-		if (weakEditor.expired() || weakBox.expired()) {
+	std::weak_ptr<tgui::ComboBox> weakTextSizeBox = textSizeComboBox;
+	textSizeComboBox->onItemSelect.connect([weakEditor, weakTextSizeBox](const tgui::String& selectedIndex){
+		if (weakEditor.expired() || weakTextSizeBox.expired()) {
 			return;
 		}
 
 		auto editor = weakEditor.lock();
-		auto box = weakBox.lock();
+		auto box = weakTextSizeBox.lock();
 
 		editor->addXmlTagWithProperties("textSize", {{ "size", selectedIndex.toStdString() }});
 		box->deselectItem();

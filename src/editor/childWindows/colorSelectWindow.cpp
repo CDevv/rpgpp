@@ -13,7 +13,7 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
 #include "childWindows/popupWindow.hpp"
-#include "childWindows/settingsPanel/base.hpp"
+#include "bindTranslation.hpp"
 #include "dialogueParser.hpp"
 #include "raylib.h"
 #include "widgets/dialogueEditor.hpp"
@@ -21,6 +21,8 @@
 constexpr int BLACK_WHITE_THRESHOLD = 80;
 
 ColorSelectWindow::ColorSelectWindow() : PopupWindow("Select a Color") {
+	this->editor = nullptr;
+
 	bindTranslation<tgui::ChildWindow>(this->currentWindow, "screen.project.dialogueview.select_a_color",
 									   &tgui::ChildWindow::setTitle);
 	auto scrollablePanel = tgui::ScrollablePanel::create();
