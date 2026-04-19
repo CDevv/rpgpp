@@ -60,7 +60,34 @@
       },
       "dialogueview": {
         "add_new_line": "Yeni satır ekle",
-        "has_a_portrait": "Portresi olacak mı?"
+        "has_a_portrait": "Portresi olacak mı?",
+        "select_a_color": "Renk seçiniz...",
+        "color": {
+          "lightgray": "Açık Grey",
+          "gold": "Altın",
+          "pink": "Pembe",
+          "green": "Yeşil",
+          "skyblue": "Gökyüzü Mavisi",
+          "purple": "Mor",
+          "beige": "Bej",
+          "magenta": "Macenta",
+          "gray": "Grey",
+          "yellow": "Sarı",
+          "red": "Kırmızı",
+          "lime": "Misket",
+          "blue": "Mavi",
+          "violet": "Menekşe",
+          "brown": "Kahverengi",
+          "white": "Beyaz",
+          "darkgray": "Koyu Gri",
+          "orange": "Turuncu",
+          "maroon": "Bordo",
+          "darkgreen": "Koyu Yeşil",
+          "darkblue": "Koyu Mavi",
+          "darkpurple": "Koyu Mor",
+          "darkbrown": "Koyu Kahverengi",
+          "black": "Siyah"
+        }
       },
       "tilesetview": {
         "tile_width": "Kare Genişliği",
