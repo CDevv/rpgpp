@@ -14,6 +14,7 @@
 #include "TGUI/String.hpp"
 #include "TGUI/Texture.hpp"
 #include "TGUI/Widgets/Button.hpp"
+#include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
 #include "TGUI/Widgets/Group.hpp"
@@ -64,6 +65,9 @@ DialogueFileView::DialogueFileView() {
 	widgetContainer.push_back(mainPanel);
 }
 
+constexpr int MAXIMUM_TEXT_SIZE = 32;
+constexpr int MINIMUM_TEXT_SIZE = 16;
+
 tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine line, size_t i) {
 	TranslationService &ts = Editor::instance->getTranslations();
 	auto panel = tgui::Panel::create({"100%", DIALOGUE_PANEL_HEIGHT});
@@ -111,7 +115,7 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 
 	auto charNameEdit = tgui::EditBox::create();
 	charNameEdit->setPosition({0, 0});
-	charNameEdit->setSize({"25%", 36});
+	charNameEdit->setSize({"10%", 36});
 	charNameEdit->setText(line.characterName);
 	charNameEdit->onTextChange(
 		[&data, i](const tgui::String &text) { data.lines.at(i).characterName = text.toStdString(); });
@@ -128,18 +132,42 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	centerGroup->add(diagTextEdit);
 
 	auto selectColorButton = tgui::Button::create();
-	selectColorButton->setPosition({"25% + 4", 0});
-	selectColorButton->setSize("20%", 36);
+	selectColorButton->setPosition({"10% + 4", 0});
+	selectColorButton->setSize("10%", 36);
 	bindTranslation<tgui::Button>(selectColorButton, "screen.project.dialogueview.select_a_color",
 								  &tgui::Button::setText);
 
+
+	auto textSizeComboBox = tgui::ComboBox::create();
+	textSizeComboBox->setPosition({"20% + 8", 0});
+	textSizeComboBox->setSize("10%", 36);
+
+	// For convenience, this code calculates the wanted text sizes automatically.
+	int textAddition = MAXIMUM_TEXT_SIZE / (MAXIMUM_TEXT_SIZE - MINIMUM_TEXT_SIZE);
+	for (int i = MINIMUM_TEXT_SIZE; i <= MAXIMUM_TEXT_SIZE; i += textAddition) {
+		textSizeComboBox->addItem(std::to_string(i));
+	}
+
+	bindTranslation<tgui::ComboBox>(textSizeComboBox, "screen.project.dialogueview.select_a_text_size", &tgui::ComboBox::setDefaultText);
+
 	std::weak_ptr<DialogueEditor> weakEditor = diagTextEdit;
+	std::weak_ptr<tgui::ComboBox> weakBox = textSizeComboBox;
+	textSizeComboBox->onItemSelect.connect([weakEditor, weakBox](const tgui::String& selectedIndex){
+		if (weakEditor.expired() || weakBox.expired()) {
+			return;
+		}
+
+		auto editor = weakEditor.lock();
+		auto box = weakBox.lock();
+
+		editor->addXmlTagWithProperties("textSize", {{ "size", selectedIndex.toStdString() }});
+		box->deselectItem();
+	});
+
+
+	centerGroup->add(textSizeComboBox);
 	selectColorButton->onPress.connect([weakEditor] {
 		if (auto capture = weakEditor.lock()) {
-			if (capture->isTextNonEditable()) {
-				return;
-			}
-
 			auto selectColorWindow = reinterpret_cast<ColorSelectWindow *>(
 				Editor::instance->getGui().getChildWindowSubService()->getWindow("select_a_color"));
 

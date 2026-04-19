@@ -37,7 +37,7 @@ ColorSelectWindow::ColorSelectWindow() : PopupWindow("Select a Color") {
 		bindTranslation<tgui::Button>(colorButton, TextFormat("screen.project.dialogueview.color.%s", type.c_str()),
 									  &tgui::Button::setText);
 
-		colorButton->setSize({"100%", 20});
+		colorButton->setSize({"100%", 30});
 
 		Color color = colors[types[i]];
 		tgui::Color btnBackColor = {color.r, color.g, color.b, color.a};

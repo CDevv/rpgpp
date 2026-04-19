@@ -62,6 +62,7 @@
 				"add_new_line": "Add a new line",
 				"has_a_portrait": "Has a portrait?",
 				"select_a_color": "Select a color...",
+				"select_a_text_size": "Text Size...",
 				"color": {
 					"lightgray": "Light Gray",
 					"gold": "Gold",

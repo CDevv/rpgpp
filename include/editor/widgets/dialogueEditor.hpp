@@ -4,9 +4,16 @@
 #include <cstddef>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/TextArea.hpp"
+
+struct XMLTagProperties {
+	std::string propertyName;
+	std::string propertyValue;
+};
+
 class DialogueEditor : public tgui::TextArea {
 private:
 	std::size_t formattingSelectionStart;
@@ -19,8 +26,20 @@ public:
 
 	static DialogueEditor::Ptr create();
 
+	/**
+	 * Add the specified XML tag to the user's selected text.
+	 * @param tagName The name of the XML tag to add.
+	 */
 	void addXmlTag(std::string tagName);
-	bool isTextNonEditable();
+
+	/**
+	 * Add the specified XML tag with properties to the user's selected text.
+	 * @param tagName The name of the XML tag to add.
+	 * @param properties The properties to add to the XML tag.
+	 */
+	void addXmlTagWithProperties(std::string tagName, std::vector<XMLTagProperties> properties);
+	void setTextAndReset(std::string text);
+	bool isTextNonEditable(std::string& tagName);
 };
 
 #endif /* _RPGPP_DIALOGUEEDITOR_HPP */

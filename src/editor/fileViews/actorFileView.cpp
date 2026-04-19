@@ -8,7 +8,6 @@
 #include "raylib.h"
 #include "services/translationService.hpp"
 #include "views/actorView.hpp"
-#include "views/propPreview.hpp"
 #include "widgets/frameEditor.hpp"
 #include "widgets/propertiesBox.hpp"
 #include "widgets/propertyFields/fileField.hpp"
