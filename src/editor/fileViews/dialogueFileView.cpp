@@ -4,10 +4,8 @@
 #include <TGUI/Widgets/CheckBox.hpp>
 #include <TGUI/Widgets/Picture.hpp>
 #include <TGUI/Widgets/ScrollablePanel.hpp>
-#include <algorithm>
 #include <cstddef>
 #include <memory>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -16,7 +14,6 @@
 #include "TGUI/String.hpp"
 #include "TGUI/Texture.hpp"
 #include "TGUI/Widgets/Button.hpp"
-#include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
 #include "TGUI/Widgets/GrowHorizontalLayout.hpp"
@@ -26,7 +23,6 @@
 #include "bindTranslation.hpp"
 #include "childWindows/colorSelectWindow.hpp"
 #include "dialogue.hpp"
-#include "dialogueParser.hpp"
 #include "editor.hpp"
 #include "raylib.h"
 #include "services/fileSystemService.hpp"

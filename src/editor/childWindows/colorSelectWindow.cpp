@@ -18,7 +18,7 @@
 #include "raylib.h"
 #include "widgets/dialogueEditor.hpp"
 
-constexpr int BLACK_WHITE_THRESHOLD = 100;
+constexpr int BLACK_WHITE_THRESHOLD = 80;
 
 ColorSelectWindow::ColorSelectWindow() : PopupWindow("Select a Color") {
 	bindTranslation<tgui::ChildWindow>(this->currentWindow, "screen.project.dialogueview.select_a_color",
