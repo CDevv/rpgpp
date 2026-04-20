@@ -18,9 +18,7 @@ Example of a Dialogue file (.rdiag):
                 "hasOptions":false,
                 "hasPortrait":false,
                 "imageId":"",
-                "options":[
-                    
-                ],
+                "options":[],
                 "text":"My dialogue <red>text!</red>"
             },
             {

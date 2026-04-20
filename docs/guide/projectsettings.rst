@@ -39,3 +39,7 @@ There are two categories in Project Settings:
     * **Tile Size** - The tile size in maps.
 
     * **Debug Draw** - Drawing objects like collision boxes and etc.
+
+    * **Export Image Scales** - What image scales to be exported.
+
+    * **Export Font Sizes** - What font sizes the fonts shall be exported in.
