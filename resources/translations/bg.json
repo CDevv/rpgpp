@@ -60,7 +60,38 @@
 			},
 			"dialogueview": {
 				"add_new_line": "Добавете част",
-				"has_a_portrait": "Има портретно изображение?"
+				"has_a_portrait": "Има портрет?",
+				"select_a_font": "Изберете шрифт..",
+				"select_a_color": "Изберете цвят..",
+				"select_a_text_size": "Размер на текста..",
+				"add_a_delay": "Дoбавете забавяне..",
+				"add_option": "Добавете опция",
+				"color": {
+					"lightgray": "Светло сиво",
+					"gold": "Златно",
+					"pink": "Розово",
+					"green": "Зелени",
+					"skyblue": "Небесно синьо",
+					"purple": "Лилаво",
+					"beige": "Бежово",
+					"magenta": "Магента",
+					"gray": "Сиво",
+					"yellow": "Жълто",
+					"red": "Червено",
+					"lime": "Лимоново",
+					"blue": "Синьо",
+					"violet": "Виолетово",
+					"brown": "Кафяво",
+					"white": "Бяло",
+					"darkgray": "Тъмно синьо",
+					"orange": "Оранжево",
+					"maroon": "Кафяво-червено",
+					"darkgreen": "Тъмно зелено",
+					"darkblue": "Тъмно синьо",
+					"darkpurple": "Тъмно лилаво",
+					"darkbrown": "Тъмно Brown",
+					"black": "Черно"
+				}
 			},
 			"tilesetview": {
 				"tile_width": "Ширина на плочка",
@@ -151,6 +182,11 @@
 			"type": "Тип",
 			"submit": "Създай"
 		},
+		"delaywindow": {
+			"add_a_delay": "Добави забавяне",
+			"description": "Забавяне в секунди.",
+			"confirm": "ДОбави"
+		},
 		"edit_prop": {
 			"title": "Редактирай обект",
 			"type": "Тип",
@@ -187,6 +223,11 @@
 		},
 		"hotkey_modifier": {
 			"listening": "Слушам..."
+		},
+		"propField": {
+			"interPropField": {
+				"remove": "Премахни"
+			}
 		}
 	},
 	"button": {

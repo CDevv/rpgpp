@@ -89,7 +89,7 @@ void serialize(Archive &a, RoomBin &b) {
 
 template <class Archive>
 void serialize(Archive &a, DialogueTextSection &b) {
-	a(b.key, b.text, b.textColor, b.textSize, b.font, b.delay);
+	a(b.key, b.text, b.textColor, b.textSize, b.font, b.delay, b.padding, b.paddingMode, b.sound, b.newline);
 }
 
 template <class Archive>

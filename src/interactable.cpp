@@ -97,16 +97,16 @@ void Interactable::setProps(nlohmann::json j) { this->props = std::make_unique<n
 
 void Interactable::addProp(PropType propType, const std::string &name) {
 	switch (propType) {
-		case INT:
+		case PROP_INT:
 			props->push_back({name, 0});
 			break;
-		case STRING:
+		case PROP_STRING:
 			props->push_back({name, ""});
 			break;
-		case BOOLEAN:
+		case PROP_BOOLEAN:
 			props->push_back({name, false});
 			break;
-		case DIALOGUE:
+		case PROP_DIALOGUE:
 			props->push_back({name, {{"propType", "dialogue"}, {"value", ""}}});
 			break;
 		default:

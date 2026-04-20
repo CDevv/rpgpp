@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-constexpr const char* spaceLiteral{" "};
+constexpr const char *spaceLiteral{" "};
 
 #include "TGUI/String.hpp"
 
@@ -21,9 +21,7 @@ DialogueEditor::DialogueEditor() {
 	});
 }
 
-bool DialogueEditor::isTextNonEditable(std::string& tagName) {
-	return this->selectedText.contains(tagName) || this->selectedText.empty();
-}
+bool DialogueEditor::isTextNonEditable(std::string &tagName) { return this->selectedText.contains(tagName); }
 
 void DialogueEditor::setTextAndReset(std::string text) {
 	this->selectedText = "";
@@ -51,9 +49,14 @@ void DialogueEditor::addXmlTag(std::string tagName) {
 
 	std::stringstream ss{};
 
-	ss << text.substr(0, this->formattingSelectionStart);
-	ss << "<" << tagName << ">" << this->selectedText << "</" << tagName << ">";
-	ss << text.substr(this->formattingSelectionEnd);
+	if (this->getSelectionStart() >= this->getSelectionEnd()) {
+		ss << text;
+		ss << "<" << tagName << ">" << "" << "</" << tagName << ">";
+	} else {
+		ss << text.substr(0, this->formattingSelectionStart);
+		ss << "<" << tagName << ">" << this->selectedText << "</" << tagName << ">";
+		ss << text.substr(this->formattingSelectionEnd);
+	}
 
 	this->setTextAndReset(ss.str());
 }
@@ -67,11 +70,16 @@ void DialogueEditor::addXmlTagWithProperties(std::string tagName, std::vector<XM
 
 	std::stringstream ss{};
 
-	ss << text.substr(0, this->formattingSelectionStart);
+	if (this->getSelectionStart() >= this->getSelectionEnd() || this->getSelectedText().empty()) {
+		ss << text;
+	} else {
+		ss << text.substr(0, this->formattingSelectionStart);
+	}
+
 	ss << "<" << tagName << spaceLiteral;
 
 	for (int i = 0; i < properties.size(); i++) {
-		auto& val = properties[i];
+		auto &val = properties[i];
 
 		/**
 		 * Construct an XML tag property string in the format "name=\"value\"" with a space separator
@@ -83,8 +91,12 @@ void DialogueEditor::addXmlTagWithProperties(std::string tagName, std::vector<XM
 		   << (i < properties.size() - 1 ? spaceLiteral : std::string{});
 	}
 
-	ss << ">" << this->selectedText << "</" << tagName << ">";
-	ss << text.substr(this->formattingSelectionEnd);
+	if (this->getSelectionStart() >= this->getSelectionEnd() || this->getSelectedText().empty()) {
+		ss << ">" << "" << "</" << tagName << ">";
+	} else {
+		ss << ">" << this->selectedText << "</" << tagName << ">";
+		ss << text.substr(this->formattingSelectionEnd);
+	}
 
 	this->setTextAndReset(ss.str());
 }

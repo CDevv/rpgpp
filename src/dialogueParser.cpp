@@ -51,6 +51,25 @@ DialogueTextSection parseSection(pugi::xml_node node, DialogueTextSection base) 
 		base.delay = node.attribute("delay").as_float(1.0f);
 	}
 
+	if (base.key == "padding") {
+		if (!node.attribute("px").empty()) {
+			base.padding = node.attribute("px").as_float(0.0f);
+			base.paddingMode = PADDING_PX;
+		}
+		if (!node.attribute("percent").empty()) {
+			base.padding = node.attribute("percent").as_int();
+			base.paddingMode = PADDING_PERCENT;
+		}
+	}
+
+	if (base.key == "sound") {
+		base.sound = node.attribute("id").as_string("Text 1");
+	}
+
+	if (base.key == "nl") {
+		base.newline = true;
+	}
+
 	return base;
 }
 

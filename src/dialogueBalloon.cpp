@@ -42,7 +42,8 @@ void DialogueBalloon::update() {
 	if (active) {
 		if (firstCharTyped == false) {
 			firstCharTyped = true;
-			Game::getSounds().playSound("Text 1");
+			auto &soundId = dialogue.lines.at(lineIndex).sections.at(sectionIndex).sound;
+			Game::getSounds().playSound(soundId);
 			return;
 		}
 
@@ -77,6 +78,10 @@ void DialogueBalloon::update() {
 					lastSectionLen = 0;
 
 					textPos = Vector2{0, 0};
+
+					appliedTag = false;
+					padding = 0.0f;
+					maxLineHeight = 0.0f;
 				}
 			} else {
 				charIndex = (text.size() - 1);
@@ -108,7 +113,8 @@ void DialogueBalloon::update() {
 				// play sound
 				if (charIndex < text.size()) {
 					if (text.at(charIndex) != ' ') {
-						Game::getSounds().playSound("Text 1");
+						auto &soundId = dialogue.lines.at(lineIndex).sections.at(sectionIndex).sound;
+						Game::getSounds().playSound(soundId);
 					}
 				}
 			}
@@ -168,6 +174,17 @@ void DialogueBalloon::draw() {
 			int idx = 0;
 			for (auto section : dialogue.lines.at(lineIndex).sections) {
 				if (i < (size + TextLength(section.text.c_str()))) {
+					if (sectionIndex != idx) {
+						if (section.paddingMode == PADDING_PX) {
+							padding = section.padding;
+						} else {
+							padding = textRect.width * (section.padding / 100);
+						}
+						appliedTag = false;
+						if (section.newline) {
+							printf("newline tag.. \n");
+						}
+					}
 					sectionIndex = idx;
 
 					break;
@@ -175,6 +192,10 @@ void DialogueBalloon::draw() {
 					size += TextLength(section.text.c_str());
 				}
 				idx++;
+			}
+
+			if (maxLineHeight < charMeasure.y) {
+				maxLineHeight = charMeasure.y;
 			}
 
 			auto &line = dialogue.lines.at(lineIndex);
@@ -189,6 +210,13 @@ void DialogueBalloon::draw() {
 				if (!delay) {
 					delay = true;
 					delayDuration = section.delay;
+				}
+			}
+
+			if (!appliedTag) {
+				if (section.padding > 0.0f) {
+					charMeasure.x += padding;
+					appliedTag = true;
 				}
 			}
 
@@ -212,8 +240,18 @@ void DialogueBalloon::charP(Vector2 charMeasure, const char *c, DialogueLine &te
 	Vector2 a = Vector2Add(textPos, Vector2{charMeasure.x + 1, 0.0f});
 	Vector2 finalCharPos = Vector2Add(Vector2{resRect.x, resRect.y}, a);
 
-	// Check for text overflow on x axis.
-	if ((finalCharPos.x + charMeasure.x) > textRect.width) {
+	auto &section = dialogue.lines.at(lineIndex).sections.at(sectionIndex);
+
+	bool hasNewline = false;
+	if (!appliedTag && section.newline) {
+		hasNewline = true;
+	}
+	if (TextIsEqual(c, "\n")) {
+		hasNewline = true;
+	}
+
+	// Check for text overflow on x axis or for newline.
+	if ((finalCharPos.x + charMeasure.x) > textRect.width || hasNewline) {
 		textPos.x = 0;
 		textPos.y += charMeasure.y;
 

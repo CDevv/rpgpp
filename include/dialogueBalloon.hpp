@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+enum DialoguePaddingMode { PADDING_PX, PADDING_PERCENT };
+
 struct DialogueTextSection {
 	std::string key;
 	std::string text;
@@ -13,6 +15,10 @@ struct DialogueTextSection {
 	int textSize = 13;
 	std::string font = "LanaPixel";
 	float delay = 0.0f;
+	std::string sound = "Text 1";
+	float padding = 0.0f;
+	DialoguePaddingMode paddingMode = PADDING_PX;
+	bool newline = false;
 };
 
 struct DialogueOption {
@@ -46,6 +52,7 @@ private:
 	DialogueBin dialogue;
 	std::string text;
 	DialogueTextSection sectionText;
+
 	bool firstCharTyped;
 	bool finishedTyping = false;
 	bool active;
@@ -53,12 +60,17 @@ private:
 	int charIndex;
 	int lineIndex;
 	int sectionIndex;
-	Color textColor;
 	int lastSectionLen;
+
+	Color textColor;
 	Vector2 textPos;
 	bool delay = false;
 	float delayDuration = 0.0f;
 	int hoveredOption = 0;
+	float padding = 0.0f;
+	float maxLineHeight = 0.0f;
+	bool appliedTag = false;
+
 	void drawPortrait() const;
 
 public:

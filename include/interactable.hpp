@@ -13,7 +13,7 @@
 #include "gamedata.hpp"
 #include "saveable.hpp"
 
-enum PropType { INT, STRING, BOOLEAN, DIALOGUE };
+enum PropType { PROP_INT, PROP_STRING, PROP_BOOLEAN, PROP_DIALOGUE };
 
 /** Defines an object that is interactable in-game by a player's action */
 class Interactable : public ISaveable {
