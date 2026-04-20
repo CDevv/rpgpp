@@ -65,6 +65,10 @@
 				"add_new_line": "Tạo hội thoại mới",
 				"has_a_portrait": "Hiển thị ảnh hội thoại?",
 				"select_a_color": "Chọn màu",
+				"select_a_font": "Chọn phông chữ",
+				"select_a_text_size": "Chọn kích cỡ chữ",
+				"add_a_delay": "Thêm độ trễ",
+				"add_option": "Thêm tùy chọn",
 				"color": {
 					"lightgray": "Xám nhạt",
 					"gold": "Vàng",
@@ -186,6 +190,11 @@
 			"type": "Loại",
 			"submit": "Tạo"
 		},
+		"delaywindow": {
+			"add_a_delay": "Thêm độ trễ",
+			"description": "Thời gian độ trễ để thêm trong đơn vị giây.",
+			"confirm": "Xác nhận"
+		},
 		"edit_prop": {
 			"title": "Chỉnh sửa Prop",
 			"type": "Loại",
@@ -215,7 +224,6 @@
 			"submit": "Sửa",
 			"remove": "Xóa"
 		}
-
 	},
 
 	"widget": {
@@ -224,6 +232,11 @@
 		},
 		"hotkey_modifier": {
 			"listening": "Đang nhận phím..."
+		},
+		"propField": {
+			"interPropField": {
+				"remove": "Xóa"
+			}
 		}
 	},
 

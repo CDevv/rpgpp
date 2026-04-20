@@ -25,16 +25,14 @@ bool DialogueEditor::isTextNonEditable(std::string& tagName) {
 	return this->selectedText.contains(tagName) || this->selectedText.empty();
 }
 
-
 void DialogueEditor::setTextAndReset(std::string text) {
 	this->selectedText = "";
 	this->setText(text);
 }
 
 void DialogueEditor::fixSelectionRange() {
-	// This fixes an interesting TGUI issue where the formattingSelectionStart can sometimes be the end of the selection.
-	// Thanks TGUI for being an awesome GUI library.
-	// .w. - thefirey33, 2026
+	// This fixes an interesting TGUI issue where the formattingSelectionStart can sometimes be the end of the
+	// selection. Thanks TGUI for being an awesome GUI library. .w. - thefirey33, 2026
 
 	if (this->formattingSelectionStart > this->formattingSelectionEnd) {
 		auto selectionEnd = this->formattingSelectionEnd;
@@ -47,8 +45,7 @@ void DialogueEditor::fixSelectionRange() {
 void DialogueEditor::addXmlTag(std::string tagName) {
 	this->fixSelectionRange();
 
-	if (this->isTextNonEditable(tagName))
-		return;
+	if (this->isTextNonEditable(tagName)) return;
 
 	auto text = this->getText();
 
@@ -64,8 +61,7 @@ void DialogueEditor::addXmlTag(std::string tagName) {
 void DialogueEditor::addXmlTagWithProperties(std::string tagName, std::vector<XMLTagProperties> properties) {
 	this->fixSelectionRange();
 
-	if (this->isTextNonEditable(tagName))
-		return;
+	if (this->isTextNonEditable(tagName)) return;
 
 	auto text = this->getText();
 
@@ -83,7 +79,8 @@ void DialogueEditor::addXmlTagWithProperties(std::string tagName, std::vector<XM
 		 *
 		 * This is very confusing, i know.
 		 */
-		ss << val.propertyName << "=\"" << val.propertyValue << "\"" << (i < properties.size() - 1 ? spaceLiteral : std::string{});
+		ss << val.propertyName << "=\"" << val.propertyValue << "\""
+		   << (i < properties.size() - 1 ? spaceLiteral : std::string{});
 	}
 
 	ss << ">" << this->selectedText << "</" << tagName << ">";

@@ -3,12 +3,10 @@
 #include <TGUI/Widgets/EditBox.hpp>
 #include <memory>
 
-#include "TGUI/Texture.hpp"
 #include "TGUI/Widget.hpp"
-#include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/Label.hpp"
-#include "editor.hpp"
+#include "childWindows/settingsPanel/base.hpp"
 #include "widgets/propertyFields/fieldConfig.hpp"
 
 InterPropField::InterPropField(const char *typeName, bool initRenderer)
@@ -17,7 +15,8 @@ InterPropField::InterPropField(const char *typeName, bool initRenderer)
 	label->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
 	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
 	value = tgui::Button::create();
-	remove = tgui::Button::create("Remove");
+	remove = tgui::Button::create();
+	bindTranslation<tgui::Button>(remove, "widget.propField.interPropField.remove", &tgui::Button::setText);
 
 	m_container->add(label, "Label");
 	m_container->add(value, "Value");

@@ -65,6 +65,7 @@
 				"select_a_color": "Select a color...",
 				"select_a_text_size": "Text Size...",
 				"add_a_delay": "Add delay...",
+				"add_option": "Add option",
 				"color": {
 					"lightgray": "Light Gray",
 					"gold": "Gold",
@@ -222,6 +223,11 @@
 		},
 		"hotkey_modifier": {
 			"listening": "Listening..."
+		},
+		"propField": {
+			"interPropField": {
+				"remove": "Remove"
+			}
 		}
 	},
 	"button": {

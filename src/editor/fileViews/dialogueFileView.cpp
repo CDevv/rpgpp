@@ -218,7 +218,8 @@ tgui::Panel::Ptr DialogueFileView::makeLinePanel(DialogueBin &data, DialogueLine
 	});
 	centerGroup->add(textSizeComboBox);
 
-	auto addOptionButton = tgui::Button::create("Add Option");
+	auto addOptionButton = tgui::Button::create();
+	bindTranslation<tgui::Button>(addOptionButton, "screen.project.dialogueview.add_option", &tgui::Button::setText);
 	addOptionButton->setPosition("80% + 20", 0);
 	addOptionButton->setSize(220, 36);
 	addOptionButton->onClick([this, i] {

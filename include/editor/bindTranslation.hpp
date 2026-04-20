@@ -38,7 +38,7 @@ void bindTranslation(std::shared_ptr<WidgetType> widget, const std::string &key,
 // The callback function provides references to the widget and the translation service.
 template <typename WidgetType>
 void bindTranslationWithCallback(std::shared_ptr<WidgetType> widget,
-						   std::function<void(std::shared_ptr<WidgetType> widget, TranslationService &)> cb) {
+								 std::function<void(std::shared_ptr<WidgetType> widget, TranslationService &)> cb) {
 	auto &ts = Editor::instance->getTranslations();
 	std::weak_ptr<WidgetType> weakWidget = widget;
 
