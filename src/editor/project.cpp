@@ -2,6 +2,7 @@
 
 #include <raylib.h>
 
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cstddef>
@@ -74,6 +75,8 @@ Project::Project(const std::string &path) {
 	gameSet.playerActorPath = j.value("playerActor", "");
 	gameSet.tileSize = j.value("tileSize", 16);
 	gameSet.debugDraw = j.value("debugDraw", false);
+	gameSet.exportImageScales = j.value("exportImageScales", std::vector<int>{1});
+	gameSet.exportFontSizes = j.value("exportFontSizes", std::vector<int>{13});
 
 	ChangeDirectory(projectPath.c_str());
 	UnloadFileText(jsonContent);
@@ -132,6 +135,8 @@ json Project::toJson() {
 	j["tileSize"] = gameSet.tileSize;
 	j["playerActor"] = gameSet.playerActorPath;
 	j["debugDraw"] = gameSet.debugDraw;
+	j["exportImageScales"] = gameSet.exportImageScales;
+	j["exportFontSizes"] = gameSet.exportFontSizes;
 
 	return j;
 }
@@ -146,13 +151,22 @@ std::vector<std::string> Project::getPaths(EngineFileType fileType) {
 	std::filesystem::path subdir = projectPath;
 	subdir /= TextToLower(Editor::instance->getFs().getTypeName(fileType).c_str());
 
+	auto &extensions = Editor::instance->getFs().getTypeExtensions(fileType);
+
 	assert(subdir.string().empty() == false && "directory path is empty");
 
 	auto pathList = LoadDirectoryFiles(subdir.string().c_str());
 	std::vector<std::string> vec = {};
 
 	for (int i = 0; i < pathList.count; i++) {
-		vec.emplace_back(pathList.paths[i]);
+		std::string fullPath = pathList.paths[i];
+		std::string fileExt = GetFileExtension(fullPath.c_str());
+		for (auto &j : extensions) {
+			if (j == fileExt) {
+				vec.emplace_back(fullPath);
+				break;
+			}
+		}
 	}
 
 	UnloadDirectoryFiles(pathList);
@@ -324,7 +338,26 @@ GameData Project::generateStruct() {
 			pBin.name = prop->getSourcePath();
 			pBin.tilePos = fromVector2(prop->getWorldTilePos());
 
+			auto *interactable = prop->getInteractable();
+
+			// add missing props to the interactable in the prop
+			for (auto &item : getInteractableNames()) {
+				std::string itemType = GetFileNameWithoutExt(item.first.c_str());
+				if (itemType == interactable->getType()) {
+					Interactable itemInteractable(item.first);
+
+					for (auto prop : itemInteractable.getProps().items()) {
+						if (!interactable->getProps().contains(prop.key())) {
+							interactable->getProps().push_back({prop.key(), prop.value()});
+						}
+					}
+
+					break;
+				}
+			}
+
 			pBin.propsCbor = nlohmann::json::to_cbor(prop->getInteractable()->getProps());
+
 			roomBin.props.push_back(pBin);
 		}
 		for (auto &[aName, actor] : room->getActors().getActors()) {

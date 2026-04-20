@@ -15,13 +15,32 @@ void ResourceService::init() {
 		for (auto &[id, fontBin] : Game::getBin().fonts) {
 			Font font = LoadFontFromMemory(fontBin.ext.c_str(), fontBin.data.data(), fontBin.dataSize, 13, nullptr, 0);
 			addFont(id, font);
+
+			// font sizes, defined in the project settings
+			for (int fontSize : Game::getBin().gameSet.exportFontSizes) {
+				Font font = LoadFontFromMemory(fontBin.ext.c_str(), fontBin.data.data(), fontBin.dataSize, fontSize,
+											   nullptr, 0);
+				addFont(TextFormat("%s-%i", id.c_str(), fontSize), font);
+			}
 		}
 
 		for (const auto &[name, data] : Game::getBin().images) {
+			// scale 1 - the image as it is
 			Image image = LoadImageFromMemory(data.ext.c_str(), data.data.data(), data.dataSize);
 			Texture2D texture = LoadTextureFromImage(image);
 			addTexture(name, texture);
 			UnloadImage(image);
+
+			// scales, defined in the settings of the project
+			for (int imageScale : Game::getBin().gameSet.exportImageScales) {
+				if (imageScale > 1) {
+					Image image = LoadImageFromMemory(data.ext.c_str(), data.data.data(), data.dataSize);
+					ImageResize(&image, image.width * imageScale, image.height * imageScale);
+					Texture2D texture = LoadTextureFromImage(image);
+					addTexture(TextFormat("%s-%i", name.c_str(), imageScale), texture);
+					UnloadImage(image);
+				}
+			}
 		}
 	} else {
 		auto dirList = LoadDirectoryFiles("fonts/");

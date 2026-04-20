@@ -21,6 +21,7 @@
 FileSystemService::FileSystemService() {
 	editorBaseDir = GetWorkingDirectory();
 
+	/// type names
 	typeNames[static_cast<int>(EngineFileType::FILE_TILESET)] = "Tilesets";
 	typeNames[static_cast<int>(EngineFileType::FILE_MAP)] = "Maps";
 	typeNames[static_cast<int>(EngineFileType::FILE_ACTOR)] = "Actors";
@@ -34,6 +35,19 @@ FileSystemService::FileSystemService() {
 	typeNames[static_cast<int>(EngineFileType::FILE_INTERACTABLE)] = "Interactables";
 
 	typeNames[static_cast<int>(EngineFileType::FILE_EMPTY)] = "Project Directory";
+
+	/// type extensions
+	typeExtensions[static_cast<int>(EngineFileType::FILE_TILESET)] = {".rtiles"};
+	typeExtensions[static_cast<int>(EngineFileType::FILE_MAP)] = {".rmap"};
+	typeExtensions[static_cast<int>(EngineFileType::FILE_ACTOR)] = {".ractor"};
+	typeExtensions[static_cast<int>(EngineFileType::FILE_DIALOGUE)] = {".rdiag"};
+	typeExtensions[static_cast<int>(EngineFileType::FILE_IMAGE)] = {".png", ".jpg"};
+	typeExtensions[static_cast<int>(EngineFileType::FILE_FONT)] = {".ttf"};
+	typeExtensions[static_cast<int>(EngineFileType::FILE_SOUND)] = {".wav", ".mp3"};
+	typeExtensions[static_cast<int>(EngineFileType::FILE_MUSIC)] = {".wav", ".mp3"};
+	typeExtensions[static_cast<int>(EngineFileType::FILE_PROP)] = {".rprop"};
+	typeExtensions[static_cast<int>(EngineFileType::FILE_SCRIPT)] = {".lua"};
+	typeExtensions[static_cast<int>(EngineFileType::FILE_INTERACTABLE)] = {".rinter"};
 }
 
 void FileSystemService::unload() {}
@@ -73,6 +87,12 @@ void FileSystemService::promptOpenProject() {
 std::string &FileSystemService::getTypeName(EngineFileType fileType) { return typeNames[static_cast<int>(fileType)]; }
 
 std::array<std::string, FILETYPE_MAX> &FileSystemService::getTypeNames() { return typeNames; }
+
+std::vector<std::string> &FileSystemService::getTypeExtensions(EngineFileType fileType) {
+	return typeExtensions[static_cast<int>(fileType)];
+}
+
+std::array<std::vector<std::string>, FILETYPE_MAX> &FileSystemService::getTypeExtensions() { return typeExtensions; }
 
 const std::string &FileSystemService::getEditorBaseDir() { return editorBaseDir; }
 

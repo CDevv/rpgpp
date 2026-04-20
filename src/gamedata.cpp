@@ -115,7 +115,7 @@ void serialize(Archive &a, ProjectProgramSettings &b) {
 
 template <class Archive>
 void serialize(Archive &a, ProjectGameSettings &b) {
-	a(b.defaultRoomPath, b.playerActorPath, b.tileSize, b.debugDraw);
+	a(b.defaultRoomPath, b.playerActorPath, b.tileSize, b.debugDraw, b.exportImageScales, b.exportFontSizes);
 }
 
 template <class Archive>

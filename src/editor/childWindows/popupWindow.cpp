@@ -34,6 +34,7 @@ void PopupWindow::open() {
 	;
 	this->currentWindow->showWithEffect(ANIMATION_TYPE, tgui::Duration(ANIMATION_DURATION));
 	this->windowIsOpen = true;
+	this->currentWindow->moveToFront();
 }
 
 void PopupWindow::close() {

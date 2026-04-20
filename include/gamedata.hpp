@@ -153,6 +153,8 @@ struct ProjectGameSettings {
 	std::string playerActorPath;
 	int tileSize = 16;
 	bool debugDraw = false;
+	std::vector<int> exportImageScales = {1};
+	std::vector<int> exportFontSizes = {13};
 };
 
 struct GameData {

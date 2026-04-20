@@ -407,8 +407,13 @@ ResizableContainer::Ptr ProjectScreen::createResourcesList() {
 	auto resourceChoose = tgui::ComboBox::create();
 	resourceChoose->setPosition(0, 0);
 	resourceChoose->setSize("100%", RESLIST_RES_CHOOSE_H);
+
+	int i = 0;
 	for (auto typeName : Editor::instance->getFs().getTypeNames()) {
-		resourceChoose->addItem(typeName);
+		if (static_cast<EngineFileType>(i) != EngineFileType::FILE_EMPTY) {
+			resourceChoose->addItem(typeName);
+		}
+		i++;
 	}
 	// resourceChoose->addMultipleItems({"TileSets", "Maps", "Scripts"});
 	resourceChoose->setSelectedItem("Maps");

@@ -30,6 +30,7 @@ enum class EngineFileType {
 class FileSystemService {
 private:
 	std::array<std::string, FILETYPE_MAX> typeNames;
+	std::array<std::vector<std::string>, FILETYPE_MAX> typeExtensions;
 	std::string editorBaseDir;
 
 public:
@@ -39,6 +40,8 @@ public:
 	void promptOpenProject();
 	std::string &getTypeName(EngineFileType fileType);
 	std::array<std::string, FILETYPE_MAX> &getTypeNames();
+	std::vector<std::string> &getTypeExtensions(EngineFileType type);
+	std::array<std::vector<std::string>, FILETYPE_MAX> &getTypeExtensions();
 	const std::string &getEditorBaseDir();
 	std::string getResourcePath(const std::string &path);
 	void openFileInDefaultApp(std::string &path);

@@ -1,21 +1,29 @@
 #include "childWindows/projectSettingsPanel/game.hpp"
 
+#include <memory>
+
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
+#include "childWindows/editListFieldWindow.hpp"
 #include "childWindows/settingsPanel/base.hpp"
+#include "editor.hpp"
+#include "listHelper.hpp"
 #include "project.hpp"
 #include "raylib.h"
 #include "widgets/propertyFields/boolField.hpp"
 #include "widgets/propertyFields/fileField.hpp"
 #include "widgets/propertyFields/intField.hpp"
+#include "widgets/propertyFields/listField.hpp"
 
 ProjectSettingsPanelGame::ProjectSettingsPanelGame(tgui::TabContainer::Ptr tabContainer)
 	: SettingsPanelBase(tabContainer, "dialog.project_settings.game._label") {
 	const tgui::ScrollablePanel::Ptr scrollPanel = tgui::ScrollablePanel::create();
 	scrollPanel->setSize("100%", "100%");
 	scrollPanel->getRenderer()->setPadding(4);
+
+	editListFieldWindow = std::make_unique<EditListFieldWindow<int>>();
 
 	const auto layout = tgui::GrowVerticalLayout::create();
 	layout->setSize("80%", "100%");
@@ -71,10 +79,38 @@ ProjectSettingsPanelGame::ProjectSettingsPanelGame(tgui::TabContainer::Ptr tabCo
 		}
 	});
 
+	exportImageScales = ListField<int>::create();
+	exportImageScales->label->setText("Export Image Scales");
+	exportImageScales->setSize({"100%", 24});
+	exportImageScales->value->onPress([this] {
+		Project *project = Editor::instance->getProject();
+
+		if (project != nullptr) {
+			editListFieldWindow->field = exportImageScales.get();
+			editListFieldWindow->setup(&project->getGameSettings().exportImageScales);
+			editListFieldWindow->open();
+		}
+	});
+
+	exportFontSizes = ListField<int>::create();
+	exportFontSizes->label->setText("Export Font Sizes");
+	exportFontSizes->setSize({"100%", 24});
+	exportFontSizes->value->onPress([this] {
+		Project *project = Editor::instance->getProject();
+
+		if (project != nullptr) {
+			editListFieldWindow->field = exportFontSizes.get();
+			editListFieldWindow->setup(&project->getGameSettings().exportFontSizes);
+			editListFieldWindow->open();
+		}
+	});
+
 	layout->add(defaultRoom);
 	layout->add(playerActor);
 	layout->add(tileSize);
 	layout->add(debugDraw);
+	layout->add(exportImageScales);
+	layout->add(exportFontSizes);
 
 	scrollPanel->add(layout);
 	panel->add(scrollPanel);
@@ -88,4 +124,6 @@ void ProjectSettingsPanelGame::setup(Project *project) {
 	defaultRoom->value->setText(GetFileName(gameSet.defaultRoomPath.c_str()));
 	playerActor->value->setText(GetFileName(gameSet.playerActorPath.c_str()));
 	tileSize->value->setValue(gameSet.tileSize);
+	exportImageScales->value->setText(VecToString(gameSet.exportImageScales));
+	exportFontSizes->value->setText(VecToString(gameSet.exportFontSizes));
 }

@@ -5,6 +5,7 @@
 
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widget.hpp"
+#include "TGUI/Widgets/BitmapButton.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"
 
@@ -18,6 +19,8 @@ protected:
 public:
 	tgui::Label::Ptr label;
 	tgui::SpinControl::Ptr value;
+	tgui::BitmapButton::Ptr remove;
+	bool removable = false;
 
 	typedef std::shared_ptr<IntField> Ptr;
 	typedef std::shared_ptr<const IntField> ConstPtr;
@@ -28,6 +31,7 @@ public:
 	static IntField::Ptr copy(IntField::ConstPtr widget);
 
 	void setSize(const tgui::Layout2d &size) override;
+	void enableRemoving();
 };
 
 #endif
