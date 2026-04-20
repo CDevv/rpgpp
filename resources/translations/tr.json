@@ -173,7 +173,9 @@
 				"default_room": "Öntanımlı Oda",
 				"player_actor": "Oyuncunun Aktörü",
 				"tile_size": "Kare Boyutu",
-				"debug_draw": "Hata Ayıklamayı Çiz"
+				"debug_draw": "Hata Ayıklamayı Çiz",
+				"export_image_scales": "Fotoğraf Boyutluklarını Dışarı Aktar",
+				"export_font_sizes": "Yazıtipi Boyutlarını Dışarı Aktar"
 			}
 		},
 		"delete_file": {
@@ -215,6 +217,11 @@
 			"dialogue": "Diyalog",
 			"submit": "Düzenle",
 			"remove": "Sil"
+		},
+		"edit_list_field": {
+			"title": "Listeyi Düzenleyin...",
+			"add": "Ekle..",
+			"close": "Kapat"
 		}
 	},
 	"widget": {
