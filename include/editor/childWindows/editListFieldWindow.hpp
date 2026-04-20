@@ -8,8 +8,8 @@
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/Panel.hpp"
 #include "TGUI/Widgets/ScrollablePanel.hpp"
+#include "bindTranslation.hpp"
 #include "childWindows/popupWindow.hpp"
-#include "interactable.hpp"
 #include "listHelper.hpp"
 #include "nlohmann/json_fwd.hpp"
 #include "raylib.h"
@@ -25,13 +25,15 @@ public:
 	std::vector<T> *list;
 	ListField<T> *field;
 	EditListFieldWindow() : PopupWindow("Edit List..") {
+		bindTranslation(this->currentWindow, "dialog.edit_list_field.title", &tgui::ChildWindow::setTitle);
 		list = nullptr;
 		currentWindow->setSize(280, 180);
 
 		auto panel = tgui::Panel::create();
 		panel->getRenderer()->setPadding({4, 4});
 
-		auto addButton = tgui::Button::create("Add..");
+		auto addButton = tgui::Button::create();
+		bindTranslation<tgui::Button>(addButton, "dialog.edit_list_field.add", &tgui::Button::setText);
 		addButton->setPosition(0, 0);
 		addButton->setSize("100%", "10%");
 		addButton->onPress([this] {
@@ -48,6 +50,7 @@ public:
 		scrollablePanel->add(layout);
 
 		auto closeButton = tgui::Button::create();
+		bindTranslation<tgui::Button>(closeButton, "dialog.edit_list_field.close", &tgui::Button::setText);
 		closeButton->setText("Close");
 		closeButton->setPosition(0, "90%");
 		closeButton->setSize("100%", "10%");

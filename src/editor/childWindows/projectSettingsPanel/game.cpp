@@ -80,6 +80,8 @@ ProjectSettingsPanelGame::ProjectSettingsPanelGame(tgui::TabContainer::Ptr tabCo
 	});
 
 	exportImageScales = ListField<int>::create();
+	bindTranslation(exportImageScales->label, "dialog.project_settings.game.export_image_scales",
+					&tgui::Label::setText);
 	exportImageScales->label->setText("Export Image Scales");
 	exportImageScales->setSize({"100%", 24});
 	exportImageScales->value->onPress([this] {
@@ -93,6 +95,7 @@ ProjectSettingsPanelGame::ProjectSettingsPanelGame(tgui::TabContainer::Ptr tabCo
 	});
 
 	exportFontSizes = ListField<int>::create();
+	bindTranslation(exportFontSizes->label, "dialog.project_settings.game.export_font_sizes", &tgui::Label::setText);
 	exportFontSizes->label->setText("Export Font Sizes");
 	exportFontSizes->setSize({"100%", 24});
 	exportFontSizes->value->onPress([this] {

@@ -1,3 +1,6 @@
+#ifndef _RPGPP_BINDTRANSLATION_H
+#define _RPGPP_BINDTRANSLATION_H
+
 #include <functional>
 #include <memory>
 
@@ -53,3 +56,5 @@ void bindTranslationWithCallback(std::shared_ptr<WidgetType> widget,
 			}
 		});
 }
+
+#endif

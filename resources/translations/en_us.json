@@ -173,7 +173,9 @@
 				"default_room": "Default Room",
 				"player_actor": "Player Actor",
 				"tile_size": "Tile Size",
-				"debug_draw": "Debug Draw"
+				"debug_draw": "Debug Draw",
+				"export_image_scales": "Export Image Scales",
+				"export_font_sizes": "Export Font Sizes"
 			}
 		},
 		"new_prop": {
@@ -215,6 +217,11 @@
 			"dialogue": "Dialogue",
 			"submit": "Submit",
 			"remove": "Remove"
+		},
+		"edit_list_field": {
+			"title": "Edit List..",
+			"add": "Add..",
+			"close": "Close"
 		}
 	},
 	"widget": {
