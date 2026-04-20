@@ -1,39 +1,53 @@
 
+#include <cstddef>
 #include <string>
-
 #include <winapi.hpp>
 
 #ifdef _WIN32
-#include <basetsd.h>
 #include <windows.h>
-#include <winnt.h>
-#include <winuser.h>
-
 #endif
 
 #ifdef _WIN32
 
 char *WinReadFromHandle(HANDLE handle) {
 	DWORD dwRead;
-	CHAR charBuf[4096];
+	char *charBuf = new char[4096];
 	BOOL bSuccess = FALSE;
 
 	for (;;) {
 		bSuccess = ReadFile(handle, charBuf, 4096, &dwRead, NULL);
-		if (!bSuccess || dwRead == 0)
-			break;
+		if (!bSuccess || dwRead == 0) break;
 
-		if (!bSuccess)
-			break;
+		if (!bSuccess) break;
 	}
 
 	return charBuf;
 }
 
+bool WinCreateDetachedExecutable(std::string path) {
+	BOOL creationResult;
+	STARTUPINFO startupInfo;
+	PROCESS_INFORMATION processInformation;
+
+	ZeroMemory(&startupInfo, sizeof(startupInfo));
+	startupInfo.cb = sizeof(startupInfo);
+	ZeroMemory(&processInformation, sizeof(processInformation));
+
+	creationResult = CreateProcess(NULL, path.data(), NULL, NULL, FALSE,
+								   CREATE_NEW_CONSOLE | CREATE_NEW_PROCESS_GROUP | CREATE_BREAKAWAY_FROM_JOB, NULL,
+								   NULL, &startupInfo, &processInformation);
+
+	if (creationResult) {
+		CloseHandle(processInformation.hProcess);
+		CloseHandle(processInformation.hThread);
+	}
+
+	return creationResult;
+}
+
 bool WinOpenFileAssociate(std::string operation, std::string file) {
 	printf("opening file with path %s (Win32)\n", file.c_str());
-	INT_PTR hInstance = (INT_PTR)ShellExecuteA(
-		NULL, operation.c_str(), file.c_str(), NULL, NULL, SW_SHOWNORMAL);
+	INT_PTR hInstance = (INT_PTR)ShellExecuteA(NULL, operation.c_str(), file.c_str(), NULL, NULL, SW_SHOWNORMAL);
 	return hInstance != SE_ERR_NOASSOC;
 }
 
@@ -42,8 +56,7 @@ void WinWriteToHandle(HANDLE handle, std::string str) {
 	CHAR charBuf[4096];
 	BOOL bSuccess = FALSE;
 
-	bSuccess = WriteFile(handle, static_cast<char *>(str.data()), str.size(),
-						 &dwWritten, NULL);
+	bSuccess = WriteFile(handle, static_cast<char *>(str.data()), str.size(), &dwWritten, NULL);
 	if (!bSuccess) {
 		printf("WriteFile Error: %lu", GetLastError());
 		return;
@@ -54,8 +67,36 @@ void WinWriteToHandle(HANDLE handle, std::string str) {
 	}
 }
 
-void WinCreateProcEx(std::string cmdLine, HANDLE outHandle, HANDLE inHandle,
-					 DWORD dwFlags, bool wait) {
+void WinRunWithLog(std::string logName, std::string cmdLine) {
+	HANDLE outFile = nullptr;
+
+	outFile =
+		CreateFile(logName.c_str(), GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	PROCESS_INFORMATION piProcInfo;
+	STARTUPINFO siStartInfo;
+
+	SetStdHandle(STD_OUTPUT_HANDLE, outFile);
+	ZeroMemory(&piProcInfo, sizeof(PROCESS_INFORMATION));
+
+	ZeroMemory(&siStartInfo, sizeof(STARTUPINFO));
+	siStartInfo.cb = sizeof(STARTUPINFO);
+	siStartInfo.hStdOutput = outFile;
+	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
+
+	bool success = CreateProcess(NULL, cmdLine.data(), NULL, NULL, true, 0, NULL, NULL, &siStartInfo, &piProcInfo);
+
+	if (!success) {
+		printf("Child process doesn't work. \n");
+	} else {
+		CloseHandle(piProcInfo.hProcess);
+		CloseHandle(piProcInfo.hThread);
+
+		CloseHandle(outFile);
+	}
+}
+
+void WinCreateProcEx(std::string cmdLine, HANDLE outHandle, HANDLE inHandle, DWORD dwFlags, bool wait) {
 #ifdef _WIN32
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -77,8 +118,8 @@ void WinCreateProcEx(std::string cmdLine, HANDLE outHandle, HANDLE inHandle,
 		handleInheritance = TRUE;
 	}
 
-	if (CreateProcess(NULL, const_cast<char *>(cmdLine.data()), NULL, NULL,
-					  handleInheritance, 0, NULL, NULL, &si, &pi)) {
+	if (CreateProcess(NULL, const_cast<char *>(cmdLine.data()), NULL, NULL, handleInheritance, 0, NULL, NULL, &si,
+					  &pi)) {
 		// Wait until child process exits.
 		if (wait) {
 			WaitForSingleObject(pi.hProcess, INFINITE);
@@ -88,10 +129,8 @@ void WinCreateProcEx(std::string cmdLine, HANDLE outHandle, HANDLE inHandle,
 		CloseHandle(pi.hProcess);
 		CloseHandle(pi.hThread);
 
-		if (outHandle != NULL)
-			CloseHandle(outHandle);
-		if (inHandle != NULL)
-			CloseHandle(inHandle);
+		if (outHandle != NULL) CloseHandle(outHandle);
+		if (inHandle != NULL) CloseHandle(inHandle);
 	} else {
 		printf("WinCreateProc: CreateProcess failed (%lu).\n", GetLastError());
 	}
@@ -100,9 +139,7 @@ void WinCreateProcEx(std::string cmdLine, HANDLE outHandle, HANDLE inHandle,
 #endif
 }
 
-void WinCreateProc(std::string cmdLine) {
-	WinCreateProcEx(cmdLine, NULL, NULL, STARTF_FORCEONFEEDBACK, true);
-}
+void WinCreateProc(std::string cmdLine) { WinCreateProcEx(cmdLine, NULL, NULL, STARTF_FORCEONFEEDBACK, true); }
 
 VsInfo WinVsWhere(std::string path) {
 	VsInfo result;
@@ -140,8 +177,7 @@ VsInfo WinVsWhere(std::string path) {
 		return result;
 	}
 
-	WinCreateProcEx(path, g_hChildStd_OUT_Wr, NULL, STARTF_USESTDHANDLES,
-					false);
+	WinCreateProcEx(path, g_hChildStd_OUT_Wr, NULL, STARTF_USESTDHANDLES, false);
 
 	CHAR *charBuf = WinReadFromHandle(g_hChildStd_OUT_Rd);
 	std::string bufferString = charBuf;

@@ -21,6 +21,7 @@
 #include "gamedata.hpp"
 #include "interactable.hpp"
 #include "raylib.h"
+#include "raymath.h"
 #include "room.hpp"
 #include "screens/projectScreen.hpp"
 #include "tile.hpp"
@@ -450,7 +451,22 @@ void RoomView::handleEditPress(tgui::Vector2f pos) {
 
 			layerVisitor->group->removeAllWidgets();
 			mj::visit(*layerVisitor, layer);
-		}
+		} break;
+		case RoomLayer::LAYER_ACTORS: {
+			IVector tileMouse = getTileAtMouse();
+
+			layerVisitor->actor = nullptr;
+			layerVisitor->actorName = "";
+			for (auto &[name, actor] : room->getActors().getActors()) {
+				if (Vector2Equals(actor->getTilePosition(), fromIVector(tileMouse))) {
+					layerVisitor->actor = actor.get();
+					layerVisitor->actorName = name;
+				}
+			}
+
+			layerVisitor->group->removeAllWidgets();
+			mj::visit(*layerVisitor, layer);
+		} break;
 		default:
 			break;
 	}

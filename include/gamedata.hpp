@@ -1,10 +1,11 @@
 #ifndef _RPGPP_GAMEDATA_H
 #define _RPGPP_GAMEDATA_H
 
+#include <raylib.h>
+
 #include <array>
 #include <cstdint>
 #include <map>
-#include <raylib.h>
 #include <string>
 #include <vector>
 
@@ -16,13 +17,9 @@ struct IVector {
 	int x;
 	int y;
 
-	bool operator==(const IVector &other) const {
-		return x == other.x && y == other.y;
-	}
+	bool operator==(const IVector &other) const { return x == other.x && y == other.y; }
 
-	bool operator<(const IVector &other) const {
-		return x < other.x || (x == other.x && y < other.y);
-	}
+	bool operator<(const IVector &other) const { return x < other.x || (x == other.x && y < other.y); }
 
 	IVector() = default;
 	IVector(int x, int y) {
@@ -53,6 +50,8 @@ struct ActorInRoomBin {
 	std::string name;
 	std::string source;
 	IVector tilePos;
+	std::string intType;
+	std::vector<std::uint8_t> propsCbor;
 };
 
 struct TileBin {
@@ -91,6 +90,12 @@ struct TileSetBin {
 	IVector tileSize;
 	std::vector<unsigned char> image;
 	int dataSize;
+};
+
+struct FontBin {
+	std::vector<unsigned char> data;
+	int dataSize;
+	std::string ext;
 };
 
 struct ImageBin {
@@ -133,8 +138,30 @@ struct GameBinSettings {
 	std::string playerActor;
 };
 
+struct ProjectProgramSettings {
+	std::string projectTitle;
+	std::string projectVersion;
+	IVector windowSize = {640, 480};
+	std::string programIconPath = "";
+	bool windowResizeableFlag = false;
+	int targetFPS = 60;
+	int windowStateFlag = 0;
+};
+
+struct ProjectGameSettings {
+	std::string defaultRoomPath;
+	std::string playerActorPath;
+	int tileSize = 16;
+	bool debugDraw = false;
+	std::vector<int> exportImageScales = {1};
+	std::vector<int> exportFontSizes = {13};
+};
+
 struct GameData {
 	std::string title;
+	ProjectProgramSettings programSet;
+	ProjectGameSettings gameSet;
+	std::map<std::string, FontBin> fonts;
 	std::map<std::string, ImageBin> images;
 	std::map<std::string, TileSetBin> tilesets;
 	std::map<std::string, InteractableBin> interactables;

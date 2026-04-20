@@ -1,12 +1,13 @@
 #ifndef _RPGPP_MAPACTION_H
 #define _RPGPP_MAPACTION_H
 
-#include "action.hpp"
-#include "room.hpp"
-#include "views/roomView.hpp"
 #include <memory>
 #include <string>
 #include <utility>
+
+#include "action.hpp"
+#include "room.hpp"
+#include "views/roomView.hpp"
 
 struct MapActionData {
 	RoomView *view;
@@ -21,7 +22,7 @@ struct MapActionData {
 };
 
 class MapAction : public Action {
-  public:
+public:
 	std::unique_ptr<Room> prevRoom;
 	MapAction(MapActionData a) {
 		data = a;

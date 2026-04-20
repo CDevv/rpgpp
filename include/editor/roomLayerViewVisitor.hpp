@@ -24,6 +24,8 @@ public:
 	RoomTool tool;
 	Interactable *inter{nullptr};
 	Prop *prop{nullptr};
+	Actor *actor{nullptr};
+	std::string actorName = "";
 	bool isAvailable = true;
 	Texture2D propTexture{};
 	Texture2D actorTexture{};
@@ -39,6 +41,8 @@ public:
 	tgui::ComboBox::Ptr propChoose;
 	tgui::ComboBox::Ptr actorChoose;
 	tgui::EditBox::Ptr actorNameInput;
+
+	void updateInteractableChoose();
 
 	~RoomLayerViewVisitor();
 };

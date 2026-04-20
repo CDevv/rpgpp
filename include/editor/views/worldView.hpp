@@ -1,16 +1,17 @@
 #ifndef _RPGPP_WORLDVIEW_H
 #define _RPGPP_WORLDVIEW_H
 
+#include <memory>
+
 #include "TGUI/Backend/Renderer/Raylib/CanvasRaylib.hpp"
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widget.hpp"
 #include "constants/room.hpp"
 #include "raylib.h"
 #include "updatable.hpp"
-#include <memory>
 
 class WorldView : public tgui::CanvasRaylib, public IUpdatable {
-  protected:
+protected:
 	Camera2D camera;
 	RenderTexture texture;
 	bool mouseMiddleButton = false;
@@ -24,7 +25,7 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	float cameraMaxZoom = 5;
 	tgui::Vector2f widgetSize{};
 
-  public:
+public:
 	typedef std::shared_ptr<WorldView> Ptr;
 	typedef std::shared_ptr<const WorldView> ConstPtr;
 
@@ -36,8 +37,7 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 
 	void setSize(const tgui::Layout2d &size) override;
 	bool isMouseOnWidget(tgui::Vector2f pos) const override;
-	void draw(tgui::BackendRenderTarget &target,
-			  tgui::RenderStates states) const override;
+	void draw(tgui::BackendRenderTarget &target, tgui::RenderStates states) const override;
 
 	void resetRender();
 
@@ -57,13 +57,12 @@ class WorldView : public tgui::CanvasRaylib, public IUpdatable {
 	void drawOrigin();
 
 	void update() override;
-	static std::shared_ptr<IUpdatable>
-	asUpdatable(const std::shared_ptr<WorldView> &ptr);
+	static std::shared_ptr<IUpdatable> asUpdatable(const std::shared_ptr<WorldView> &ptr);
 
 	void setTool(RoomTool newTool);
 	bool isInView();
 
-  protected:
+protected:
 	tgui::Widget::Ptr clone() const override;
 };
 

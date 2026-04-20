@@ -1,4 +1,5 @@
 #include "colorRect.hpp"
+
 #include <raylib.h>
 
 ColorRect::ColorRect() : rect(Rectangle{1, 1, 1, 1}), color() {}

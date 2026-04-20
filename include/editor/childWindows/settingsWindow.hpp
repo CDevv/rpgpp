@@ -6,11 +6,11 @@
 #include "settingsPanel/hotkeys.hpp"
 
 class SettingsWindow : public PopupWindow {
-  private:
+private:
 	std::shared_ptr<SettingsPanelGeneral> general;
 	std::shared_ptr<SettingsPanelHotkeys> hotkeys;
 
-  public:
+public:
 	SettingsWindow();
 };
 

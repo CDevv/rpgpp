@@ -7,12 +7,14 @@ constexpr const char *DEFAULT_PLAYER_PATH = "actors/playerActor.ractor";
 class Player;
 class TileMap;
 
-#include "gamedata.hpp"
+#include <raylib.h>
+
 #include <memory>
 #include <nlohmann/json.hpp>
-#include <raylib.h>
 #include <string>
 #include <vector>
+
+#include "gamedata.hpp"
 
 using json = nlohmann::json;
 #include "actor.hpp"
@@ -28,7 +30,7 @@ using json = nlohmann::json;
  * interactables, collisions and the TileMap
  */
 class Room : public ISaveable {
-  private:
+private:
 	bool lock;
 	int worldTileSize;
 	/** The camera. */
@@ -51,11 +53,11 @@ class Room : public ISaveable {
 	std::unique_ptr<Player> player;
 	void updateCamera();
 
-  public:
+public:
 	/** Empty constructor */
 	Room();
 	/** Construct a Room from an .rmap file */
-	Room(const std::string &fileName, int tileSize = 48);
+	Room(const std::string &fileName, int tileSize = 48, bool createPlayer = true);
 	/** Construct a Room by using a TileMap pointer */
 	Room(std::unique_ptr<TileMap> tileMap);
 	/** Construct a Room by using the RoomBin binary structure

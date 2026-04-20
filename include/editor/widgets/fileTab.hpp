@@ -1,15 +1,16 @@
 #ifndef _RPGPP_FILETAB_H
 #define _RPGPP_FILETAB_H
 
+#include <cstddef>
+
 #include "TGUI/Signal.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/Tabs.hpp"
 #include "components/tooltip.hpp"
 #include "fileTabRenderer.hpp"
-#include <cstddef>
 
 class FileTab : public tgui::Tabs {
-  private:
+private:
 	bool isHovering = false;
 	bool isHoldingMouse = false;
 	bool isDragging = false;
@@ -27,13 +28,11 @@ class FileTab : public tgui::Tabs {
 
 	bool cursorModified = false;
 
-	void renderTab(tgui::BackendRenderTarget &target,
-				   tgui::RenderStates &states, int idx, bool roundedCorners,
-				   float borderWidth, float usableHeight,
-				   tgui::Sprite &close) const;
+	void renderTab(tgui::BackendRenderTarget &target, tgui::RenderStates &states, int idx, bool roundedCorners,
+				   float borderWidth, float usableHeight, tgui::Sprite &close) const;
 	void closeAndOpenNextTab(std::size_t idx);
 
-  public:
+public:
 	bool useExternalMouseEvent = false;
 	typedef std::shared_ptr<FileTab> Ptr;
 	typedef std::shared_ptr<const FileTab> ConstPtr;
@@ -46,8 +45,7 @@ class FileTab : public tgui::Tabs {
 
 	static FileTab::Ptr copy(FileTab::ConstPtr widget);
 
-	void draw(tgui::BackendRenderTarget &target,
-			  tgui::RenderStates states) const override;
+	void draw(tgui::BackendRenderTarget &target, tgui::RenderStates states) const override;
 
 	FileTabRenderer *getSharedRenderer() override;
 
@@ -66,7 +64,7 @@ class FileTab : public tgui::Tabs {
 	size_t addFileTab(const std::string &path, const std::string &fileName);
 	void closeCurrentTab();
 
-  protected:
+protected:
 	Widget::Ptr clone() const override;
 };
 

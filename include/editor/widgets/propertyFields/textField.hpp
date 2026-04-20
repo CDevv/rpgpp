@@ -5,14 +5,16 @@
 #include <TGUI/Widgets/EditBox.hpp>
 #include <TGUI/Widgets/Label.hpp>
 
+#include "TGUI/Widgets/BitmapButton.hpp"
+
 class TextField : public tgui::SubwidgetContainer {
-  private:
+private:
 	void updateSize();
 
-  protected:
+protected:
 	tgui::Widget::Ptr clone() const override;
 
-  public:
+public:
 	tgui::Label::Ptr label;
 	tgui::EditBox::Ptr value;
 

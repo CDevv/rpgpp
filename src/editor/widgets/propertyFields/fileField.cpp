@@ -1,14 +1,15 @@
 #include "widgets/propertyFields/fileField.hpp"
+
+#include <memory>
+#include <string>
+
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/Button.hpp"
 #include "TGUI/Widgets/FileDialog.hpp"
 #include "editor.hpp"
 #include "raylib.h"
 #include "widgets/propertyFields/fieldConfig.hpp"
-#include <memory>
-#include <string>
-FileField::FileField(const char *typeName, bool initRenderer)
-	: tgui::SubwidgetContainer(typeName, initRenderer) {
+FileField::FileField(const char *typeName, bool initRenderer) : tgui::SubwidgetContainer(typeName, initRenderer) {
 	label = tgui::Label::create("Label");
 	label->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
 	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
@@ -19,8 +20,7 @@ FileField::FileField(const char *typeName, bool initRenderer)
 		fileDialog->setPath(Editor::instance->getProject()->getBasePath());
 		fileDialog->setFileTypeFilters(pathFilters);
 		fileDialog->onFileSelect([this](const tgui::String &path) {
-			value->setText(
-				std::string(GetFileName(path.toStdString().c_str())));
+			value->setText(std::string(GetFileName(path.toStdString().c_str())));
 			chosenPath = path;
 			if (callback != nullptr) {
 				callback(path);
@@ -38,8 +38,7 @@ FileField::FileField(const char *typeName, bool initRenderer)
 
 FileField::Ptr FileField::create() { return std::make_shared<FileField>(); }
 
-FileField::Ptr FileField::create(const tgui::String &label,
-								 const tgui::String &value) {
+FileField::Ptr FileField::create(const tgui::String &label, const tgui::String &value) {
 	auto ptr = std::make_shared<FileField>();
 	ptr->label->setText(label);
 	ptr->value->setText(value);
@@ -54,9 +53,7 @@ FileField::Ptr FileField::copy(FileField::ConstPtr widget) {
 	}
 }
 
-tgui::Widget::Ptr FileField::clone() const {
-	return std::make_shared<FileField>(*this);
-}
+tgui::Widget::Ptr FileField::clone() const { return std::make_shared<FileField>(*this); }
 
 void FileField::setValue(const tgui::String &value) {
 	this->value->setText(value);

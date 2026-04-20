@@ -34,7 +34,7 @@
 				"_label": "General",
 				"language": "Language",
 				"theme": "Theme",
-				"theme_notice": "It is recommended to restart the editor after switching theme!"
+				"theme_notice": "You need to restart the editor for the theme to take effect.\nUnsaved progress will be lost!"
 			},
 			"hotkeys": {
 				"_label": "Hotkeys",
@@ -60,7 +60,38 @@
 			},
 			"dialogueview": {
 				"add_new_line": "Add a new line",
-				"has_a_portrait": "Has a portrait?"
+				"has_a_portrait": "Has a portrait?",
+				"select_a_font": "Select a font...",
+				"select_a_color": "Select a color...",
+				"select_a_text_size": "Text Size...",
+				"add_a_delay": "Add delay...",
+				"add_option": "Add option",
+				"color": {
+					"lightgray": "Light Gray",
+					"gold": "Gold",
+					"pink": "Pink",
+					"green": "Green",
+					"skyblue": "Sky Blue",
+					"purple": "Purple",
+					"beige": "Beige",
+					"magenta": "Magenta",
+					"gray": "Gray",
+					"yellow": "Yellow",
+					"red": "Red",
+					"lime": "Lime",
+					"blue": "Blue",
+					"violet": "Violet",
+					"brown": "Brown",
+					"white": "White",
+					"darkgray": "Dark Gray",
+					"orange": "Orange",
+					"maroon": "Maroon",
+					"darkgreen": "Dark Green",
+					"darkblue": "Dark Blue",
+					"darkpurple": "Dark Purple",
+					"darkbrown": "Dark Brown",
+					"black": "Black"
+				}
 			},
 			"tilesetview": {
 				"tile_width": "Tile Width",
@@ -96,6 +127,11 @@
 				"edit_anim_data": "Edit Animation Data",
 				"is_non_idle": "Is Non-Idle Animation?"
 			},
+			"interactableview": {
+				"display_name": "Display Name",
+				"script": "Script",
+				"on_touch": "On Touch?"
+			},
 			"toolbar": {
 				"play": "Play",
 				"build": "Build"
@@ -116,6 +152,76 @@
 			"folder": "Folder",
 			"confirm": "Confirm",
 			"cancel": "Cancel"
+		},
+		"project_settings": {
+			"_label": "Project Settings",
+			"title": "Title",
+			"save": "Save",
+			"program": {
+				"_label": "Program",
+				"title": "Title",
+				"version": "Version",
+				"program_icon": "Program Icon",
+				"window_width": "Window Width",
+				"window_height": "Window Height",
+				"is_resizable": "Is Window Resizable?",
+				"window_mode": "Window Mode",
+				"target_fps": "Target FPS"
+			},
+			"game": {
+				"_label": "Game",
+				"default_room": "Default Room",
+				"player_actor": "Player Actor",
+				"tile_size": "Tile Size",
+				"debug_draw": "Debug Draw",
+				"export_image_scales": "Export Image Scales",
+				"export_font_sizes": "Export Font Sizes"
+			}
+		},
+		"new_prop": {
+			"title": "New Prop",
+			"name": "Name",
+			"type": "Type",
+			"submit": "Create"
+		},
+		"delaywindow": {
+			"add_a_delay": "Add delay...",
+			"description": "Amount of delay to add in seconds.",
+			"confirm": "Confirm"
+		},
+		"edit_prop": {
+			"title": "Edit Prop",
+			"type": "Type",
+			"submit": "Submit",
+			"remove": "Remove"
+		},
+		"delete_file": {
+			"title": "Are you sure?",
+			"yes": "Yes",
+			"no": "No",
+			"ok": "Ok",
+			"room_must_exist": "You must have at least one Room.",
+			"room_cannot_be_deleted": "You cannot delete the default Room.",
+			"player_actor_must_exist": "You must have a playerActor file.",
+			"player_actor_cannot_be_deleted": "You cannot delete the Player's Actor."
+		},
+		"add_dialogue_option": {
+			"title": "Add a Dialogue Option",
+			"name": "Option Name",
+			"dialogue": "Dialogue",
+			"submit": "Add"
+		},
+		"edit_dialogue_option": {
+			"title": "Edit a Dialogue Option",
+			"name": "Option Name",
+			"dialogue": "Dialogue",
+			"submit": "Submit",
+			"remove": "Remove"
+		},
+		"edit_list_field": {
+			"title": "Edit List..",
+			"add": "Add..",
+			"close": "Close"
 		}
 	},
 	"widget": {
@@ -124,9 +230,20 @@
 		},
 		"hotkey_modifier": {
 			"listening": "Listening..."
+		},
+		"propField": {
+			"interPropField": {
+				"remove": "Remove"
+			}
 		}
 	},
 	"button": {
-		"go_back": "Go Back"
+		"go_back": "Go Back",
+		"restart": "Restart",
+		"restart_later": "Restart Later"
+	},
+	"context_menu": {
+		"copy_full_path": "Copy full path",
+		"delete": "Delete"
 	}
 }

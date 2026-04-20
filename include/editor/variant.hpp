@@ -1,25 +1,26 @@
 #ifndef _RPGPP_VARIANT_H
 #define _RPGPP_VARIANT_H
 
-#include "saveable.hpp"
 #include <memory>
 
+#include "saveable.hpp"
+
 class VariantWrapper {
-  public:
+public:
 	VariantWrapper() {};
 	virtual ~VariantWrapper() {};
 	virtual ISaveable *toSaveable() = 0;
 };
 
 class SaveableVariant {
-  public:
+public:
 	std::unique_ptr<ISaveable> data;
 };
 
-template <typename T> class Variant : public VariantWrapper {
-  public:
-	static_assert(std::is_base_of<ISaveable, T>::value,
-				  "The template is not the base of ISaveable");
+template <typename T>
+class Variant : public VariantWrapper {
+public:
+	static_assert(std::is_base_of<ISaveable, T>::value, "The template is not the base of ISaveable");
 
 	std::unique_ptr<T> data;
 	Variant() = default;
@@ -32,7 +33,8 @@ template <typename T> class Variant : public VariantWrapper {
 	ISaveable *toSaveable() { return dynamic_cast<ISaveable *>(data.get()); }
 };
 
-template <typename T> ISaveable *toSaveable(Variant<T> *variant) {
+template <typename T>
+ISaveable *toSaveable(Variant<T> *variant) {
 	return dynamic_cast<ISaveable *>(variant->data.get());
 }
 

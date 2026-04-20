@@ -1,6 +1,8 @@
 #include "saveables/fontWrapper.hpp"
-#include "raylib.h"
+
 #include <string>
+
+#include "raylib.h"
 
 FontWrapper::FontWrapper(const std::string &filePath) {
 	font = LoadFont(filePath.c_str());

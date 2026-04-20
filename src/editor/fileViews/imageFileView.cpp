@@ -1,11 +1,13 @@
 #include "fileViews/imageFileView.hpp"
+
+#include <TGUI/Widgets/Panel.hpp>
+
 #include "TGUI/Widgets/Label.hpp"
 #include "editor.hpp"
 #include "raylib.h"
 #include "saveables/imageWrapper.hpp"
 #include "views/imageView.hpp"
 #include "views/worldView.hpp"
-#include <TGUI/Widgets/Panel.hpp>
 
 ImageFileView::ImageFileView() {
 	imageView = ImageView::create();
@@ -36,9 +38,8 @@ void ImageFileView::init(tgui::Group::Ptr layout, VariantWrapper *variant) {
 	auto image = ptr->get();
 
 	imageView->setImage(image);
-	infoLabel->setText(TextFormat("%s | Image Size: %ix%i",
-								  GetFileName(image->source.c_str()),
-								  image->image.width, image->image.height));
+	infoLabel->setText(TextFormat("%s | Image Size: %ix%i", GetFileName(image->source.c_str()), image->image.width,
+								  image->image.height));
 
 	addWidgets(layout);
 }

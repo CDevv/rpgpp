@@ -1,5 +1,6 @@
-#include "game.hpp"
 #include <raylib.h>
+
+#include "game.hpp"
 
 int main() {
 	const int width = 640;

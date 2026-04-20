@@ -1,9 +1,12 @@
 #include "soundService.hpp"
+
+#include <raylib.h>
+
+#include <cstdio>
+#include <stdexcept>
+
 #include "game.hpp"
 #include "gamedata.hpp"
-#include <cstdio>
-#include <raylib.h>
-#include <stdexcept>
 
 SoundService::SoundService() {
 	music = {};
@@ -14,18 +17,15 @@ SoundService::SoundService() {
 bool SoundService::loadMusic(const std::string &id) {
 	GameData &gameData = Game::getBin();
 
-	if (lastId == id)
-		return true;
+	if (lastId == id) return true;
 
 	if (gameData.music.count(id) != 0) {
-		if (gameData.music[id].isSound)
-			return musicLoaded;
+		if (gameData.music[id].isSound) return musicLoaded;
 
 		auto &musicBin = gameData.music[id];
 
-		Music newMusic = LoadMusicStreamFromMemory(musicBin.fileExt.c_str(),
-												   musicBin.fileData.data(),
-												   musicBin.fileData.size());
+		Music newMusic =
+			LoadMusicStreamFromMemory(musicBin.fileExt.c_str(), musicBin.fileData.data(), musicBin.fileData.size());
 
 		if (IsMusicValid(newMusic)) {
 			unload();
@@ -52,9 +52,8 @@ void SoundService::playSound(const std::string &id) const {
 	if (gameData.music.count(id) != 0) {
 		if (gameData.music[id].isSound) {
 			MusicBin soundBin = gameData.music[id];
-			Wave soundWave = LoadWaveFromMemory(soundBin.fileExt.c_str(),
-												soundBin.fileData.data(),
-												soundBin.fileData.size());
+			Wave soundWave =
+				LoadWaveFromMemory(soundBin.fileExt.c_str(), soundBin.fileData.data(), soundBin.fileData.size());
 			Sound sound = LoadSoundFromWave(soundWave);
 
 			PlaySound(sound);
@@ -64,8 +63,7 @@ void SoundService::playSound(const std::string &id) const {
 			// UnloadSound(sound);
 		}
 	} else {
-		throw std::runtime_error(
-			TextFormat("This Sound does not exist: %s", id.c_str()));
+		throw std::runtime_error(TextFormat("This Sound does not exist: %s", id.c_str()));
 	}
 }
 

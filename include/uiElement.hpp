@@ -2,7 +2,7 @@
 #define _RPGPP_UIELEMENT_H
 
 class UIElement {
-  public:
+public:
 	virtual ~UIElement() = default;
 
 	UIElement();

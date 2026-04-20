@@ -60,7 +60,38 @@
 			},
 			"dialogueview": {
 				"add_new_line": "Добавете част",
-				"has_a_portrait": "Има портретно изображение?"
+				"has_a_portrait": "Има портрет?",
+				"select_a_font": "Изберете шрифт..",
+				"select_a_color": "Изберете цвят..",
+				"select_a_text_size": "Размер на текста..",
+				"add_a_delay": "Дoбавете забавяне..",
+				"add_option": "Добавете опция",
+				"color": {
+					"lightgray": "Светло сиво",
+					"gold": "Златно",
+					"pink": "Розово",
+					"green": "Зелени",
+					"skyblue": "Небесно синьо",
+					"purple": "Лилаво",
+					"beige": "Бежово",
+					"magenta": "Магента",
+					"gray": "Сиво",
+					"yellow": "Жълто",
+					"red": "Червено",
+					"lime": "Лимоново",
+					"blue": "Синьо",
+					"violet": "Виолетово",
+					"brown": "Кафяво",
+					"white": "Бяло",
+					"darkgray": "Тъмно синьо",
+					"orange": "Оранжево",
+					"maroon": "Кафяво-червено",
+					"darkgreen": "Тъмно зелено",
+					"darkblue": "Тъмно синьо",
+					"darkpurple": "Тъмно лилаво",
+					"darkbrown": "Тъмно Brown",
+					"black": "Черно"
+				}
 			},
 			"tilesetview": {
 				"tile_width": "Ширина на плочка",
@@ -96,6 +127,11 @@
 				"edit_anim_data": "Редактирай анимация",
 				"is_non_idle": "е анимация на вървене?"
 			},
+			"interactableview": {
+				"display_name": "Име",
+				"script": "Скрипт",
+				"on_touch": "Извикай при допир?"
+			},
 			"toolbar": {
 				"play": "Пусни игра",
 				"build": "Компилирай игра"
@@ -116,6 +152,76 @@
 			"folder": "Папка",
 			"confirm": "Потвърди",
 			"cancel": "Отмени"
+		},
+		"project_settings": {
+			"_label": "Настройки на проекта",
+			"title": "Име",
+			"save": "Запази",
+			"program": {
+				"_label": "Програма",
+				"title": "Име",
+				"version": "Версия",
+				"program_icon": "Икона на програма",
+				"window_width": "Ширина на прозореца",
+				"window_height": "Височина на прозореца",
+				"is_resizable": "Позволи оразмеряване?",
+				"window_mode": "Режим на прозореца",
+				"target_fps": "Кадри в секунда"
+			},
+			"game": {
+				"_label": "Игра",
+				"default_room": "Първоначална стая",
+				"player_actor": "Актьор на играча",
+				"tile_size": "Размер на плочка",
+				"debug_draw": "Дебъгерно рисуване",
+				"export_image_scales": "Експортирани размери на изобр.",
+				"export_font_sizes": "Експортиране размери на шрифтовете"
+			}
+		},
+		"new_prop": {
+			"title": "Нов обект",
+			"name": "Име",
+			"type": "Тип",
+			"submit": "Създай"
+		},
+		"delaywindow": {
+			"add_a_delay": "Добави забавяне",
+			"description": "Забавяне в секунди.",
+			"confirm": "ДОбави"
+		},
+		"edit_prop": {
+			"title": "Редактирай обект",
+			"type": "Тип",
+			"submit": "Потвърди",
+			"remove": "Премахни"
+		},
+		"delete_file": {
+			"title": "Сигурни ли сте?",
+			"yes": "Да",
+			"no": "Не",
+			"ok": "Ок",
+			"room_must_exist": "Трябва да имате поне една стая..",
+			"room_cannot_be_deleted": "Не може да изтриете стаята, зададена по подразбиране.",
+			"player_actor_must_exist": "Трябва да имате playerActor файл.",
+			"player_actor_cannot_be_deleted": "Не може да изтриете актьора на играча."
+		},
+		"add_dialogue_option": {
+			"title": "Добавяне на опция",
+			"name": "Текст",
+			"dialogue": "Диалог",
+			"submit": "Добави"
+		},
+		"edit_dialogue_option": {
+			"title": "Редактиране на опция",
+			"name": "Текст",
+			"dialogue": "Диалог",
+			"submit": "Потвърди",
+			"remove": "Премахни"
+		},
+		"edit_list_field": {
+			"title": "Редактиране на списък..",
+			"add": "Добави..",
+			"close": "Затвори"
 		}
 	},
 	"widget": {
@@ -124,9 +230,20 @@
 		},
 		"hotkey_modifier": {
 			"listening": "Слушам..."
+		},
+		"propField": {
+			"interPropField": {
+				"remove": "Премахни"
+			}
 		}
 	},
 	"button": {
-		"go_back": "Върни се"
+		"go_back": "Върни се",
+		"restart": "Рестартирай",
+		"restart_later": "Рестартирай по-късно"
+	},
+	"context_menu": {
+		"copy_full_path": "Копирай пълен път",
+		"delete": "Изтрий"
 	}
 }

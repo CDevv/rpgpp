@@ -3,7 +3,7 @@
 #include "raylib.h"
 
 class PerformanceOverlay {
-  public:
+public:
 	PerformanceOverlay();
 
 	void Update();
@@ -12,7 +12,7 @@ class PerformanceOverlay {
 	void Toggle();
 	bool IsEnabled() const;
 
-  private:
+private:
 	bool enabled{false};
 	static const int SAMPLE_COUNT = 240;
 

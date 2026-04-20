@@ -1,12 +1,16 @@
 #include "widgets/propertyFields/textField.hpp"
-#include "TGUI/Widget.hpp"
-#include "TGUI/Widgets/Label.hpp"
-#include "widgets/propertyFields/fieldConfig.hpp"
+
 #include <TGUI/Widgets/EditBox.hpp>
 #include <memory>
 
-TextField::TextField(const char *typeName, bool initRenderer)
-	: tgui::SubwidgetContainer(typeName, initRenderer) {
+#include "TGUI/Texture.hpp"
+#include "TGUI/Widget.hpp"
+#include "TGUI/Widgets/BitmapButton.hpp"
+#include "TGUI/Widgets/Label.hpp"
+#include "editor.hpp"
+#include "widgets/propertyFields/fieldConfig.hpp"
+
+TextField::TextField(const char *typeName, bool initRenderer) : tgui::SubwidgetContainer(typeName, initRenderer) {
 	label = tgui::Label::create("Label");
 	label->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
 	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
@@ -28,9 +32,7 @@ TextField::Ptr TextField::copy(TextField::ConstPtr widget) {
 	}
 }
 
-tgui::Widget::Ptr TextField::clone() const {
-	return std::make_shared<TextField>(*this);
-}
+tgui::Widget::Ptr TextField::clone() const { return std::make_shared<TextField>(*this); }
 
 void TextField::setSize(const tgui::Layout2d &size) {
 	tgui::SubwidgetContainer::setSize(size);
@@ -41,6 +43,5 @@ void TextField::updateSize() {
 	label->setPosition({PADDING, 0});
 	label->setSize({getSize().x * 0.5f - PADDING, getSize().y});
 	value->setSize({getSize().x * 0.5f - PADDING, getSize().y});
-
 	value->setPosition({getSize().x * 0.5, 0});
 }

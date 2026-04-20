@@ -1,9 +1,11 @@
 #include "services/recentProjectService.hpp"
-#include "raylib.h"
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
+
+#include "raylib.h"
 
 RecentProjectService::RecentProjectService() {
 	path = GetWorkingDirectory();
@@ -32,11 +34,9 @@ RecentProjectService::RecentProjectService() {
 }
 
 void RecentProjectService::save() {
-
 	std::ofstream file(path);
 	if (!file.is_open()) {
-		std::cerr << "Failed to open recent project file for saving"
-				  << std::endl;
+		std::cerr << "Failed to open recent project file for saving" << std::endl;
 		return;
 	}
 
@@ -61,6 +61,4 @@ void RecentProjectService::enqueue(const std::string &projectPath) {
 	save();
 }
 
-const std::deque<std::string> &RecentProjectService::getRecentProjects() const {
-	return recentProjects;
-}
+const std::deque<std::string> &RecentProjectService::getRecentProjects() const { return recentProjects; }

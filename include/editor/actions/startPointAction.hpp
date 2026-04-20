@@ -3,7 +3,7 @@
 
 #include "actions/mapAction.hpp"
 class StartPointAction : public MapAction {
-  public:
+public:
 	StartPointAction(MapActionData data);
 	void execute() override;
 	void undo() override;

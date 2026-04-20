@@ -1,14 +1,16 @@
 #ifndef _RPGPP_SAVEABLES_FONTWRAPPER_H
 #define _RPGPP_SAVEABLES_FONTWRAPPER_H
 
-#include "saveable.hpp"
+#include <raylib.h>
+
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
-#include <raylib.h>
 #include <string>
 
+#include "saveable.hpp"
+
 class FontWrapper : public ISaveable {
-  public:
+public:
 	Font font{};
 	std::string fontSource;
 	FontWrapper() = default;

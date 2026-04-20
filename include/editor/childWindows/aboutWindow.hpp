@@ -3,7 +3,7 @@
 
 #include "childWindows/popupWindow.hpp"
 class AboutWindow : public PopupWindow {
-  public:
+public:
 	AboutWindow();
 };
 

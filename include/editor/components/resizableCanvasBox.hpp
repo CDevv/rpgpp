@@ -1,23 +1,16 @@
 #ifndef RPGPP_RESIZABLECANVASBOX_H
 #define RPGPP_RESIZABLECANVASBOX_H
-#include "raylib.h"
 #include <string>
 
-enum ResizeDirection {
-	NONE = 0,
-	MOVE = 1 << 0,
-	TOP = 1 << 1,
-	BOTTOM = 1 << 2,
-	LEFT = 1 << 3,
-	RIGHT = 1 << 4
-};
+#include "raylib.h"
+
+enum ResizeDirection { NONE = 0, MOVE = 1 << 0, TOP = 1 << 1, BOTTOM = 1 << 2, LEFT = 1 << 3, RIGHT = 1 << 4 };
 
 class ResizableCanvasBox {
-  public:
-	ResizableCanvasBox(std::string id, float x, float y, float width,
-					   float height, Color color, bool isResizable = true);
-	ResizableCanvasBox(std::string id, Rectangle rec, Color color,
+public:
+	ResizableCanvasBox(std::string id, float x, float y, float width, float height, Color color,
 					   bool isResizable = true);
+	ResizableCanvasBox(std::string id, Rectangle rec, Color color, bool isResizable = true);
 	void draw();
 
 	// @returns true if the box was clicked, false otherwise
@@ -25,6 +18,8 @@ class ResizableCanvasBox {
 	void mouseMoved(Vector2 mousePos, int snapWidth = 1, int snapHeight = 1);
 	// @returns the new rectangle after the mouse is released
 	Rectangle leftMouseReleased(Vector2 mousePos);
+
+	Rectangle getRectangle();
 
 	void updatePosition(float x, float y);
 	void updateSize(float width, float height);
@@ -37,7 +32,7 @@ class ResizableCanvasBox {
 	void setMinSize(float size) { minSize = std::max(size, 2.f); }
 	float getMinSize() const { return minSize; }
 
-  private:
+private:
 	const float RESIZE_MARGIN = 1.f;
 	float minSize = 2.f;
 	bool isResizable = true;

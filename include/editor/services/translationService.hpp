@@ -21,10 +21,10 @@ constexpr auto DEFAULT_LANGUAGE = "en_us";
 // Placeholders are defined with two curly brackets (like `{{test}}`)
 // and can be replaced using `.replace("test", "value")`
 class TranslatedString {
-  private:
+private:
 	std::string value;
 
-  public:
+public:
 	TranslatedString(const std::string &value) : value(value) {}
 	TranslatedString replace(const std::string &k, const std::string &v) {
 		std::string finder = "{{" + k + "}}";
@@ -39,10 +39,9 @@ class TranslatedString {
 };
 
 class TranslationService {
-  public:
+public:
 	using ListenerID = size_t;
-	using Callback = std::function<bool(TranslationService &ts, ListenerID id,
-										bool checkingAlive)>;
+	using Callback = std::function<bool(TranslationService &ts, ListenerID id, bool checkingAlive)>;
 	TranslationService(Editor *editor_ptr);
 	TranslatedString getKey(const std::string &key);
 	void setLanguage(const std::string &language);
@@ -53,10 +52,8 @@ class TranslationService {
 	void purgeDeadListeners();
 	std::map<std::string, std::string> langKeyToName = {};
 
-  private:
-	std::map<std::string, std::map<std::string, std::string, std::less<>>,
-			 std::less<>>
-		translations = {};
+private:
+	std::map<std::string, std::map<std::string, std::string, std::less<>>, std::less<>> translations = {};
 	std::map<std::string, const filesystem::directory_entry> translationFiles = {};
 	std::string current_language = DEFAULT_LANGUAGE;
 	std::unordered_map<ListenerID, Callback> listeners;

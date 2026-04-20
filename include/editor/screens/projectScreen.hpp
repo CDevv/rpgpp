@@ -1,6 +1,8 @@
 #ifndef _RPGPP_SCREENS_PROJECT_SCREEN_H
 #define _RPGPP_SCREENS_PROJECT_SCREEN_H
 
+#include <memory>
+
 #include "TGUI/Widgets/ContextMenu.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
@@ -13,11 +15,10 @@
 #include "services/fileSystemService.hpp"
 #include "services/translationService.hpp"
 #include "widgets/fileTab.hpp"
-#include <memory>
 
 namespace screens {
 class ProjectScreen : public UIScreen {
-  private:
+private:
 	static const int TOOLBAR_H = 54;
 
 	static const int FILETABS_H = 32;
@@ -49,13 +50,13 @@ class ProjectScreen : public UIScreen {
 
 	tgui::String focusedFile;
 
-  private:
+private:
 	void switchView(tgui::String id);
 	void clearView();
 	tgui::Group::Ptr createToolBar();
 	ResizableContainer::Ptr createResourcesList();
 
-  public:
+public:
 	void addFileView(EngineFileType fileType, const std::string &path);
 	void addResourceButtons(EngineFileType fileType);
 	void mouseMove(int x, int y) override;
@@ -68,5 +69,5 @@ class ProjectScreen : public UIScreen {
 
 	tgui::Group::Ptr toolBar;
 };
-} // namespace screens
+}  // namespace screens
 #endif

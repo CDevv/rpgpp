@@ -1,17 +1,22 @@
-#include "editor.hpp"
-#include "services/translationService.hpp"
+#ifndef _RPGPP_BINDTRANSLATION_H
+#define _RPGPP_BINDTRANSLATION_H
+
 #include <functional>
 #include <memory>
 
+#include "editor.hpp"
+#include "services/translationService.hpp"
+
 class TSConnection {
-  public:
+public:
 	TSConnection(TranslationService::ListenerID id) : id(id) {}
 	~TSConnection() { Editor::instance->getTranslations().removeListener(id); }
 
-  private:
+private:
 	TranslationService::ListenerID id;
 };
 
+// Binds a widget's text to a translation key, updating it whenever the translation changes.
 template <typename WidgetType>
 void bindTranslation(std::shared_ptr<WidgetType> widget, const std::string &key,
 					 void (WidgetType::*setter)(const tgui::String &)) {
@@ -22,44 +27,34 @@ void bindTranslation(std::shared_ptr<WidgetType> widget, const std::string &key,
 	(widget.get()->*setter)(ts.getKey(key));
 
 	auto id = ts.addListener(
-		[weakWidget, key, setter](TranslationService &ts,
-								  TranslationService::ListenerID id,
-								  bool checkingAlive) {
+		[weakWidget, key, setter](TranslationService &ts, TranslationService::ListenerID id, bool checkingAlive) {
 			if (auto w = weakWidget.lock()) {
-				if (!checkingAlive)
-					(w.get()->*setter)(ts.getKey(key));
+				if (!checkingAlive) (w.get()->*setter)(ts.getKey(key));
 				return true;
 			} else {
 				return false;
 			}
 		});
-
-	// TODO: Implement a cleaner way to detect when the widget is destroyed, and
-	// call
-	//     Editor::instance->getTranslations().removeListener(id);
-	// There's currently an issue on TGUI's repo to add support for callback
-	// when a widget gets destroyed https://github.com/texus/TGUI/issues/326
 }
 
+// Binds a custom callback to a widget, and calling it whenever the translation changes.
+// The callback function provides references to the widget and the translation service.
 template <typename WidgetType>
-void bindCustomTranslation(
-	std::shared_ptr<WidgetType> widget,
-	std::function<void(std::shared_ptr<WidgetType> widget,
-					   TranslationService &)>
-		cb) {
+void bindTranslationWithCallback(std::shared_ptr<WidgetType> widget,
+								 std::function<void(std::shared_ptr<WidgetType> widget, TranslationService &)> cb) {
 	auto &ts = Editor::instance->getTranslations();
 	std::weak_ptr<WidgetType> weakWidget = widget;
 
 	cb(widget, ts);
-	auto id = ts.addListener([weakWidget, cb](TranslationService &ts,
-											  TranslationService::ListenerID id,
-											  bool checkingAlive) {
-		if (auto w = weakWidget.lock()) {
-			if (!checkingAlive)
-				cb(w, ts);
-			return true;
-		} else {
-			return false;
-		}
-	});
+	auto id =
+		ts.addListener([weakWidget, cb](TranslationService &ts, TranslationService::ListenerID id, bool checkingAlive) {
+			if (auto w = weakWidget.lock()) {
+				if (!checkingAlive) cb(w, ts);
+				return true;
+			} else {
+				return false;
+			}
+		});
 }
+
+#endif

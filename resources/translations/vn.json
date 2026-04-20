@@ -37,7 +37,7 @@
 				"_label": "Chung",
 				"language": "Ngôn ngữ",
 				"theme": "Chủ đề",
-				"theme_notice": "Để áp dụng chủ đề mới, vui lòng khởi động lại phần mềm!"
+				"theme_notice": "Để áp dụng chủ đề, vui lòng khởi động lại phần mềm.\n Lưu ý rằng tiến trình chưa lưu sẽ bị mất nếu khởi động lại!"
 			},
 			"hotkeys": {
 				"_label": "Phím Tắt",
@@ -63,7 +63,38 @@
 			},
 			"dialogueview": {
 				"add_new_line": "Tạo hội thoại mới",
-				"has_a_portrait": "Hiển thị ảnh hội thoại?"
+				"has_a_portrait": "Hiển thị ảnh hội thoại?",
+				"select_a_color": "Chọn màu",
+				"select_a_font": "Chọn phông chữ",
+				"select_a_text_size": "Chọn kích cỡ chữ",
+				"add_a_delay": "Thêm độ trễ",
+				"add_option": "Thêm tùy chọn",
+				"color": {
+					"lightgray": "Xám nhạt",
+					"gold": "Vàng",
+					"pink": "Hồng",
+					"green": "Xanh lá",
+					"skyblue": "Xanh da trời đậm",
+					"purple": "Đỏ tía",
+					"beige": "Be",
+					"magenta": "Hồng sẫm",
+					"gray": "Xám",
+					"yellow": "Vàng",
+					"red": "Đỏ",
+					"lime": "Vàng chanh",
+					"blue": "Xanh",
+					"violet": "Tím",
+					"brown": "Nâu",
+					"white": "Trắng",
+					"darkgray": "Xám đậm",
+					"orange": "Cam",
+					"maroon": "Nâu sẫm",
+					"darkgreen": "Xanh lá đậm",
+					"darkblue": "Xanh đậm",
+					"darkpurple": "Tía đậm",
+					"darkbrown": "Nâu đậm",
+					"black": "Đen"
+				}
 			},
 			"tilesetview": {
 				"tile_width": "Độ rộng Tile",
@@ -102,7 +133,11 @@
 				"edit_anim_data": "Chỉnh sửa dữ liệu animation",
 				"is_non_idle": "Có phải animation?"
 			},
-
+			"interactableview": {
+				"display_name": "Tên hiển thị",
+				"script": "Tệp Script",
+				"on_touch": "Kích hoạt khi chạm?"
+			},
 			"toolbar": {
 				"play": "Chạy chương trình",
 				"build": "Dịch và tạo chương trình"
@@ -125,6 +160,76 @@
 			"folder": "Thư mục",
 			"confirm": "Tạo",
 			"cancel": "Hủy"
+		},
+		"project_settings": {
+			"_label": "Cấu hình dự án",
+			"title": "Tên dự án",
+			"save": "Lưu",
+			"program": {
+				"_label": "Phần mềm",
+				"title": "Tên",
+				"version": "Phiên bản",
+				"program_icon": "Biểu tượng",
+				"window_width": "Chiều rộng cửa sổ",
+				"window_height": "Chiều cao cửa sổ",
+				"is_resizable": "Cửa sổ có thể thay đổi kích cỡ?",
+				"window_mode": "Chế độ cửa sổ",
+				"target_fps": "FPS"
+			},
+			"game": {
+				"_label": "Trò chơi",
+				"default_room": "Room mặc định",
+				"player_actor": "Actor người chơi",
+				"tile_size": "Kích cỡ Tile",
+				"debug_draw": "Vẽ gỡ lỗi",
+				"export_image_scales": "Kích cỡ xuất hình ảnh",
+				"export_font_sizes": "Kích cỡ xuất phông chữ"
+			}
+		},
+		"new_prop": {
+			"title": "Tạo Prop mới",
+			"name": "Tên",
+			"type": "Loại",
+			"submit": "Tạo"
+		},
+		"delaywindow": {
+			"add_a_delay": "Thêm độ trễ",
+			"description": "Thời gian độ trễ để thêm trong đơn vị giây.",
+			"confirm": "Xác nhận"
+		},
+		"edit_prop": {
+			"title": "Chỉnh sửa Prop",
+			"type": "Loại",
+			"submit": "Sửa",
+			"remove": "Xóa"
+		},
+		"delete_file": {
+			"title": "Bạn chắc có muốn xóa không?",
+			"yes": "Có",
+			"no": "Không",
+			"ok": "Okay",
+			"room_must_exist": "Lỗi: Dự án phải có ít nhất một phòng.",
+			"room_cannot_be_deleted": "Lỗi: Bạn không thể xóa phòng mặc định.",
+			"player_actor_must_exist": "Lỗi: Bạn phải có tệp tin playerActor.",
+			"player_actor_cannot_be_deleted": "Lỗi: Bạn không thể xóa Actor người chơi."
+		},
+		"add_dialogue_option": {
+			"title": "Tạo tùy chọn hội thoại",
+			"name": "Tên tùy chọn",
+			"dialogue": "Hội thoại",
+			"submit": "Tạo"
+		},
+		"edit_dialogue_option": {
+			"title": "Chỉnh sửa tùy chọn hội thoại",
+			"name": "Tên tùy chọn",
+			"dialogue": "Hội thoại",
+			"submit": "Sửa",
+			"remove": "Xóa"
+		},
+		"edit_list_field": {
+			"title": "Sửa danh sách",
+			"add": "Thêm",
+			"close": "Thoát"
 		}
 	},
 
@@ -134,10 +239,21 @@
 		},
 		"hotkey_modifier": {
 			"listening": "Đang nhận phím..."
+		},
+		"propField": {
+			"interPropField": {
+				"remove": "Xóa"
+			}
 		}
 	},
 
 	"button": {
-		"go_back": "Quay lại"
+		"go_back": "Quay lại",
+		"restart": "Khởi động lại",
+		"restart_later": "Khởi động lại sau"
+	},
+	"context_menu": {
+		"copy_full_path": "Sao chép đường dẫn",
+		"delete": "Xóa"
 	}
 }

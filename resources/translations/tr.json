@@ -1,132 +1,249 @@
 {
-  "language": "Türkçe",
-  "menu": {
-    "file": {
-      "_label": "Dosya",
-      "new_project": "Yeni Proje",
-      "open_project": "Proje Aç",
-      "save_file": "Dosyayı Kaydet"
-    },
-    "edit": {
-      "_label": "Düzenle",
-      "undo": "Geri Al",
-      "redo": "Yinele"
-    },
-    "options": {
-      "_label": "Seçenekler",
-      "editor": "Düzenleyici Seçenekleri..."
-    },
-    "about": {
-      "_label": "Bilgi",
-      "rpgpp": "RPG++ Hakkında...",
-      "rpgpp_description": "C++'da yazılmış, RPG oyun motoru."
-    }
-  },
-  "screen": {
-    "starting": {
-      "get_started": "Başla!",
-      "description": "'Yeni Proje'ye tıklayarak yeni proje oluşturun, ya da 'Proje Aç' ile birini açın!",
-      "actions": "Eylemler",
-      "recent_projects": "Son Projeler"
-    },
-    "options": {
-      "general": {
-        "_label": "Genel",
-        "language": "Dil",
-        "theme": "Tema",
-        "theme_notice": "Tema değiştirdikten sonra düzenleyici yeniden başlatmanız önerilir!"
-      },
-      "hotkeys": {
-        "_label": "Kısayollar",
-        "close_tab": "Sekmeyi Kapat",
-        "new_project": "Yeni Proje",
-        "open_project": "Proje Aç",
-        "undo": "Geri Al",
-        "redo": "Yinele",
-        "save_file": "Dosyayı Kaydet",
-        "toggle_debug": "Hata Ayıklamayı Aç/Kapat",
-        "room_tool.edit": "Harita Araçları/Düzenle",
-        "room_tool.eraser": "Harita Araçları/Sil",
-        "room_tool.mouse": "Harita Araçları/Fare",
-        "room_tool.pen": "Harita Araçları/Kalem",
-        "room_tool.set_spoint": "Harita Araçları/Başlangıç Noktasını Seç",
-        "room_tool.toggle_bm": "Harita Araçları/Fırça Modunu Aç/Kapat"
-      }
-    },
-    "project": {
-      "create_new_resource": "Yeni Kaynak",
-      "emptyview": {
-        "notice": "Hiç bir dosya ya da görünüş tanımlanmamıştır!"
-      },
-      "dialogueview": {
-        "add_new_line": "Yeni satır ekle",
-        "has_a_portrait": "Portresi olacak mı?"
-      },
-      "tilesetview": {
-        "tile_width": "Kare Genişliği",
-        "tile_height": "Kare Yüksekliği",
-        "texture": "Doku"
-      },
-      "roomview": {
-        "mapwidth": "Harita Genişliği",
-        "mapheight": "Harita Yüksekliği",
-        "tileset_file": "Kare Seti Dosyası",
-        "enable_brush": "Fırça Modunu Aktifleştir",
-        "bg_music_file": "Arkaplan Müziği"
-      },
-      "propview": {
-        "atlas": "Atlas Büyüklüğü",
-        "collision": "Çarpışma Karesi Büyüklüğü",
-        "has_interactable": "Interaktifi Varmı?",
-        "image": "Obje Fotoğrafı",
-        "interactable_type": "Interaktif Türü"
-      },
-      "actorview": {
-        "dir0": "Aşağı (Boşta)",
-        "dir1": "Aşağı",
-        "dir2": "Yukarı (Boşta)",
-        "dir3": "Yukarı",
-        "dir4": "Sol (Boşta)",
-        "dir5": "Sol",
-        "dir6": "Sağ (Boşta)",
-        "dir7": "Sağ",
-        "play": "Oynat",
-        "pause": "Duraklat",
-        "is_non_idle": "Boşta Olmayan Animasyon Mu?",
-        "delete": "Kare Sil",
-        "edit_anim_data": "Animasyon Verisini Düzenle"
-      },
-      "toolbar": {
-        "play": "Oyna",
-        "build": "Derle"
-      }
-    }
-  },
-  "dialog": {
-    "new_file": {
-      "title": "Yeni Kaynak",
-      "name": "Dosya Adı",
-      "file": "Dosya",
-      "confirm": "Kabul Et",
-      "cancel": "İptal"
-    },
-    "new_project": {
-      "title": "Yeni Proje",
-      "name": "Proje Adı",
-      "folder": "Klasör",
-      "confirm": "Kabul Et",
-      "cancel": "İptal"
-    }
-  },
-  "widget": {
-    "filechooser": {
-      "select_a_file": "Dosya Seç"
-    },
-    "hotkey_modifier": {
-      "listening": "Bir tuşa basın..."
-    }
-  },
-  "button": {
-    "go_back": "Geri Git"
-  }
+	"language": "Türkçe",
+	"menu": {
+		"file": {
+			"_label": "Dosya",
+			"new_project": "Yeni Proje",
+			"open_project": "Proje Aç",
+			"save_file": "Dosyayı Kaydet"
+		},
+		"edit": {
+			"_label": "Düzenle",
+			"undo": "Geri Al",
+			"redo": "Yinele"
+		},
+		"options": {
+			"_label": "Seçenekler",
+			"editor": "Düzenleyici Seçenekleri..."
+		},
+		"about": {
+			"_label": "Bilgi",
+			"rpgpp": "RPG++ Hakkında...",
+			"rpgpp_description": "C++'da yazılmış, RPG oyun motoru."
+		}
+	},
+	"screen": {
+		"starting": {
+			"get_started": "Başla!",
+			"description": "'Yeni Proje'ye tıklayarak yeni proje oluşturun, ya da 'Proje Aç' ile birini açın!",
+			"actions": "Eylemler",
+			"recent_projects": "Son Projeler"
+		},
+		"options": {
+			"general": {
+				"_label": "Genel",
+				"language": "Dil",
+				"theme": "Tema",
+				"theme_notice": "Tema değiştirdikten sonra etkili olması için düzenleyiciyi yeniden başlatın.\nKaydedilmiş değişiklikler silinecektir!"
+			},
+			"hotkeys": {
+				"_label": "Kısayollar",
+				"close_tab": "Sekmeyi Kapat",
+				"new_project": "Yeni Proje",
+				"open_project": "Proje Aç",
+				"undo": "Geri Al",
+				"redo": "Yinele",
+				"save_file": "Dosyayı Kaydet",
+				"toggle_debug": "Hata Ayıklamayı Aç/Kapat",
+				"room_tool.edit": "Harita Araçları/Düzenle",
+				"room_tool.eraser": "Harita Araçları/Sil",
+				"room_tool.mouse": "Harita Araçları/Fare",
+				"room_tool.pen": "Harita Araçları/Kalem",
+				"room_tool.set_spoint": "Harita Araçları/Başlangıç Noktasını Seç",
+				"room_tool.toggle_bm": "Harita Araçları/Fırça Modunu Aç/Kapat"
+			}
+		},
+		"project": {
+			"create_new_resource": "Yeni Kaynak",
+			"emptyview": {
+				"notice": "Hiç bir dosya ya da görünüş tanımlanmamıştır!"
+			},
+			"dialogueview": {
+				"add_new_line": "Yeni satır ekle",
+				"has_a_portrait": "Portresi Varmı?",
+				"select_a_color": "Renk seçiniz...",
+				"select_a_text_size": "Yazı Boyutu...",
+				"select_a_font": "Yazıtipi Seçin...",
+				"add_a_delay": "Gecikme Ekleyin...",
+				"add_option": "Seçenek Ekle",
+				"color": {
+					"lightgray": "Açık Grey",
+					"gold": "Altın",
+					"pink": "Pembe",
+					"green": "Yeşil",
+					"skyblue": "Gökyüzü Mavisi",
+					"purple": "Mor",
+					"beige": "Bej",
+					"magenta": "Macenta",
+					"gray": "Grey",
+					"yellow": "Sarı",
+					"red": "Kırmızı",
+					"lime": "Misket",
+					"blue": "Mavi",
+					"violet": "Menekşe",
+					"brown": "Kahverengi",
+					"white": "Beyaz",
+					"darkgray": "Koyu Gri",
+					"orange": "Turuncu",
+					"maroon": "Bordo",
+					"darkgreen": "Koyu Yeşil",
+					"darkblue": "Koyu Mavi",
+					"darkpurple": "Koyu Mor",
+					"darkbrown": "Koyu Kahverengi",
+					"black": "Siyah"
+				}
+			},
+			"tilesetview": {
+				"tile_width": "Kare Genişliği",
+				"tile_height": "Kare Yüksekliği",
+				"texture": "Doku"
+			},
+			"roomview": {
+				"mapwidth": "Harita Genişliği",
+				"mapheight": "Harita Yüksekliği",
+				"tileset_file": "Kare Seti Dosyası",
+				"enable_brush": "Fırça Modunu Aktifleştir",
+				"bg_music_file": "Arkaplan Müziği"
+			},
+			"propview": {
+				"atlas": "Atlas Büyüklüğü",
+				"collision": "Çarpışma Karesi Büyüklüğü",
+				"has_interactable": "Interaktifi Varmı?",
+				"image": "Obje Fotoğrafı",
+				"interactable_type": "Interaktif Türü"
+			},
+			"actorview": {
+				"dir0": "Aşağı (Boşta)",
+				"dir1": "Aşağı",
+				"dir2": "Yukarı (Boşta)",
+				"dir3": "Yukarı",
+				"dir4": "Sol (Boşta)",
+				"dir5": "Sol",
+				"dir6": "Sağ (Boşta)",
+				"dir7": "Sağ",
+				"play": "Oynat",
+				"pause": "Duraklat",
+				"is_non_idle": "Boşta Olmayan Animasyon Mu?",
+				"delete": "Kare Sil",
+				"edit_anim_data": "Animasyon Verisini Düzenle"
+			},
+			"interactableview": {
+				"display_name": "Görünüş Adı",
+				"script": "Betik",
+				"on_touch": "Dokunulduğunda?"
+			},
+			"toolbar": {
+				"play": "Oyna",
+				"build": "Derle"
+			}
+		}
+	},
+	"dialog": {
+		"new_file": {
+			"title": "Yeni Kaynak",
+			"name": "Dosya Adı",
+			"file": "Dosya",
+			"confirm": "Kabul Et",
+			"cancel": "İptal"
+		},
+		"new_project": {
+			"title": "Yeni Proje",
+			"name": "Proje Adı",
+			"folder": "Klasör",
+			"confirm": "Kabul Et",
+			"cancel": "İptal"
+		},
+		"project_settings": {
+			"_label": "Proje Ayarları",
+			"title": "Başlık",
+			"save": "Kaydet",
+			"program": {
+				"_label": "Uygulama",
+				"title": "Başlık",
+				"version": "Versiyon",
+				"program_icon": "Uygulama Simgesi",
+				"window_width": "Pencere Genişliği",
+				"window_height": "Pencere Uzunluğu",
+				"is_resizable": "Pencerenin Boyutu Değiştirilebilir mi?",
+				"window_mode": "Pencere Modu",
+				"target_fps": "Hedef FPS"
+			},
+			"game": {
+				"_label": "Oyun",
+				"default_room": "Öntanımlı Oda",
+				"player_actor": "Oyuncunun Aktörü",
+				"tile_size": "Kare Boyutu",
+				"debug_draw": "Hata Ayıklamayı Çiz",
+				"export_image_scales": "Fotoğraf Boyutluklarını Dışarı Aktar",
+				"export_font_sizes": "Yazıtipi Boyutlarını Dışarı Aktar"
+			}
+		},
+		"delete_file": {
+			"title": "Gerçekten Sil?",
+			"yes": "Evet",
+			"no": "Hayır",
+			"ok": "Tamam",
+			"room_must_exist": "En az bir odanız olması lazımdır.",
+			"room_cannot_be_deleted": "Öntanımlı odayı silemezsiniz.",
+			"player_actor_must_exist": "playerActor dosyanızın olması lazımdır.",
+			"player_actor_cannot_be_deleted": "Oyuncunun Aktörünü silemezsiniz."
+		},
+		"new_prop": {
+			"title": "Yeni Obje",
+			"name": "Adı",
+			"type": "Tür",
+			"submit": "Oluştur"
+		},
+		"delaywindow": {
+			"add_a_delay": "Gecikme Ekleyin...",
+			"description": "Saniye olarak eklenecek gecikme.",
+			"confirm": "Ekle"
+		},
+		"edit_prop": {
+			"title": "Objeyi Düzenle",
+			"type": "Tür",
+			"submit": "Düzenle",
+			"remove": "Sil"
+		},
+		"add_dialogue_option": {
+			"title": "Bir diyalog seçeneği ekleyin",
+			"name": "Seçenek İsmi",
+			"dialogue": "Diyalog",
+			"submit": "Ekle"
+		},
+		"edit_dialogue_option": {
+			"title": "Diyalog Seçeneğini Düzenleyin",
+			"name": "Seçenek İsmi",
+			"dialogue": "Diyalog",
+			"submit": "Düzenle",
+			"remove": "Sil"
+		},
+		"edit_list_field": {
+			"title": "Listeyi Düzenleyin...",
+			"add": "Ekle..",
+			"close": "Kapat"
+		}
+	},
+	"widget": {
+		"filechooser": {
+			"select_a_file": "Dosya Seç"
+		},
+		"hotkey_modifier": {
+			"listening": "Bir tuşa basın..."
+		},
+		"propField": {
+			"interPropField": {
+				"remove": "Sil"
+			}
+		}
+	},
+	"button": {
+		"go_back": "Geri Git",
+		"restart": "Yeniden Başlat",
+		"restart_later": "Sonra Yeniden Başlat"
+	},
+	"context_menu": {
+		"copy_full_path": "Full yolunu kopyala",
+		"delete": "Sil"
+	}
 }

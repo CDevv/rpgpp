@@ -1,4 +1,5 @@
 #include "childWindows/settingsPanel/hotkeys.hpp"
+
 #include "TGUI/Widgets/GrowVerticalLayout.hpp"
 #include "TGUI/Widgets/HorizontalLayout.hpp"
 #include "TGUI/Widgets/Label.hpp"
@@ -11,8 +12,7 @@ SettingsPanelHotkeys::SettingsPanelHotkeys(tgui::TabContainer::Ptr tabContainer)
 	HotkeyService &hks = Editor::instance->getHotkeyService();
 	TranslationService &ts = Editor::instance->getTranslations();
 
-	const tgui::ScrollablePanel::Ptr scrollPanel =
-		tgui::ScrollablePanel::create();
+	const tgui::ScrollablePanel::Ptr scrollPanel = tgui::ScrollablePanel::create();
 	scrollPanel->setSize("100%", "100%");
 	scrollPanel->getRenderer()->setPadding(4);
 
@@ -36,8 +36,7 @@ SettingsPanelHotkeys::SettingsPanelHotkeys(tgui::TabContainer::Ptr tabContainer)
 			ConfigurationService &cfgs = Editor::instance->getConfiguration();
 			hks.removeHotkey(id);
 			hks.addHotkey(id, hk);
-			cfgs.setStringValue("hotkeys", id,
-								to_string(HotkeyService::pack(hk)));
+			cfgs.setStringValue("hotkeys", id, to_string(HotkeyService::pack(hk)));
 			cfgs.saveConfiguration();
 		});
 

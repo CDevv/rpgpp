@@ -5,11 +5,11 @@
 #include "views/fontView.hpp"
 
 class FontFileView : public FileView {
-  public:
+public:
 	FontFileView();
 	void init(tgui::Group::Ptr layout, VariantWrapper *variant) override;
 
-  private:
+private:
 	FontView::Ptr fontView;
 };
 

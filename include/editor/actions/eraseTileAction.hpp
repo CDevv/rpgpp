@@ -4,7 +4,7 @@
 #include "mapAction.hpp"
 
 class EraseTileAction : public MapAction {
-  public:
+public:
 	EraseTileAction(MapActionData data);
 	void execute() override;
 	void undo() override;

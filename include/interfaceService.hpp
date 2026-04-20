@@ -1,16 +1,18 @@
 #ifndef _RPGPP_INTERFACESERVICE_H
 #define _RPGPP_INTERFACESERVICE_H
 
-#include "dialogueBalloon.hpp"
-#include "interfaceView.hpp"
+#include <raylib.h>
+
 #include <map>
 #include <memory>
-#include <raylib.h>
 #include <string>
+
+#include "dialogueBalloon.hpp"
+#include "interfaceView.hpp"
 
 /** The InterfaceService acts for the User Interface (UI). */
 class InterfaceService {
-  private:
+private:
 	/** The loaded font that will be used for the User Interface. */
 	Font font;
 	bool fpsVisible;
@@ -21,7 +23,7 @@ class InterfaceService {
 	/** Available UI Views. */
 	std::unique_ptr<std::map<std::string, InterfaceView>> views;
 
-  public:
+public:
 	/** Empty constructor. */
 	InterfaceService();
 	~InterfaceService();

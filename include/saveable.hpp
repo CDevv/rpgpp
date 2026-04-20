@@ -4,7 +4,7 @@
 #include <nlohmann/json_fwd.hpp>
 
 class ISaveable {
-  public:
+public:
 	ISaveable() = default;
 	virtual ~ISaveable() = default;
 	virtual nlohmann::json dumpJson() = 0;

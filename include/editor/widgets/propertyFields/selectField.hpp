@@ -2,22 +2,23 @@
 #ifndef _RPGPP_SELECTFIELD_H
 #define _RPGPP_SELECTFIELD_H
 
+#include <memory>
+
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Widget.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "TGUI/Widgets/Group.hpp"
 #include "TGUI/Widgets/Label.hpp"
 #include "TGUI/Widgets/SpinControl.hpp"
-#include <memory>
 
 class SelectField : public tgui::Group {
-  private:
+private:
 	void updateSize();
 
-  protected:
+protected:
 	tgui::Widget::Ptr clone() const override;
 
-  public:
+public:
 	tgui::Label::Ptr label;
 	tgui::ComboBox::Ptr value;
 

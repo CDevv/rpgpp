@@ -1,6 +1,8 @@
 #ifndef _RPGPP_WIDGETS_SOUNDPLAYER_H
 #define _RPGPP_WIDGETS_SOUNDPLAYER_H
 
+#include <memory>
+
 #include "TGUI/SubwidgetContainer.hpp"
 #include "TGUI/Texture.hpp"
 #include "TGUI/Widgets/BitmapButton.hpp"
@@ -9,10 +11,9 @@
 #include "TGUI/Widgets/Slider.hpp"
 #include "saveables/soundWrapper.hpp"
 #include "updatable.hpp"
-#include <memory>
 
 class SoundPlayer : public tgui::SubwidgetContainer, public IUpdatable {
-  public:
+public:
 	typedef std::shared_ptr<SoundPlayer> Ptr;
 
 	tgui::Panel::Ptr panel;
@@ -32,7 +33,7 @@ class SoundPlayer : public tgui::SubwidgetContainer, public IUpdatable {
 	void setSound(SoundWrapper *sound);
 	SoundWrapper *getSound();
 
-  private:
+private:
 	SoundWrapper *sound;
 	void updateSize();
 
@@ -43,7 +44,7 @@ class SoundPlayer : public tgui::SubwidgetContainer, public IUpdatable {
 	bool mouseOnSlider = false;
 	bool hasPlayed = false;
 
-  protected:
+protected:
 	Widget::Ptr clone() const override;
 };
 

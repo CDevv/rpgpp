@@ -1,8 +1,8 @@
 #include "widgets/propertyFields/boolField.hpp"
+
 #include "TGUI/Widgets/CheckBox.hpp"
 #include "widgets/propertyFields/fieldConfig.hpp"
-BoolField::BoolField(const char *typeName, bool initRenderer)
-	: tgui::SubwidgetContainer(typeName, initRenderer) {
+BoolField::BoolField(const char *typeName, bool initRenderer) : tgui::SubwidgetContainer(typeName, initRenderer) {
 	label = tgui::Label::create("Label");
 	label->setHorizontalAlignment(tgui::HorizontalAlignment::Left);
 	label->setVerticalAlignment(tgui::VerticalAlignment::Center);
@@ -24,9 +24,7 @@ BoolField::Ptr BoolField::copy(BoolField::ConstPtr widget) {
 	}
 }
 
-tgui::Widget::Ptr BoolField::clone() const {
-	return std::make_shared<BoolField>(*this);
-}
+tgui::Widget::Ptr BoolField::clone() const { return std::make_shared<BoolField>(*this); }
 
 void BoolField::setSize(const tgui::Layout2d &size) {
 	tgui::SubwidgetContainer::setSize(size);

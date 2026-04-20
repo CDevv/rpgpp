@@ -1,16 +1,17 @@
 #ifndef _RPGPP_WORLDSERVICE_H
 #define _RPGPP_WORLDSERVICE_H
 
-#include "gamedata.hpp"
-#include "player.hpp"
-#include "room.hpp"
 #include <map>
 #include <memory>
 #include <string>
 
+#include "gamedata.hpp"
+#include "player.hpp"
+#include "room.hpp"
+
 /** The WorldService is responsible for containing and drawing the Room. */
 class WorldService {
-  private:
+private:
 	/** The current room in this World. */
 	std::unique_ptr<Room> room;
 	bool lock;
@@ -24,7 +25,7 @@ class WorldService {
 	float alpha;
 	bool transitionSecondStage;
 
-  public:
+public:
 	/** Empty constructor. */
 	WorldService();
 	/** Get a reference to the current room. */

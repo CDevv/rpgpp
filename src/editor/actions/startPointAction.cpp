@@ -1,4 +1,5 @@
 #include "actions/startPointAction.hpp"
+
 #include "actions/mapAction.hpp"
 
 StartPointAction::StartPointAction(MapActionData data) : MapAction(data) {}

@@ -4,6 +4,7 @@
 #include "TGUI/Backend/raylib.hpp"
 #include "TGUI/String.hpp"
 #include "TGUI/Widgets/Button.hpp"
+#include "TGUI/Widgets/CheckBox.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
 #include "TGUI/Widgets/EditBox.hpp"
 #include "TGUI/Widgets/Label.hpp"
@@ -12,19 +13,19 @@
 // TODO: Segfault happens when editor is closed. This widget could be causing
 // segfault, specially when it is at least opened once.
 class NewProjectWindow {
-  public:
+public:
 	tgui::ChildWindow::Ptr window{nullptr};
 	tgui::EditBox::Ptr titleField;
 	FileChooser::Ptr fileField;
 	tgui::Button::Ptr confirmButton;
 	tgui::Button::Ptr cancelButton;
 	tgui::Label::Ptr fileLabel;
+	tgui::CheckBox::Ptr makeDirCheck;
 
 	typedef std::shared_ptr<NewProjectWindow> Ptr;
 	typedef std::shared_ptr<const NewProjectWindow> ConstPtr;
 
-	NewProjectWindow(const char *typeName = "NewProjectWindow",
-					 bool initRenderer = true);
+	NewProjectWindow(const char *typeName = "NewProjectWindow", bool initRenderer = true);
 
 	static NewProjectWindow::Ptr create();
 	static NewProjectWindow::Ptr create(const tgui::String &title);
@@ -35,11 +36,9 @@ class NewProjectWindow {
 	void updateSize(const tgui::Layout2d &size);
 	void setFieldTitle(const tgui::String &title);
 	void setFileFieldTitle(const tgui::String &title);
-	void setPathFilters(
-		std::vector<std::pair<tgui::String, std::vector<tgui::String>>>
-			pathFilters);
+	void setPathFilters(std::vector<std::pair<tgui::String, std::vector<tgui::String>>> pathFilters);
 
-  private:
+private:
 	static const int FIELD_H = 24;
 	static const int BUTTON_W = 100;
 	static const int BUTTON_H = 24;

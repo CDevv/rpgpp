@@ -6,13 +6,13 @@
 #include "TGUI/Widgets/CheckBox.hpp"
 #include "TGUI/Widgets/Label.hpp"
 class BoolField : public tgui::SubwidgetContainer {
-  private:
+private:
 	void updateSize();
 
-  protected:
+protected:
 	tgui::Widget::Ptr clone() const override;
 
-  public:
+public:
 	tgui::Label::Ptr label;
 	tgui::CheckBox::Ptr value;
 

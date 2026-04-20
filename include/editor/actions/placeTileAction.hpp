@@ -4,7 +4,7 @@
 #include "mapAction.hpp"
 
 class PlaceTileAction : public MapAction {
-  public:
+public:
 	PlaceTileAction(MapActionData a);
 	void execute() override;
 	void undo() override;

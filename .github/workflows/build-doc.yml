@@ -2,9 +2,9 @@ name: "Build documentations"
 
 on:
     push:
-        branches: ["main", "docs"]
+        branches: ["main"]
     pull_request:
-        branches: ["main", "docs"]
+        branches: ["main"]
     workflow_dispatch:
 
 env:

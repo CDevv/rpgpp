@@ -1,22 +1,26 @@
 #ifndef _RPGPP_INTFIELD_H
 #define _RPGPP_INTFIELD_H
 
-#include "TGUI/SubwidgetContainer.hpp"
-#include "TGUI/Widget.hpp"
-#include "TGUI/Widgets/Label.hpp"
-#include "TGUI/Widgets/SpinControl.hpp"
 #include <memory>
 
+#include "TGUI/SubwidgetContainer.hpp"
+#include "TGUI/Widget.hpp"
+#include "TGUI/Widgets/BitmapButton.hpp"
+#include "TGUI/Widgets/Label.hpp"
+#include "TGUI/Widgets/SpinControl.hpp"
+
 class IntField : public tgui::SubwidgetContainer {
-  private:
+private:
 	void updateSize();
 
-  protected:
+protected:
 	tgui::Widget::Ptr clone() const override;
 
-  public:
+public:
 	tgui::Label::Ptr label;
 	tgui::SpinControl::Ptr value;
+	tgui::BitmapButton::Ptr remove;
+	bool removable = false;
 
 	typedef std::shared_ptr<IntField> Ptr;
 	typedef std::shared_ptr<const IntField> ConstPtr;
@@ -27,6 +31,7 @@ class IntField : public tgui::SubwidgetContainer {
 	static IntField::Ptr copy(IntField::ConstPtr widget);
 
 	void setSize(const tgui::Layout2d &size) override;
+	void enableRemoving();
 };
 
 #endif

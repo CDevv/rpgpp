@@ -5,7 +5,7 @@
 #include "variant.hpp"
 
 class EmptyFileView : public FileView {
-  public:
+public:
 	EmptyFileView();
 	void init(tgui::Group::Ptr layout, VariantWrapper *variant) override;
 };

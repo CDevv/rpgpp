@@ -1,22 +1,23 @@
 #include "game.hpp"
+
+#include <raylib.h>
+
+#include <memory>
+#include <sol/forward.hpp>
+#include <sol/sol.hpp>	// FIXME : lua.h not found
+#include <stdexcept>
+
 #include "gamedata.hpp"
 #include "scriptService.hpp"
 #include "soundService.hpp"
-#include <memory>
-#include <raylib.h>
-#include <sol/forward.hpp>
-#include <sol/sol.hpp> // FIXME : lua.h not found
-#include <stdexcept>
 
 Game *Game::instance_ = nullptr;
 std::unique_ptr<GameData> Game::gameData = std::unique_ptr<GameData>{};
 bool Game::usesBin = false;
 std::unique_ptr<StateService> Game::state = std::unique_ptr<StateService>{};
 std::unique_ptr<WorldService> Game::world = std::unique_ptr<WorldService>{};
-std::unique_ptr<InterfaceService> Game::ui =
-	std::unique_ptr<InterfaceService>{};
-std::unique_ptr<ResourceService> Game::resources =
-	std::unique_ptr<ResourceService>{};
+std::unique_ptr<InterfaceService> Game::ui = std::unique_ptr<InterfaceService>{};
+std::unique_ptr<ResourceService> Game::resources = std::unique_ptr<ResourceService>{};
 std::unique_ptr<SoundService> Game::sounds = std::unique_ptr<SoundService>{};
 std::unique_ptr<ScriptService> Game::scripts = std::unique_ptr<ScriptService>{};
 
@@ -47,21 +48,48 @@ void Game::init() {
 	scripts = std::make_unique<ScriptService>();
 }
 
+bool Game::isUsingBin() { return usesBin; }
+
 void Game::useBin(const std::string &filePath) {
 	gameData = std::make_unique<GameData>(deserializeFile(filePath));
 	usesBin = true;
 
-	for (const auto &[name, data] : gameData->images) {
-		Image image = LoadImageFromMemory(data.ext.c_str(), data.data.data(),
-										  data.dataSize);
-		Texture2D texture = LoadTextureFromImage(image);
-		resources->addTexture(name, texture);
-		UnloadImage(image);
+	// resources
+	resources->init();
+
+	/// Setup program
+	SetWindowTitle(gameData->title.c_str());
+	SetWindowSize(gameData->programSet.windowSize.x, gameData->programSet.windowSize.y);
+	if (gameData->programSet.windowResizeableFlag) {
+		SetWindowState(FLAG_WINDOW_RESIZABLE);
+	} else {
+		ClearWindowState(FLAG_WINDOW_RESIZABLE);
+	}
+	SetWindowState(gameData->programSet.windowStateFlag);
+	if (gameData->programSet.targetFPS > 0) {
+		SetTargetFPS(gameData->programSet.targetFPS);
 	}
 
-	SetWindowTitle(gameData->title.c_str());
+	auto iconTexture = resources->getTexture(GetFileName(gameData->programSet.programIconPath.c_str()));
+	Image iconImage = LoadImageFromTexture(iconTexture);
 
-	world->setRoomBin(gameData->rooms.at(0));
+	SetWindowIcon(iconImage);
+
+	UnloadImage(iconImage);
+	///
+
+	/// Select the default room from the settings
+	if (gameData->gameSet.defaultRoomPath.empty()) {
+		world->setRoomBin(gameData->rooms.at(0));
+	} else {
+		std::string chosenName = GetFileNameWithoutExt(gameData->gameSet.defaultRoomPath.c_str());
+		for (auto &room : gameData->rooms) {
+			if (room.name == chosenName) {
+				world->setRoomBin(room);
+				break;
+			}
+		}
+	}
 }
 
 GameData &Game::getBin() { return *gameData; }

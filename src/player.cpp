@@ -1,9 +1,13 @@
 #include "player.hpp"
-#include "conversion.hpp"
-#include "interactable.hpp"
+
 #include <raylib.h>
 #include <raymath.h>
+
 #include <stdexcept>
+
+#include "conversion.hpp"
+#include "game.hpp"
+#include "interactable.hpp"
 
 Player::Player(std::unique_ptr<Actor> actor, Room &room) : room(room) {
 	this->lock = false;
@@ -13,8 +17,7 @@ Player::Player(std::unique_ptr<Actor> actor, Room &room) : room(room) {
 
 	Rectangle collisionRect = actor->getCollisionRect(Vector2{0, 0});
 	this->interactableArea =
-		Rectangle{collisionRect.x - 6, collisionRect.y - 6,
-				  collisionRect.width + 12, collisionRect.height + 12};
+		Rectangle{collisionRect.x - 6, collisionRect.y - 6, collisionRect.width + 12, collisionRect.height + 12};
 
 	this->actor = std::move(actor);
 	this->idleDirection = RPGPP_DOWN_IDLE;
@@ -28,8 +31,7 @@ void Player::unload() const { actor->unload(); }
 void Player::update() {
 	Rectangle collisionRect = actor->getCollisionRect(Vector2{0, 0});
 	this->interactableArea =
-		Rectangle{collisionRect.x - 6, collisionRect.y - 6,
-				  collisionRect.width + 12, collisionRect.height + 12};
+		Rectangle{collisionRect.x - 6, collisionRect.y - 6, collisionRect.width + 12, collisionRect.height + 12};
 
 	int change = 2;
 	velocity = Vector2{0, 0};
@@ -58,11 +60,9 @@ void Player::update() {
 		this->handleInteraction();
 	}
 
-	if (!lock)
-		this->handleCollision();
+	if (!lock) this->handleCollision();
 
-	if (lock)
-		return;
+	if (lock) return;
 
 	if (!actor->isTempAnimationPlaying()) {
 		if (Vector2Equals(velocity, Vector2{0, 0})) {
@@ -80,16 +80,23 @@ void Player::update() {
 void Player::draw() const {
 	actor->draw();
 
-	// debug draw interactable area..
-	Color interactableAreaDebugColor = ORANGE;
-	interactableAreaDebugColor.a = (255 / 4);
+	bool debugDraw = true;
 
-	DrawRectangleRec(interactableArea, interactableAreaDebugColor);
+	if (Game::isUsingBin()) {
+		debugDraw = Game::getBin().gameSet.debugDraw;
+	}
+
+	if (debugDraw) {
+		// debug draw interactable area..
+		Color interactableAreaDebugColor = ORANGE;
+		interactableAreaDebugColor.a = (255 / 4);
+
+		DrawRectangleRec(interactableArea, interactableAreaDebugColor);
+	}
 }
 
 void Player::handleCollision() {
-	if (actor == nullptr)
-		return;
+	if (actor == nullptr) return;
 
 	Rectangle playerRect = actor->getCollisionRect(velocity);
 
@@ -99,8 +106,7 @@ void Player::handleCollision() {
 	// collision tiles
 	for (auto &[pos, obj] : room.getCollisions().getObjects()) {
 		Vector2 v = fromIVector(pos);
-		Rectangle tileRect = Rectangle{v.x * worldTileSize, v.y * worldTileSize,
-									   static_cast<float>(worldTileSize),
+		Rectangle tileRect = Rectangle{v.x * worldTileSize, v.y * worldTileSize, static_cast<float>(worldTileSize),
 									   static_cast<float>(worldTileSize)};
 
 		if (CheckCollisionRecs(playerRect, tileRect)) {
@@ -117,15 +123,21 @@ void Player::handleCollision() {
 		}
 	}
 
+	// actors
+	for (auto &[name, actor] : room.getActors().getActors()) {
+		if (CheckCollisionRecs(playerRect, actor->getCollisionRect(Vector2{0, 0}))) {
+			velocity = Vector2{0, 0};
+			break;
+		}
+	}
+
 	// interactable tiles
-	std::vector<Interactable *> interactableTiles =
-		this->room.getInteractables().getList();
+	std::vector<Interactable *> interactableTiles = this->room.getInteractables().getList();
 	for (Interactable *interactable : interactableTiles) {
 		Rectangle tileRect =
 			Rectangle{interactable->getWorldPos().x * room.getWorldTileSize(),
 					  interactable->getWorldPos().y * room.getWorldTileSize(),
-					  static_cast<float>(room.getWorldTileSize()),
-					  static_cast<float>(room.getWorldTileSize())};
+					  static_cast<float>(room.getWorldTileSize()), static_cast<float>(room.getWorldTileSize())};
 
 		if (CheckCollisionRecs(playerRect, tileRect)) {
 			velocity = Vector2{0, 0};
@@ -144,14 +156,12 @@ void Player::handleCollision() {
 }
 
 void Player::handleInteraction() {
-	std::vector<Interactable *> interactableTiles =
-		this->room.getInteractables().getList();
+	std::vector<Interactable *> interactableTiles = this->room.getInteractables().getList();
 	for (Interactable *interactable : interactableTiles) {
 		Rectangle tileRect =
 			Rectangle{interactable->getWorldPos().x * room.getWorldTileSize(),
 					  interactable->getWorldPos().y * room.getWorldTileSize(),
-					  static_cast<float>(room.getWorldTileSize()),
-					  static_cast<float>(room.getWorldTileSize())};
+					  static_cast<float>(room.getWorldTileSize()), static_cast<float>(room.getWorldTileSize())};
 
 		if (CheckCollisionRecs(interactableArea, tileRect)) {
 			if (interactable->getType() == "warper") {
@@ -167,9 +177,17 @@ void Player::handleInteraction() {
 
 	for (auto &[pos, prop] : room.getProps().getObjects()) {
 		if (prop->getHasInteractable()) {
-			if (CheckCollisionRecs(interactableArea,
-								   prop->getWorldCollisionRect())) {
+			if (CheckCollisionRecs(interactableArea, prop->getWorldCollisionRect())) {
 				prop->getInteractable()->interact();
+				break;
+			}
+		}
+	}
+
+	for (auto &[name, actor] : room.getActors().getActors()) {
+		if (actor->hasInteractable()) {
+			if (CheckCollisionRecs(interactableArea, actor->getCollisionRect(Vector2{0, 0}))) {
+				actor->getInteractable()->interact();
 				break;
 			}
 		}
@@ -190,8 +208,7 @@ void Player::moveByVelocity(Vector2 velocity) {
 }
 
 Vector2 Player::getPosition() const {
-	if (actor == nullptr)
-		return Vector2{0, 0};
+	if (actor == nullptr) return Vector2{0, 0};
 
 	return actor->getPosition();
 }
@@ -202,29 +219,30 @@ void Player::setPosition(Vector2 pos) {
 }
 
 Vector2 Player::getCenterPosition() const {
-	if (actor == nullptr)
-		return Vector2{0, 0};
+	if (actor == nullptr) return Vector2{0, 0};
 
 	Rectangle actorRect = actor->getRect();
-	return Vector2{actorRect.x + (actorRect.width / 2),
-				   actorRect.y + (actorRect.height / 2)};
+	return Vector2{actorRect.x + (actorRect.width / 2), actorRect.y + (actorRect.height / 2)};
 }
 
 Vector2 Player::getTilePosition() const { return actor->getTilePosition(); }
 
 void Player::setTilePosition(Vector2 tilePos) {
 	if (!room.getTileMap()->worldPosIsValid(tilePos)) {
-		throw std::runtime_error(TextFormat(
-			"This world tile position does not exist: %i, %i",
-			static_cast<int>(tilePos.x), static_cast<int>(tilePos.y)));
+		throw std::runtime_error(TextFormat("This world tile position does not exist: %i, %i",
+											static_cast<int>(tilePos.x), static_cast<int>(tilePos.y)));
 	}
-	actor->setTilePosition(tilePos,
-						   room.getTileMap()->getTileSet()->getTileSize());
+	actor->setTilePosition(tilePos, room.getTileMap()->getTileSet()->getTileSize());
 }
 
 Vector2 Player::getCollisionPos() const {
-	if (actor == nullptr)
-		return Vector2{0, 0};
+	if (actor == nullptr) return Vector2{0, 0};
+
+	return actor->getCollisionCenter();
+}
+
+Vector2 Player::getCollisionCenterPos() const {
+	if (actor == nullptr) return Vector2{0, 0};
 
 	return actor->getCollisionCenter();
 }

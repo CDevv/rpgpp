@@ -45,6 +45,11 @@ Here you can see the title of the opened project, as well as a Playtest button a
 
     * **Build** - Export the project. This will result in a .bin file and an executable file in the project's root directory.
 
+    .. image:: ../images/rpgpp-projectsettingsbutton.png
+        :width: 40%
+
+    * **Project Settings** - Open the Project Settings window, where you can change settings about your project.
+
 * `(3)` - **Resources List**
 
 Here you can see the resources of the project. The dropdown lets you choose which type of resource do you want to be listed. You can click on any file listed here. The "New Resource" button creates a new resource of the type that is currently chosen in the dropdown.

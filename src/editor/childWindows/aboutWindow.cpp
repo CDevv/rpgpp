@@ -1,4 +1,7 @@
 #include "childWindows/aboutWindow.hpp"
+
+#include <string>
+
 #include "TGUI/Config.hpp"
 #include "TGUI/Layout.hpp"
 #include "TGUI/Widgets/ChildWindow.hpp"
@@ -7,7 +10,6 @@
 #include "bindTranslation.hpp"
 #include "childWindows/popupWindow.hpp"
 #include "editor.hpp"
-#include <string>
 
 AboutWindow::AboutWindow() : PopupWindow("AboutWindow") {
 	auto layout = tgui::GrowVerticalLayout::create();
@@ -16,10 +18,8 @@ AboutWindow::AboutWindow() : PopupWindow("AboutWindow") {
 	EditorGuiService::createLogoCenter(layout);
 
 	auto infoText = tgui::Label::create();
-	bindTranslation(infoText, "menu.about.rpgpp_description",
-					&tgui::Label::setText);
-	bindTranslation<tgui::ChildWindow>(this->currentWindow, "menu.about._label",
-									   &tgui::ChildWindow::setTitle);
+	bindTranslation(infoText, "menu.about.rpgpp_description", &tgui::Label::setText);
+	bindTranslation<tgui::ChildWindow>(this->currentWindow, "menu.about._label", &tgui::ChildWindow::setTitle);
 	infoText->setTextSize(20);
 	infoText->setHorizontalAlignment(tgui::HorizontalAlignment::Center);
 	layout->add(infoText);

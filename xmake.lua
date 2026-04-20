@@ -20,37 +20,6 @@ on_install("linux", "macosx", "mingw", "windows", function (package)
 end)
 package_end()
 
-package("noop")
-set_sourcedir(path.join(os.scriptdir(), "libs/noop"))
-add_deps("cmake")
-set_license("MIT")
-on_install("linux", "macosx", "mingw", "windows", function (package)
-	import("package.tools.cmake").install(package, { })
-end)
-package_end()
-
-package("tree-sitter-lua")
-add_urls("https://github.com/tree-sitter-grammars/tree-sitter-lua.git")
-add_versions("0.4.99", "e40f5b6e6df9c2d1d6d664ff5d346a75d71ee6b2")
-add_versions("0.4.100", "e40f5b6e6df9c2d1d6d664ff5d346a75d71ee6b2")
-add_deps("cmake", "noop")
-set_license("MIT")
--- This is the most fucky hack I've probably made. It's essentially: I don't
--- want you to fucking regenerate the grammar file, cause it's already there. But
--- since you want to regenerate it, how about I pass in a very legit version of tree-sitter CLI
--- called "noop" so at least you have something to run!
---
--- NOTE: This only works because the grammar file has already been generated.
-on_install("mingw", "windows", "linux", "macosx", function (package)
-	local noop = package:dep("noop")
-	local config = { }
-	table.insert(config, "-DCMAKE_BUILD_TYPE=" .. (is_mode("debug") and "Debug" or "Release"))
-	table.insert(config, "-DBUILD_SHARED_LIBS=OFF")
-	table.insert(config, "-DTREE_SITTER_CLI=" .. path.join(noop:installdir(), "bin/noop"))
-	import("package.tools.cmake").install(package, config)
-end)
-package_end()
-
 package("tgui")
 -- set_sourcedir(path.join(os.scriptdir(), "libs/tgui/"))
 add_urls("https://github.com/texus/TGUI.git")
@@ -70,14 +39,15 @@ on_install("linux", "macosx", "mingw", "windows", function (package)
 end)
 package_end()
 
-add_requires("raylib", "tgui", "nlohmann_json", "luajit", "noop", "tree-sitter",
-	"tree-sitter-lua")
+add_requires("raylib", "tgui", "nlohmann_json", "luajit", "pugixml")
 add_rules("mode.debug", "mode.release")
 set_defaultmode("debug")
 
 target("rpgpp")
+set_plat(os.host())
+set_arch(os.arch())
 set_kind("static")
-add_packages("raylib", "nlohmann_json", "luajit")
+add_packages("raylib", "nlohmann_json", "luajit", "pugixml")
 set_languages("cxx17")
 add_includedirs("include/", "include/lua/")
 add_files("src/*.cpp", "src/lua/*.cpp")
@@ -154,13 +124,12 @@ set_languages("cxx17")
 add_includedirs("include/", "include/editor/", os.dirs(path.join(os.scriptdir())))
 add_files("src/editor/**.cpp")
 add_deps("rpgpp")
-add_packages("raylib", "tgui", "nlohmann_json", "luajit", "noop", "tree-sitter",
-	"tree-sitter-lua")
+add_packages("raylib", "tgui", "nlohmann_json", "luajit", "pugixml")
 after_build( function (target)
-	os.cp("$(curdir)/resources", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
+	os.cp("$(curdir)/resources", "./build/$(plat)/$(arch)/$(mode)/", { async = true })
 	if is_plat("linux", "macosx") then
-		os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpp.a", "$(curdir)/game-src/lib/librpgpp.a", { async = true })
-		os.cp("$(builddir)/$(plat)/$(arch)/$(mode)/librpgpplua.so", "$(curdir)/game-src/lib/librpgpplua.so",
+		os.cp("./build/$(plat)/$(arch)/$(mode)/librpgpp.a", "$(curdir)/game-src/lib/librpgpp.a", { async = true })
+		os.cp("./build/$(plat)/$(arch)/$(mode)/librpgpplua.so", "$(curdir)/game-src/lib/librpgpplua.so",
 			{ async = true })
 		os.cp(path.join(target:pkg("luajit"):installdir(), "bin/luajit*"), "$(curdir)/execs/luajit", { async = true })
 	end
@@ -170,13 +139,13 @@ after_build( function (target)
 		os.cp(path.join(target:pkg("luajit"):installdir(), "bin/luajit.exe"), "$(curdir)/execs/luajit.exe",
 			{ async = true })
 	end
-	os.cp("$(curdir)/game-src", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
-	os.cp("$(curdir)/execs", "$(builddir)/$(plat)/$(arch)/$(mode)/", { async = true })
+	os.cp("$(curdir)/game-src", "./build/$(plat)/$(arch)/$(mode)/", { async = true })
+	os.cp("$(curdir)/execs", "./build/$(plat)/$(arch)/$(mode)/", { async = true })
 
 	os.rm("$(curdir)/game-src", { async = true })
 	os.rm("$(curdir)/execs", { async = true })
 	-- remove this line to test if the configuration file changes
-	os.cp("$(curdir)/rpgpp.ini", "$(builddir)/$(plat)/$(arch)/$(mode)/", { copy_if_different = true })
+	os.cp("$(curdir)/rpgpp.ini", "./build/$(plat)/$(arch)/$(mode)/", { copy_if_different = true })
 	print("Pro tip: Check whether translations are up to date with `xmake check_translation`!")
 	print("Environment:")
 	print("  builddir: " .. "$(builddir)")

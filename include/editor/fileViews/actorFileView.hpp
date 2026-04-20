@@ -8,12 +8,12 @@
 #include "widgets/propertyFields/rectangleField.hpp"
 
 class ActorFileView : public FileView {
-  private:
+private:
 	FileField::Ptr tileSetField;
 	RectangleField::Ptr collisionField;
 	ActorView::Ptr actorView;
 
-  public:
+public:
 	ActorFileView();
 	FrameEditor::Ptr frameEditor;
 

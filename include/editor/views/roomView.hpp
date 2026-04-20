@@ -1,6 +1,8 @@
 #ifndef _RPGPP_ROOMVIEW_H
 #define _RPGPP_ROOMVIEW_H
 
+#include <memory>
+
 #include "TGUI/Vector2.hpp"
 #include "TGUI/Widgets/ComboBox.hpp"
 #include "fileViews/fileView.hpp"
@@ -11,14 +13,13 @@
 #include "tileSetView.hpp"
 #include "tilemap.hpp"
 #include "views/worldView.hpp"
-#include <memory>
 
 class RoomViewModesHandler;
 
 class RoomView : public WorldView {
 	friend class RoomViewModesHandler;
 
-  private:
+private:
 	RoomLayer layer;
 	IVector selectedTile{-1, -1};
 	bool brushMode = false;
@@ -33,7 +34,7 @@ class RoomView : public WorldView {
 	void handleModePress(tgui::Vector2f pos);
 	void handleEditPress(tgui::Vector2f pos);
 
-  public:
+public:
 	typedef std::shared_ptr<RoomView> Ptr;
 
 	Room *room{nullptr};
