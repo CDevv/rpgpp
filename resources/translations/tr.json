@@ -65,6 +65,7 @@
 				"select_a_text_size": "Yazı Boyutu...",
 				"select_a_font": "Yazıtipi Seçin...",
 				"add_a_delay": "Gecikme Ekleyin...",
+				"add_option": "Seçenek Ekle",
 				"color": {
 					"lightgray": "Açık Grey",
 					"gold": "Altın",
@@ -222,6 +223,11 @@
 		},
 		"hotkey_modifier": {
 			"listening": "Bir tuşa basın..."
+		},
+		"propField": {
+			"interPropField": {
+				"remove": "Sil"
+			}
 		}
 	},
 	"button": {
