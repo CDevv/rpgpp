@@ -67,7 +67,7 @@ void WinWriteToHandle(HANDLE handle, std::string str) {
 	}
 }
 
-void WinRunWithLog(std::string logName, std::string cmdLine){
+void WinRunWithLog(std::string logName, std::string cmdLine) {
 	HANDLE outFile = nullptr;
 
 	outFile =
