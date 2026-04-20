@@ -140,28 +140,6 @@ void DialogueBalloon::draw() {
 
 		DrawTextureNPatch(uiTexture, info, rect, origin, 0.0f, WHITE);
 
-		if (finishedTyping && dialogue.lines.at(lineIndex).hasOptions) {
-			auto &line = dialogue.lines.at(lineIndex);
-
-			DrawTextureNPatch(uiTexture, info, optionsRect, origin, 0.0f, WHITE);
-
-			Vector2 optionTextPos = {optionsRect.x + 20, optionsRect.y + 20};
-			int i = 0;
-
-			for (auto &option : line.options) {
-				optionTextPos.y += (13 * 3) * i + (4 * i);
-
-				Color optionTextColor = WHITE;
-
-				if (hoveredOption == i) optionTextColor = YELLOW;
-
-				DrawTextEx(Game::getResources().getFont("LanaPixel"), option.title.c_str(), optionTextPos, 13 * 3, 1.0,
-						   optionTextColor);
-
-				i++;
-			}
-		}
-
 		if (dialogue.lines.at(lineIndex).hasPortrait) {
 			drawPortrait();
 		}
@@ -226,6 +204,28 @@ void DialogueBalloon::draw() {
 			Vector2 newMeasure = MeasureTextEx(Game::getResources().getFont(section.font),
 											   TextSubtext(text.c_str(), i, 1), section.textSize * 3, 1.0f);
 			charMeasure = newMeasure;
+		}
+
+		if (finishedTyping && dialogue.lines.at(lineIndex).hasOptions) {
+			auto &line = dialogue.lines.at(lineIndex);
+
+			DrawTextureNPatch(uiTexture, info, optionsRect, origin, 0.0f, WHITE);
+
+			Vector2 optionTextPos = {optionsRect.x + 20, optionsRect.y + 20};
+			int i = 0;
+
+			for (auto &option : line.options) {
+				optionTextPos.y += (13 * 3) * i + (4 * i);
+
+				Color optionTextColor = WHITE;
+
+				if (hoveredOption == i) optionTextColor = YELLOW;
+
+				DrawTextEx(Game::getResources().getFont("LanaPixel"), option.title.c_str(), optionTextPos, 13 * 3, 1.0,
+						   optionTextColor);
+
+				i++;
+			}
 		}
 	}
 }

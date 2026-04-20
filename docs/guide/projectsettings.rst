@@ -14,15 +14,17 @@ There are two categories in Project Settings:
 
     * **Title** - The Window's title.
 
-    * **Version** - Version of the game.
-
     * **Program Icon** - The icon of the window.
+
+    * **Version** - Version of the game.
 
     * **Window Width** - Width of the window.
 
     * **Window Height** - Height of the window.
 
     * **Is Window Resizeable** - Whether the window will be resizeable.
+
+    * **Window Mode** - windowed, exclusive, minimized, maximized, fullscreen.
 
     * **Target FPS** - The frames per second that will be targeted.
 
@@ -35,3 +37,5 @@ There are two categories in Project Settings:
     * **Player Actor** - The Actor file which will be used for the Player's appearance.
 
     * **Tile Size** - The tile size in maps.
+
+    * **Debug Draw** - Drawing objects like collision boxes and etc.
