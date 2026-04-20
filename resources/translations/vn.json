@@ -181,7 +181,9 @@
 				"default_room": "Room mặc định",
 				"player_actor": "Actor người chơi",
 				"tile_size": "Kích cỡ Tile",
-				"debug_draw": "Vẽ gỡ lỗi"
+				"debug_draw": "Vẽ gỡ lỗi",
+				"export_image_scales": "Kích cỡ xuất hình ảnh",
+				"export_font_sizes": "Kích cỡ xuất phông chữ"
 			}
 		},
 		"new_prop": {
@@ -223,6 +225,11 @@
 			"dialogue": "Hội thoại",
 			"submit": "Sửa",
 			"remove": "Xóa"
+		},
+		"edit_list_field": {
+			"title": "Sửa danh sách",
+			"add": "Thêm",
+			"close": "Thoát"
 		}
 	},
 
