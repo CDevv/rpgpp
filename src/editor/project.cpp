@@ -26,7 +26,7 @@
 #include "services/fileSystemService.hpp"
 #include "tileset.hpp"
 
-#ifdef _WIN64
+#ifdef _WIN32
 
 #include <fileapi.h>
 #include <handleapi.h>
@@ -594,7 +594,7 @@ void Project::runProject() {
 	stream = popen(TextFormat("%s -l rpgpplua %s", intepreterPath.c_str(), scriptPath.c_str()), "r");
 
 #endif
-#ifdef _WIN64
+#ifdef _WIN32
 	intepreterPath /= "luajit.exe";
 
 	const std::filesystem::path rpgppDllPath = "rpgpplua.dll";
@@ -652,7 +652,7 @@ void Project::buildProject() {
 
 	std::filesystem::path resultPath = projectPath;
 
-#ifdef _WIN64
+#ifdef _WIN32
 	baseGamePath /= "game.exe";
 	resultPath /= TextFormat("%s.exe", programSet.projectTitle.c_str());
 #else
@@ -667,7 +667,7 @@ void Project::buildProject() {
 		return;
 	}
 
-#ifdef _WIN64
+#ifdef _WIN32
 
 	HANDLE outFile = nullptr;
 
