@@ -67,6 +67,35 @@ void WinWriteToHandle(HANDLE handle, std::string str) {
 	}
 }
 
+void WinRunWithLog(std::string logName, std::string cmdLine){
+	HANDLE outFile = nullptr;
+
+	outFile =
+		CreateFile(logName.c_str(), GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	PROCESS_INFORMATION piProcInfo;
+	STARTUPINFO siStartInfo;
+
+	SetStdHandle(STD_OUTPUT_HANDLE, outFile);
+	ZeroMemory(&piProcInfo, sizeof(PROCESS_INFORMATION));
+
+	ZeroMemory(&siStartInfo, sizeof(STARTUPINFO));
+	siStartInfo.cb = sizeof(STARTUPINFO);
+	siStartInfo.hStdOutput = outFile;
+	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
+
+	bool success = CreateProcess(NULL, cmdLine.data(), NULL, NULL, true, 0, NULL, NULL, &siStartInfo, &piProcInfo);
+
+	if (!success) {
+		printf("Child process doesn't work. \n");
+	} else {
+		CloseHandle(piProcInfo.hProcess);
+		CloseHandle(piProcInfo.hThread);
+
+		CloseHandle(outFile);
+	}
+}
+
 void WinCreateProcEx(std::string cmdLine, HANDLE outHandle, HANDLE inHandle, DWORD dwFlags, bool wait) {
 #ifdef _WIN32
 	STARTUPINFO si;

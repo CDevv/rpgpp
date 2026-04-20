@@ -73,6 +73,10 @@ jobs:
               uses: xmake-io/github-action-setup-xmake@v1
               with:
                   xmake-version: latest
+            - name: Configure
+              run: |
+                  xmake global --clean
+                  xmake config --plat=windows --arch=x64 -y
 
             - name: Build
               shell: pwsh
