@@ -28,18 +28,7 @@
 
 #ifdef _WIN32
 
-#include <fileapi.h>
-#include <handleapi.h>
-#include <minwinbase.h>
-#include <minwindef.h>
-#include <namedpipeapi.h>
-#include <processenv.h>
-#include <processthreadsapi.h>
-#include <winbase.h>
-#include <windows.h>
-#include <winnt.h>
-
-#include "fix_win32_compatibility.h"
+#include <winapi.hpp>
 
 #else
 
@@ -609,32 +598,7 @@ void Project::runProject() {
 	// these paths.
 	std::string cmdLine = TextFormat("%s -l rpgpplua %s", intepreterPath.string().c_str(), scriptPath.string().c_str());
 
-	HANDLE outFile = nullptr;
-
-	outFile =
-		CreateFile("playtest.log", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-
-	PROCESS_INFORMATION piProcInfo;
-	STARTUPINFO siStartInfo;
-
-	SetStdHandle(STD_OUTPUT_HANDLE, outFile);
-	ZeroMemory(&piProcInfo, sizeof(PROCESS_INFORMATION));
-
-	ZeroMemory(&siStartInfo, sizeof(STARTUPINFO));
-	siStartInfo.cb = sizeof(STARTUPINFO);
-	siStartInfo.hStdOutput = outFile;
-	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
-
-	bool success = CreateProcess(NULL, cmdLine.data(), NULL, NULL, true, 0, NULL, NULL, &siStartInfo, &piProcInfo);
-
-	if (!success) {
-		printf("Child process doesn't work. \n");
-	} else {
-		CloseHandle(piProcInfo.hProcess);
-		CloseHandle(piProcInfo.hThread);
-
-		CloseHandle(outFile);
-	}
+	WinRunWithLog("playtest.log", cmdLine);
 
 #endif
 }
@@ -669,31 +633,7 @@ void Project::buildProject() {
 
 #ifdef _WIN32
 
-	HANDLE outFile = nullptr;
-
-	outFile = CreateFile("build.log", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-
-	PROCESS_INFORMATION piProcInfo;
-	STARTUPINFO siStartInfo;
-
-	ZeroMemory(&piProcInfo, sizeof(PROCESS_INFORMATION));
-
-	ZeroMemory(&siStartInfo, sizeof(STARTUPINFO));
-	siStartInfo.cb = sizeof(STARTUPINFO);
-	siStartInfo.hStdOutput = outFile;
-	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
-
-	bool success =
-		CreateProcess(NULL, resultPath.string().data(), NULL, NULL, true, 0, NULL, NULL, &siStartInfo, &piProcInfo);
-
-	if (!success) {
-		printf("Child process could not be created.. \n");
-	} else {
-		CloseHandle(piProcInfo.hProcess);
-		CloseHandle(piProcInfo.hThread);
-
-		CloseHandle(outFile);
-	}
+	WinRunWithLog("build.log", resultPath.string().data());
 
 #else
 

@@ -14,4 +14,5 @@ void WinCreateProc(std::string cmdLine);
 VsInfo WinVsWhere(std::string path);
 VsInfo ParseVsWhereData(std::string output);
 bool WinCreateDetachedExecutable(std::string path);
+void WinRunWithLog(std::string logName, std::string cmdLine);
 #endif
