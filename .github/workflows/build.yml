@@ -26,10 +26,14 @@ jobs:
                   fetch-depth: 0
                   submodules: recursive
 
+            - name: Install xmake
+              uses: xmake-io/github-action-setup-xmake@v1
+              with:
+                  xmake-version: latest
+
             - name: Install packages
               shell: bash
               run: |
-                  sudo add-apt-repository ppa:xmake-io/xmake
                   sudo apt-get update
                   sudo apt-get install -y \
                     libx11-dev \
@@ -38,8 +42,7 @@ jobs:
                     libxcursor-dev \
                     libxi-dev \
                     libgl1-mesa-dev \
-                    mesa-common-dev \
-                    xmake
+                    mesa-common-dev
 
             - name: Build
               shell: bash
