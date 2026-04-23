@@ -6,14 +6,13 @@
 #include "uiElement.hpp"
 
 class ColorRect : public UIElement {
-private:
+public:
 	Rectangle rect;
 	Color color;
 
-public:
 	ColorRect();
-
 	explicit ColorRect(Rectangle rect);
+
 	void setColor(Color newColor);
 	void update() override;
 	void draw() override;

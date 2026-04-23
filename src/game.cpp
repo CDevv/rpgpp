@@ -37,9 +37,16 @@ Game &Game::instance() {
 	return *instance_;
 }
 
-void Game::init() {
+void Game::init(bool usesBin) {
 	gameData = std::make_unique<GameData>();
-	usesBin = false;
+	Game::usesBin = false;
+
+	if (usesBin) {
+		std::string filePath = "game.bin";
+		gameData = std::make_unique<GameData>(deserializeFile(filePath));
+		Game::usesBin = true;
+	}
+
 	resources = std::make_unique<ResourceService>();
 	state = std::make_unique<StateService>();
 	world = std::make_unique<WorldService>();
@@ -55,7 +62,7 @@ void Game::useBin(const std::string &filePath) {
 	usesBin = true;
 
 	// resources
-	resources->init();
+	// resources->init();
 
 	/// Setup program
 	SetWindowTitle(gameData->title.c_str());

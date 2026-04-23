@@ -10,7 +10,7 @@ int main() {
 	InitAudioDevice();
 
 	Game game;
-	game.init();
+	game.init(true);
 
 	game.useBin("game.bin");
 

@@ -134,10 +134,6 @@ struct RoomBin {
 	std::string musicSource;
 };
 
-struct GameBinSettings {
-	std::string playerActor;
-};
-
 struct ProjectProgramSettings {
 	std::string projectTitle;
 	std::string projectVersion;

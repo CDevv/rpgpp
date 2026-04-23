@@ -9,17 +9,19 @@
 
 class ImageRect : public UIElement {
 private:
-	Rectangle rect;
-	std::string source;
 	Texture2D texture;
 
 public:
+	Rectangle rect;
+	std::string source;
+
 	ImageRect();
 	ImageRect(Rectangle rect);
+
 	void setSource(const std::string &source);
 	void setTexture(Texture2D texture);
-	void update();
-	void draw();
+	void update() override;
+	void draw() override;
 };
 
 #endif
