@@ -2,13 +2,16 @@
 
 #include <raylib.h>
 
+#include <memory>
 #include <stdexcept>
 
 #include "colorRect.hpp"
 #include "game.hpp"
 #include "imageRect.hpp"
 #include "interfaceView.hpp"
+#include "ninePatchImageRect.hpp"
 #include "textArea.hpp"
+#include "uiElement.hpp"
 
 InterfaceService::InterfaceService() {
 	fpsVisible = false;
@@ -42,6 +45,15 @@ InterfaceService::InterfaceService() {
 	ImageRect *imageRect = new ImageRect(Rectangle{50, 50, 50, 50});
 	imageRect->setTexture(LoadTexture("logo-sq.png"));
 	view.addElement(imageRect);
+
+	NinePatchImageRect *npatch = new NinePatchImageRect(Rectangle{0, 200, 150, 100});
+	npatch->setSource("ui-npatch.png");
+	npatch->npatchInfo.top = 3;
+	npatch->npatchInfo.left = 3;
+	npatch->npatchInfo.bottom = 3;
+	npatch->npatchInfo.right = 3;
+	npatch->npatchInfo.layout = NPATCH_NINE_PATCH;
+	view.addElement(std::move(npatch));
 
 	views->emplace("test", std::move(view));
 }

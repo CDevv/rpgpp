@@ -17,6 +17,7 @@ public:
 	InterfaceView();
 	explicit InterfaceView(Rectangle rect);
 	void addElement(UIElement *element);
+	void addElement(std::unique_ptr<UIElement> element);
 	void update() const;
 	void draw() const;
 };

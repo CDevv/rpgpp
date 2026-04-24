@@ -32,6 +32,7 @@ private:
 public:
 	Game();
 	static Game &instance();
+	static Game *instancePtr();
 	static bool isUsingBin();
 	static void useBin(const std::string &filePath);
 	static GameData &getBin();

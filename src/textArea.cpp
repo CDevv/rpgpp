@@ -3,24 +3,46 @@
 #include <raylib.h>
 
 #include "game.hpp"
+#include "gamedata.hpp"
+#include "nlohmann/json_fwd.hpp"
 
 TextArea::TextArea() : rect(Rectangle{}) {}
 
 TextArea::TextArea(Rectangle rect) {
 	this->rect = rect;
 	this->content = "";
-
-	props->push_back({"rect_x", rect.x});
-	props->push_back({"rect_y", rect.y});
-	props->push_back({"rect_width", rect.width});
-	props->push_back({"rect_height", rect.height});
-
-	props->push_back({"content", content});
 }
+
+void TextArea::fromJson(const nlohmann::json &json) {
+	rect = json.at("rect");
+	content = json.at("content");
+}
+
+nlohmann::json TextArea::dumpJson() {
+	auto j = nlohmann::json::object();
+	j["rect"] = rect;
+	j["content"] = content;
+	return j;
+}
+
+void TextArea::fromBin(UIElementBin &bin) {
+	rect = std::get<Rectangle>(bin.props["rect"]);
+	content = std::get<std::string>(bin.props["content"]);
+}
+
+UIElementBin TextArea::dumpBin() {
+	UIElementBin bin;
+	bin.props["rect"] = rect;
+	bin.props["content"] = content;
+	return bin;
+}
+
+std::map<std::string, xxx::any_ptr> TextArea::getProps() { return {{"rect", &rect}, {"content", &content}}; }
+
+void TextArea::setText(const std::string &text) { this->content = text; }
 
 void TextArea::update() {
 	// TODO
-	content = props->at("content");
 }
 
 void TextArea::draw() {
@@ -38,9 +60,4 @@ void TextArea::putChar(int i, Vector2 *charPos, Vector2 *charMeasure) const {
 				BLACK);
 
 	*charMeasure = MeasureTextEx(Game::getUi().getFont(), TextSubtext(content.c_str(), i, 1), 13 * 3, 1.0f);
-}
-
-void TextArea::setText(const std::string &text) {
-	this->content = text;
-	props->at("content") = text;
 }

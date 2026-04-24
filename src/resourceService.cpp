@@ -64,7 +64,9 @@ void ResourceService::addTextureFromFile(const std::string &filePath) {
 	addTexture(newId, text);
 }
 
-Texture2D ResourceService::getTexture(const std::string &id) { return textures[id]; }
+Texture2D ResourceService::getTexture(const std::string &id) { return textures.at(id); }
+
+bool ResourceService::textureExists(const std::string &id) { return textures.count(id) > 0; }
 
 void ResourceService::addFont(const std::string &id, Font font) { fonts[id] = font; }
 
@@ -74,6 +76,8 @@ void ResourceService::addFontFromFile(const std::string &filePath, int fontSize)
 }
 
 Font ResourceService::getFont(const std::string &id) { return fonts.at(id); }
+
+bool ResourceService::fontExists(const std::string &id) { return fonts.count(id) > 0; }
 
 void ResourceService::unload() const {
 	for (const auto &[name, texture] : textures) {

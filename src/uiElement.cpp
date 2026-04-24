@@ -4,14 +4,13 @@
 
 #include "nlohmann/json_fwd.hpp"
 
-UIElement::UIElement() { props = std::make_unique<nlohmann::json>(nlohmann::json::object()); };
+UIElement::UIElement() = default;
 
-void UIElement::setProperties(const nlohmann::json &newProps) {
-	props.reset();
-	props = std::make_unique<nlohmann::json>(newProps);
-}
+void UIElement::fromJson(const nlohmann::json &json) {}
 
-nlohmann::json &UIElement::getProperties() { return *props; }
+void fromBin(UIElementBin &bin) {}
+UIElementBin dumpBin() {}
+std::map<std::string, xxx::any_ptr> getProps() {}
 
 void UIElement::draw() {}
 void UIElement::update() {}

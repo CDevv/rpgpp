@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <map>
 #include <string>
+#include <variant>
 #include <vector>
 
 #include "dialogueBalloon.hpp"
@@ -37,6 +38,12 @@ struct IRect {
 	int y;
 	int width;
 	int height;
+};
+
+typedef std::variant<int, std::string, Rectangle, Color, NPatchInfo> PropVariant;
+
+struct UIElementBin {
+	std::map<std::string, PropVariant> props;
 };
 
 struct ActorBin {

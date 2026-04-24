@@ -1,5 +1,5 @@
-#ifndef _RPGPP_IMAGERECT_H
-#define _RPGPP_IMAGERECT_H
+#ifndef _RPGPP_NINEPATCHIMAGERECT_H
+#define _RPGPP_NINEPATCHIMAGERECT_H
 
 #include <raylib.h>
 
@@ -7,7 +7,7 @@
 
 #include "uiElement.hpp"
 
-class ImageRect : public UIElement {
+class NinePatchImageRect : public UIElement {
 private:
 	Texture2D texture;
 	void loadTexture();
@@ -16,9 +16,10 @@ public:
 	Rectangle rect;
 	std::string source;
 	int scale;
+	NPatchInfo npatchInfo;
 
-	ImageRect();
-	ImageRect(Rectangle rect);
+	NinePatchImageRect();
+	NinePatchImageRect(Rectangle rect);
 
 	void fromJson(const nlohmann::json &json) override;
 	nlohmann::json dumpJson() override;

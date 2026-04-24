@@ -37,6 +37,8 @@ Game &Game::instance() {
 	return *instance_;
 }
 
+Game *Game::instancePtr() { return instance_; }
+
 void Game::init(bool usesBin) {
 	gameData = std::make_unique<GameData>();
 	Game::usesBin = false;

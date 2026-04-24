@@ -1,6 +1,7 @@
 #include "interfaceView.hpp"
 
 #include <memory>
+#include <utility>
 
 #include "uiElement.hpp"
 
@@ -16,6 +17,8 @@ void InterfaceView::addElement(UIElement *element) {
 	ptr.reset(element);
 	this->elements.push_back(std::move(ptr));
 }
+
+void InterfaceView::addElement(std::unique_ptr<UIElement> element) { this->elements.push_back(std::move(element)); }
 
 void InterfaceView::update() const {
 	for (auto &&i : elements) {

@@ -18,6 +18,12 @@ public:
 	TextArea();
 	TextArea(Rectangle rect);
 
+	void fromJson(const nlohmann::json &json) override;
+	nlohmann::json dumpJson() override;
+	void fromBin(UIElementBin &bin) override;
+	UIElementBin dumpBin() override;
+	std::map<std::string, xxx::any_ptr> getProps() override;
+
 	void setText(const std::string &text);
 	void update() override;
 	void draw() override;

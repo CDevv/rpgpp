@@ -6,6 +6,7 @@
 #include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 #include <fstream>
+#include <sstream>
 
 #include "dialogueBalloon.hpp"
 #include "interactable.hpp"
@@ -19,6 +20,11 @@ void serialize(Archive &a, IRect &b) {
 template <class Archive>
 void serialize(Archive &a, IVector &b) {
 	a(b.x, b.y);
+}
+
+template <class Archive>
+void serialize(Archive &a, Rectangle &b) {
+	a(b.x, b.y, b.width, b.height);
 }
 
 template <class Archive>
