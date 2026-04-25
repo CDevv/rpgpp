@@ -40,9 +40,35 @@ struct IRect {
 	int height;
 };
 
-typedef std::variant<int, std::string, Rectangle, Color, NPatchInfo> PropVariant;
+struct UIElementRef {
+	std::string title = "";
+};
+
+enum TextAlignment {
+	TEXT_ALIGN_LEFT = 0,
+	TEXT_ALIGN_TOP = 0,
+	TEXT_ALIGN_CENTRE = 1,
+	TEXT_ALIGN_MIDDLE = 1,
+	TEXT_ALIGN_RIGHT = 2,
+	TEXT_ALIGN_BOTTOM = 2
+};
+
+enum InterfaceElementType {
+	INTERFACE_NULL,
+	INTERFACE_TEXTAREA,
+	INTERFACE_LABEL,
+	INTERFACE_COLORRECT,
+	INTERFACE_IMAGERECT,
+	INTERFACE_NINEPATCHIMAGERECT,
+	INTERFACE_BUTTON
+};
+
+#define RPGPP_INTERFACE_ELEMENT_MAX (7)
+
+typedef std::variant<int, std::string, Rectangle, Color, NPatchInfo, UIElementRef, TextAlignment> PropVariant;
 
 struct UIElementBin {
+	InterfaceElementType type;
 	std::map<std::string, PropVariant> props;
 };
 
@@ -139,6 +165,10 @@ struct RoomBin {
 	std::vector<ActorInRoomBin> actors;
 	std::vector<std::vector<TileBin>> tiles;
 	std::string musicSource;
+};
+
+struct InterfaceViewBin {
+	std::map<std::string, UIElementBin> elements;
 };
 
 struct ProjectProgramSettings {

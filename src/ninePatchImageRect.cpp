@@ -4,10 +4,11 @@
 #include "gamedata.hpp"
 #include "nlohmann/json_fwd.hpp"
 #include "raylib.h"
+#include "uiElement.hpp"
 
 NinePatchImageRect::NinePatchImageRect() : NinePatchImageRect({1, 1, 1, 1}) {}
 
-NinePatchImageRect::NinePatchImageRect(Rectangle rect) {
+NinePatchImageRect::NinePatchImageRect(Rectangle rect) : UIElement(INTERFACE_NINEPATCHIMAGERECT) {
 	this->rect = rect;
 	this->scale = 1;
 	this->source = "";
@@ -58,7 +59,7 @@ void NinePatchImageRect::fromBin(UIElementBin &bin) {
 }
 
 UIElementBin NinePatchImageRect::dumpBin() {
-	UIElementBin bin;
+	UIElementBin bin = UIElement::dumpBin();
 	bin.props["rect"] = rect;
 	bin.props["scale"] = scale;
 	bin.props["source"] = source;

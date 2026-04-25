@@ -4,20 +4,36 @@
 #include <raylib.h>
 
 #include <memory>
+#include <string>
 #include <vector>
 
+#include "gamedata.hpp"
+#include "saveable.hpp"
 #include "uiElement.hpp"
 
-class InterfaceView {
+class InterfaceView : public ISaveable {
 private:
 	Rectangle rect;
-	std::vector<std::unique_ptr<UIElement>> elements;
+	std::map<std::string, std::unique_ptr<UIElement>> elements;
+	UIElement *focused = nullptr;
 
 public:
 	InterfaceView();
 	explicit InterfaceView(Rectangle rect);
-	void addElement(UIElement *element);
-	void addElement(std::unique_ptr<UIElement> element);
+
+	InterfaceView(const std::string &filePath);
+	nlohmann::json dumpJson();
+
+	InterfaceView(InterfaceViewBin &bin);
+
+	void onNotify(Event event);
+	bool elementExists(const std::string &title);
+	void addElement(const std::string &title, UIElement *element);
+	void addElement(const std::string &title, std::unique_ptr<UIElement> element);
+	void removeElement(const std::string &title);
+	UIElement *getElement(const std::string &title);
+	void renameElement(const std::string &title, const std::string &newTitle);
+	void changeFocusedElement(const std::string &title);
 	void update() const;
 	void draw() const;
 };

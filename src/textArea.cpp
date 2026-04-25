@@ -5,10 +5,11 @@
 #include "game.hpp"
 #include "gamedata.hpp"
 #include "nlohmann/json_fwd.hpp"
+#include "uiElement.hpp"
 
 TextArea::TextArea() : rect(Rectangle{}) {}
 
-TextArea::TextArea(Rectangle rect) {
+TextArea::TextArea(Rectangle rect) : UIElement(INTERFACE_TEXTAREA) {
 	this->rect = rect;
 	this->content = "";
 }
@@ -31,7 +32,7 @@ void TextArea::fromBin(UIElementBin &bin) {
 }
 
 UIElementBin TextArea::dumpBin() {
-	UIElementBin bin;
+	UIElementBin bin = UIElement::dumpBin();
 	bin.props["rect"] = rect;
 	bin.props["content"] = content;
 	return bin;

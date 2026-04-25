@@ -1,20 +1,24 @@
-#ifndef _RPGPP_COLORRECT_H
-#define _RPGPP_COLORRECT_H
-
-#include <raylib.h>
+#ifndef _RPGPP_LABEL_H
+#define _RPGPP_LABEL_H
 
 #include "gamedata.hpp"
+#include "raylib.h"
 #include "uiElement.hpp"
 
-class ColorRect : public UIElement {
+class Label : public UIElement {
 public:
-	Rectangle rect;
-	Color color;
-	Color borderColor;
-	int borderWidth;
+	Font font;
 
-	ColorRect();
-	explicit ColorRect(Rectangle rect);
+	Rectangle rect;
+	std::string text;
+	Color textColor;
+	TextAlignment horizontalAlignment;
+	TextAlignment verticalAlignment;
+	std::string fontName;
+	int fontSize;
+
+	Label();
+	Label(Rectangle rect);
 
 	void fromJson(const nlohmann::json &json) override;
 	nlohmann::json dumpJson() override;
@@ -22,7 +26,8 @@ public:
 	UIElementBin dumpBin() override;
 	std::map<std::string, xxx::any_ptr> getProps() override;
 
-	void setColor(Color newColor);
+	void setText(const std::string &text);
+
 	void update() override;
 	void draw() override;
 };

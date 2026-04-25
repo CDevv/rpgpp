@@ -33,6 +33,11 @@ void serialize(Archive &a, Color &b) {
 }
 
 template <class Archive>
+void serialize(Archive &a, UIElementRef &b) {
+	a(b.title);
+}
+
+template <class Archive>
 void serialize(Archive &a, ActorBin &b) {
 	a(b.name, b.tileSetName, b.collision, b.animations);
 }

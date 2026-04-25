@@ -6,10 +6,11 @@
 
 #include "gamedata.hpp"
 #include "nlohmann/json_fwd.hpp"
+#include "uiElement.hpp"
 
 ImageRect::ImageRect() : rect(Rectangle{}), texture() {}
 
-ImageRect::ImageRect(Rectangle rect) : texture() {
+ImageRect::ImageRect(Rectangle rect) : UIElement(INTERFACE_IMAGERECT) {
 	this->rect = rect;
 	this->source = "";
 	this->scale = 1;
@@ -58,7 +59,7 @@ void ImageRect::fromBin(UIElementBin &bin) {
 }
 
 UIElementBin ImageRect::dumpBin() {
-	UIElementBin bin;
+	UIElementBin bin = UIElement::dumpBin();
 	bin.props["rect"] = rect;
 	bin.props["source"] = source;
 	bin.props["scale"] = scale;

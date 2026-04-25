@@ -2,6 +2,7 @@
 #define _RPGPP_UIELEMENT_H
 
 #include <any>
+#include <functional>
 #include <map>
 #include <memory>
 #include <string>
@@ -12,20 +13,53 @@
 #include "jsonConversions.hpp"
 #include "nlohmann/json.hpp"
 #include "nlohmann/json_fwd.hpp"
+#include "raylib.h"
 #include "saveable.hpp"
 
+struct Event {
+	KeyboardKey key;
+};
+
+enum CallbackType { CALLBACK_TRIGGER, CALLBACK_FOCUSED, CALLBACK_UNFOCUSED };
+
+#define RPGPP_CALLBACK_TYPE_MAX (3)
+
 class UIElement : public ISaveable {
+protected:
+	bool focusable = false;
+
 public:
+	InterfaceElementType elementType;
+
+	UIElementRef upButton;
+	UIElementRef downButton;
+	UIElementRef leftButton;
+	UIElementRef rightButton;
+
+	std::map<CallbackType, std::function<void()>> callbacks;
+
 	UIElement();
+	UIElement(InterfaceElementType elementType);
 	virtual ~UIElement() = default;
+	InterfaceElementType getType();
+	virtual void onNotify(Event event);
+	bool isFocusable();
+	void invokeCallback(CallbackType type);
+	void setCallback(CallbackType type, std::function<void()> callback);
+
+	void setUpElement(const std::string &title);
+	void setDownElement(const std::string &title);
+	void setLeftElement(const std::string &title);
+	void setRightElement(const std::string &title);
+
 	virtual void update();
 	virtual void draw();
 
-	// virtual nlohmann::json dumpJson();
-	virtual void fromJson(const nlohmann::json &json) = 0;
-	virtual void fromBin(UIElementBin &bin) = 0;
-	virtual UIElementBin dumpBin() = 0;
-	virtual std::map<std::string, xxx::any_ptr> getProps() = 0;
+	virtual nlohmann::json dumpJson();
+	virtual void fromJson(const nlohmann::json &json);
+	virtual UIElementBin dumpBin();
+	virtual void fromBin(UIElementBin &bin);
+	virtual std::map<std::string, xxx::any_ptr> getProps();
 };
 
 #endif

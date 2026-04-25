@@ -9,7 +9,10 @@ void from_json(const json &j, Rectangle &rect) {
 	j.at(3).get_to(rect.height);
 }
 
-void to_json(json &j, const Color &color) { j = json{color.r, color.g, color.b, color.a}; }
+void to_json(json &j, const Color &color) {
+	std::array<unsigned char, 4> arr = {color.r, color.g, color.b, color.a};
+	j = arr;
+}
 
 void from_json(const json &j, Color &color) {
 	j.at(0).get_to(color.r);
@@ -30,3 +33,7 @@ void from_json(const json &j, NPatchInfo &info) {
 	j.at(4).get_to(info.bottom);
 	j.at(5).get_to(info.layout);
 }
+
+void to_json(json &j, const UIElementRef &info) { j = info.title; }
+
+void from_json(const json &j, UIElementRef &info) { info = {j}; }

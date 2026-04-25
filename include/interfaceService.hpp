@@ -21,7 +21,9 @@ private:
 	/** Component for in-game dialogue. */
 	DialogueBalloon dialogue;
 	/** Available UI Views. */
-	std::unique_ptr<std::map<std::string, InterfaceView>> views;
+	std::map<std::string, std::unique_ptr<InterfaceView>> views;
+	/** Current active view. */
+	std::string currentViewName;
 
 public:
 	/** Empty constructor. */
@@ -35,6 +37,8 @@ public:
 	void showDialogue(const std::string &id);
 	/** Open the dialogue with a Dialogue structure */
 	void showDialogue(const DialogueBin &dialogue);
+	/** Get the current active view. */
+	InterfaceView *getCurrentView();
 	/** Update routine. */
 	void update();
 	/** Draw routine. */
