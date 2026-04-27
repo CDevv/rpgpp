@@ -72,7 +72,7 @@ ProjectSettingsPanelGame::ProjectSettingsPanelGame(tgui::TabContainer::Ptr tabCo
 	bindTranslation(debugDraw->label, "dialog.project_settings.game.debug_draw", &tgui::Label::setText);
 	debugDraw->label->setText("Debug Draw");
 	debugDraw->setSize({"100%", 24});
-	debugDraw->value->onCheck([](bool value) {
+	debugDraw->value->onChange([](bool value) {
 		Project *project = Editor::instance->getProject();
 		if (project != nullptr) {
 			project->getGameSettings().debugDraw = value;
@@ -127,6 +127,7 @@ void ProjectSettingsPanelGame::setup(Project *project) {
 	defaultRoom->value->setText(GetFileName(gameSet.defaultRoomPath.c_str()));
 	playerActor->value->setText(GetFileName(gameSet.playerActorPath.c_str()));
 	tileSize->value->setValue(gameSet.tileSize);
+	debugDraw->value->setChecked(gameSet.debugDraw);
 	exportImageScales->value->setText(VecToString(gameSet.exportImageScales));
 	exportFontSizes->value->setText(VecToString(gameSet.exportFontSizes));
 }
