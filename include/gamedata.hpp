@@ -60,10 +60,11 @@ enum InterfaceElementType {
 	INTERFACE_COLORRECT,
 	INTERFACE_IMAGERECT,
 	INTERFACE_NINEPATCHIMAGERECT,
-	INTERFACE_BUTTON
+	INTERFACE_BUTTON,
+	INTERFACE_DIALOGUEAREA
 };
 
-#define RPGPP_INTERFACE_ELEMENT_MAX (7)
+#define RPGPP_INTERFACE_ELEMENT_MAX (8)
 
 typedef std::variant<int, std::string, Rectangle, Color, NPatchInfo, UIElementRef, TextAlignment> PropVariant;
 

@@ -206,7 +206,7 @@ void DialogueBalloon::draw() {
 			charMeasure = newMeasure;
 		}
 
-		if (finishedTyping && dialogue.lines.at(lineIndex).hasOptions) {
+		if (finishedTyping && dialogue.lines.at(lineIndex).hasOptions && charIndex > 0) {
 			auto &line = dialogue.lines.at(lineIndex);
 
 			DrawTextureNPatch(uiTexture, info, optionsRect, origin, 0.0f, WHITE);

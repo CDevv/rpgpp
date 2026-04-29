@@ -8,6 +8,8 @@
 
 #include "button.hpp"
 #include "colorRect.hpp"
+#include "dialogueArea.hpp"
+#include "dialogueBalloon.hpp"
 #include "game.hpp"
 #include "imageRect.hpp"
 #include "interfaceView.hpp"
@@ -48,7 +50,6 @@ InterfaceService::InterfaceService() {
 	imageRect->setTexture(LoadTexture("logo-sq.png"));
 	view->addElement("imageRect", imageRect);
 
-	/*
 	NinePatchImageRect *npatch = new NinePatchImageRect(Rectangle{0, 200, 150, 100});
 	npatch->setSource("ui-npatch.png");
 	npatch->npatchInfo.top = 3;
@@ -56,8 +57,16 @@ InterfaceService::InterfaceService() {
 	npatch->npatchInfo.bottom = 3;
 	npatch->npatchInfo.right = 3;
 	npatch->npatchInfo.layout = NPATCH_NINE_PATCH;
-	view->addElement(std::move(npatch));
-	*/
+	view->addElement("npatch", npatch);
+
+	DialogueBin testDialogue;
+	DialogueLine diagLine;
+	diagLine.sections.push_back({"", "Hello!"});
+	testDialogue.lines.push_back(diagLine);
+	DialogueArea *dialogue = new DialogueArea();
+	dialogue->setRect({0, 200, 300, 50});
+	dialogue->setDialogue(testDialogue);
+	view->addElement("zdiag", dialogue);
 
 	Button *button = new Button();
 	button->setRect(Rectangle{0, 200, 150, 50});
@@ -76,8 +85,8 @@ InterfaceService::InterfaceService() {
 	button->setCallback(CALLBACK_TRIGGER, [] { printf("button2 tirggered..\n"); });
 	view->addElement("button2", button2);
 
-	std::string viewDump = view->dumpJson().dump();
-	SaveFileText("ui.json", viewDump.c_str());
+	// std::string viewDump = view->dumpJson().dump();
+	// SaveFileText("ui.json", viewDump.c_str());
 
 	views.emplace("test", std::move(view));
 

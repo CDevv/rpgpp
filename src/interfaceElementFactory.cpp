@@ -4,6 +4,7 @@
 
 #include "button.hpp"
 #include "colorRect.hpp"
+#include "dialogueArea.hpp"
 #include "imageRect.hpp"
 #include "label.hpp"
 #include "ninePatchImageRect.hpp"
@@ -14,6 +15,6 @@ static std::array<std::function<std::unique_ptr<UIElement>()>, RPGPP_INTERFACE_E
 	[] { return std::make_unique<UIElement>(); }, [] { return std::make_unique<TextArea>(); },
 	[] { return std::make_unique<Label>(); },		[] { return std::make_unique<ColorRect>(); },
 	[] { return std::make_unique<ImageRect>(); }, [] { return std::make_unique<NinePatchImageRect>(); },
-	[] { return std::make_unique<Button>(); }};
+	[] { return std::make_unique<Button>(); },	   [] { return std::make_unique<DialogueArea>(); }};
 
 std::unique_ptr<UIElement> constructElement(InterfaceElementType type) { return interfaceFactory[type](); }
