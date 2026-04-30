@@ -7,7 +7,10 @@
 #include "raymath.h"
 #include "uiElement.hpp"
 
-DialogueArea::DialogueArea() : UIElement(INTERFACE_DIALOGUEAREA) {
+DialogueArea::DialogueArea() : DialogueArea(Rectangle{0, 0, 20, 20}) {}
+
+DialogueArea::DialogueArea(Rectangle rect) : UIElement(INTERFACE_DIALOGUEAREA) {
+	this->rect = rect;
 	text = "";
 	textColor = WHITE;
 }
@@ -178,7 +181,39 @@ void DialogueArea::chooseSection(int i) {
 	section = &line->sections.at(sectionIndex);
 }
 
+void DialogueArea::advanceToNextLine() {
+	if (finishedTyping) {
+		if (lineIndex == (dialogue.lines.size() - 1)) {
+			// hideDialogue();
+			dialogueFinished = true;
+		} else {
+			lineIndex++;
+			text = "";
+			for (auto k : dialogue.lines.at(lineIndex).sections) {
+				text = text.append(k.text);
+			}
+
+			charIndex = 0;
+			firstCharTyped = false;
+			sectionIndex = 0;
+
+			textPos = Vector2{0, 0};
+
+			appliedTag = false;
+			padding = 0.0f;
+			maxLineHeight = 0.0f;
+
+			line = &dialogue.lines.at(lineIndex);
+			section = &line->sections.at(sectionIndex);
+		}
+	} else {
+		charIndex = (text.size() - 1);
+	}
+}
+
 void DialogueArea::setDialogue(const DialogueBin &dialogue) {
+	dialogueFinished = false;
+
 	this->dialogue = dialogue;
 	this->lineIndex = 0;
 
@@ -198,3 +233,7 @@ void DialogueArea::setRect(const Rectangle &rect) { this->rect = rect; }
 void DialogueArea::setText(const std::string &text) { this->text = text; }
 
 void DialogueArea::setTextColor(const Color &color) { this->textColor = color; }
+
+bool DialogueArea::isDialogueFinished() { return dialogueFinished; }
+
+bool DialogueArea::isFinishedTyping() { return finishedTyping; }

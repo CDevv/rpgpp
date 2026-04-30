@@ -3,6 +3,7 @@
 
 #include <raylib.h>
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
@@ -14,7 +15,7 @@
 class InterfaceView : public ISaveable {
 private:
 	Rectangle rect;
-	std::map<std::string, std::unique_ptr<UIElement>> elements;
+	std::multimap<int, std::unique_ptr<UIElement>, std::less<int>> elements;
 	UIElement *focused = nullptr;
 
 public:
@@ -22,18 +23,20 @@ public:
 	explicit InterfaceView(Rectangle rect);
 
 	InterfaceView(const std::string &filePath);
-	nlohmann::json dumpJson();
-
 	InterfaceView(InterfaceViewBin &bin);
 
+	nlohmann::json dumpJson();
+
 	void onNotify(Event event);
+
 	bool elementExists(const std::string &title);
-	void addElement(const std::string &title, UIElement *element);
-	void addElement(const std::string &title, std::unique_ptr<UIElement> element);
+	void addElement(const std::string &title, UIElement *element, int layer);
+	void addElement(const std::string &title, std::unique_ptr<UIElement> element, int layer);
 	void removeElement(const std::string &title);
 	UIElement *getElement(const std::string &title);
 	void renameElement(const std::string &title, const std::string &newTitle);
 	void changeFocusedElement(const std::string &title);
+
 	void update() const;
 	void draw() const;
 };

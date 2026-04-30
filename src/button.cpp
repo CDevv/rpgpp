@@ -62,6 +62,8 @@ std::map<std::string, xxx::any_ptr> Button::getProps() {
 	return map;
 }
 
+Rectangle Button::getRect() { return label.rect; }
+
 void Button::setRect(const Rectangle &rect) {
 	this->label.rect = rect;
 	this->colorRect.rect = rect;

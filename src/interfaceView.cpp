@@ -1,8 +1,11 @@
 #include "interfaceView.hpp"
 
+#include <algorithm>
+#include <functional>
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "actor.hpp"
 #include "gamedata.hpp"
@@ -14,7 +17,7 @@ InterfaceView::InterfaceView() : rect(Rectangle{}) {}
 
 InterfaceView::InterfaceView(Rectangle rect) {
 	this->rect = rect;
-	this->elements = std::map<std::string, std::unique_ptr<UIElement>>{};
+	this->elements = std::multimap<int, std::unique_ptr<UIElement>, std::less<int>>{};
 }
 
 InterfaceView::InterfaceView(const std::string &filePath) {
@@ -26,7 +29,8 @@ InterfaceView::InterfaceView(const std::string &filePath) {
 		auto obj = item.value();
 		auto element = constructElement(obj.at("type"));
 		element->fromJson(obj.at("props"));
-		addElement(item.key(), std::move(element));
+		int layer = obj.at("layer");
+		addElement(item.key(), std::move(element), layer);
 	}
 }
 
@@ -34,7 +38,7 @@ InterfaceView::InterfaceView(InterfaceViewBin &bin) {
 	for (auto &[title, elementBin] : bin.elements) {
 		auto element = constructElement(elementBin.type);
 		element->fromBin(elementBin);
-		addElement(title, std::move(element));
+		addElement(title, std::move(element), elementBin.layer);
 	}
 }
 
@@ -44,6 +48,7 @@ nlohmann::json InterfaceView::dumpJson() {
 	for (auto &&[title, element] : elements) {
 		auto obj = json::object();
 		obj["type"] = element->getType();
+		obj["layer"] = element->getLayer();
 		obj["props"] = element->dumpJson();
 
 		j["elements"][title] = obj;
@@ -52,35 +57,68 @@ nlohmann::json InterfaceView::dumpJson() {
 	return j;
 }
 
-bool InterfaceView::elementExists(const std::string &title) { return (elements.count(title) > 0); }
+bool InterfaceView::elementExists(const std::string &title) {
+	bool res = false;
+	for (auto &item : elements) {
+		if (item.second->getName() == title) {
+			res = true;
+			break;
+		}
+	}
+	return res;
+}
 
-void InterfaceView::addElement(const std::string &title, UIElement *element) {
+void InterfaceView::addElement(const std::string &title, UIElement *element, int layer) {
+	element->setName(title);
+	element->setLayer(layer);
 	auto ptr = std::unique_ptr<UIElement>{};
 	ptr.reset(element);
-	this->elements[title] = std::move(ptr);
+	this->elements.emplace(std::make_pair(layer, std::move(ptr)));
 }
 
-void InterfaceView::addElement(const std::string &title, std::unique_ptr<UIElement> element) {
-	this->elements[title] = std::move(element);
+void InterfaceView::addElement(const std::string &title, std::unique_ptr<UIElement> element, int layer) {
+	element->setName(title);
+	element->setLayer(layer);
+	this->elements.emplace(std::make_pair(layer, std::move(element)));
 }
 
-void InterfaceView::removeElement(const std::string &title) { this->elements.erase(title); }
+void InterfaceView::removeElement(const std::string &title) {
+	for (auto &item : elements) {
+		if (item.second->getName() == title) {
+			elements.erase(item.first);
+			break;
+		}
+	}
+}
 
-UIElement *InterfaceView::getElement(const std::string &title) { return this->elements.at(title).get(); }
+UIElement *InterfaceView::getElement(const std::string &title) {
+	UIElement *res = nullptr;
+	for (auto &&item : elements) {
+		if (item.second->getName() == title) {
+			res = item.second.get();
+			break;
+		}
+	}
+	return res;
+}
 
 void InterfaceView::renameElement(const std::string &title, const std::string &newTitle) {
-	auto node = elements.extract(title);
-	node.key() = newTitle;
-	elements.insert(std::move(node));
+	for (auto &item : elements) {
+		if (item.second->getName() == title) {
+			item.second->setName(newTitle);
+			break;
+		}
+	}
 }
 
 void InterfaceView::changeFocusedElement(const std::string &title) {
 	if (elementExists(title)) {
-		if (elements[title]->isFocusable()) {
+		auto *element = getElement(title);
+		if (element->isFocusable()) {
 			if (focused != nullptr) {
 				focused->invokeCallback(CALLBACK_UNFOCUSED);
 			}
-			focused = elements[title].get();
+			focused = element;
 			focused->invokeCallback(CALLBACK_FOCUSED);
 		}
 	}
@@ -93,13 +131,15 @@ void InterfaceView::onNotify(Event event) {
 }
 
 void InterfaceView::update() const {
-	for (auto &&[key, i] : elements) {
-		i->update();
+	for (auto &item : elements) {
+		item.second->update();
 	}
 }
 
 void InterfaceView::draw() const {
-	for (auto &&[key, i] : elements) {
-		i->draw();
+	for (auto &item : elements) {
+		if (item.second->isVisible()) {
+			item.second->draw();
+		}
 	}
 }

@@ -26,7 +26,10 @@ enum CallbackType { CALLBACK_TRIGGER, CALLBACK_FOCUSED, CALLBACK_UNFOCUSED };
 
 class UIElement : public ISaveable {
 protected:
+	int layer = 0;
 	bool focusable = false;
+	std::string name = "";
+	bool visible = true;
 
 public:
 	InterfaceElementType elementType;
@@ -44,6 +47,13 @@ public:
 	InterfaceElementType getType();
 	virtual void onNotify(Event event);
 	bool isFocusable();
+	int getLayer();
+	void setLayer(int layer);
+	std::string getName();
+	void setName(const std::string &name);
+	bool isVisible();
+	void setVisible(bool value);
+
 	void invokeCallback(CallbackType type);
 	void setCallback(CallbackType type, std::function<void()> callback);
 

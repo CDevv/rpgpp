@@ -70,6 +70,7 @@ typedef std::variant<int, std::string, Rectangle, Color, NPatchInfo, UIElementRe
 
 struct UIElementBin {
 	InterfaceElementType type;
+	int layer;
 	std::map<std::string, PropVariant> props;
 };
 

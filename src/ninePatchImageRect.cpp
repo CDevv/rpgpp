@@ -26,7 +26,7 @@ void NinePatchImageRect::loadTexture() {
 	} else {
 		if (scale > 1) {
 			Image image = LoadImage(source.c_str());
-			ImageResize(&image, image.width * scale, image.height * scale);
+			ImageResizeNN(&image, image.width * scale, image.height * scale);
 			texture = LoadTextureFromImage(image);
 			UnloadImage(image);
 		} else {
@@ -74,6 +74,8 @@ void NinePatchImageRect::setSource(const std::string &source) {
 }
 
 void NinePatchImageRect::setTexture(Texture2D texture) { this->texture = texture; }
+
+void NinePatchImageRect::setScale(int scale) { this->scale = scale; }
 
 std::map<std::string, xxx::any_ptr> NinePatchImageRect::getProps() {
 	return {{"rect", &rect}, {"scale", &scale}, {"source", &source}, {"npatchinfo", &npatchInfo}};

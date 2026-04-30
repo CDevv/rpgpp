@@ -10,6 +10,7 @@
 #include "colorRect.hpp"
 #include "dialogueArea.hpp"
 #include "dialogueBalloon.hpp"
+#include "dialogueInterfaceView.hpp"
 #include "game.hpp"
 #include "imageRect.hpp"
 #include "interfaceView.hpp"
@@ -40,15 +41,15 @@ InterfaceService::InterfaceService() {
 
 	TextArea *tArea = new TextArea(Rectangle{0, 0, 300, 200});
 	tArea->setText("Text!");
-	view->addElement("tArea", tArea);
+	view->addElement("tArea", tArea, 0);
 
 	ColorRect *colorRect = new ColorRect(Rectangle{0, 50, 50, 75});
 	colorRect->setColor(RED);
-	view->addElement("colorRect", colorRect);
+	view->addElement("colorRect", colorRect, 1);
 
 	ImageRect *imageRect = new ImageRect(Rectangle{50, 50, 50, 50});
 	imageRect->setTexture(LoadTexture("logo-sq.png"));
-	view->addElement("imageRect", imageRect);
+	view->addElement("imageRect", imageRect, 2);
 
 	NinePatchImageRect *npatch = new NinePatchImageRect(Rectangle{0, 200, 150, 100});
 	npatch->setSource("ui-npatch.png");
@@ -57,7 +58,7 @@ InterfaceService::InterfaceService() {
 	npatch->npatchInfo.bottom = 3;
 	npatch->npatchInfo.right = 3;
 	npatch->npatchInfo.layout = NPATCH_NINE_PATCH;
-	view->addElement("npatch", npatch);
+	view->addElement("npatch", npatch, 3);
 
 	DialogueBin testDialogue;
 	DialogueLine diagLine;
@@ -66,7 +67,7 @@ InterfaceService::InterfaceService() {
 	DialogueArea *dialogue = new DialogueArea();
 	dialogue->setRect({0, 200, 300, 50});
 	dialogue->setDialogue(testDialogue);
-	view->addElement("zdiag", dialogue);
+	view->addElement("zdiag", dialogue, 4);
 
 	Button *button = new Button();
 	button->setRect(Rectangle{0, 200, 150, 50});
@@ -74,7 +75,7 @@ InterfaceService::InterfaceService() {
 	button->colorRect.borderWidth = 2;
 	button->setDownElement("button2");
 	button->setCallback(CALLBACK_TRIGGER, [] { printf("button1 tirggered..\n"); });
-	view->addElement("button1", button);
+	view->addElement("button1", button, 0);
 	view->changeFocusedElement("button1");
 
 	Button *button2 = new Button();
@@ -83,12 +84,17 @@ InterfaceService::InterfaceService() {
 	button2->colorRect.borderWidth = 2;
 	button2->setUpElement("button1");
 	button->setCallback(CALLBACK_TRIGGER, [] { printf("button2 tirggered..\n"); });
-	view->addElement("button2", button2);
+	view->addElement("button2", button2, 0);
 
 	// std::string viewDump = view->dumpJson().dump();
 	// SaveFileText("ui.json", viewDump.c_str());
 
-	views.emplace("test", std::move(view));
+	// views.emplace("test", std::move(view));
+
+	// currentViewName = "test";
+
+	auto diagView = std::make_unique<DialogueInterfaceView>();
+	views.emplace("test", std::move(diagView));
 
 	currentViewName = "test";
 }

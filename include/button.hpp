@@ -24,6 +24,7 @@ public:
 	std::map<std::string, xxx::any_ptr> getProps() override;
 
 	void setRect(const Rectangle &rect);
+	Rectangle getRect();
 	void setText(const std::string &text);
 
 	void update() override;

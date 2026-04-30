@@ -43,6 +43,18 @@ void UIElement::onNotify(Event event) {
 
 bool UIElement::isFocusable() { return focusable; }
 
+int UIElement::getLayer() { return layer; }
+
+void UIElement::setLayer(int layer) { this->layer = layer; }
+
+std::string UIElement::getName() { return name; }
+
+void UIElement::setName(const std::string &name) { this->name = name; }
+
+bool UIElement::isVisible() { return visible; }
+
+void UIElement::setVisible(bool value) { this->visible = value; }
+
 void UIElement::invokeCallback(CallbackType type) { callbacks[type](); }
 
 void UIElement::setCallback(CallbackType type, std::function<void()> callback) { callbacks[type] = callback; }

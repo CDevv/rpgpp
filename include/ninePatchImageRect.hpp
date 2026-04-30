@@ -29,6 +29,7 @@ public:
 
 	void setSource(const std::string &source);
 	void setTexture(Texture2D texture);
+	void setScale(int scale);
 
 	void update() override;
 	void draw() override;

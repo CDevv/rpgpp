@@ -35,7 +35,7 @@ void ResourceService::init() {
 			for (int imageScale : Game::getBin().gameSet.exportImageScales) {
 				if (imageScale > 1) {
 					Image image = LoadImageFromMemory(data.ext.c_str(), data.data.data(), data.dataSize);
-					ImageResize(&image, image.width * imageScale, image.height * imageScale);
+					ImageResizeNN(&image, image.width * imageScale, image.height * imageScale);
 					Texture2D texture = LoadTextureFromImage(image);
 					addTexture(TextFormat("%s-%i", name.c_str(), imageScale), texture);
 					UnloadImage(image);

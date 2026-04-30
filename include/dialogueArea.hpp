@@ -28,6 +28,8 @@ private:
 	Font font;
 	std::string fontName;
 
+	bool dialogueFinished = false;
+
 public:
 	Rectangle rect;
 	std::string text;
@@ -39,6 +41,7 @@ public:
 	DialogueTextSection *section = nullptr;
 
 	DialogueArea();
+	DialogueArea(Rectangle rect);
 
 	void fromJson(const nlohmann::json &json) override;
 	nlohmann::json dumpJson() override;
@@ -50,6 +53,10 @@ public:
 	void setText(const std::string &text);
 	void setTextColor(const Color &color);
 	void setDialogue(const DialogueBin &dialogue);
+	bool isDialogueFinished();
+	bool isFinishedTyping();
+
+	void advanceToNextLine();
 
 	void update() override;
 	void draw() override;
