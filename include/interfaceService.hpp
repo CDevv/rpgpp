@@ -16,6 +16,7 @@ private:
 	/** The loaded font that will be used for the User Interface. */
 	Font font;
 	bool fpsVisible;
+	bool notifyLock = false;
 	/** Texture for UI components. */
 	Texture uiTexture;
 	/** Component for in-game dialogue. */
@@ -39,6 +40,12 @@ public:
 	void showDialogue(const DialogueBin &dialogue);
 	/** Get the current active view. */
 	InterfaceView *getCurrentView();
+	/** Set this view as the current one and show it. */
+	void showInterface(const std::string &title);
+	/** Hide the current view (no current view). */
+	void hideInterface();
+	void setNotifyLock();
+	bool getNotifyLock();
 	/** Update routine. */
 	void update();
 	/** Draw routine. */

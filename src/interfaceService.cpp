@@ -117,7 +117,13 @@ void InterfaceService::showDialogue(const std::string &id) {
 	}
 }
 
-void InterfaceService::showDialogue(const DialogueBin &dialogue) { this->dialogue.showDialogue(dialogue); }
+void InterfaceService::showDialogue(const DialogueBin &dialogue) {
+	if (currentViewName != "test") {
+		DialogueInterfaceView *diagView = static_cast<DialogueInterfaceView *>(views.at("test").get());
+		diagView->setDialogue(dialogue);
+		showInterface("test");
+	}
+}
 
 InterfaceView *InterfaceService::getCurrentView() {
 	if (views.count(currentViewName) > 0) {
@@ -127,23 +133,46 @@ InterfaceView *InterfaceService::getCurrentView() {
 	}
 }
 
+void InterfaceService::showInterface(const std::string &title) {
+	if (views.count(title) > 0) {
+		currentViewName = title;
+		notifyLock = true;
+	}
+}
+
+void InterfaceService::hideInterface() {
+	if (views.count(currentViewName) > 0) {
+		currentViewName = "";
+	}
+}
+
+void InterfaceService::setNotifyLock() { notifyLock = true; }
+
+bool InterfaceService::getNotifyLock() { return notifyLock; }
+
 void InterfaceService::update() {
 	if (IsKeyPressed(KEY_Q)) {
 		fpsVisible = !fpsVisible;
 	}
 
 	if (views.count(currentViewName) > 0) {
-		InterfaceView *currentView = views.at(currentViewName).get();
-		auto key = GetKeyPressed();
-		if (key != KEY_NULL) {
-			currentView->onNotify({static_cast<KeyboardKey>(key)});
+		if (!notifyLock) {
+			auto key = GetKeyPressed();
+			if (key != KEY_NULL) {
+				views.at(currentViewName)->onNotify({static_cast<KeyboardKey>(key)});
+			}
 		}
+		views.at(currentViewName)->update();
 	}
 
 	dialogue.update();
 
 	for (auto &&item : views) {
 		item.second->update();
+	}
+
+	if (notifyLock) {
+		notifyLock = false;
 	}
 }
 
@@ -155,8 +184,8 @@ void InterfaceService::draw() {
 
 	dialogue.draw();
 
-	for (auto &&item : views) {
-		item.second->draw();
+	if (views.count(currentViewName) > 0) {
+		views.at(currentViewName)->draw();
 	}
 }
 

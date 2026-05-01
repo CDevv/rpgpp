@@ -16,6 +16,7 @@ public:
 	Color shownTextColor;
 
 	Button();
+	Button(Rectangle rect);
 
 	void fromJson(const nlohmann::json &json) override;
 	nlohmann::json dumpJson() override;
@@ -26,6 +27,10 @@ public:
 	void setRect(const Rectangle &rect);
 	Rectangle getRect();
 	void setText(const std::string &text);
+	void setTextSize(int size);
+	void setBackgroundColor(Color color);
+	void setNormalTextColor(Color color);
+	void setFocusedTextColor(Color color);
 
 	void update() override;
 	void draw() override;

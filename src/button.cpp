@@ -7,7 +7,9 @@
 #include "raylib.h"
 #include "uiElement.hpp"
 
-Button::Button() : UIElement(INTERFACE_BUTTON) {
+Button::Button() : Button(Rectangle{0, 0, 20, 20}) {}
+
+Button::Button(Rectangle rect) : UIElement(INTERFACE_BUTTON) {
 	focusable = true;
 	normalTextColor = label.textColor;
 	focusedTextColor = DARKGRAY;
@@ -15,27 +17,31 @@ Button::Button() : UIElement(INTERFACE_BUTTON) {
 	callbacks[CALLBACK_TRIGGER] = [] { printf("button trigger.. \n"); };
 	callbacks[CALLBACK_UNFOCUSED] = [this] { shownTextColor = normalTextColor; };
 	callbacks[CALLBACK_FOCUSED] = [this] { shownTextColor = focusedTextColor; };
+
+	this->setRect(rect);
 }
 
 void Button::fromJson(const nlohmann::json &json) {
 	UIElement::fromJson(json);
-	colorRect.fromJson(json);
-	label.fromJson(json);
+	colorRect.fromJson(json.at("colorRect"));
+	label.fromJson(json.at("label"));
 	normalTextColor = label.textColor;
 	focusedTextColor = json["focusedTextColor"];
+
+	for (auto &i : json.items()) {
+		printf("%s : %s \n", i.key().c_str(), i.value().dump().c_str());
+	}
+	printf("============\n");
 }
 
 nlohmann::json Button::dumpJson() {
 	auto j = UIElement::dumpJson();
 	auto colorRectDump = colorRect.dumpJson();
-	for (auto &i : colorRectDump.items()) {
-		j[i.key()] = i.value();
-	}
+	j["colorRect"] = colorRectDump;
 	auto labelDump = label.dumpJson();
-	for (auto &i : labelDump.items()) {
-		j[i.key()] = i.value();
-	}
+	j["label"] = labelDump;
 	j["focusedTextColor"] = focusedTextColor;
+	printf("%s \n", j["textColor"].dump().c_str());
 	return j;
 }
 
@@ -70,6 +76,18 @@ void Button::setRect(const Rectangle &rect) {
 }
 
 void Button::setText(const std::string &text) { this->label.setText(text); }
+
+void Button::setTextSize(int size) { label.fontSize = size; }
+
+void Button::setBackgroundColor(Color color) { colorRect.setColor(color); }
+
+void Button::setNormalTextColor(Color color) {
+	normalTextColor = color;
+	this->label.textColor = color;
+	shownTextColor = color;
+}
+
+void Button::setFocusedTextColor(Color color) { focusedTextColor = color; }
 
 void Button::update() {
 	label.textColor = shownTextColor;

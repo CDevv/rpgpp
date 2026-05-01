@@ -85,6 +85,10 @@ void InterfaceView::addElement(const std::string &title, std::unique_ptr<UIEleme
 void InterfaceView::removeElement(const std::string &title) {
 	for (auto &item : elements) {
 		if (item.second->getName() == title) {
+			if (focusedElementName == title) {
+				focusedElementName = "";
+				focused = nullptr;
+			}
 			elements.erase(item.first);
 			break;
 		}
@@ -115,6 +119,7 @@ void InterfaceView::changeFocusedElement(const std::string &title) {
 	if (elementExists(title)) {
 		auto *element = getElement(title);
 		if (element->isFocusable()) {
+			focusedElementName = title;
 			if (focused != nullptr) {
 				focused->invokeCallback(CALLBACK_UNFOCUSED);
 			}
@@ -125,18 +130,25 @@ void InterfaceView::changeFocusedElement(const std::string &title) {
 }
 
 void InterfaceView::onNotify(Event event) {
+	if (elementExists(focusedElementName)) {
+		focused = getElement(focusedElementName);
+	} else {
+		focused = nullptr;
+	}
 	if (focused != nullptr) {
 		focused->onNotify(event);
 	}
 }
 
-void InterfaceView::update() const {
+void InterfaceView::update() {
 	for (auto &item : elements) {
-		item.second->update();
+		if (item.second->isVisible()) {
+			item.second->update();
+		}
 	}
 }
 
-void InterfaceView::draw() const {
+void InterfaceView::draw() {
 	for (auto &item : elements) {
 		if (item.second->isVisible()) {
 			item.second->draw();

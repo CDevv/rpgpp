@@ -183,6 +183,8 @@ void DialogueArea::chooseSection(int i) {
 
 void DialogueArea::advanceToNextLine() {
 	if (finishedTyping) {
+		finishedTyping = false;
+
 		if (lineIndex == (dialogue.lines.size() - 1)) {
 			// hideDialogue();
 			dialogueFinished = true;
@@ -213,9 +215,14 @@ void DialogueArea::advanceToNextLine() {
 
 void DialogueArea::setDialogue(const DialogueBin &dialogue) {
 	dialogueFinished = false;
+	finishedTyping = false;
 
 	this->dialogue = dialogue;
 	this->lineIndex = 0;
+	this->sectionIndex = 0;
+
+	line = &this->dialogue.lines.at(lineIndex);
+	section = &line->sections.at(sectionIndex);
 
 	firstCharTyped = false;
 	text = "";

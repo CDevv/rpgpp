@@ -16,7 +16,10 @@ class InterfaceView : public ISaveable {
 private:
 	Rectangle rect;
 	std::multimap<int, std::unique_ptr<UIElement>, std::less<int>> elements;
+
+protected:
 	UIElement *focused = nullptr;
+	std::string focusedElementName = "";
 
 public:
 	InterfaceView();
@@ -27,7 +30,7 @@ public:
 
 	nlohmann::json dumpJson();
 
-	void onNotify(Event event);
+	virtual void onNotify(Event event);
 
 	bool elementExists(const std::string &title);
 	void addElement(const std::string &title, UIElement *element, int layer);
@@ -37,8 +40,8 @@ public:
 	void renameElement(const std::string &title, const std::string &newTitle);
 	void changeFocusedElement(const std::string &title);
 
-	void update() const;
-	void draw() const;
+	virtual void update();
+	virtual void draw();
 };
 
 #endif

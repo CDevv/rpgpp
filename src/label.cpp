@@ -28,7 +28,7 @@ void Label::fromJson(const nlohmann::json &json) {
 	text = json.at("text");
 	textColor = json.at("textColor");
 	horizontalAlignment = json.at("horizontalAlignment");
-	verticalAlignment = json.at("verticalHorizontal");
+	verticalAlignment = json.at("verticalAlignment");
 	fontName = json.at("fontName");
 	fontSize = json.at("fontSize");
 }
@@ -82,11 +82,11 @@ void Label::setText(const std::string &text) { this->text = text; }
 void Label::update() {}
 
 void Label::draw() {
-	Vector2 textSize = MeasureTextEx(font, text.c_str(), static_cast<float>(fontSize), fontSize * .1f);
+	Vector2 textSize = MeasureTextEx(font, text.c_str(), static_cast<float>(fontSize), 1);
 
 	Vector2 textPos =
 		(Vector2){rect.x + Lerp(0.0f, rect.width - textSize.x, (static_cast<float>(horizontalAlignment) * 0.5f)),
 				  rect.y + Lerp(0.0f, rect.height - textSize.y, (static_cast<float>(verticalAlignment) * 0.5f))};
 
-	DrawTextEx(font, text.c_str(), textPos, static_cast<float>(fontSize), fontSize * .1f, textColor);
+	DrawTextEx(font, text.c_str(), textPos, static_cast<float>(fontSize), 1, textColor);
 }

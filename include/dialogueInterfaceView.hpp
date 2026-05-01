@@ -1,21 +1,25 @@
 #ifndef _RPGPP_DIALOGUEINTERFACEVIEW_H
 #define _RPGPP_DIALOGUEINTERFACEVIEW_H
 
+#include <vector>
+
 #include "dialogue.hpp"
 #include "dialogueBalloon.hpp"
 #include "gamedata.hpp"
 #include "interfaceView.hpp"
+#include "uiElement.hpp"
 
 class DialogueInterfaceView : public InterfaceView {
 public:
-	DialogueBin *dialogue;
+	DialogueBin dialogue;
+	int optionsCount = 0;
 
 	DialogueInterfaceView();
 
 	DialogueInterfaceView(const std::string &filePath);
 	DialogueInterfaceView(InterfaceViewBin &bin);
 
-	void setDialogue(DialogueBin *dialogue);
+	void setDialogue(DialogueBin dialogue);
 
 	void onNotify(Event event);
 
