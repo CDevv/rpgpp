@@ -149,7 +149,7 @@ void Interactable::interact() {
 			std::cout << error.what() << std::endl;
 		}
 		if (result.status() != sol::call_status::ok) {
-			printf("uh oh: %i \n", result.status());
+			printf("uh oh: %i \n", static_cast<int>(result.status()));
 		}
 
 		if (state["interact"].valid()) {

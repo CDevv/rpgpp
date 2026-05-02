@@ -26,6 +26,7 @@ void Button::fromJson(const nlohmann::json &json) {
 	colorRect.fromJson(json.at("colorRect"));
 	label.fromJson(json.at("label"));
 	normalTextColor = label.textColor;
+	shownTextColor = label.textColor;
 	focusedTextColor = json["focusedTextColor"];
 
 	for (auto &i : json.items()) {
@@ -41,7 +42,7 @@ nlohmann::json Button::dumpJson() {
 	auto labelDump = label.dumpJson();
 	j["label"] = labelDump;
 	j["focusedTextColor"] = focusedTextColor;
-	printf("%s \n", j["textColor"].dump().c_str());
+	printf("%s \n", j["label"]["textColor"].dump().c_str());
 	return j;
 }
 
@@ -83,8 +84,8 @@ void Button::setBackgroundColor(Color color) { colorRect.setColor(color); }
 
 void Button::setNormalTextColor(Color color) {
 	normalTextColor = color;
-	this->label.textColor = color;
-	shownTextColor = color;
+	this->label.textColor = normalTextColor;
+	shownTextColor = normalTextColor;
 }
 
 void Button::setFocusedTextColor(Color color) { focusedTextColor = color; }

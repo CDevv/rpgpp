@@ -137,12 +137,14 @@ void InterfaceService::showInterface(const std::string &title) {
 	if (views.count(title) > 0) {
 		currentViewName = title;
 		notifyLock = true;
+		Game::getWorld().getPlayer().setMovementLock(true);
 	}
 }
 
 void InterfaceService::hideInterface() {
 	if (views.count(currentViewName) > 0) {
 		currentViewName = "";
+		Game::getWorld().getPlayer().setMovementLock(false);
 	}
 }
 

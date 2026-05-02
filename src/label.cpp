@@ -82,6 +82,8 @@ void Label::setText(const std::string &text) { this->text = text; }
 void Label::update() {}
 
 void Label::draw() {
+	printf("%i \n", textColor.r);
+
 	Vector2 textSize = MeasureTextEx(font, text.c_str(), static_cast<float>(fontSize), 1);
 
 	Vector2 textPos =

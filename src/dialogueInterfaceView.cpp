@@ -119,7 +119,6 @@ void DialogueInterfaceView::onNotify(Event event) {
 				for (auto &option : diagArea->line->options) {
 					Button *button = new Button();
 					button->fromJson(buttonProps);
-					button->setLayer(3);
 					button->setVisible(false);
 					button->setText(option.title);
 
