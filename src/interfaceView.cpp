@@ -45,13 +45,13 @@ InterfaceView::InterfaceView(InterfaceViewBin &bin) {
 nlohmann::json InterfaceView::dumpJson() {
 	auto j = json::object();
 	j["elements"] = json::object();
-	for (auto &&[title, element] : elements) {
+	for (auto &&[layer, element] : elements) {
 		auto obj = json::object();
 		obj["type"] = element->getType();
 		obj["layer"] = element->getLayer();
 		obj["props"] = element->dumpJson();
 
-		j["elements"][title] = obj;
+		j["elements"][element->getName()] = obj;
 	}
 
 	return j;
@@ -105,6 +105,8 @@ UIElement *InterfaceView::getElement(const std::string &title) {
 	}
 	return res;
 }
+
+const std::multimap<int, std::unique_ptr<UIElement>, std::less<int>> &InterfaceView::getElements() { return elements; }
 
 void InterfaceView::renameElement(const std::string &title, const std::string &newTitle) {
 	for (auto &item : elements) {

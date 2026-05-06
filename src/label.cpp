@@ -20,7 +20,11 @@ Label::Label(Rectangle rect) : UIElement(INTERFACE_LABEL) {
 	this->fontName = "LanaPixel";
 	this->fontSize = 26;
 
-	this->font = Game::getResources().getFont(fontName);
+	if (Game::isUsingBin()) {
+		this->font = Game::getResources().getFont(fontName);
+	} else {
+		this->font = LoadFontEx(fontName.c_str(), fontSize, nullptr, 0);
+	}
 }
 
 void Label::fromJson(const nlohmann::json &json) {

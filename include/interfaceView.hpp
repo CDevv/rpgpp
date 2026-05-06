@@ -39,6 +39,7 @@ public:
 	UIElement *getElement(const std::string &title);
 	void renameElement(const std::string &title, const std::string &newTitle);
 	void changeFocusedElement(const std::string &title);
+	const std::multimap<int, std::unique_ptr<UIElement>, std::less<int>> &getElements();
 
 	virtual void update();
 	virtual void draw();
